@@ -10,7 +10,7 @@ interface Player {
 interface Team {
   name: string;
   score: number;
-  players: Player[];
+  goalScorer: GoalScorer | null;
 }
 
 interface GoalScorer {
@@ -19,21 +19,71 @@ interface GoalScorer {
   time: number;
 }
 
-const TeamComponent: React.FC<Team> = ({ name, score, players }) => (
+const generateRandomName = (): string => {
+  const firstName = ["Carlos", "Rafael", "Felipe", "Lucas", "Gustavo"];
+  const lastName = ["Silva", "Santos", "Oliveira", "Souza", "Ferreira"];
+  const randomFirstName =
+    firstName[Math.floor(Math.random() * firstName.length)];
+  const randomLastName = lastName[Math.floor(Math.random() * lastName.length)];
+  return `${randomFirstName} ${randomLastName}`;
+};
+
+const generateRandomStrength = (): number => {
+  return Math.floor(Math.random() * 100) + 1;
+};
+
+const generateRandomPosition = (): Player["position"] => {
+  const positions: Player["position"][] = [
+    "goalkeeper",
+    "defender",
+    "midfielder",
+    "forward",
+  ];
+  return positions[Math.floor(Math.random() * positions.length)];
+};
+
+const generatePlayers = (): Player[] => {
+  const players: Player[] = [];
+
+  // Generate Goalkeeper
+  const goalkeeper: Player = {
+    firstName: generateRandomName(),
+    lastName: generateRandomName(),
+    strength: generateRandomStrength(),
+    position: "goalkeeper",
+  };
+  players.push(goalkeeper);
+
+  // Generate Outfield Players
+  for (let i = 1; i <= 10; i++) {
+    const player: Player = {
+      firstName: generateRandomName(),
+      lastName: generateRandomName(),
+      strength: generateRandomStrength(),
+      position: generateRandomPosition(),
+    };
+    players.push(player);
+  }
+
+  return players;
+};
+
+const TeamComponent: React.FC<Team> = ({ name, score, goalScorer }) => (
   <div className="team">
     <h2>{name}</h2>
-    <p>Score: {score}</p>
-    {/*players.map((player, index) => (
-      <p key={index}>
-        {player.firstName} {player.lastName} ({player.position})
-      </p>
-    ))*/}
+    <p>
+      Score: {score} {goalScorer?.firstName} {goalScorer?.lastName}{" "}
+      {goalScorer?.time}'
+    </p>
   </div>
 );
 
 const MatchSimulator: React.FC = () => {
   const [cearaScore, setCearaScore] = useState(0);
   const [fortalezaScore, setFortalezaScore] = useState(0);
+  const [cearaPlayers, setCearaPlayers] = useState<Player[]>(generatePlayers());
+  const [fortalezaPlayers, setFortalezaPlayers] =
+    useState<Player[]>(generatePlayers);
   const [scorer, setScorer] = useState<GoalScorer | null>(null);
   const [time, setTime] = useState(0);
 
@@ -48,17 +98,21 @@ const MatchSimulator: React.FC = () => {
 
     // Simulate match events (e.g., goals)
     if (time === 15) {
+      const cearaScorer =
+        cearaPlayers[Math.floor(Math.random() * cearaPlayers.length)];
       const goalScorer: GoalScorer = {
-        firstName: "Player",
-        lastName: "A",
+        firstName: cearaScorer.firstName,
+        lastName: cearaScorer.lastName,
         time,
       };
       setCearaScore((prevScore) => prevScore + 1);
       setScorer(goalScorer);
     } else if (time === 30) {
+      const fortalezaScorer =
+        fortalezaPlayers[Math.floor(Math.random() * fortalezaPlayers.length)];
       const goalScorer: GoalScorer = {
-        firstName: "Player",
-        lastName: "B",
+        firstName: fortalezaScorer.firstName,
+        lastName: fortalezaScorer.lastName,
         time,
       };
       setFortalezaScore((prevScore) => prevScore + 1);
@@ -68,67 +122,14 @@ const MatchSimulator: React.FC = () => {
     return () => clearInterval(timer);
   }, [time]);
 
-  const generateRandomName = (): string => {
-    const firstName = ["Carlos", "Rafael", "Felipe", "Lucas", "Gustavo"];
-    const lastName = ["Silva", "Santos", "Oliveira", "Souza", "Ferreira"];
-    const randomFirstName =
-      firstName[Math.floor(Math.random() * firstName.length)];
-    const randomLastName =
-      lastName[Math.floor(Math.random() * lastName.length)];
-    return `${randomFirstName} ${randomLastName}`;
-  };
-
-  const generateRandomStrength = (): number => {
-    return Math.floor(Math.random() * 100) + 1;
-  };
-
-  const generateRandomPosition = (): Player["position"] => {
-    const positions: Player["position"][] = [
-      "goalkeeper",
-      "defender",
-      "midfielder",
-      "forward",
-    ];
-    return positions[Math.floor(Math.random() * positions.length)];
-  };
-
-  const generatePlayers = (teamName: string): Player[] => {
-    const players: Player[] = [];
-
-    // Generate Goalkeeper
-    const goalkeeper: Player = {
-      firstName: generateRandomName(),
-      lastName: generateRandomName(),
-      strength: generateRandomStrength(),
-      position: "goalkeeper",
-    };
-    players.push(goalkeeper);
-
-    // Generate Outfield Players
-    for (let i = 1; i <= 10; i++) {
-      const player: Player = {
-        firstName: generateRandomName(),
-        lastName: generateRandomName(),
-        strength: generateRandomStrength(),
-        position: generateRandomPosition(),
-      };
-      players.push(player);
-    }
-
-    return players;
-  };
-
-  const cearaPlayers: Player[] = generatePlayers("Ceará");
-  const fortalezaPlayers: Player[] = generatePlayers("Fortaleza");
-
   return (
     <div className="match-simulator">
-      <TeamComponent name="Ceará" score={cearaScore} players={cearaPlayers} />
+      <TeamComponent name="Ceará" score={cearaScore} goalScorer={scorer} />
       <div className="middle">Time: {time}</div>
       <TeamComponent
         name="Fortaleza"
         score={fortalezaScore}
-        players={fortalezaPlayers}
+        goalScorer={scorer}
       />
     </div>
   );
