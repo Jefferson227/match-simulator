@@ -10,7 +10,6 @@ interface Player {
 interface Team {
   name: string;
   score: number;
-  goalScorer: GoalScorer | null;
 }
 
 interface GoalScorer {
@@ -68,15 +67,26 @@ const generatePlayers = (): Player[] => {
   return players;
 };
 
-const TeamComponent: React.FC<Team> = ({ name, score, goalScorer }) => (
+const TeamComponent: React.FC<Team> = ({ name, score }) => (
   <div className="team">
     <h2>{name}</h2>
-    <p>
-      Score: {score} {goalScorer?.firstName} {goalScorer?.lastName}{" "}
-      {goalScorer?.time}'
-    </p>
+    <p>{score}</p>
   </div>
 );
+
+const ScoreBoard: React.FC<GoalScorer | null> = (goalScorer) => {
+  if (goalScorer === null) {
+    return null;
+  }
+
+  return (
+    <div className="scoreboard">
+      <p>
+        {goalScorer.firstName} {goalScorer.lastName} {goalScorer.time}'
+      </p>
+    </div>
+  );
+};
 
 const MatchSimulator: React.FC = () => {
   const [cearaScore, setCearaScore] = useState(0);
@@ -124,13 +134,10 @@ const MatchSimulator: React.FC = () => {
 
   return (
     <div className="match-simulator">
-      <TeamComponent name="Ceará" score={cearaScore} goalScorer={scorer} />
+      <TeamComponent name="Ceará" score={cearaScore} />
       <div className="middle">Time: {time}</div>
-      <TeamComponent
-        name="Fortaleza"
-        score={fortalezaScore}
-        goalScorer={scorer}
-      />
+      <TeamComponent name="Fortaleza" score={fortalezaScore} />
+      {scorer !== null ? <ScoreBoard goalScorer={scorer} /> : null}
     </div>
   );
 };
