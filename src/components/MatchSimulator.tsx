@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
 interface Player {
   firstName: string;
@@ -94,11 +94,10 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({ goalScorer }) => {
 };
 
 const MatchSimulator: React.FC = () => {
+  const cearaPlayers = useMemo(() => generatePlayers(), []);
+  const fortalezaPlayers = useMemo(() => generatePlayers(), []);
   const [cearaScore, setCearaScore] = useState(0);
   const [fortalezaScore, setFortalezaScore] = useState(0);
-  const [cearaPlayers, setCearaPlayers] = useState<Player[]>(generatePlayers());
-  const [fortalezaPlayers, setFortalezaPlayers] =
-    useState<Player[]>(generatePlayers);
   const [scorer, setScorer] = useState<GoalScorer | null>(null);
   const [time, setTime] = useState(0);
 
