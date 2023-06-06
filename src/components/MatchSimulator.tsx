@@ -18,6 +18,10 @@ interface GoalScorer {
   time: number;
 }
 
+interface ScoreBoardProps {
+  goalScorer: GoalScorer;
+}
+
 const generateRandomName = (): string => {
   const firstName = ["Carlos", "Rafael", "Felipe", "Lucas", "Gustavo"];
   const lastName = ["Silva", "Santos", "Oliveira", "Souza", "Ferreira"];
@@ -74,7 +78,7 @@ const TeamComponent: React.FC<Team> = ({ name, score }) => (
   </div>
 );
 
-const ScoreBoard: React.FC<GoalScorer | null> = (goalScorer) => {
+const ScoreBoard: React.FC<ScoreBoardProps> = ({ goalScorer }) => {
   if (goalScorer === null) {
     return null;
   }
