@@ -22,13 +22,14 @@ interface ScoreBoardProps {
   goalScorer: GoalScorer;
 }
 
-const generateRandomName = (): string => {
+const generateRandomFirstName = (): string => {
   const firstName = ["Carlos", "Rafael", "Felipe", "Lucas", "Gustavo"];
+  return firstName[Math.floor(Math.random() * firstName.length)];
+};
+
+const generateRandomLastName = (): string => {
   const lastName = ["Silva", "Santos", "Oliveira", "Souza", "Ferreira"];
-  const randomFirstName =
-    firstName[Math.floor(Math.random() * firstName.length)];
-  const randomLastName = lastName[Math.floor(Math.random() * lastName.length)];
-  return `${randomFirstName} ${randomLastName}`;
+  return lastName[Math.floor(Math.random() * lastName.length)];
 };
 
 const generateRandomStrength = (): number => {
@@ -50,8 +51,8 @@ const generatePlayers = (): Player[] => {
 
   // Generate Goalkeeper
   const goalkeeper: Player = {
-    firstName: generateRandomName(),
-    lastName: generateRandomName(),
+    firstName: generateRandomFirstName(),
+    lastName: generateRandomLastName(),
     strength: generateRandomStrength(),
     position: "goalkeeper",
   };
@@ -60,8 +61,8 @@ const generatePlayers = (): Player[] => {
   // Generate Outfield Players
   for (let i = 1; i <= 10; i++) {
     const player: Player = {
-      firstName: generateRandomName(),
-      lastName: generateRandomName(),
+      firstName: generateRandomFirstName(),
+      lastName: generateRandomLastName(),
       strength: generateRandomStrength(),
       position: generateRandomPosition(),
     };
