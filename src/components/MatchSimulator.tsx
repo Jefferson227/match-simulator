@@ -1,74 +1,15 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import Player from '../interfaces/Player';
 import GoalScorer from '../interfaces/GoalScorer';
 import ScoreBoard from './ScoreBoard';
 import TeamComponent from './TeamComponent';
-
-const generateRandomFirstName = (): string => {
-  const firstName = [
-    'Carlos',
-    'Rafael',
-    'Felipe',
-    'Lucas',
-    'Gustavo',
-  ];
-  return firstName[Math.floor(Math.random() * firstName.length)];
-};
-
-const generateRandomLastName = (): string => {
-  const lastName = [
-    'Silva',
-    'Santos',
-    'Oliveira',
-    'Souza',
-    'Ferreira',
-  ];
-  return lastName[Math.floor(Math.random() * lastName.length)];
-};
-
-const generateRandomStrength = (): number => {
-  return Math.floor(Math.random() * 100) + 1;
-};
-
-const generateRandomPosition = (): Player['position'] => {
-  const positions: Player['position'][] = [
-    'goalkeeper',
-    'defender',
-    'midfielder',
-    'forward',
-  ];
-  return positions[Math.floor(Math.random() * positions.length)];
-};
-
-const generatePlayers = (): Player[] => {
-  const players: Player[] = [];
-
-  // Generate Goalkeeper
-  const goalkeeper: Player = {
-    firstName: generateRandomFirstName(),
-    lastName: generateRandomLastName(),
-    strength: generateRandomStrength(),
-    position: 'goalkeeper',
-  };
-  players.push(goalkeeper);
-
-  // Generate Outfield Players
-  for (let i = 1; i <= 10; i++) {
-    const player: Player = {
-      firstName: generateRandomFirstName(),
-      lastName: generateRandomLastName(),
-      strength: generateRandomStrength(),
-      position: generateRandomPosition(),
-    };
-    players.push(player);
-  }
-
-  return players;
-};
+import Functions from '../functions/MatchSimulatorFunctions';
 
 const MatchSimulator: React.FC = () => {
-  const cearaPlayers = useMemo(() => generatePlayers(), []);
-  const fortalezaPlayers = useMemo(() => generatePlayers(), []);
+  const cearaPlayers = useMemo(() => Functions.generatePlayers(), []);
+  const fortalezaPlayers = useMemo(
+    () => Functions.generatePlayers(),
+    []
+  );
   const [cearaScore, setCearaScore] = useState(0);
   const [fortalezaScore, setFortalezaScore] = useState(0);
   const [scorer, setScorer] = useState<GoalScorer | null>(null);
