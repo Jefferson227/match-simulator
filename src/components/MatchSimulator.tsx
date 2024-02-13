@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from 'react';
 
 interface Player {
   firstName: string;
   lastName: string;
   strength: number;
-  position: "goalkeeper" | "defender" | "midfielder" | "forward";
+  position: 'goalkeeper' | 'defender' | 'midfielder' | 'forward';
 }
 
 interface Team {
@@ -23,12 +23,24 @@ interface ScoreBoardProps {
 }
 
 const generateRandomFirstName = (): string => {
-  const firstName = ["Carlos", "Rafael", "Felipe", "Lucas", "Gustavo"];
+  const firstName = [
+    'Carlos',
+    'Rafael',
+    'Felipe',
+    'Lucas',
+    'Gustavo',
+  ];
   return firstName[Math.floor(Math.random() * firstName.length)];
 };
 
 const generateRandomLastName = (): string => {
-  const lastName = ["Silva", "Santos", "Oliveira", "Souza", "Ferreira"];
+  const lastName = [
+    'Silva',
+    'Santos',
+    'Oliveira',
+    'Souza',
+    'Ferreira',
+  ];
   return lastName[Math.floor(Math.random() * lastName.length)];
 };
 
@@ -36,12 +48,12 @@ const generateRandomStrength = (): number => {
   return Math.floor(Math.random() * 100) + 1;
 };
 
-const generateRandomPosition = (): Player["position"] => {
-  const positions: Player["position"][] = [
-    "goalkeeper",
-    "defender",
-    "midfielder",
-    "forward",
+const generateRandomPosition = (): Player['position'] => {
+  const positions: Player['position'][] = [
+    'goalkeeper',
+    'defender',
+    'midfielder',
+    'forward',
   ];
   return positions[Math.floor(Math.random() * positions.length)];
 };
@@ -54,7 +66,7 @@ const generatePlayers = (): Player[] => {
     firstName: generateRandomFirstName(),
     lastName: generateRandomLastName(),
     strength: generateRandomStrength(),
-    position: "goalkeeper",
+    position: 'goalkeeper',
   };
   players.push(goalkeeper);
 
@@ -87,7 +99,8 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({ goalScorer }) => {
   return (
     <div className="scoreboard">
       <p>
-        {goalScorer.firstName} {goalScorer.lastName} {goalScorer.time}'
+        {goalScorer.firstName} {goalScorer.lastName} {goalScorer.time}
+        '
       </p>
     </div>
   );
@@ -123,7 +136,9 @@ const MatchSimulator: React.FC = () => {
       setScorer(goalScorer);
     } else if (time === 30) {
       const fortalezaScorer =
-        fortalezaPlayers[Math.floor(Math.random() * fortalezaPlayers.length)];
+        fortalezaPlayers[
+          Math.floor(Math.random() * fortalezaPlayers.length)
+        ];
       const goalScorer: GoalScorer = {
         firstName: fortalezaScorer.firstName,
         lastName: fortalezaScorer.lastName,
@@ -134,7 +149,7 @@ const MatchSimulator: React.FC = () => {
     }
 
     return () => clearInterval(timer);
-  }, [time]);
+  }, [time, cearaPlayers, fortalezaPlayers]);
 
   return (
     <div className="match-simulator">
