@@ -15,6 +15,7 @@ const MatchSimulator: React.FC = () => {
   const [scorer, setScorer] = useState<GoalScorer | null>(null);
   const [time, setTime] = useState(0);
 
+  // If this useEffect becomes more complex, think about creating a custom useEffect
   useEffect(() => {
     const timer = setInterval(() => {
       setTime((prevTime) => prevTime + 1);
