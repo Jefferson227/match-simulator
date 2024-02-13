@@ -1,26 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
-
-interface Player {
-  firstName: string;
-  lastName: string;
-  strength: number;
-  position: 'goalkeeper' | 'defender' | 'midfielder' | 'forward';
-}
-
-interface Team {
-  name: string;
-  score: number;
-}
-
-interface GoalScorer {
-  firstName: string;
-  lastName: string;
-  time: number;
-}
-
-interface ScoreBoardProps {
-  goalScorer: GoalScorer;
-}
+import Player from '../interfaces/Player';
+import GoalScorer from '../interfaces/GoalScorer';
+import ScoreBoard from './ScoreBoard';
+import TeamComponent from './TeamComponent';
 
 const generateRandomFirstName = (): string => {
   const firstName = [
@@ -82,28 +64,6 @@ const generatePlayers = (): Player[] => {
   }
 
   return players;
-};
-
-const TeamComponent: React.FC<Team> = ({ name, score }) => (
-  <div className="team">
-    <h2>{name}</h2>
-    <p>{score}</p>
-  </div>
-);
-
-const ScoreBoard: React.FC<ScoreBoardProps> = ({ goalScorer }) => {
-  if (goalScorer === null) {
-    return null;
-  }
-
-  return (
-    <div className="scoreboard">
-      <p>
-        {goalScorer.firstName} {goalScorer.lastName} {goalScorer.time}
-        '
-      </p>
-    </div>
-  );
 };
 
 const MatchSimulator: React.FC = () => {
