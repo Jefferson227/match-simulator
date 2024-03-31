@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import GoalScorer from '../interfaces/GoalScorer';
-import ScoreBoard from './ScoreBoard';
-import TeamComponent from './TeamComponent';
-import Functions from '../functions/MatchSimulatorFunctions';
+import GoalScorer from '../../interfaces/GoalScorer';
+import ScoreBoard from '../ScoreBoard';
+import TeamComponent from '../TeamComponent';
+import Functions from '../../functions/MatchSimulatorFunctions';
+import './MatchSimulator.css';
 
 const MatchSimulator: React.FC = () => {
   const cearaPlayers = useMemo(() => Functions.generatePlayers(), []);
-  const fortalezaPlayers = useMemo(
-    () => Functions.generatePlayers(),
-    []
-  );
+  const fortalezaPlayers = useMemo(() => Functions.generatePlayers(), []);
   const [cearaScore, setCearaScore] = useState(0);
   const [fortalezaScore, setFortalezaScore] = useState(0);
   const [scorer, setScorer] = useState<GoalScorer | null>(null);
@@ -38,9 +36,7 @@ const MatchSimulator: React.FC = () => {
       setScorer(goalScorer);
     } else if (time === 30) {
       const fortalezaScorer =
-        fortalezaPlayers[
-          Math.floor(Math.random() * fortalezaPlayers.length)
-        ];
+        fortalezaPlayers[Math.floor(Math.random() * fortalezaPlayers.length)];
       const goalScorer: GoalScorer = {
         firstName: fortalezaScorer.firstName,
         lastName: fortalezaScorer.lastName,

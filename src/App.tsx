@@ -1,5 +1,5 @@
-import "./App.css";
-import MatchSimulator from "./components/MatchSimulator";
+import './App.css';
+import MatchSimulator from './components/MatchSimulator/MatchSimulator';
 
 function App() {
   return (
