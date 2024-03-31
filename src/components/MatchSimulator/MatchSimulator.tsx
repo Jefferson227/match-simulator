@@ -51,6 +51,10 @@ const MatchSimulator: React.FC = () => {
 
   return (
     <div className="match-simulator">
+      <div className="timebar" style={{ width: `${(time * 100) / 90}%` }}>
+        <p className="time">{`${time}'`}</p>
+      </div>
+
       <div className="scoreboard">
         <TeamComponent name="CEA" score={cearaScore} />
         {/* <div className="middle">Time: {time}</div> */}
