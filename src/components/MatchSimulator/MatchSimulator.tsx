@@ -60,7 +60,11 @@ const MatchSimulator: React.FC = () => {
         {/* <div className="middle">Time: {time}</div> */}
         <Score homeScore={cearaScore} guestScore={fortalezaScore} />
         <TeamComponent name="FOR" score={fortalezaScore} />
-        <div className="scorer">{`${scorer?.firstName} ${scorer?.lastName}`}</div>
+        <div className="scorer">
+          {scorer?.firstName
+            ? `${scorer?.firstName} ${scorer?.lastName}`
+            : null}
+        </div>
       </div>
     </div>
   );
