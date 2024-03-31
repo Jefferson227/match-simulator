@@ -1,7 +1,6 @@
-import GoalScorer from '../interfaces/GoalScorer';
-
 interface ScoreBoardProps {
-  goalScorer: GoalScorer;
+  homeScore: number;
+  guestScore: number;
 }
 
 export default ScoreBoardProps;

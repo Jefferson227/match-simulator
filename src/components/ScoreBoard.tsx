@@ -1,16 +1,11 @@
 import ScoreBoardProps from '../props/ScoreBoardProps';
 
-const ScoreBoard: React.FC<ScoreBoardProps> = ({ goalScorer }) => {
-  if (goalScorer === null) {
-    return null;
-  }
-
+const ScoreBoard: React.FC<ScoreBoardProps> = ({ homeScore, guestScore }) => {
   return (
     <div className="scoreboard">
-      <p>
-        {goalScorer.firstName} {goalScorer.lastName} {goalScorer.time}
-        '
-      </p>
+      <div className="home-score">{homeScore}</div>
+      <div className="divisor">x</div>
+      <div className="guest-score">{guestScore}</div>
     </div>
   );
 };
