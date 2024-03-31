@@ -4,9 +4,12 @@
   width: 304px;
   height: 58px;
   margin: 0 auto;
+  position: relative;
+}
+
+.match-simulator .scoreboard {
   display: flex;
   justify-content: space-between;
-  position: relative;
 }
 
 .match-simulator .team-padding {
@@ -39,7 +42,7 @@
   font-size: 22px;
 }
 
-.match-simulator .scoreboard {
+.match-simulator .score {
   display: flex;
   justify-content: space-between;
   font-family: 'Press Start 2P', system-ui;

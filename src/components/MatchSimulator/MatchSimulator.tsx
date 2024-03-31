@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import GoalScorer from '../../interfaces/GoalScorer';
-import ScoreBoard from '../ScoreBoard';
+import Score from '../Score';
 import TeamComponent from '../TeamComponent';
 import Functions from '../../functions/MatchSimulatorFunctions';
 import './MatchSimulator.css';
@@ -51,11 +51,13 @@ const MatchSimulator: React.FC = () => {
 
   return (
     <div className="match-simulator">
-      <TeamComponent name="CEA" score={cearaScore} />
-      {/* <div className="middle">Time: {time}</div> */}
-      <ScoreBoard homeScore={cearaScore} guestScore={fortalezaScore} />
-      <TeamComponent name="FOR" score={fortalezaScore} />
-      <div className="scorer">{`${scorer?.firstName} ${scorer?.lastName}`}</div>
+      <div className="scoreboard">
+        <TeamComponent name="CEA" score={cearaScore} />
+        {/* <div className="middle">Time: {time}</div> */}
+        <Score homeScore={cearaScore} guestScore={fortalezaScore} />
+        <TeamComponent name="FOR" score={fortalezaScore} />
+        <div className="scorer">{`${scorer?.firstName} ${scorer?.lastName}`}</div>
+      </div>
     </div>
   );
 };
