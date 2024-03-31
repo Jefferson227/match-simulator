@@ -52,9 +52,14 @@ const MatchSimulator: React.FC = () => {
   return (
     <div className="match-simulator">
       <TeamComponent name="CEA" score={cearaScore} />
-      <div className="middle">Time: {time}</div>
+      {/* <div className="middle">Time: {time}</div> */}
+      <div className="scoreboard">
+        <div className="home-score">{cearaScore}</div>
+        <div className="divisor">x</div>
+        <div className="guest-score">{fortalezaScore}</div>
+      </div>
       <TeamComponent name="FOR" score={fortalezaScore} />
-      {scorer !== null ? <ScoreBoard goalScorer={scorer} /> : null}
+      {/* {scorer !== null ? <ScoreBoard goalScorer={scorer} /> : null} */}
     </div>
   );
 };

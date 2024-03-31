@@ -4,9 +4,11 @@
   width: 304px;
   height: 58px;
   margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
 }
 
-.team-padding {
+.match-simulator .team-padding {
   width: 95px;
   height: 58px;
   padding: 4px;
@@ -14,7 +16,7 @@
   background-color: #e2e2e2;
 }
 
-.team {
+.match-simulator .team {
   display: block;
   width: 95px;
   height: 58px;
@@ -22,7 +24,7 @@
   position: relative;
 }
 
-.team-name {
+.match-simulator .team-name {
   position: absolute;
   top: 0;
   left: 0;
@@ -34,4 +36,16 @@
   font-weight: 400;
   font-style: normal;
   font-size: 22px;
+}
+
+.match-simulator .scoreboard {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Press Start 2P', system-ui;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 22px;
+  color: #e2e2e2;
+  margin-top: 22px;
+  width: 73px;
 }
