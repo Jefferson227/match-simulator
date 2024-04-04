@@ -57,7 +57,6 @@ const MatchSimulator: React.FC = () => {
 
       <div className="scoreboard">
         <TeamComponent name="CEA" score={cearaScore} />
-        {/* <div className="middle">Time: {time}</div> */}
         <Score homeScore={cearaScore} guestScore={fortalezaScore} />
         <TeamComponent name="FOR" score={fortalezaScore} />
         <div className="scorer">
