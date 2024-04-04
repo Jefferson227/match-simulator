@@ -1,6 +1,8 @@
 interface Team {
   name: string;
-  score: number;
+  outlineColor: string;
+  backgroundColor: string;
+  nameColor: string;
 }
 
 export default Team;

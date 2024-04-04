@@ -56,9 +56,19 @@ const MatchSimulator: React.FC = () => {
       </div>
 
       <div className="scoreboard">
-        <TeamComponent name="CEA" score={cearaScore} />
+        <TeamComponent
+          name="CEA"
+          outlineColor="#e2e2e2"
+          backgroundColor="#1e1e1e"
+          nameColor="#e2e2e2"
+        />
         <Score homeScore={cearaScore} guestScore={fortalezaScore} />
-        <TeamComponent name="FOR" score={fortalezaScore} />
+        <TeamComponent
+          name="FOR"
+          outlineColor="#fe3b3b"
+          backgroundColor="#1263ff"
+          nameColor="#e2e2e2"
+        />
         <div className="scorer">
           {scorer?.firstName
             ? `${scorer?.firstName} ${scorer?.lastName}`
