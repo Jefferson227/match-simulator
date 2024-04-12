@@ -6,6 +6,8 @@
 }
 
 .team-players .team-container-padding {
+  width: 350px;
+  height: 596px;
   padding: 4px;
   background-color: #e2e2e2;
   margin: 0 auto;
