@@ -1,12 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-.match-simulator {
+.match-simulator .scoreboard {
   width: 304px;
   height: 58px;
   margin: 0 auto;
-}
-
-.match-simulator .scoreboard {
   display: flex;
   justify-content: space-between;
   position: relative;
