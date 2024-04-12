@@ -1,0 +1,12 @@
+.team-players .team-container {
+  width: 350px;
+  height: 596px;
+  background-color: #1e1e1e;
+  margin: 0 auto;
+}
+
+.team-players .team-container-padding {
+  padding: 4px;
+  background-color: #e2e2e2;
+  margin: 0 auto;
+}

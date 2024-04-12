@@ -4,6 +4,7 @@ import Score from '../Score';
 import TeamComponent from '../TeamComponent';
 import Functions from '../../functions/MatchSimulatorFunctions';
 import './MatchSimulator.css';
+import './TeamContainer.css';
 
 const MatchSimulator: React.FC = () => {
   const cearaPlayers = useMemo(() => Functions.generatePlayers(), []);
@@ -55,7 +56,7 @@ const MatchSimulator: React.FC = () => {
         <p className="time">{`${time}'`}</p>
       </div>
 
-      <div className="scoreboard">
+      <div className="scoreboard" style={{ display: 'none' }}>
         <TeamComponent
           name="CEA"
           outlineColor="#e2e2e2"
@@ -76,64 +77,66 @@ const MatchSimulator: React.FC = () => {
         </div>
       </div>
 
-      <div className="team-players" style={{ display: 'none' }}>
-        <div className="team-container">
-          <div className="team-name">CEARÁ SPORTING CLUB</div>
-          <div className="formation">4-3-3</div>
-          <div className="players">
-            <div className="player">
-              <div className="position">GK</div>
-              <div className="name">RICHARD</div>
-              <div className="strength">99</div>
+      <div className="team-players">
+        <div className="team-container-padding">
+          <div className="team-container">
+            <div className="team-name">CEARÁ SPORTING CLUB</div>
+            <div className="formation">4-3-3</div>
+            <div className="players">
+              <div className="player">
+                <div className="position">GK</div>
+                <div className="name">RICHARD</div>
+                <div className="strength">99</div>
+              </div>
+              <div className="player">
+                <div className="position">DF</div>
+                <div className="name">DAVID RICARDO</div>
+                <div className="strength">99</div>
+              </div>
+              <div className="player">
+                <div className="position">DF</div>
+                <div className="name">MATHEUS BAHIA</div>
+                <div className="strength">99</div>
+              </div>
+              <div className="player">
+                <div className="position">DF</div>
+                <div className="name">RAÍ RAMOS</div>
+                <div className="strength">99</div>
+              </div>
+              <div className="player">
+                <div className="position">MF</div>
+                <div className="name">RICHARDSON</div>
+                <div className="strength">99</div>
+              </div>
+              <div className="player">
+                <div className="position">MF</div>
+                <div className="name">LOURENÇO</div>
+                <div className="strength">99</div>
+              </div>
+              <div className="player">
+                <div className="position">MF</div>
+                <div className="name">G. CASTILHO</div>
+                <div className="strength">99</div>
+              </div>
+              <div className="player">
+                <div className="position">FW</div>
+                <div className="name">ERICK PULGA</div>
+                <div className="strength">99</div>
+              </div>
+              <div className="player">
+                <div className="position">FW</div>
+                <div className="name">BARCELÓ</div>
+                <div className="strength">99</div>
+              </div>
+              <div className="player">
+                <div className="position">FW</div>
+                <div className="name">AYLON</div>
+                <div className="strength">99</div>
+              </div>
             </div>
-            <div className="player">
-              <div className="position">DF</div>
-              <div className="name">DAVID RICARDO</div>
-              <div className="strength">99</div>
+            <div className="substitute-button-container">
+              <button>SEE SUBSTITUTES</button>
             </div>
-            <div className="player">
-              <div className="position">DF</div>
-              <div className="name">MATHEUS BAHIA</div>
-              <div className="strength">99</div>
-            </div>
-            <div className="player">
-              <div className="position">DF</div>
-              <div className="name">RAÍ RAMOS</div>
-              <div className="strength">99</div>
-            </div>
-            <div className="player">
-              <div className="position">MF</div>
-              <div className="name">RICHARDSON</div>
-              <div className="strength">99</div>
-            </div>
-            <div className="player">
-              <div className="position">MF</div>
-              <div className="name">LOURENÇO</div>
-              <div className="strength">99</div>
-            </div>
-            <div className="player">
-              <div className="position">MF</div>
-              <div className="name">G. CASTILHO</div>
-              <div className="strength">99</div>
-            </div>
-            <div className="player">
-              <div className="position">FW</div>
-              <div className="name">ERICK PULGA</div>
-              <div className="strength">99</div>
-            </div>
-            <div className="player">
-              <div className="position">FW</div>
-              <div className="name">BARCELÓ</div>
-              <div className="strength">99</div>
-            </div>
-            <div className="player">
-              <div className="position">FW</div>
-              <div className="name">AYLON</div>
-              <div className="strength">99</div>
-            </div>
-          </div>
-          <div className="substitute-button-container">
-            <button>SEE SUBSTITUTES</button>
           </div>
         </div>
 
