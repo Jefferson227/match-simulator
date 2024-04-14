@@ -3,12 +3,16 @@
   height: 596px;
   background-color: #1e1e1e;
   margin: 0 auto;
+  outline: 4px solid #e2e2e2;
 }
 
-.team-players .team-container-padding {
-  width: 350px;
-  height: 596px;
-  padding: 4px;
-  background-color: #e2e2e2;
-  margin: 0 auto;
+.team-players .team-container .team-name {
+  max-height: 80px;
+  border-bottom: 2px solid #e2e2e2;
+  font-family: 'Press Start 2P', system-ui;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 20px;
+  color: #e2e2e2;
+  padding: 22px;
 }
