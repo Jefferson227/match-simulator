@@ -33,8 +33,33 @@
       "strength": 99
     },
     {
-      "position": "DF",
-      "name": "Raí Ramos",
+      "position": "MF",
+      "name": "Richardson",
+      "strength": 99
+    },
+    {
+      "position": "MF",
+      "name": "Lourenço",
+      "strength": 99
+    },
+    {
+      "position": "MF",
+      "name": "G. Castilho",
+      "strength": 99
+    },
+    {
+      "position": "FW",
+      "name": "Erick Pulga",
+      "strength": 99
+    },
+    {
+      "position": "FW",
+      "name": "Barceló",
+      "strength": 99
+    },
+    {
+      "position": "FW",
+      "name": "Aylon",
       "strength": 99
     }
   ]
