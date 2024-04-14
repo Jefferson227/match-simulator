@@ -120,6 +120,7 @@ const MatchSimulator: React.FC = () => {
               className="substitute-button"
               style={{
                 backgroundColor: homeTeam.colors.background,
+                outlineColor: homeTeam.colors.outline,
                 color: homeTeam.colors.name,
               }}
             >
