@@ -60,8 +60,6 @@ const MatchSimulator: React.FC = () => {
     return () => clearInterval(timer);
   }, [time, homeTeam, visitorTeam]);
 
-  useEffect(() => {}, [teamPlayersState]);
-
   return (
     <div className="match-simulator">
       <div className="timebar" style={{ width: `${(time * 100) / 90}%` }}>
