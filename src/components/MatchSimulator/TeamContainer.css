@@ -16,3 +16,14 @@
   color: #e2e2e2;
   padding: 22px;
 }
+
+.team-players .team-container .formation {
+  max-height: 60px;
+  border-bottom: 2px solid #e2e2e2;
+  font-family: 'Press Start 2P', system-ui;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+  color: #e2e2e2;
+  padding: 22px;
+}
