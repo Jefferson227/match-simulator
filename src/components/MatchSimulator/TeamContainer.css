@@ -27,3 +27,24 @@
   color: #e2e2e2;
   padding: 22px;
 }
+
+.team-players .team-container .player {
+  font-family: 'Press Start 2P', system-ui;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14px;
+  color: #e2e2e2;
+  display: flex;
+  justify-content: space-between;
+  margin: 14px 38px;
+}
+
+.team-players .team-container .player .position,
+.team-players .team-container .player .strength {
+  width: 32px;
+}
+
+.team-players .team-container .player .name {
+  width: 182px;
+  text-align: left;
+}
