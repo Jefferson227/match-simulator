@@ -9,8 +9,8 @@ import './TeamContainer.css';
 const MatchSimulator: React.FC = () => {
   const homeTeam = useMemo(() => Functions.loadHomeTeam(), []);
   const visitorTeam = useMemo(() => Functions.loadVisitorTeam(), []);
-  const [cearaScore, setCearaScore] = useState(0);
-  const [fortalezaScore, setFortalezaScore] = useState(0);
+  const [homeTeamScore, setHomeTeamScore] = useState(0);
+  const [visitorTeamScore, setVisitorTeamScore] = useState(0);
   const [scorer, setScorer] = useState<GoalScorer | null>(null);
   const [time, setTime] = useState(0);
 
@@ -26,31 +26,31 @@ const MatchSimulator: React.FC = () => {
 
     // Simulate match events (e.g., goals)
     if (time === 15) {
-      const cearaScorer =
+      const homeTeamScorer =
         homeTeam?.players[Math.floor(Math.random() * homeTeam.players.length)];
 
-      if (cearaScorer) {
+      if (homeTeamScorer) {
         const goalScorer: GoalScorer = {
-          playerName: cearaScorer.name,
+          playerName: homeTeamScorer.name,
           time,
         };
 
-        setCearaScore((prevScore) => prevScore + 1);
+        setHomeTeamScore((prevScore) => prevScore + 1);
         setScorer(goalScorer);
       }
     } else if (time === 30) {
-      const fortalezaScorer =
+      const visitorTeamScorer =
         visitorTeam?.players[
           Math.floor(Math.random() * visitorTeam.players.length)
         ];
 
-      if (fortalezaScorer) {
+      if (visitorTeamScorer) {
         const goalScorer: GoalScorer = {
-          playerName: fortalezaScorer.name,
+          playerName: visitorTeamScorer.name,
           time,
         };
 
-        setFortalezaScore((prevScore) => prevScore + 1);
+        setVisitorTeamScore((prevScore) => prevScore + 1);
         setScorer(goalScorer);
       }
     }
@@ -71,7 +71,7 @@ const MatchSimulator: React.FC = () => {
           backgroundColor="#1e1e1e"
           teamNameColor="#e2e2e2"
         />
-        <Score homeScore={cearaScore} guestScore={fortalezaScore} />
+        <Score homeScore={homeTeamScore} guestScore={visitorTeamScore} />
         <TeamComponent
           name="FOR"
           outlineColor="#fe3b3b"
