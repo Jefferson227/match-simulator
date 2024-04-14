@@ -138,11 +138,11 @@ const MatchSimulator: React.FC = () => {
           </div>
         </div>
 
-        <div className="bottom-buttons">
-          <div className="back-to-main-team">
+        <div className="footer-buttons-container">
+          <div className="back-to-main-team" style={{ display: 'none' }}>
             <button>BACK TO MAIN TEAM</button>
           </div>
-          <div className="back-to-match">BACK TO MATCH</div>
+          <button className="back-to-match">BACK TO MATCH</button>
         </div>
       </div>
     </div>
