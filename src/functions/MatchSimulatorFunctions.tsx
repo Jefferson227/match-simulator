@@ -1,7 +1,7 @@
 import Player from '../interfaces/Player';
 import Team from '../interfaces/Team';
-const HOME_TEAM = '../assets/ceara.json';
-const VISITOR_TEAM = '../assets/fortaleza.json';
+import homeTeam from '../assets/ceara.json';
+import visitorTeam from '../assets/fortaleza.json';
 
 function generateRandomFirstName(): string {
   const firstName = ['Carlos', 'Rafael', 'Felipe', 'Lucas', 'Gustavo'];
@@ -41,26 +41,12 @@ function generatePlayers(): Player[] {
   return players;
 }
 
-async function fetchData(url: string): Promise<any> {
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error('Failed to fetch data');
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    throw error;
-  }
+function loadHomeTeam(): Team {
+  return homeTeam as Team;
 }
 
-async function loadHomeTeam(): Promise<Team> {
-  return (await fetchData(HOME_TEAM)) as Team;
-}
-
-async function loadVisitorTeam(): Promise<Team> {
-  return (await fetchData(VISITOR_TEAM)) as Team;
+function loadVisitorTeam(): Team {
+  return visitorTeam as Team;
 }
 
 const MatchSimulatorFunctions = {

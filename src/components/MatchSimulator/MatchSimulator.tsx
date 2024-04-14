@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import GoalScorer from '../../interfaces/GoalScorer';
-import Team from '../../interfaces/Team';
 import Score from '../Score';
 import TeamComponent from '../TeamComponent';
 import Functions from '../../functions/MatchSimulatorFunctions';
@@ -8,36 +7,12 @@ import './MatchSimulator.css';
 import './TeamContainer.css';
 
 const MatchSimulator: React.FC = () => {
-  const [homeTeam, setHomeTeam] = useState<Team | null>(null);
-  const [visitorTeam, setVisitorTeam] = useState<Team | null>(null);
+  const homeTeam = useMemo(() => Functions.loadHomeTeam(), []);
+  const visitorTeam = useMemo(() => Functions.loadVisitorTeam(), []);
   const [cearaScore, setCearaScore] = useState(0);
   const [fortalezaScore, setFortalezaScore] = useState(0);
   const [scorer, setScorer] = useState<GoalScorer | null>(null);
   const [time, setTime] = useState(0);
-
-  // Load teams
-  useEffect(() => {
-    const loadHomeTeam = async () => {
-      try {
-        const data = await Functions.loadHomeTeam();
-        setHomeTeam(data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    const loadVisitorTeam = async () => {
-      try {
-        const data = await Functions.loadVisitorTeam();
-        setVisitorTeam(data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    loadHomeTeam();
-    loadVisitorTeam();
-  }, []);
 
   // If this useEffect becomes more complex, think about creating a custom useEffect
   useEffect(() => {
