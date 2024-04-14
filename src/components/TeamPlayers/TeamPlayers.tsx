@@ -3,9 +3,13 @@ import './TeamPlayers.css';
 
 interface TeamPlayersProps {
   team: Team;
+  resetTeamPlayersState: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const TeamPlayers: React.FC<TeamPlayersProps> = ({ team }) => {
+const TeamPlayers: React.FC<TeamPlayersProps> = ({
+  team,
+  resetTeamPlayersState,
+}) => {
   return (
     <div className="team-players">
       <div
@@ -54,7 +58,9 @@ const TeamPlayers: React.FC<TeamPlayersProps> = ({ team }) => {
         <div className="back-to-main-team" style={{ display: 'none' }}>
           <button>BACK TO MAIN TEAM</button>
         </div>
-        <button className="back-to-match">BACK TO MATCH</button>
+        <button className="back-to-match" onClick={resetTeamPlayersState}>
+          BACK TO MATCH
+        </button>
       </div>
     </div>
   );

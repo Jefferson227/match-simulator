@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import GoalScorer from '../../interfaces/GoalScorer';
+import Team from '../../interfaces/Team';
 import Score from '../Score';
 import TeamComponent from '../TeamComponent';
 import Functions from '../../functions/MatchSimulatorFunctions';
@@ -13,6 +14,7 @@ const MatchSimulator: React.FC = () => {
   const [visitorTeamScore, setVisitorTeamScore] = useState(0);
   const [scorer, setScorer] = useState<GoalScorer | null>(null);
   const [time, setTime] = useState(0);
+  const [teamPlayersState, setTeamPlayersState] = useState<Team | null>(null);
 
   // If this useEffect becomes more complex, think about creating a custom useEffect
   useEffect(() => {
@@ -58,32 +60,43 @@ const MatchSimulator: React.FC = () => {
     return () => clearInterval(timer);
   }, [time, homeTeam, visitorTeam]);
 
+  useEffect(() => {}, [teamPlayersState]);
+
   return (
     <div className="match-simulator">
       <div className="timebar" style={{ width: `${(time * 100) / 90}%` }}>
         <p className="time">{`${time}'`}</p>
       </div>
 
-      <div className="scoreboard" style={{ display: 'none' }}>
-        <TeamComponent
-          name={homeTeam.abbreviation}
-          outlineColor={homeTeam.colors.outline}
-          backgroundColor={homeTeam.colors.background}
-          teamNameColor={homeTeam.colors.name}
-        />
-        <Score homeScore={homeTeamScore} guestScore={visitorTeamScore} />
-        <TeamComponent
-          name={visitorTeam.abbreviation}
-          outlineColor={visitorTeam.colors.outline}
-          backgroundColor={visitorTeam.colors.background}
-          teamNameColor={visitorTeam.colors.name}
-        />
-        <div className="scorer">
-          {scorer?.playerName ? scorer?.playerName : null}
+      {teamPlayersState === null ? (
+        <div className="scoreboard">
+          <TeamComponent
+            name={homeTeam.abbreviation}
+            outlineColor={homeTeam.colors.outline}
+            backgroundColor={homeTeam.colors.background}
+            teamNameColor={homeTeam.colors.name}
+            setTeamPlayersState={() => setTeamPlayersState(homeTeam)}
+          />
+          <Score homeScore={homeTeamScore} guestScore={visitorTeamScore} />
+          <TeamComponent
+            name={visitorTeam.abbreviation}
+            outlineColor={visitorTeam.colors.outline}
+            backgroundColor={visitorTeam.colors.background}
+            teamNameColor={visitorTeam.colors.name}
+            setTeamPlayersState={() => setTeamPlayersState(visitorTeam)}
+          />
+          <div className="scorer">
+            {scorer?.playerName ? scorer?.playerName : null}
+          </div>
         </div>
-      </div>
+      ) : null}
 
-      <TeamPlayers team={homeTeam} />
+      {teamPlayersState !== null ? (
+        <TeamPlayers
+          team={teamPlayersState}
+          resetTeamPlayersState={() => setTeamPlayersState(null)}
+        />
+      ) : null}
     </div>
   );
 };

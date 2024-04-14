@@ -3,6 +3,7 @@ interface TeamComponentProps {
   outlineColor: string;
   backgroundColor: string;
   teamNameColor: string;
+  setTeamPlayersState: React.MouseEventHandler<HTMLDivElement>;
 }
 
 const TeamComponent: React.FC<TeamComponentProps> = ({
@@ -10,8 +11,13 @@ const TeamComponent: React.FC<TeamComponentProps> = ({
   outlineColor,
   backgroundColor,
   teamNameColor,
+  setTeamPlayersState,
 }) => (
-  <div className="team-padding" style={{ backgroundColor: outlineColor }}>
+  <div
+    className="team-padding"
+    style={{ backgroundColor: outlineColor }}
+    onClick={setTeamPlayersState}
+  >
     <div className="team" style={{ backgroundColor: backgroundColor }}>
       <h2 className="team-name" style={{ color: teamNameColor }}>
         {name}
