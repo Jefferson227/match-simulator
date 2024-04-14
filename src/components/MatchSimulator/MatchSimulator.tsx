@@ -66,17 +66,17 @@ const MatchSimulator: React.FC = () => {
 
       <div className="scoreboard" style={{ display: 'none' }}>
         <TeamComponent
-          name="CEA"
-          outlineColor="#e2e2e2"
-          backgroundColor="#1e1e1e"
-          teamNameColor="#e2e2e2"
+          name={homeTeam.abbreviation}
+          outlineColor={homeTeam.colors.outline}
+          backgroundColor={homeTeam.colors.background}
+          teamNameColor={homeTeam.colors.name}
         />
         <Score homeScore={homeTeamScore} guestScore={visitorTeamScore} />
         <TeamComponent
-          name="FOR"
-          outlineColor="#fe3b3b"
-          backgroundColor="#1263ff"
-          teamNameColor="#e2e2e2"
+          name={visitorTeam.abbreviation}
+          outlineColor={visitorTeam.colors.outline}
+          backgroundColor={visitorTeam.colors.background}
+          teamNameColor={visitorTeam.colors.name}
         />
         <div className="scorer">
           {scorer?.playerName ? scorer?.playerName : null}
