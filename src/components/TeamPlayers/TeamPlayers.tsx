@@ -40,7 +40,10 @@ const TeamPlayers: React.FC<TeamPlayersProps> = ({
             </div>
           ))}
         </div>
-        <div className="substitute-button-container">
+        <div
+          className="substitute-button-container"
+          style={{ display: 'none' }}
+        >
           <button
             className="substitute-button"
             style={{
