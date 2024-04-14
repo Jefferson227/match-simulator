@@ -1,0 +1,41 @@
+{
+  "name": "Ceará Sporting Club",
+  "abbreviation": "CEA",
+  "colors": {
+    "outline": "#e2e2e2",
+    "background": "#1e1e1e",
+    "name": "#e2e2e2"
+  },
+  "players": [
+    {
+      "position": "GK",
+      "name": "Richard",
+      "strength": 99
+    },
+    {
+      "position": "DF",
+      "name": "David Ricardo",
+      "strength": 99
+    },
+    {
+      "position": "DF",
+      "name": "Matheus Bahia",
+      "strength": 99
+    },
+    {
+      "position": "DF",
+      "name": "Matheus Felipe",
+      "strength": 99
+    },
+    {
+      "position": "DF",
+      "name": "Raí Ramos",
+      "strength": 99
+    },
+    {
+      "position": "DF",
+      "name": "Raí Ramos",
+      "strength": 99
+    }
+  ]
+}

@@ -1,8 +1,16 @@
+import Player from './Player';
+
+interface TeamColor {
+  outline: string;
+  background: string;
+  name: string;
+}
+
 interface Team {
   name: string;
-  outlineColor: string;
-  backgroundColor: string;
-  nameColor: string;
+  abbreviation: string;
+  colors: TeamColor;
+  players: Array<Player>;
 }
 
 export default Team;

@@ -29,8 +29,7 @@ const MatchSimulator: React.FC = () => {
       const cearaScorer =
         cearaPlayers[Math.floor(Math.random() * cearaPlayers.length)];
       const goalScorer: GoalScorer = {
-        firstName: cearaScorer.firstName,
-        lastName: cearaScorer.lastName,
+        playerName: cearaScorer.name,
         time,
       };
       setCearaScore((prevScore) => prevScore + 1);
@@ -39,8 +38,7 @@ const MatchSimulator: React.FC = () => {
       const fortalezaScorer =
         fortalezaPlayers[Math.floor(Math.random() * fortalezaPlayers.length)];
       const goalScorer: GoalScorer = {
-        firstName: fortalezaScorer.firstName,
-        lastName: fortalezaScorer.lastName,
+        playerName: fortalezaScorer.name,
         time,
       };
       setFortalezaScore((prevScore) => prevScore + 1);
@@ -61,19 +59,17 @@ const MatchSimulator: React.FC = () => {
           name="CEA"
           outlineColor="#e2e2e2"
           backgroundColor="#1e1e1e"
-          nameColor="#e2e2e2"
+          teamNameColor="#e2e2e2"
         />
         <Score homeScore={cearaScore} guestScore={fortalezaScore} />
         <TeamComponent
           name="FOR"
           outlineColor="#fe3b3b"
           backgroundColor="#1263ff"
-          nameColor="#e2e2e2"
+          teamNameColor="#e2e2e2"
         />
         <div className="scorer">
-          {scorer?.firstName
-            ? `${scorer?.firstName} ${scorer?.lastName}`
-            : null}
+          {scorer?.playerName ? scorer?.playerName : null}
         </div>
       </div>
 

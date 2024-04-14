@@ -1,6 +1,5 @@
 interface GoalScorer {
-  firstName: string;
-  lastName: string;
+  playerName: string;
   time: number;
 }
 

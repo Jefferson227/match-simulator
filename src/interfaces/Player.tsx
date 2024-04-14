@@ -1,8 +1,7 @@
 interface Player {
-  firstName: string;
-  lastName: string;
+  name: string;
   strength: number;
-  position: 'goalkeeper' | 'defender' | 'midfielder' | 'forward';
+  position: 'GK' | 'DF' | 'MF' | 'FW';
 }
 
 export default Player;
