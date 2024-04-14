@@ -134,7 +134,7 @@ const MatchSimulator: React.FC = () => {
             </div>
           </div>
           <div className="substitute-button-container">
-            <button>SEE SUBSTITUTES</button>
+            <button className="substitute-button">SEE SUBSTITUTES</button>
           </div>
         </div>
 

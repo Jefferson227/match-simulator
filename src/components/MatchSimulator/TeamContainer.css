@@ -4,6 +4,7 @@
   background-color: #1e1e1e;
   margin: 0 auto;
   outline: 4px solid #e2e2e2;
+  position: relative;
 }
 
 .team-players .team-container .team-name {
@@ -47,4 +48,25 @@
 .team-players .team-container .player .name {
   width: 182px;
   text-align: left;
+}
+
+.team-players .team-container .substitute-button-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.team-players .team-container .substitute-button-container .substitute-button {
+  width: 318px;
+  height: 58px;
+  font-family: 'Press Start 2P', system-ui;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+  color: #e2e2e2;
+  background-color: #1e1e1e;
+  border: 0;
+  outline: 4px solid #e2e2e2;
 }
