@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import GoalScorer from '../../interfaces/GoalScorer';
+import Team from '../../interfaces/Team';
 import Score from '../Score';
 import TeamComponent from '../TeamComponent';
 import Functions from '../../functions/MatchSimulatorFunctions';
@@ -7,12 +8,36 @@ import './MatchSimulator.css';
 import './TeamContainer.css';
 
 const MatchSimulator: React.FC = () => {
-  const cearaPlayers = useMemo(() => Functions.generatePlayers(), []);
-  const fortalezaPlayers = useMemo(() => Functions.generatePlayers(), []);
+  const [homeTeam, setHomeTeam] = useState<Team | null>(null);
+  const [visitorTeam, setVisitorTeam] = useState<Team | null>(null);
   const [cearaScore, setCearaScore] = useState(0);
   const [fortalezaScore, setFortalezaScore] = useState(0);
   const [scorer, setScorer] = useState<GoalScorer | null>(null);
   const [time, setTime] = useState(0);
+
+  // Load teams
+  useEffect(() => {
+    const loadHomeTeam = async () => {
+      try {
+        const data = await Functions.loadHomeTeam();
+        setHomeTeam(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    const loadVisitorTeam = async () => {
+      try {
+        const data = await Functions.loadVisitorTeam();
+        setVisitorTeam(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    loadHomeTeam();
+    loadVisitorTeam();
+  }, []);
 
   // If this useEffect becomes more complex, think about creating a custom useEffect
   useEffect(() => {
@@ -27,26 +52,36 @@ const MatchSimulator: React.FC = () => {
     // Simulate match events (e.g., goals)
     if (time === 15) {
       const cearaScorer =
-        cearaPlayers[Math.floor(Math.random() * cearaPlayers.length)];
-      const goalScorer: GoalScorer = {
-        playerName: cearaScorer.name,
-        time,
-      };
-      setCearaScore((prevScore) => prevScore + 1);
-      setScorer(goalScorer);
+        homeTeam?.players[Math.floor(Math.random() * homeTeam.players.length)];
+
+      if (cearaScorer) {
+        const goalScorer: GoalScorer = {
+          playerName: cearaScorer.name,
+          time,
+        };
+
+        setCearaScore((prevScore) => prevScore + 1);
+        setScorer(goalScorer);
+      }
     } else if (time === 30) {
       const fortalezaScorer =
-        fortalezaPlayers[Math.floor(Math.random() * fortalezaPlayers.length)];
-      const goalScorer: GoalScorer = {
-        playerName: fortalezaScorer.name,
-        time,
-      };
-      setFortalezaScore((prevScore) => prevScore + 1);
-      setScorer(goalScorer);
+        visitorTeam?.players[
+          Math.floor(Math.random() * visitorTeam.players.length)
+        ];
+
+      if (fortalezaScorer) {
+        const goalScorer: GoalScorer = {
+          playerName: fortalezaScorer.name,
+          time,
+        };
+
+        setFortalezaScore((prevScore) => prevScore + 1);
+        setScorer(goalScorer);
+      }
     }
 
     return () => clearInterval(timer);
-  }, [time, cearaPlayers, fortalezaPlayers]);
+  }, [time, homeTeam, visitorTeam]);
 
   return (
     <div className="match-simulator">
