@@ -33,7 +33,11 @@ const TeamPlayers: React.FC<TeamPlayersProps> = ({
         </div>
         <div className="players">
           {team.players.map((player) => (
-            <div className="player" style={{ color: team.colors.name }}>
+            <div
+              className="player"
+              key={player.id}
+              style={{ color: team.colors.name }}
+            >
               <div className="position">{player.position}</div>
               <div className="name">{player.name}</div>
               <div className="strength">{player.strength}</div>
