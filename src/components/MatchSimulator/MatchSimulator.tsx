@@ -84,63 +84,47 @@ const MatchSimulator: React.FC = () => {
       </div>
 
       <div className="team-players">
-        <div className="team-container">
-          <div className="team-name">CEARÁ SPORTING CLUB</div>
-          <div className="formation">4-3-3</div>
+        <div
+          className="team-container"
+          style={{
+            backgroundColor: homeTeam.colors.background,
+            outlineColor: homeTeam.colors.outline,
+          }}
+        >
+          <div
+            className="team-name"
+            style={{
+              color: homeTeam.colors.name,
+              borderColor: homeTeam.colors.outline,
+            }}
+          >
+            {homeTeam.name}
+          </div>
+          <div
+            className="formation"
+            style={{ borderColor: homeTeam.colors.outline }}
+          >
+            4-3-3
+          </div>
           <div className="players">
-            <div className="player">
-              <div className="position">GK</div>
-              <div className="name">RICHARD</div>
-              <div className="strength">99</div>
-            </div>
-            <div className="player">
-              <div className="position">DF</div>
-              <div className="name">DAVID RICARDO</div>
-              <div className="strength">99</div>
-            </div>
-            <div className="player">
-              <div className="position">DF</div>
-              <div className="name">MATHEUS BAHIA</div>
-              <div className="strength">99</div>
-            </div>
-            <div className="player">
-              <div className="position">DF</div>
-              <div className="name">RAÍ RAMOS</div>
-              <div className="strength">99</div>
-            </div>
-            <div className="player">
-              <div className="position">MF</div>
-              <div className="name">RICHARDSON</div>
-              <div className="strength">99</div>
-            </div>
-            <div className="player">
-              <div className="position">MF</div>
-              <div className="name">LOURENÇO</div>
-              <div className="strength">99</div>
-            </div>
-            <div className="player">
-              <div className="position">MF</div>
-              <div className="name">G. CASTILHO</div>
-              <div className="strength">99</div>
-            </div>
-            <div className="player">
-              <div className="position">FW</div>
-              <div className="name">ERICK PULGA</div>
-              <div className="strength">99</div>
-            </div>
-            <div className="player">
-              <div className="position">FW</div>
-              <div className="name">BARCELÓ</div>
-              <div className="strength">99</div>
-            </div>
-            <div className="player">
-              <div className="position">FW</div>
-              <div className="name">AYLON</div>
-              <div className="strength">99</div>
-            </div>
+            {homeTeam.players.map((player) => (
+              <div className="player" style={{ color: homeTeam.colors.name }}>
+                <div className="position">{player.position}</div>
+                <div className="name">{player.name}</div>
+                <div className="strength">{player.strength}</div>
+              </div>
+            ))}
           </div>
           <div className="substitute-button-container">
-            <button className="substitute-button">SEE SUBSTITUTES</button>
+            <button
+              className="substitute-button"
+              style={{
+                backgroundColor: homeTeam.colors.background,
+                color: homeTeam.colors.outline,
+              }}
+            >
+              SEE SUBSTITUTES
+            </button>
           </div>
         </div>
 

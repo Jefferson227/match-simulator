@@ -16,6 +16,7 @@
   font-size: 20px;
   color: #e2e2e2;
   padding: 22px;
+  text-transform: uppercase;
 }
 
 .team-players .team-container .formation {
@@ -37,7 +38,8 @@
   color: #e2e2e2;
   display: flex;
   justify-content: space-between;
-  margin: 14px 38px;
+  margin: 14px 24px;
+  text-transform: uppercase;
 }
 
 .team-players .team-container .player .position,
@@ -46,7 +48,7 @@
 }
 
 .team-players .team-container .player .name {
-  width: 182px;
+  width: 200px;
   text-align: left;
 }
 
