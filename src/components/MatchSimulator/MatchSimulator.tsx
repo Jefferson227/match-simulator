@@ -4,7 +4,7 @@ import Score from '../Score';
 import TeamComponent from '../TeamComponent';
 import Functions from '../../functions/MatchSimulatorFunctions';
 import './MatchSimulator.css';
-import './TeamContainer.css';
+import TeamPlayers from '../TeamPlayers/TeamPlayers';
 
 const MatchSimulator: React.FC = () => {
   const homeTeam = useMemo(() => Functions.loadHomeTeam(), []);
@@ -83,59 +83,7 @@ const MatchSimulator: React.FC = () => {
         </div>
       </div>
 
-      <div className="team-players">
-        <div
-          className="team-container"
-          style={{
-            backgroundColor: homeTeam.colors.background,
-            outlineColor: homeTeam.colors.outline,
-          }}
-        >
-          <div
-            className="team-name"
-            style={{
-              color: homeTeam.colors.name,
-              borderColor: homeTeam.colors.outline,
-            }}
-          >
-            {homeTeam.name}
-          </div>
-          <div
-            className="formation"
-            style={{ borderColor: homeTeam.colors.outline }}
-          >
-            4-3-3
-          </div>
-          <div className="players">
-            {homeTeam.players.map((player) => (
-              <div className="player" style={{ color: homeTeam.colors.name }}>
-                <div className="position">{player.position}</div>
-                <div className="name">{player.name}</div>
-                <div className="strength">{player.strength}</div>
-              </div>
-            ))}
-          </div>
-          <div className="substitute-button-container">
-            <button
-              className="substitute-button"
-              style={{
-                backgroundColor: homeTeam.colors.background,
-                outlineColor: homeTeam.colors.outline,
-                color: homeTeam.colors.name,
-              }}
-            >
-              SEE SUBSTITUTES
-            </button>
-          </div>
-        </div>
-
-        <div className="footer-buttons-container">
-          <div className="back-to-main-team" style={{ display: 'none' }}>
-            <button>BACK TO MAIN TEAM</button>
-          </div>
-          <button className="back-to-match">BACK TO MATCH</button>
-        </div>
-      </div>
+      <TeamPlayers team={homeTeam} />
     </div>
   );
 };
