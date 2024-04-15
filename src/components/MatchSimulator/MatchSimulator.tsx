@@ -18,11 +18,13 @@ const MatchSimulator: React.FC = () => {
 
   // If this useEffect becomes more complex, think about creating a custom useEffect
   useEffect(() => {
-    const timer = setInterval(() => {
+    let timer: NodeJS.Timeout | undefined;
+
+    timer = setInterval(() => {
       setTime((prevTime) => prevTime + 1);
     }, 1000);
 
-    if (time >= 90) {
+    if (time >= 90 || teamPlayersState !== null) {
       clearInterval(timer);
     }
 
@@ -58,7 +60,7 @@ const MatchSimulator: React.FC = () => {
     }
 
     return () => clearInterval(timer);
-  }, [time, homeTeam, visitorTeam]);
+  }, [time, homeTeam, visitorTeam, teamPlayersState]);
 
   return (
     <div className="match-simulator">
