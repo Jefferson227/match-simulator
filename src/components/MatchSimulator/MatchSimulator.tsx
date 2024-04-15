@@ -18,55 +18,47 @@ const MatchSimulator: React.FC = () => {
 
   // If this useEffect becomes more complex, think about creating a custom useEffect
   useEffect(() => {
-    let timer: NodeJS.Timeout | undefined = undefined;
-
-    const handleTimer = () => {
+    const timer = setInterval(() => {
       setTime((prevTime) => prevTime + 1);
+    }, 1000);
 
-      // Simulate match events (e.g., goals)
-      if (time === 15) {
-        const homeTeamScorer =
-          homeTeam?.players[
-            Math.floor(Math.random() * homeTeam.players.length)
-          ];
+    if (time >= 90) {
+      clearInterval(timer);
+    }
 
-        if (homeTeamScorer) {
-          const goalScorer: GoalScorer = {
-            playerName: homeTeamScorer.name,
-            time,
-          };
+    // Simulate match events (e.g., goals)
+    if (time === 15) {
+      const homeTeamScorer =
+        homeTeam?.players[Math.floor(Math.random() * homeTeam.players.length)];
 
-          setHomeTeamScore((prevScore) => prevScore + 1);
-          setScorer(goalScorer);
-        }
-      } else if (time === 30) {
-        const visitorTeamScorer =
-          visitorTeam?.players[
-            Math.floor(Math.random() * visitorTeam.players.length)
-          ];
+      if (homeTeamScorer) {
+        const goalScorer: GoalScorer = {
+          playerName: homeTeamScorer.name,
+          time,
+        };
 
-        if (visitorTeamScorer) {
-          const goalScorer: GoalScorer = {
-            playerName: visitorTeamScorer.name,
-            time,
-          };
-
-          setVisitorTeamScore((prevScore) => prevScore + 1);
-          setScorer(goalScorer);
-        }
+        setHomeTeamScore((prevScore) => prevScore + 1);
+        setScorer(goalScorer);
       }
+    } else if (time === 30) {
+      const visitorTeamScorer =
+        visitorTeam?.players[
+          Math.floor(Math.random() * visitorTeam.players.length)
+        ];
 
-      if (time >= 90 || teamPlayersState !== null) {
-        clearInterval(timer);
+      if (visitorTeamScorer) {
+        const goalScorer: GoalScorer = {
+          playerName: visitorTeamScorer.name,
+          time,
+        };
+
+        setVisitorTeamScore((prevScore) => prevScore + 1);
+        setScorer(goalScorer);
       }
-    };
-
-    if (teamPlayersState === null && !timer) {
-      timer = setInterval(handleTimer, 1000);
     }
 
     return () => clearInterval(timer);
-  }, [time, homeTeam, visitorTeam, teamPlayersState]);
+  }, [time, homeTeam, visitorTeam]);
 
   return (
     <div className="match-simulator">
