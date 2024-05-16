@@ -28,6 +28,9 @@ const MatchSimulator: React.FC = () => {
       clearInterval(timer);
     }
 
+    // On every tick of the clock, the players from both teams will perform actions
+    Functions.clock();
+
     // Simulate match events (e.g., goals)
     if (time === 15) {
       const homeTeamScorer =
