@@ -11,7 +11,7 @@ function loadVisitorTeam(): Team {
   return visitorTeam as Team;
 }
 
-function clock(
+function tickClock(
   time: number,
   setHomeTeamScore: React.Dispatch<React.SetStateAction<number>>,
   setVisitorTeamScore: React.Dispatch<React.SetStateAction<number>>,
@@ -56,7 +56,7 @@ function clock(
 const MatchSimulatorFunctions = {
   loadHomeTeam,
   loadVisitorTeam,
-  clock,
+  tickClock,
 };
 
 export default MatchSimulatorFunctions;

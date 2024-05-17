@@ -29,7 +29,7 @@ const MatchSimulator: React.FC = () => {
     }
 
     // On every tick of the clock, the players from both teams will perform actions
-    Functions.clock(time, setHomeTeamScore, setVisitorTeamScore, setScorer);
+    Functions.tickClock(time, setHomeTeamScore, setVisitorTeamScore, setScorer);
 
     return () => clearInterval(timer);
   }, [time, homeTeam, visitorTeam, teamPlayersState]);
