@@ -29,38 +29,7 @@ const MatchSimulator: React.FC = () => {
     }
 
     // On every tick of the clock, the players from both teams will perform actions
-    Functions.clock();
-
-    // Simulate match events (e.g., goals)
-    if (time === 15) {
-      const homeTeamScorer =
-        homeTeam?.players[Math.floor(Math.random() * homeTeam.players.length)];
-
-      if (homeTeamScorer) {
-        const goalScorer: GoalScorer = {
-          playerName: homeTeamScorer.name,
-          time,
-        };
-
-        setHomeTeamScore((prevScore) => prevScore + 1);
-        setScorer(goalScorer);
-      }
-    } else if (time === 30) {
-      const visitorTeamScorer =
-        visitorTeam?.players[
-          Math.floor(Math.random() * visitorTeam.players.length)
-        ];
-
-      if (visitorTeamScorer) {
-        const goalScorer: GoalScorer = {
-          playerName: visitorTeamScorer.name,
-          time,
-        };
-
-        setVisitorTeamScore((prevScore) => prevScore + 1);
-        setScorer(goalScorer);
-      }
-    }
+    Functions.clock(time, setHomeTeamScore, setVisitorTeamScore, setScorer);
 
     return () => clearInterval(timer);
   }, [time, homeTeam, visitorTeam, teamPlayersState]);
