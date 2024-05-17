@@ -10,8 +10,8 @@ import TeamPlayers from '../TeamPlayers/TeamPlayers';
 const MatchSimulator: React.FC = () => {
   const homeTeam = useMemo(() => Functions.loadHomeTeam(), []);
   const visitorTeam = useMemo(() => Functions.loadVisitorTeam(), []);
-  const [homeTeamScore, setHomeTeamScore] = useState(0);
-  const [visitorTeamScore, setVisitorTeamScore] = useState(0);
+  const [homeTeamScore, setHomeTeamScore] = useState<number>(0);
+  const [visitorTeamScore, setVisitorTeamScore] = useState<number>(0);
   const [scorer, setScorer] = useState<GoalScorer | null>(null);
   const [time, setTime] = useState(0);
   const [teamPlayersState, setTeamPlayersState] = useState<Team | null>(null);
