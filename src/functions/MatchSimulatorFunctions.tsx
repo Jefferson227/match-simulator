@@ -3,12 +3,19 @@ import GoalScorer from '../interfaces/GoalScorer';
 import homeTeam from '../assets/ceara.json';
 import visitorTeam from '../assets/fortaleza.json';
 
+let anyTeamHasScored = false;
+
 function loadHomeTeam(): Team {
   return homeTeam as Team;
 }
 
 function loadVisitorTeam(): Team {
   return visitorTeam as Team;
+}
+
+function kickOff() {
+  // The action to start or restart the match
+  anyTeamHasScored = false;
 }
 
 function tickClock(
@@ -20,6 +27,10 @@ function tickClock(
   // This function runs on every 'second' of the match
   // and is responsible for performing all actions in a space of
   // one second (corresponding to one minute in real life)
+
+  if (time === 0 || anyTeamHasScored) {
+    kickOff();
+  }
 
   // Simulate match events (e.g., goals)
   if (time === 15) {
