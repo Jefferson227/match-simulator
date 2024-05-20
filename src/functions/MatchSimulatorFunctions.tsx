@@ -1,9 +1,11 @@
 import Team from '../interfaces/Team';
+import Player from '../interfaces/Player';
 import GoalScorer from '../interfaces/GoalScorer';
 import homeTeamJson from '../assets/ceara.json';
 import visitorTeamJson from '../assets/fortaleza.json';
 
 let anyTeamHasScored = false;
+let playerWithTheBall: Player | null = null;
 
 function loadHomeTeam(): Team {
   return homeTeamJson as Team;
@@ -13,9 +15,10 @@ function loadVisitorTeam(): Team {
   return visitorTeamJson as Team;
 }
 
-function kickOff() {
+function kickOff(playerWithTheBall: Player | null) {
   // The action to start or restart the match
   anyTeamHasScored = false;
+  playerWithTheBall = null;
 }
 
 function runActionsForPlayers(homeTeam: Team, visitorTeam: Team) {
@@ -41,7 +44,7 @@ function tickClock(
   // one second (corresponding to one minute in real life)
 
   if (time === 0 || anyTeamHasScored) {
-    kickOff();
+    kickOff(playerWithTheBall);
   }
 
   runActionsForPlayers(homeTeam, visitorTeam);
