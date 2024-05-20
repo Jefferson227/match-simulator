@@ -1,16 +1,16 @@
 import Team from '../interfaces/Team';
 import GoalScorer from '../interfaces/GoalScorer';
-import homeTeam from '../assets/ceara.json';
-import visitorTeam from '../assets/fortaleza.json';
+import homeTeamJson from '../assets/ceara.json';
+import visitorTeamJson from '../assets/fortaleza.json';
 
 let anyTeamHasScored = false;
 
 function loadHomeTeam(): Team {
-  return homeTeam as Team;
+  return homeTeamJson as Team;
 }
 
 function loadVisitorTeam(): Team {
-  return visitorTeam as Team;
+  return visitorTeamJson as Team;
 }
 
 function kickOff() {
@@ -18,7 +18,7 @@ function kickOff() {
   anyTeamHasScored = false;
 }
 
-function runActionsForPlayers() {
+function runActionsForPlayers(homeTeam: Team, visitorTeam: Team) {
   // The action run for all players in the field
   runActionForPlayerWithTheBall();
   runActionForPlayersWithoutTheBall();
@@ -30,6 +30,8 @@ function runActionForPlayersWithoutTheBall() {}
 
 function tickClock(
   time: number,
+  homeTeam: Team,
+  visitorTeam: Team,
   setHomeTeamScore: React.Dispatch<React.SetStateAction<number>>,
   setVisitorTeamScore: React.Dispatch<React.SetStateAction<number>>,
   setScorer: (goalScorer: GoalScorer) => void
@@ -42,7 +44,7 @@ function tickClock(
     kickOff();
   }
 
-  runActionsForPlayers();
+  runActionsForPlayers(homeTeam, visitorTeam);
 
   // Simulate match events (e.g., goals)
   if (time === 15) {
