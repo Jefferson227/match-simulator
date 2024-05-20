@@ -18,6 +18,16 @@ function kickOff() {
   anyTeamHasScored = false;
 }
 
+function runActionsForPlayers() {
+  // The action run for all players in the field
+  runActionForPlayerWithTheBall();
+  runActionForPlayersWithoutTheBall();
+}
+
+function runActionForPlayerWithTheBall() {}
+
+function runActionForPlayersWithoutTheBall() {}
+
 function tickClock(
   time: number,
   setHomeTeamScore: React.Dispatch<React.SetStateAction<number>>,
@@ -31,6 +41,8 @@ function tickClock(
   if (time === 0 || anyTeamHasScored) {
     kickOff();
   }
+
+  runActionsForPlayers();
 
   // Simulate match events (e.g., goals)
   if (time === 15) {
