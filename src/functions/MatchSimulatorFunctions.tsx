@@ -5,6 +5,7 @@ import homeTeamJson from '../assets/ceara.json';
 import visitorTeamJson from '../assets/fortaleza.json';
 
 let anyTeamHasScored = false;
+let lastTeamThatScored: Team | null = null;
 let playerWithTheBall: Player | null = null;
 
 function loadHomeTeam(): Team {
@@ -15,10 +16,14 @@ function loadVisitorTeam(): Team {
   return visitorTeamJson as Team;
 }
 
-function kickOff(playerWithTheBall: Player | null) {
+function kickOff(
+  playerWithTheBall: Player | null,
+  lastTeamThatScored: Team | null
+) {
   // The action to start or restart the match
   anyTeamHasScored = false;
   playerWithTheBall = null;
+  lastTeamThatScored = null;
 }
 
 function runActionsForPlayers(homeTeam: Team, visitorTeam: Team) {
@@ -44,7 +49,7 @@ function tickClock(
   // one second (corresponding to one minute in real life)
 
   if (time === 0 || anyTeamHasScored) {
-    kickOff(playerWithTheBall);
+    kickOff(playerWithTheBall, lastTeamThatScored);
   }
 
   runActionsForPlayers(homeTeam, visitorTeam);
