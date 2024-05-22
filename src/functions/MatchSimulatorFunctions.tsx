@@ -11,7 +11,13 @@ function loadVisitorTeam(): Team {
   return visitorTeamJson as Team;
 }
 
-function kickOff() {}
+function kickOff() {
+  // The match starts
+}
+
+function endMatch() {
+  // The match ends
+}
 
 function tickClock(
   time: number,
@@ -58,6 +64,10 @@ function tickClock(
       setVisitorTeamScore((prevScore) => prevScore + 1);
       setScorer(goalScorer);
     }
+  }
+
+  if (time === 90) {
+    endMatch();
   }
 }
 
