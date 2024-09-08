@@ -2,7 +2,7 @@ import Team from '../interfaces/Team';
 import GoalScorer from '../interfaces/GoalScorer';
 import Player from '../interfaces/Player';
 import homeTeamJson from '../assets/ceara.json';
-import visitorTeamJson from '../assets/fortaleza.json';
+import visitorTeamJson from '../assets/americarn.json';
 
 function loadHomeTeam(): Team {
   return homeTeamJson as Team;
