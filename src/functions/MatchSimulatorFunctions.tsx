@@ -20,6 +20,16 @@ function endMatch() {
   // The match ends
 }
 
+function getCalculatedForces(sumForces: number) {
+  const random = getRandomDecimal(99);
+
+  if (parseInt(random.toFixed(0)) % 2 === 0) {
+    return sumForces * random;
+  }
+
+  return sumForces / random;
+}
+
 function rollAction(
   time: number,
   homeTeam: Team,
@@ -28,8 +38,7 @@ function rollAction(
   setVisitorTeamScore: React.Dispatch<React.SetStateAction<number>>,
   setScorer: (goalScorer: GoalScorer) => void
 ) {
-  // The sum of forces of all players in the team is multiplied by a random number returned
-  // by the getRandomDecimal()
+  // Getting the sum of forces of all players from both teams
   let sumForcesHomeTeam = homeTeam.players.reduce(
     (accumulator, player) => accumulator + player.strength,
     0
@@ -39,30 +48,27 @@ function rollAction(
     0
   );
 
-  // The calculated numbers from each team are compared, and the winner number is multiplied
-  // by 0.021
-  let calculatedForcesHomeTeam = sumForcesHomeTeam * getRandomDecimal(0.1);
-  let calculatedForcesVisitorTeam =
-    sumForcesVisitorTeam * getRandomDecimal(0.1);
+  // The forces for each team is calculated
+  let calculatedForcesHomeTeam = getCalculatedForces(sumForcesHomeTeam);
+  let calculatedForcesVisitorTeam = getCalculatedForces(sumForcesVisitorTeam);
 
   let winnerTeamParam = '';
-  let winnerNumber = 0;
-  let winnerCalculatedForces = 0;
 
   if (calculatedForcesHomeTeam > calculatedForcesVisitorTeam) {
     winnerTeamParam = 'home';
-    winnerCalculatedForces = calculatedForcesHomeTeam;
   } else if (calculatedForcesHomeTeam < calculatedForcesVisitorTeam) {
     winnerTeamParam = 'visitor';
-    winnerCalculatedForces = calculatedForcesVisitorTeam;
   }
 
-  // If the result is greater or equals 20, the score is marked to the team with the winner number
-  const multiplier = 1;
-  winnerNumber = winnerCalculatedForces * multiplier;
-  console.log(winnerNumber);
+  // Each clock tick has a chance of 2.5% of scoring
+  let percentage = getRandomDecimal(100);
+  console.log(`home: ${calculatedForcesHomeTeam}`);
+  console.log(`visitor: ${calculatedForcesVisitorTeam}`);
+  console.log(`percentage: ${percentage}`);
+  console.log(`winner: ${winnerTeamParam}`);
+  console.log('');
 
-  if (winnerNumber < 5) {
+  if (percentage >= 2.5) {
     return;
   }
 
@@ -90,17 +96,29 @@ function rollAction(
   let scorer: Player | null = null;
 
   if (percentagePosition > 0 && percentagePosition <= 2) {
-    scorer =
-      winnerTeam?.players.filter((player) => player.position === 'DF')[0] ||
-      null;
+    let players = winnerTeam?.players.filter(
+      (player) => player.position === 'DF'
+    );
+    let randomIndex = getRandomDecimal((players?.length || 1) - 1);
+    let index = parseInt(randomIndex.toFixed(0));
+
+    scorer = players ? players[index] : null;
   } else if (percentagePosition > 2 && percentagePosition <= 20) {
-    scorer =
-      winnerTeam?.players.filter((player) => player.position === 'MF')[0] ||
-      null;
+    let players = winnerTeam?.players.filter(
+      (player) => player.position === 'MF'
+    );
+    let randomIndex = getRandomDecimal((players?.length || 1) - 1);
+    let index = parseInt(randomIndex.toFixed(0));
+
+    scorer = players ? players[index] : null;
   } else if (percentagePosition > 20 && percentagePosition <= 100) {
-    scorer =
-      winnerTeam?.players.filter((player) => player.position === 'FW')[0] ||
-      null;
+    let players = winnerTeam?.players.filter(
+      (player) => player.position === 'MF'
+    );
+    let randomIndex = getRandomDecimal((players?.length || 1) - 1);
+    let index = parseInt(randomIndex.toFixed(0));
+
+    scorer = players ? players[index] : null;
   }
 
   let goalScorer: GoalScorer = {
