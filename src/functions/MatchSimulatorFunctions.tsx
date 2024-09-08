@@ -103,7 +103,7 @@ function rollAction(
     let index = parseInt(randomIndex.toFixed(0));
 
     scorer = players ? players[index] : null;
-  } else if (percentagePosition > 2 && percentagePosition <= 20) {
+  } else if (percentagePosition > 2 && percentagePosition <= 10) {
     let players = winnerTeam?.players.filter(
       (player) => player.position === 'MF'
     );
@@ -111,7 +111,7 @@ function rollAction(
     let index = parseInt(randomIndex.toFixed(0));
 
     scorer = players ? players[index] : null;
-  } else if (percentagePosition > 20 && percentagePosition <= 100) {
+  } else if (percentagePosition > 10 && percentagePosition <= 100) {
     let players = winnerTeam?.players.filter(
       (player) => player.position === 'MF'
     );
