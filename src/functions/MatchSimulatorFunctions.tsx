@@ -79,7 +79,7 @@ function findScorer(team: Team | null): Player | null {
   return players[randomIndex] || null;
 }
 
-function rollAction(
+function runAction(
   time: number,
   homeTeam: Team,
   visitorTeam: Team,
@@ -138,7 +138,7 @@ function tickClock(
     kickOff();
   }
 
-  rollAction(
+  runAction(
     time,
     homeTeam,
     visitorTeam,
