@@ -30,6 +30,55 @@ function getCalculatedForces(sumForces: number) {
   return sumForces / random;
 }
 
+function getWinnerTeamParam(homeTeam: Team, visitorTeam: Team) {
+  const sumForces = (team: Team) =>
+    team.players.reduce((acc, player) => acc + player.strength, 0);
+
+  const calculatedForcesHomeTeam = getCalculatedForces(sumForces(homeTeam));
+  const calculatedForcesVisitorTeam = getCalculatedForces(
+    sumForces(visitorTeam)
+  );
+
+  return calculatedForcesHomeTeam > calculatedForcesVisitorTeam
+    ? 'home'
+    : calculatedForcesHomeTeam < calculatedForcesVisitorTeam
+    ? 'visitor'
+    : '';
+}
+
+function getWinnerTeamData(
+  param: string,
+  homeTeam: Team,
+  visitorTeam: Team,
+  setHomeTeamScore: React.Dispatch<React.SetStateAction<number>>,
+  setVisitorTeamScore: React.Dispatch<React.SetStateAction<number>>
+) {
+  switch (param) {
+    case 'home':
+      return { team: homeTeam, setScore: setHomeTeamScore };
+    case 'visitor':
+      return { team: visitorTeam, setScore: setVisitorTeamScore };
+    default:
+      return { team: null, setScore: () => {} };
+  }
+}
+
+function findScorer(team: Team | null): Player | null {
+  if (!team) return null;
+
+  const percentagePosition = getRandomDecimal(100);
+  let position: string;
+
+  if (percentagePosition <= 2) position = 'DF';
+  else if (percentagePosition <= 10) position = 'MF';
+  else position = 'FW';
+
+  const players = team.players.filter((player) => player.position === position);
+  const randomIndex = Math.floor(getRandomDecimal(players.length));
+
+  return players[randomIndex] || null;
+}
+
 function rollAction(
   time: number,
   homeTeam: Team,
@@ -38,90 +87,29 @@ function rollAction(
   setVisitorTeamScore: React.Dispatch<React.SetStateAction<number>>,
   setScorer: (goalScorer: GoalScorer) => void
 ) {
-  // Getting the sum of forces of all players from both teams
-  let sumForcesHomeTeam = homeTeam.players.reduce(
-    (accumulator, player) => accumulator + player.strength,
-    0
-  );
-  let sumForcesVisitorTeam = visitorTeam.players.reduce(
-    (accumulator, player) => accumulator + player.strength,
-    0
-  );
-
-  // The forces for each team is calculated
-  let calculatedForcesHomeTeam = getCalculatedForces(sumForcesHomeTeam);
-  let calculatedForcesVisitorTeam = getCalculatedForces(sumForcesVisitorTeam);
-
-  let winnerTeamParam = '';
-
-  if (calculatedForcesHomeTeam > calculatedForcesVisitorTeam) {
-    winnerTeamParam = 'home';
-  } else if (calculatedForcesHomeTeam < calculatedForcesVisitorTeam) {
-    winnerTeamParam = 'visitor';
-  }
-
-  // Each clock tick has a chance of 2.5% of scoring
-  let percentage = getRandomDecimal(100);
-  console.log(`home: ${calculatedForcesHomeTeam}`);
-  console.log(`visitor: ${calculatedForcesVisitorTeam}`);
-  console.log(`percentage: ${percentage}`);
-  console.log(`winner: ${winnerTeamParam}`);
-  console.log('');
-
+  // Any of the teams has a chance of scoring of 2.5%
+  const percentage = getRandomDecimal(100);
   if (percentage >= 2.5) {
     return;
   }
 
-  // GK has no chance of scoring
-  // DF has a chance of 2% of scoring
-  // MF has a chance of 20% of scoring
-  // FW has a chance of 88% of scoring
-  let winnerTeam: Team | null = null;
-  let setWinnerTeamScore: React.Dispatch<
-    React.SetStateAction<number>
-  > = () => {};
+  // Getting which team will score
+  const winnerTeamParam = getWinnerTeamParam(homeTeam, visitorTeam);
+  if (winnerTeamParam === '') return;
 
-  switch (winnerTeamParam) {
-    case 'home':
-      winnerTeam = homeTeam;
-      setWinnerTeamScore = setHomeTeamScore;
-      break;
-    case 'visitor':
-      winnerTeam = visitorTeam;
-      setWinnerTeamScore = setVisitorTeamScore;
-      break;
-  }
+  const { team: winnerTeam, setScore: setWinnerTeamScore } = getWinnerTeamData(
+    winnerTeamParam,
+    homeTeam,
+    visitorTeam,
+    setHomeTeamScore,
+    setVisitorTeamScore
+  );
 
-  let percentagePosition = getRandomDecimal(100);
-  let scorer: Player | null = null;
+  // Getting the scorer in the scorer team
+  const scorer = findScorer(winnerTeam);
 
-  if (percentagePosition > 0 && percentagePosition <= 2) {
-    let players = winnerTeam?.players.filter(
-      (player) => player.position === 'DF'
-    );
-    let randomIndex = getRandomDecimal((players?.length || 1) - 1);
-    let index = parseInt(randomIndex.toFixed(0));
-
-    scorer = players ? players[index] : null;
-  } else if (percentagePosition > 2 && percentagePosition <= 10) {
-    let players = winnerTeam?.players.filter(
-      (player) => player.position === 'MF'
-    );
-    let randomIndex = getRandomDecimal((players?.length || 1) - 1);
-    let index = parseInt(randomIndex.toFixed(0));
-
-    scorer = players ? players[index] : null;
-  } else if (percentagePosition > 10 && percentagePosition <= 100) {
-    let players = winnerTeam?.players.filter(
-      (player) => player.position === 'MF'
-    );
-    let randomIndex = getRandomDecimal((players?.length || 1) - 1);
-    let index = parseInt(randomIndex.toFixed(0));
-
-    scorer = players ? players[index] : null;
-  }
-
-  let goalScorer: GoalScorer = {
+  // Setting the scorer and updating the scoreboard
+  const goalScorer: GoalScorer = {
     playerName: scorer?.name || '',
     time: time,
   };
