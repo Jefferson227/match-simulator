@@ -30,7 +30,7 @@ function getCalculatedForces(sumForces: number) {
   return sumForces / random;
 }
 
-function getWinnerTeamParam(homeTeam: Team, visitorTeam: Team) {
+function getScorerTeamParam(homeTeam: Team, visitorTeam: Team) {
   const sumForces = (team: Team) =>
     team.players.reduce((acc, player) => acc + player.strength, 0);
 
@@ -46,7 +46,7 @@ function getWinnerTeamParam(homeTeam: Team, visitorTeam: Team) {
     : '';
 }
 
-function getWinnerTeamData(
+function getScorerTeamData(
   param: string,
   homeTeam: Team,
   visitorTeam: Team,
@@ -94,11 +94,11 @@ function runAction(
   }
 
   // Getting which team will score
-  const winnerTeamParam = getWinnerTeamParam(homeTeam, visitorTeam);
-  if (winnerTeamParam === '') return;
+  const scorerTeamParam = getScorerTeamParam(homeTeam, visitorTeam);
+  if (scorerTeamParam === '') return;
 
-  const { team: winnerTeam, setScore: setWinnerTeamScore } = getWinnerTeamData(
-    winnerTeamParam,
+  const { team: scorerTeam, setScore: setScorerTeamScore } = getScorerTeamData(
+    scorerTeamParam,
     homeTeam,
     visitorTeam,
     setHomeTeamScore,
@@ -106,7 +106,7 @@ function runAction(
   );
 
   // Getting the scorer in the scorer team
-  const scorer = findScorer(winnerTeam);
+  const scorer = findScorer(scorerTeam);
 
   // Setting the scorer and updating the scoreboard
   const goalScorer: GoalScorer = {
@@ -115,7 +115,7 @@ function runAction(
   };
 
   setScorer(goalScorer);
-  setWinnerTeamScore((prevScore) => prevScore + 1);
+  setScorerTeamScore((prevScore) => prevScore + 1);
 }
 
 function getRandomDecimal(multiplier: number): number {
