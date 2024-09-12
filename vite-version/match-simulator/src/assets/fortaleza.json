@@ -1,0 +1,77 @@
+{
+  "name": "Fortaleza Esporte Club",
+  "abbreviation": "FOR",
+  "colors": {
+    "outline": "#fe3b3b",
+    "background": "#1263ff",
+    "name": "#e2e2e2"
+  },
+  "players": [
+    {
+      "id": 1,
+      "position": "GK",
+      "name": "J. Ricardo",
+      "strength": 99
+    },
+    {
+      "id": 2,
+      "position": "DF",
+      "name": "Titi",
+      "strength": 99
+    },
+    {
+      "id": 3,
+      "position": "DF",
+      "name": "B. Kuscevic",
+      "strength": 99
+    },
+    {
+      "id": 4,
+      "position": "DF",
+      "name": "E. Brítez",
+      "strength": 99
+    },
+    {
+      "id": 5,
+      "position": "MF",
+      "name": "B. Pacheco",
+      "strength": 99
+    },
+    {
+      "id": 6,
+      "position": "MF",
+      "name": "J. Welison",
+      "strength": 99
+    },
+    {
+      "id": 7,
+      "position": "MF",
+      "name": "T. Pochettino",
+      "strength": 99
+    },
+    {
+      "id": 8,
+      "position": "MF",
+      "name": "Hércules",
+      "strength": 99
+    },
+    {
+      "id": 9,
+      "position": "MF",
+      "name": "Y. Pikachu",
+      "strength": 99
+    },
+    {
+      "id": 10,
+      "position": "FW",
+      "name": "J. Lucero",
+      "strength": 99
+    },
+    {
+      "id": 11,
+      "position": "FW",
+      "name": "Marinho",
+      "strength": 99
+    }
+  ]
+}
