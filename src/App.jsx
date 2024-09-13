@@ -5,7 +5,6 @@ function App() {
   return (
     <div className="App">
       <MatchSimulator />
-      <p>This is running under Vite</p>
     </div>
   );
 }
