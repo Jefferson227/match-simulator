@@ -1,11 +1,14 @@
 import "./App.css";
+import AppProviders from "./providers/AppProviders";
 import MatchSimulator from "./components/MatchSimulator/MatchSimulator";
 
 function App() {
   return (
-    <div className="App">
-      <MatchSimulator />
-    </div>
+    <AppProviders>
+      <div className="App">
+        <MatchSimulator />
+      </div>
+    </AppProviders>
   );
 }
 
