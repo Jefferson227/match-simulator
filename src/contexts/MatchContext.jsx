@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from 'react';
+import { createContext, useReducer } from 'react';
 import { matchReducer } from '../reducers/matchReducer';
 
 export const MatchContext = createContext();
