@@ -13,7 +13,7 @@ const MatchSimulator = () => {
   const [visitorTeamScore, setVisitorTeamScore] = useState(0);
   const [scorer, setScorer] = useState(null);
   const [time, setTime] = useState(0);
-  const [teamPlayersState, setTeamPlayersState] = useState(null);
+  const [teamPlayersView, setTeamPlayersView] = useState(null);
   const { runTest } = useContext(MatchContext);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const MatchSimulator = () => {
       setTime((prevTime) => prevTime + 1);
     }, 1000);
 
-    if (time >= 90 || teamPlayersState !== null) {
+    if (time >= 90 || teamPlayersView !== null) {
       clearInterval(timer);
     }
 
@@ -39,7 +39,7 @@ const MatchSimulator = () => {
     );
 
     return () => clearInterval(timer);
-  }, [time, homeTeam, visitorTeam, teamPlayersState]);
+  }, [time, homeTeam, visitorTeam, teamPlayersView]);
 
   return (
     <div className="match-simulator">
@@ -50,14 +50,14 @@ const MatchSimulator = () => {
         <p className="time">{`${time}'`}</p>
       </div>
 
-      {teamPlayersState === null ? (
+      {teamPlayersView === null ? (
         <div className="scoreboard">
           <TeamComponent
             name={homeTeam.abbreviation}
             outlineColor={homeTeam.colors.outline}
             backgroundColor={homeTeam.colors.background}
             teamNameColor={homeTeam.colors.name}
-            setTeamPlayersState={() => setTeamPlayersState(homeTeam)}
+            setTeamPlayersView={() => setTeamPlayersView(homeTeam)}
           />
           <Score
             homeScore={homeTeamScore}
@@ -68,9 +68,7 @@ const MatchSimulator = () => {
             outlineColor={visitorTeam.colors.outline}
             backgroundColor={visitorTeam.colors.background}
             teamNameColor={visitorTeam.colors.name}
-            setTeamPlayersState={() =>
-              setTeamPlayersState(visitorTeam)
-            }
+            setTeamPlayersView={() => setTeamPlayersView(visitorTeam)}
           />
           <div className="scorer">
             {scorer?.playerName ? scorer?.playerName : null}
@@ -78,10 +76,10 @@ const MatchSimulator = () => {
         </div>
       ) : null}
 
-      {teamPlayersState !== null ? (
+      {teamPlayersView !== null ? (
         <TeamPlayers
-          team={teamPlayersState}
-          resetTeamPlayersState={() => setTeamPlayersState(null)}
+          team={teamPlayersView}
+          resetTeamPlayersView={() => setTeamPlayersView(null)}
         />
       ) : null}
     </div>

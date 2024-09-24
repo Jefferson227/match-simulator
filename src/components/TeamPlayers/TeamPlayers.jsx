@@ -1,6 +1,6 @@
 import './TeamPlayers.css';
 
-const TeamPlayers = ({ team, resetTeamPlayersState }) => {
+const TeamPlayers = ({ team, resetTeamPlayersView }) => {
   return (
     <div className="team-players">
       <div
@@ -19,7 +19,10 @@ const TeamPlayers = ({ team, resetTeamPlayersState }) => {
         >
           {team.name}
         </div>
-        <div className="formation" style={{ borderColor: team.colors.outline }}>
+        <div
+          className="formation"
+          style={{ borderColor: team.colors.outline }}
+        >
           4-3-3
         </div>
         <div className="players">
@@ -53,10 +56,16 @@ const TeamPlayers = ({ team, resetTeamPlayersState }) => {
       </div>
 
       <div className="footer-buttons-container">
-        <div className="back-to-main-team" style={{ display: 'none' }}>
+        <div
+          className="back-to-main-team"
+          style={{ display: 'none' }}
+        >
           <button>BACK TO MAIN TEAM</button>
         </div>
-        <button className="back-to-match" onClick={resetTeamPlayersState}>
+        <button
+          className="back-to-match"
+          onClick={resetTeamPlayersView}
+        >
           BACK TO MATCH
         </button>
       </div>

@@ -3,14 +3,17 @@ const TeamComponent = ({
   outlineColor,
   backgroundColor,
   teamNameColor,
-  setTeamPlayersState,
+  setTeamPlayersView,
 }) => (
   <div
     className="team-padding"
     style={{ backgroundColor: outlineColor }}
-    onClick={setTeamPlayersState}
+    onClick={setTeamPlayersView}
   >
-    <div className="team" style={{ backgroundColor: backgroundColor }}>
+    <div
+      className="team"
+      style={{ backgroundColor: backgroundColor }}
+    >
       <h2 className="team-name" style={{ color: teamNameColor }}>
         {name}
       </h2>
