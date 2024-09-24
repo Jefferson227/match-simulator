@@ -10,6 +10,7 @@ export const MatchProvider = ({ children }) => {
   });
 
   const runTest = (msg) => dispatch({ type: 'TEST', payload: msg });
+  const loadMatches = () => dispatch({ type: 'LOAD_MATCHES' });
 
   return (
     <MatchContext.Provider
@@ -17,6 +18,7 @@ export const MatchProvider = ({ children }) => {
         testParam: state.testParam,
         matches: state.matches,
         runTest,
+        loadMatches,
       }}
     >
       {children}
