@@ -5,20 +5,17 @@ export const MatchContext = createContext();
 
 export const MatchProvider = ({ children }) => {
   const [state, dispatch] = useReducer(matchReducer, {
-    testParam: null,
     matches: [],
   });
 
-  const runTest = (msg) => dispatch({ type: 'TEST', payload: msg });
-  const loadMatches = () => dispatch({ type: 'LOAD_MATCHES' });
+  const setMatches = (teams) =>
+    dispatch({ type: 'SET_MATCHES', payload: teams });
 
   return (
     <MatchContext.Provider
       value={{
-        testParam: state.testParam,
         matches: state.matches,
-        runTest,
-        loadMatches,
+        setMatches,
       }}
     >
       {children}

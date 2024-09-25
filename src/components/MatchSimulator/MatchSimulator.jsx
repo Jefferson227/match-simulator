@@ -5,6 +5,7 @@ import Functions from '../../functions/MatchSimulatorFunctions';
 import './MatchSimulator.css';
 import TeamPlayers from '../TeamPlayers/TeamPlayers';
 import { MatchContext } from '../../contexts/MatchContext';
+import teamService from '../../services/teamService';
 
 const MatchSimulator = () => {
   const homeTeam = useMemo(() => Functions.loadHomeTeam(), []);
@@ -14,7 +15,15 @@ const MatchSimulator = () => {
   const [scorer, setScorer] = useState(null);
   const [time, setTime] = useState(0);
   const [teamPlayersView, setTeamPlayersView] = useState(null);
-  const { runTest } = useContext(MatchContext);
+  const { setMatches, matches } = useContext(MatchContext);
+
+  useEffect(() => {
+    setMatches(teamService.getTeams());
+  }, []);
+
+  useEffect(() => {
+    console.log(matches);
+  }, [matches]);
 
   useEffect(() => {
     let timer;
@@ -26,8 +35,6 @@ const MatchSimulator = () => {
     if (time >= 90 || teamPlayersView !== null) {
       clearInterval(timer);
     }
-
-    runTest(time);
 
     Functions.tickClock(
       time,
