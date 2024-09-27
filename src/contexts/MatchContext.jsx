@@ -10,8 +10,8 @@ export const MatchProvider = ({ children }) => {
 
   const setMatches = (teams) =>
     dispatch({ type: 'SET_MATCHES', payload: teams });
-  const setScorer = (match, scorer) =>
-    dispatch({ type: 'SET_SCORER', payload: { match, scorer } });
+  const setScorer = (matchId, scorer) =>
+    dispatch({ type: 'SET_SCORER', payload: { matchId, scorer } });
 
   return (
     <MatchContext.Provider

@@ -17,7 +17,7 @@ export const matchReducer = (state, action) => {
       };
     }
     case 'SET_SCORER': {
-      const { matchId, scorer, time } = action.payload;
+      const { matchId, scorer } = action.payload;
 
       return {
         ...state,
@@ -25,7 +25,10 @@ export const matchReducer = (state, action) => {
           return m.id === matchId
             ? {
                 ...m,
-                lastScorer: { scorer, time },
+                lastScorer: {
+                  playerName: scorer.playerName,
+                  time: scorer.time,
+                },
               }
             : m;
         }),
