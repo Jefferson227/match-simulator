@@ -5,7 +5,17 @@ export const matchReducer = (state, action) => {
 
       return {
         ...state,
-        matches: [...state.matches, { homeTeam, visitorTeam }],
+        matches: [
+          ...state.matches,
+          {
+            id: crypto.randomUUID,
+            homeTeam,
+            visitorTeam,
+            lastScorer: {},
+          },
+        ],
+      };
+    }
       };
     }
     default:
