@@ -16,6 +16,19 @@ export const matchReducer = (state, action) => {
         ],
       };
     }
+    case 'SET_SCORER': {
+      const { matchId, scorer, time } = action.payload;
+
+      return {
+        ...state,
+        matches: state.matches.map((m) => {
+          return m.id === matchId
+            ? {
+                ...m,
+                lastScorer: { scorer, time },
+              }
+            : m;
+        }),
       };
     }
     default:
