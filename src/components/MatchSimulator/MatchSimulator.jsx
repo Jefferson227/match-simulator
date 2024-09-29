@@ -64,16 +64,31 @@ const MatchSimulator = () => {
 
       {!teamSquadView && homeTeam.current && visitorTeam.current ? (
         <div className="scoreboard">
-          <TeamComponent team={homeTeam.current} />
-          <Score
-            homeScore={matches[0].homeTeam.score}
-            guestScore={matches[0].visitorTeam.score}
-          />
-          <TeamComponent team={visitorTeam.current} />
-          <div className="scorer">
-            {matches[0]?.lastScorer
-              ? `${matches[0].lastScorer.playerName} ${matches[0].lastScorer.time}'`
-              : null}
+          <div className="match">
+            <TeamComponent team={homeTeam.current} />
+            <Score
+              homeScore={matches[0].homeTeam.score}
+              guestScore={matches[0].visitorTeam.score}
+            />
+            <TeamComponent team={visitorTeam.current} />
+            <div className="scorer">
+              {matches[0]?.lastScorer
+                ? `${matches[0].lastScorer.playerName} ${matches[0].lastScorer.time}'`
+                : null}
+            </div>
+          </div>
+          <div className="match">
+            <TeamComponent team={homeTeam.current} />
+            <Score
+              homeScore={matches[0].homeTeam.score}
+              guestScore={matches[0].visitorTeam.score}
+            />
+            <TeamComponent team={visitorTeam.current} />
+            <div className="scorer">
+              {matches[0]?.lastScorer
+                ? `${matches[0].lastScorer.playerName} ${matches[0].lastScorer.time}'`
+                : null}
+            </div>
           </div>
         </div>
       ) : null}
