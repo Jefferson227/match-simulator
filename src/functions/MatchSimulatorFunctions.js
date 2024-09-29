@@ -74,14 +74,7 @@ function findScorer(team) {
   return players[randomIndex] || null;
 }
 
-function runAction(
-  time,
-  homeTeam,
-  visitorTeam,
-  setScorer,
-  matches,
-  increaseScore
-) {
+function runAction(time, setScorer, matches, increaseScore) {
   matches.forEach((match) => {
     // Any of the teams has a chance of scoring of 2.5%
     const percentage = getRandomDecimal(100);
@@ -90,13 +83,16 @@ function runAction(
     }
 
     // Getting which team will score
-    const scorerTeamParam = getScorerTeamParam(homeTeam, visitorTeam);
+    const scorerTeamParam = getScorerTeamParam(
+      match.homeTeam,
+      match.visitorTeam
+    );
     if (scorerTeamParam === '') return;
 
     const scorerTeam = getScorerTeamData(
       scorerTeamParam,
-      homeTeam,
-      visitorTeam
+      match.homeTeam,
+      match.visitorTeam
     );
 
     // Getting the scorer in the scorer team
@@ -117,14 +113,7 @@ function getRandomDecimal(multiplier) {
   return parseFloat((Math.random() * multiplier).toFixed(2));
 }
 
-function tickClock(
-  time,
-  homeTeam,
-  visitorTeam,
-  setScorer,
-  matches,
-  increaseScore
-) {
+function tickClock(time, setScorer, matches, increaseScore) {
   // This function runs on every 'second' of the match
   // and is responsible for performing all actions in a space of
   // one second (corresponding to one minute in real life)
@@ -133,14 +122,7 @@ function tickClock(
     kickOff();
   }
 
-  runAction(
-    time,
-    homeTeam,
-    visitorTeam,
-    setScorer,
-    matches,
-    increaseScore
-  );
+  runAction(time, setScorer, matches, increaseScore);
 
   // Simulate match events (e.g., goals)
   /* if (time === 15) {

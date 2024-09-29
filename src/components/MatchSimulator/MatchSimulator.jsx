@@ -8,8 +8,6 @@ import { MatchContext } from '../../contexts/MatchContext';
 import teamService from '../../services/teamService';
 
 const MatchSimulator = () => {
-  const homeTeam = useRef(null);
-  const visitorTeam = useRef(null);
   const [time, setTime] = useState(0);
   const {
     matches,
@@ -36,19 +34,8 @@ const MatchSimulator = () => {
       clearInterval(timer);
     }
 
-    // Load teams from state
-    homeTeam.current = matches[0]?.homeTeam;
-    visitorTeam.current = matches[0]?.visitorTeam;
-
-    if (matches[0]) {
-      Functions.tickClock(
-        time,
-        homeTeam.current,
-        visitorTeam.current,
-        setScorer,
-        matches,
-        increaseScore
-      );
+    if (matches) {
+      Functions.tickClock(time, setScorer, matches, increaseScore);
     }
 
     return () => clearInterval(timer);
