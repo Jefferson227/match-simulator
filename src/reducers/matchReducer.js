@@ -42,6 +42,25 @@ export const matchReducer = (state, action) => {
         }),
       };
     }
+    case 'INCREASE_SCORE': {
+      const { matchId, scorerTeam } = action.payload;
+
+      return {
+        ...state,
+        matches: state.matches.map((m) => {
+          if (m.id === matchId) {
+            const team = Object.values(m).find(
+              (team) => team.isHomeTeam === scorerTeam.isHomeTeam
+            );
+
+            team.score = team.score++;
+            return m;
+          }
+
+          return m;
+        }),
+      };
+    }
     default:
       return state;
   }

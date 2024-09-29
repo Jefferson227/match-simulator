@@ -12,6 +12,11 @@ export const MatchProvider = ({ children }) => {
     dispatch({ type: 'SET_MATCHES', payload: teams });
   const setScorer = (matchId, scorer) =>
     dispatch({ type: 'SET_SCORER', payload: { matchId, scorer } });
+  const increaseScore = (matchId, scorerTeam) =>
+    dispatch({
+      type: 'INCREASE_SCORE',
+      payload: { matchId, scorerTeam },
+    });
 
   return (
     <MatchContext.Provider
@@ -19,6 +24,7 @@ export const MatchProvider = ({ children }) => {
         matches: state.matches,
         setMatches,
         setScorer,
+        increaseScore,
       }}
     >
       {children}
