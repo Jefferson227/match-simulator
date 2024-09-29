@@ -53,7 +53,7 @@ export const matchReducer = (state, action) => {
               (team) => team.isHomeTeam === scorerTeam.isHomeTeam
             );
 
-            team.score = team.score++;
+            team.score = team.score + 1;
             return m;
           }
 
