@@ -23,7 +23,8 @@ const MatchSimulator = () => {
   const [scorer, setScorer] = useState(null);
   const [time, setTime] = useState(0);
   const [teamPlayersView, setTeamPlayersView] = useState(null);
-  const { setMatches, matches } = useContext(MatchContext);
+  const { matches, setMatches, increaseScore } =
+    useContext(MatchContext);
   const { getTeams } = teamService;
 
   useEffect(() => {
@@ -37,8 +38,6 @@ const MatchSimulator = () => {
 
   useEffect(() => {
     let timer;
-    homeTeam.current = matches[0]?.homeTeam;
-    visitorTeam.current = matches[0]?.visitorTeam;
 
     timer = setInterval(() => {
       setTime((prevTime) => prevTime + 1);
@@ -48,15 +47,22 @@ const MatchSimulator = () => {
       clearInterval(timer);
     }
 
-    Functions.tickClock(
-      time,
-      homeTeam.current,
-      visitorTeam.current,
-      setHomeTeamScore,
-      setVisitorTeamScore,
-      setScorer,
-      matches
-    );
+    // Load teams from state
+    homeTeam.current = matches[0]?.homeTeam;
+    visitorTeam.current = matches[0]?.visitorTeam;
+
+    if (matches[0]) {
+      Functions.tickClock(
+        time,
+        homeTeam.current,
+        visitorTeam.current,
+        setHomeTeamScore,
+        setVisitorTeamScore,
+        setScorer,
+        matches[0].id,
+        increaseScore
+      );
+    }
 
     return () => clearInterval(timer);
   }, [time, matches, teamPlayersView]);
@@ -84,8 +90,8 @@ const MatchSimulator = () => {
             }
           />
           <Score
-            homeScore={homeTeamScore}
-            guestScore={visitorTeamScore}
+            homeScore={matches[0].homeTeam.score}
+            guestScore={matches[0].visitorTeam.score}
           />
           <TeamComponent
             name={visitorTeam.current.abbreviation}

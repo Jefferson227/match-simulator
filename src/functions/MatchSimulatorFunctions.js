@@ -31,7 +31,9 @@ function getScorerTeamParam(homeTeam, visitorTeam) {
   const sumForces = (team) =>
     team.players.reduce((acc, player) => acc + player.strength, 0);
 
-  const calculatedForcesHomeTeam = getCalculatedForces(sumForces(homeTeam));
+  const calculatedForcesHomeTeam = getCalculatedForces(
+    sumForces(homeTeam)
+  );
   const calculatedForcesVisitorTeam = getCalculatedForces(
     sumForces(visitorTeam)
   );
@@ -43,18 +45,12 @@ function getScorerTeamParam(homeTeam, visitorTeam) {
     : '';
 }
 
-function getScorerTeamData(
-  param,
-  homeTeam,
-  visitorTeam,
-  setHomeTeamScore,
-  setVisitorTeamScore
-) {
+function getScorerTeamData(param, homeTeam, visitorTeam) {
   switch (param) {
     case 'home':
-      return { team: homeTeam, setScore: setHomeTeamScore };
+      return homeTeam;
     case 'visitor':
-      return { team: visitorTeam, setScore: setVisitorTeamScore };
+      return visitorTeam;
     default:
       return { team: null, setScore: () => {} };
   }
@@ -70,7 +66,9 @@ function findScorer(team) {
   else if (percentagePosition <= 10) position = 'MF';
   else position = 'FW';
 
-  const players = team.players.filter((player) => player.position === position);
+  const players = team.players.filter(
+    (player) => player.position === position
+  );
   const randomIndex = Math.floor(getRandomDecimal(players.length));
 
   return players[randomIndex] || null;
@@ -82,7 +80,9 @@ function runAction(
   visitorTeam,
   setHomeTeamScore,
   setVisitorTeamScore,
-  setScorer
+  setScorer,
+  matchId,
+  increaseScore
 ) {
   // Any of the teams has a chance of scoring of 2.5%
   const percentage = getRandomDecimal(100);
@@ -94,12 +94,10 @@ function runAction(
   const scorerTeamParam = getScorerTeamParam(homeTeam, visitorTeam);
   if (scorerTeamParam === '') return;
 
-  const { team: scorerTeam, setScore: setScorerTeamScore } = getScorerTeamData(
+  const scorerTeam = getScorerTeamData(
     scorerTeamParam,
     homeTeam,
-    visitorTeam,
-    setHomeTeamScore,
-    setVisitorTeamScore
+    visitorTeam
   );
 
   // Getting the scorer in the scorer team
@@ -112,7 +110,7 @@ function runAction(
   };
 
   setScorer(goalScorer);
-  setScorerTeamScore((prevScore) => prevScore + 1);
+  increaseScore(matchId, scorerTeam);
 }
 
 function getRandomDecimal(multiplier) {
@@ -125,7 +123,9 @@ function tickClock(
   visitorTeam,
   setHomeTeamScore,
   setVisitorTeamScore,
-  setScorer
+  setScorer,
+  matchId,
+  increaseScore
 ) {
   // This function runs on every 'second' of the match
   // and is responsible for performing all actions in a space of
@@ -141,7 +141,9 @@ function tickClock(
     visitorTeam,
     setHomeTeamScore,
     setVisitorTeamScore,
-    setScorer
+    setScorer,
+    matchId,
+    increaseScore
   );
 
   // Simulate match events (e.g., goals)
