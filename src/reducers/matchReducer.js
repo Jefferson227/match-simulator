@@ -61,6 +61,14 @@ export const matchReducer = (state, action) => {
         }),
       };
     }
+    case 'SET_TEAM_SQUAD_VIEW': {
+      const { teamSquadView } = action.payload;
+
+      return {
+        ...state,
+        teamSquadView,
+      };
+    }
     default:
       return state;
   }

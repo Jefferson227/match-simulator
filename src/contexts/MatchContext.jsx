@@ -17,14 +17,21 @@ export const MatchProvider = ({ children }) => {
       type: 'INCREASE_SCORE',
       payload: { matchId, scorerTeam },
     });
+  const setTeamSquadView = (teamSquadView) =>
+    dispatch({
+      type: 'SET_TEAM_SQUAD_VIEW',
+      payload: { teamSquadView },
+    });
 
   return (
     <MatchContext.Provider
       value={{
         matches: state.matches,
+        teamSquadView: state.teamSquadView,
         setMatches,
         setScorer,
         increaseScore,
+        setTeamSquadView,
       }}
     >
       {children}
