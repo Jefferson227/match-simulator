@@ -20,11 +20,6 @@ const MatchSimulator = () => {
     setMatches(getTeams());
   }, []);
 
-  // Just checking the teams in the console
-  // useEffect(() => {
-  //   console.log(matches);
-  // }, [matches]);
-
   useEffect(() => {
     let timer;
 
