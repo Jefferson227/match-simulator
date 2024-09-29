@@ -1,6 +1,10 @@
+import { useContext } from 'react';
+import { MatchContext } from '../../contexts/MatchContext';
 import './TeamPlayers.css';
 
-const TeamPlayers = ({ team, resetTeamPlayersView }) => {
+const TeamPlayers = ({ team }) => {
+  const { setTeamSquadView } = useContext(MatchContext);
+
   return (
     <div className="team-players">
       <div
@@ -64,7 +68,7 @@ const TeamPlayers = ({ team, resetTeamPlayersView }) => {
         </div>
         <button
           className="back-to-match"
-          onClick={resetTeamPlayersView}
+          onClick={() => setTeamSquadView(null)}
         >
           BACK TO MATCH
         </button>
