@@ -21,7 +21,8 @@ const MatchSimulator = () => {
   const { getTeams } = teamService;
 
   useEffect(() => {
-    setMatches(getTeams());
+    setMatches(getTeams(1));
+    setMatches(getTeams(2));
   }, []);
 
   useEffect(() => {
