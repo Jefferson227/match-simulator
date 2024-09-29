@@ -1,10 +1,4 @@
-import {
-  useState,
-  useEffect,
-  // useMemo,
-  useContext,
-  useRef,
-} from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import Score from '../Score';
 import TeamComponent from '../TeamComponent';
 import Functions from '../../functions/MatchSimulatorFunctions';
@@ -14,12 +8,8 @@ import { MatchContext } from '../../contexts/MatchContext';
 import teamService from '../../services/teamService';
 
 const MatchSimulator = () => {
-  // const homeTeam = useMemo(() => Functions.loadHomeTeam(), []);
-  // const visitorTeam = useMemo(() => Functions.loadVisitorTeam(), []);
   const homeTeam = useRef(null);
   const visitorTeam = useRef(null);
-  const [homeTeamScore, setHomeTeamScore] = useState(0);
-  const [visitorTeamScore, setVisitorTeamScore] = useState(0);
   const [scorer, setScorer] = useState(null);
   const [time, setTime] = useState(0);
   const [teamPlayersView, setTeamPlayersView] = useState(null);
