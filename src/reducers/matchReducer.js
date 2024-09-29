@@ -8,7 +8,7 @@ export const matchReducer = (state, action) => {
         matches: [
           ...state.matches,
           {
-            id: crypto.randomUUID,
+            id: crypto.randomUUID(),
             homeTeam: {
               ...homeTeam,
               isHomeTeam: true,
