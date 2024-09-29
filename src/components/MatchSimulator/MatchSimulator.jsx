@@ -56,8 +56,6 @@ const MatchSimulator = () => {
         time,
         homeTeam.current,
         visitorTeam.current,
-        setHomeTeamScore,
-        setVisitorTeamScore,
         setScorer,
         matches[0].id,
         increaseScore

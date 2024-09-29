@@ -78,8 +78,6 @@ function runAction(
   time,
   homeTeam,
   visitorTeam,
-  setHomeTeamScore,
-  setVisitorTeamScore,
   setScorer,
   matchId,
   increaseScore
@@ -121,8 +119,6 @@ function tickClock(
   time,
   homeTeam,
   visitorTeam,
-  setHomeTeamScore,
-  setVisitorTeamScore,
   setScorer,
   matchId,
   increaseScore
@@ -139,8 +135,6 @@ function tickClock(
     time,
     homeTeam,
     visitorTeam,
-    setHomeTeamScore,
-    setVisitorTeamScore,
     setScorer,
     matchId,
     increaseScore
