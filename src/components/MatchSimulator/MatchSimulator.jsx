@@ -46,7 +46,7 @@ const MatchSimulator = () => {
         homeTeam.current,
         visitorTeam.current,
         setScorer,
-        matches[0].id,
+        matches,
         increaseScore
       );
     }
@@ -63,34 +63,23 @@ const MatchSimulator = () => {
         <p className="time">{`${time}'`}</p>
       </div>
 
-      {!teamSquadView && homeTeam.current && visitorTeam.current ? (
+      {!teamSquadView ? (
         <div className="scoreboard">
-          <div className="match">
-            <TeamComponent team={homeTeam.current} />
-            <Score
-              homeScore={matches[0].homeTeam.score}
-              guestScore={matches[0].visitorTeam.score}
-            />
-            <TeamComponent team={visitorTeam.current} />
-            <div className="scorer">
-              {matches[0]?.lastScorer
-                ? `${matches[0].lastScorer.playerName} ${matches[0].lastScorer.time}'`
-                : null}
+          {matches.map((match, index) => (
+            <div className="match" key={index}>
+              <TeamComponent team={match.homeTeam} />
+              <Score
+                homeScore={match.homeTeam.score}
+                guestScore={match.visitorTeam.score}
+              />
+              <TeamComponent team={match.visitorTeam} />
+              <div className="scorer">
+                {match?.lastScorer
+                  ? `${match.lastScorer.playerName} ${match.lastScorer.time}'`
+                  : null}
+              </div>
             </div>
-          </div>
-          <div className="match">
-            <TeamComponent team={homeTeam.current} />
-            <Score
-              homeScore={matches[0].homeTeam.score}
-              guestScore={matches[0].visitorTeam.score}
-            />
-            <TeamComponent team={visitorTeam.current} />
-            <div className="scorer">
-              {matches[0]?.lastScorer
-                ? `${matches[0].lastScorer.playerName} ${matches[0].lastScorer.time}'`
-                : null}
-            </div>
-          </div>
+          ))}
         </div>
       ) : null}
 

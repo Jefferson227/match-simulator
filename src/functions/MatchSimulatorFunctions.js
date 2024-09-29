@@ -79,36 +79,38 @@ function runAction(
   homeTeam,
   visitorTeam,
   setScorer,
-  matchId,
+  matches,
   increaseScore
 ) {
-  // Any of the teams has a chance of scoring of 2.5%
-  const percentage = getRandomDecimal(100);
-  if (percentage >= 2.5) {
-    return;
-  }
+  matches.forEach((match) => {
+    // Any of the teams has a chance of scoring of 2.5%
+    const percentage = getRandomDecimal(100);
+    if (percentage >= 2.5) {
+      return;
+    }
 
-  // Getting which team will score
-  const scorerTeamParam = getScorerTeamParam(homeTeam, visitorTeam);
-  if (scorerTeamParam === '') return;
+    // Getting which team will score
+    const scorerTeamParam = getScorerTeamParam(homeTeam, visitorTeam);
+    if (scorerTeamParam === '') return;
 
-  const scorerTeam = getScorerTeamData(
-    scorerTeamParam,
-    homeTeam,
-    visitorTeam
-  );
+    const scorerTeam = getScorerTeamData(
+      scorerTeamParam,
+      homeTeam,
+      visitorTeam
+    );
 
-  // Getting the scorer in the scorer team
-  const scorer = findScorer(scorerTeam);
+    // Getting the scorer in the scorer team
+    const scorer = findScorer(scorerTeam);
 
-  // Setting the scorer and updating the scoreboard
-  const goalScorer = {
-    playerName: scorer?.name || '',
-    time: time,
-  };
+    // Setting the scorer and updating the scoreboard
+    const goalScorer = {
+      playerName: scorer?.name || '',
+      time: time,
+    };
 
-  setScorer(matchId, goalScorer);
-  increaseScore(matchId, scorerTeam);
+    setScorer(match.id, goalScorer);
+    increaseScore(match.id, scorerTeam);
+  });
 }
 
 function getRandomDecimal(multiplier) {
@@ -120,7 +122,7 @@ function tickClock(
   homeTeam,
   visitorTeam,
   setScorer,
-  matchId,
+  matches,
   increaseScore
 ) {
   // This function runs on every 'second' of the match
@@ -136,7 +138,7 @@ function tickClock(
     homeTeam,
     visitorTeam,
     setScorer,
-    matchId,
+    matches,
     increaseScore
   );
 
