@@ -1,4 +1,10 @@
-import { useState, useEffect, useMemo, useContext } from 'react';
+import {
+  useState,
+  useEffect,
+  // useMemo,
+  useContext,
+  useRef,
+} from 'react';
 import Score from '../Score';
 import TeamComponent from '../TeamComponent';
 import Functions from '../../functions/MatchSimulatorFunctions';
@@ -8,25 +14,31 @@ import { MatchContext } from '../../contexts/MatchContext';
 import teamService from '../../services/teamService';
 
 const MatchSimulator = () => {
-  const homeTeam = useMemo(() => Functions.loadHomeTeam(), []);
-  const visitorTeam = useMemo(() => Functions.loadVisitorTeam(), []);
+  // const homeTeam = useMemo(() => Functions.loadHomeTeam(), []);
+  // const visitorTeam = useMemo(() => Functions.loadVisitorTeam(), []);
+  const homeTeam = useRef(null);
+  const visitorTeam = useRef(null);
   const [homeTeamScore, setHomeTeamScore] = useState(0);
   const [visitorTeamScore, setVisitorTeamScore] = useState(0);
   const [scorer, setScorer] = useState(null);
   const [time, setTime] = useState(0);
   const [teamPlayersView, setTeamPlayersView] = useState(null);
   const { setMatches, matches } = useContext(MatchContext);
+  const { getTeams } = teamService;
 
   useEffect(() => {
-    setMatches(teamService.getTeams());
+    setMatches(getTeams());
   }, []);
 
-  useEffect(() => {
-    console.log(matches);
-  }, [matches]);
+  // Just checking the teams in the console
+  // useEffect(() => {
+  //   console.log(matches);
+  // }, [matches]);
 
   useEffect(() => {
     let timer;
+    homeTeam.current = matches[0]?.homeTeam;
+    visitorTeam.current = matches[0]?.visitorTeam;
 
     timer = setInterval(() => {
       setTime((prevTime) => prevTime + 1);
@@ -38,15 +50,16 @@ const MatchSimulator = () => {
 
     Functions.tickClock(
       time,
-      homeTeam,
-      visitorTeam,
+      homeTeam.current,
+      visitorTeam.current,
       setHomeTeamScore,
       setVisitorTeamScore,
-      setScorer
+      setScorer,
+      matches
     );
 
     return () => clearInterval(timer);
-  }, [time, homeTeam, visitorTeam, teamPlayersView]);
+  }, [time, matches, teamPlayersView]);
 
   return (
     <div className="match-simulator">
@@ -57,25 +70,31 @@ const MatchSimulator = () => {
         <p className="time">{`${time}'`}</p>
       </div>
 
-      {teamPlayersView === null ? (
+      {teamPlayersView === null &&
+      homeTeam.current &&
+      visitorTeam.current ? (
         <div className="scoreboard">
           <TeamComponent
-            name={homeTeam.abbreviation}
-            outlineColor={homeTeam.colors.outline}
-            backgroundColor={homeTeam.colors.background}
-            teamNameColor={homeTeam.colors.name}
-            setTeamPlayersView={() => setTeamPlayersView(homeTeam)}
+            name={homeTeam.current.abbreviation}
+            outlineColor={homeTeam.current.colors.outline}
+            backgroundColor={homeTeam.current.colors.background}
+            teamNameColor={homeTeam.current.colors.name}
+            setTeamPlayersView={() =>
+              setTeamPlayersView(homeTeam.current)
+            }
           />
           <Score
             homeScore={homeTeamScore}
             guestScore={visitorTeamScore}
           />
           <TeamComponent
-            name={visitorTeam.abbreviation}
-            outlineColor={visitorTeam.colors.outline}
-            backgroundColor={visitorTeam.colors.background}
-            teamNameColor={visitorTeam.colors.name}
-            setTeamPlayersView={() => setTeamPlayersView(visitorTeam)}
+            name={visitorTeam.current.abbreviation}
+            outlineColor={visitorTeam.current.colors.outline}
+            backgroundColor={visitorTeam.current.colors.background}
+            teamNameColor={visitorTeam.current.colors.name}
+            setTeamPlayersView={() =>
+              setTeamPlayersView(visitorTeam.current)
+            }
           />
           <div className="scorer">
             {scorer?.playerName ? scorer?.playerName : null}
