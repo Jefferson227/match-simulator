@@ -19,7 +19,7 @@ export const matchReducer = (state, action) => {
               isHomeTeam: false,
               score: 0,
             },
-            lastScorer: {},
+            lastScorer: null,
           },
         ],
       };

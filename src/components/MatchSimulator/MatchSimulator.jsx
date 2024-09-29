@@ -10,10 +10,9 @@ import teamService from '../../services/teamService';
 const MatchSimulator = () => {
   const homeTeam = useRef(null);
   const visitorTeam = useRef(null);
-  const [scorer, setScorer] = useState(null);
   const [time, setTime] = useState(0);
   const [teamPlayersView, setTeamPlayersView] = useState(null);
-  const { matches, setMatches, increaseScore } =
+  const { matches, setMatches, increaseScore, setScorer } =
     useContext(MatchContext);
   const { getTeams } = teamService;
 
@@ -91,7 +90,9 @@ const MatchSimulator = () => {
             }
           />
           <div className="scorer">
-            {scorer?.playerName ? scorer?.playerName : null}
+            {matches[0]?.lastScorer
+              ? `${matches[0].lastScorer.playerName} ${matches[0].lastScorer.time}'`
+              : null}
           </div>
         </div>
       ) : null}

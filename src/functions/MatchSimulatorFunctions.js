@@ -107,7 +107,7 @@ function runAction(
     time: time,
   };
 
-  setScorer(goalScorer);
+  setScorer(matchId, goalScorer);
   increaseScore(matchId, scorerTeam);
 }
 
