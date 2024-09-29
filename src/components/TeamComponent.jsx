@@ -1,27 +1,21 @@
 import { useContext } from 'react';
 import { MatchContext } from '../contexts/MatchContext';
 
-const TeamComponent = ({
-  name,
-  outlineColor,
-  backgroundColor,
-  teamNameColor,
-  team,
-}) => {
+const TeamComponent = ({ team }) => {
   const { setTeamSquadView } = useContext(MatchContext);
 
   return (
     <div
       className="team-padding"
-      style={{ backgroundColor: outlineColor }}
+      style={{ backgroundColor: team.colors.outline }}
       onClick={() => setTeamSquadView(team)}
     >
       <div
         className="team"
-        style={{ backgroundColor: backgroundColor }}
+        style={{ backgroundColor: team.colors.background }}
       >
-        <h2 className="team-name" style={{ color: teamNameColor }}>
-          {name}
+        <h2 className="team-name" style={{ color: team.colors.name }}>
+          {team.abbreviation}
         </h2>
       </div>
     </div>

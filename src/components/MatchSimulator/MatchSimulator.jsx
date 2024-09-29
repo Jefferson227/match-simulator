@@ -64,24 +64,12 @@ const MatchSimulator = () => {
 
       {!teamSquadView && homeTeam.current && visitorTeam.current ? (
         <div className="scoreboard">
-          <TeamComponent
-            name={homeTeam.current.abbreviation}
-            outlineColor={homeTeam.current.colors.outline}
-            backgroundColor={homeTeam.current.colors.background}
-            teamNameColor={homeTeam.current.colors.name}
-            team={homeTeam.current}
-          />
+          <TeamComponent team={homeTeam.current} />
           <Score
             homeScore={matches[0].homeTeam.score}
             guestScore={matches[0].visitorTeam.score}
           />
-          <TeamComponent
-            name={visitorTeam.current.abbreviation}
-            outlineColor={visitorTeam.current.colors.outline}
-            backgroundColor={visitorTeam.current.colors.background}
-            teamNameColor={visitorTeam.current.colors.name}
-            team={visitorTeam.current}
-          />
+          <TeamComponent team={visitorTeam.current} />
           <div className="scorer">
             {matches[0]?.lastScorer
               ? `${matches[0].lastScorer.playerName} ${matches[0].lastScorer.time}'`
