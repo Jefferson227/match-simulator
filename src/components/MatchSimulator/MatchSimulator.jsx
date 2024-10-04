@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useRef } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Score from '../Score';
 import TeamComponent from '../TeamComponent';
 import Functions from '../../functions/MatchSimulatorFunctions';
