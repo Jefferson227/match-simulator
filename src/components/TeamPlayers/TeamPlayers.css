@@ -38,8 +38,9 @@
   color: #e2e2e2;
   display: flex;
   justify-content: space-between;
-  margin: 14px 24px;
+  padding: 8px 24px;
   text-transform: uppercase;
+  cursor: pointer;
 }
 
 .team-players .team-container .player .position,

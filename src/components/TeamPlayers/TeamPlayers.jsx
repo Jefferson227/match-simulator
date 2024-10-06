@@ -1,8 +1,9 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { MatchContext } from '../../contexts/MatchContext';
 import './TeamPlayers.css';
 
 const TeamPlayers = ({ team }) => {
+  const [selectedPlayer, setSelectedPlayer] = useState(null);
   const { setTeamSquadView } = useContext(MatchContext);
 
   return (
@@ -23,10 +24,7 @@ const TeamPlayers = ({ team }) => {
         >
           {team.name}
         </div>
-        <div
-          className="formation"
-          style={{ borderColor: team.colors.outline }}
-        >
+        <div className="formation" style={{ borderColor: team.colors.outline }}>
           4-3-3
         </div>
         <div className="players">
@@ -34,7 +32,17 @@ const TeamPlayers = ({ team }) => {
             <div
               className="player"
               key={player.id}
-              style={{ color: team.colors.name }}
+              style={{
+                color:
+                  player.id === selectedPlayer
+                    ? team.colors.background
+                    : team.colors.name,
+                backgroundColor:
+                  player.id === selectedPlayer
+                    ? team.colors.name
+                    : team.colors.background,
+              }}
+              onClick={() => setSelectedPlayer(player.id)}
             >
               <div className="position">{player.position}</div>
               <div className="name">{player.name}</div>
@@ -60,10 +68,7 @@ const TeamPlayers = ({ team }) => {
       </div>
 
       <div className="footer-buttons-container">
-        <div
-          className="back-to-main-team"
-          style={{ display: 'none' }}
-        >
+        <div className="back-to-main-team" style={{ display: 'none' }}>
           <button>BACK TO MAIN TEAM</button>
         </div>
         <button
