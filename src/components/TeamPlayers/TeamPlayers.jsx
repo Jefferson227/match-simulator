@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { MatchContext } from '../../contexts/MatchContext';
 import './TeamPlayers.css';
 
-const TeamPlayers = ({ team }) => {
+const TeamPlayers = ({ teamSquadView }) => {
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [selectedSubstitute, setSelectedSubstitute] = useState(null);
   const [showSubstitutes, setShowSubstitutes] = useState(false);
@@ -13,39 +13,42 @@ const TeamPlayers = ({ team }) => {
       <div
         className="team-container"
         style={{
-          backgroundColor: team.colors.background,
-          outlineColor: team.colors.outline,
+          backgroundColor: teamSquadView.team.colors.background,
+          outlineColor: teamSquadView.team.colors.outline,
         }}
       >
         <div
           className="team-name"
           style={{
-            color: team.colors.name,
-            borderColor: team.colors.outline,
+            color: teamSquadView.team.colors.name,
+            borderColor: teamSquadView.team.colors.outline,
           }}
         >
-          {team.name}
+          {teamSquadView.team.name}
         </div>
-        <div className="formation" style={{ borderColor: team.colors.outline }}>
+        <div
+          className="formation"
+          style={{ borderColor: teamSquadView.team.colors.outline }}
+        >
           4-3-3
         </div>
         <div
           className="players"
           style={{ display: showSubstitutes ? 'none' : 'block' }}
         >
-          {team.players.map((player) => (
+          {teamSquadView.team.players.map((player) => (
             <div
               className="player"
               key={player.id}
               style={{
                 color:
                   player.id === selectedPlayer
-                    ? team.colors.background
-                    : team.colors.name,
+                    ? teamSquadView.team.colors.background
+                    : teamSquadView.team.colors.name,
                 backgroundColor:
                   player.id === selectedPlayer
-                    ? team.colors.name
-                    : team.colors.background,
+                    ? teamSquadView.team.colors.name
+                    : teamSquadView.team.colors.background,
               }}
               onClick={() =>
                 player.id !== selectedPlayer
@@ -62,22 +65,25 @@ const TeamPlayers = ({ team }) => {
         <div
           className="players"
           style={{
-            display: showSubstitutes && team.substitutes ? 'block' : 'none',
+            display:
+              showSubstitutes && teamSquadView.team.substitutes
+                ? 'block'
+                : 'none',
           }}
         >
-          {team.substitutes.map((substitute) => (
+          {teamSquadView.team.substitutes.map((substitute) => (
             <div
               className="player"
               key={substitute.id}
               style={{
                 color:
                   substitute.id === selectedSubstitute
-                    ? team.colors.background
-                    : team.colors.name,
+                    ? teamSquadView.team.colors.background
+                    : teamSquadView.team.colors.name,
                 backgroundColor:
                   substitute.id === selectedSubstitute
-                    ? team.colors.name
-                    : team.colors.background,
+                    ? teamSquadView.team.colors.name
+                    : teamSquadView.team.colors.background,
               }}
               onClick={() =>
                 substitute.id !== selectedSubstitute
@@ -98,9 +104,9 @@ const TeamPlayers = ({ team }) => {
           <button
             className="substitute-button"
             style={{
-              backgroundColor: team.colors.background,
-              outlineColor: team.colors.outline,
-              color: team.colors.name,
+              backgroundColor: teamSquadView.team.colors.background,
+              outlineColor: teamSquadView.team.colors.outline,
+              color: teamSquadView.team.colors.name,
             }}
             onClick={() => setShowSubstitutes(true)}
           >
@@ -120,9 +126,9 @@ const TeamPlayers = ({ team }) => {
           <button
             className="substitute-button"
             style={{
-              backgroundColor: team.colors.background,
-              outlineColor: team.colors.outline,
-              color: team.colors.name,
+              backgroundColor: teamSquadView.team.colors.background,
+              outlineColor: teamSquadView.team.colors.outline,
+              color: teamSquadView.team.colors.name,
             }}
             onClick={() => {
               setSelectedPlayer(null);
