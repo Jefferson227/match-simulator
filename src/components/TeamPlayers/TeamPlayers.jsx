@@ -101,8 +101,16 @@ const TeamPlayers = ({ team }) => {
       </div>
 
       <div className="footer-buttons-container">
-        <div className="back-to-main-team" style={{ display: 'none' }}>
-          <button>BACK TO MAIN TEAM</button>
+        <div
+          className="back-to-main-team"
+          style={{ display: showSubstitutes ? 'block' : 'none' }}
+        >
+          <button
+            className="back-to-match"
+            onClick={() => setShowSubstitutes(false)}
+          >
+            BACK TO MAIN TEAM
+          </button>
         </div>
         <button
           className="back-to-match"
