@@ -4,6 +4,7 @@ import './TeamPlayers.css';
 
 const TeamPlayers = ({ team }) => {
   const [selectedPlayer, setSelectedPlayer] = useState(null);
+  const [selectedSubstitute, setSelectedSubstitute] = useState(null);
   const [showSubstitutes, setShowSubstitutes] = useState(false);
   const { setTeamSquadView } = useContext(MatchContext);
 
@@ -66,15 +67,15 @@ const TeamPlayers = ({ team }) => {
               key={substitute.id}
               style={{
                 color:
-                  substitute.id === selectedPlayer
+                  substitute.id === selectedSubstitute
                     ? team.colors.background
                     : team.colors.name,
                 backgroundColor:
-                  substitute.id === selectedPlayer
+                  substitute.id === selectedSubstitute
                     ? team.colors.name
                     : team.colors.background,
               }}
-              onClick={() => setSelectedPlayer(substitute.id)}
+              onClick={() => setSelectedSubstitute(substitute.id)}
             >
               <div className="position">{substitute.position}</div>
               <div className="name">{substitute.name}</div>
