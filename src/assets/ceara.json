@@ -74,5 +74,18 @@
       "strength": 99
     }
   ],
-  "substitutes": []
+  "substitutes": [
+    {
+      "id": 13,
+      "position": "DF",
+      "name": "Ramon Menezes",
+      "strength": 99
+    },
+    {
+      "id": 14,
+      "position": "FW",
+      "name": "Facundo Castro",
+      "strength": 99
+    }
+  ]
 }
