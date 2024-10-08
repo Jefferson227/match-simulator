@@ -47,7 +47,11 @@ const TeamPlayers = ({ team }) => {
                     ? team.colors.name
                     : team.colors.background,
               }}
-              onClick={() => setSelectedPlayer(player.id)}
+              onClick={() =>
+                player.id !== selectedPlayer
+                  ? setSelectedPlayer(player.id)
+                  : setSelectedPlayer(null)
+              }
             >
               <div className="position">{player.position}</div>
               <div className="name">{player.name}</div>
@@ -75,7 +79,11 @@ const TeamPlayers = ({ team }) => {
                     ? team.colors.name
                     : team.colors.background,
               }}
-              onClick={() => setSelectedSubstitute(substitute.id)}
+              onClick={() =>
+                substitute.id !== selectedSubstitute
+                  ? setSelectedSubstitute(substitute.id)
+                  : setSelectedSubstitute(null)
+              }
             >
               <div className="position">{substitute.position}</div>
               <div className="name">{substitute.name}</div>
