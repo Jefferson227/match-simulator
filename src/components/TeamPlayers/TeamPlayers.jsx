@@ -107,6 +107,28 @@ const TeamPlayers = ({ team }) => {
             SEE SUBSTITUTES
           </button>
         </div>
+
+        <div
+          className="substitute-button-container"
+          style={{
+            display:
+              showSubstitutes && selectedPlayer && selectedSubstitute
+                ? 'block'
+                : 'none',
+          }}
+        >
+          <button
+            className="substitute-button"
+            style={{
+              backgroundColor: team.colors.background,
+              outlineColor: team.colors.outline,
+              color: team.colors.name,
+            }}
+            onClick={() => setShowSubstitutes(true)}
+          >
+            CONFIRF SUBST.
+          </button>
+        </div>
       </div>
 
       <div className="footer-buttons-container">
