@@ -124,7 +124,10 @@ const TeamPlayers = ({ team }) => {
               outlineColor: team.colors.outline,
               color: team.colors.name,
             }}
-            onClick={() => setShowSubstitutes(true)}
+            onClick={() => {
+              setSelectedPlayer(null);
+              setSelectedSubstitute(null);
+            }}
           >
             CONFIRF SUBST.
           </button>
