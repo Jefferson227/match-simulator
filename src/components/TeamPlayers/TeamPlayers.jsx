@@ -84,7 +84,7 @@ const TeamPlayers = ({ team }) => {
         </div>
         <div
           className="substitute-button-container"
-          style={{ display: 'block' }}
+          style={{ display: showSubstitutes ? 'none' : 'block' }}
         >
           <button
             className="substitute-button"
