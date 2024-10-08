@@ -11,67 +11,67 @@
       "id": 1,
       "position": "GK",
       "name": "Matheus R.",
-      "strength": 10
+      "strength": 5
     },
     {
       "id": 2,
       "position": "DF",
       "name": "Richardson",
-      "strength": 10
+      "strength": 5
     },
     {
       "id": 3,
       "position": "DF",
       "name": "E. Thuram",
-      "strength": 10
+      "strength": 5
     },
     {
       "id": 4,
       "position": "DF",
       "name": "Wesley",
-      "strength": 10
+      "strength": 5
     },
     {
       "id": 5,
       "position": "DF",
       "name": "Paulo César",
-      "strength": 10
+      "strength": 5
     },
     {
       "id": 6,
       "position": "MF",
       "name": "Yago Henrique",
-      "strength": 10
+      "strength": 5
     },
     {
       "id": 7,
       "position": "MF",
       "name": "Wellington R.",
-      "strength": 10
+      "strength": 5
     },
     {
       "id": 8,
       "position": "MF",
       "name": "Lima",
-      "strength": 10
+      "strength": 5
     },
     {
       "id": 9,
       "position": "FW",
       "name": "Wallyson",
-      "strength": 10
+      "strength": 5
     },
     {
       "id": 10,
       "position": "FW",
       "name": "Jackson",
-      "strength": 10
+      "strength": 5
     },
     {
       "id": 11,
       "position": "FW",
       "name": "Pedro Felipe",
-      "strength": 10
+      "strength": 5
     }
   ]
 }

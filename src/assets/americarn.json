@@ -11,67 +11,67 @@
       "id": 1,
       "position": "GK",
       "name": "G. Rodrigues",
-      "strength": 1
+      "strength": 5
     },
     {
       "id": 2,
       "position": "DF",
       "name": "R. Bueno",
-      "strength": 1
+      "strength": 5
     },
     {
       "id": 3,
       "position": "DF",
       "name": "Alan Amorim",
-      "strength": 1
+      "strength": 5
     },
     {
       "id": 4,
       "position": "DF",
       "name": "M. Sousa",
-      "strength": 1
+      "strength": 5
     },
     {
       "id": 5,
       "position": "DF",
       "name": "Rafael Jensen",
-      "strength": 1
+      "strength": 5
     },
     {
       "id": 6,
       "position": "MF",
       "name": "Suelynton",
-      "strength": 1
+      "strength": 5
     },
     {
       "id": 7,
       "position": "MF",
       "name": "G. Ramos",
-      "strength": 1
+      "strength": 5
     },
     {
       "id": 8,
       "position": "MF",
       "name": "M. Pedroso",
-      "strength": 1
+      "strength": 5
     },
     {
       "id": 9,
       "position": "FW",
       "name": "G. Guedes",
-      "strength": 1
+      "strength": 5
     },
     {
       "id": 10,
       "position": "FW",
       "name": "Buiú",
-      "strength": 1
+      "strength": 5
     },
     {
       "id": 11,
       "position": "FW",
       "name": "N. Pereira",
-      "strength": 1
+      "strength": 5
     }
   ]
 }
