@@ -4,6 +4,7 @@ import './TeamPlayers.css';
 
 const TeamPlayers = ({ team }) => {
   const [selectedPlayer, setSelectedPlayer] = useState(null);
+  const [showSubstitutes, setShowSubstitutes] = useState(false);
   const { setTeamSquadView } = useContext(MatchContext);
 
   return (
@@ -27,7 +28,10 @@ const TeamPlayers = ({ team }) => {
         <div className="formation" style={{ borderColor: team.colors.outline }}>
           4-3-3
         </div>
-        <div className="players">
+        <div
+          className="players"
+          style={{ display: showSubstitutes ? 'none' : 'block' }}
+        >
           {team.players.map((player) => (
             <div
               className="player"
@@ -51,8 +55,36 @@ const TeamPlayers = ({ team }) => {
           ))}
         </div>
         <div
+          className="players"
+          style={{
+            display: showSubstitutes && team.substitutes ? 'block' : 'none',
+          }}
+        >
+          {team.substitutes.map((substitute) => (
+            <div
+              className="player"
+              key={substitute.id}
+              style={{
+                color:
+                  substitute.id === selectedPlayer
+                    ? team.colors.background
+                    : team.colors.name,
+                backgroundColor:
+                  substitute.id === selectedPlayer
+                    ? team.colors.name
+                    : team.colors.background,
+              }}
+              onClick={() => setSelectedPlayer(substitute.id)}
+            >
+              <div className="position">{substitute.position}</div>
+              <div className="name">{substitute.name}</div>
+              <div className="strength">{substitute.strength}</div>
+            </div>
+          ))}
+        </div>
+        <div
           className="substitute-button-container"
-          style={{ display: 'none' }}
+          style={{ display: 'block' }}
         >
           <button
             className="substitute-button"
@@ -61,6 +93,7 @@ const TeamPlayers = ({ team }) => {
               outlineColor: team.colors.outline,
               color: team.colors.name,
             }}
+            onClick={() => setShowSubstitutes(true)}
           >
             SEE SUBSTITUTES
           </button>
