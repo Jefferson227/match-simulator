@@ -6,7 +6,7 @@ const TeamPlayers = ({ teamSquadView }) => {
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [selectedSubstitute, setSelectedSubstitute] = useState(null);
   const [showSubstitutes, setShowSubstitutes] = useState(false);
-  const { setTeamSquadView } = useContext(MatchContext);
+  const { setTeamSquadView, confirmSubstitution } = useContext(MatchContext);
 
   return (
     <div className="team-players">
@@ -131,6 +131,12 @@ const TeamPlayers = ({ teamSquadView }) => {
               color: teamSquadView.team.colors.name,
             }}
             onClick={() => {
+              confirmSubstitution({
+                matchId: teamSquadView.matchId,
+                team: teamSquadView.team,
+                selectedPlayer,
+                selectedSubstitute,
+              });
               setSelectedPlayer(null);
               setSelectedSubstitute(null);
             }}
