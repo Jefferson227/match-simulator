@@ -69,6 +69,38 @@ export const matchReducer = (state, action) => {
         teamSquadView,
       };
     }
+    case 'CONFIRM_SUBSTITUTION': {
+      const { matchId, team, selectedPlayer, selectedSubstitute } =
+        action.payload;
+
+      return {
+        ...state,
+        matches: state.matches.map((match) => {
+          if (match.id === matchId) {
+            const teamFound = Object.values(match).find(
+              (t) => t.isHomeTeam === team.isHomeTeam
+            );
+
+            // remove the player from the main squad
+            teamFound.players = teamFound.players.filter(
+              (p) => p.name !== selectedPlayer.name
+            );
+
+            // add the substitute player in the main squad
+            teamFound.players = [...teamFound.players, selectedSubstitute];
+
+            // remove the substitute player from the substitutes
+            teamFound.substitutes = teamFound.substitutes.filter(
+              (s) => s.name !== selectedSubstitute.name
+            );
+
+            return match;
+          }
+
+          return match;
+        }),
+      };
+    }
     default:
       return state;
   }
