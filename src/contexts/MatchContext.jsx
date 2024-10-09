@@ -22,6 +22,16 @@ export const MatchProvider = ({ children }) => {
       type: 'SET_TEAM_SQUAD_VIEW',
       payload: { teamSquadView },
     });
+  const confirmSubstitution = ({
+    matchId,
+    team,
+    selectedPlayer,
+    selectedSubstitute,
+  }) =>
+    dispatch({
+      type: 'CONFIRM_SUBSTITUTION',
+      payload: { matchId, team, selectedPlayer, selectedSubstitute },
+    });
 
   return (
     <MatchContext.Provider
@@ -32,6 +42,7 @@ export const MatchProvider = ({ children }) => {
         setScorer,
         increaseScore,
         setTeamSquadView,
+        confirmSubstitution,
       }}
     >
       {children}
