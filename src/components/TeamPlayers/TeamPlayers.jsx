@@ -42,17 +42,17 @@ const TeamPlayers = ({ teamSquadView }) => {
               key={player.id}
               style={{
                 color:
-                  player.id === selectedPlayer
+                  player.id === selectedPlayer?.id
                     ? teamSquadView.team.colors.background
                     : teamSquadView.team.colors.name,
                 backgroundColor:
-                  player.id === selectedPlayer
+                  player.id === selectedPlayer?.id
                     ? teamSquadView.team.colors.name
                     : teamSquadView.team.colors.background,
               }}
               onClick={() =>
-                player.id !== selectedPlayer
-                  ? setSelectedPlayer(player.id)
+                player.id !== selectedPlayer?.id
+                  ? setSelectedPlayer(player)
                   : setSelectedPlayer(null)
               }
             >
@@ -77,17 +77,17 @@ const TeamPlayers = ({ teamSquadView }) => {
               key={substitute.id}
               style={{
                 color:
-                  substitute.id === selectedSubstitute
+                  substitute.id === selectedSubstitute?.id
                     ? teamSquadView.team.colors.background
                     : teamSquadView.team.colors.name,
                 backgroundColor:
-                  substitute.id === selectedSubstitute
+                  substitute.id === selectedSubstitute?.id
                     ? teamSquadView.team.colors.name
                     : teamSquadView.team.colors.background,
               }}
               onClick={() =>
-                substitute.id !== selectedSubstitute
-                  ? setSelectedSubstitute(substitute.id)
+                substitute.id !== selectedSubstitute?.id
+                  ? setSelectedSubstitute(substitute)
                   : setSelectedSubstitute(null)
               }
             >
