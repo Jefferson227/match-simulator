@@ -1,3 +1,6 @@
+import utils from '../utils/utils';
+const { addPlayerAttributes } = utils;
+
 export const matchReducer = (state, action) => {
   switch (action.type) {
     case 'SET_MATCHES': {
@@ -11,27 +14,15 @@ export const matchReducer = (state, action) => {
             id: crypto.randomUUID(),
             homeTeam: {
               ...homeTeam,
-              players: homeTeam.players.map((player) => {
-                player.id = crypto.randomUUID();
-                return player;
-              }),
-              substitutes: homeTeam.substitutes.map((substitute) => {
-                substitute.id = crypto.randomUUID();
-                return substitute;
-              }),
+              players: addPlayerAttributes(homeTeam.players),
+              substitutes: addPlayerAttributes(homeTeam.substitutes),
               isHomeTeam: true,
               score: 0,
             },
             visitorTeam: {
               ...visitorTeam,
-              players: visitorTeam.players.map((player) => {
-                player.id = crypto.randomUUID();
-                return player;
-              }),
-              substitutes: visitorTeam.substitutes.map((substitute) => {
-                substitute.id = crypto.randomUUID();
-                return substitute;
-              }),
+              players: addPlayerAttributes(visitorTeam.players),
+              substitutes: addPlayerAttributes(visitorTeam.substitutes),
               isHomeTeam: false,
               score: 0,
             },
