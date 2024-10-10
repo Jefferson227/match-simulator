@@ -1,9 +1,19 @@
 function addPlayerAttributes(players) {
-  return players.map((player) => {
-    player.id = crypto.randomUUID();
-    player.order = getPlayerOrder(player.position);
-    return player;
-  });
+  return players
+    .map((player) => {
+      player.id = crypto.randomUUID();
+      player.order = getPlayerOrder(player.position);
+      return player;
+    })
+    .sort((a, b) => {
+      if (a.order < b.order) {
+        return -1; // a comes before b
+      }
+      if (a.order > b.order) {
+        return 1; // a comes after b
+      }
+      return 0; // a and b are equal
+    });
 }
 
 function getPlayerOrder(position) {
