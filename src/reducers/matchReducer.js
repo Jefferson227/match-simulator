@@ -99,7 +99,7 @@ export const matchReducer = (state, action) => {
 
             // remove the player from the main squad
             teamFound.players = teamFound.players.filter(
-              (p) => p.name !== selectedPlayer.name
+              (p) => p.id !== selectedPlayer.id
             );
 
             // add the substitute player in the main squad
@@ -107,7 +107,7 @@ export const matchReducer = (state, action) => {
 
             // remove the substitute player from the substitutes
             teamFound.substitutes = teamFound.substitutes.filter(
-              (s) => s.name !== selectedSubstitute.name
+              (s) => s.id !== selectedSubstitute.id
             );
 
             return match;
