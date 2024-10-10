@@ -93,8 +93,18 @@ export const matchReducer = (state, action) => {
               (p) => p.id !== selectedPlayer.id
             );
 
-            // add the substitute player in the main squad
-            teamFound.players = [...teamFound.players, selectedSubstitute];
+            // add the substitute player in the main squad in the correct order
+            teamFound.players = [...teamFound.players, selectedSubstitute].sort(
+              (a, b) => {
+                if (a.order < b.order) {
+                  return -1; // a comes before b
+                }
+                if (a.order > b.order) {
+                  return 1; // a comes after b
+                }
+                return 0; // a and b are equal
+              }
+            );
 
             // remove the substitute player from the substitutes
             teamFound.substitutes = teamFound.substitutes.filter(
