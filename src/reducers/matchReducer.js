@@ -11,11 +11,27 @@ export const matchReducer = (state, action) => {
             id: crypto.randomUUID(),
             homeTeam: {
               ...homeTeam,
+              players: homeTeam.players.map((player) => {
+                player.id = crypto.randomUUID();
+                return player;
+              }),
+              substitutes: homeTeam.substitutes.map((substitute) => {
+                substitute.id = crypto.randomUUID();
+                return substitute;
+              }),
               isHomeTeam: true,
               score: 0,
             },
             visitorTeam: {
               ...visitorTeam,
+              players: visitorTeam.players.map((player) => {
+                player.id = crypto.randomUUID();
+                return player;
+              }),
+              substitutes: visitorTeam.substitutes.map((substitute) => {
+                substitute.id = crypto.randomUUID();
+                return substitute;
+              }),
               isHomeTeam: false,
               score: 0,
             },
