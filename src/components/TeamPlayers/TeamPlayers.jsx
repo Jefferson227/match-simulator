@@ -1,8 +1,10 @@
 import { useContext, useState } from 'react';
 import { MatchContext } from '../../contexts/MatchContext';
 import './TeamPlayers.css';
+import { useTranslation } from 'react-i18next';
 
 const TeamPlayers = ({ teamSquadView }) => {
+  const { t } = useTranslation();
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [selectedSubstitute, setSelectedSubstitute] = useState(null);
   const [showSubstitutes, setShowSubstitutes] = useState(false);
@@ -110,7 +112,7 @@ const TeamPlayers = ({ teamSquadView }) => {
             }}
             onClick={() => setShowSubstitutes(true)}
           >
-            SEE SUBSTITUTES
+            {t('teamPlayers.seeSubstitutes')}
           </button>
         </div>
 
