@@ -143,7 +143,7 @@ const TeamPlayers = ({ teamSquadView }) => {
               setSelectedSubstitute(null);
             }}
           >
-            CONFIRF SUBST.
+            {t('teamPlayers.confirmSubstitution')}
           </button>
         </div>
       </div>
@@ -157,14 +157,14 @@ const TeamPlayers = ({ teamSquadView }) => {
             className="back-to-match"
             onClick={() => setShowSubstitutes(false)}
           >
-            BACK TO MAIN TEAM
+            {t('teamPlayers.backToMainTeam')}
           </button>
         </div>
         <button
           className="back-to-match"
           onClick={() => setTeamSquadView(null)}
         >
-          BACK TO MATCH
+          {t('teamPlayers.backToMatch')}
         </button>
       </div>
     </div>
