@@ -1,5 +1,8 @@
 {
   "teamPlayers": {
-    "seeSubstitutes": "SEE SUBSTITUTES"
+    "seeSubstitutes": "SEE SUBSTITUTES",
+    "backToMatch": "BACK TO MATCH",
+    "backToMainTeam": "BACK TO MAIN TEAM",
+    "confirmSubstitution": "CONFIRM SUBST."
   }
 }

@@ -1,5 +1,8 @@
 {
   "teamPlayers": {
-    "seeSubstitutes": "VER SUBSTITUTOS"
+    "seeSubstitutes": "VER SUBSTITUTOS",
+    "backToMatch": "VOLTAR AO JOGO",
+    "backToMainTeam": "VOLTAR AO TIME",
+    "confirmSubstitution": "CONFIRMAR SUBST."
   }
 }
