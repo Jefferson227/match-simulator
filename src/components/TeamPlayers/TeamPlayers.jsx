@@ -58,7 +58,9 @@ const TeamPlayers = ({ teamSquadView }) => {
                   : setSelectedPlayer(null)
               }
             >
-              <div className="position">{player.position}</div>
+              <div className="position">
+                {t(`teamPlayers.positions.${player.position}`)}
+              </div>
               <div className="name">{player.name}</div>
               <div className="strength">{player.strength}</div>
             </div>
@@ -93,7 +95,9 @@ const TeamPlayers = ({ teamSquadView }) => {
                   : setSelectedSubstitute(null)
               }
             >
-              <div className="position">{substitute.position}</div>
+              <div className="position">
+                {t(`teamPlayers.positions.${substitute.position}`)}
+              </div>
               <div className="name">{substitute.name}</div>
               <div className="strength">{substitute.strength}</div>
             </div>

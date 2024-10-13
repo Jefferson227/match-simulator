@@ -3,6 +3,12 @@
     "seeSubstitutes": "SEE SUBSTITUTES",
     "backToMatch": "BACK TO MATCH",
     "backToMainTeam": "BACK TO MAIN TEAM",
-    "confirmSubstitution": "CONFIRM SUBST."
+    "confirmSubstitution": "CONFIRM SUBST.",
+    "positions": {
+      "GK": "GK",
+      "DF": "DF",
+      "MF": "MF",
+      "FW": "FW"
+    }
   }
 }
