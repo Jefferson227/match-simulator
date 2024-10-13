@@ -12,6 +12,11 @@ const initialState = {
   teamSquadView: null,
 };
 
+// crypto.test.js
+test('crypto.randomUUID should return a mock UUID', () => {
+  expect(crypto.randomUUID()).toBe('mocked-uuid');
+});
+
 test('SET_MATCHES should add a match with home and visitor teams', () => {
   const homeTeam = { players: [], substitutes: [], name: 'Home Team' };
   const visitorTeam = { players: [], substitutes: [], name: 'Visitor Team' };

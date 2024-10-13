@@ -2,11 +2,6 @@ import utils from './utils';
 
 const { addPlayerAttributes } = utils;
 
-// Mock the crypto.randomUUID function to return predictable values
-global.crypto = {
-  randomUUID: jest.fn(() => 'mocked-uuid'),
-};
-
 describe('addPlayerAttributes', () => {
   beforeEach(() => {
     // Clear all mocks before each test
