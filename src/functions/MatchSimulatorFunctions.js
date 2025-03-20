@@ -2,19 +2,117 @@ import homeTeamJson from '../assets/ceara.json';
 import visitorTeamJson from '../assets/americarn.json';
 
 function loadHomeTeam() {
-  return homeTeamJson;
+  const homeTeam = { ...homeTeamJson };
+  homeTeam.players = homeTeam.players.map((player, index) => {
+    let column;
+    switch (player.position) {
+      case 'GK':
+        column = 1;
+        break;
+      case 'DF':
+        column = 2;
+        break;
+      case 'MF':
+        column = 4 + (index % 4); // spread MFs across center field
+        break;
+      case 'FW':
+        column = 6 + (index % 2);
+        break;
+      default:
+        column = 4;
+    }
+    return {
+      ...player,
+      fieldPosition: { row: (index % 5) + 1, column }, // rows 1 to 5
+    };
+  });
+  return homeTeam;
 }
 
 function loadVisitorTeam() {
-  return visitorTeamJson;
+  const visitorTeam = { ...visitorTeamJson };
+  visitorTeam.players = visitorTeam.players.map((player, index) => {
+    let column;
+    switch (player.position) {
+      case 'GK':
+        column = 10;
+        break;
+      case 'DF':
+        column = 9;
+        break;
+      case 'MF':
+        column = 7 - (index % 4); // spread MFs across center field
+        break;
+      case 'FW':
+        column = 5 - (index % 2);
+        break;
+      default:
+        column = 7;
+    }
+    return {
+      ...player,
+      fieldPosition: { row: (index % 5) + 1, column },
+    };
+  });
+  return visitorTeam;
 }
 
-function kickOff() {
-  // The match starts
+function kickOff(matches) {
+  matches.forEach((match) => {
+    const firstPossessor =
+      match.homeTeam.players.find((p) => p.position === 'MF') ||
+      match.homeTeam.players[0];
+    match.ball = {
+      possessedBy: { teamId: match.homeTeam.id, playerId: firstPossessor.id },
+      position: { ...firstPossessor.fieldPosition },
+    };
+  });
 }
 
 function endMatch() {
   // The match ends
+}
+
+function processBallAction(match) {
+  const { ball, homeTeam, visitorTeam } = match;
+  const team = ball.possessedBy.teamId === homeTeam.id ? homeTeam : visitorTeam;
+  const player = team.players.find((p) => p.id === ball.possessedBy.playerId);
+
+  const actionChance = getRandomDecimal(100);
+
+  if (actionChance < 60) {
+    // Pass
+    const teammates = team.players.filter((p) => p.id !== player.id);
+    const receiver = teammates[Math.floor(Math.random() * teammates.length)];
+    match.ball.possessedBy.playerId = receiver.id;
+    match.ball.position = { ...receiver.fieldPosition };
+  } else if (actionChance < 85) {
+    // Dribble forward
+    if (team === homeTeam) {
+      player.fieldPosition.column = Math.min(
+        10,
+        player.fieldPosition.column + 1
+      );
+    } else {
+      player.fieldPosition.column = Math.max(
+        1,
+        player.fieldPosition.column - 1
+      );
+    }
+    match.ball.position = { ...player.fieldPosition };
+  } else {
+    // Attempt shot if near opponent goal
+    const nearGoal =
+      team === homeTeam
+        ? player.fieldPosition.column >= 9
+        : player.fieldPosition.column <= 2;
+    if (nearGoal) {
+      const success = getRandomDecimal(100) < player.strength;
+      if (success) {
+        match.latestGoal = { scorerName: player.name };
+      }
+    }
+  }
 }
 
 function getCalculatedForces(sumForces) {
@@ -31,9 +129,7 @@ function getScorerTeamParam(homeTeam, visitorTeam) {
   const sumForces = (team) =>
     team.players.reduce((acc, player) => acc + player.strength, 0);
 
-  const calculatedForcesHomeTeam = getCalculatedForces(
-    sumForces(homeTeam)
-  );
+  const calculatedForcesHomeTeam = getCalculatedForces(sumForces(homeTeam));
   const calculatedForcesVisitorTeam = getCalculatedForces(
     sumForces(visitorTeam)
   );
@@ -66,12 +162,39 @@ function findScorer(team) {
   else if (percentagePosition <= 10) position = 'MF';
   else position = 'FW';
 
-  const players = team.players.filter(
-    (player) => player.position === position
-  );
+  const players = team.players.filter((player) => player.position === position);
   const randomIndex = Math.floor(getRandomDecimal(players.length));
 
   return players[randomIndex] || null;
+}
+
+function movePlayers(match) {
+  const moveDirection = (player, teamType) => {
+    let columnChange = 0;
+
+    if (player.position === 'DF') {
+      // Defenders move slightly forward or backward within their zone
+      columnChange = teamType === 'home' ? 1 : -1;
+    } else if (player.position === 'MF') {
+      // Midfielders can shift within midfield
+      columnChange =
+        getRandomDecimal(3) > 1.5 ? (teamType === 'home' ? 1 : -1) : 0;
+    } else if (player.position === 'FW') {
+      // Forwards move forward toward opponent's goal
+      columnChange = teamType === 'home' ? 1 : -1;
+    }
+
+    // Update position, ensuring they stay within field limits
+    player.fieldPosition.column = Math.max(
+      1,
+      Math.min(10, player.fieldPosition.column + columnChange)
+    );
+  };
+
+  match.homeTeam.players.forEach((player) => moveDirection(player, 'home'));
+  match.visitorTeam.players.forEach((player) =>
+    moveDirection(player, 'visitor')
+  );
 }
 
 function runAction(time, setScorer, matches, increaseScore) {
@@ -119,41 +242,29 @@ function tickClock(time, setScorer, matches, increaseScore) {
   // one second (corresponding to one minute in real life)
 
   if (time === 0) {
-    kickOff();
+    kickOff(matches);
   }
 
+  matches.forEach((match) => {
+    movePlayers(match);
+    processBallAction(match);
+  });
   runAction(time, setScorer, matches, increaseScore);
 
-  // Simulate match events (e.g., goals)
-  /* if (time === 15) {
-    const homeTeamScorer =
-      homeTeam?.players[Math.floor(Math.random() * homeTeam.players.length)];
-
-    if (homeTeamScorer) {
-      const goalScorer = {
-        playerName: homeTeamScorer.name,
-        time,
-      };
-
-      setHomeTeamScore((prevScore) => prevScore + 1);
-      setScorer(goalScorer);
+  matches.forEach((match) => {
+    if (match.latestGoal) {
+      setScorer(match.id, { playerName: match.latestGoal.scorerName, time });
+      increaseScore(
+        match.id,
+        match.homeTeam.players.find(
+          (p) => p.name === match.latestGoal.scorerName
+        )
+          ? match.homeTeam
+          : match.visitorTeam
+      );
+      delete match.latestGoal;
     }
-  } else if (time === 30) {
-    const visitorTeamScorer =
-      visitorTeam?.players[
-        Math.floor(Math.random() * visitorTeam.players.length)
-      ];
-
-    if (visitorTeamScorer) {
-      const goalScorer = {
-        playerName: visitorTeamScorer.name,
-        time,
-      };
-
-      setVisitorTeamScore((prevScore) => prevScore + 1);
-      setScorer(goalScorer);
-    }
-  } */
+  });
 
   if (time === 90) {
     endMatch();
