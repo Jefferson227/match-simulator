@@ -1,62 +1,3 @@
-import homeTeamJson from '../assets/ceara.json';
-import visitorTeamJson from '../assets/americarn.json';
-
-function loadHomeTeam() {
-  const homeTeam = { ...homeTeamJson };
-  homeTeam.players = homeTeam.players.map((player, index) => {
-    let column;
-    switch (player.position) {
-      case 'GK':
-        column = 1;
-        break;
-      case 'DF':
-        column = 2;
-        break;
-      case 'MF':
-        column = 4 + (index % 4); // spread MFs across center field
-        break;
-      case 'FW':
-        column = 6 + (index % 2);
-        break;
-      default:
-        column = 4;
-    }
-    return {
-      ...player,
-      fieldPosition: { row: (index % 5) + 1, column }, // rows 1 to 5
-    };
-  });
-  return homeTeam;
-}
-
-function loadVisitorTeam() {
-  const visitorTeam = { ...visitorTeamJson };
-  visitorTeam.players = visitorTeam.players.map((player, index) => {
-    let column;
-    switch (player.position) {
-      case 'GK':
-        column = 10;
-        break;
-      case 'DF':
-        column = 9;
-        break;
-      case 'MF':
-        column = 7 - (index % 4); // spread MFs across center field
-        break;
-      case 'FW':
-        column = 5 - (index % 2);
-        break;
-      default:
-        column = 7;
-    }
-    return {
-      ...player,
-      fieldPosition: { row: (index % 5) + 1, column },
-    };
-  });
-  return visitorTeam;
-}
-
 function kickOff(matches) {
   matches.forEach((match) => {
     const firstPossessor =
@@ -272,8 +213,6 @@ function tickClock(time, setScorer, matches, increaseScore) {
 }
 
 const MatchSimulatorFunctions = {
-  loadHomeTeam,
-  loadVisitorTeam,
   tickClock,
 };
 
