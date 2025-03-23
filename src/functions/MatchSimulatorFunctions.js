@@ -19,7 +19,7 @@ function processBallAction(match) {
   const team = ball.possessedBy.teamId === homeTeam.id ? homeTeam : visitorTeam;
   const player = team.players.find((p) => p.id === ball.possessedBy.playerId);
 
-  const actionChance = getRandomDecimal(100);
+  const actionChance = getRandomDecimal(100) + player.strength / 2;
 
   if (actionChance < 60) {
     // Pass
@@ -27,6 +27,30 @@ function processBallAction(match) {
     const receiver = teammates[Math.floor(Math.random() * teammates.length)];
     match.ball.possessedBy.playerId = receiver.id;
     match.ball.position = { ...receiver.fieldPosition };
+    // Opponent attempt to intercept or tackle
+    const opponentTeam = team === homeTeam ? visitorTeam : homeTeam;
+    const nearbyOpponent = opponentTeam.players.find(
+      (op) =>
+        Math.abs(op.fieldPosition.column - player.fieldPosition.column) <= 1 &&
+        Math.abs(op.fieldPosition.row - player.fieldPosition.row) <= 1
+    );
+
+    if (nearbyOpponent) {
+      const interceptionChance = getRandomDecimal(100);
+      if (
+        interceptionChance <
+        (nearbyOpponent.strength /
+          (player.strength + nearbyOpponent.strength)) *
+          100
+      ) {
+        match.ball.possessedBy = {
+          teamId: opponentTeam.id,
+          playerId: nearbyOpponent.id,
+        };
+        match.ball.position = { ...nearbyOpponent.fieldPosition };
+        return;
+      }
+    }
   } else if (actionChance < 85) {
     // Dribble forward
     if (team === homeTeam) {
@@ -41,6 +65,30 @@ function processBallAction(match) {
       );
     }
     match.ball.position = { ...player.fieldPosition };
+    // Opponent attempt to intercept or tackle
+    const opponentTeam = team === homeTeam ? visitorTeam : homeTeam;
+    const nearbyOpponent = opponentTeam.players.find(
+      (op) =>
+        Math.abs(op.fieldPosition.column - player.fieldPosition.column) <= 1 &&
+        Math.abs(op.fieldPosition.row - player.fieldPosition.row) <= 1
+    );
+
+    if (nearbyOpponent) {
+      const interceptionChance = getRandomDecimal(100);
+      if (
+        interceptionChance <
+        (nearbyOpponent.strength /
+          (player.strength + nearbyOpponent.strength)) *
+          100
+      ) {
+        match.ball.possessedBy = {
+          teamId: opponentTeam.id,
+          playerId: nearbyOpponent.id,
+        };
+        match.ball.position = { ...nearbyOpponent.fieldPosition };
+        return;
+      }
+    }
   } else {
     // Attempt shot if near opponent goal
     const nearGoal =
@@ -48,7 +96,44 @@ function processBallAction(match) {
         ? player.fieldPosition.column >= 9
         : player.fieldPosition.column <= 2;
     if (nearGoal) {
-      const success = getRandomDecimal(100) < player.strength;
+      const opponentTeam = team === homeTeam ? visitorTeam : homeTeam;
+
+      // Check for interception by defenders
+      const nearbyDefender = opponentTeam.players.find(
+        (op) =>
+          (op.position === 'DF' || op.position === 'GK') &&
+          Math.abs(op.fieldPosition.column - player.fieldPosition.column) <=
+            1 &&
+          Math.abs(op.fieldPosition.row - player.fieldPosition.row) <= 1
+      );
+
+      if (nearbyDefender) {
+        const interceptionChance = getRandomDecimal(100);
+        if (
+          interceptionChance <
+          (nearbyDefender.strength /
+            (player.strength + nearbyDefender.strength)) *
+            100
+        ) {
+          match.ball.possessedBy = {
+            teamId: opponentTeam.id,
+            playerId: nearbyDefender.id,
+          };
+          match.ball.position = { ...nearbyDefender.fieldPosition };
+          return;
+        }
+      }
+
+      // If no interception, attempt shot
+      const opponentDefense =
+        opponentTeam.players
+          .filter((p) => p.position === 'DF' || p.position === 'GK')
+          .reduce((acc, p) => acc + p.strength, 0) /
+        opponentTeam.players.length;
+
+      const success =
+        getRandomDecimal(100) <
+        (player.strength / (player.strength + opponentDefense)) * 100;
       if (success) {
         match.latestGoal = { scorerName: player.name };
       }
