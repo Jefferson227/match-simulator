@@ -10,121 +10,97 @@ function kickOff(matches) {
   });
 }
 
-function endMatch() {
-  // The match ends
+function getRandomDecimal(multiplier) {
+  return parseFloat((Math.random() * multiplier).toFixed(2));
+}
+
+function tryInterception(match, player, opponentTeam, isShot = false) {
+  const nearbyOpponent = opponentTeam.players.find(
+    (op) =>
+      (isShot ? op.position === 'DF' || op.position === 'GK' : true) &&
+      Math.abs(op.fieldPosition.column - player.fieldPosition.column) <= 1 &&
+      Math.abs(op.fieldPosition.row - player.fieldPosition.row) <= 1
+  );
+
+  if (nearbyOpponent) {
+    const interceptionChance = getRandomDecimal(100);
+    if (
+      interceptionChance <
+      (nearbyOpponent.strength / (player.strength + nearbyOpponent.strength)) *
+        100
+    ) {
+      match.ball.possessedBy = {
+        teamId: opponentTeam.id,
+        playerId: nearbyOpponent.id,
+      };
+      match.ball.position = { ...nearbyOpponent.fieldPosition };
+      return true;
+    }
+  }
+  return false;
 }
 
 function processBallAction(match) {
   const { ball, homeTeam, visitorTeam } = match;
-  const team = ball.possessedBy.teamId === homeTeam.id ? homeTeam : visitorTeam;
-  const player = team.players.find((p) => p.id === ball.possessedBy.playerId);
+  const currentTeam =
+    ball.possessedBy.teamId === homeTeam.id ? homeTeam : visitorTeam;
+  const currentPlayer = currentTeam.players.find(
+    (p) => p.id === ball.possessedBy.playerId
+  );
 
-  const actionChance = getRandomDecimal(100) + player.strength / 2;
+  if (!currentPlayer) return; // Defensive guard
+
+  const opponentTeam = currentTeam === homeTeam ? visitorTeam : homeTeam;
+  const actionChance = getRandomDecimal(100) + currentPlayer.strength / 2;
 
   if (actionChance < 60) {
+    // Interception check BEFORE pass
+    const intercepted = tryInterception(match, currentPlayer, opponentTeam);
+    if (intercepted) return;
+
     // Pass
-    const teammates = team.players.filter((p) => p.id !== player.id);
+    const teammates = currentTeam.players.filter(
+      (p) => p.id !== currentPlayer.id
+    );
     const receiver = teammates[Math.floor(Math.random() * teammates.length)];
     match.ball.possessedBy.playerId = receiver.id;
     match.ball.position = { ...receiver.fieldPosition };
-    // Opponent attempt to intercept or tackle
-    const opponentTeam = team === homeTeam ? visitorTeam : homeTeam;
-    const nearbyOpponent = opponentTeam.players.find(
-      (op) =>
-        Math.abs(op.fieldPosition.column - player.fieldPosition.column) <= 1 &&
-        Math.abs(op.fieldPosition.row - player.fieldPosition.row) <= 1
-    );
-
-    if (nearbyOpponent) {
-      const interceptionChance = getRandomDecimal(100);
-      if (
-        interceptionChance <
-        (nearbyOpponent.strength /
-          (player.strength + nearbyOpponent.strength)) *
-          100
-      ) {
-        match.ball.possessedBy = {
-          teamId: opponentTeam.id,
-          playerId: nearbyOpponent.id,
-        };
-        match.ball.position = { ...nearbyOpponent.fieldPosition };
-        return;
-      }
-    }
   } else if (actionChance < 85) {
-    // Dribble forward
-    if (team === homeTeam) {
-      player.fieldPosition.column = Math.min(
+    // Interception check BEFORE dribble
+    const intercepted = tryInterception(match, currentPlayer, opponentTeam);
+    if (intercepted) return;
+
+    // Dribble
+    if (currentTeam === homeTeam) {
+      currentPlayer.fieldPosition.column = Math.min(
         10,
-        player.fieldPosition.column + 1
+        currentPlayer.fieldPosition.column + 1
       );
     } else {
-      player.fieldPosition.column = Math.max(
+      currentPlayer.fieldPosition.column = Math.max(
         1,
-        player.fieldPosition.column - 1
+        currentPlayer.fieldPosition.column - 1
       );
     }
-    match.ball.position = { ...player.fieldPosition };
-    // Opponent attempt to intercept or tackle
-    const opponentTeam = team === homeTeam ? visitorTeam : homeTeam;
-    const nearbyOpponent = opponentTeam.players.find(
-      (op) =>
-        Math.abs(op.fieldPosition.column - player.fieldPosition.column) <= 1 &&
-        Math.abs(op.fieldPosition.row - player.fieldPosition.row) <= 1
-    );
-
-    if (nearbyOpponent) {
-      const interceptionChance = getRandomDecimal(100);
-      if (
-        interceptionChance <
-        (nearbyOpponent.strength /
-          (player.strength + nearbyOpponent.strength)) *
-          100
-      ) {
-        match.ball.possessedBy = {
-          teamId: opponentTeam.id,
-          playerId: nearbyOpponent.id,
-        };
-        match.ball.position = { ...nearbyOpponent.fieldPosition };
-        return;
-      }
-    }
+    match.ball.position = { ...currentPlayer.fieldPosition };
   } else {
     // Attempt shot if near opponent goal
     const nearGoal =
-      team === homeTeam
-        ? player.fieldPosition.column >= 9
-        : player.fieldPosition.column <= 2;
+      currentTeam === homeTeam
+        ? currentPlayer.fieldPosition.column >= 9
+        : currentPlayer.fieldPosition.column <= 2;
+
     if (nearGoal) {
-      const opponentTeam = team === homeTeam ? visitorTeam : homeTeam;
-
-      // Check for interception by defenders
-      const nearbyDefender = opponentTeam.players.find(
-        (op) =>
-          (op.position === 'DF' || op.position === 'GK') &&
-          Math.abs(op.fieldPosition.column - player.fieldPosition.column) <=
-            1 &&
-          Math.abs(op.fieldPosition.row - player.fieldPosition.row) <= 1
+      // Interception check BEFORE shot
+      const intercepted = tryInterception(
+        match,
+        currentPlayer,
+        opponentTeam,
+        true
       );
+      if (intercepted) return;
 
-      if (nearbyDefender) {
-        const interceptionChance = getRandomDecimal(100);
-        if (
-          interceptionChance <
-          (nearbyDefender.strength /
-            (player.strength + nearbyDefender.strength)) *
-            100
-        ) {
-          match.ball.possessedBy = {
-            teamId: opponentTeam.id,
-            playerId: nearbyDefender.id,
-          };
-          match.ball.position = { ...nearbyDefender.fieldPosition };
-          return;
-        }
-      }
-
-      // If no interception, attempt shot
+      // Shot logic
       const opponentDefense =
         opponentTeam.players
           .filter((p) => p.position === 'DF' || p.position === 'GK')
@@ -133,9 +109,10 @@ function processBallAction(match) {
 
       const success =
         getRandomDecimal(100) <
-        (player.strength / (player.strength + opponentDefense)) * 100;
+        (currentPlayer.strength / (currentPlayer.strength + opponentDefense)) *
+          100;
       if (success) {
-        match.latestGoal = { scorerName: player.name };
+        match.latestGoal = { scorerName: currentPlayer.name };
       }
     }
   }
@@ -146,18 +123,14 @@ function movePlayers(match) {
     let columnChange = 0;
 
     if (player.position === 'DF') {
-      // Defenders move slightly forward or backward within their zone
       columnChange = teamType === 'home' ? 1 : -1;
     } else if (player.position === 'MF') {
-      // Midfielders can shift within midfield
       columnChange =
         getRandomDecimal(3) > 1.5 ? (teamType === 'home' ? 1 : -1) : 0;
     } else if (player.position === 'FW') {
-      // Forwards move forward toward opponent's goal
       columnChange = teamType === 'home' ? 1 : -1;
     }
 
-    // Update position, ensuring they stay within field limits
     player.fieldPosition.column = Math.max(
       1,
       Math.min(10, player.fieldPosition.column + columnChange)
@@ -170,15 +143,11 @@ function movePlayers(match) {
   );
 }
 
-function getRandomDecimal(multiplier) {
-  return parseFloat((Math.random() * multiplier).toFixed(2));
+function endMatch() {
+  // Placeholder for match end logic if needed
 }
 
 function tickClock(time, setScorer, matches, increaseScore) {
-  // This function runs on every 'second' of the match
-  // and is responsible for performing all actions in a space of
-  // one second (corresponding to one minute in real life)
-
   if (time === 0) {
     kickOff(matches);
   }
