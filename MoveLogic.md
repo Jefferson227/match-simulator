@@ -91,7 +91,3 @@
 ## Player Actions
 
 - `Move`: performs a move according to your field position, ball possession and specific rules
-
-# How The Field Behaves
-
-## Square States
