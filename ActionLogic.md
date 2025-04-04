@@ -14,7 +14,7 @@
 
 # Actions Per Position
 
-- The actions differ depending on if the player has the ball possession or not
+- The actions differ depending on whether the player has the ball possession or not
 - Each action has a percentage of chance to be taken
 
 ## GK
@@ -73,7 +73,7 @@
   - `Move`:
     - All positions: 100%
   - `Pass`:
-    - Defensive field: 100%
+    - Defensive field: 90%
     - Middle field: 70%
     - Offensive field: 40%
   - `Shoot`:
@@ -81,4 +81,13 @@
     - Middle field: 5%
     - Offensive field: 10%
 
-- The player force can increase the percentage of success
+- The player force can increase the percentage of success rate of each action
+- Considering each player has a force between 1 and 99, on every action attempt, a random number will be generated between 1 and the player force
+- The resulted number will be added as a percentage in the success rate
+- The sum of total success rate plus the player random force, will have a max percentage of 100%
+  - `Total success rate = position success rate + player random force`
+  - Example:
+    - Action: `Pass` in the middle field (70% of success)
+    - Player force: 43
+    - Player random force: 11
+    - `Total success rate = 70 + 11 = 81%`
