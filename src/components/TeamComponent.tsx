@@ -1,7 +1,13 @@
-import { useContext } from 'react';
+import { FC, useContext } from 'react';
 import { MatchContext } from '../contexts/MatchContext';
+import { Team } from '../types';
 
-const TeamComponent = ({ team, matchId }) => {
+interface TeamComponentProps {
+  team: Team;
+  matchId: string;
+}
+
+const TeamComponent: FC<TeamComponentProps> = ({ team, matchId }) => {
   const { setTeamSquadView } = useContext(MatchContext);
 
   return (

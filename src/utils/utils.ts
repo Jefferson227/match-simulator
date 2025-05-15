@@ -1,22 +1,25 @@
-function addPlayerAttributes(players) {
+import { Player } from '../types';
+
+function addPlayerAttributes(players: Player[]): Player[] {
   return players
     .map((player) => {
-      player.id = crypto.randomUUID();
-      player.order = getPlayerOrder(player.position);
-      return player;
+      const updatedPlayer = { ...player };
+      updatedPlayer.id = Math.floor(Math.random() * 10000);
+      updatedPlayer.order = getPlayerOrder(player.position);
+      return updatedPlayer;
     })
     .sort((a, b) => {
-      if (a.order < b.order) {
+      if ((a.order ?? 0) < (b.order ?? 0)) {
         return -1; // a comes before b
       }
-      if (a.order > b.order) {
+      if ((a.order ?? 0) > (b.order ?? 0)) {
         return 1; // a comes after b
       }
       return 0; // a and b are equal
     });
 }
 
-function getPlayerOrder(position) {
+function getPlayerOrder(position: string): number {
   switch (position) {
     case 'GK': {
       return 0;

@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, FC } from 'react';
 import Score from '../Score';
 import TeamComponent from '../TeamComponent';
 import Functions from '../../functions/MatchSimulatorFunctions';
@@ -6,8 +6,8 @@ import TeamPlayers from '../TeamPlayers/TeamPlayers';
 import { MatchContext } from '../../contexts/MatchContext';
 import teamService from '../../services/teamService';
 
-const MatchSimulator = () => {
-  const [time, setTime] = useState(0);
+const MatchSimulator: FC = () => {
+  const [time, setTime] = useState<number>(0);
   const { matches, teamSquadView, setMatches, increaseScore, setScorer } =
     useContext(MatchContext);
   const { getTeams } = teamService;
@@ -18,9 +18,9 @@ const MatchSimulator = () => {
   }, []);
 
   useEffect(() => {
-    let timer;
+    let timer: number | undefined;
 
-    timer = setInterval(() => {
+    timer = window.setInterval(() => {
       setTime((prevTime) => prevTime + 1);
     }, 1000);
 
@@ -28,12 +28,14 @@ const MatchSimulator = () => {
       clearInterval(timer);
     }
 
-    if (matches) {
+    if (matches.length > 0) {
       Functions.tickClock(time, setScorer, matches, increaseScore);
     }
 
-    return () => clearInterval(timer);
-  }, [time, matches, teamSquadView]);
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [time, matches, teamSquadView, setScorer, increaseScore]);
 
   return (
     <div className="font-press-start">
@@ -53,8 +55,8 @@ const MatchSimulator = () => {
             >
               <TeamComponent team={match.homeTeam} matchId={match.id} />
               <Score
-                homeScore={match.homeTeam.score}
-                guestScore={match.visitorTeam.score}
+                homeScore={match.homeTeam.score || 0}
+                guestScore={match.visitorTeam.score || 0}
               />
               <TeamComponent team={match.visitorTeam} matchId={match.id} />
               <div className="absolute -bottom-8 left-0 text-[14px] text-[#e2e2e2] uppercase">

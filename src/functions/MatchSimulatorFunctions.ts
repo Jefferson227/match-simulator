@@ -1,28 +1,44 @@
-function kickOff(matches) {
+import { Match, Player, Team, Scorer } from '../types';
+
+function kickOff(matches: Match[]): void {
   matches.forEach((match) => {
     const firstPossessor =
       match.homeTeam.players.find((p) => p.position === 'MF') ||
       match.homeTeam.players[0];
-    match.ball = {
-      possessedBy: { teamId: match.homeTeam.id, playerId: firstPossessor.id },
-      position: { ...firstPossessor.fieldPosition },
-    };
+
+    if (firstPossessor && firstPossessor.fieldPosition) {
+      match.ball = {
+        possessedBy: {
+          teamId: match.homeTeam.id || '',
+          playerId: firstPossessor.id,
+        },
+        position: { ...firstPossessor.fieldPosition },
+      };
+    }
   });
 }
 
-function getRandomDecimal(multiplier) {
+function getRandomDecimal(multiplier: number): number {
   return parseFloat((Math.random() * multiplier).toFixed(2));
 }
 
-function tryInterception(match, player, opponentTeam, isShot = false) {
+function tryInterception(
+  match: Match,
+  player: Player,
+  opponentTeam: Team,
+  isShot = false
+): boolean {
+  if (!player.fieldPosition) return false;
+
   const nearbyOpponent = opponentTeam.players.find(
     (op) =>
       (isShot ? op.position === 'DF' || op.position === 'GK' : true) &&
-      Math.abs(op.fieldPosition.column - player.fieldPosition.column) <= 1 &&
-      Math.abs(op.fieldPosition.row - player.fieldPosition.row) <= 1
+      op.fieldPosition &&
+      Math.abs(op.fieldPosition.column - player.fieldPosition!.column) <= 1 &&
+      Math.abs(op.fieldPosition.row - player.fieldPosition!.row) <= 1
   );
 
-  if (nearbyOpponent) {
+  if (nearbyOpponent && match.ball) {
     const interceptionChance = getRandomDecimal(100);
     if (
       interceptionChance <
@@ -30,17 +46,19 @@ function tryInterception(match, player, opponentTeam, isShot = false) {
         100
     ) {
       match.ball.possessedBy = {
-        teamId: opponentTeam.id,
+        teamId: opponentTeam.id || '',
         playerId: nearbyOpponent.id,
       };
-      match.ball.position = { ...nearbyOpponent.fieldPosition };
+      match.ball.position = { ...nearbyOpponent.fieldPosition! };
       return true;
     }
   }
   return false;
 }
 
-function processBallAction(match) {
+function processBallAction(match: Match): void {
+  if (!match.ball) return;
+
   const { ball, homeTeam, visitorTeam } = match;
   const currentTeam =
     ball.possessedBy.teamId === homeTeam.id ? homeTeam : visitorTeam;
@@ -48,7 +66,7 @@ function processBallAction(match) {
     (p) => p.id === ball.possessedBy.playerId
   );
 
-  if (!currentPlayer) return; // Defensive guard
+  if (!currentPlayer || !currentPlayer.fieldPosition) return; // Defensive guard
 
   const opponentTeam = currentTeam === homeTeam ? visitorTeam : homeTeam;
   const actionChance = getRandomDecimal(100) + currentPlayer.strength / 2;
@@ -60,11 +78,14 @@ function processBallAction(match) {
 
     // Pass
     const teammates = currentTeam.players.filter(
-      (p) => p.id !== currentPlayer.id
+      (p) => p.id !== currentPlayer.id && p.fieldPosition
     );
-    const receiver = teammates[Math.floor(Math.random() * teammates.length)];
-    match.ball.possessedBy.playerId = receiver.id;
-    match.ball.position = { ...receiver.fieldPosition };
+
+    if (teammates.length > 0) {
+      const receiver = teammates[Math.floor(Math.random() * teammates.length)];
+      match.ball.possessedBy.playerId = receiver.id;
+      match.ball.position = { ...receiver.fieldPosition! };
+    }
   } else if (actionChance < 85) {
     // Interception check BEFORE dribble
     const intercepted = tryInterception(match, currentPlayer, opponentTeam);
@@ -101,16 +122,21 @@ function processBallAction(match) {
       if (intercepted) return;
 
       // Shot logic
+      const defensePlayers = opponentTeam.players.filter(
+        (p) => p.position === 'DF' || p.position === 'GK'
+      );
+
+      if (defensePlayers.length === 0) return;
+
       const opponentDefense =
-        opponentTeam.players
-          .filter((p) => p.position === 'DF' || p.position === 'GK')
-          .reduce((acc, p) => acc + p.strength, 0) /
-        opponentTeam.players.length;
+        defensePlayers.reduce((acc, p) => acc + p.strength, 0) /
+        defensePlayers.length;
 
       const success =
         getRandomDecimal(100) <
         (currentPlayer.strength / (currentPlayer.strength + opponentDefense)) *
           100;
+
       if (success) {
         match.latestGoal = { scorerName: currentPlayer.name };
       }
@@ -118,8 +144,13 @@ function processBallAction(match) {
   }
 }
 
-function movePlayers(match) {
-  const moveDirection = (player, teamType) => {
+function movePlayers(match: Match): void {
+  const moveDirection = (
+    player: Player,
+    teamType: 'home' | 'visitor'
+  ): void => {
+    if (!player.fieldPosition) return;
+
     let columnChange = 0;
 
     if (player.position === 'DF') {
@@ -143,11 +174,16 @@ function movePlayers(match) {
   );
 }
 
-function endMatch() {
+function endMatch(): void {
   // Placeholder for match end logic if needed
 }
 
-function tickClock(time, setScorer, matches, increaseScore) {
+function tickClock(
+  time: number,
+  setScorer: (matchId: string, scorer: Scorer) => void,
+  matches: Match[],
+  increaseScore: (matchId: string, scorerTeam: { isHomeTeam: boolean }) => void
+): void {
   if (time === 0) {
     kickOff(matches);
   }
@@ -159,15 +195,17 @@ function tickClock(time, setScorer, matches, increaseScore) {
 
   matches.forEach((match) => {
     if (match.latestGoal) {
-      setScorer(match.id, { playerName: match.latestGoal.scorerName, time });
-      increaseScore(
-        match.id,
-        match.homeTeam.players.find(
-          (p) => p.name === match.latestGoal.scorerName
-        )
-          ? match.homeTeam
-          : match.visitorTeam
+      setScorer(match.id, {
+        playerName: match.latestGoal.scorerName,
+        time,
+      });
+
+      const isHomeTeamScorer = !!match.homeTeam.players.find(
+        (p) => p.name === match.latestGoal?.scorerName
       );
+
+      increaseScore(match.id, { isHomeTeam: isHomeTeamScorer });
+
       delete match.latestGoal;
     }
   });

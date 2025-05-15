@@ -1,12 +1,19 @@
-import { useContext, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import { MatchContext } from '../../contexts/MatchContext';
 import { useTranslation } from 'react-i18next';
+import { TeamSquadView, Player } from '../../types';
 
-const TeamPlayers = ({ teamSquadView }) => {
+interface TeamPlayersProps {
+  teamSquadView: TeamSquadView;
+}
+
+const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
   const { t } = useTranslation();
-  const [selectedPlayer, setSelectedPlayer] = useState(null);
-  const [selectedSubstitute, setSelectedSubstitute] = useState(null);
-  const [showSubstitutes, setShowSubstitutes] = useState(false);
+  const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
+  const [selectedSubstitute, setSelectedSubstitute] = useState<Player | null>(
+    null
+  );
+  const [showSubstitutes, setShowSubstitutes] = useState<boolean>(false);
   const { setTeamSquadView, confirmSubstitution } = useContext(MatchContext);
 
   return (
@@ -130,14 +137,16 @@ const TeamPlayers = ({ teamSquadView }) => {
               color: teamSquadView.team.colors.name,
             }}
             onClick={() => {
-              confirmSubstitution({
-                matchId: teamSquadView.matchId,
-                team: teamSquadView.team,
-                selectedPlayer,
-                selectedSubstitute,
-              });
-              setSelectedPlayer(null);
-              setSelectedSubstitute(null);
+              if (selectedPlayer && selectedSubstitute) {
+                confirmSubstitution({
+                  matchId: teamSquadView.matchId,
+                  team: teamSquadView.team,
+                  selectedPlayer,
+                  selectedSubstitute,
+                });
+                setSelectedPlayer(null);
+                setSelectedSubstitute(null);
+              }
             }}
           >
             {t('teamPlayers.confirmSubstitution')}
