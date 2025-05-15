@@ -6,12 +6,18 @@ const TeamComponent = ({ team, matchId }) => {
 
   return (
     <div
-      className="team-padding"
-      style={{ backgroundColor: team.colors.outline }}
+      className="w-[95px] h-[58px] border-[4px] box-content cursor-pointer"
+      style={{ borderColor: team.colors.outline }}
       onClick={() => setTeamSquadView({ team, matchId })}
     >
-      <div className="team" style={{ backgroundColor: team.colors.background }}>
-        <h2 className="team-name" style={{ color: team.colors.name }}>
+      <div
+        className="w-full h-full flex items-center justify-center"
+        style={{ backgroundColor: team.colors.background }}
+      >
+        <h2
+          className="font-press-start text-[22px]"
+          style={{ color: team.colors.name }}
+        >
           {team.abbreviation}
         </h2>
       </div>

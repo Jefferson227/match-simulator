@@ -2,7 +2,6 @@ import { useState, useEffect, useContext } from 'react';
 import Score from '../Score';
 import TeamComponent from '../TeamComponent';
 import Functions from '../../functions/MatchSimulatorFunctions';
-import './MatchSimulator.css';
 import TeamPlayers from '../TeamPlayers/TeamPlayers';
 import { MatchContext } from '../../contexts/MatchContext';
 import teamService from '../../services/teamService';
@@ -37,22 +36,28 @@ const MatchSimulator = () => {
   }, [time, matches, teamSquadView]);
 
   return (
-    <div className="match-simulator">
-      <div className="timebar" style={{ width: `${(time * 100) / 90}%` }}>
-        <p className="time">{`${time}'`}</p>
+    <div className="font-press-start">
+      <div
+        className="h-[33px] bg-[#fbff21] mb-[33px]"
+        style={{ width: `${(time * 100) / 90}%` }}
+      >
+        <p className="m-0 pt-2 text-right pr-2 text-[20px] text-[#1e1e1e]">{`${time}'`}</p>
       </div>
 
       {!teamSquadView ? (
-        <div className="scoreboard">
+        <div className="flex flex-col items-center">
           {matches.map((match, index) => (
-            <div className="match" key={index}>
+            <div
+              className="w-[320px] flex justify-between items-center mb-[58px] relative"
+              key={index}
+            >
               <TeamComponent team={match.homeTeam} matchId={match.id} />
               <Score
                 homeScore={match.homeTeam.score}
                 guestScore={match.visitorTeam.score}
               />
               <TeamComponent team={match.visitorTeam} matchId={match.id} />
-              <div className="scorer">
+              <div className="absolute -bottom-8 left-0 text-[14px] text-[#e2e2e2] uppercase">
                 {match?.lastScorer
                   ? `${match.lastScorer.playerName} ${match.lastScorer.time}'`
                   : null}

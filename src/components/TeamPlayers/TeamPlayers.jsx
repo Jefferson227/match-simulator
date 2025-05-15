@@ -1,6 +1,5 @@
 import { useContext, useState } from 'react';
 import { MatchContext } from '../../contexts/MatchContext';
-import './TeamPlayers.css';
 import { useTranslation } from 'react-i18next';
 
 const TeamPlayers = ({ teamSquadView }) => {
@@ -11,16 +10,16 @@ const TeamPlayers = ({ teamSquadView }) => {
   const { setTeamSquadView, confirmSubstitution } = useContext(MatchContext);
 
   return (
-    <div className="team-players">
+    <div className="font-press-start">
       <div
-        className="team-container"
+        className="w-[350px] h-[596px] mx-auto relative outline outline-4"
         style={{
           backgroundColor: teamSquadView.team.colors.background,
           outlineColor: teamSquadView.team.colors.outline,
         }}
       >
         <div
-          className="team-name"
+          className="max-h-[80px] border-b-2 text-[20px] py-[22px] px-[22px] uppercase"
           style={{
             color: teamSquadView.team.colors.name,
             borderColor: teamSquadView.team.colors.outline,
@@ -29,18 +28,15 @@ const TeamPlayers = ({ teamSquadView }) => {
           {teamSquadView.team.name}
         </div>
         <div
-          className="formation"
+          className="max-h-[60px] border-b-2 text-[16px] py-[22px] px-[22px] text-[#e2e2e2]"
           style={{ borderColor: teamSquadView.team.colors.outline }}
         >
           4-3-3
         </div>
-        <div
-          className="players"
-          style={{ display: showSubstitutes ? 'none' : 'block' }}
-        >
+        <div className={showSubstitutes ? 'hidden' : 'block'}>
           {teamSquadView.team.players.map((player) => (
             <div
-              className="player"
+              className="text-[14px] flex justify-between py-2 px-6 uppercase cursor-pointer"
               key={player.id}
               style={{
                 color:
@@ -58,26 +54,24 @@ const TeamPlayers = ({ teamSquadView }) => {
                   : setSelectedPlayer(null)
               }
             >
-              <div className="position">
+              <div className="w-8">
                 {t(`teamPlayers.positions.${player.position}`)}
               </div>
-              <div className="name">{player.name}</div>
-              <div className="strength">{player.strength}</div>
+              <div className="w-[200px] text-left">{player.name}</div>
+              <div className="w-8">{player.strength}</div>
             </div>
           ))}
         </div>
         <div
-          className="players"
-          style={{
-            display:
-              showSubstitutes && teamSquadView.team.substitutes
-                ? 'block'
-                : 'none',
-          }}
+          className={
+            showSubstitutes && teamSquadView.team.substitutes
+              ? 'block'
+              : 'hidden'
+          }
         >
           {teamSquadView.team.substitutes.map((substitute) => (
             <div
-              className="player"
+              className="text-[14px] flex justify-between py-2 px-6 uppercase cursor-pointer"
               key={substitute.id}
               style={{
                 color:
@@ -95,20 +89,21 @@ const TeamPlayers = ({ teamSquadView }) => {
                   : setSelectedSubstitute(null)
               }
             >
-              <div className="position">
+              <div className="w-8">
                 {t(`teamPlayers.positions.${substitute.position}`)}
               </div>
-              <div className="name">{substitute.name}</div>
-              <div className="strength">{substitute.strength}</div>
+              <div className="w-[200px] text-left">{substitute.name}</div>
+              <div className="w-8">{substitute.strength}</div>
             </div>
           ))}
         </div>
         <div
-          className="substitute-button-container"
-          style={{ display: showSubstitutes ? 'none' : 'block' }}
+          className={`absolute bottom-0 left-0 w-full mb-[15px] ${
+            showSubstitutes ? 'hidden' : 'block'
+          }`}
         >
           <button
-            className="substitute-button"
+            className="w-[318px] h-[58px] text-[16px] border-0 outline outline-4"
             style={{
               backgroundColor: teamSquadView.team.colors.background,
               outlineColor: teamSquadView.team.colors.outline,
@@ -121,16 +116,14 @@ const TeamPlayers = ({ teamSquadView }) => {
         </div>
 
         <div
-          className="substitute-button-container"
-          style={{
-            display:
-              showSubstitutes && selectedPlayer && selectedSubstitute
-                ? 'block'
-                : 'none',
-          }}
+          className={
+            showSubstitutes && selectedPlayer && selectedSubstitute
+              ? 'absolute bottom-0 left-0 w-full mb-[15px] block'
+              : 'hidden'
+          }
         >
           <button
-            className="substitute-button"
+            className="w-[318px] h-[58px] text-[16px] border-0 outline outline-4"
             style={{
               backgroundColor: teamSquadView.team.colors.background,
               outlineColor: teamSquadView.team.colors.outline,
@@ -152,20 +145,17 @@ const TeamPlayers = ({ teamSquadView }) => {
         </div>
       </div>
 
-      <div className="footer-buttons-container">
-        <div
-          className="back-to-main-team"
-          style={{ display: showSubstitutes ? 'block' : 'none' }}
-        >
+      <div className="mt-[18px]">
+        <div className={showSubstitutes ? 'block' : 'hidden'}>
           <button
-            className="back-to-match"
+            className="w-[318px] h-[58px] outline outline-4 outline-[#e2e2e2] border-0 inline-block text-[#e2e2e2] bg-[#3d7a33] text-[16px] mt-4"
             onClick={() => setShowSubstitutes(false)}
           >
             {t('teamPlayers.backToMainTeam')}
           </button>
         </div>
         <button
-          className="back-to-match"
+          className="w-[318px] h-[58px] outline outline-4 outline-[#e2e2e2] border-0 inline-block text-[#e2e2e2] bg-[#3d7a33] text-[16px] mt-4"
           onClick={() => setTeamSquadView(null)}
         >
           {t('teamPlayers.backToMatch')}

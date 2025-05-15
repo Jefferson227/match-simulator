@@ -1,9 +1,9 @@
 const Score = ({ homeScore, guestScore }) => {
   return (
-    <div className="score">
-      <div className="home-score">{homeScore}</div>
-      <div className="divisor">x</div>
-      <div className="guest-score">{guestScore}</div>
+    <div className="flex justify-between items-center font-press-start text-[22px] text-[#e2e2e2] mx-2 w-[70px]">
+      <div>{homeScore}</div>
+      <div>x</div>
+      <div>{guestScore}</div>
     </div>
   );
 };
