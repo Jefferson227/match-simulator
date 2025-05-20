@@ -2,7 +2,7 @@ import utils from '../utils/utils';
 import { MatchState, Team, Player, Match } from '../types';
 import { MatchAction } from '../contexts/MatchContext';
 
-const { addPlayerAttributes, getRandomNumber } = utils;
+const { addPlayerAttributes, getRandomNumber, getAverage } = utils;
 
 export const matchReducer = (
   state: MatchState,
@@ -25,6 +25,7 @@ export const matchReducer = (
               isHomeTeam: true,
               score: 0,
               morale: getRandomNumber(0, 100),
+              overallMood: getAverage(homeTeam.players.map((p) => p.mood)),
             },
             visitorTeam: {
               ...visitorTeam,
@@ -33,6 +34,7 @@ export const matchReducer = (
               isHomeTeam: false,
               score: 0,
               morale: getRandomNumber(0, 100),
+              overallMood: getAverage(homeTeam.players.map((p) => p.mood)),
             },
             lastScorer: null,
           },
