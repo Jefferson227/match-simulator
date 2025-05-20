@@ -2,7 +2,7 @@ import utils from '../utils/utils';
 import { MatchState, Team, Player, Match } from '../types';
 import { MatchAction } from '../contexts/MatchContext';
 
-const { addPlayerAttributes, getRandomNumber, getAverage } = utils;
+const { addPlayerAttributes, getRandomNumber, getAverage, getSum } = utils;
 
 export const matchReducer = (
   state: MatchState,
@@ -26,6 +26,22 @@ export const matchReducer = (
               score: 0,
               morale: getRandomNumber(0, 100),
               overallMood: getAverage(homeTeam.players.map((p) => p.mood)),
+              overallStrength: getSum(homeTeam.players.map((p) => p.strength)),
+              attackStrength: getSum(
+                homeTeam.players
+                  .filter((p) => p.position === 'FW')
+                  .map((p) => p.strength)
+              ),
+              midfieldStrength: getSum(
+                homeTeam.players
+                  .filter((p) => p.position === 'MF')
+                  .map((p) => p.strength)
+              ),
+              defenseStrength: getSum(
+                homeTeam.players
+                  .filter((p) => p.position === 'DF' || p.position === 'GK')
+                  .map((p) => p.strength)
+              ),
             },
             visitorTeam: {
               ...visitorTeam,
@@ -34,7 +50,25 @@ export const matchReducer = (
               isHomeTeam: false,
               score: 0,
               morale: getRandomNumber(0, 100),
-              overallMood: getAverage(homeTeam.players.map((p) => p.mood)),
+              overallMood: getAverage(visitorTeam.players.map((p) => p.mood)),
+              overallStrength: getSum(
+                visitorTeam.players.map((p) => p.strength)
+              ),
+              attackStrength: getSum(
+                visitorTeam.players
+                  .filter((p) => p.position === 'FW')
+                  .map((p) => p.strength)
+              ),
+              midfieldStrength: getSum(
+                visitorTeam.players
+                  .filter((p) => p.position === 'MF')
+                  .map((p) => p.strength)
+              ),
+              defenseStrength: getSum(
+                visitorTeam.players
+                  .filter((p) => p.position === 'DF' || p.position === 'GK')
+                  .map((p) => p.strength)
+              ),
             },
             lastScorer: null,
           },
