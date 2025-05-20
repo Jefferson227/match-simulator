@@ -28,7 +28,11 @@ export interface Team {
   score?: number;
   morale: number;
   formation: number;
-  mood: number;
+  overallMood: number;
+  overallStrength: number;
+  attackStrength: number;
+  midfieldStrength: number;
+  defenseStrength: number;
 }
 
 export interface Scorer {
