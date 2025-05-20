@@ -10,6 +10,7 @@ function addPlayerAttributes(players: Player[]): Player[] {
       const updatedPlayer = { ...player };
       updatedPlayer.id = Math.floor(Math.random() * 10000);
       updatedPlayer.order = getPlayerOrder(player.position);
+      updatedPlayer.mood = getRandomNumber(0, 100);
       return updatedPlayer;
     })
     .sort((a, b) => {

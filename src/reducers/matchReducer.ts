@@ -24,6 +24,7 @@ export const matchReducer = (
               substitutes: addPlayerAttributes(homeTeam.substitutes),
               isHomeTeam: true,
               score: 0,
+              morale: utils.getRandomNumber(0, 100),
             },
             visitorTeam: {
               ...visitorTeam,
@@ -31,6 +32,7 @@ export const matchReducer = (
               substitutes: addPlayerAttributes(visitorTeam.substitutes),
               isHomeTeam: false,
               score: 0,
+              morale: utils.getRandomNumber(0, 100),
             },
             lastScorer: null,
           },
