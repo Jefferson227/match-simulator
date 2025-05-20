@@ -1,5 +1,9 @@
 import { Player } from '../types';
 
+function getRandomNumber(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 function addPlayerAttributes(players: Player[]): Player[] {
   return players
     .map((player) => {
@@ -39,6 +43,6 @@ function getPlayerOrder(position: string): number {
   }
 }
 
-const utils = { addPlayerAttributes };
+const utils = { addPlayerAttributes, getRandomNumber };
 
 export default utils;
