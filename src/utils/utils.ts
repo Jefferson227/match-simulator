@@ -1,5 +1,9 @@
 import { Player } from '../types';
 
+function getAverage(numbers: number[]): number {
+  return numbers.reduce((acc, curr) => acc + curr, 0) / numbers.length;
+}
+
 function getRandomNumber(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -44,6 +48,10 @@ function getPlayerOrder(position: string): number {
   }
 }
 
-const utils = { addPlayerAttributes, getRandomNumber };
+const utils = {
+  addPlayerAttributes,
+  getRandomNumber,
+  getAverage,
+};
 
 export default utils;
