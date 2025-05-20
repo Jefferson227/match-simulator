@@ -1,5 +1,9 @@
 import { Player } from '../types';
 
+function getSum(numbers: number[]): number {
+  return numbers.reduce((acc, curr) => acc + curr, 0);
+}
+
 function getAverage(numbers: number[]): number {
   return numbers.reduce((acc, curr) => acc + curr, 0) / numbers.length;
 }
@@ -52,6 +56,7 @@ const utils = {
   addPlayerAttributes,
   getRandomNumber,
   getAverage,
+  getSum,
 };
 
 export default utils;
