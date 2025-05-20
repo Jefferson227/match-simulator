@@ -2,7 +2,7 @@ import utils from '../utils/utils';
 import { MatchState, Team, Player, Match } from '../types';
 import { MatchAction } from '../contexts/MatchContext';
 
-const { addPlayerAttributes } = utils;
+const { addPlayerAttributes, getRandomNumber } = utils;
 
 export const matchReducer = (
   state: MatchState,
@@ -24,7 +24,7 @@ export const matchReducer = (
               substitutes: addPlayerAttributes(homeTeam.substitutes),
               isHomeTeam: true,
               score: 0,
-              morale: utils.getRandomNumber(0, 100),
+              morale: getRandomNumber(0, 100),
             },
             visitorTeam: {
               ...visitorTeam,
@@ -32,7 +32,7 @@ export const matchReducer = (
               substitutes: addPlayerAttributes(visitorTeam.substitutes),
               isHomeTeam: false,
               score: 0,
-              morale: utils.getRandomNumber(0, 100),
+              morale: getRandomNumber(0, 100),
             },
             lastScorer: null,
           },
