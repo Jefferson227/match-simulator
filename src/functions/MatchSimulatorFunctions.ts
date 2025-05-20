@@ -187,7 +187,7 @@ function runMatchLogic(match: Match): void {
    * - Get the teams' moods (the mood of the team is random each time a match starts)
    *
    * The team morale is a number between 0 and 100 and it's build up according to the team's progress throughout the season.
-   * The team formation has a different weight to be calculated.
+   * The team attack, midfield and defense strength is defined by the number of players in each position in the team.
    * The team mood is the average of a number between 0 and 100 set at the start of the match for each player in each team.
    */
 }
