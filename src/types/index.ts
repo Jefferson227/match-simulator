@@ -3,6 +3,7 @@ export interface Player {
   position: string;
   name: string;
   strength: number;
+  mood: number;
   fieldPosition?: {
     row: number;
     column: number;
@@ -25,6 +26,9 @@ export interface Team {
   substitutes: Player[];
   isHomeTeam?: boolean;
   score?: number;
+  morale: number;
+  formation: number;
+  mood: number;
 }
 
 export interface Scorer {
