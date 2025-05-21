@@ -1,20 +1,11 @@
 import { Match, Player, Team, Scorer } from '../types';
+import utils from '../utils/utils';
+const { getRandomNumber } = utils;
 
 function kickOff(matches: Match[]): void {
   matches.forEach((match) => {
-    const firstPossessor =
-      match.homeTeam.players.find((p) => p.position === 'MF') ||
-      match.homeTeam.players[0];
-
-    if (firstPossessor && firstPossessor.fieldPosition) {
-      match.ball = {
-        possessedBy: {
-          teamId: match.homeTeam.id || '',
-          playerId: firstPossessor.id,
-        },
-        position: { ...firstPossessor.fieldPosition },
-      };
-    }
+    var randomNumber = getRandomNumber(0, 100);
+    match.ballPossession.isHomeTeam = randomNumber < 50;
   });
 }
 
