@@ -170,7 +170,14 @@ function endMatch(): void {
 }
 
 function runMatchLogic(match: Match): void {
-  // TODO: Implement match logic
+  // TODO: Implement one small part at a time
+  /**
+   * If the ball is in the midfield, the team with the ball possession must roll the dice to decide what to do:
+   * - Move the ball within the same area (80% of the times)
+   * - Pass the ball to the attacking area (19% of the times)
+   * - Shoot the ball to the goal (1% of the times)
+   */
+  //
 }
 
 function tickClock(
