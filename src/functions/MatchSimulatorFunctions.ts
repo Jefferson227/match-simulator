@@ -170,46 +170,7 @@ function endMatch(): void {
 }
 
 function runMatchLogic(match: Match): void {
-  /*
-   * TODO: Implement the logic for each match
-   * - Calculate the teams' overall strength
-   * - Get the teams' morale
-   * - Get the teams' attack, midfield and defense strength (sum of the strength of the players in each position in the team)
-   * - Get the teams' moods (the mood of the team is random each time a match starts)
-   * - Get the diceRollValue
-   *
-   * The team morale is a number between 0 and 100 and it's build up according to the team's progress throughout the season.
-   * The team attack, midfield and defense strength is defined by the number of players in each position in the team.
-   * The team mood is the average of a number between 0 and 100 set at the start of the match for each player in each team.
-   * The diceRollValue is a number between 0 and 100 that is used to dispute the ball possession and define the scoring chances.
-   *
-   * # Overall strength
-   * - The overall strength of a team is the sum of strength of all players.
-   * - The team's morale will define the weight of the team's overall strength.
-   * - The team's mood is the percentage added to the diceRollValue
-   *
-   * # Ball possession
-   * - The initial ball possession is defined randomly in the kickOff() function
-   * - The ball possession has two attributes: isHomeTeam and ballPosition
-   * - The team with the ball possession can perform the possible actions: move, pass or shot
-   *
-   * # Actions
-   * ## Move
-   * - The team with the ball possession can move with the ball in the same position in the field
-   * - This is the action that will be performed 80% of the times
-   * - The move can be intercepted by the opposing team
-   *
-   * ## Pass
-   * - The team with the ball possession can move the ball to the next position in the field, towards the attacking area
-   * - This action will be performed 18% of the times
-   * - The pass can be intercepted by the opposing team
-   *
-   * ## Shot
-   * - The team with the ball possession can shot to the goal
-   * - This action will be performed 2% of the times
-   * - If the shot is successful, a goal is scored for the team with the ball possession
-   * - If the shot fails, the ball possession is transferred to the opposing team
-   */
+  // TODO: Implement match logic
 }
 
 function tickClock(
