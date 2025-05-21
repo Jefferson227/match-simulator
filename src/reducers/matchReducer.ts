@@ -71,6 +71,10 @@ export const matchReducer = (
               ),
             },
             lastScorer: null,
+            ballPossession: {
+              isHomeTeam: true,
+              ballPosition: 'midfield', // defense, midfield, attack
+            },
           },
         ],
       };

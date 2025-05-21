@@ -45,16 +45,20 @@ export interface Match {
   homeTeam: Team;
   visitorTeam: Team;
   lastScorer: Scorer | null;
-  ball?: {
-    possessedBy: {
-      teamId: string;
-      playerId: number;
-    };
-    position: {
-      row: number;
-      column: number;
-    };
+  ballPossession: {
+    isHomeTeam: boolean;
+    ballPosition: string;
   };
+  // ball?: {
+  //   possessedBy: {
+  //     teamId: string;
+  //     playerId: number;
+  //   };
+  //   position: {
+  //     row: number;
+  //     column: number;
+  //   };
+  // };
   latestGoal?: {
     scorerName: string;
   };
