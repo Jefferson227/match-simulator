@@ -190,7 +190,10 @@ function runMatchLogic(match: Match): void {
       handleMidfieldBallPass(match);
       return;
     }
+
     // Shoot the ball to the goal
+    handleMidfieldBallShoot(match);
+    return;
   }
 }
 
