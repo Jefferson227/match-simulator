@@ -177,7 +177,68 @@ function runMatchLogic(match: Match): void {
    * - Pass the ball to the attacking area (19% of the times)
    * - Shoot the ball to the goal (1% of the times)
    */
-  //
+  if (match.ballPossession.position === 'midfield') {
+    const randomNumber = getRandomNumber(0, 100);
+    if (randomNumber < 80) {
+      // Simulating moving the ball within the same area
+
+      // Get the sum of the strength of all players in the midfield from both teams
+      const maxHomeMidfieldStrength = match.homeTeam.players
+        .filter((p) => p.position === 'MF')
+        .reduce((acc, player) => acc + player.strength, 0);
+      const maxVisitorMidfieldStrength = match.visitorTeam.players
+        .filter((p) => p.position === 'MF')
+        .reduce((acc, player) => acc + player.strength, 0);
+
+      // Roll the dice for each sum to get the values to be disputed
+      const homeMidfieldStrengthForDispute = getRandomNumber(
+        1,
+        maxHomeMidfieldStrength
+      );
+      const visitorMidfieldStrengthForDispute = getRandomNumber(
+        1,
+        maxVisitorMidfieldStrength
+      );
+
+      // Considering the home team has the ball possession and won the dispute, so the possession is maintained
+      if (
+        homeMidfieldStrengthForDispute >= visitorMidfieldStrengthForDispute &&
+        match.ballPossession.isHomeTeam
+      ) {
+        return;
+      }
+
+      // Considering the visitor team has the ball possession and lost the dispute, so the possession is switched to the home team
+      if (
+        homeMidfieldStrengthForDispute >= visitorMidfieldStrengthForDispute &&
+        !match.ballPossession.isHomeTeam
+      ) {
+        match.ballPossession.isHomeTeam = true;
+        return;
+      }
+
+      // Considering the home team has the ball possession and lost the dispute, so the possession is switched to the visitor team
+      if (
+        homeMidfieldStrengthForDispute < visitorMidfieldStrengthForDispute &&
+        match.ballPossession.isHomeTeam
+      ) {
+        match.ballPossession.isHomeTeam = false;
+        return;
+      }
+
+      // Considering the visitor team has the ball possession and won the dispute, so the possession is maintained
+      if (
+        homeMidfieldStrengthForDispute < visitorMidfieldStrengthForDispute &&
+        !match.ballPossession.isHomeTeam
+      ) {
+        return;
+      }
+    } else if (randomNumber < 99) {
+      // Pass the ball to the attacking area
+    } else {
+      // Shoot the ball to the goal
+    }
+  }
 }
 
 function tickClock(

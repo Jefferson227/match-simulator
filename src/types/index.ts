@@ -47,7 +47,7 @@ export interface Match {
   lastScorer: Scorer | null;
   ballPossession: {
     isHomeTeam: boolean;
-    ballPosition: string;
+    position: 'midfield' | 'defense' | 'attack';
   };
   // ball?: {
   //   possessedBy: {
