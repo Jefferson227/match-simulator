@@ -25,7 +25,7 @@ export interface Team {
   players: Player[];
   substitutes: Player[];
   isHomeTeam?: boolean;
-  score?: number;
+  score: number;
   morale: number;
   formation: number;
   overallMood: number;
