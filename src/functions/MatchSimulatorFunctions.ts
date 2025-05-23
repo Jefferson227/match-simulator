@@ -255,10 +255,7 @@ function handleMidfieldBallShoot(match: Match): void {
     return;
   }
 
-  // If the shooter strength is less than the defense strength, the ball is passed to the defense field of the opposing team
-  match.ballPossession.position = 'defense';
-
-  // The ball possession is switched to the opposing team
+  // Otherwise, the ball possession is switched to the opposing team
   if (match.ballPossession.isHomeTeam) {
     match.ballPossession.isHomeTeam = false;
     return;
