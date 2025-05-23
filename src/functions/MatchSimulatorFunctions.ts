@@ -192,7 +192,7 @@ function runMatchLogic(match: Match): void {
     }
 
     // Shoot the ball to the goal
-    handleMidfieldBallShoot(match);
+    handleBallShoot(match, 'midfield');
     return;
   }
 
@@ -213,10 +213,13 @@ function runMatchLogic(match: Match): void {
   }
 }
 
-function handleMidfieldBallShoot(match: Match): void {
+function handleBallShoot(
+  match: Match,
+  position: 'defense' | 'midfield' | 'attack'
+): void {
   /**
-   * Get all MF players from the team with the ball possession
-   * Roll the dice to choose one MF player to dispute against the opposing team
+   * Get all players from the current position from the team with the ball possession
+   * Roll the dice to choose one player from the current position to dispute against the opposing team
    * Get the sum of the strength of all DF players plus the GK from the opposing team
    */
   // Get the team with the ball possession
@@ -229,13 +232,14 @@ function handleMidfieldBallShoot(match: Match): void {
     ? match.visitorTeam
     : match.homeTeam;
 
-  // Get all MF players from the team with the ball possession
-  const mfPlayers = teamWithBallPossession.players.filter(
-    (p) => p.position === 'MF'
+  // Get all players from the current position from the team with the ball possession
+  const offensivePlayers = teamWithBallPossession.players.filter(
+    (p) => p.position === getPlayerPosition(position)
   );
 
-  // Roll the dice to choose one MF player to dispute against the opposing team
-  const shooter = mfPlayers[getRandomNumber(0, mfPlayers.length - 1)];
+  // Roll the dice to choose one player from the current position to dispute against the opposing team
+  const shooter =
+    offensivePlayers[getRandomNumber(0, offensivePlayers.length - 1)];
   const shooterMaxStrength = shooter.strength;
 
   // Get the sum of the strength of all DF players plus the GK from the opposing team
@@ -243,7 +247,7 @@ function handleMidfieldBallShoot(match: Match): void {
     .filter((p) => p.position === 'DF' || p.position === 'GK')
     .reduce((acc, player) => acc + player.strength, 0);
 
-  // Roll the dice to see if the MF player can score a goal
+  // Roll the dice to see if the shooter can score a goal
   const shooterStrength = getRandomNumber(1, shooterMaxStrength);
   const defenseStrength = getRandomNumber(1, defensePlayersMaxStrength);
 
