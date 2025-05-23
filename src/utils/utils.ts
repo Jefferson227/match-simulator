@@ -52,11 +52,31 @@ function getPlayerOrder(position: string): number {
   }
 }
 
+function getPlayerPosition(
+  position: 'defense' | 'midfield' | 'attack'
+): 'GK' | 'DF' | 'MF' | 'FW' {
+  switch (position) {
+    case 'defense': {
+      return 'GK';
+    }
+    case 'midfield': {
+      return 'MF';
+    }
+    case 'attack': {
+      return 'FW';
+    }
+    default: {
+      return 'MF';
+    }
+  }
+}
+
 const utils = {
   addPlayerAttributes,
   getRandomNumber,
   getAverage,
   getSum,
+  getPlayerPosition,
 };
 
 export default utils;
