@@ -195,6 +195,22 @@ function runMatchLogic(match: Match): void {
     handleMidfieldBallShoot(match);
     return;
   }
+
+  /**
+   * If the ball is in the attack field, the team with the ball possession must roll the dice to decide what to do:
+   * - Move the ball within the same area (90% of the times)
+   * - Pass the ball back to the midfield area (5% of the times)
+   * - Shoot the ball to the goal (5% of the times)
+   */
+  if (match.ballPossession.position === 'attack') {
+    const randomNumber = getRandomNumber(0, 100);
+    if (randomNumber < 90) {
+      // Move the ball within the same area
+      // handleAttackBallMovement(match);
+      return;
+    }
+    return;
+  }
 }
 
 function handleMidfieldBallShoot(match: Match): void {
