@@ -1,6 +1,11 @@
 import { Match, Player, Team, Scorer } from '../types';
 import utils from '../utils/utils';
-const { getRandomNumber, getPlayerPosition, getNextFieldArea } = utils;
+const {
+  getRandomNumber,
+  getPlayerPosition,
+  getNextFieldArea,
+  getPreviousFieldArea,
+} = utils;
 
 function kickOff(matches: Match[]): void {
   matches.forEach((match) => {
@@ -269,7 +274,7 @@ function handleBallShoot(
   return;
 }
 
-function handleBallPass(
+function handleBallPassToNextArea(
   match: Match,
   position: 'defense' | 'midfield' | 'attack'
 ): void {
@@ -300,6 +305,59 @@ function handleBallPass(
     !match.ballPossession.isHomeTeam
   ) {
     match.ballPossession.position = getNextFieldArea(position);
+    return;
+  }
+
+  // Considering the home team has the ball possession and lost the dispute, so the possession is switched to the visitor team
+  if (
+    homeStrengthForDispute < visitorStrengthForDispute &&
+    match.ballPossession.isHomeTeam
+  ) {
+    match.ballPossession.isHomeTeam = false;
+    return;
+  }
+
+  // Considering the visitor team has the ball possession and lost the dispute, so the possession is switched to the home team
+  if (
+    homeStrengthForDispute >= visitorStrengthForDispute &&
+    !match.ballPossession.isHomeTeam
+  ) {
+    match.ballPossession.isHomeTeam = true;
+    return;
+  }
+}
+
+function handleBallPassToPreviousArea(
+  match: Match,
+  position: 'defense' | 'midfield' | 'attack'
+): void {
+  // Get the sum of the strength of all players in the position from both teams
+  const maxHomeStrength = match.homeTeam.players
+    .filter((p) => p.position === getPlayerPosition(position))
+    .reduce((acc, player) => acc + player.strength, 0);
+  const maxVisitorStrength = match.visitorTeam.players
+    .filter((p) => p.position === getPlayerPosition(position))
+    .reduce((acc, player) => acc + player.strength, 0);
+
+  // Roll the dice for each sum to get the values to be disputed
+  const homeStrengthForDispute = getRandomNumber(1, maxHomeStrength);
+  const visitorStrengthForDispute = getRandomNumber(1, maxVisitorStrength);
+
+  // Considering the home team has the ball possession and won the dispute, so the ball is passed to the next area
+  if (
+    homeStrengthForDispute >= visitorStrengthForDispute &&
+    match.ballPossession.isHomeTeam
+  ) {
+    match.ballPossession.position = getPreviousFieldArea(position);
+    return;
+  }
+
+  // Considering the visitor team has the ball possession and won the dispute, so the ball is passed to the next area
+  if (
+    homeStrengthForDispute < visitorStrengthForDispute &&
+    !match.ballPossession.isHomeTeam
+  ) {
+    match.ballPossession.position = getPreviousFieldArea(position);
     return;
   }
 
