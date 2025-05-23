@@ -192,7 +192,7 @@ function runMatchLogic(match: Match): void {
 
     if (randomNumber < 99) {
       // Pass the ball to the attacking area
-      handleBallPass(match, match.ballPossession.position);
+      handleBallPassToNextArea(match, match.ballPossession.position);
       return;
     }
 
