@@ -90,12 +90,32 @@ function getNextFieldArea(
   }
 }
 
+function getPreviousFieldArea(
+  position: 'defense' | 'midfield' | 'attack'
+): 'defense' | 'midfield' | 'attack' {
+  switch (position) {
+    case 'defense': {
+      return position;
+    }
+    case 'midfield': {
+      return 'defense';
+    }
+    case 'attack': {
+      return 'midfield';
+    }
+    default: {
+      return position;
+    }
+  }
+}
+
 const utils = {
   addPlayerAttributes,
   getRandomNumber,
   getAverage,
   getSum,
   getPlayerPosition,
+  getPreviousFieldArea,
   getNextFieldArea,
 };
 
