@@ -181,18 +181,18 @@ function runMatchLogic(match: Match): void {
     const randomNumber = getRandomNumber(0, 100);
     if (randomNumber < 80) {
       // Move the ball within the same area
-      handleBallMovement(match, 'midfield');
+      handleBallMovement(match, match.ballPossession.position);
       return;
     }
 
     if (randomNumber < 99) {
       // Pass the ball to the attacking area
-      handleBallPass(match, 'midfield');
+      handleBallPass(match, match.ballPossession.position);
       return;
     }
 
     // Shoot the ball to the goal
-    handleBallShoot(match, 'midfield');
+    handleBallShoot(match, match.ballPossession.position);
     return;
   }
 
