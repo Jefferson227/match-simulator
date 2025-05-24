@@ -398,24 +398,18 @@ function runMatchLogic(
     const randomNumber = getRandomNumber(0, 100);
     if (randomNumber < 60) {
       // Move the ball within the same area
-      handleBallMovement(match, match.ballPossession.position);
+      handleBallMovement(match);
       return;
     }
 
     if (randomNumber < 99) {
       // Pass the ball to the attacking area
-      handleBallPassToNextArea(match, match.ballPossession.position);
+      handleBallPassToNextArea(match);
       return;
     }
 
     // Shoot the ball to the goal
-    handleBallShoot(
-      match,
-      match.ballPossession.position,
-      time,
-      setScorer,
-      increaseScore
-    );
+    handleBallShoot(match, time, setScorer, increaseScore);
     return;
   }
 
@@ -429,24 +423,18 @@ function runMatchLogic(
     const randomNumber = getRandomNumber(0, 100);
     if (randomNumber < 80) {
       // Move the ball within the same area
-      handleBallMovement(match, match.ballPossession.position);
+      handleBallMovement(match);
       return;
     }
 
     if (randomNumber < 98) {
       // Pass the ball to the attacking area
-      handleBallPassToNextArea(match, match.ballPossession.position);
+      handleBallPassToNextArea(match);
       return;
     }
 
     // Shoot the ball to the goal
-    handleBallShoot(
-      match,
-      match.ballPossession.position,
-      time,
-      setScorer,
-      increaseScore
-    );
+    handleBallShoot(match, time, setScorer, increaseScore);
     return;
   }
 
