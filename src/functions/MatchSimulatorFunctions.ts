@@ -232,10 +232,7 @@ function handleBallShoot(
   );
 }
 
-function handleBallPassToNextArea(
-  match: Match,
-  position: 'defense' | 'midfield' | 'attack'
-): void {
+function handleBallPassToNextArea(match: Match): void {
   // Get the team with the ball possession
   var teamWithBallPossession = match.ballPossession.isHomeTeam
     ? match.homeTeam
@@ -275,7 +272,9 @@ function handleBallPassToNextArea(
   if (
     teamWithBallPossessionStrengthForDispute >= opposingTeamStrengthForDispute
   ) {
-    match.ballPossession.position = getNextFieldArea(position);
+    match.ballPossession.position = getNextFieldArea(
+      match.ballPossession.position
+    );
     return;
   }
 
