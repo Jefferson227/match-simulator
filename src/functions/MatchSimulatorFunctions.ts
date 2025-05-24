@@ -1,6 +1,4 @@
 import { Match, Player, Team, Scorer } from '../types';
-import { useContext } from 'react';
-import { MatchContext } from '../contexts/MatchContext';
 import utils from '../utils/utils';
 const {
   getRandomNumber,
@@ -8,7 +6,6 @@ const {
   getNextFieldArea,
   getPreviousFieldArea,
 } = utils;
-const { setScorer, increaseScore } = useContext(MatchContext);
 
 function kickOff(matches: Match[]): void {
   matches.forEach((match) => {
@@ -177,63 +174,12 @@ function endMatch(): void {
   // Placeholder for match end logic if needed
 }
 
-function runMatchLogic(match: Match, time: number): void {
-  // TODO: Implement one small part at a time
-  /**
-   * If the ball is in the midfield, the team with the ball possession must roll the dice to decide what to do:
-   * - Move the ball within the same area (80% of the times)
-   * - Pass the ball to the attacking area (19% of the times)
-   * - Shoot the ball to the goal (1% of the times)
-   */
-  if (match.ballPossession.position === 'midfield') {
-    const randomNumber = getRandomNumber(0, 100);
-    if (randomNumber < 80) {
-      // Move the ball within the same area
-      handleBallMovement(match, match.ballPossession.position);
-      return;
-    }
-
-    if (randomNumber < 99) {
-      // Pass the ball to the attacking area
-      handleBallPassToNextArea(match, match.ballPossession.position);
-      return;
-    }
-
-    // Shoot the ball to the goal
-    handleBallShoot(match, match.ballPossession.position, time);
-    return;
-  }
-
-  /**
-   * If the ball is in the attack field, the team with the ball possession must roll the dice to decide what to do:
-   * - Move the ball within the same area (90% of the times)
-   * - Pass the ball back to the midfield area (5% of the times)
-   * - Shoot the ball to the goal (5% of the times)
-   */
-  if (match.ballPossession.position === 'attack') {
-    const randomNumber = getRandomNumber(0, 100);
-    if (randomNumber < 90) {
-      // Move the ball within the same area
-      handleBallMovement(match, match.ballPossession.position);
-      return;
-    }
-
-    if (randomNumber < 95) {
-      // Pass the ball back to the midfield area
-      handleBallPassToPreviousArea(match, match.ballPossession.position);
-      return;
-    }
-
-    // Shoot the ball to the goal
-    handleBallShoot(match, match.ballPossession.position, time);
-    return;
-  }
-}
-
 function handleBallShoot(
   match: Match,
   position: 'defense' | 'midfield' | 'attack',
-  time: number
+  time: number,
+  setScorer: (matchId: string, scorer: Scorer) => void,
+  increaseScore: (matchId: string, scorerTeam: { isHomeTeam: boolean }) => void
 ): void {
   /**
    * Get all players from the current position from the team with the ball possession
@@ -445,13 +391,88 @@ function handleBallMovement(
   }
 }
 
-function tickClock(time: number, matches: Match[]): void {
+function runMatchLogic(
+  match: Match,
+  time: number,
+  setScorer: (matchId: string, scorer: Scorer) => void,
+  increaseScore: (matchId: string, scorerTeam: { isHomeTeam: boolean }) => void
+): void {
+  // TODO: Implement one small part at a time
+  /**
+   * If the ball is in the midfield, the team with the ball possession must roll the dice to decide what to do:
+   * - Move the ball within the same area (80% of the times)
+   * - Pass the ball to the attacking area (19% of the times)
+   * - Shoot the ball to the goal (1% of the times)
+   */
+  if (match.ballPossession.position === 'midfield') {
+    const randomNumber = getRandomNumber(0, 100);
+    if (randomNumber < 80) {
+      // Move the ball within the same area
+      handleBallMovement(match, match.ballPossession.position);
+      return;
+    }
+
+    if (randomNumber < 99) {
+      // Pass the ball to the attacking area
+      handleBallPassToNextArea(match, match.ballPossession.position);
+      return;
+    }
+
+    // Shoot the ball to the goal
+    handleBallShoot(
+      match,
+      match.ballPossession.position,
+      time,
+      setScorer,
+      increaseScore
+    );
+    return;
+  }
+
+  /**
+   * If the ball is in the attack field, the team with the ball possession must roll the dice to decide what to do:
+   * - Move the ball within the same area (90% of the times)
+   * - Pass the ball back to the midfield area (5% of the times)
+   * - Shoot the ball to the goal (5% of the times)
+   */
+  if (match.ballPossession.position === 'attack') {
+    const randomNumber = getRandomNumber(0, 100);
+    if (randomNumber < 90) {
+      // Move the ball within the same area
+      handleBallMovement(match, match.ballPossession.position);
+      return;
+    }
+
+    if (randomNumber < 95) {
+      // Pass the ball back to the midfield area
+      handleBallPassToPreviousArea(match, match.ballPossession.position);
+      return;
+    }
+
+    // Shoot the ball to the goal
+    handleBallShoot(
+      match,
+      match.ballPossession.position,
+      time,
+      setScorer,
+      increaseScore
+    );
+    return;
+  }
+}
+
+function tickClock(
+  time: number,
+  matches: Match[],
+  setScorer: (matchId: string, scorer: Scorer) => void,
+  increaseScore: (matchId: string, scorerTeam: { isHomeTeam: boolean }) => void
+): void {
   if (time === 0) {
     kickOff(matches);
   }
 
   matches.forEach((match) => {
-    runMatchLogic(match, time);
+    runMatchLogic(match, time, setScorer, increaseScore);
   });
 
   if (time === 90) {
