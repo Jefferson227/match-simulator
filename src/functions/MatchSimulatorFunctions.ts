@@ -399,6 +399,37 @@ function runMatchLogic(
 ): void {
   // TODO: Implement one small part at a time
   /**
+   * If the ball is in the defense field, the team with the ball possession must roll the dice to decide what to do:
+   * - Move the ball within the same area (60% of the times)
+   * - Pass the ball to the midfield area (39% of the times)
+   * - Shoot the ball to the goal (1% of the times)
+   */
+  if (match.ballPossession.position === 'defense') {
+    const randomNumber = getRandomNumber(0, 100);
+    if (randomNumber < 60) {
+      // Move the ball within the same area
+      handleBallMovement(match, match.ballPossession.position);
+      return;
+    }
+
+    if (randomNumber < 99) {
+      // Pass the ball to the attacking area
+      handleBallPassToNextArea(match, match.ballPossession.position);
+      return;
+    }
+
+    // Shoot the ball to the goal
+    handleBallShoot(
+      match,
+      match.ballPossession.position,
+      time,
+      setScorer,
+      increaseScore
+    );
+    return;
+  }
+
+  /**
    * If the ball is in the midfield, the team with the ball possession must roll the dice to decide what to do:
    * - Move the ball within the same area (80% of the times)
    * - Pass the ball to the attacking area (19% of the times)
