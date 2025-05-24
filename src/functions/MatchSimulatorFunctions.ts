@@ -178,7 +178,6 @@ function endMatch(): void {
 
 function handleBallShoot(
   match: Match,
-  position: 'defense' | 'midfield' | 'attack',
   time: number,
   setScorer: (matchId: string, scorer: Scorer) => void,
   increaseScore: (matchId: string, scorerTeam: { isHomeTeam: boolean }) => void
@@ -200,7 +199,7 @@ function handleBallShoot(
 
   // Get all players from the current position from the team with the ball possession
   const offensivePlayers = teamWithBallPossession.players.filter(
-    (p) => p.position === getPlayerPosition(position)
+    (p) => p.position === getPlayerPosition(match.ballPossession.position)
   );
 
   // Roll the dice to choose one player from the current position to dispute against the opposing team
@@ -227,13 +226,10 @@ function handleBallShoot(
   }
 
   // Otherwise, the ball possession is switched to the opposing team
-  if (match.ballPossession.isHomeTeam) {
-    match.ballPossession.isHomeTeam = false;
-    return;
-  }
-
-  match.ballPossession.isHomeTeam = true;
-  return;
+  match.ballPossession.isHomeTeam = !match.ballPossession.isHomeTeam;
+  match.ballPossession.position = getOpposingPosition(
+    match.ballPossession.position
+  );
 }
 
 function handleBallPassToNextArea(
@@ -475,13 +471,7 @@ function runMatchLogic(
     }
 
     // Shoot the ball to the goal
-    handleBallShoot(
-      match,
-      match.ballPossession.position,
-      time,
-      setScorer,
-      increaseScore
-    );
+    handleBallShoot(match, time, setScorer, increaseScore);
     return;
   }
 }
