@@ -333,6 +333,7 @@ function handleBallPassToPreviousArea(match: Match): void {
 
   // Otherwise, the ball possession is switched to the opposing team
   match.ballPossession.isHomeTeam = !match.ballPossession.isHomeTeam;
+  match.ballPossession.position = opposingPosition;
 }
 
 function handleBallMovement(match: Match): void {
@@ -379,6 +380,7 @@ function handleBallMovement(match: Match): void {
 
   // Otherwise, the possession is switched to the opposing team
   match.ballPossession.isHomeTeam = !match.ballPossession.isHomeTeam;
+  match.ballPossession.position = opposingPosition;
 }
 
 function runMatchLogic(
