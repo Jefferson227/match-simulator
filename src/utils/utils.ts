@@ -71,6 +71,25 @@ function getPlayerPosition(
   }
 }
 
+function getOpposingPosition(
+  position: 'defense' | 'midfield' | 'attack'
+): 'defense' | 'midfield' | 'attack' {
+  switch (position) {
+    case 'attack': {
+      return 'defense';
+    }
+    case 'midfield': {
+      return position;
+    }
+    case 'defense': {
+      return 'attack';
+    }
+    default: {
+      return position;
+    }
+  }
+}
+
 function getNextFieldArea(
   position: 'defense' | 'midfield' | 'attack'
 ): 'defense' | 'midfield' | 'attack' {
@@ -115,6 +134,7 @@ const utils = {
   getAverage,
   getSum,
   getPlayerPosition,
+  getOpposingPosition,
   getPreviousFieldArea,
   getNextFieldArea,
 };
