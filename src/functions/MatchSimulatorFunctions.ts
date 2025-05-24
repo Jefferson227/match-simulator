@@ -11,6 +11,7 @@ function kickOff(matches: Match[]): void {
   matches.forEach((match) => {
     var randomNumber = getRandomNumber(0, 100);
     match.ballPossession.isHomeTeam = randomNumber < 50;
+    match.ballPossession.position = 'midfield';
   });
 }
 
