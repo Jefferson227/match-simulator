@@ -1,4 +1,6 @@
 import { Match, Player, Team, Scorer } from '../types';
+import { useContext } from 'react';
+import { MatchContext } from '../contexts/MatchContext';
 import utils from '../utils/utils';
 const {
   getRandomNumber,
@@ -6,6 +8,7 @@ const {
   getNextFieldArea,
   getPreviousFieldArea,
 } = utils;
+const { setScorer, increaseScore } = useContext(MatchContext);
 
 function kickOff(matches: Match[]): void {
   matches.forEach((match) => {
@@ -174,7 +177,7 @@ function endMatch(): void {
   // Placeholder for match end logic if needed
 }
 
-function runMatchLogic(match: Match): void {
+function runMatchLogic(match: Match, time: number): void {
   // TODO: Implement one small part at a time
   /**
    * If the ball is in the midfield, the team with the ball possession must roll the dice to decide what to do:
@@ -197,7 +200,7 @@ function runMatchLogic(match: Match): void {
     }
 
     // Shoot the ball to the goal
-    handleBallShoot(match, match.ballPossession.position);
+    handleBallShoot(match, match.ballPossession.position, time);
     return;
   }
 
@@ -222,14 +225,15 @@ function runMatchLogic(match: Match): void {
     }
 
     // Shoot the ball to the goal
-    handleBallShoot(match, match.ballPossession.position);
+    handleBallShoot(match, match.ballPossession.position, time);
     return;
   }
 }
 
 function handleBallShoot(
   match: Match,
-  position: 'defense' | 'midfield' | 'attack'
+  position: 'defense' | 'midfield' | 'attack',
+  time: number
 ): void {
   /**
    * Get all players from the current position from the team with the ball possession
@@ -269,7 +273,8 @@ function handleBallShoot(
   if (shooterStrength > defenseStrength) {
     match.latestGoal = { scorerName: shooter.name };
 
-    teamWithBallPossession.score++;
+    setScorer(match.id, { playerName: shooter.name, time });
+    increaseScore(match.id, { isHomeTeam: match.ballPossession.isHomeTeam });
     return;
   }
 
@@ -440,18 +445,13 @@ function handleBallMovement(
   }
 }
 
-function tickClock(
-  time: number,
-  setScorer: (matchId: string, scorer: Scorer) => void,
-  matches: Match[],
-  increaseScore: (matchId: string, scorerTeam: { isHomeTeam: boolean }) => void
-): void {
+function tickClock(time: number, matches: Match[]): void {
   if (time === 0) {
     kickOff(matches);
   }
 
   matches.forEach((match) => {
-    runMatchLogic(match);
+    runMatchLogic(match, time);
   });
 
   if (time === 90) {

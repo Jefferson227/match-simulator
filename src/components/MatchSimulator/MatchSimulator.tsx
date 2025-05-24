@@ -29,7 +29,7 @@ const MatchSimulator: FC = () => {
     }
 
     if (matches.length > 0) {
-      Functions.tickClock(time, setScorer, matches, increaseScore);
+      Functions.tickClock(time, matches);
     }
 
     return () => {
