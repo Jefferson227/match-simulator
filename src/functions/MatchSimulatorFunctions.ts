@@ -289,57 +289,54 @@ function handleBallPassToNextArea(
   }
 }
 
-function handleBallPassToPreviousArea(
-  match: Match,
-  position: 'defense' | 'midfield' | 'attack'
-): void {
-  // Get the sum of the strength of all players in the position from both teams
-  const maxHomeStrength = match.homeTeam.players
-    .filter((p) => p.position === getPlayerPosition(position))
+function handleBallPassToPreviousArea(match: Match): void {
+  // Get the team with the ball possession
+  var teamWithBallPossession = match.ballPossession.isHomeTeam
+    ? match.homeTeam
+    : match.visitorTeam;
+
+  // Get the opposing team
+  var opposingTeam = match.ballPossession.isHomeTeam
+    ? match.visitorTeam
+    : match.homeTeam;
+
+  // Get the sum of the strength of all players in the position from the team with the ball possession
+  const maxTeamWithBallPossessionStrength = teamWithBallPossession.players
+    .filter(
+      (p) => p.position === getPlayerPosition(match.ballPossession.position)
+    )
     .reduce((acc, player) => acc + player.strength, 0);
-  const maxVisitorStrength = match.visitorTeam.players
-    .filter((p) => p.position === getPlayerPosition(position))
+
+  // Get the opposing position
+  const opposingPosition = getOpposingPosition(match.ballPossession.position);
+
+  // Get the sum of the strength of all players in the opposing position from the opposing team
+  const maxOpposingTeamStrength = opposingTeam.players
+    .filter((p) => p.position === getPlayerPosition(opposingPosition))
     .reduce((acc, player) => acc + player.strength, 0);
 
   // Roll the dice for each sum to get the values to be disputed
-  const homeStrengthForDispute = getRandomNumber(1, maxHomeStrength);
-  const visitorStrengthForDispute = getRandomNumber(1, maxVisitorStrength);
+  const teamWithBallPossessionStrengthForDispute = getRandomNumber(
+    1,
+    maxTeamWithBallPossessionStrength
+  );
+  const opposingTeamStrengthForDispute = getRandomNumber(
+    1,
+    maxOpposingTeamStrength
+  );
 
-  // Considering the home team has the ball possession and won the dispute, so the ball is passed to the next area
+  // If the team with the ball possession wins the dispute, so the ball is passed to the previous area
   if (
-    homeStrengthForDispute >= visitorStrengthForDispute &&
-    match.ballPossession.isHomeTeam
+    teamWithBallPossessionStrengthForDispute >= opposingTeamStrengthForDispute
   ) {
-    match.ballPossession.position = getPreviousFieldArea(position);
+    match.ballPossession.position = getPreviousFieldArea(
+      match.ballPossession.position
+    );
     return;
   }
 
-  // Considering the visitor team has the ball possession and won the dispute, so the ball is passed to the next area
-  if (
-    homeStrengthForDispute < visitorStrengthForDispute &&
-    !match.ballPossession.isHomeTeam
-  ) {
-    match.ballPossession.position = getPreviousFieldArea(position);
-    return;
-  }
-
-  // Considering the home team has the ball possession and lost the dispute, so the possession is switched to the visitor team
-  if (
-    homeStrengthForDispute < visitorStrengthForDispute &&
-    match.ballPossession.isHomeTeam
-  ) {
-    match.ballPossession.isHomeTeam = false;
-    return;
-  }
-
-  // Considering the visitor team has the ball possession and lost the dispute, so the possession is switched to the home team
-  if (
-    homeStrengthForDispute >= visitorStrengthForDispute &&
-    !match.ballPossession.isHomeTeam
-  ) {
-    match.ballPossession.isHomeTeam = true;
-    return;
-  }
+  // Otherwise, the ball possession is switched to the opposing team
+  match.ballPossession.isHomeTeam = !match.ballPossession.isHomeTeam;
 }
 
 function handleBallMovement(match: Match): void {
@@ -473,7 +470,7 @@ function runMatchLogic(
 
     if (randomNumber < 95) {
       // Pass the ball back to the midfield area
-      handleBallPassToPreviousArea(match, match.ballPossession.position);
+      handleBallPassToPreviousArea(match);
       return;
     }
 
