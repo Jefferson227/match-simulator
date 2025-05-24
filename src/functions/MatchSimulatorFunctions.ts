@@ -432,8 +432,8 @@ function runMatchLogic(
   /**
    * If the ball is in the midfield, the team with the ball possession must roll the dice to decide what to do:
    * - Move the ball within the same area (80% of the times)
-   * - Pass the ball to the attacking area (19% of the times)
-   * - Shoot the ball to the goal (1% of the times)
+   * - Pass the ball to the attacking area (18% of the times)
+   * - Shoot the ball to the goal (2% of the times)
    */
   if (match.ballPossession.position === 'midfield') {
     const randomNumber = getRandomNumber(0, 100);
@@ -443,7 +443,7 @@ function runMatchLogic(
       return;
     }
 
-    if (randomNumber < 99) {
+    if (randomNumber < 98) {
       // Pass the ball to the attacking area
       handleBallPassToNextArea(match, match.ballPossession.position);
       return;
