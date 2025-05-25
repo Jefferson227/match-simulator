@@ -43,7 +43,7 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
         <div className={showSubstitutes ? 'hidden' : 'block'}>
           {teamSquadView.team.players.map((player) => (
             <div
-              className="text-[14px] flex justify-between py-2 px-6 uppercase cursor-pointer"
+              className="text-[14px] flex justify-between py-0.5 px-6 uppercase cursor-pointer"
               key={player.id}
               style={{
                 color:
@@ -78,7 +78,7 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
         >
           {teamSquadView.team.substitutes.map((substitute) => (
             <div
-              className="text-[14px] flex justify-between py-2 px-6 uppercase cursor-pointer"
+              className="text-[14px] flex justify-between py-0.5 px-6 uppercase cursor-pointer"
               key={substitute.id}
               style={{
                 color:
