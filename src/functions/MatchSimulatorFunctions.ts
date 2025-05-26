@@ -307,19 +307,19 @@ function runMatchLogic(
 
   /**
    * If the ball is in the attack field, the team with the ball possession must roll the dice to decide what to do:
-   * - Move the ball within the same area (75% of the times)
+   * - Move the ball within the same area (60% of the times)
    * - Pass the ball back to the midfield area (10% of the times)
-   * - Shoot the ball to the goal (15% of the times)
+   * - Shoot the ball to the goal (30% of the times)
    */
   if (match.ballPossession.position === 'attack') {
     const randomNumber = getRandomNumber(0, 100);
-    if (randomNumber < 75) {
+    if (randomNumber < 60) {
       // Move the ball within the same area
       handleBallMovement(match);
       return;
     }
 
-    if (randomNumber < 85) {
+    if (randomNumber < 70) {
       // Pass the ball back to the midfield area
       handleBallPassToPreviousArea(match);
       return;
