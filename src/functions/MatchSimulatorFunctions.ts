@@ -7,12 +7,28 @@ const {
   getNextFieldArea,
   getPreviousFieldArea,
 } = utils;
+const debugTeam = 'América Futebol Clube';
 
 function kickOff(matches: Match[]): void {
   matches.forEach((match) => {
     var randomNumber = getRandomNumber(0, 100);
     match.ballPossession.isHomeTeam = randomNumber < 50;
     match.ballPossession.position = 'midfield';
+
+    // Log the kick off
+    if (match.homeTeam.name === debugTeam) {
+      if (match.ballPossession.isHomeTeam) {
+        console.log(
+          `kickOff(); team: ${match.homeTeam.name}; position: ${match.ballPossession.position}`
+        );
+
+        return;
+      }
+
+      console.log(
+        `kickOff(); team: ${match.visitorTeam.name}; position: ${match.ballPossession.position}`
+      );
+    }
   });
 }
 
@@ -52,10 +68,18 @@ function handleBallShoot(
    * Roll the dice to choose one player from the current position to dispute against the opposing team
    * Get the sum of the strength of all DF players plus the GK from the opposing team
    */
+
   // Get the team with the ball possession
   const teamWithBallPossession = match.ballPossession.isHomeTeam
     ? match.homeTeam
     : match.visitorTeam;
+
+  // Track shot attempts
+  match.shotAttempts = (match.shotAttempts || 0) + 1;
+  if (match.homeTeam.name === debugTeam)
+    console.log(
+      `handleBallShoot(); team: ${teamWithBallPossession.name}; position: ${match.ballPossession.position}; shot attempt: ${match.shotAttempts}`
+    );
 
   // Get the opposing team
   const opposingTeam = match.ballPossession.isHomeTeam
@@ -88,6 +112,12 @@ function handleBallShoot(
     setScorer(match.id, { playerName: shooter.name, time });
     increaseScore(match.id, { isHomeTeam: match.ballPossession.isHomeTeam });
 
+    // Log the goal
+    if (match.homeTeam.name === debugTeam)
+      console.log(
+        `handleBallShoot(); team: ${teamWithBallPossession.name}; position: ${match.ballPossession.position}; goal scored by ${shooter.name} at ${time} minutes`
+      );
+
     kickOffAfterGoal(match);
     return;
   }
@@ -97,6 +127,12 @@ function handleBallShoot(
   match.ballPossession.position = getOpposingPosition(
     match.ballPossession.position
   );
+
+  // Log the shot attempt failed
+  if (match.homeTeam.name === debugTeam)
+    console.log(
+      `handleBallShoot(); team: ${opposingTeam.name}; position: ${match.ballPossession.position}; shot attempt failed - interception`
+    );
 }
 
 function handleBallPassToNextArea(match: Match): void {
@@ -142,12 +178,24 @@ function handleBallPassToNextArea(match: Match): void {
     match.ballPossession.position = getNextFieldArea(
       match.ballPossession.position
     );
+
+    // Log the ball passed to the next area
+    if (match.homeTeam.name === debugTeam)
+      console.log(
+        `handleBallPassToNextArea(); team: ${teamWithBallPossession.name}; position: ${match.ballPossession.position}; ball passed to next area`
+      );
     return;
   }
 
   // Otherwise, the ball possession is switched to the opposing team
   match.ballPossession.isHomeTeam = !match.ballPossession.isHomeTeam;
   match.ballPossession.position = opposingPosition;
+
+  // Log the ball pass failed
+  if (match.homeTeam.name === debugTeam)
+    console.log(
+      `handleBallPassToNextArea(); team: ${opposingTeam.name}; position: ${match.ballPossession.position}; ball pass failed - interception`
+    );
 }
 
 function handleBallPassToPreviousArea(match: Match): void {
@@ -193,12 +241,24 @@ function handleBallPassToPreviousArea(match: Match): void {
     match.ballPossession.position = getPreviousFieldArea(
       match.ballPossession.position
     );
+
+    // Log the ball passed to the previous area
+    if (match.homeTeam.name === debugTeam)
+      console.log(
+        `handleBallPassToPreviousArea(); team: ${teamWithBallPossession.name}; position: ${match.ballPossession.position}; ball passed to previous area`
+      );
     return;
   }
 
   // Otherwise, the ball possession is switched to the opposing team
   match.ballPossession.isHomeTeam = !match.ballPossession.isHomeTeam;
   match.ballPossession.position = opposingPosition;
+
+  // Log the ball pass failed
+  if (match.homeTeam.name === debugTeam)
+    console.log(
+      `handleBallPassToPreviousArea(); team: ${opposingTeam.name}; position: ${match.ballPossession.position}; ball pass failed - interception`
+    );
 }
 
 function handleBallMovement(match: Match): void {
@@ -240,12 +300,24 @@ function handleBallMovement(match: Match): void {
   // If the team with the ball possession wins the dispute, so the possession is maintained
   if (
     teamWithBallPossessionStrengthForDispute >= opposingTeamStrengthForDispute
-  )
+  ) {
+    // Log the ball movement within the same area
+    if (match.homeTeam.name === debugTeam)
+      console.log(
+        `handleBallMovement(); team: ${teamWithBallPossession.name}; position: ${match.ballPossession.position}; ball movement within the same area`
+      );
     return;
+  }
 
   // Otherwise, the possession is switched to the opposing team
   match.ballPossession.isHomeTeam = !match.ballPossession.isHomeTeam;
   match.ballPossession.position = opposingPosition;
+
+  // Log the ball movement - interception
+  if (match.homeTeam.name === debugTeam)
+    console.log(
+      `handleBallMovement(); team: ${opposingTeam.name}; position: ${match.ballPossession.position}; ball movement - interception`
+    );
 }
 
 function runMatchLogic(

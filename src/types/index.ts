@@ -49,6 +49,7 @@ export interface Match {
     isHomeTeam: boolean;
     position: 'midfield' | 'defense' | 'attack';
   };
+  shotAttempts: number;
   // ball?: {
   //   possessedBy: {
   //     teamId: string;
