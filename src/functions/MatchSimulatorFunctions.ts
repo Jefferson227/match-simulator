@@ -16,6 +16,27 @@ function kickOff(matches: Match[]): void {
   });
 }
 
+function kickOffAfterGoal(match: Match): void {
+  // Ball possession is switched to the opposing team after taking a goal
+  match.ballPossession.isHomeTeam = !match.ballPossession.isHomeTeam;
+  match.ballPossession.position = 'midfield';
+
+  // Log the kick off after goal
+  if (match.homeTeam.name === debugTeam) {
+    if (match.ballPossession.isHomeTeam) {
+      console.log(
+        `kickOffAfterGoal(); team: ${match.homeTeam.name}; position: ${match.ballPossession.position}`
+      );
+
+      return;
+    }
+
+    console.log(
+      `kickOffAfterGoal(); team: ${match.visitorTeam.name}; position: ${match.ballPossession.position}`
+    );
+  }
+}
+
 function endMatch(): void {
   // Placeholder for match end logic if needed
 }
@@ -66,6 +87,8 @@ function handleBallShoot(
 
     setScorer(match.id, { playerName: shooter.name, time });
     increaseScore(match.id, { isHomeTeam: match.ballPossession.isHomeTeam });
+
+    kickOffAfterGoal(match);
     return;
   }
 
