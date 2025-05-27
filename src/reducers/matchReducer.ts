@@ -73,8 +73,10 @@ export const matchReducer = (
             lastScorer: null,
             ballPossession: {
               isHomeTeam: true,
-              ballPosition: 'midfield', // defense, midfield, attack
+              position: 'midfield', // defense, midfield, attack
             },
+            shotAttempts: 0,
+            scorers: [],
           },
         ],
       };
@@ -85,15 +87,21 @@ export const matchReducer = (
       return {
         ...state,
         matches: state.matches.map((m) => {
-          return m.id === matchId
-            ? {
-                ...m,
-                lastScorer: {
-                  playerName: scorer.playerName,
-                  time: scorer.time,
-                },
-              }
-            : m;
+          if (m.id === matchId) {
+            // Determine if the scorer is from the home team
+            const isHomeTeam = m.homeTeam.players.some(
+              (p) => p.name === scorer.playerName
+            );
+            return {
+              ...m,
+              lastScorer: {
+                playerName: scorer.playerName,
+                time: scorer.time,
+              },
+              scorers: [...(m.scorers || []), { ...scorer, isHomeTeam }],
+            };
+          }
+          return m;
         }),
       };
     }

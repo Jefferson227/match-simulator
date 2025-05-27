@@ -5,9 +5,11 @@ import Functions from '../../functions/MatchSimulatorFunctions';
 import TeamPlayers from '../TeamPlayers/TeamPlayers';
 import { MatchContext } from '../../contexts/MatchContext';
 import teamService from '../../services/teamService';
+import MatchDetails from '../MatchDetails';
 
 const MatchSimulator: FC = () => {
   const [time, setTime] = useState<number>(0);
+  const [detailsMatchId, setDetailsMatchId] = useState<string | null>(null);
   const { matches, teamSquadView, setMatches, increaseScore, setScorer } =
     useContext(MatchContext);
   const { getTeams } = teamService;
@@ -46,7 +48,7 @@ const MatchSimulator: FC = () => {
         <p className="m-0 pt-2 text-right pr-2 text-[20px] text-[#1e1e1e]">{`${time}'`}</p>
       </div>
 
-      {!teamSquadView ? (
+      {!teamSquadView && !detailsMatchId ? (
         <div className="flex flex-col items-center">
           {matches.map((match, index) => (
             <div
@@ -57,6 +59,7 @@ const MatchSimulator: FC = () => {
               <Score
                 homeScore={match.homeTeam.score || 0}
                 guestScore={match.visitorTeam.score || 0}
+                onClick={() => setDetailsMatchId(match.id)}
               />
               <TeamComponent team={match.visitorTeam} matchId={match.id} />
               <div className="absolute -bottom-8 left-0 text-[14px] text-[#e2e2e2] uppercase">
@@ -68,6 +71,19 @@ const MatchSimulator: FC = () => {
           ))}
         </div>
       ) : null}
+
+      {detailsMatchId &&
+        (() => {
+          const match = matches.find((m) => m.id === detailsMatchId);
+          if (!match) return null;
+          return (
+            <MatchDetails
+              match={match}
+              scorers={match.scorers || []}
+              onBack={() => setDetailsMatchId(null)}
+            />
+          );
+        })()}
 
       {teamSquadView ? <TeamPlayers teamSquadView={teamSquadView} /> : null}
     </div>
