@@ -26,7 +26,7 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
         }}
       >
         <div
-          className="max-h-[80px] border-b-2 text-[20px] py-[22px] px-[22px] uppercase"
+          className="max-h-[80px] border-b-2 text-[20px] py-[10px] px-[22px] uppercase"
           style={{
             color: teamSquadView.team.colors.name,
             borderColor: teamSquadView.team.colors.outline,
@@ -35,12 +35,12 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
           {teamSquadView.team.name}
         </div>
         <div
-          className="max-h-[60px] border-b-2 text-[16px] py-[22px] px-[22px] text-[#e2e2e2]"
+          className="max-h-[60px] border-b-2 text-[16px] py-[10px] px-[22px] text-[#e2e2e2]"
           style={{ borderColor: teamSquadView.team.colors.outline }}
         >
           4-3-3
         </div>
-        <div className={showSubstitutes ? 'hidden' : 'block'}>
+        <div className={showSubstitutes ? 'hidden' : 'block mt-[10px]'}>
           {teamSquadView.team.players.map((player) => (
             <div
               className="text-[14px] flex justify-between py-0.5 px-6 uppercase cursor-pointer"
@@ -72,7 +72,7 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
         <div
           className={
             showSubstitutes && teamSquadView.team.substitutes
-              ? 'block'
+              ? 'block mt-[10px]'
               : 'hidden'
           }
         >
