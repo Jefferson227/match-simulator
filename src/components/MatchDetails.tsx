@@ -26,8 +26,10 @@ const MatchDetails: FC<MatchDetailsProps> = ({ match, scorers, onBack }) => {
           </div>
         </div>
 
-        <div className="text-[22px] text-white">
-          {match.homeTeam.score}x{match.visitorTeam.score}
+        <div className="flex items-center text-[22px] text-white">
+          <div>{match.homeTeam.score}</div>
+          <div className="mx-[2px]">x</div>
+          <div>{match.visitorTeam.score}</div>
         </div>
 
         <div className="flex items-center">
