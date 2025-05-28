@@ -10,5 +10,9 @@
       "MF": "MC",
       "FW": "AT"
     }
+  },
+  "matchDetails": {
+    "noGoals": "Nenhum gol marcado",
+    "backToMatch": "VOLTAR AO JOGO"
   }
 }

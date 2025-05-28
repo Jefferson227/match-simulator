@@ -10,5 +10,9 @@
       "MF": "MF",
       "FW": "FW"
     }
+  },
+  "matchDetails": {
+    "noGoals": "No goals",
+    "backToMatch": "BACK TO MATCH"
   }
 }
