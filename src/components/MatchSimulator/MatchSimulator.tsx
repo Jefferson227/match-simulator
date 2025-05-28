@@ -22,22 +22,24 @@ const MatchSimulator: FC = () => {
   useEffect(() => {
     let timer: number | undefined;
 
-    timer = window.setInterval(() => {
-      setTime((prevTime) => prevTime + 1);
-    }, 1000);
-
-    if (time >= 90 || teamSquadView) {
-      clearInterval(timer);
+    if (!detailsMatchId && !teamSquadView) {
+      timer = window.setInterval(() => {
+        setTime((prevTime) => prevTime + 1);
+      }, 1000);
     }
 
     if (matches.length > 0) {
       Functions.tickClock(time, matches, setScorer, increaseScore);
     }
 
+    if (time >= 90 || teamSquadView || detailsMatchId) {
+      if (timer) clearInterval(timer);
+    }
+
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [time, matches, teamSquadView, setScorer, increaseScore]);
+  }, [time, matches, teamSquadView, detailsMatchId, setScorer, increaseScore]);
 
   return (
     <div className="font-press-start">
