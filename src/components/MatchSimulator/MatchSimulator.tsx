@@ -22,13 +22,13 @@ const MatchSimulator: FC = () => {
   useEffect(() => {
     let timer: number | undefined;
 
-    if (!detailsMatchId && !teamSquadView) {
+    if (!detailsMatchId && !teamSquadView && time < 90) {
       timer = window.setInterval(() => {
         setTime((prevTime) => prevTime + 1);
       }, 1000);
     }
 
-    if (matches.length > 0) {
+    if (matches.length > 0 && time < 90) {
       Functions.tickClock(time, matches, setScorer, increaseScore);
     }
 
