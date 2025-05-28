@@ -46,7 +46,7 @@ const MatchDetails: FC<MatchDetailsProps> = ({ match, scorers, onBack }) => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 min-h-[180px] mb-8">
+      <div className="flex flex-col gap-2 min-h-[374px] mb-8">
         {scorers.length === 0 ? (
           <div className="text-center text-white text-[16px]">
             {t('matchDetails.noGoals')}
