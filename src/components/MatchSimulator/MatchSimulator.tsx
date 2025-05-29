@@ -47,7 +47,7 @@ const MatchSimulator: FC = () => {
         className="h-[33px] bg-[#fbff21] mb-[33px]"
         style={{ width: `${(time * 100) / 90}%` }}
       >
-        <p className="m-0 pt-2 text-right pr-2 text-[20px] text-[#1e1e1e]">{`${time}'`}</p>
+        <p className="m-0 pt-1 text-right pr-2 text-[20px] text-[#1e1e1e]">{`${time}'`}</p>
       </div>
 
       {!teamSquadView && !detailsMatchId ? (
