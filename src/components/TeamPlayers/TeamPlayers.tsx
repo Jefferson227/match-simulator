@@ -154,17 +154,19 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
         </div>
       </div>
 
-      <div className="mt-[18px]">
-        <div className={showSubstitutes ? 'block' : 'hidden'}>
-          <button
-            className="w-[318px] h-[58px] outline outline-4 outline-[#e2e2e2] border-0 inline-block text-[#e2e2e2] bg-[#3d7a33] text-[16px] mt-4"
-            onClick={() => setShowSubstitutes(false)}
-          >
-            {t('teamPlayers.backToMainTeam')}
-          </button>
-        </div>
+      <div className="mt-[18px] ">
         <button
-          className="w-[318px] h-[58px] outline outline-4 outline-[#e2e2e2] border-0 inline-block text-[#e2e2e2] bg-[#3d7a33] text-[16px] mt-4"
+          className={`${
+            showSubstitutes ? 'inline-block' : 'hidden'
+          } w-[159px] h-[58px] outline outline-4 outline-[#e2e2e2] border-0 text-[#e2e2e2] bg-[#3d7a33] text-[16px] mt-4 mr-[24px]`}
+          onClick={() => setShowSubstitutes(false)}
+        >
+          {t('teamPlayers.backToMainTeam')}
+        </button>
+        <button
+          className={`${
+            showSubstitutes ? 'w-[159px]' : 'w-[318px]'
+          } h-[58px] outline outline-4 outline-[#e2e2e2] border-0 inline-block text-[#e2e2e2] bg-[#3d7a33] text-[16px] mt-4`}
           onClick={() => setTeamSquadView(null)}
         >
           {t('teamPlayers.backToMatch')}
