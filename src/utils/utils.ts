@@ -138,14 +138,14 @@ function getTeamFormation(team: { players: { position: string }[] }): string {
 function getTeamMoralePercentage(team: { morale: number }): number {
   // The morale percentage can vary from -30% to 30%
   // A value of 50 represents 30%, and the morale number from the team is calculated proportionally
-  // If the morale is more than 50, the percentage is positive
+  // If the morale is greater or equals than 50, the percentage is positive
   // If the morale is less than 50, the percentage is negative
   if (team.morale >= 50) {
     const calculatedMorale = team.morale - 50;
-    return (30 * calculatedMorale) / 50;
+    return Math.round((30 * calculatedMorale) / 50);
   }
 
-  return ((30 * team.morale) / 50) * -1;
+  return Math.round(((30 * team.morale) / 50) * -1);
 }
 
 function getMaxTeamStrength(
@@ -172,7 +172,6 @@ const utils = {
   getNextFieldArea,
   getTeamFormation,
   getMaxTeamStrength,
-  getTeamMoralePercentage,
 };
 
 export default utils;
