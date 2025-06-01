@@ -135,6 +135,27 @@ function getTeamFormation(team: { players: { position: string }[] }): string {
   return `${defenders}-${midfielders}-${forwards}`;
 }
 
+function getTeamMoralePercentage(team: { morale: number }): number {
+  // The morale percentage can vary from -30% to 30%
+  // If the morale is more than 50, the percentage is positive
+  // 50 represents 30%, and the morale number from the team is calculated proportionally based on that
+  if (team.morale >= 50) {
+    // 50 -> 30%
+    // morale (68) -> moralePercentage
+
+    // moralePercentage * 50 = 30 * morale (68)
+
+    // moralePercentage = 30 * morale (68) / 50
+    return (30 * team.morale) / 50;
+  }
+
+  // If the morale is less than 50, the percentage is negative
+  // Let's say "50" is "0"
+  // So if the morale is 35, the morale for the calculation is 50 - 35 = 15
+  // and we get 15 + 50 = 65, which is the morale for the calculation
+  const calculatedMorale = 100 - team.morale;
+  return ((30 * (50 - calculatedMorale)) / 50) * -1;
+}
 
 function getMaxTeamStrength(
   team: { players: { strength: number; position: string }[] },
