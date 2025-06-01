@@ -2,7 +2,7 @@ import utils from '../utils/utils';
 import { MatchState, Team, Player, Match } from '../types';
 import { MatchAction } from '../contexts/MatchContext';
 
-const { addPlayerAttributes, getRandomNumber, getAverage, getSum } = utils;
+const { addPlayerAttributes, getAverage, getSum } = utils;
 
 export const matchReducer = (
   state: MatchState,
