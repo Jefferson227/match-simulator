@@ -146,6 +146,7 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
                 });
                 setSelectedPlayer(null);
                 setSelectedSubstitute(null);
+                setShowSubstitutes(false);
               }
             }}
           >
