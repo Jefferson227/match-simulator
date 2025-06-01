@@ -6,6 +6,7 @@ const {
   getOpposingPosition,
   getNextFieldArea,
   getPreviousFieldArea,
+  getMaxTeamStrength,
 } = utils;
 const debugTeam = 'Ceará Sporting Club';
 
@@ -147,19 +148,19 @@ function handleBallPassToNextArea(match: Match): void {
     : match.homeTeam;
 
   // Get the sum of the strength of all players in the position from the team with the ball possession
-  const maxTeamWithBallPossessionStrength = teamWithBallPossession.players
-    .filter(
-      (p) => p.position === getPlayerPosition(match.ballPossession.position)
-    )
-    .reduce((acc, player) => acc + player.strength, 0);
+  const maxTeamWithBallPossessionStrength = getMaxTeamStrength(
+    teamWithBallPossession,
+    getPlayerPosition(match.ballPossession.position)
+  );
 
   // Get the opposing position
   const opposingPosition = getOpposingPosition(match.ballPossession.position);
 
   // Get the sum of the strength of all players in the opposing position from the opposing team
-  const maxOpposingTeamStrength = opposingTeam.players
-    .filter((p) => p.position === getPlayerPosition(opposingPosition))
-    .reduce((acc, player) => acc + player.strength, 0);
+  const maxOpposingTeamStrength = getMaxTeamStrength(
+    opposingTeam,
+    getPlayerPosition(opposingPosition)
+  );
 
   // Roll the dice for each sum to get the values to be disputed
   const teamWithBallPossessionStrengthForDispute = getRandomNumber(
@@ -210,19 +211,19 @@ function handleBallPassToPreviousArea(match: Match): void {
     : match.homeTeam;
 
   // Get the sum of the strength of all players in the position from the team with the ball possession
-  const maxTeamWithBallPossessionStrength = teamWithBallPossession.players
-    .filter(
-      (p) => p.position === getPlayerPosition(match.ballPossession.position)
-    )
-    .reduce((acc, player) => acc + player.strength, 0);
+  const maxTeamWithBallPossessionStrength = getMaxTeamStrength(
+    teamWithBallPossession,
+    getPlayerPosition(match.ballPossession.position)
+  );
 
   // Get the opposing position
   const opposingPosition = getOpposingPosition(match.ballPossession.position);
 
   // Get the sum of the strength of all players in the opposing position from the opposing team
-  const maxOpposingTeamStrength = opposingTeam.players
-    .filter((p) => p.position === getPlayerPosition(opposingPosition))
-    .reduce((acc, player) => acc + player.strength, 0);
+  const maxOpposingTeamStrength = getMaxTeamStrength(
+    opposingTeam,
+    getPlayerPosition(opposingPosition)
+  );
 
   // Roll the dice for each sum to get the values to be disputed
   const teamWithBallPossessionStrengthForDispute = getRandomNumber(
@@ -273,19 +274,19 @@ function handleBallMovement(match: Match): void {
     : match.homeTeam;
 
   // Get the sum of the strength of all players in the position from the team with the ball possession
-  const maxTeamWithBallPossessionStrength = teamWithBallPossession.players
-    .filter(
-      (p) => p.position === getPlayerPosition(match.ballPossession.position)
-    )
-    .reduce((acc, player) => acc + player.strength, 0);
+  const maxTeamWithBallPossessionStrength = getMaxTeamStrength(
+    teamWithBallPossession,
+    getPlayerPosition(match.ballPossession.position)
+  );
 
   // Get the opposing position
   const opposingPosition = getOpposingPosition(match.ballPossession.position);
 
   // Get the sum of the strength of all players in the opposing position from the opposing team
-  const maxOpposingTeamStrength = opposingTeam.players
-    .filter((p) => p.position === getPlayerPosition(opposingPosition))
-    .reduce((acc, player) => acc + player.strength, 0);
+  const maxOpposingTeamStrength = getMaxTeamStrength(
+    opposingTeam,
+    getPlayerPosition(opposingPosition)
+  );
 
   // Roll the dice for each sum to get the values to be disputed
   const teamWithBallPossessionStrengthForDispute = getRandomNumber(
