@@ -135,6 +135,20 @@ function getTeamFormation(team: { players: { position: string }[] }): string {
   return `${defenders}-${midfielders}-${forwards}`;
 }
 
+
+function getMaxTeamStrength(
+  team: { players: { strength: number; position: string }[] },
+  position: string
+): number {
+  // TODO: Get the team morale and players' mood
+  // The team morale can add or remove up to 30% to the team strength
+  // The players' mood can add or remove up to 10% to the team strength
+
+  return team.players
+    .filter((p) => p.position === position)
+    .reduce((acc, player) => acc + player.strength, 0);
+}
+
 const utils = {
   addPlayerAttributes,
   getRandomNumber,
@@ -145,6 +159,7 @@ const utils = {
   getPreviousFieldArea,
   getNextFieldArea,
   getTeamFormation,
+  getMaxTeamStrength,
 };
 
 export default utils;
