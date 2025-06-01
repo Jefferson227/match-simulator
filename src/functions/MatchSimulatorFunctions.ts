@@ -7,7 +7,7 @@ const {
   getNextFieldArea,
   getPreviousFieldArea,
 } = utils;
-const debugTeam = 'América Futebol Clube';
+const debugTeam = 'Ceará Sporting Club';
 
 function kickOff(matches: Match[]): void {
   matches.forEach((match) => {
