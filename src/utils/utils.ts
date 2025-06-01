@@ -148,6 +148,19 @@ function getTeamMoralePercentage(team: { morale: number }): number {
   return Math.round(((30 * team.morale) / 50) * -1);
 }
 
+function getTeamMoodPercentage(team: { overallMood: number }): number {
+  // The mood percentage can vary from -10% to 10%
+  // A value of 50 represents 10%, and the overall mood number from the team is calculated proportionally
+  // If the mood is greater or equals than 50, the percentage is positive
+  // If the mood is less than 50, the percentage is negative
+  if (team.overallMood >= 50) {
+    const calculatedMood = team.overallMood - 50;
+    return Math.round((10 * calculatedMood) / 50);
+  }
+
+  return Math.round(((10 * team.overallMood) / 50) * -1);
+}
+
 function getMaxTeamStrength(
   team: { players: { strength: number; position: string }[] },
   position: string
