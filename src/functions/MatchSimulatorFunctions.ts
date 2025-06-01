@@ -8,6 +8,7 @@ const {
   getPreviousFieldArea,
   getMaxTeamStrength,
   getMaxShooterStrength,
+  getMaxDefenseStrength,
 } = utils;
 const debugTeam = 'Ceará Sporting Club';
 
@@ -102,9 +103,7 @@ function handleBallShoot(
   );
 
   // Get the sum of the strength of all DF players plus the GK from the opposing team
-  const defensePlayersMaxStrength = opposingTeam.players
-    .filter((p) => p.position === 'DF' || p.position === 'GK')
-    .reduce((acc, player) => acc + player.strength, 0);
+  const defensePlayersMaxStrength = getMaxDefenseStrength(opposingTeam);
 
   // Roll the dice to see if the shooter can score a goal
   const shooterStrength = getRandomNumber(1, shooterMaxStrength);

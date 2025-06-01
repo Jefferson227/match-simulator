@@ -184,6 +184,26 @@ function getMaxTeamStrength(
   );
 }
 
+function getMaxDefenseStrength(team: {
+  players: { strength: number; position: string }[];
+  morale: number;
+  overallMood: number;
+}): number {
+  // The team morale can add or remove up to 30% to the team strength
+  // The players' mood can add or remove up to 10% to the team strength
+  const teamMoralePercentage = getTeamMoralePercentage(team);
+  const teamMoodPercentage = getTeamMoodPercentage(team);
+  const teamStrength = team.players
+    .filter((p) => p.position === 'DF' || p.position === 'GK')
+    .reduce((acc, player) => acc + player.strength, 0);
+
+  return (
+    teamStrength *
+    (1 + teamMoralePercentage / 100) *
+    (1 + teamMoodPercentage / 100)
+  );
+}
+
 function getPlayerMoodPercentage(player: { mood: number }): number {
   // The mood percentage can vary from -10% to 10%
   // A value of 50 represents 10%, and the mood number from the player is calculated proportionally
@@ -223,6 +243,7 @@ const utils = {
   getTeamFormation,
   getMaxTeamStrength,
   getMaxShooterStrength,
+  getMaxDefenseStrength,
 };
 
 export default utils;
