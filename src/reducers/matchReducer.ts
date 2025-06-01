@@ -150,77 +150,46 @@ export const matchReducer = (
       return {
         ...state,
         matches: state.matches.map((match) => {
-          if (match.id === matchId) {
-            // Create a new copy of the match
-            const updatedMatch = { ...match };
+          if (match.id !== matchId) return match;
 
-            // Find and update the correct team
-            if (team.isHomeTeam) {
-              // Create copies of players and substitutes arrays
-              const filteredPlayers = updatedMatch.homeTeam.players.filter(
-                (p) => p.id !== selectedPlayer.id
-              );
+          // Create a new copy of the match
+          const updatedMatch = { ...match };
 
-              const sortedPlayers = [
-                ...filteredPlayers,
-                selectedSubstitute,
-              ].sort((a, b) => {
-                if ((a.order ?? 0) < (b.order ?? 0)) {
-                  return -1; // a comes before b
-                }
-                if ((a.order ?? 0) > (b.order ?? 0)) {
-                  return 1; // a comes after b
-                }
-                return 0; // a and b are equal
-              });
+          const isTeamHomeOrVisitor = team.isHomeTeam
+            ? 'homeTeam'
+            : 'visitorTeam';
 
-              const filteredSubstitutes =
-                updatedMatch.homeTeam.substitutes.filter(
-                  (s) => s.id !== selectedSubstitute.id
-                );
+          // Remove the substituted player from the main squad
+          const filteredPlayers = updatedMatch[
+            isTeamHomeOrVisitor
+          ].players.filter((p) => p.id !== selectedPlayer.id);
 
-              // Update the homeTeam
-              updatedMatch.homeTeam = {
-                ...updatedMatch.homeTeam,
-                players: sortedPlayers,
-                substitutes: filteredSubstitutes,
-              };
-            } else {
-              // Create copies of players and substitutes arrays
-              const filteredPlayers = updatedMatch.visitorTeam.players.filter(
-                (p) => p.id !== selectedPlayer.id
-              );
-
-              const sortedPlayers = [
-                ...filteredPlayers,
-                selectedSubstitute,
-              ].sort((a, b) => {
-                if ((a.order ?? 0) < (b.order ?? 0)) {
-                  return -1; // a comes before b
-                }
-                if ((a.order ?? 0) > (b.order ?? 0)) {
-                  return 1; // a comes after b
-                }
-                return 0; // a and b are equal
-              });
-
-              const filteredSubstitutes =
-                updatedMatch.visitorTeam.substitutes.filter(
-                  (s) => s.id !== selectedSubstitute.id
-                );
-
-              // Update the visitorTeam
-              updatedMatch.visitorTeam = {
-                ...updatedMatch.visitorTeam,
-                players: sortedPlayers,
-                substitutes: filteredSubstitutes,
-              };
+          // Sort the players from the main squad plus the substitute by order
+          const sortedPlayers = [...filteredPlayers, selectedSubstitute].sort(
+            (a, b) => {
+              if ((a.order ?? 0) < (b.order ?? 0)) {
+                return -1; // a comes before b
+              }
+              if ((a.order ?? 0) > (b.order ?? 0)) {
+                return 1; // a comes after b
+              }
+              return 0; // a and b are equal
             }
+          );
 
-            return updatedMatch;
-          }
+          // Remove the changed player from the substitutes
+          const filteredSubstitutes = updatedMatch[
+            isTeamHomeOrVisitor
+          ].substitutes.filter((s) => s.id !== selectedSubstitute.id);
 
-          return match;
+          // Update the team
+          updatedMatch[isTeamHomeOrVisitor] = {
+            ...updatedMatch[isTeamHomeOrVisitor],
+            players: sortedPlayers,
+            substitutes: filteredSubstitutes,
+          };
+
+          return updatedMatch;
         }),
       };
     }
