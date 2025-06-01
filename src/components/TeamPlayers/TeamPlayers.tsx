@@ -1,4 +1,4 @@
-import { FC, useContext, useState } from 'react';
+import { FC, useContext, useState, useEffect } from 'react';
 import { MatchContext } from '../../contexts/MatchContext';
 import { useTranslation } from 'react-i18next';
 import { TeamSquadView, Player } from '../../types';
@@ -14,7 +14,25 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
     null
   );
   const [showSubstitutes, setShowSubstitutes] = useState<boolean>(false);
-  const { setTeamSquadView, confirmSubstitution } = useContext(MatchContext);
+  const { matches, setTeamSquadView, confirmSubstitution } =
+    useContext(MatchContext);
+
+  useEffect(() => {
+    // When matches or teamSquadView changes, update the teamSquadView with the latest team
+    const updatedMatch = matches.find((m) => m.id === teamSquadView.matchId);
+    const updatedTeam = teamSquadView.team.isHomeTeam
+      ? updatedMatch?.homeTeam
+      : updatedMatch?.visitorTeam;
+
+    if (updatedTeam) {
+      setTeamSquadView({
+        ...teamSquadView,
+        team: updatedTeam,
+      });
+    }
+    // Only run this effect after a substitution (e.g., when showSubstitutes is false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [matches]);
 
   return (
     <div className="font-press-start">
