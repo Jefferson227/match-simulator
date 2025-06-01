@@ -2,6 +2,7 @@ import { FC, useContext, useState, useEffect } from 'react';
 import { MatchContext } from '../../contexts/MatchContext';
 import { useTranslation } from 'react-i18next';
 import { TeamSquadView, Player } from '../../types';
+import utils from '../../utils/utils';
 
 interface TeamPlayersProps {
   teamSquadView: TeamSquadView;
@@ -56,7 +57,7 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
           className="max-h-[60px] border-b-2 text-[16px] py-[10px] px-[22px] text-[#e2e2e2]"
           style={{ borderColor: teamSquadView.team.colors.outline }}
         >
-          4-3-3
+          {utils.getTeamFormation(teamSquadView.team)}
         </div>
         <div className={showSubstitutes ? 'hidden' : 'block mt-[10px]'}>
           {teamSquadView.team.players.map((player) => (

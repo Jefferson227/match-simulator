@@ -128,6 +128,13 @@ function getPreviousFieldArea(
   }
 }
 
+function getTeamFormation(team: { players: { position: string }[] }): string {
+  const defenders = team.players.filter((p) => p.position === 'DF').length;
+  const midfielders = team.players.filter((p) => p.position === 'MF').length;
+  const forwards = team.players.filter((p) => p.position === 'FW').length;
+  return `${defenders}-${midfielders}-${forwards}`;
+}
+
 const utils = {
   addPlayerAttributes,
   getRandomNumber,
@@ -137,6 +144,7 @@ const utils = {
   getOpposingPosition,
   getPreviousFieldArea,
   getNextFieldArea,
+  getTeamFormation,
 };
 
 export default utils;
