@@ -45,7 +45,7 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
         }}
       >
         <div
-          className="max-h-[80px] border-b-2 text-[20px] py-[10px] px-[22px] uppercase"
+          className="max-h-[80px] border-b-3 text-[20px] py-[10px] px-[22px] uppercase"
           style={{
             color: teamSquadView.team.colors.name,
             borderColor: teamSquadView.team.colors.outline,
@@ -54,7 +54,7 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
           {teamSquadView.team.name}
         </div>
         <div
-          className="max-h-[60px] border-b-2 text-[16px] py-[10px] px-[22px] text-[#e2e2e2]"
+          className="max-h-[60px] border-b-3 text-[16px] py-[10px] px-[22px] text-[#e2e2e2]"
           style={{ borderColor: teamSquadView.team.colors.outline }}
         >
           {utils.getTeamFormation(teamSquadView.team)}
