@@ -24,7 +24,7 @@ export const matchReducer = (
               substitutes: addPlayerAttributes(homeTeam.substitutes),
               isHomeTeam: true,
               score: 0,
-              morale: getRandomNumber(0, 100),
+              morale: 50,
               overallMood: getAverage(homeTeam.players.map((p) => p.mood)),
               overallStrength: getSum(homeTeam.players.map((p) => p.strength)),
               attackStrength: getSum(
@@ -49,7 +49,7 @@ export const matchReducer = (
               substitutes: addPlayerAttributes(visitorTeam.substitutes),
               isHomeTeam: false,
               score: 0,
-              morale: getRandomNumber(0, 100),
+              morale: 50,
               overallMood: getAverage(visitorTeam.players.map((p) => p.mood)),
               overallStrength: getSum(
                 visitorTeam.players.map((p) => p.strength)
