@@ -184,6 +184,33 @@ function getMaxTeamStrength(
   );
 }
 
+function getPlayerMoodPercentage(player: { mood: number }): number {
+  // The mood percentage can vary from -10% to 10%
+  // A value of 50 represents 10%, and the mood number from the player is calculated proportionally
+  // If the mood is greater or equals than 50, the percentage is positive
+  // If the mood is less than 50, the percentage is negative
+  if (player.mood >= 50) {
+    const calculatedMood = player.mood - 50;
+    return Math.round((10 * calculatedMood) / 50);
+  }
+
+  return Math.round(((10 * player.mood) / 50) * -1);
+}
+
+function getMaxShooterStrength(
+  player: { strength: number; mood: number },
+  team: { morale: number }
+): number {
+  const teamMoralePercentage = getTeamMoralePercentage(team);
+  const playerMoodPercentage = getPlayerMoodPercentage(player);
+
+  return (
+    player.strength *
+    (1 + teamMoralePercentage / 100) *
+    (1 + playerMoodPercentage / 100)
+  );
+}
+
 const utils = {
   addPlayerAttributes,
   getRandomNumber,
@@ -195,6 +222,7 @@ const utils = {
   getNextFieldArea,
   getTeamFormation,
   getMaxTeamStrength,
+  getMaxShooterStrength,
 };
 
 export default utils;
