@@ -12,7 +12,7 @@ const MatchDetails: FC<MatchDetailsProps> = ({ match, scorers, onBack }) => {
   const { t } = useTranslation();
   return (
     <div className="font-press-start w-[350px] h-[596px] mx-auto mt-8 outline outline-4 outline-white bg-[#397a33] p-4">
-      <div className="flex justify-between items-center border-b-2 border-white pb-4 mb-4">
+      <div className="flex justify-between items-center border-b-3 border-white pb-4 mb-4">
         <div className="flex items-center">
           <div
             className="w-[95px] h-[58px] border-[4px] box-content flex items-center justify-center text-[22px] mr-4"
