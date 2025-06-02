@@ -177,10 +177,10 @@ function getMaxTeamStrength(
     .filter((p) => p.position === position)
     .reduce((acc, player) => acc + player.strength, 0);
 
-  return (
+  return Math.round(
     teamStrength *
-    (1 + teamMoralePercentage / 100) *
-    (1 + teamMoodPercentage / 100)
+      (1 + teamMoralePercentage / 100) *
+      (1 + teamMoodPercentage / 100)
   );
 }
 
@@ -197,10 +197,10 @@ function getMaxDefenseStrength(team: {
     .filter((p) => p.position === 'DF' || p.position === 'GK')
     .reduce((acc, player) => acc + player.strength, 0);
 
-  return (
+  return Math.round(
     teamStrength *
-    (1 + teamMoralePercentage / 100) *
-    (1 + teamMoodPercentage / 100)
+      (1 + teamMoralePercentage / 100) *
+      (1 + teamMoodPercentage / 100)
   );
 }
 
