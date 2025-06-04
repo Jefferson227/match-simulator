@@ -57,7 +57,7 @@ function getPlayerPosition(
 ): 'GK' | 'DF' | 'MF' | 'FW' {
   switch (position) {
     case 'defense': {
-      return 'GK';
+      return 'DF';
     }
     case 'midfield': {
       return 'MF';
