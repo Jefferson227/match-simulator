@@ -22,7 +22,7 @@ const TeamManager: React.FC = () => {
   return (
     <div className="font-press-start flex flex-col items-center justify-center min-h-screen bg-[#3d7a33]">
       <div className="bg-black border-4 border-[#e2e2e2] w-[350px] p-2">
-        <div className="bg-black text-[#fbff21] text-center text-[20px] py-2 border-b-4 border-[#e2e2e2]">
+        <div className="bg-black text-[#e2e2e2] text-center text-[20px] py-2 border-b-4 border-[#e2e2e2]">
           {mockTeam.name}
         </div>
         <div className="bg-black text-white text-center text-[18px] py-2 border-b-4 border-[#e2e2e2]">
@@ -54,7 +54,7 @@ const TeamManager: React.FC = () => {
               NEXT PAGE
             </button>
           </div>
-          <button className="w-[90%] border-2 border-[#e2e2e2] bg-black text-[#fbff21] py-2 text-[17px] mt-2 hover:bg-[#222]">
+          <button className="w-[90%] border-2 border-[#e2e2e2] bg-black text-[#e2e2e2] py-2 text-[17px] mt-2 hover:bg-[#222]">
             START MATCH
           </button>
         </div>
