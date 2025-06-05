@@ -1,7 +1,7 @@
 import AppProviders from './providers/AppProviders';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
-import MatchSimulator from './components/MatchSimulator/MatchSimulator';
+import TeamManager from './components/TeamManager/TeamManager';
 import { FC } from 'react';
 
 const App: FC = () => {
@@ -9,7 +9,7 @@ const App: FC = () => {
     <I18nextProvider i18n={i18n}>
       <AppProviders>
         <div className="text-center min-h-screen bg-[#3d7a33]">
-          <MatchSimulator />
+          <TeamManager />
         </div>
       </AppProviders>
     </I18nextProvider>
