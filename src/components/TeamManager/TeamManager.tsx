@@ -21,20 +21,20 @@ const mockTeam = {
 const TeamManager: React.FC = () => {
   return (
     <div className="font-press-start flex flex-col items-center justify-center min-h-screen bg-[#3d7a33]">
-      <div className="bg-black border-4 border-[#e2e2e2] w-[350px] p-2">
-        <div className="bg-black text-[#e2e2e2] text-center text-[20px] py-2 border-b-4 border-[#e2e2e2]">
+      <div className="bg-[#1e1e1e] border-4 border-[#e2e2e2] w-[350px]">
+        <div className="bg-[#1e1e1e] text-[#e2e2e2] text-center text-[20px] py-2 border-b-4 border-[#e2e2e2]">
           {mockTeam.name}
         </div>
-        <div className="bg-black text-white text-center text-[18px] py-2 border-b-4 border-[#e2e2e2]">
+        <div className="bg-[#1e1e1e] text-white text-center text-[18px] py-2 border-b-4 border-[#e2e2e2]">
           {mockTeam.formation}
         </div>
-        <div className="bg-black text-white py-2 border-b-4 border-[#e2e2e2]">
+        <div className="bg-[#1e1e1e] text-white py-2 border-b-4 border-[#e2e2e2] mx-2">
           {mockTeam.players.map((player, idx) => (
             <div
               key={idx}
-              className="flex justify-between items-center px-2 py-1 text-[15px]"
+              className="flex justify-between items-center px-2 py-0.5 text-[15px]"
             >
-              <span className="bg-[#e2e2e2] text-black px-2 py-1 mr-2 rounded-sm min-w-[36px] text-center">
+              <span className="bg-[#e2e2e2] text-[#1e1e1e] px-2 py-1 mr-2 rounded-sm min-w-[36px] text-center">
                 {player.position}
               </span>
               <span className="flex-1 uppercase text-left">{player.name}</span>
@@ -43,18 +43,18 @@ const TeamManager: React.FC = () => {
           ))}
         </div>
         <div className="flex flex-col items-center gap-2 py-2">
-          <button className="w-[90%] border-2 border-[#e2e2e2] bg-black text-white py-2 text-[15px] hover:bg-[#222]">
+          <button className="w-[90%] border-2 border-[#e2e2e2] bg-[#1e1e1e] text-white py-2 text-[15px] hover:bg-[#222]">
             CHOOSE FORMATION
           </button>
           <div className="flex w-full justify-between gap-2">
-            <button className="w-1/2 border-2 border-[#e2e2e2] bg-black text-white py-2 text-[13px] hover:bg-[#222]">
+            <button className="w-1/2 border-2 border-[#e2e2e2] bg-[#1e1e1e] text-white py-2 text-[13px] hover:bg-[#222]">
               PREV PAGE
             </button>
-            <button className="w-1/2 border-2 border-[#e2e2e2] bg-black text-white py-2 text-[13px] hover:bg-[#222]">
+            <button className="w-1/2 border-2 border-[#e2e2e2] bg-[#1e1e1e] text-white py-2 text-[13px] hover:bg-[#222]">
               NEXT PAGE
             </button>
           </div>
-          <button className="w-[90%] border-2 border-[#e2e2e2] bg-black text-[#e2e2e2] py-2 text-[17px] mt-2 hover:bg-[#222]">
+          <button className="w-[90%] border-2 border-[#e2e2e2] bg-[#1e1e1e] text-[#e2e2e2] py-2 text-[17px] mt-2 hover:bg-[#222]">
             START MATCH
           </button>
         </div>
