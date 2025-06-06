@@ -56,7 +56,7 @@ const TeamManager: React.FC = () => {
           NEXT PAGE
         </button>
       </div>
-      <button className="w-[90%] border-2 border-[#e2e2e2] bg-[#1e1e1e] text-[#e2e2e2] py-2 text-[17px] mt-2 hover:bg-[#222]">
+      <button className="w-[350px] border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-4 text-[17px] mt-2 hover:bg-[#222]">
         START MATCH
       </button>
     </div>
