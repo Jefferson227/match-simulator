@@ -28,13 +28,13 @@ const TeamManager: React.FC = () => {
         <div className="bg-[#1e1e1e] text-white text-center text-[18px] py-2 border-b-4 border-[#e2e2e2]">
           {mockTeam.formation}
         </div>
-        <div className="bg-[#1e1e1e] text-white py-2 mx-2">
+        <div className="bg-[#1e1e1e] text-white py-2 mx-2 mb-[50px]">
           {mockTeam.players.map((player, idx) => (
             <div
               key={idx}
-              className="flex justify-between items-center px-2 py-0.5 text-[15px]"
+              className="flex justify-between items-center px-2 text-[15px]"
             >
-              <span className="bg-[#e2e2e2] text-[#1e1e1e] px-2 py-1 mr-2 rounded-sm min-w-[36px] text-center">
+              <span className="bg-[#e2e2e2] text-[#1e1e1e] px-2 my-[2px] mr-2 rounded-sm min-w-[36px] text-center">
                 {player.position}
               </span>
               <span className="flex-1 uppercase text-left">{player.name}</span>
