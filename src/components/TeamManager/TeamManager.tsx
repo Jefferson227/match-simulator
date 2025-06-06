@@ -34,7 +34,7 @@ const TeamManager: React.FC = () => {
               key={idx}
               className="flex justify-between items-center px-2 text-[15px]"
             >
-              <span className="bg-[#e2e2e2] text-[#1e1e1e] px-2 my-[2px] mr-2 rounded-sm min-w-[36px] text-center">
+              <span className="bg-[#e2e2e2] text-[#1e1e1e] px-2 my-[2px] mr-2 min-w-[36px] text-center">
                 {player.position}
               </span>
               <span className="flex-1 uppercase text-left">{player.name}</span>
