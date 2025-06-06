@@ -42,8 +42,8 @@ const TeamManager: React.FC = () => {
             </div>
           ))}
         </div>
-        <div className="flex flex-col items-center gap-2 py-2">
-          <button className="w-[90%] border-2 border-[#e2e2e2] bg-[#1e1e1e] text-white py-2 text-[15px] hover:bg-[#222]">
+        <div className="flex flex-col items-center gap-2 py-[17px]">
+          <button className="w-[90%] border-[4px] border-[#e2e2e2] bg-[#1e1e1e] text-white py-[17px] text-[16px] hover:bg-[#222]">
             CHOOSE FORMATION
           </button>
         </div>
