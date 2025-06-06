@@ -43,20 +43,20 @@ const TeamManager: React.FC = () => {
           ))}
         </div>
         <div className="flex flex-col items-center gap-2 py-[17px]">
-          <button className="w-[90%] border-[4px] border-[#e2e2e2] bg-[#1e1e1e] text-white py-[17px] text-[16px] hover:bg-[#222]">
+          <button className="w-[90%] border-[4px] border-[#e2e2e2] bg-[#1e1e1e] text-white py-[17px] text-[16px]">
             CHOOSE FORMATION
           </button>
         </div>
       </div>
       <div className="flex w-[350px] justify-between gap-2 mx-auto">
-        <button className="w-1/2 border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-2 text-[13px] hover:bg-[#222]">
+        <button className="w-1/2 border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-2 text-[13px]">
           PREV PAGE
         </button>
-        <button className="w-1/2 border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-2 text-[13px] hover:bg-[#222]">
+        <button className="w-1/2 border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-2 text-[13px]">
           NEXT PAGE
         </button>
       </div>
-      <button className="w-[350px] border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-4 text-[17px] mt-2 hover:bg-[#222]">
+      <button className="w-[350px] border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-4 text-[17px] mt-2">
         START MATCH
       </button>
     </div>
