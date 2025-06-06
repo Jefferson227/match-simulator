@@ -28,7 +28,7 @@ const TeamManager: React.FC = () => {
         <div className="bg-[#1e1e1e] text-white text-center text-[18px] py-2 border-b-4 border-[#e2e2e2]">
           {mockTeam.formation}
         </div>
-        <div className="bg-[#1e1e1e] text-white py-2 border-b-4 border-[#e2e2e2] mx-2">
+        <div className="bg-[#1e1e1e] text-white py-2 mx-2">
           {mockTeam.players.map((player, idx) => (
             <div
               key={idx}
