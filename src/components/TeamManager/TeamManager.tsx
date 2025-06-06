@@ -21,7 +21,7 @@ const mockTeam = {
 const TeamManager: React.FC = () => {
   return (
     <div className="font-press-start min-h-screen bg-[#3d7a33]">
-      <div className="bg-[#1e1e1e] border-4 border-[#e2e2e2] w-[350px] mx-auto mt-[45px] mb-[15px]">
+      <div className="bg-[#1e1e1e] border-4 border-[#e2e2e2] w-[350px] mx-auto mt-[26px] mb-[15px]">
         <div className="bg-[#1e1e1e] text-[#e2e2e2] text-center text-[20px] py-2 border-b-4 border-[#e2e2e2]">
           {mockTeam.name}
         </div>
