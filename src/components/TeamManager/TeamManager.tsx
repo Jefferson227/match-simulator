@@ -49,14 +49,14 @@ const TeamManager: React.FC = () => {
         </div>
       </div>
       <div className="flex w-[350px] justify-between gap-2 mx-auto">
-        <button className="w-1/2 border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-2 px-2 leading-[19px] text-[17px]">
+        <button className="w-1/2 border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-2 px-3 leading-[19px] text-[16px]">
           PREV PAGE
         </button>
-        <button className="w-1/2 border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-2 px-2 leading-[19px] text-[17px]">
+        <button className="w-1/2 border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-2 px-3 leading-[19px] text-[16px]">
           NEXT PAGE
         </button>
       </div>
-      <button className="w-[350px] border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-4 text-[17px] mt-2">
+      <button className="w-[350px] border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-4 text-[16px] mt-2">
         START MATCH
       </button>
     </div>
