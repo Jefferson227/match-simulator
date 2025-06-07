@@ -7,6 +7,7 @@ import { describe, it, expect } from '@jest/globals';
 
 describe('TeamManager', () => {
   it('renders the team name, formation, player list, and button labels correctly', () => {
+    i18n.changeLanguage('en'); // Force English for the test
     render(
       <I18nextProvider i18n={i18n}>
         <TeamManager />
@@ -34,7 +35,7 @@ describe('TeamManager', () => {
 
     // Check if the button labels are displayed
     expect(screen.getByText('CHOOSE FORMATION')).toBeTruthy();
-    expect(screen.getByText('PREV PAGE')).toBeTruthy();
+    expect(screen.getByText('PREVIOUS PAGE')).toBeTruthy();
     expect(screen.getByText('NEXT PAGE')).toBeTruthy();
     expect(screen.getByText('START MATCH')).toBeTruthy();
   });
