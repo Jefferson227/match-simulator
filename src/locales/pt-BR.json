@@ -14,5 +14,11 @@
   "matchDetails": {
     "noGoals": "NENHUM GOL MARCADO",
     "backToMatch": "VOLTAR AO JOGO"
+  },
+  "teamManager": {
+    "chooseFormation": "ESCOLHER FORMAÇÃO",
+    "prevPage": "PÁGINA ANTERIOR",
+    "nextPage": "PRÓXIMA PÁGINA",
+    "startMatch": "INICIAR JOGO"
   }
 }

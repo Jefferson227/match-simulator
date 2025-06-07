@@ -14,5 +14,11 @@
   "matchDetails": {
     "noGoals": "NO GOALS",
     "backToMatch": "BACK TO MATCH"
+  },
+  "teamManager": {
+    "chooseFormation": "CHOOSE FORMATION",
+    "prevPage": "PREVIOUS PAGE",
+    "nextPage": "NEXT PAGE",
+    "startMatch": "START MATCH"
   }
 }

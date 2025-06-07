@@ -1,7 +1,8 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const mockTeam = {
-  name: 'CEARA SPORTING CLUB',
+  name: 'CEARÁ SPORTING CLUB',
   formation: '4-3-3',
   players: [
     { position: 'GK', name: 'RICHARD', rating: 99 },
@@ -19,6 +20,7 @@ const mockTeam = {
 };
 
 const TeamManager: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <div className="font-press-start min-h-screen bg-[#3d7a33]">
       <div className="bg-[#1e1e1e] border-4 border-[#e2e2e2] w-[350px] mx-auto mt-[26px] mb-[15px]">
@@ -44,20 +46,20 @@ const TeamManager: React.FC = () => {
         </div>
         <div className="flex flex-col items-center gap-2 py-[17px]">
           <button className="w-[90%] border-[4px] border-[#e2e2e2] bg-[#1e1e1e] text-white py-[17px] text-[16px]">
-            CHOOSE FORMATION
+            {t('teamManager.chooseFormation')}
           </button>
         </div>
       </div>
       <div className="flex w-[350px] justify-between gap-2 mx-auto">
         <button className="w-1/2 border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-2 px-3 leading-[19px] text-[16px]">
-          PREV PAGE
+          {t('teamManager.prevPage')}
         </button>
         <button className="w-1/2 border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-2 px-3 leading-[19px] text-[16px]">
-          NEXT PAGE
+          {t('teamManager.nextPage')}
         </button>
       </div>
       <button className="w-[350px] border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-4 text-[16px] mt-2">
-        START MATCH
+        {t('teamManager.startMatch')}
       </button>
     </div>
   );
