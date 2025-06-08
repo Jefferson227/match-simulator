@@ -82,8 +82,10 @@ describe('TeamManager', () => {
       </I18nextProvider>
     );
 
-    // Check if the team name is displayed
-    expect(screen.getByText(mockTeam.name)).toBeTruthy();
+    // Check if the team name is displayed in uppercase
+    const teamNameElement = screen.getByText(mockTeam.name);
+    expect(teamNameElement).toBeTruthy();
+    expect(teamNameElement.className).toContain('uppercase');
 
     // Check if the formation is displayed
     expect(screen.getByText(mockTeam.formation)).toBeTruthy();
