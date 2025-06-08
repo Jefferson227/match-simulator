@@ -43,7 +43,9 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
   const setCurrentPage = (page: number) =>
     dispatch({ type: 'SET_CURRENT_PAGE', payload: page });
 
-  const getSelectedTeam = () => dispatch({ type: 'GET_SELECTED_TEAM' });
+  const getSelectedTeam = () => {
+    dispatch({ type: 'GET_SELECTED_TEAM' });
+  };
 
   const setMatchStarted = (isStarted: boolean) =>
     dispatch({ type: 'SET_MATCH_STARTED', payload: isStarted });
