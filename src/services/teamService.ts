@@ -79,6 +79,10 @@ function loadVisitorTeam(visitorTeamJson: Team): Team {
   return visitorTeam;
 }
 
-const teamService = { getTeams };
+function getSelectedTeam(): Team {
+  return cearaJson as Team;
+}
+
+const teamService = { getTeams, getSelectedTeam };
 
 export default teamService;
