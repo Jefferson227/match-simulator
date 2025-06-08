@@ -5,17 +5,17 @@ const selectedTeam = {
   name: 'CEARÁ SPORTING CLUB',
   formation: '4-3-3',
   players: [
-    { position: 'GK', name: 'RICHARD', rating: 99 },
-    { position: 'DF', name: 'DAVID RICARDO', rating: 99 },
-    { position: 'DF', name: 'MATHEUS BAHIA', rating: 99 },
-    { position: 'DF', name: 'MATHEUS FELIPE', rating: 99 },
-    { position: 'DF', name: 'RAÍ RAMOS', rating: 99 },
-    { position: 'MF', name: 'RICHARDSON', rating: 99 },
-    { position: 'MF', name: 'LOURENÇO', rating: 99 },
-    { position: 'MF', name: 'G. CASTILHO', rating: 99 },
-    { position: 'FW', name: 'ERICK PULGA', rating: 99 },
-    { position: 'FW', name: 'BARCELÓ', rating: 99 },
-    { position: 'FW', name: 'AYLON', rating: 99 },
+    { position: 'GK', name: 'RICHARD', strength: 99 },
+    { position: 'DF', name: 'DAVID RICARDO', strength: 99 },
+    { position: 'DF', name: 'MATHEUS BAHIA', strength: 99 },
+    { position: 'DF', name: 'MATHEUS FELIPE', strength: 99 },
+    { position: 'DF', name: 'RAÍ RAMOS', strength: 99 },
+    { position: 'MF', name: 'RICHARDSON', strength: 99 },
+    { position: 'MF', name: 'LOURENÇO', strength: 99 },
+    { position: 'MF', name: 'G. CASTILHO', strength: 99 },
+    { position: 'FW', name: 'ERICK PULGA', strength: 99 },
+    { position: 'FW', name: 'BARCELÓ', strength: 99 },
+    { position: 'FW', name: 'AYLON', strength: 99 },
   ],
 };
 
@@ -40,7 +40,7 @@ const TeamManager: React.FC = () => {
                 {player.position}
               </span>
               <span className="flex-1 uppercase text-left">{player.name}</span>
-              <span className="ml-2">{player.rating}</span>
+              <span className="ml-2">{player.strength}</span>
             </div>
           ))}
         </div>
