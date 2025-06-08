@@ -27,7 +27,7 @@ export interface Team {
   isHomeTeam?: boolean;
   score: number;
   morale: number;
-  formation: number;
+  formation: string;
   overallMood: number;
   overallStrength: number;
   attackStrength: number;
