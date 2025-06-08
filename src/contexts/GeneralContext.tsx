@@ -1,11 +1,12 @@
 import { createContext, useReducer, ReactNode } from 'react';
 import { generalReducer, GeneralState } from '../reducers/generalReducer';
+import { Team } from '../types';
 
 // Define the context type
 interface GeneralContextType {
   state: GeneralState;
   setCurrentPage: (page: number) => void;
-  setSelectedTeam: (team: string | null) => void;
+  setSelectedTeam: () => void;
   setMatchStarted: (isStarted: boolean) => void;
 }
 
@@ -13,7 +14,7 @@ interface GeneralContextType {
 const defaultContextValue: GeneralContextType = {
   state: {
     currentPage: 1,
-    selectedTeam: null,
+    selectedTeam: {} as Team,
     isMatchStarted: false,
   },
   setCurrentPage: () => {},
@@ -35,15 +36,14 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
 }) => {
   const [state, dispatch] = useReducer(generalReducer, {
     currentPage: 1,
-    selectedTeam: null,
+    selectedTeam: {} as Team,
     isMatchStarted: false,
   });
 
   const setCurrentPage = (page: number) =>
     dispatch({ type: 'SET_CURRENT_PAGE', payload: page });
 
-  const setSelectedTeam = (team: string | null) =>
-    dispatch({ type: 'SET_SELECTED_TEAM', payload: team });
+  const setSelectedTeam = () => dispatch({ type: 'SET_SELECTED_TEAM' });
 
   const setMatchStarted = (isStarted: boolean) =>
     dispatch({ type: 'SET_MATCH_STARTED', payload: isStarted });
