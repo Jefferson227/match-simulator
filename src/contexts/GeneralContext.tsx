@@ -6,7 +6,7 @@ import { Team } from '../types';
 interface GeneralContextType {
   state: GeneralState;
   setCurrentPage: (page: number) => void;
-  setSelectedTeam: () => void;
+  getSelectedTeam: () => void;
   setMatchStarted: (isStarted: boolean) => void;
 }
 
@@ -18,7 +18,7 @@ const defaultContextValue: GeneralContextType = {
     isMatchStarted: false,
   },
   setCurrentPage: () => {},
-  setSelectedTeam: () => {},
+  getSelectedTeam: () => {},
   setMatchStarted: () => {},
 };
 
@@ -43,7 +43,7 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
   const setCurrentPage = (page: number) =>
     dispatch({ type: 'SET_CURRENT_PAGE', payload: page });
 
-  const setSelectedTeam = () => dispatch({ type: 'SET_SELECTED_TEAM' });
+  const getSelectedTeam = () => dispatch({ type: 'GET_SELECTED_TEAM' });
 
   const setMatchStarted = (isStarted: boolean) =>
     dispatch({ type: 'SET_MATCH_STARTED', payload: isStarted });
@@ -53,7 +53,7 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
       value={{
         state,
         setCurrentPage,
-        setSelectedTeam,
+        getSelectedTeam,
         setMatchStarted,
       }}
     >

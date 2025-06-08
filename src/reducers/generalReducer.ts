@@ -11,7 +11,7 @@ export interface GeneralState {
 // Define the action types
 export type GeneralAction =
   | { type: 'SET_CURRENT_PAGE'; payload: number }
-  | { type: 'SET_SELECTED_TEAM' }
+  | { type: 'GET_SELECTED_TEAM' }
   | { type: 'SET_MATCH_STARTED'; payload: boolean };
 
 // Create the reducer
@@ -25,7 +25,7 @@ export const generalReducer = (
         ...state,
         currentPage: action.payload,
       };
-    case 'SET_SELECTED_TEAM':
+    case 'GET_SELECTED_TEAM':
       return {
         ...state,
         selectedTeam: teamService.getSelectedTeam(),
