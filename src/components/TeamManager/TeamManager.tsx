@@ -1,37 +1,26 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-
-const selectedTeam = {
-  name: 'CEARÁ SPORTING CLUB',
-  formation: '4-3-3',
-  players: [
-    { position: 'GK', name: 'RICHARD', strength: 99 },
-    { position: 'DF', name: 'DAVID RICARDO', strength: 99 },
-    { position: 'DF', name: 'MATHEUS BAHIA', strength: 99 },
-    { position: 'DF', name: 'MATHEUS FELIPE', strength: 99 },
-    { position: 'DF', name: 'RAÍ RAMOS', strength: 99 },
-    { position: 'MF', name: 'RICHARDSON', strength: 99 },
-    { position: 'MF', name: 'LOURENÇO', strength: 99 },
-    { position: 'MF', name: 'G. CASTILHO', strength: 99 },
-    { position: 'FW', name: 'ERICK PULGA', strength: 99 },
-    { position: 'FW', name: 'BARCELÓ', strength: 99 },
-    { position: 'FW', name: 'AYLON', strength: 99 },
-  ],
-};
+import { GeneralContext } from '../../contexts/GeneralContext';
 
 const TeamManager: React.FC = () => {
   const { t } = useTranslation();
+  const { getSelectedTeam, state } = useContext(GeneralContext);
+
+  useEffect(() => {
+    getSelectedTeam();
+  }, []);
+
   return (
     <div className="font-press-start min-h-screen bg-[#3d7a33]">
       <div className="bg-[#1e1e1e] border-4 border-[#e2e2e2] w-[350px] mx-auto mt-[26px] mb-[15px]">
         <div className="bg-[#1e1e1e] text-[#e2e2e2] text-center text-[20px] py-2 border-b-4 border-[#e2e2e2]">
-          {selectedTeam.name}
+          {state.selectedTeam?.name}
         </div>
         <div className="bg-[#1e1e1e] text-white text-center text-[18px] py-2 border-b-4 border-[#e2e2e2]">
-          {selectedTeam.formation}
+          {state.selectedTeam?.formation}
         </div>
         <div className="bg-[#1e1e1e] text-white py-2 mx-2 mb-[50px]">
-          {selectedTeam.players.map((player, idx) => (
+          {state.selectedTeam?.players?.map((player, idx) => (
             <div
               key={idx}
               className="flex justify-between items-center px-2 text-[15px]"
