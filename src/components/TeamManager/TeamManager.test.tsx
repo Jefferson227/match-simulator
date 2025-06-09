@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import TeamManager from './TeamManager';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../../i18n';
@@ -135,5 +135,65 @@ describe('TeamManager', () => {
     expect(screen.getByText('PREVIOUS PAGE')).toBeTruthy();
     expect(screen.getByText('NEXT PAGE')).toBeTruthy();
     expect(screen.getByText('START MATCH')).toBeTruthy();
+  });
+
+  it('shows formation grid and hides player list/navigation when Choose Formation is clicked', async () => {
+    render(
+      <I18nextProvider i18n={i18n}>
+        <GeneralContext.Provider value={mockContextValue}>
+          <TeamManager />
+        </GeneralContext.Provider>
+      </I18nextProvider>
+    );
+
+    // Click the 'Choose Formation' button
+    fireEvent.click(screen.getByText('CHOOSE FORMATION'));
+
+    // Wait for the formation grid to appear
+    await waitFor(() => {
+      expect(screen.getByText('5-3-2')).toBeTruthy();
+      expect(screen.getByText('3-5-2')).toBeTruthy();
+      expect(screen.getByText('BEST PLAYERS')).toBeTruthy();
+      expect(screen.getByText('GO BACK')).toBeTruthy();
+    });
+
+    // Player list and navigation buttons should be hidden
+    expect(screen.queryByText('RICHARD')).toBeNull();
+    expect(screen.queryByText('PREVIOUS PAGE')).toBeNull();
+    expect(screen.queryByText('NEXT PAGE')).toBeNull();
+    expect(screen.queryByText('START MATCH')).toBeNull();
+
+    // Formation section should show 'CHOOSE FORMATION'
+    expect(screen.getByText('CHOOSE FORMATION')).toBeTruthy();
+  });
+
+  it('returns to player list and navigation when Go Back is clicked', async () => {
+    render(
+      <I18nextProvider i18n={i18n}>
+        <GeneralContext.Provider value={mockContextValue}>
+          <TeamManager />
+        </GeneralContext.Provider>
+      </I18nextProvider>
+    );
+
+    // Click the 'Choose Formation' button
+    fireEvent.click(screen.getByText('CHOOSE FORMATION'));
+
+    // Wait for the 'Go Back' button to appear
+    const goBackBtn = await screen.findByText('GO BACK');
+    fireEvent.click(goBackBtn);
+
+    // Wait for the player list and navigation buttons to be visible again
+    await waitFor(() => {
+      expect(screen.getByText('RICHARD')).toBeTruthy();
+      expect(screen.getByText('PREVIOUS PAGE')).toBeTruthy();
+      expect(screen.getByText('NEXT PAGE')).toBeTruthy();
+      expect(screen.getByText('START MATCH')).toBeTruthy();
+
+      // Formation grid should be hidden
+      expect(screen.queryByText('5-3-2')).toBeNull();
+      expect(screen.queryByText('BEST PLAYERS')).toBeNull();
+      expect(screen.queryByText('GO BACK')).toBeNull();
+    });
   });
 });
