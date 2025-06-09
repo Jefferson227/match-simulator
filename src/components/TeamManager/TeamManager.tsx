@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GeneralContext } from '../../contexts/GeneralContext';
+import utils from '../../utils/utils';
 
 const TeamManager: React.FC = () => {
   const { t } = useTranslation();
@@ -17,7 +18,7 @@ const TeamManager: React.FC = () => {
           {state.selectedTeam?.name}
         </div>
         <div className="bg-[#1e1e1e] text-white text-center text-[18px] py-2 border-b-4 border-[#e2e2e2]">
-          {state.selectedTeam?.formation}
+          {utils.getTeamFormation(state.selectedTeam)}
         </div>
         <div className="bg-[#1e1e1e] text-white py-2 mx-2 mb-[50px]">
           {state.selectedTeam?.players?.map((player, idx) => (

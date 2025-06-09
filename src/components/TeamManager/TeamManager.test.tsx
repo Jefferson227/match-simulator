@@ -7,6 +7,14 @@ import { describe, it, expect, jest, beforeEach } from '@jest/globals';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import { Team } from '../../types';
 
+// Mock the utils module
+jest.mock('../../utils/utils', () => ({
+  __esModule: true,
+  default: {
+    getTeamFormation: () => '4-3-3',
+  },
+}));
+
 // Mock data
 const mockTeam: Team = {
   id: '1',
@@ -88,7 +96,7 @@ describe('TeamManager', () => {
     expect(teamNameElement.className).toContain('uppercase');
 
     // Check if the formation is displayed
-    expect(screen.getByText(mockTeam.formation)).toBeTruthy();
+    expect(screen.getByText('4-3-3')).toBeTruthy();
 
     // Check if all players are displayed with their positions and strengths
     mockTeam.players.forEach((player) => {
