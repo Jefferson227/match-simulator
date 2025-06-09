@@ -19,6 +19,8 @@
     "chooseFormation": "CHOOSE FORMATION",
     "prevPage": "PREVIOUS PAGE",
     "nextPage": "NEXT PAGE",
-    "startMatch": "START MATCH"
+    "startMatch": "START MATCH",
+    "goBack": "GO BACK",
+    "bestPlayers": "BEST PLAYERS"
   }
 }

@@ -19,6 +19,8 @@
     "chooseFormation": "ESCOLHER FORMAÇÃO",
     "prevPage": "PÁGINA ANTERIOR",
     "nextPage": "PRÓXIMA PÁGINA",
-    "startMatch": "INICIAR JOGO"
+    "startMatch": "INICIAR JOGO",
+    "goBack": "VOLTAR",
+    "bestPlayers": "MELHORES JOGADORES"
   }
 }
