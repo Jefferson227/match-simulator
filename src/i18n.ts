@@ -8,7 +8,7 @@ i18n.use(initReactI18next).init({
     en: { translation: en },
     'pt-BR': { translation: ptBR },
   },
-  lng: 'pt-BR', // default language
+  lng: 'en', // default language
   fallbackLng: 'pt-BR', // fallback if the language is not available
   interpolation: {
     escapeValue: false, // React already does escaping
