@@ -18,10 +18,17 @@ const TeamManager: React.FC = () => {
   const { t } = useTranslation();
   const { getSelectedTeam, state } = useContext(GeneralContext);
   const [showFormationGrid, setShowFormationGrid] = useState(false);
+  const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
 
   useEffect(() => {
     getSelectedTeam();
   }, []);
+
+  const handlePlayerClick = (id: string) => {
+    setSelectedPlayers((prev) =>
+      prev.includes(id) ? prev.filter((pid) => pid !== id) : [...prev, id]
+    );
+  };
 
   return (
     <div className="font-press-start min-h-screen bg-[#3d7a33]">
@@ -55,12 +62,20 @@ const TeamManager: React.FC = () => {
           </div>
         ) : (
           <div className="bg-[#1e1e1e] text-white py-2 mx-2 mb-[50px]">
-            {state.selectedTeam?.players?.map((player, idx) => (
+            {state.selectedTeam?.players?.map((player) => (
               <div
-                key={idx}
-                className="flex justify-between items-center px-2 text-[15px]"
+                key={player.id}
+                className="flex justify-between items-center px-2 text-[15px] cursor-pointer"
+                onClick={() => handlePlayerClick(player.id)}
               >
-                <span className="bg-[#e2e2e2] text-[#1e1e1e] px-2 my-[2px] mr-2 min-w-[36px] text-center">
+                <span
+                  className={
+                    selectedPlayers.includes(player.id)
+                      ? 'bg-[#e2e2e2] text-[#1e1e1e] px-2 my-[2px] mr-2 min-w-[36px] text-center'
+                      : 'bg-transparent text-[#e2e2e2] px-2 my-[2px] mr-2 min-w-[36px] text-center'
+                  }
+                  style={{ transition: 'background 0.2s, color 0.2s' }}
+                >
                   {player.position}
                 </span>
                 <span className="flex-1 uppercase text-left">
