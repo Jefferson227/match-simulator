@@ -1,4 +1,5 @@
 import cearaJson from '../assets/ceara.json';
+import cearaTeamManagerJson from '../assets/ceara-team-manager.json';
 import americaRnJson from '../assets/americarn.json';
 import fortalezaJson from '../assets/fortaleza.json';
 import abcJson from '../assets/abc.json';
@@ -80,7 +81,7 @@ function loadVisitorTeam(visitorTeamJson: Team): Team {
 }
 
 function getSelectedTeam(): Team {
-  let team = cearaJson as Team;
+  let team = cearaTeamManagerJson as Team;
   team.players = team.players.map((player: Player) => {
     return {
       ...player,
