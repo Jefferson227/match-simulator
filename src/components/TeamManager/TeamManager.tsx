@@ -28,6 +28,8 @@ const TeamManager: React.FC = () => {
   const [playerStates, setPlayerStates] = useState<{
     [id: string]: PlayerSelectionState;
   }>({});
+  const [currentPage, setCurrentPage] = useState(0); // 0-based page index
+  const PLAYERS_PER_PAGE = 11;
 
   useEffect(() => {
     getSelectedTeam();
@@ -39,6 +41,26 @@ const TeamManager: React.FC = () => {
       return { ...prev, [id]: nextState };
     });
   };
+
+  // Pagination logic
+  const players = state.selectedTeam?.players || [];
+  const totalPages = Math.ceil(players.length / PLAYERS_PER_PAGE);
+  const paginatedPlayers = players.slice(
+    currentPage * PLAYERS_PER_PAGE,
+    (currentPage + 1) * PLAYERS_PER_PAGE
+  );
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1));
+  };
+  const handlePrevPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 0));
+  };
+
+  useEffect(() => {
+    // Reset to first page if team changes or player count changes
+    setCurrentPage(0);
+  }, [state.selectedTeam?.id, players.length]);
 
   return (
     <div className="font-press-start min-h-screen bg-[#3d7a33]">
@@ -72,7 +94,7 @@ const TeamManager: React.FC = () => {
           </div>
         ) : (
           <div className="bg-[#1e1e1e] text-white py-2 mx-2 mb-[50px]">
-            {state.selectedTeam?.players?.map((player) => {
+            {paginatedPlayers.map((player) => {
               const selState =
                 playerStates[player.id] ?? PlayerSelectionState.Unselected;
               return (
@@ -131,10 +153,26 @@ const TeamManager: React.FC = () => {
       ) : (
         <>
           <div className="flex w-[350px] justify-between gap-2 mx-auto">
-            <button className="w-1/2 border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-2 px-3 leading-[19px] text-[16px]">
+            <button
+              className="w-1/2 border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-2 px-3 leading-[19px] text-[16px]"
+              onClick={handlePrevPage}
+              disabled={currentPage === 0}
+              style={
+                currentPage === 0 ? { opacity: 0.5, cursor: 'not-allowed' } : {}
+              }
+            >
               {t('teamManager.prevPage')}
             </button>
-            <button className="w-1/2 border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-2 px-3 leading-[19px] text-[16px]">
+            <button
+              className="w-1/2 border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-2 px-3 leading-[19px] text-[16px]"
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages - 1 || totalPages === 0}
+              style={
+                currentPage === totalPages - 1 || totalPages === 0
+                  ? { opacity: 0.5, cursor: 'not-allowed' }
+                  : {}
+              }
+            >
               {t('teamManager.nextPage')}
             </button>
           </div>
