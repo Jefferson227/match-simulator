@@ -18,7 +18,8 @@
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "allowJs": true
+    "allowJs": true,
+    "types": ["@testing-library/jest-dom", "jest"]
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
