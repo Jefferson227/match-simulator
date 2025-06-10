@@ -14,20 +14,30 @@ const FORMATIONS = [
   '3-3-4',
 ];
 
+// Enum for player selection state
+enum PlayerSelectionState {
+  Unselected = 0,
+  Selected = 1,
+  Substitute = 2,
+}
+
 const TeamManager: React.FC = () => {
   const { t } = useTranslation();
   const { getSelectedTeam, state } = useContext(GeneralContext);
   const [showFormationGrid, setShowFormationGrid] = useState(false);
-  const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
+  const [playerStates, setPlayerStates] = useState<{
+    [id: string]: PlayerSelectionState;
+  }>({});
 
   useEffect(() => {
     getSelectedTeam();
   }, []);
 
   const handlePlayerClick = (id: string) => {
-    setSelectedPlayers((prev) =>
-      prev.includes(id) ? prev.filter((pid) => pid !== id) : [...prev, id]
-    );
+    setPlayerStates((prev) => {
+      const nextState = ((prev[id] ?? PlayerSelectionState.Unselected) + 1) % 3;
+      return { ...prev, [id]: nextState };
+    });
   };
 
   return (
@@ -62,28 +72,38 @@ const TeamManager: React.FC = () => {
           </div>
         ) : (
           <div className="bg-[#1e1e1e] text-white py-2 mx-2 mb-[50px]">
-            {state.selectedTeam?.players?.map((player) => (
-              <div
-                key={player.id}
-                className="flex justify-between items-center px-2 text-[15px] cursor-pointer"
-                onClick={() => handlePlayerClick(player.id)}
-              >
-                <span
-                  className={
-                    selectedPlayers.includes(player.id)
-                      ? 'bg-[#e2e2e2] text-[#1e1e1e] px-2 my-[2px] mr-2 min-w-[36px] text-center'
-                      : 'bg-transparent text-[#e2e2e2] px-2 my-[2px] mr-2 min-w-[36px] text-center'
-                  }
-                  style={{ transition: 'background 0.2s, color 0.2s' }}
+            {state.selectedTeam?.players?.map((player) => {
+              const selState =
+                playerStates[player.id] ?? PlayerSelectionState.Unselected;
+              return (
+                <div
+                  key={player.id}
+                  className="flex justify-between items-center px-2 text-[15px] cursor-pointer"
+                  onClick={() => handlePlayerClick(player.id)}
                 >
-                  {player.position}
-                </span>
-                <span className="flex-1 uppercase text-left">
-                  {player.name}
-                </span>
-                <span className="ml-2">{player.strength}</span>
-              </div>
-            ))}
+                  <span
+                    className={
+                      selState === PlayerSelectionState.Selected
+                        ? 'bg-[#e2e2e2] text-[#1e1e1e] px-2 my-[2px] mr-2 min-w-[36px] text-center'
+                        : 'bg-transparent text-[#e2e2e2] px-2 my-[2px] mr-2 min-w-[36px] text-center'
+                    }
+                    style={{ transition: 'background 0.2s, color 0.2s' }}
+                  >
+                    {player.position}
+                  </span>
+                  <span
+                    className={
+                      selState === PlayerSelectionState.Substitute
+                        ? 'flex-1 uppercase text-left underline decoration-2 decoration-[#e2e2e2] underline-offset-2'
+                        : 'flex-1 uppercase text-left'
+                    }
+                  >
+                    {player.name}
+                  </span>
+                  <span className="ml-2">{player.strength}</span>
+                </div>
+              );
+            })}
           </div>
         )}
         {/* Choose Formation Button (only when not showing grid) */}
