@@ -67,6 +67,13 @@ const mockContextValue = {
   setMatchStarted: jest.fn(),
 };
 
+// Enum for player selection state (copy from TeamManager)
+enum PlayerSelectionState {
+  Unselected = 0,
+  Selected = 1,
+  Substitute = 2,
+}
+
 describe('TeamManager', () => {
   beforeEach(() => {
     i18n.changeLanguage('en');
@@ -201,5 +208,40 @@ describe('TeamManager', () => {
       expect(screen.queryByText('BEST PLAYERS')).toBeNull();
       expect(screen.queryByText('GO BACK')).toBeNull();
     });
+  });
+
+  it('cycles player selection through unselected, selected, substitute, and back', () => {
+    render(
+      <I18nextProvider i18n={i18n}>
+        <GeneralContext.Provider value={mockContextValue}>
+          <TeamManager />
+        </GeneralContext.Provider>
+      </I18nextProvider>
+    );
+
+    // Find the player row for RICHARD
+    const playerRow = screen.getByText('RICHARD').closest('div');
+    expect(playerRow).toBeTruthy();
+
+    // 1st click: should highlight position (selected)
+    fireEvent.click(playerRow!);
+    const posBox = playerRow!.querySelector('span');
+    expect(posBox).toHaveClass('bg-[#e2e2e2]');
+    expect(posBox).toHaveClass('text-[#1e1e1e]');
+    // Name should NOT be underlined
+    const nameSpan = screen.getByText('RICHARD');
+    expect(nameSpan).not.toHaveClass('underline');
+
+    // 2nd click: should remove highlight and underline name (substitute)
+    fireEvent.click(playerRow!);
+    expect(posBox).not.toHaveClass('bg-[#e2e2e2]');
+    expect(posBox).not.toHaveClass('text-[#1e1e1e]');
+    expect(nameSpan).toHaveClass('underline');
+
+    // 3rd click: should return to unselected (no highlight, no underline)
+    fireEvent.click(playerRow!);
+    expect(posBox).not.toHaveClass('bg-[#e2e2e2]');
+    expect(posBox).not.toHaveClass('text-[#1e1e1e]');
+    expect(nameSpan).not.toHaveClass('underline');
   });
 });
