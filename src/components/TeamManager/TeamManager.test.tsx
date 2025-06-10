@@ -74,6 +74,20 @@ enum PlayerSelectionState {
   Substitute = 2,
 }
 
+// Add a mock team with 15 players for pagination tests
+const mockTeamManyPlayers: Team = {
+  ...mockTeam,
+  players: [
+    ...Array.from({ length: 15 }, (_, i) => ({
+      id: `${i + 1}`,
+      name: `PLAYER${i + 1}`,
+      position: i === 0 ? 'GK' : i < 6 ? 'DEF' : i < 11 ? 'MID' : 'FWD',
+      strength: 70 + i,
+      mood: 70,
+    })),
+  ],
+};
+
 describe('TeamManager', () => {
   beforeEach(() => {
     i18n.changeLanguage('en');
@@ -243,5 +257,71 @@ describe('TeamManager', () => {
     expect(posBox).not.toHaveClass('bg-[#e2e2e2]');
     expect(posBox).not.toHaveClass('text-[#1e1e1e]');
     expect(nameSpan).not.toHaveClass('underline');
+  });
+});
+
+describe('TeamManager pagination', () => {
+  const contextValue = {
+    ...mockContextValue,
+    state: {
+      ...mockContextValue.state,
+      selectedTeam: mockTeamManyPlayers,
+    },
+  };
+
+  it('shows only 11 players per page', () => {
+    render(
+      <I18nextProvider i18n={i18n}>
+        <GeneralContext.Provider value={contextValue}>
+          <TeamManager />
+        </GeneralContext.Provider>
+      </I18nextProvider>
+    );
+    // Only PLAYER1 to PLAYER11 should be visible
+    for (let i = 1; i <= 11; i++) {
+      expect(screen.getByText(`PLAYER${i}`)).toBeInTheDocument();
+    }
+    // PLAYER12+ should not be visible
+    for (let i = 12; i <= 15; i++) {
+      expect(screen.queryByText(`PLAYER${i}`)).toBeNull();
+    }
+  });
+
+  it('shows next page of players when Next Page is clicked', () => {
+    render(
+      <I18nextProvider i18n={i18n}>
+        <GeneralContext.Provider value={contextValue}>
+          <TeamManager />
+        </GeneralContext.Provider>
+      </I18nextProvider>
+    );
+    fireEvent.click(screen.getByText('NEXT PAGE'));
+    // PLAYER12 to PLAYER15 should be visible
+    for (let i = 12; i <= 15; i++) {
+      expect(screen.getByText(`PLAYER${i}`)).toBeInTheDocument();
+    }
+    // PLAYER1 to PLAYER11 should not be visible
+    for (let i = 1; i <= 11; i++) {
+      expect(screen.queryByText(`PLAYER${i}`)).toBeNull();
+    }
+  });
+
+  it('disables Previous Page on first page and Next Page on last page', () => {
+    render(
+      <I18nextProvider i18n={i18n}>
+        <GeneralContext.Provider value={contextValue}>
+          <TeamManager />
+        </GeneralContext.Provider>
+      </I18nextProvider>
+    );
+    const prevBtn = screen.getByText('PREVIOUS PAGE');
+    const nextBtn = screen.getByText('NEXT PAGE');
+    // On first page
+    expect(prevBtn).toBeDisabled();
+    expect(nextBtn).not.toBeDisabled();
+    // Go to last page
+    fireEvent.click(nextBtn);
+    expect(prevBtn).not.toBeDisabled();
+    expect(nextBtn).toBeDisabled();
   });
 });
