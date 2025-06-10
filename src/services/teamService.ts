@@ -80,7 +80,14 @@ function loadVisitorTeam(visitorTeamJson: Team): Team {
 }
 
 function getSelectedTeam(): Team {
-  return cearaJson as Team;
+  let team = cearaJson as Team;
+  team.players = team.players.map((player: Player) => {
+    return {
+      ...player,
+      id: crypto.randomUUID(),
+    };
+  });
+  return team;
 }
 
 const teamService = { getTeams, getSelectedTeam };
