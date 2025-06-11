@@ -120,7 +120,9 @@ const TeamManager: React.FC = () => {
                         : 'flex-1 uppercase text-left'
                     }
                   >
-                    {player.name}
+                    {player.name.length > 14
+                      ? utils.shortenPlayerName(player.name)
+                      : player.name}
                   </span>
                   <span className="ml-2">{player.strength}</span>
                 </div>

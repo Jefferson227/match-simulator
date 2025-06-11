@@ -233,6 +233,23 @@ function getMaxShooterStrength(
   );
 }
 
+function shortenPlayerName(name: string): string {
+  if (name.length <= 14) return name;
+  const parts = name.split(' ');
+  if (parts.length === 1) {
+    return name.slice(0, 14);
+  }
+
+  // Try first initial + last name
+  const short = `${parts[0][0]}. ${parts.slice(1).join(' ')}`;
+  if (short.length <= 14) return short;
+
+  // Truncate last name if still too long
+  const lastName = parts.slice(1).join(' ');
+  const maxLastNameLen = 14 - (parts[0][0].length + 2); // 2 for ". "
+  return `${parts[0][0]}. ${lastName.slice(0, maxLastNameLen)}`;
+}
+
 const utils = {
   addPlayerAttributes,
   getRandomNumber,
@@ -246,6 +263,7 @@ const utils = {
   getMaxTeamStrength,
   getMaxShooterStrength,
   getMaxDefenseStrength,
+  shortenPlayerName,
 };
 
 export default utils;
