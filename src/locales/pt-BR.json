@@ -21,6 +21,7 @@
     "nextPage": "PRÓXIMA PÁGINA",
     "startMatch": "INICIAR JOGO",
     "goBack": "VOLTAR",
-    "bestPlayers": "MELHORES JOGADORES"
+    "bestPlayers": "MELHORES JOGADORES",
+    "selectedCount": "{{count}} SELECIONADO(S)"
   }
 }

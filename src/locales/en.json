@@ -21,6 +21,7 @@
     "nextPage": "NEXT PAGE",
     "startMatch": "START MATCH",
     "goBack": "GO BACK",
-    "bestPlayers": "BEST PLAYERS"
+    "bestPlayers": "BEST PLAYERS",
+    "selectedCount": "{{count}} SELECTED"
   }
 }

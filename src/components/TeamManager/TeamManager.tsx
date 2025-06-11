@@ -62,6 +62,11 @@ const TeamManager: React.FC = () => {
     setCurrentPage(0);
   }, [state.selectedTeam?.id, players.length]);
 
+  // Count selected players
+  const selectedCount = Object.values(playerStates).filter(
+    (state) => state === PlayerSelectionState.Selected
+  ).length;
+
   return (
     <div className="font-press-start min-h-screen bg-[#3d7a33]">
       <div className="bg-[#1e1e1e] border-4 border-[#e2e2e2] w-[350px] mx-auto mt-[26px] mb-[15px]">
@@ -71,6 +76,8 @@ const TeamManager: React.FC = () => {
         <div className="bg-[#1e1e1e] text-white text-center text-[18px] py-2 border-b-4 border-[#e2e2e2]">
           {showFormationGrid
             ? t('teamManager.chooseFormation')
+            : selectedCount < 11
+            ? t('teamManager.selectedCount', { count: selectedCount })
             : utils.getTeamFormation(state.selectedTeam)}
         </div>
         {/* Player List or Formation Grid */}
