@@ -123,8 +123,8 @@ describe('TeamManager', () => {
     expect(teamNameElement).toBeTruthy();
     expect(teamNameElement.className).toContain('uppercase');
 
-    // Check if the formation is displayed
-    expect(screen.getByText('4-3-3')).toBeTruthy();
+    // Check if the formation or selected count is displayed
+    expect(screen.getByText('0 SELECTED')).toBeInTheDocument();
 
     // Check if all players are displayed with their positions and strengths
     mockTeam.players.forEach((player) => {
@@ -258,6 +258,32 @@ describe('TeamManager', () => {
     expect(posBox).not.toHaveClass('bg-[#e2e2e2]');
     expect(posBox).not.toHaveClass('text-[#1e1e1e]');
     expect(nameSpan).not.toHaveClass('underline');
+  });
+
+  it('shows selected count or formation based on number of selected players', () => {
+    render(
+      <I18nextProvider i18n={i18n}>
+        <GeneralContext.Provider value={mockContextValue}>
+          <TeamManager />
+        </GeneralContext.Provider>
+      </I18nextProvider>
+    );
+    // Initially, no players are selected
+    expect(screen.getByText('0 SELECTED')).toBeInTheDocument();
+
+    // Select 5 players
+    const playerNames = mockTeam.players.map((p) => p.name);
+    for (let i = 0; i < 5; i++) {
+      fireEvent.click(screen.getByText(playerNames[i]));
+    }
+    expect(screen.getByText('5 SELECTED')).toBeInTheDocument();
+
+    // Select up to 11 players
+    for (let i = 5; i < 11; i++) {
+      fireEvent.click(screen.getByText(playerNames[i]));
+    }
+    // Now, formation should be shown
+    expect(screen.getByText('4-3-3')).toBeInTheDocument();
   });
 });
 
