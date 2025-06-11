@@ -37,6 +37,26 @@ const TeamManager: React.FC = () => {
 
   const handlePlayerClick = (id: string) => {
     setPlayerStates((prev) => {
+      const player = state.selectedTeam?.players.find((p) => p.id === id);
+      if (!player) return prev;
+      const currentState = prev[id] ?? PlayerSelectionState.Unselected;
+      // If this is a GK and trying to select, check if another GK is already selected
+      if (
+        player.position === 'GK' &&
+        (currentState + 1) % 3 === PlayerSelectionState.Selected
+      ) {
+        const anotherGKSelected = state.selectedTeam?.players.some(
+          (p) =>
+            p.position === 'GK' &&
+            p.id !== id &&
+            (prev[p.id] ?? PlayerSelectionState.Unselected) ===
+              PlayerSelectionState.Selected
+        );
+        if (anotherGKSelected) {
+          // Don't allow selecting another GK
+          return prev;
+        }
+      }
       const nextState = ((prev[id] ?? PlayerSelectionState.Unselected) + 1) % 3;
       return { ...prev, [id]: nextState };
     });
