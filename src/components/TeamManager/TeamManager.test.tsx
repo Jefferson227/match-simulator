@@ -1,4 +1,5 @@
 /// <reference types="@testing-library/jest-dom" />
+import '@testing-library/jest-dom';
 import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import TeamManager from './TeamManager';
@@ -131,7 +132,7 @@ describe('TeamManager', () => {
     expect(teamNameElement.className).toContain('uppercase');
 
     // Check if the formation or selected count is displayed
-    expect(screen.getByText('0 SELECTED')).toBeInTheDocument();
+    expect(screen.getByText('0 SELECTED')).toBeTruthy();
 
     // Check if all players on the first page are displayed with their positions and strengths
     const firstPagePlayers = mockTeam.players.slice(0, 11);
@@ -147,7 +148,7 @@ describe('TeamManager', () => {
     expect(screen.getByText('PREVIOUS PAGE')).toBeTruthy();
     expect(screen.getByText('NEXT PAGE')).toBeTruthy();
     // START MATCH button should not be visible initially
-    expect(screen.queryByText('START MATCH')).not.toBeInTheDocument();
+    expect(screen.queryByText('START MATCH')).toBeNull();
   });
 
   it('renders correctly when team data is not available', () => {
@@ -172,7 +173,7 @@ describe('TeamManager', () => {
     expect(screen.getByText('PREVIOUS PAGE')).toBeTruthy();
     expect(screen.getByText('NEXT PAGE')).toBeTruthy();
     // START MATCH button should not be visible
-    expect(screen.queryByText('START MATCH')).not.toBeInTheDocument();
+    expect(screen.queryByText('START MATCH')).toBeNull();
   });
 
   it('shows formation grid and hides player list/navigation when Choose Formation is clicked', async () => {
@@ -227,7 +228,7 @@ describe('TeamManager', () => {
       expect(screen.getByText('PREVIOUS PAGE')).toBeTruthy();
       expect(screen.getByText('NEXT PAGE')).toBeTruthy();
       // START MATCH button should not be visible
-      expect(screen.queryByText('START MATCH')).not.toBeInTheDocument();
+      expect(screen.queryByText('START MATCH')).toBeNull();
 
       // Formation grid should be hidden
       expect(screen.queryByText('5-3-2')).toBeNull();
@@ -252,23 +253,23 @@ describe('TeamManager', () => {
     // 1st click: should highlight position (selected)
     fireEvent.click(playerRow!);
     const posBox = playerRow!.querySelector('span');
-    expect(posBox).toHaveClass('bg-[#e2e2e2]');
-    expect(posBox).toHaveClass('text-[#1e1e1e]');
+    expect(posBox?.className).toContain('bg-[#e2e2e2]');
+    expect(posBox?.className).toContain('text-[#1e1e1e]');
     // Name should NOT be underlined
     const nameSpan = screen.getByText('RICHARD');
-    expect(nameSpan).not.toHaveClass('underline');
+    expect(nameSpan.className).not.toContain('underline');
 
     // 2nd click: should remove highlight and underline name (substitute)
     fireEvent.click(playerRow!);
-    expect(posBox).not.toHaveClass('bg-[#e2e2e2]');
-    expect(posBox).not.toHaveClass('text-[#1e1e1e]');
-    expect(nameSpan).toHaveClass('underline');
+    expect(posBox?.className).not.toContain('bg-[#e2e2e2]');
+    expect(posBox?.className).not.toContain('text-[#1e1e1e]');
+    expect(nameSpan.className).toContain('underline');
 
     // 3rd click: should return to unselected (no highlight, no underline)
     fireEvent.click(playerRow!);
-    expect(posBox).not.toHaveClass('bg-[#e2e2e2]');
-    expect(posBox).not.toHaveClass('text-[#1e1e1e]');
-    expect(nameSpan).not.toHaveClass('underline');
+    expect(posBox?.className).not.toContain('bg-[#e2e2e2]');
+    expect(posBox?.className).not.toContain('text-[#1e1e1e]');
+    expect(nameSpan.className).not.toContain('underline');
   });
 
   it('shows selected count or formation based on number of selected players', () => {
@@ -280,7 +281,7 @@ describe('TeamManager', () => {
       </I18nextProvider>
     );
     // Initially, no players are selected
-    expect(screen.getByText('0 SELECTED')).toBeInTheDocument();
+    expect(screen.getByText('0 SELECTED')).toBeTruthy();
 
     // Select exactly one GK and the next 10 outfield players, checking all pages if needed
     let selectedCount = 0;
@@ -316,7 +317,7 @@ describe('TeamManager', () => {
 
     // Now, formation should be shown based on selected players
     // In this case, we selected 4 DF, 3 MF, and 3 FW (plus 1 GK)
-    expect(screen.getByText('4-3-3')).toBeInTheDocument();
+    expect(screen.getByText('4-3-3')).toBeTruthy();
   });
 
   it('allows only one GK to be selected at a time', () => {
@@ -337,31 +338,31 @@ describe('TeamManager', () => {
     fireEvent.click(gk1!);
     let posBox1 = gk1!.querySelector('span');
     let posBox2 = gk2!.querySelector('span');
-    expect(posBox1).toHaveClass('bg-[#e2e2e2]');
-    expect(posBox2).not.toHaveClass('bg-[#e2e2e2]');
+    expect(posBox1?.className).toContain('bg-[#e2e2e2]');
+    expect(posBox2?.className).not.toContain('bg-[#e2e2e2]');
 
     // Try to select the second GK (should be ignored for 'Selected', but will cycle to 'Substitute')
     fireEvent.click(gk2!);
     posBox1 = gk1!.querySelector('span');
     posBox2 = gk2!.querySelector('span');
-    expect(posBox1).toHaveClass('bg-[#e2e2e2]');
+    expect(posBox1?.className).toContain('bg-[#e2e2e2]');
     // The second GK should NOT be selected (should not have the selected class)
-    expect(posBox2).not.toHaveClass('bg-[#e2e2e2]');
+    expect(posBox2?.className).not.toContain('bg-[#e2e2e2]');
 
     // Deselect the first GK (cycle: selected -> substitute -> unselected)
     fireEvent.click(gk1!); // to substitute
     fireEvent.click(gk1!); // to unselected
     posBox1 = gk1!.querySelector('span');
     posBox2 = gk2!.querySelector('span');
-    expect(posBox1).not.toHaveClass('bg-[#e2e2e2]');
-    expect(posBox2).not.toHaveClass('bg-[#e2e2e2]');
+    expect(posBox1?.className).not.toContain('bg-[#e2e2e2]');
+    expect(posBox2?.className).not.toContain('bg-[#e2e2e2]');
 
     // Now select the second GK (should succeed)
     fireEvent.click(gk2!);
     posBox1 = gk1!.querySelector('span');
     posBox2 = gk2!.querySelector('span');
-    expect(posBox1).not.toHaveClass('bg-[#e2e2e2]');
-    expect(posBox2).toHaveClass('bg-[#e2e2e2]');
+    expect(posBox1?.className).not.toContain('bg-[#e2e2e2]');
+    expect(posBox2?.className).toContain('bg-[#e2e2e2]');
   });
 
   it('shows START MATCH button only when exactly 11 players are selected', () => {
@@ -374,7 +375,7 @@ describe('TeamManager', () => {
     );
 
     // Initially, START MATCH button should not be visible
-    expect(screen.queryByText('START MATCH')).not.toBeInTheDocument();
+    expect(screen.queryByText('START MATCH')).toBeNull();
 
     // Select exactly one GK and the next 10 outfield players, checking all pages if needed
     let selectedCount = 0;
@@ -409,7 +410,8 @@ describe('TeamManager', () => {
     }
 
     // Now START MATCH button should be visible
-    expect(screen.getByText('START MATCH')).toBeTruthy();
+    const startMatchButton = screen.getByText('START MATCH');
+    expect(startMatchButton).toBeTruthy();
   });
 });
 
@@ -432,7 +434,7 @@ describe('TeamManager pagination', () => {
     );
     // Only PLAYER1 to PLAYER11 should be visible
     for (let i = 1; i <= 11; i++) {
-      expect(screen.getByText(`PLAYER${i}`)).toBeInTheDocument();
+      expect(screen.getByText(`PLAYER${i}`)).toBeTruthy();
     }
     // PLAYER12+ should not be visible
     for (let i = 12; i <= 15; i++) {
@@ -451,7 +453,7 @@ describe('TeamManager pagination', () => {
     fireEvent.click(screen.getByText('NEXT PAGE'));
     // PLAYER12 to PLAYER15 should be visible
     for (let i = 12; i <= 15; i++) {
-      expect(screen.getByText(`PLAYER${i}`)).toBeInTheDocument();
+      expect(screen.getByText(`PLAYER${i}`)).toBeTruthy();
     }
     // PLAYER1 to PLAYER11 should not be visible
     for (let i = 1; i <= 11; i++) {
@@ -470,11 +472,11 @@ describe('TeamManager pagination', () => {
     const prevBtn = screen.getByText('PREVIOUS PAGE');
     const nextBtn = screen.getByText('NEXT PAGE');
     // On first page
-    expect(prevBtn).toBeDisabled();
-    expect(nextBtn).not.toBeDisabled();
+    expect(prevBtn.hasAttribute('disabled')).toBe(true);
+    expect(nextBtn.hasAttribute('disabled')).toBe(false);
     // Go to last page
     fireEvent.click(nextBtn);
-    expect(prevBtn).not.toBeDisabled();
-    expect(nextBtn).toBeDisabled();
+    expect(prevBtn.hasAttribute('disabled')).toBe(false);
+    expect(nextBtn.hasAttribute('disabled')).toBe(true);
   });
 });
