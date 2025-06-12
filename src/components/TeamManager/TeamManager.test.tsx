@@ -311,7 +311,8 @@ describe('TeamManager', () => {
       }
     }
 
-    // Now, formation should be shown
+    // Now, formation should be shown based on selected players
+    // In this case, we selected 4 DF, 3 MF, and 3 FW (plus 1 GK)
     expect(screen.getByText('4-3-3')).toBeInTheDocument();
   });
 

@@ -87,6 +87,22 @@ const TeamManager: React.FC = () => {
     (state) => state === PlayerSelectionState.Selected
   ).length;
 
+  // Calculate formation based on selected players
+  const calculateFormation = () => {
+    if (selectedCount !== 11) return null;
+
+    const selectedPlayers =
+      state.selectedTeam?.players.filter(
+        (player) => playerStates[player.id] === PlayerSelectionState.Selected
+      ) || [];
+
+    const dfCount = selectedPlayers.filter((p) => p.position === 'DF').length;
+    const mfCount = selectedPlayers.filter((p) => p.position === 'MF').length;
+    const fwCount = selectedPlayers.filter((p) => p.position === 'FW').length;
+
+    return `${dfCount}-${mfCount}-${fwCount}`;
+  };
+
   return (
     <div className="font-press-start min-h-screen bg-[#3d7a33]">
       <div className="bg-[#1e1e1e] border-4 border-[#e2e2e2] w-[350px] mx-auto mt-[26px] mb-[15px]">
@@ -98,7 +114,7 @@ const TeamManager: React.FC = () => {
             ? t('teamManager.chooseFormation')
             : selectedCount < 11
             ? t('teamManager.selectedCount', { count: selectedCount })
-            : utils.getTeamFormation(state.selectedTeam)}
+            : calculateFormation()}
         </div>
         {/* Player List or Formation Grid */}
         {showFormationGrid ? (
