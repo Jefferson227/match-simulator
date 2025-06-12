@@ -221,9 +221,11 @@ const TeamManager: React.FC = () => {
               {t('teamManager.nextPage')}
             </button>
           </div>
-          <button className="w-[350px] border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-4 text-[16px] mt-2">
-            {t('teamManager.startMatch')}
-          </button>
+          {selectedCount === 11 && (
+            <button className="w-[350px] border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-4 text-[16px] mt-2">
+              {t('teamManager.startMatch')}
+            </button>
+          )}
         </>
       )}
     </div>

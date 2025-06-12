@@ -146,7 +146,8 @@ describe('TeamManager', () => {
     expect(screen.getByText('CHOOSE FORMATION')).toBeTruthy();
     expect(screen.getByText('PREVIOUS PAGE')).toBeTruthy();
     expect(screen.getByText('NEXT PAGE')).toBeTruthy();
-    expect(screen.getByText('START MATCH')).toBeTruthy();
+    // START MATCH button should not be visible initially
+    expect(screen.queryByText('START MATCH')).not.toBeInTheDocument();
   });
 
   it('renders correctly when team data is not available', () => {
@@ -170,7 +171,8 @@ describe('TeamManager', () => {
     expect(screen.getByText('CHOOSE FORMATION')).toBeTruthy();
     expect(screen.getByText('PREVIOUS PAGE')).toBeTruthy();
     expect(screen.getByText('NEXT PAGE')).toBeTruthy();
-    expect(screen.getByText('START MATCH')).toBeTruthy();
+    // START MATCH button should not be visible
+    expect(screen.queryByText('START MATCH')).not.toBeInTheDocument();
   });
 
   it('shows formation grid and hides player list/navigation when Choose Formation is clicked', async () => {
@@ -224,7 +226,8 @@ describe('TeamManager', () => {
       expect(screen.getByText('RICHARD')).toBeTruthy();
       expect(screen.getByText('PREVIOUS PAGE')).toBeTruthy();
       expect(screen.getByText('NEXT PAGE')).toBeTruthy();
-      expect(screen.getByText('START MATCH')).toBeTruthy();
+      // START MATCH button should not be visible
+      expect(screen.queryByText('START MATCH')).not.toBeInTheDocument();
 
       // Formation grid should be hidden
       expect(screen.queryByText('5-3-2')).toBeNull();
@@ -359,6 +362,54 @@ describe('TeamManager', () => {
     posBox2 = gk2!.querySelector('span');
     expect(posBox1).not.toHaveClass('bg-[#e2e2e2]');
     expect(posBox2).toHaveClass('bg-[#e2e2e2]');
+  });
+
+  it('shows START MATCH button only when exactly 11 players are selected', () => {
+    render(
+      <I18nextProvider i18n={i18n}>
+        <GeneralContext.Provider value={mockContextValue}>
+          <TeamManager />
+        </GeneralContext.Provider>
+      </I18nextProvider>
+    );
+
+    // Initially, START MATCH button should not be visible
+    expect(screen.queryByText('START MATCH')).not.toBeInTheDocument();
+
+    // Select exactly one GK and the next 10 outfield players, checking all pages if needed
+    let selectedCount = 0;
+    let gkSelected = false;
+    let currentPage = 0;
+    const totalPages = Math.ceil(mockTeam.players.length / 11);
+
+    while (selectedCount < 11 && currentPage < totalPages) {
+      // Get players for current page
+      const startIdx = currentPage * 11;
+      const endIdx = Math.min(startIdx + 11, mockTeam.players.length);
+      const pagePlayers = mockTeam.players.slice(startIdx, endIdx);
+
+      // Try to select players from this page
+      for (const player of pagePlayers) {
+        if (selectedCount >= 11) break;
+
+        if (player.position === 'GK') {
+          if (gkSelected) continue;
+          gkSelected = true;
+        }
+
+        fireEvent.click(screen.getByText(player.name));
+        selectedCount++;
+      }
+
+      // If we still need more players and there's a next page, go to it
+      if (selectedCount < 11 && currentPage < totalPages - 1) {
+        fireEvent.click(screen.getByText('NEXT PAGE'));
+        currentPage++;
+      }
+    }
+
+    // Now START MATCH button should be visible
+    expect(screen.getByText('START MATCH')).toBeTruthy();
   });
 });
 
