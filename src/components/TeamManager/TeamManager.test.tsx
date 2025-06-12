@@ -76,13 +76,6 @@ const mockContextValue = {
   setMatchStarted: jest.fn(),
 };
 
-// Enum for player selection state (copy from TeamManager)
-enum PlayerSelectionState {
-  Unselected = 0,
-  Selected = 1,
-  Substitute = 2,
-}
-
 // Add a mock team with 15 players for pagination tests
 const mockTeamManyPlayers: Team = {
   ...mockTeam,
