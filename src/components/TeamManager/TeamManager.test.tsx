@@ -29,6 +29,13 @@ const mockTeam: Team = {
   },
   players: [
     { id: '1', name: 'RICHARD', position: 'GK', strength: 80, mood: 70 },
+    {
+      id: '15',
+      name: 'BRUNO FERREIRA',
+      position: 'GK',
+      strength: 80,
+      mood: 70,
+    },
     { id: '2', name: 'DAVID RICARDO', position: 'DEF', strength: 75, mood: 75 },
     { id: '3', name: 'MATHEUS BAHIA', position: 'DEF', strength: 78, mood: 80 },
     {
@@ -126,8 +133,9 @@ describe('TeamManager', () => {
     // Check if the formation or selected count is displayed
     expect(screen.getByText('0 SELECTED')).toBeInTheDocument();
 
-    // Check if all players are displayed with their positions and strengths
-    mockTeam.players.forEach((player) => {
+    // Check if all players on the first page are displayed with their positions and strengths
+    const firstPagePlayers = mockTeam.players.slice(0, 11);
+    firstPagePlayers.forEach((player) => {
       const playerElement = screen.getByText(player.name).closest('div');
       expect(playerElement).toBeTruthy();
       expect(playerElement?.textContent).toContain(player.position);
@@ -271,19 +279,85 @@ describe('TeamManager', () => {
     // Initially, no players are selected
     expect(screen.getByText('0 SELECTED')).toBeInTheDocument();
 
-    // Select 5 players
-    const playerNames = mockTeam.players.map((p) => p.name);
-    for (let i = 0; i < 5; i++) {
-      fireEvent.click(screen.getByText(playerNames[i]));
-    }
-    expect(screen.getByText('5 SELECTED')).toBeInTheDocument();
+    // Select exactly one GK and the next 10 outfield players, checking all pages if needed
+    let selectedCount = 0;
+    let gkSelected = false;
+    let currentPage = 0;
+    const totalPages = Math.ceil(mockTeam.players.length / 11);
 
-    // Select up to 11 players
-    for (let i = 5; i < 11; i++) {
-      fireEvent.click(screen.getByText(playerNames[i]));
+    while (selectedCount < 11 && currentPage < totalPages) {
+      // Get players for current page
+      const startIdx = currentPage * 11;
+      const endIdx = Math.min(startIdx + 11, mockTeam.players.length);
+      const pagePlayers = mockTeam.players.slice(startIdx, endIdx);
+
+      // Try to select players from this page
+      for (const player of pagePlayers) {
+        if (selectedCount >= 11) break;
+
+        if (player.position === 'GK') {
+          if (gkSelected) continue;
+          gkSelected = true;
+        }
+
+        fireEvent.click(screen.getByText(player.name));
+        selectedCount++;
+      }
+
+      // If we still need more players and there's a next page, go to it
+      if (selectedCount < 11 && currentPage < totalPages - 1) {
+        fireEvent.click(screen.getByText('NEXT PAGE'));
+        currentPage++;
+      }
     }
+
     // Now, formation should be shown
     expect(screen.getByText('4-3-3')).toBeInTheDocument();
+  });
+
+  it('allows only one GK to be selected at a time', () => {
+    render(
+      <I18nextProvider i18n={i18n}>
+        <GeneralContext.Provider value={mockContextValue}>
+          <TeamManager />
+        </GeneralContext.Provider>
+      </I18nextProvider>
+    );
+    // Find the two GKs
+    const gk1 = screen.getByText('RICHARD').closest('div');
+    const gk2 = screen.getByText('BRUNO FERREIRA').closest('div');
+    expect(gk1).toBeTruthy();
+    expect(gk2).toBeTruthy();
+
+    // Select the first GK (should succeed)
+    fireEvent.click(gk1!);
+    let posBox1 = gk1!.querySelector('span');
+    let posBox2 = gk2!.querySelector('span');
+    expect(posBox1).toHaveClass('bg-[#e2e2e2]');
+    expect(posBox2).not.toHaveClass('bg-[#e2e2e2]');
+
+    // Try to select the second GK (should be ignored for 'Selected', but will cycle to 'Substitute')
+    fireEvent.click(gk2!);
+    posBox1 = gk1!.querySelector('span');
+    posBox2 = gk2!.querySelector('span');
+    expect(posBox1).toHaveClass('bg-[#e2e2e2]');
+    // The second GK should NOT be selected (should not have the selected class)
+    expect(posBox2).not.toHaveClass('bg-[#e2e2e2]');
+
+    // Deselect the first GK (cycle: selected -> substitute -> unselected)
+    fireEvent.click(gk1!); // to substitute
+    fireEvent.click(gk1!); // to unselected
+    posBox1 = gk1!.querySelector('span');
+    posBox2 = gk2!.querySelector('span');
+    expect(posBox1).not.toHaveClass('bg-[#e2e2e2]');
+    expect(posBox2).not.toHaveClass('bg-[#e2e2e2]');
+
+    // Now select the second GK (should succeed)
+    fireEvent.click(gk2!);
+    posBox1 = gk1!.querySelector('span');
+    posBox2 = gk2!.querySelector('span');
+    expect(posBox1).not.toHaveClass('bg-[#e2e2e2]');
+    expect(posBox2).toHaveClass('bg-[#e2e2e2]');
   });
 });
 
