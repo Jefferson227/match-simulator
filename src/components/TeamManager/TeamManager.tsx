@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import utils from '../../utils/utils';
 
-const FORMATIONS = [
+export const FORMATIONS = [
   '5-3-2',
   '3-5-2',
   '4-4-2',
@@ -103,6 +103,66 @@ const TeamManager: React.FC = () => {
     return `${dfCount}-${mfCount}-${fwCount}`;
   };
 
+  // Function to check if a formation is available based on team's players
+  const isFormationAvailable = (formation: string) => {
+    const [df, mf, fw] = formation.split('-').map(Number);
+    const players = state.selectedTeam?.players || [];
+
+    const dfCount = players.filter((p) => p.position === 'DF').length;
+    const mfCount = players.filter((p) => p.position === 'MF').length;
+    const fwCount = players.filter((p) => p.position === 'FW').length;
+    const gkCount = players.filter((p) => p.position === 'GK').length;
+
+    return dfCount >= df && mfCount >= mf && fwCount >= fw && gkCount >= 1;
+  };
+
+  // Function to select best players for a formation
+  const selectBestPlayersForFormation = (formation: string) => {
+    const [df, mf, fw] = formation.split('-').map(Number);
+    const players = state.selectedTeam?.players || [];
+
+    // Reset all selections
+    const newPlayerStates: { [id: string]: PlayerSelectionState } = {};
+
+    // Select best GK
+    const gks = players
+      .filter((p) => p.position === 'GK')
+      .sort((a, b) => b.strength - a.strength);
+    if (gks.length > 0) {
+      newPlayerStates[gks[0].id] = PlayerSelectionState.Selected;
+    }
+
+    // Select best defenders
+    const defenders = players
+      .filter((p) => p.position === 'DF')
+      .sort((a, b) => b.strength - a.strength)
+      .slice(0, df);
+    defenders.forEach((df) => {
+      newPlayerStates[df.id] = PlayerSelectionState.Selected;
+    });
+
+    // Select best midfielders
+    const midfielders = players
+      .filter((p) => p.position === 'MF')
+      .sort((a, b) => b.strength - a.strength)
+      .slice(0, mf);
+    midfielders.forEach((mf) => {
+      newPlayerStates[mf.id] = PlayerSelectionState.Selected;
+    });
+
+    // Select best forwards
+    const forwards = players
+      .filter((p) => p.position === 'FW')
+      .sort((a, b) => b.strength - a.strength)
+      .slice(0, fw);
+    forwards.forEach((fw) => {
+      newPlayerStates[fw.id] = PlayerSelectionState.Selected;
+    });
+
+    setPlayerStates(newPlayerStates);
+    setShowFormationGrid(false);
+  };
+
   return (
     <div className="font-press-start min-h-screen bg-[#3d7a33]">
       <div className="bg-[#1e1e1e] border-4 border-[#e2e2e2] w-[350px] mx-auto mt-[26px] mb-[15px]">
@@ -119,15 +179,25 @@ const TeamManager: React.FC = () => {
         {/* Player List or Formation Grid */}
         {showFormationGrid ? (
           <div className="bg-[#1e1e1e] text-white py-2 mx-2 mb-[50px] grid grid-cols-2 gap-4">
-            {FORMATIONS.map((formation) => (
-              <button
-                key={formation}
-                className="border-4 border-[#e2e2e2] bg-[#1e1e1e] text-white py-4 text-[18px] font-press-start"
-                onClick={() => setShowFormationGrid(false)}
-              >
-                {formation}
-              </button>
-            ))}
+            {FORMATIONS.map((formation) => {
+              const isAvailable = isFormationAvailable(formation);
+              return (
+                <button
+                  key={formation}
+                  className={`border-4 border-[#e2e2e2] ${
+                    isAvailable
+                      ? 'bg-[#1e1e1e] text-white hover:bg-[#2e2e2e]'
+                      : 'bg-[#1e1e1e] text-gray-500 cursor-not-allowed'
+                  } py-4 text-[18px] font-press-start`}
+                  onClick={() =>
+                    isAvailable && selectBestPlayersForFormation(formation)
+                  }
+                  disabled={!isAvailable}
+                >
+                  {formation}
+                </button>
+              );
+            })}
             <button
               className="col-span-2 border-4 border-[#e2e2e2] bg-[#1e1e1e] text-white py-4 text-[18px] font-press-start mt-4"
               onClick={() => setShowFormationGrid(false)}
