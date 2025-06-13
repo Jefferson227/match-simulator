@@ -34,25 +34,25 @@ const mockTeam: Team = {
       id: '15',
       name: 'BRUNO FERREIRA',
       position: 'GK',
-      strength: 80,
+      strength: 75,
       mood: 70,
     },
     { id: '2', name: 'DAVID RICARDO', position: 'DF', strength: 75, mood: 75 },
     { id: '3', name: 'MATHEUS BAHIA', position: 'DF', strength: 78, mood: 80 },
-    {
-      id: '4',
-      name: 'MATHEUS FELIPE',
-      position: 'DF',
-      strength: 76,
-      mood: 75,
-    },
+    { id: '4', name: 'MATHEUS FELIPE', position: 'DF', strength: 76, mood: 75 },
     { id: '5', name: 'RAÍ RAMOS', position: 'DF', strength: 77, mood: 78 },
+    { id: '16', name: 'JOAO VICTOR', position: 'DF', strength: 74, mood: 75 },
+    { id: '17', name: 'LUCAS RIBEIRO', position: 'DF', strength: 73, mood: 74 },
     { id: '6', name: 'RICHARDSON', position: 'MF', strength: 79, mood: 82 },
     { id: '7', name: 'LOURENÇO', position: 'MF', strength: 74, mood: 76 },
     { id: '8', name: 'G. CASTILHO', position: 'MF', strength: 73, mood: 75 },
+    { id: '18', name: 'PEDRO LUCAS', position: 'MF', strength: 72, mood: 73 },
+    { id: '19', name: 'VITOR JACARE', position: 'MF', strength: 71, mood: 72 },
     { id: '9', name: 'ERICK PULGA', position: 'FW', strength: 82, mood: 85 },
     { id: '10', name: 'BARCELÓ', position: 'FW', strength: 81, mood: 83 },
     { id: '11', name: 'AYLON', position: 'FW', strength: 80, mood: 80 },
+    { id: '20', name: 'JUNIOR VIANA', position: 'FW', strength: 79, mood: 79 },
+    { id: '21', name: 'LUCAS CRUZ', position: 'FW', strength: 78, mood: 78 },
   ],
   substitutes: [],
   score: 0,
@@ -276,37 +276,58 @@ describe('TeamManager', () => {
     // Initially, no players are selected
     expect(screen.getByText('0 SELECTED')).toBeTruthy();
 
-    // Select exactly one GK and the next 10 outfield players, checking all pages if needed
-    let selectedCount = 0;
-    let gkSelected = false;
-    let currentPage = 0;
-    const totalPages = Math.ceil(mockTeam.players.length / 11);
+    // Helper function to select a player by name
+    const selectPlayer = (playerName: string) => {
+      // Try to find the player on the current page
+      let playerElement = screen.queryByText(playerName)?.closest('div');
 
-    while (selectedCount < 11 && currentPage < totalPages) {
-      // Get players for current page
-      const startIdx = currentPage * 11;
-      const endIdx = Math.min(startIdx + 11, mockTeam.players.length);
-      const pagePlayers = mockTeam.players.slice(startIdx, endIdx);
-
-      // Try to select players from this page
-      for (const player of pagePlayers) {
-        if (selectedCount >= 11) break;
-
-        if (player.position === 'GK') {
-          if (gkSelected) continue;
-          gkSelected = true;
-        }
-
-        fireEvent.click(screen.getByText(player.name));
-        selectedCount++;
+      // If not found and there's a next page button that's not disabled, try next page
+      const nextPageButton = screen.getByText('NEXT PAGE');
+      if (!playerElement && !nextPageButton.hasAttribute('disabled')) {
+        fireEvent.click(nextPageButton);
+        playerElement = screen.queryByText(playerName)?.closest('div');
       }
 
-      // If we still need more players and there's a next page, go to it
-      if (selectedCount < 11 && currentPage < totalPages - 1) {
-        fireEvent.click(screen.getByText('NEXT PAGE'));
-        currentPage++;
+      // If still not found and there's a previous page button that's not disabled, try previous page
+      const prevPageButton = screen.getByText('PREVIOUS PAGE');
+      if (!playerElement && !prevPageButton.hasAttribute('disabled')) {
+        fireEvent.click(prevPageButton);
+        playerElement = screen.queryByText(playerName)?.closest('div');
       }
-    }
+
+      expect(playerElement).toBeTruthy();
+      fireEvent.click(playerElement!);
+    };
+
+    // Select the best GK
+    selectPlayer('RICHARD');
+
+    // Select the best 4 defenders
+    const defenders = mockTeam.players
+      .filter((p) => p.position === 'DF')
+      .sort((a, b) => b.strength - a.strength)
+      .slice(0, 4);
+    defenders.forEach((df) => {
+      selectPlayer(df.name);
+    });
+
+    // Select the best 3 midfielders
+    const midfielders = mockTeam.players
+      .filter((p) => p.position === 'MF')
+      .sort((a, b) => b.strength - a.strength)
+      .slice(0, 3);
+    midfielders.forEach((mf) => {
+      selectPlayer(mf.name);
+    });
+
+    // Select the best 3 forwards
+    const forwards = mockTeam.players
+      .filter((p) => p.position === 'FW')
+      .sort((a, b) => b.strength - a.strength)
+      .slice(0, 3);
+    forwards.forEach((fw) => {
+      selectPlayer(fw.name);
+    });
 
     // Now, formation should be shown based on selected players
     // In this case, we selected 4 DF, 3 MF, and 3 FW (plus 1 GK)
@@ -483,7 +504,7 @@ describe('TeamManager', () => {
       expect(formation343.hasAttribute('disabled')).toBe(true);
     });
 
-    it('selects best players when a formation is chosen', () => {
+    it('selects best players and substitutes when a formation is chosen', () => {
       render(
         <I18nextProvider i18n={i18n}>
           <GeneralContext.Provider value={mockContextValue}>
@@ -498,8 +519,11 @@ describe('TeamManager', () => {
       // Select 4-3-3 formation
       fireEvent.click(screen.getByText('4-3-3'));
 
-      // Helper function to check if a player is selected, navigating through pages if needed
-      const checkPlayerSelected = (playerName: string) => {
+      // Helper function to check if a player is selected or substitute
+      const checkPlayerState = (
+        playerName: string,
+        isSubstitute: boolean = false
+      ) => {
         // Try to find the player on the current page
         let playerElement = screen.queryByText(playerName)?.closest('div');
 
@@ -518,13 +542,30 @@ describe('TeamManager', () => {
         }
 
         expect(playerElement).toBeTruthy();
-        expect(playerElement?.querySelector('span')?.className).toContain(
-          'bg-[#e2e2e2]'
-        );
+
+        if (isSubstitute) {
+          // Check if name is underlined (substitute)
+          expect(
+            playerElement?.querySelector('span:nth-child(2)')?.className
+          ).toContain('underline');
+          // Check if position is not highlighted
+          expect(
+            playerElement?.querySelector('span:first-child')?.className
+          ).not.toContain('bg-[#e2e2e2]');
+        } else {
+          // Check if position is highlighted (selected)
+          expect(
+            playerElement?.querySelector('span:first-child')?.className
+          ).toContain('bg-[#e2e2e2]');
+          // Check if name is not underlined
+          expect(
+            playerElement?.querySelector('span:nth-child(2)')?.className
+          ).not.toContain('underline');
+        }
       };
 
       // Check if the best GK is selected
-      checkPlayerSelected('RICHARD');
+      checkPlayerState('RICHARD');
 
       // Check if the best defenders are selected
       const defenders = mockTeam.players
@@ -532,7 +573,7 @@ describe('TeamManager', () => {
         .sort((a, b) => b.strength - a.strength)
         .slice(0, 4);
       defenders.forEach((df) => {
-        checkPlayerSelected(df.name);
+        checkPlayerState(df.name);
       });
 
       // Check if the best midfielders are selected
@@ -541,7 +582,7 @@ describe('TeamManager', () => {
         .sort((a, b) => b.strength - a.strength)
         .slice(0, 3);
       midfielders.forEach((mf) => {
-        checkPlayerSelected(mf.name);
+        checkPlayerState(mf.name);
       });
 
       // Check if the best forwards are selected
@@ -550,7 +591,42 @@ describe('TeamManager', () => {
         .sort((a, b) => b.strength - a.strength)
         .slice(0, 3);
       forwards.forEach((fw) => {
-        checkPlayerSelected(fw.name);
+        checkPlayerState(fw.name);
+      });
+
+      // Check if the best GK substitute is selected
+      const gkSubs = mockTeam.players
+        .filter((p) => p.position === 'GK' && p.name !== 'RICHARD')
+        .sort((a, b) => b.strength - a.strength);
+      if (gkSubs.length > 0) {
+        checkPlayerState(gkSubs[0].name, true);
+      }
+
+      // Check if the best DF substitutes are selected
+      const dfSubs = mockTeam.players
+        .filter((p) => p.position === 'DF' && !defenders.includes(p))
+        .sort((a, b) => b.strength - a.strength)
+        .slice(0, 2);
+      dfSubs.forEach((df) => {
+        checkPlayerState(df.name, true);
+      });
+
+      // Check if the best MF substitutes are selected
+      const mfSubs = mockTeam.players
+        .filter((p) => p.position === 'MF' && !midfielders.includes(p))
+        .sort((a, b) => b.strength - a.strength)
+        .slice(0, 2);
+      mfSubs.forEach((mf) => {
+        checkPlayerState(mf.name, true);
+      });
+
+      // Check if the best FW substitutes are selected
+      const fwSubs = mockTeam.players
+        .filter((p) => p.position === 'FW' && !forwards.includes(p))
+        .sort((a, b) => b.strength - a.strength)
+        .slice(0, 2);
+      fwSubs.forEach((fw) => {
+        checkPlayerState(fw.name, true);
       });
 
       // Check if formation grid is closed

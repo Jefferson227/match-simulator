@@ -159,6 +159,45 @@ const TeamManager: React.FC = () => {
       newPlayerStates[fw.id] = PlayerSelectionState.Selected;
     });
 
+    // Select substitutes
+    // First, get all players that weren't selected as starters
+    const availablePlayers = players.filter((p) => !newPlayerStates[p.id]);
+
+    // Select best GK substitute
+    const gkSubs = availablePlayers
+      .filter((p) => p.position === 'GK')
+      .sort((a, b) => b.strength - a.strength);
+    if (gkSubs.length > 0) {
+      newPlayerStates[gkSubs[0].id] = PlayerSelectionState.Substitute;
+    }
+
+    // Select best DF substitutes (up to 2)
+    const dfSubs = availablePlayers
+      .filter((p) => p.position === 'DF')
+      .sort((a, b) => b.strength - a.strength)
+      .slice(0, 2);
+    dfSubs.forEach((df) => {
+      newPlayerStates[df.id] = PlayerSelectionState.Substitute;
+    });
+
+    // Select best MF substitutes (up to 2)
+    const mfSubs = availablePlayers
+      .filter((p) => p.position === 'MF')
+      .sort((a, b) => b.strength - a.strength)
+      .slice(0, 2);
+    mfSubs.forEach((mf) => {
+      newPlayerStates[mf.id] = PlayerSelectionState.Substitute;
+    });
+
+    // Select best FW substitutes (up to 2)
+    const fwSubs = availablePlayers
+      .filter((p) => p.position === 'FW')
+      .sort((a, b) => b.strength - a.strength)
+      .slice(0, 2);
+    fwSubs.forEach((fw) => {
+      newPlayerStates[fw.id] = PlayerSelectionState.Substitute;
+    });
+
     setPlayerStates(newPlayerStates);
     setShowFormationGrid(false);
   };
