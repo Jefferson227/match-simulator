@@ -2,7 +2,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import TeamManager from './TeamManager';
+import TeamManager, { FORMATIONS } from './TeamManager';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../../i18n';
 import { describe, it, expect, jest, beforeEach } from '@jest/globals';
@@ -405,6 +405,196 @@ describe('TeamManager', () => {
     // Now START MATCH button should be visible
     const startMatchButton = screen.getByText('START MATCH');
     expect(startMatchButton).toBeTruthy();
+  });
+
+  describe('Formation Selection', () => {
+    it('disables formations that require more players than available', () => {
+      // Create a team with limited players
+      const limitedTeam = {
+        ...mockTeam,
+        players: [
+          { id: '1', name: 'RICHARD', position: 'GK', strength: 80, mood: 70 },
+          {
+            id: '2',
+            name: 'DAVID RICARDO',
+            position: 'DF',
+            strength: 75,
+            mood: 75,
+          },
+          {
+            id: '3',
+            name: 'MATHEUS BAHIA',
+            position: 'DF',
+            strength: 78,
+            mood: 80,
+          },
+          {
+            id: '4',
+            name: 'MATHEUS FELIPE',
+            position: 'DF',
+            strength: 76,
+            mood: 75,
+          },
+          {
+            id: '5',
+            name: 'RAÍ RAMOS',
+            position: 'MF',
+            strength: 77,
+            mood: 78,
+          },
+          {
+            id: '6',
+            name: 'RICHARDSON',
+            position: 'MF',
+            strength: 79,
+            mood: 82,
+          },
+          { id: '7', name: 'LOURENÇO', position: 'FW', strength: 74, mood: 76 },
+        ],
+      };
+
+      const contextWithLimitedTeam = {
+        ...mockContextValue,
+        state: {
+          ...mockContextValue.state,
+          selectedTeam: limitedTeam,
+        },
+      };
+
+      render(
+        <I18nextProvider i18n={i18n}>
+          <GeneralContext.Provider value={contextWithLimitedTeam}>
+            <TeamManager />
+          </GeneralContext.Provider>
+        </I18nextProvider>
+      );
+
+      // Click the 'Choose Formation' button
+      fireEvent.click(screen.getByText('CHOOSE FORMATION'));
+
+      // 4-4-2 should be disabled (not enough players)
+      const formation442 = screen.getByText('4-4-2');
+      expect(formation442.className).toContain('text-gray-500');
+      expect(formation442.hasAttribute('disabled')).toBe(true);
+
+      // 3-4-3 should be disabled (not enough forwards)
+      const formation343 = screen.getByText('3-4-3');
+      expect(formation343.className).toContain('text-gray-500');
+      expect(formation343.hasAttribute('disabled')).toBe(true);
+    });
+
+    it('selects best players when a formation is chosen', () => {
+      render(
+        <I18nextProvider i18n={i18n}>
+          <GeneralContext.Provider value={mockContextValue}>
+            <TeamManager />
+          </GeneralContext.Provider>
+        </I18nextProvider>
+      );
+
+      // Click the 'Choose Formation' button
+      fireEvent.click(screen.getByText('CHOOSE FORMATION'));
+
+      // Select 4-3-3 formation
+      fireEvent.click(screen.getByText('4-3-3'));
+
+      // Helper function to check if a player is selected, navigating through pages if needed
+      const checkPlayerSelected = (playerName: string) => {
+        // Try to find the player on the current page
+        let playerElement = screen.queryByText(playerName)?.closest('div');
+
+        // If not found and there's a next page button that's not disabled, try next page
+        const nextPageButton = screen.getByText('NEXT PAGE');
+        if (!playerElement && !nextPageButton.hasAttribute('disabled')) {
+          fireEvent.click(nextPageButton);
+          playerElement = screen.queryByText(playerName)?.closest('div');
+        }
+
+        // If still not found and there's a previous page button that's not disabled, try previous page
+        const prevPageButton = screen.getByText('PREVIOUS PAGE');
+        if (!playerElement && !prevPageButton.hasAttribute('disabled')) {
+          fireEvent.click(prevPageButton);
+          playerElement = screen.queryByText(playerName)?.closest('div');
+        }
+
+        expect(playerElement).toBeTruthy();
+        expect(playerElement?.querySelector('span')?.className).toContain(
+          'bg-[#e2e2e2]'
+        );
+      };
+
+      // Check if the best GK is selected
+      checkPlayerSelected('RICHARD');
+
+      // Check if the best defenders are selected
+      const defenders = mockTeam.players
+        .filter((p) => p.position === 'DF')
+        .sort((a, b) => b.strength - a.strength)
+        .slice(0, 4);
+      defenders.forEach((df) => {
+        checkPlayerSelected(df.name);
+      });
+
+      // Check if the best midfielders are selected
+      const midfielders = mockTeam.players
+        .filter((p) => p.position === 'MF')
+        .sort((a, b) => b.strength - a.strength)
+        .slice(0, 3);
+      midfielders.forEach((mf) => {
+        checkPlayerSelected(mf.name);
+      });
+
+      // Check if the best forwards are selected
+      const forwards = mockTeam.players
+        .filter((p) => p.position === 'FW')
+        .sort((a, b) => b.strength - a.strength)
+        .slice(0, 3);
+      forwards.forEach((fw) => {
+        checkPlayerSelected(fw.name);
+      });
+
+      // Check if formation grid is closed
+      expect(screen.queryByText('CHOOSE FORMATION')).toBeTruthy();
+
+      // Check if START MATCH button is visible (indicating 11 players are selected)
+      expect(screen.getByText('START MATCH')).toBeTruthy();
+    });
+
+    it('shows formation grid with correct styling for available/unavailable formations', () => {
+      render(
+        <I18nextProvider i18n={i18n}>
+          <GeneralContext.Provider value={mockContextValue}>
+            <TeamManager />
+          </GeneralContext.Provider>
+        </I18nextProvider>
+      );
+
+      // Click the 'Choose Formation' button
+      fireEvent.click(screen.getByText('CHOOSE FORMATION'));
+
+      // Check if all formations are rendered
+      FORMATIONS.forEach((formation: string) => {
+        const formationButton = screen.getByText(formation);
+        expect(formationButton).toBeTruthy();
+
+        // Check if button has correct styling based on availability
+        const isAvailable =
+          mockTeam.players.filter((p) => p.position === 'DF').length >=
+            parseInt(formation.split('-')[0]) &&
+          mockTeam.players.filter((p) => p.position === 'MF').length >=
+            parseInt(formation.split('-')[1]) &&
+          mockTeam.players.filter((p) => p.position === 'FW').length >=
+            parseInt(formation.split('-')[2]);
+
+        if (isAvailable) {
+          expect(formationButton.className).not.toContain('text-gray-500');
+          expect(formationButton.hasAttribute('disabled')).toBe(false);
+        } else {
+          expect(formationButton.className).toContain('text-gray-500');
+          expect(formationButton.hasAttribute('disabled')).toBe(true);
+        }
+      });
+    });
   });
 });
 
