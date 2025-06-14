@@ -49,6 +49,14 @@ const TeamManager: React.FC = () => {
         (state) => state === PlayerSelectionState.Substitute
       ).length;
 
+      // Check if there's a GK selected
+      const hasGKSelected = state.selectedTeam?.players.some(
+        (p) =>
+          p.position === 'GK' &&
+          (prev[p.id] ?? PlayerSelectionState.Unselected) ===
+            PlayerSelectionState.Selected
+      );
+
       // If this is a GK and trying to select, check if another GK is already selected
       if (
         player.position === 'GK' &&
@@ -67,10 +75,41 @@ const TeamManager: React.FC = () => {
         }
       }
 
+      // If trying to deselect a GK, check if it's the only GK selected
+      if (
+        player.position === 'GK' &&
+        currentState === PlayerSelectionState.Selected &&
+        selectedCount === 11
+      ) {
+        // Don't allow deselecting the only GK if we have 11 players
+        return prev;
+      }
+
       // If we haven't reached the player limit yet, use the tri-state cycle
       if (selectedCount < 11) {
         const nextState =
           ((prev[id] ?? PlayerSelectionState.Unselected) + 1) % 3;
+        // If trying to select as starter (not substitute or unselect)
+        if (nextState === PlayerSelectionState.Selected) {
+          // If this would be the 11th selected player
+          if (selectedCount === 10) {
+            // Check if a GK is already selected (including this one if it's a GK)
+            const willBeGK = player.position === 'GK';
+            const gkAlreadySelected = state.selectedTeam?.players.some(
+              (p) =>
+                p.position === 'GK' &&
+                (p.id === id && !willBeGK
+                  ? false
+                  : (prev[p.id] ?? PlayerSelectionState.Unselected) ===
+                      PlayerSelectionState.Selected ||
+                    (p.id === id && willBeGK))
+            );
+            // If no GK is selected and this is not a GK, block selection
+            if (!gkAlreadySelected && !willBeGK) {
+              return prev;
+            }
+          }
+        }
         return { ...prev, [id]: nextState };
       }
 
@@ -84,7 +123,14 @@ const TeamManager: React.FC = () => {
         // Always allow deselecting a substitute
         return { ...prev, [id]: PlayerSelectionState.Unselected };
       } else if (currentState === PlayerSelectionState.Selected) {
-        // If currently selected, only allow cycling to unselected
+        // If currently selected, only allow cycling to unselected if it's not the only GK
+        if (player.position === 'GK' && selectedCount === 11) {
+          return prev;
+        }
+        // If we have 11 players and no GK selected, don't allow deselecting
+        if (selectedCount === 11 && !hasGKSelected) {
+          return prev;
+        }
         return { ...prev, [id]: PlayerSelectionState.Unselected };
       }
 
