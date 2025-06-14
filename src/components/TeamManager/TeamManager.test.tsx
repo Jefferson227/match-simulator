@@ -747,6 +747,46 @@ describe('TeamManager', () => {
       }
     };
 
+    // First, select some substitutes before reaching 11 players
+    // Select GK substitute
+    selectPlayer('BRUNO FERREIRA');
+    selectPlayer('BRUNO FERREIRA'); // Second click to make it a substitute
+    checkPlayerState('BRUNO FERREIRA', true);
+
+    // Select DF substitutes
+    const dfSubs = mockTeam.players
+      .filter((p) => p.position === 'DF')
+      .sort((a, b) => b.strength - a.strength)
+      .slice(4, 6); // Get the next 2 best defenders
+    dfSubs.forEach((df) => {
+      selectPlayer(df.name);
+      selectPlayer(df.name); // Second click to make it a substitute
+      checkPlayerState(df.name, true);
+    });
+
+    // Select MF substitutes
+    const mfSubs = mockTeam.players
+      .filter((p) => p.position === 'MF')
+      .sort((a, b) => b.strength - a.strength)
+      .slice(3, 5); // Get the next 2 best midfielders
+    mfSubs.forEach((mf) => {
+      selectPlayer(mf.name);
+      selectPlayer(mf.name); // Second click to make it a substitute
+      checkPlayerState(mf.name, true);
+    });
+
+    // Select FW substitutes
+    const fwSubs = mockTeam.players
+      .filter((p) => p.position === 'FW')
+      .sort((a, b) => b.strength - a.strength)
+      .slice(3, 5); // Get the next 2 best forwards
+    fwSubs.forEach((fw) => {
+      selectPlayer(fw.name);
+      selectPlayer(fw.name); // Second click to make it a substitute
+      checkPlayerState(fw.name, true);
+    });
+
+    // Now select the starting 11
     // Select the best GK
     selectPlayer('RICHARD');
 
@@ -786,7 +826,11 @@ describe('TeamManager', () => {
         !defenders.includes(p) &&
         !midfielders.includes(p) &&
         !forwards.includes(p) &&
-        p.name !== 'RICHARD'
+        p.name !== 'RICHARD' &&
+        !dfSubs.includes(p) &&
+        !mfSubs.includes(p) &&
+        !fwSubs.includes(p) &&
+        p.name !== 'BRUNO FERREIRA'
     );
     if (extraPlayer) {
       selectPlayer(extraPlayer.name);
@@ -798,41 +842,6 @@ describe('TeamManager', () => {
         playerElement?.querySelector('span:first-child')?.className
       ).not.toContain('bg-[#e2e2e2]');
     }
-
-    // Now try to select substitutes
-    // Select GK substitute
-    selectPlayer('BRUNO FERREIRA');
-    checkPlayerState('BRUNO FERREIRA', true);
-
-    // Select DF substitutes
-    const dfSubs = mockTeam.players
-      .filter((p) => p.position === 'DF' && !defenders.includes(p))
-      .sort((a, b) => b.strength - a.strength)
-      .slice(0, 2);
-    dfSubs.forEach((df) => {
-      selectPlayer(df.name);
-      checkPlayerState(df.name, true);
-    });
-
-    // Select MF substitutes
-    const mfSubs = mockTeam.players
-      .filter((p) => p.position === 'MF' && !midfielders.includes(p))
-      .sort((a, b) => b.strength - a.strength)
-      .slice(0, 2);
-    mfSubs.forEach((mf) => {
-      selectPlayer(mf.name);
-      checkPlayerState(mf.name, true);
-    });
-
-    // Select FW substitutes
-    const fwSubs = mockTeam.players
-      .filter((p) => p.position === 'FW' && !forwards.includes(p))
-      .sort((a, b) => b.strength - a.strength)
-      .slice(0, 2);
-    fwSubs.forEach((fw) => {
-      selectPlayer(fw.name);
-      checkPlayerState(fw.name, true);
-    });
 
     // Try to select an additional substitute - should not be possible
     const extraSub = mockTeam.players.find(
