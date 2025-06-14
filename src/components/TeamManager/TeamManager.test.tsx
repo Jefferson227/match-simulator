@@ -864,6 +864,134 @@ describe('TeamManager', () => {
       ).not.toContain('underline');
     }
   });
+
+  it('prevents selecting 11 players without a GK', () => {
+    render(
+      <I18nextProvider i18n={i18n}>
+        <GeneralContext.Provider value={mockContextValue}>
+          <TeamManager />
+        </GeneralContext.Provider>
+      </I18nextProvider>
+    );
+
+    // Helper function to select a player by name
+    const selectPlayer = (playerName: string) => {
+      let playerElement = screen.queryByText(playerName)?.closest('div');
+      const nextPageButton = screen.getByText('NEXT PAGE');
+      if (!playerElement && !nextPageButton.hasAttribute('disabled')) {
+        fireEvent.click(nextPageButton);
+        playerElement = screen.queryByText(playerName)?.closest('div');
+      }
+      const prevPageButton = screen.getByText('PREVIOUS PAGE');
+      if (!playerElement && !prevPageButton.hasAttribute('disabled')) {
+        fireEvent.click(prevPageButton);
+        playerElement = screen.queryByText(playerName)?.closest('div');
+      }
+      expect(playerElement).toBeTruthy();
+      fireEvent.click(playerElement!);
+    };
+
+    // Select 10 outfield players (no GK)
+    const outfieldPlayers = mockTeam.players
+      .filter((p) => p.position !== 'GK')
+      .slice(0, 10);
+    outfieldPlayers.forEach((p) => selectPlayer(p.name));
+
+    // Try to select an 11th outfield player (should not be possible)
+    const extraOutfield = mockTeam.players.find(
+      (p) => p.position !== 'GK' && !outfieldPlayers.includes(p)
+    );
+    if (extraOutfield) {
+      selectPlayer(extraOutfield.name);
+      const playerElement = screen
+        .queryByText(extraOutfield.name)
+        ?.closest('div');
+      // Should not be selected
+      expect(
+        playerElement?.querySelector('span:first-child')?.className
+      ).not.toContain('bg-[#e2e2e2]');
+    }
+
+    // Now select a GK (should be allowed as 11th player)
+    selectPlayer('RICHARD');
+    const gkElement = screen.queryByText('RICHARD')?.closest('div');
+    expect(gkElement?.querySelector('span:first-child')?.className).toContain(
+      'bg-[#e2e2e2]'
+    );
+  });
+
+  it('allows any position as 11th player if a GK is already selected', () => {
+    render(
+      <I18nextProvider i18n={i18n}>
+        <GeneralContext.Provider value={mockContextValue}>
+          <TeamManager />
+        </GeneralContext.Provider>
+      </I18nextProvider>
+    );
+    // Helper function to select a player by name
+    const selectPlayer = (playerName: string) => {
+      let playerElement = screen.queryByText(playerName)?.closest('div');
+      const nextPageButton = screen.getByText('NEXT PAGE');
+      if (!playerElement && !nextPageButton.hasAttribute('disabled')) {
+        fireEvent.click(nextPageButton);
+        playerElement = screen.queryByText(playerName)?.closest('div');
+      }
+      const prevPageButton = screen.getByText('PREVIOUS PAGE');
+      if (!playerElement && !prevPageButton.hasAttribute('disabled')) {
+        fireEvent.click(prevPageButton);
+        playerElement = screen.queryByText(playerName)?.closest('div');
+      }
+      expect(playerElement).toBeTruthy();
+      fireEvent.click(playerElement!);
+    };
+    // Select a GK first
+    selectPlayer('RICHARD');
+    // Select 10 outfield players
+    const outfieldPlayers = mockTeam.players
+      .filter((p) => p.position !== 'GK')
+      .slice(0, 10);
+    outfieldPlayers.forEach((p) => selectPlayer(p.name));
+    // All 11 should be selected (including the GK)
+    let gkElement = screen.queryByText('RICHARD')?.closest('div');
+    // If not found, try navigating pages
+    if (!gkElement) {
+      const nextPageButton = screen.getByText('NEXT PAGE');
+      if (!nextPageButton.hasAttribute('disabled')) {
+        fireEvent.click(nextPageButton);
+        gkElement = screen.queryByText('RICHARD')?.closest('div');
+      }
+    }
+    if (!gkElement) {
+      const prevPageButton = screen.getByText('PREVIOUS PAGE');
+      if (!prevPageButton.hasAttribute('disabled')) {
+        fireEvent.click(prevPageButton);
+        gkElement = screen.queryByText('RICHARD')?.closest('div');
+      }
+    }
+    expect(gkElement?.querySelector('span:first-child')?.className).toContain(
+      'bg-[#e2e2e2]'
+    );
+    outfieldPlayers.forEach((p) => {
+      let el = screen.queryByText(p.name)?.closest('div');
+      if (!el) {
+        const nextPageButton = screen.getByText('NEXT PAGE');
+        if (!nextPageButton.hasAttribute('disabled')) {
+          fireEvent.click(nextPageButton);
+          el = screen.queryByText(p.name)?.closest('div');
+        }
+      }
+      if (!el) {
+        const prevPageButton = screen.getByText('PREVIOUS PAGE');
+        if (!prevPageButton.hasAttribute('disabled')) {
+          fireEvent.click(prevPageButton);
+          el = screen.queryByText(p.name)?.closest('div');
+        }
+      }
+      expect(el?.querySelector('span:first-child')?.className).toContain(
+        'bg-[#e2e2e2]'
+      );
+    });
+  });
 });
 
 describe('TeamManager pagination', () => {
