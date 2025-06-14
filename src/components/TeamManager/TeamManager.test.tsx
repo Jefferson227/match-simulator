@@ -672,6 +672,189 @@ describe('TeamManager', () => {
       });
     });
   });
+
+  it('enforces selection limits of 11 players and 7 substitutes', () => {
+    render(
+      <I18nextProvider i18n={i18n}>
+        <GeneralContext.Provider value={mockContextValue}>
+          <TeamManager />
+        </GeneralContext.Provider>
+      </I18nextProvider>
+    );
+
+    // Helper function to select a player by name
+    const selectPlayer = (playerName: string) => {
+      // Try to find the player on the current page
+      let playerElement = screen.queryByText(playerName)?.closest('div');
+
+      // If not found and there's a next page button that's not disabled, try next page
+      const nextPageButton = screen.getByText('NEXT PAGE');
+      if (!playerElement && !nextPageButton.hasAttribute('disabled')) {
+        fireEvent.click(nextPageButton);
+        playerElement = screen.queryByText(playerName)?.closest('div');
+      }
+
+      // If still not found and there's a previous page button that's not disabled, try previous page
+      const prevPageButton = screen.getByText('PREVIOUS PAGE');
+      if (!playerElement && !prevPageButton.hasAttribute('disabled')) {
+        fireEvent.click(prevPageButton);
+        playerElement = screen.queryByText(playerName)?.closest('div');
+      }
+
+      expect(playerElement).toBeTruthy();
+      fireEvent.click(playerElement!);
+    };
+
+    // Helper function to check if a player is selected or substitute
+    const checkPlayerState = (
+      playerName: string,
+      isSubstitute: boolean = false
+    ) => {
+      let playerElement = screen.queryByText(playerName)?.closest('div');
+
+      if (!playerElement) {
+        const nextPageButton = screen.getByText('NEXT PAGE');
+        if (!nextPageButton.hasAttribute('disabled')) {
+          fireEvent.click(nextPageButton);
+          playerElement = screen.queryByText(playerName)?.closest('div');
+        }
+      }
+
+      if (!playerElement) {
+        const prevPageButton = screen.getByText('PREVIOUS PAGE');
+        if (!prevPageButton.hasAttribute('disabled')) {
+          fireEvent.click(prevPageButton);
+          playerElement = screen.queryByText(playerName)?.closest('div');
+        }
+      }
+
+      expect(playerElement).toBeTruthy();
+
+      if (isSubstitute) {
+        expect(
+          playerElement?.querySelector('span:nth-child(2)')?.className
+        ).toContain('underline');
+        expect(
+          playerElement?.querySelector('span:first-child')?.className
+        ).not.toContain('bg-[#e2e2e2]');
+      } else {
+        expect(
+          playerElement?.querySelector('span:first-child')?.className
+        ).toContain('bg-[#e2e2e2]');
+        expect(
+          playerElement?.querySelector('span:nth-child(2)')?.className
+        ).not.toContain('underline');
+      }
+    };
+
+    // Select the best GK
+    selectPlayer('RICHARD');
+
+    // Select the best 4 defenders
+    const defenders = mockTeam.players
+      .filter((p) => p.position === 'DF')
+      .sort((a, b) => b.strength - a.strength)
+      .slice(0, 4);
+    defenders.forEach((df) => {
+      selectPlayer(df.name);
+    });
+
+    // Select the best 3 midfielders
+    const midfielders = mockTeam.players
+      .filter((p) => p.position === 'MF')
+      .sort((a, b) => b.strength - a.strength)
+      .slice(0, 3);
+    midfielders.forEach((mf) => {
+      selectPlayer(mf.name);
+    });
+
+    // Select the best 3 forwards
+    const forwards = mockTeam.players
+      .filter((p) => p.position === 'FW')
+      .sort((a, b) => b.strength - a.strength)
+      .slice(0, 3);
+    forwards.forEach((fw) => {
+      selectPlayer(fw.name);
+    });
+
+    // Verify we have 11 selected players
+    expect(screen.getByText('4-3-3')).toBeTruthy();
+
+    // Try to select an additional player - should not be possible
+    const extraPlayer = mockTeam.players.find(
+      (p) =>
+        !defenders.includes(p) &&
+        !midfielders.includes(p) &&
+        !forwards.includes(p) &&
+        p.name !== 'RICHARD'
+    );
+    if (extraPlayer) {
+      selectPlayer(extraPlayer.name);
+      // The player should not be selected (no highlight)
+      const playerElement = screen
+        .queryByText(extraPlayer.name)
+        ?.closest('div');
+      expect(
+        playerElement?.querySelector('span:first-child')?.className
+      ).not.toContain('bg-[#e2e2e2]');
+    }
+
+    // Now try to select substitutes
+    // Select GK substitute
+    selectPlayer('BRUNO FERREIRA');
+    checkPlayerState('BRUNO FERREIRA', true);
+
+    // Select DF substitutes
+    const dfSubs = mockTeam.players
+      .filter((p) => p.position === 'DF' && !defenders.includes(p))
+      .sort((a, b) => b.strength - a.strength)
+      .slice(0, 2);
+    dfSubs.forEach((df) => {
+      selectPlayer(df.name);
+      checkPlayerState(df.name, true);
+    });
+
+    // Select MF substitutes
+    const mfSubs = mockTeam.players
+      .filter((p) => p.position === 'MF' && !midfielders.includes(p))
+      .sort((a, b) => b.strength - a.strength)
+      .slice(0, 2);
+    mfSubs.forEach((mf) => {
+      selectPlayer(mf.name);
+      checkPlayerState(mf.name, true);
+    });
+
+    // Select FW substitutes
+    const fwSubs = mockTeam.players
+      .filter((p) => p.position === 'FW' && !forwards.includes(p))
+      .sort((a, b) => b.strength - a.strength)
+      .slice(0, 2);
+    fwSubs.forEach((fw) => {
+      selectPlayer(fw.name);
+      checkPlayerState(fw.name, true);
+    });
+
+    // Try to select an additional substitute - should not be possible
+    const extraSub = mockTeam.players.find(
+      (p) =>
+        !dfSubs.includes(p) &&
+        !mfSubs.includes(p) &&
+        !fwSubs.includes(p) &&
+        p.name !== 'BRUNO FERREIRA' &&
+        !defenders.includes(p) &&
+        !midfielders.includes(p) &&
+        !forwards.includes(p) &&
+        p.name !== 'RICHARD'
+    );
+    if (extraSub) {
+      selectPlayer(extraSub.name);
+      // The player should not be a substitute (no underline)
+      const playerElement = screen.queryByText(extraSub.name)?.closest('div');
+      expect(
+        playerElement?.querySelector('span:nth-child(2)')?.className
+      ).not.toContain('underline');
+    }
+  });
 });
 
 describe('TeamManager pagination', () => {

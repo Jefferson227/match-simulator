@@ -40,6 +40,15 @@ const TeamManager: React.FC = () => {
       const player = state.selectedTeam?.players.find((p) => p.id === id);
       if (!player) return prev;
       const currentState = prev[id] ?? PlayerSelectionState.Unselected;
+
+      // Count current selections
+      const selectedCount = Object.values(prev).filter(
+        (state) => state === PlayerSelectionState.Selected
+      ).length;
+      const substituteCount = Object.values(prev).filter(
+        (state) => state === PlayerSelectionState.Substitute
+      ).length;
+
       // If this is a GK and trying to select, check if another GK is already selected
       if (
         player.position === 'GK' &&
@@ -57,8 +66,29 @@ const TeamManager: React.FC = () => {
           return prev;
         }
       }
-      const nextState = ((prev[id] ?? PlayerSelectionState.Unselected) + 1) % 3;
-      return { ...prev, [id]: nextState };
+
+      // If we haven't reached the player limit yet, use the tri-state cycle
+      if (selectedCount < 11) {
+        const nextState =
+          ((prev[id] ?? PlayerSelectionState.Unselected) + 1) % 3;
+        return { ...prev, [id]: nextState };
+      }
+
+      // If we've reached the player limit, only allow cycling between unselected and substitute
+      if (currentState === PlayerSelectionState.Unselected) {
+        // Only allow selecting as substitute if we haven't reached the substitute limit
+        if (substituteCount < 7) {
+          return { ...prev, [id]: PlayerSelectionState.Substitute };
+        }
+      } else if (currentState === PlayerSelectionState.Substitute) {
+        // Always allow deselecting a substitute
+        return { ...prev, [id]: PlayerSelectionState.Unselected };
+      } else if (currentState === PlayerSelectionState.Selected) {
+        // If currently selected, only allow cycling to unselected
+        return { ...prev, [id]: PlayerSelectionState.Unselected };
+      }
+
+      return prev;
     });
   };
 
