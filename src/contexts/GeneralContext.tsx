@@ -63,8 +63,7 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
   const setMatchTeam = (team: MatchTeam) =>
     dispatch({ type: 'SET_MATCH_TEAM', payload: team });
 
-  const setMatchOtherTeams = (teams: MatchTeam[]) =>
-    dispatch({ type: 'SET_MATCH_OTHER_TEAMS', payload: teams });
+  const setMatchOtherTeams = () => dispatch({ type: 'SET_MATCH_OTHER_TEAMS' });
 
   return (
     <GeneralContext.Provider
