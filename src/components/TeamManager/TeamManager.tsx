@@ -362,7 +362,7 @@ const TeamManager: React.FC = () => {
           </div>
         ) : (
           <div
-            className="py-2 mx-2 mb-[50px]"
+            className="py-2 mx-2 mb-[50px] h-[307.5px]"
             style={{ backgroundColor, color: '#fff' }}
           >
             {paginatedPlayers.map((player) => {
