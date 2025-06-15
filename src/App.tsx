@@ -6,17 +6,21 @@ import { GeneralContext } from './contexts/GeneralContext';
 import { FC, useContext } from 'react';
 import MatchSimulator from './components/MatchSimulator/MatchSimulator';
 
-const App: FC = () => {
+const AppContent: FC = () => {
   const { state } = useContext(GeneralContext);
   return (
-    <I18nextProvider i18n={i18n}>
-      <AppProviders>
-        <div className="text-center min-h-screen bg-[#3d7a33]">
-          {state.isMatchStarted ? <MatchSimulator /> : <TeamManager />}
-        </div>
-      </AppProviders>
-    </I18nextProvider>
+    <div className="text-center min-h-screen bg-[#3d7a33]">
+      {state.isMatchStarted ? <MatchSimulator /> : <TeamManager />}
+    </div>
   );
 };
+
+const App: FC = () => (
+  <I18nextProvider i18n={i18n}>
+    <AppProviders>
+      <AppContent />
+    </AppProviders>
+  </I18nextProvider>
+);
 
 export default App;
