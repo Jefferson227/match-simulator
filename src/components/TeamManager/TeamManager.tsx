@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import utils from '../../utils/utils';
-import { BaseTeam, MatchTeam, Player } from '../../types';
+import { MatchTeam, Player } from '../../types';
 
 export const FORMATIONS = [
   '5-3-2',
