@@ -456,9 +456,12 @@ describe('TeamManager', () => {
       }
     }
 
-    // Now START MATCH button should be visible
-    const startMatchButton = screen.getByText('START MATCH');
+    // Now START MATCH button should be visible with correct colors
+    const startMatchButton = screen.getByText('START MATCH') as HTMLElement;
     expect(startMatchButton).toBeTruthy();
+    expect(startMatchButton.style.borderColor).toBe('#e2e2e2');
+    expect(startMatchButton.style.backgroundColor).toBe('rgb(60, 122, 51)');
+    expect(startMatchButton.style.color).toBe('rgb(226, 226, 226)');
   });
 
   describe('Formation Selection', () => {
@@ -1080,9 +1083,9 @@ describe('TeamManager', () => {
     // Now START MATCH button should be visible with correct colors
     const startMatchButton = screen.getByText('START MATCH') as HTMLElement;
     expect(startMatchButton).toBeTruthy();
-    expect(startMatchButton.style.borderColor).toBe('#000000'); // outlineColor from mockTeam
+    expect(startMatchButton.style.borderColor).toBe('#e2e2e2');
     expect(startMatchButton.style.backgroundColor).toBe('rgb(60, 122, 51)');
-    expect(startMatchButton.style.color).toBe('rgb(0, 0, 0)'); // outlineColor from mockTeam
+    expect(startMatchButton.style.color).toBe('rgb(226, 226, 226)');
   });
 
   it('shows disabled state for navigation buttons correctly', () => {

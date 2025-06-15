@@ -494,9 +494,9 @@ const TeamManager: React.FC = () => {
             <button
               className="w-[350px] border-4 py-4 text-[16px] mt-2"
               style={{
-                borderColor: outlineColor,
+                borderColor: '#e2e2e2',
                 backgroundColor: '#3c7a33',
-                color: outlineColor,
+                color: '#e2e2e2',
               }}
             >
               {t('teamManager.startMatch')}
