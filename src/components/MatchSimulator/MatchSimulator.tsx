@@ -4,6 +4,7 @@ import TeamComponent from '../TeamComponent';
 import Functions from '../../functions/MatchSimulatorFunctions';
 import TeamPlayers from '../TeamPlayers/TeamPlayers';
 import { MatchContext } from '../../contexts/MatchContext';
+import { GeneralContext } from '../../contexts/GeneralContext';
 import teamService from '../../services/teamService';
 import MatchDetails from '../MatchDetails';
 
@@ -12,11 +13,26 @@ const MatchSimulator: FC = () => {
   const [detailsMatchId, setDetailsMatchId] = useState<string | null>(null);
   const { matches, teamSquadView, setMatches, increaseScore, setScorer } =
     useContext(MatchContext);
+  const { state } = useContext(GeneralContext);
   const { getTeams } = teamService;
 
   useEffect(() => {
-    setMatches(getTeams(1));
-    setMatches(getTeams(2));
+    // TODO: Set the matches from the generalReducer
+    // setMatches(getTeams(1));
+    // setMatches(getTeams(2));
+
+    setMatches({
+      homeTeam: state.matchOtherTeams[0],
+      visitorTeam: state.matchOtherTeams[1],
+    });
+    setMatches({
+      homeTeam: state.matchOtherTeams[2],
+      visitorTeam: state.matchOtherTeams[3],
+    });
+    setMatches({
+      homeTeam: state.matchOtherTeams[4],
+      visitorTeam: state.matchOtherTeams[5],
+    });
   }, []);
 
   useEffect(() => {
