@@ -16,7 +16,7 @@ export type GeneralAction =
   | { type: 'SET_BASE_TEAM'; payload: BaseTeam }
   | { type: 'SET_MATCH_STARTED'; payload: boolean }
   | { type: 'SET_MATCH_TEAM'; payload: MatchTeam }
-  | { type: 'SET_MATCH_OTHER_TEAMS'; payload: MatchTeam[] };
+  | { type: 'SET_MATCH_OTHER_TEAMS' };
 
 // Create the reducer
 export const generalReducer = (
@@ -45,9 +45,14 @@ export const generalReducer = (
         matchTeam: action.payload,
       };
     case 'SET_MATCH_OTHER_TEAMS':
+      // TODO: Since it's returning an array of the player's team plus the other teams, this needs to be renamed
+      const matchOtherTeams = teamService.getOtherMatchTeams();
+
       return {
         ...state,
-        matchOtherTeams: action.payload,
+        matchOtherTeams: state.matchTeam
+          ? [state.matchTeam, ...matchOtherTeams]
+          : matchOtherTeams,
       };
     default:
       return state;

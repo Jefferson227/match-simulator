@@ -2,15 +2,17 @@ import { createContext, useReducer, ReactNode } from 'react';
 import { matchReducer } from '../reducers/matchReducer';
 import {
   Match,
-  MatchState,
-  Team,
   SubstitutionParams,
   TeamSquadView,
   Scorer,
+  MatchTeam,
 } from '../types';
 
 export type MatchAction =
-  | { type: 'SET_MATCHES'; payload: { homeTeam: Team; visitorTeam: Team } }
+  | {
+      type: 'SET_MATCHES';
+      payload: { homeTeam: MatchTeam; visitorTeam: MatchTeam };
+    }
   | { type: 'SET_SCORER'; payload: { matchId: string; scorer: Scorer } }
   | {
       type: 'INCREASE_SCORE';
@@ -25,7 +27,7 @@ export type MatchAction =
 interface MatchContextType {
   matches: Match[];
   teamSquadView: TeamSquadView | null | undefined;
-  setMatches: (teams: { homeTeam: Team; visitorTeam: Team }) => void;
+  setMatches: (teams: { homeTeam: MatchTeam; visitorTeam: MatchTeam }) => void;
   setScorer: (matchId: string, scorer: Scorer) => void;
   increaseScore: (matchId: string, scorerTeam: { isHomeTeam: boolean }) => void;
   setTeamSquadView: (teamSquadView: TeamSquadView | null) => void;
@@ -54,7 +56,7 @@ export const MatchProvider: React.FC<MatchProviderProps> = ({ children }) => {
     matches: [],
   });
 
-  const setMatches = (teams: { homeTeam: Team; visitorTeam: Team }) =>
+  const setMatches = (teams: { homeTeam: MatchTeam; visitorTeam: MatchTeam }) =>
     dispatch({ type: 'SET_MATCHES', payload: teams });
 
   const setScorer = (matchId: string, scorer: Scorer) =>

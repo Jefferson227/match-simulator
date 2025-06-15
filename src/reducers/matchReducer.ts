@@ -1,5 +1,5 @@
 import utils from '../utils/utils';
-import { MatchState, Team, Player, Match } from '../types';
+import { MatchState, MatchTeam } from '../types';
 import { MatchAction } from '../contexts/MatchContext';
 
 const { addPlayerAttributes, getAverage, getSum } = utils;
@@ -12,64 +12,64 @@ export const matchReducer = (
     case 'SET_MATCHES': {
       const { homeTeam, visitorTeam } = action.payload;
 
-      var updatedHomeTeam: Team = {
+      var updatedHomeTeam: MatchTeam = {
         ...homeTeam,
-        players: addPlayerAttributes(homeTeam.players),
+        starters: addPlayerAttributes(homeTeam.starters),
         substitutes: addPlayerAttributes(homeTeam.substitutes),
         isHomeTeam: true,
         score: 0,
         morale: 50,
         overallMood: 0,
-        overallStrength: getSum(homeTeam.players.map((p) => p.strength)),
+        overallStrength: getSum(homeTeam.starters.map((p) => p.strength)),
         attackStrength: getSum(
-          homeTeam.players
+          homeTeam.starters
             .filter((p) => p.position === 'FW')
             .map((p) => p.strength)
         ),
         midfieldStrength: getSum(
-          homeTeam.players
+          homeTeam.starters
             .filter((p) => p.position === 'MF')
             .map((p) => p.strength)
         ),
         defenseStrength: getSum(
-          homeTeam.players
+          homeTeam.starters
             .filter((p) => p.position === 'DF' || p.position === 'GK')
             .map((p) => p.strength)
         ),
       };
 
       updatedHomeTeam.overallMood = getAverage(
-        updatedHomeTeam.players.map((p) => p.mood)
+        updatedHomeTeam.starters.map((p) => p.mood)
       );
 
-      var updatedVisitorTeam: Team = {
+      var updatedVisitorTeam: MatchTeam = {
         ...visitorTeam,
-        players: addPlayerAttributes(visitorTeam.players),
+        starters: addPlayerAttributes(visitorTeam.starters),
         substitutes: addPlayerAttributes(visitorTeam.substitutes),
         isHomeTeam: false,
         score: 0,
         morale: 50,
         overallMood: 0,
-        overallStrength: getSum(visitorTeam.players.map((p) => p.strength)),
+        overallStrength: getSum(visitorTeam.starters.map((p) => p.strength)),
         attackStrength: getSum(
-          visitorTeam.players
+          visitorTeam.starters
             .filter((p) => p.position === 'FW')
             .map((p) => p.strength)
         ),
         midfieldStrength: getSum(
-          visitorTeam.players
+          visitorTeam.starters
             .filter((p) => p.position === 'MF')
             .map((p) => p.strength)
         ),
         defenseStrength: getSum(
-          visitorTeam.players
+          visitorTeam.starters
             .filter((p) => p.position === 'DF' || p.position === 'GK')
             .map((p) => p.strength)
         ),
       };
 
       updatedVisitorTeam.overallMood = getAverage(
-        updatedVisitorTeam.players.map((p) => p.mood)
+        updatedVisitorTeam.starters.map((p) => p.mood)
       );
 
       return {
@@ -99,7 +99,7 @@ export const matchReducer = (
         matches: state.matches.map((m) => {
           if (m.id === matchId) {
             // Determine if the scorer is from the home team
-            const isHomeTeam = m.homeTeam.players.some(
+            const isHomeTeam = m.homeTeam.starters.some(
               (p) => p.name === scorer.playerName
             );
             return {
@@ -172,7 +172,7 @@ export const matchReducer = (
           // Remove the substituted player from the main squad
           const filteredPlayers = updatedMatch[
             isTeamHomeOrVisitor
-          ].players.filter((p) => p.id !== selectedPlayer.id);
+          ].starters.filter((p) => p.id !== selectedPlayer.id);
 
           // Sort the players from the main squad plus the substitute by order
           const sortedPlayers = [...filteredPlayers, selectedSubstitute].sort(
@@ -195,7 +195,7 @@ export const matchReducer = (
           // Update the team
           updatedMatch[isTeamHomeOrVisitor] = {
             ...updatedMatch[isTeamHomeOrVisitor],
-            players: sortedPlayers,
+            starters: sortedPlayers,
             substitutes: filteredSubstitutes,
           };
 

@@ -75,8 +75,8 @@ export interface Scorer {
 
 export interface Match {
   id: string;
-  homeTeam: Team;
-  visitorTeam: Team;
+  homeTeam: MatchTeam;
+  visitorTeam: MatchTeam;
   lastScorer: Scorer | null;
   ballPossession: {
     isHomeTeam: boolean;
@@ -100,7 +100,7 @@ export interface Match {
 }
 
 export interface TeamSquadView {
-  team: Team;
+  team: MatchTeam;
   matchId: string;
 }
 
@@ -111,7 +111,7 @@ export interface MatchState {
 
 export interface SubstitutionParams {
   matchId: string;
-  team: Team;
+  team: MatchTeam;
   selectedPlayer: Player;
   selectedSubstitute: Player;
 }
