@@ -2,14 +2,17 @@ import AppProviders from './providers/AppProviders';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 import TeamManager from './components/TeamManager/TeamManager';
-import { FC } from 'react';
+import { GeneralContext } from './contexts/GeneralContext';
+import { FC, useContext } from 'react';
+import MatchSimulator from './components/MatchSimulator/MatchSimulator';
 
 const App: FC = () => {
+  const { state } = useContext(GeneralContext);
   return (
     <I18nextProvider i18n={i18n}>
       <AppProviders>
         <div className="text-center min-h-screen bg-[#3d7a33]">
-          <TeamManager />
+          {state.isMatchStarted ? <MatchSimulator /> : <TeamManager />}
         </div>
       </AppProviders>
     </I18nextProvider>
