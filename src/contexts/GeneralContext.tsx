@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, ReactNode } from 'react';
+import React, { createContext, useReducer, ReactNode } from 'react';
 import { generalReducer, GeneralState } from '../reducers/generalReducer';
 import { BaseTeam, MatchTeam } from '../types';
 import teamService from '../services/teamService';
@@ -10,6 +10,7 @@ interface GeneralContextType {
   getBaseTeam: () => void;
   setMatchStarted: (isStarted: boolean) => void;
   setMatchTeam: (team: MatchTeam) => void;
+  setMatchOtherTeams: (teams: MatchTeam[]) => void;
 }
 
 // Create the default context value
@@ -18,12 +19,14 @@ const defaultContextValue: GeneralContextType = {
     currentPage: 1,
     baseTeam: {} as BaseTeam,
     matchTeam: null,
+    matchOtherTeams: [],
     isMatchStarted: false,
   },
   setCurrentPage: () => {},
   getBaseTeam: () => {},
   setMatchStarted: () => {},
   setMatchTeam: () => {},
+  setMatchOtherTeams: () => {},
 };
 
 // Create the context
@@ -42,6 +45,7 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
     currentPage: 1,
     baseTeam: {} as BaseTeam,
     matchTeam: null,
+    matchOtherTeams: [],
     isMatchStarted: false,
   });
 
@@ -59,6 +63,9 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
   const setMatchTeam = (team: MatchTeam) =>
     dispatch({ type: 'SET_MATCH_TEAM', payload: team });
 
+  const setMatchOtherTeams = (teams: MatchTeam[]) =>
+    dispatch({ type: 'SET_MATCH_OTHER_TEAMS', payload: teams });
+
   return (
     <GeneralContext.Provider
       value={{
@@ -67,6 +74,7 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
         getBaseTeam,
         setMatchStarted,
         setMatchTeam,
+        setMatchOtherTeams,
       }}
     >
       {children}

@@ -6,6 +6,7 @@ export interface GeneralState {
   currentPage: number;
   baseTeam: BaseTeam;
   matchTeam: MatchTeam | null;
+  matchOtherTeams: MatchTeam[];
   isMatchStarted: boolean;
 }
 
@@ -14,7 +15,8 @@ export type GeneralAction =
   | { type: 'SET_CURRENT_PAGE'; payload: number }
   | { type: 'SET_BASE_TEAM'; payload: BaseTeam }
   | { type: 'SET_MATCH_STARTED'; payload: boolean }
-  | { type: 'SET_MATCH_TEAM'; payload: MatchTeam };
+  | { type: 'SET_MATCH_TEAM'; payload: MatchTeam }
+  | { type: 'SET_MATCH_OTHER_TEAMS'; payload: MatchTeam[] };
 
 // Create the reducer
 export const generalReducer = (
@@ -41,6 +43,11 @@ export const generalReducer = (
       return {
         ...state,
         matchTeam: action.payload,
+      };
+    case 'SET_MATCH_OTHER_TEAMS':
+      return {
+        ...state,
+        matchOtherTeams: action.payload,
       };
     default:
       return state;
