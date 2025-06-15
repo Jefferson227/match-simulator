@@ -518,6 +518,12 @@ const TeamManager: React.FC = () => {
                 backgroundColor: '#3c7a33',
                 color: '#e2e2e2',
               }}
+              onClick={() => {
+                const matchTeam = createMatchTeam();
+                if (matchTeam) {
+                  setMatchTeam(matchTeam);
+                }
+              }}
             >
               {t('teamManager.startMatch')}
             </button>
