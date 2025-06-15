@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import utils from '../../utils/utils';
+import { BaseTeam, MatchTeam, Player } from '../../types';
 
 export const FORMATIONS = [
   '5-3-2',
@@ -23,7 +24,7 @@ enum PlayerSelectionState {
 
 const TeamManager: React.FC = () => {
   const { t } = useTranslation();
-  const { getSelectedTeam, state } = useContext(GeneralContext);
+  const { getBaseTeam, setMatchTeam, state } = useContext(GeneralContext);
   const [showFormationGrid, setShowFormationGrid] = useState(false);
   const [playerStates, setPlayerStates] = useState<{
     [id: string]: PlayerSelectionState;
@@ -32,12 +33,12 @@ const TeamManager: React.FC = () => {
   const PLAYERS_PER_PAGE = 11;
 
   useEffect(() => {
-    getSelectedTeam();
+    getBaseTeam();
   }, []);
 
   const handlePlayerClick = (id: string) => {
     setPlayerStates((prev) => {
-      const player = state.selectedTeam?.players.find((p) => p.id === id);
+      const player = state.baseTeam?.players.find((p: Player) => p.id === id);
       if (!player) return prev;
       const currentState = prev[id] ?? PlayerSelectionState.Unselected;
 
@@ -50,8 +51,8 @@ const TeamManager: React.FC = () => {
       ).length;
 
       // Check if there's a GK selected
-      const hasGKSelected = state.selectedTeam?.players.some(
-        (p) =>
+      const hasGKSelected = state.baseTeam?.players.some(
+        (p: Player) =>
           p.position === 'GK' &&
           (prev[p.id] ?? PlayerSelectionState.Unselected) ===
             PlayerSelectionState.Selected
@@ -62,8 +63,8 @@ const TeamManager: React.FC = () => {
         player.position === 'GK' &&
         (currentState + 1) % 3 === PlayerSelectionState.Selected
       ) {
-        const anotherGKSelected = state.selectedTeam?.players.some(
-          (p) =>
+        const anotherGKSelected = state.baseTeam?.players.some(
+          (p: Player) =>
             p.position === 'GK' &&
             p.id !== id &&
             (prev[p.id] ?? PlayerSelectionState.Unselected) ===
@@ -95,8 +96,8 @@ const TeamManager: React.FC = () => {
           if (selectedCount === 10) {
             // Check if a GK is already selected (including this one if it's a GK)
             const willBeGK = player.position === 'GK';
-            const gkAlreadySelected = state.selectedTeam?.players.some(
-              (p) =>
+            const gkAlreadySelected = state.baseTeam?.players.some(
+              (p: Player) =>
                 p.position === 'GK' &&
                 (p.id === id && !willBeGK
                   ? false
@@ -139,7 +140,7 @@ const TeamManager: React.FC = () => {
   };
 
   // Pagination logic
-  const players = state.selectedTeam?.players || [];
+  const players = state.baseTeam?.players || [];
   const totalPages = Math.ceil(players.length / PLAYERS_PER_PAGE);
   const paginatedPlayers = players.slice(
     currentPage * PLAYERS_PER_PAGE,
@@ -156,7 +157,7 @@ const TeamManager: React.FC = () => {
   useEffect(() => {
     // Reset to first page if team changes or player count changes
     setCurrentPage(0);
-  }, [state.selectedTeam?.id, players.length]);
+  }, [state.baseTeam?.id, players.length]);
 
   // Count selected players
   const selectedCount = Object.values(playerStates).filter(
@@ -168,7 +169,7 @@ const TeamManager: React.FC = () => {
     if (selectedCount !== 11) return null;
 
     const selectedPlayers =
-      state.selectedTeam?.players.filter(
+      state.baseTeam?.players.filter(
         (player) => playerStates[player.id] === PlayerSelectionState.Selected
       ) || [];
 
@@ -182,7 +183,7 @@ const TeamManager: React.FC = () => {
   // Function to check if a formation is available based on team's players
   const isFormationAvailable = (formation: string) => {
     const [df, mf, fw] = formation.split('-').map(Number);
-    const players = state.selectedTeam?.players || [];
+    const players = state.baseTeam?.players || [];
 
     const dfCount = players.filter((p) => p.position === 'DF').length;
     const mfCount = players.filter((p) => p.position === 'MF').length;
@@ -195,7 +196,7 @@ const TeamManager: React.FC = () => {
   // Function to select best players for a formation
   const selectBestPlayersForFormation = (formation: string) => {
     const [df, mf, fw] = formation.split('-').map(Number);
-    const players = state.selectedTeam?.players || [];
+    const players = state.baseTeam?.players || [];
 
     // Reset all selections
     const newPlayerStates: { [id: string]: PlayerSelectionState } = {};
@@ -278,8 +279,27 @@ const TeamManager: React.FC = () => {
     setShowFormationGrid(false);
   };
 
+  const createMatchTeam = (): MatchTeam | null => {
+    if (!state.baseTeam || selectedCount !== 11) return null;
+
+    const starters = state.baseTeam.players.filter(
+      (player) => playerStates[player.id] === PlayerSelectionState.Selected
+    );
+    const substitutes = state.baseTeam.players.filter(
+      (player) => playerStates[player.id] === PlayerSelectionState.Substitute
+    );
+
+    return {
+      ...state.baseTeam,
+      starters,
+      substitutes,
+      score: 0,
+      isHomeTeam: true,
+    };
+  };
+
   // Extract team colors with fallbacks
-  const teamColors = state.selectedTeam?.colors || {};
+  const teamColors = state.baseTeam?.colors || {};
   const backgroundColor = teamColors.background || '#1e1e1e';
   const outlineColor = teamColors.outline || '#e2e2e2';
   const nameColor = teamColors.name || '#e2e2e2';
@@ -301,7 +321,7 @@ const TeamManager: React.FC = () => {
             borderBottom: `4px solid ${outlineColor}`,
           }}
         >
-          {state.selectedTeam?.name}
+          {state.baseTeam?.name}
         </div>
         <div
           className="text-center text-[18px] py-2"
