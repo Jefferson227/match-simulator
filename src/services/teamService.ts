@@ -10,13 +10,13 @@ function getTeams(matchNumber: number): { homeTeam: Team; visitorTeam: Team } {
   switch (matchNumber) {
     case 1:
       return {
-        homeTeam: loadHomeTeam(cearaJson as Team),
-        visitorTeam: loadVisitorTeam(fortalezaJson as Team),
+        homeTeam: loadHomeTeam(transformToBaseTeam(cearaJson)),
+        visitorTeam: loadVisitorTeam(transformToBaseTeam(fortalezaJson)),
       };
     case 2:
       return {
-        homeTeam: loadHomeTeam(americaRnJson as Team),
-        visitorTeam: loadVisitorTeam(abcJson as Team),
+        homeTeam: loadHomeTeam(transformToBaseTeam(americaRnJson)),
+        visitorTeam: loadVisitorTeam(transformToBaseTeam(abcJson)),
       };
     default:
       throw new Error(`Invalid match number: ${matchNumber}`);
@@ -44,8 +44,8 @@ function transformToBaseTeam(jsonData: any): BaseTeam {
   };
 }
 
-function loadHomeTeam(homeTeamJson: Team): Team {
-  const homeTeam = { ...homeTeamJson };
+function loadHomeTeam(homeTeamJson: BaseTeam): Team {
+  const homeTeam = { ...homeTeamJson } as Team;
   homeTeam.players = homeTeam.players.map((player: Player, index: number) => {
     let column: number;
     switch (player.position) {
@@ -69,11 +69,14 @@ function loadHomeTeam(homeTeamJson: Team): Team {
       fieldPosition: { row: (index % 5) + 1, column }, // rows 1 to 5
     };
   });
+  homeTeam.substitutes = [];
+  homeTeam.score = 0;
+  homeTeam.isHomeTeam = true;
   return homeTeam;
 }
 
-function loadVisitorTeam(visitorTeamJson: Team): Team {
-  const visitorTeam = { ...visitorTeamJson };
+function loadVisitorTeam(visitorTeamJson: BaseTeam): Team {
+  const visitorTeam = { ...visitorTeamJson } as Team;
   visitorTeam.players = visitorTeam.players.map(
     (player: Player, index: number) => {
       let column: number;
@@ -99,6 +102,9 @@ function loadVisitorTeam(visitorTeamJson: Team): Team {
       };
     }
   );
+  visitorTeam.substitutes = [];
+  visitorTeam.score = 0;
+  visitorTeam.isHomeTeam = false;
   return visitorTeam;
 }
 
