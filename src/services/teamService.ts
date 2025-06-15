@@ -1,10 +1,15 @@
 import cearaJson from '../assets/ceara.json';
 import cearaTeamManagerJson from '../assets/ceara-team-manager.json';
+import fortalezaTeamManagerJson from '../assets/fortaleza-team-manager.json';
 import americaRnJson from '../assets/americarn.json';
+import americaRnTeamManagerJson from '../assets/americarn-team-manager.json';
 import sampaioCorreaTeamManagerJson from '../assets/sampaio-correa-team-manager.json';
+import santaCruzTeamManagerJson from '../assets/santa-cruz-team-manager.json';
+import amazonasTeamManagerJson from '../assets/amazonas-team-manager.json';
 import fortalezaJson from '../assets/fortaleza.json';
 import abcJson from '../assets/abc.json';
-import { Team, Player, BaseTeam } from '../types';
+import { Team, Player, BaseTeam, MatchTeam } from '../types';
+import matchService from './matchService';
 
 function getTeams(matchNumber: number): { homeTeam: Team; visitorTeam: Team } {
   switch (matchNumber) {
@@ -109,9 +114,104 @@ function loadVisitorTeam(visitorTeamJson: BaseTeam): Team {
 }
 
 function getBaseTeam(): BaseTeam {
-  return transformToBaseTeam(sampaioCorreaTeamManagerJson);
+  return transformToBaseTeam(cearaTeamManagerJson);
 }
 
-const teamService = { getTeams, getBaseTeam };
+function getOtherMatchTeams(): MatchTeam[] {
+  return [
+    transformToMatchTeam(transformToBaseTeam(sampaioCorreaTeamManagerJson)),
+    transformToMatchTeam(transformToBaseTeam(fortalezaTeamManagerJson)),
+    transformToMatchTeam(transformToBaseTeam(americaRnTeamManagerJson)),
+    transformToMatchTeam(transformToBaseTeam(santaCruzTeamManagerJson)),
+    transformToMatchTeam(transformToBaseTeam(amazonasTeamManagerJson)),
+  ];
+}
+
+function transformToMatchTeam(baseTeam: BaseTeam): MatchTeam {
+  const starters = getAutomaticStarters(baseTeam.players);
+  const substitutes = getAutomaticSubstitutes(
+    baseTeam.players.filter(
+      (player) => !starters.some((starter) => starter.id === player.id)
+    )
+  );
+
+  return {
+    ...baseTeam,
+    starters: starters,
+    substitutes: substitutes,
+    isHomeTeam: false,
+    score: 0,
+    morale: 100,
+    overallMood: 100,
+    overallStrength: 0,
+    attackStrength: 0,
+    midfieldStrength: 0,
+  };
+}
+
+function getAutomaticStarters(players: Player[]): Player[] {
+  // Get a random formation
+  const formation = matchService.getRandomFormation();
+
+  // Parse formation numbers
+  const [defCount, midCount, fwdCount] = formation.split('-').map(Number);
+
+  // Sort players by strength within each position
+  const goalkeepers = players
+    .filter((p) => p.position === 'GK')
+    .sort((a, b) => b.strength - a.strength);
+  const defenders = players
+    .filter((p) => p.position === 'DF')
+    .sort((a, b) => b.strength - a.strength);
+  const midfielders = players
+    .filter((p) => p.position === 'MF')
+    .sort((a, b) => b.strength - a.strength);
+  const forwards = players
+    .filter((p) => p.position === 'FW')
+    .sort((a, b) => b.strength - a.strength);
+
+  // Select starters based on formation
+  const starters: Player[] = [
+    ...goalkeepers.slice(0, 1), // 1 GK
+    ...defenders.slice(0, defCount), // Defenders based on formation
+    ...midfielders.slice(0, midCount), // Midfielders based on formation
+    ...forwards.slice(0, fwdCount), // Forwards based on formation
+  ];
+
+  return starters;
+}
+
+function getAutomaticSubstitutes(players: Player[]): Player[] {
+  // Sort players by strength within each position
+  const goalkeepers = players
+    .filter((p) => p.position === 'GK')
+    .sort((a, b) => b.strength - a.strength);
+  const defenders = players
+    .filter((p) => p.position === 'DF')
+    .sort((a, b) => b.strength - a.strength);
+  const midfielders = players
+    .filter((p) => p.position === 'MF')
+    .sort((a, b) => b.strength - a.strength);
+  const forwards = players
+    .filter((p) => p.position === 'FW')
+    .sort((a, b) => b.strength - a.strength);
+
+  // Get substitutes based on position
+  const substitutes: Player[] = [
+    ...goalkeepers.slice(0, 1), // 1 GK
+    ...defenders.slice(0, 2), // 2 DF
+    ...midfielders.slice(0, 2), // 2 MF
+    ...forwards.slice(0, 2), // 2 FW
+  ].filter((player) => player !== undefined); // Remove any undefined entries if we don't have enough players
+
+  // Limit to 7 substitutes
+  return substitutes.slice(0, 7);
+}
+
+const teamService = {
+  getTeams,
+  getBaseTeam,
+  getOtherMatchTeams,
+};
 
 export default teamService;

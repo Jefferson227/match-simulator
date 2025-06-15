@@ -1,0 +1,88 @@
+{
+  "name": "América Futebol Clube (RN)",
+  "abbreviation": "AME",
+  "colors": {
+    "outline": "#e2e2e2",
+    "background": "#fe3b3b",
+    "name": "#e2e2e2"
+  },
+  "players": [
+    { "position": "GK", "name": "Andrey", "strength": 99 },
+    { "position": "GK", "name": "Reinaldo", "strength": 99 },
+    { "position": "GK", "name": "Eliel Jose Martins Santos", "strength": 99 },
+    {
+      "position": "DF",
+      "name": "Adalberto dos Santos Rodrigues",
+      "strength": 99
+    },
+    { "position": "DF", "name": "Digão Longo Freitas", "strength": 99 },
+    { "position": "DF", "name": "Paulo Henrique", "strength": 99 },
+    {
+      "position": "DF",
+      "name": "Jamerson Julio da Silva Neves",
+      "strength": 99
+    },
+    {
+      "position": "DF",
+      "name": "José Antônio Horácio de Lima",
+      "strength": 99
+    },
+    {
+      "position": "DF",
+      "name": "Wálber da Silva Sousa Cabral",
+      "strength": 99
+    },
+    { "position": "DF", "name": "Cléber", "strength": 99 },
+    { "position": "DF", "name": "Bruno Furtado", "strength": 99 },
+    { "position": "DF", "name": "Roberto Dias Correia Filho", "strength": 99 },
+    { "position": "DF", "name": "Arthur Henrique", "strength": 99 },
+    {
+      "position": "DF",
+      "name": "José José Pereira de Oliveira",
+      "strength": 99
+    },
+    { "position": "DF", "name": "Lázaro", "strength": 99 },
+    { "position": "DF", "name": "Rafael Tavares", "strength": 99 },
+    { "position": "MF", "name": "Edson Rocha", "strength": 99 },
+    { "position": "MF", "name": "Morais", "strength": 99 },
+    { "position": "MF", "name": "Fabinho", "strength": 99 },
+    { "position": "MF", "name": "Jéfferson Rodrigues", "strength": 99 },
+    { "position": "MF", "name": "Tiago Silva", "strength": 99 },
+    { "position": "MF", "name": "Daniel Costa", "strength": 99 },
+    { "position": "MF", "name": "Arthur Maia", "strength": 99 },
+    { "position": "MF", "name": "Neto", "strength": 99 },
+    { "position": "MF", "name": "Jean Cleber", "strength": 99 },
+    { "position": "MF", "name": "Caio", "strength": 99 },
+    { "position": "MF", "name": "Thiago Alves", "strength": 99 },
+    { "position": "MF", "name": "Val", "strength": 99 },
+    { "position": "MF", "name": "Judson", "strength": 99 },
+    { "position": "MF", "name": "Márcio Passos", "strength": 99 },
+    { "position": "MF", "name": "Marcelo Ribeiro Santos", "strength": 99 },
+    { "position": "MF", "name": "Pedrinho", "strength": 99 },
+    {
+      "position": "MF",
+      "name": "Janderson Janderson de Oliveira Alves",
+      "strength": 99
+    },
+    { "position": "MF", "name": "Arquiriam Alves Bernardo", "strength": 99 },
+    { "position": "MF", "name": "Dudu", "strength": 99 },
+    {
+      "position": "MF",
+      "name": "André André Williams Rocha da Silva",
+      "strength": 99
+    },
+    { "position": "MF", "name": "Rivaldo", "strength": 99 },
+    { "position": "FW", "name": "Wanderson Carvalho Oliveira", "strength": 99 },
+    { "position": "FW", "name": "Sinho", "strength": 99 },
+    { "position": "FW", "name": "Paulinho", "strength": 99 },
+    { "position": "FW", "name": "Alfredo", "strength": 99 },
+    { "position": "FW", "name": "Max Brendon Costa Pinheiro", "strength": 99 },
+    { "position": "FW", "name": "Daivison", "strength": 99 },
+    { "position": "FW", "name": "Isac", "strength": 99 },
+    { "position": "FW", "name": "Gláucio", "strength": 99 },
+    { "position": "FW", "name": "José Ferreira", "strength": 99 },
+    { "position": "FW", "name": "Alan Alan Caetano Santos", "strength": 99 },
+    { "position": "FW", "name": "Rodrigo Pimpão", "strength": 99 },
+    { "position": "FW", "name": "Alex Marques dos Santos", "strength": 99 }
+  ]
+}
