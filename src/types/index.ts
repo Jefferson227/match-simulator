@@ -35,6 +35,39 @@ export interface Team {
   defenseStrength: number;
 }
 
+export interface BaseTeam {
+  id: string;
+  name: string;
+  abbreviation: string;
+  colors: TeamColors;
+  players: Player[]; // All available players
+  morale: number;
+  formation: string;
+  overallMood: number;
+  overallStrength: number;
+  attackStrength: number;
+  midfieldStrength: number;
+  defenseStrength: number;
+}
+
+export interface MatchTeam {
+  id: string;
+  name: string;
+  abbreviation: string;
+  colors: TeamColors;
+  starters: Player[]; // Only selected starters
+  substitutes: Player[]; // Only selected substitutes
+  formation: string;
+  isHomeTeam: boolean;
+  score: number;
+  morale: number;
+  overallMood: number;
+  overallStrength: number;
+  attackStrength: number;
+  midfieldStrength: number;
+  defenseStrength: number;
+}
+
 export interface Scorer {
   playerName: string;
   time: number;
