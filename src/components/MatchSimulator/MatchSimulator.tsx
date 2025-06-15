@@ -13,13 +13,18 @@ const MatchSimulator: FC = () => {
   const [detailsMatchId, setDetailsMatchId] = useState<string | null>(null);
   const { matches, teamSquadView, setMatches, increaseScore, setScorer } =
     useContext(MatchContext);
-  const { state } = useContext(GeneralContext);
+  const { state, setMatchOtherTeams } = useContext(GeneralContext);
   const { getTeams } = teamService;
+
+  useEffect(() => {
+    setMatchOtherTeams();
+  }, []);
 
   useEffect(() => {
     // TODO: Set the matches from the generalReducer
     // setMatches(getTeams(1));
     // setMatches(getTeams(2));
+    if (state.matchOtherTeams.length === 0) return;
 
     setMatches({
       homeTeam: state.matchOtherTeams[0],
@@ -33,7 +38,7 @@ const MatchSimulator: FC = () => {
       homeTeam: state.matchOtherTeams[4],
       visitorTeam: state.matchOtherTeams[5],
     });
-  }, []);
+  }, [state.matchOtherTeams]);
 
   useEffect(() => {
     let timer: number | undefined;

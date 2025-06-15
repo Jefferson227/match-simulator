@@ -10,7 +10,7 @@ interface GeneralContextType {
   getBaseTeam: () => void;
   setMatchStarted: (isStarted: boolean) => void;
   setMatchTeam: (team: MatchTeam) => void;
-  setMatchOtherTeams: (teams: MatchTeam[]) => void;
+  setMatchOtherTeams: () => void;
 }
 
 // Create the default context value
