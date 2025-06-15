@@ -1,9 +1,10 @@
 import cearaJson from '../assets/ceara.json';
 import cearaTeamManagerJson from '../assets/ceara-team-manager.json';
 import americaRnJson from '../assets/americarn.json';
+import sampaioCorreaTeamManagerJson from '../assets/sampaio-correa-team-manager.json';
 import fortalezaJson from '../assets/fortaleza.json';
 import abcJson from '../assets/abc.json';
-import { Team, Player } from '../types';
+import { Team, Player, BaseTeam } from '../types';
 
 function getTeams(matchNumber: number): { homeTeam: Team; visitorTeam: Team } {
   switch (matchNumber) {
@@ -20,6 +21,27 @@ function getTeams(matchNumber: number): { homeTeam: Team; visitorTeam: Team } {
     default:
       throw new Error(`Invalid match number: ${matchNumber}`);
   }
+}
+
+function transformToBaseTeam(jsonData: any): BaseTeam {
+  return {
+    id: crypto.randomUUID(),
+    name: jsonData.name,
+    abbreviation: jsonData.abbreviation,
+    colors: jsonData.colors,
+    players: jsonData.players.map((player: any) => ({
+      ...player,
+      id: crypto.randomUUID(),
+      mood: 100, // Default mood
+    })),
+    morale: 100, // Default morale
+    formation: '4-4-2', // Default formation
+    overallMood: 100, // Default overall mood
+    overallStrength: 0, // Will be calculated
+    attackStrength: 0, // Will be calculated
+    midfieldStrength: 0, // Will be calculated
+    defenseStrength: 0, // Will be calculated
+  };
 }
 
 function loadHomeTeam(homeTeamJson: Team): Team {
@@ -80,17 +102,10 @@ function loadVisitorTeam(visitorTeamJson: Team): Team {
   return visitorTeam;
 }
 
-function getSelectedTeam(): Team {
-  let team = cearaTeamManagerJson as Team;
-  team.players = team.players.map((player: Player) => {
-    return {
-      ...player,
-      id: crypto.randomUUID(),
-    };
-  });
-  return team;
+function getBaseTeam(): BaseTeam {
+  return transformToBaseTeam(sampaioCorreaTeamManagerJson);
 }
 
-const teamService = { getTeams, getSelectedTeam };
+const teamService = { getTeams, getBaseTeam };
 
 export default teamService;
