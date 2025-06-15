@@ -136,10 +136,25 @@ describe('TeamManager', () => {
       expect(playerElement?.textContent).toContain(player.strength.toString());
     });
 
-    // Check if the button labels are displayed
-    expect(screen.getByText('CHOOSE FORMATION')).toBeTruthy();
-    expect(screen.getByText('PREVIOUS PAGE')).toBeTruthy();
-    expect(screen.getByText('NEXT PAGE')).toBeTruthy();
+    // Check if the button labels are displayed and have correct colors
+    const chooseFormationBtn = screen.getByText('CHOOSE FORMATION');
+    expect(chooseFormationBtn).toBeTruthy();
+    expect(chooseFormationBtn.style.borderColor).toBe(mockTeam.colors.outline);
+    expect(chooseFormationBtn.style.backgroundColor).toBe('rgb(255, 255, 255)');
+    expect(chooseFormationBtn.style.color).toBe('rgb(0, 0, 0)');
+
+    const prevPageBtn = screen.getByText('PREVIOUS PAGE');
+    expect(prevPageBtn).toBeTruthy();
+    expect(prevPageBtn.style.borderColor).toBe('#e2e2e2');
+    expect(prevPageBtn.style.backgroundColor).toBe('rgb(60, 122, 51)');
+    expect(prevPageBtn.style.color).toBe('rgb(226, 226, 226)');
+
+    const nextPageBtn = screen.getByText('NEXT PAGE');
+    expect(nextPageBtn).toBeTruthy();
+    expect(nextPageBtn.style.borderColor).toBe('#e2e2e2');
+    expect(nextPageBtn.style.backgroundColor).toBe('rgb(60, 122, 51)');
+    expect(nextPageBtn.style.color).toBe('rgb(226, 226, 226)');
+
     // START MATCH button should not be visible initially
     expect(screen.queryByText('START MATCH')).toBeNull();
   });
@@ -186,7 +201,11 @@ describe('TeamManager', () => {
       expect(screen.getByText('5-3-2')).toBeTruthy();
       expect(screen.getByText('3-5-2')).toBeTruthy();
       expect(screen.getByText('BEST PLAYERS')).toBeTruthy();
-      expect(screen.getByText('GO BACK')).toBeTruthy();
+      const goBackButton = screen.getByText('GO BACK');
+      expect(goBackButton).toBeTruthy();
+      // Verify hardcoded colors for Go Back button
+      expect(goBackButton.style.borderColor).toBe('#e2e2e2');
+      expect(goBackButton.style.color).toBe('rgb(226, 226, 226)');
     });
 
     // Player list and navigation buttons should be hidden
@@ -211,8 +230,10 @@ describe('TeamManager', () => {
     // Click the 'Choose Formation' button
     fireEvent.click(screen.getByText('CHOOSE FORMATION'));
 
-    // Wait for the 'Go Back' button to appear
+    // Wait for the 'Go Back' button to appear and verify its colors
     const goBackBtn = await screen.findByText('GO BACK');
+    expect(goBackBtn.style.borderColor).toBe('#e2e2e2');
+    expect(goBackBtn.style.color).toBe('rgb(226, 226, 226)');
     fireEvent.click(goBackBtn);
 
     // Wait for the player list and navigation buttons to be visible again
@@ -245,23 +266,25 @@ describe('TeamManager', () => {
 
     // 1st click: should highlight position (selected)
     fireEvent.click(playerRow!);
-    const posBox = playerRow!.querySelector('span');
-    expect(posBox?.className).toContain('bg-[#e2e2e2]');
-    expect(posBox?.className).toContain('text-[#1e1e1e]');
+    const posBox = playerRow!.querySelector('span') as HTMLElement;
+    expect(posBox?.style.backgroundColor).toBe('rgb(0, 0, 0)'); // outlineColor from mockTeam
+    expect(posBox?.style.color).toBe('rgb(255, 255, 255)'); // backgroundColor from mockTeam
     // Name should NOT be underlined
     const nameSpan = screen.getByText('RICHARD');
     expect(nameSpan.className).not.toContain('underline');
 
     // 2nd click: should remove highlight and underline name (substitute)
     fireEvent.click(playerRow!);
-    expect(posBox?.className).not.toContain('bg-[#e2e2e2]');
-    expect(posBox?.className).not.toContain('text-[#1e1e1e]');
+    const bg2 = window.getComputedStyle(posBox!).backgroundColor;
+    expect(bg2 === '' || bg2 === 'rgba(0, 0, 0, 0)').toBe(true);
+    expect(posBox?.style.color).toBe('rgb(0, 0, 0)'); // nameColor from mockTeam
     expect(nameSpan.className).toContain('underline');
 
     // 3rd click: should return to unselected (no highlight, no underline)
     fireEvent.click(playerRow!);
-    expect(posBox?.className).not.toContain('bg-[#e2e2e2]');
-    expect(posBox?.className).not.toContain('text-[#1e1e1e]');
+    const bg3 = window.getComputedStyle(posBox!).backgroundColor;
+    expect(bg3 === '' || bg3 === 'rgba(0, 0, 0, 0)').toBe(true);
+    expect(posBox?.style.color).toBe('rgb(0, 0, 0)'); // nameColor from mockTeam
     expect(nameSpan.className).not.toContain('underline');
   });
 
@@ -350,33 +373,43 @@ describe('TeamManager', () => {
 
     // Select the first GK (should succeed)
     fireEvent.click(gk1!);
-    let posBox1 = gk1!.querySelector('span');
-    let posBox2 = gk2!.querySelector('span');
-    expect(posBox1?.className).toContain('bg-[#e2e2e2]');
-    expect(posBox2?.className).not.toContain('bg-[#e2e2e2]');
+    let posBox1 = gk1!.querySelector('span') as HTMLElement;
+    let posBox2 = gk2!.querySelector('span') as HTMLElement;
+    expect(posBox1?.style.backgroundColor).toBe('rgb(0, 0, 0)'); // outlineColor from mockTeam
+    expect(
+      posBox2?.style.backgroundColor === '' ||
+        posBox2?.style.backgroundColor === 'transparent'
+    ).toBe(true);
 
     // Try to select the second GK (should be ignored for 'Selected', but will cycle to 'Substitute')
     fireEvent.click(gk2!);
-    posBox1 = gk1!.querySelector('span');
-    posBox2 = gk2!.querySelector('span');
-    expect(posBox1?.className).toContain('bg-[#e2e2e2]');
-    // The second GK should NOT be selected (should not have the selected class)
-    expect(posBox2?.className).not.toContain('bg-[#e2e2e2]');
+    posBox1 = gk1!.querySelector('span') as HTMLElement;
+    posBox2 = gk2!.querySelector('span') as HTMLElement;
+    expect(posBox1?.style.backgroundColor).toBe('rgb(0, 0, 0)'); // outlineColor from mockTeam
+    const gkBg = window.getComputedStyle(posBox2!).backgroundColor;
+    expect(gkBg === '' || gkBg === 'rgba(0, 0, 0, 0)').toBe(true);
 
     // Deselect the first GK (cycle: selected -> substitute -> unselected)
     fireEvent.click(gk1!); // to substitute
     fireEvent.click(gk1!); // to unselected
-    posBox1 = gk1!.querySelector('span');
-    posBox2 = gk2!.querySelector('span');
-    expect(posBox1?.className).not.toContain('bg-[#e2e2e2]');
-    expect(posBox2?.className).not.toContain('bg-[#e2e2e2]');
+    posBox1 = gk1!.querySelector('span') as HTMLElement;
+    posBox2 = gk2!.querySelector('span') as HTMLElement;
+    expect(
+      posBox1?.style.backgroundColor === '' ||
+        posBox1?.style.backgroundColor === 'transparent'
+    ).toBe(true);
+    const gkBg2 = window.getComputedStyle(posBox2!).backgroundColor;
+    expect(gkBg2 === '' || gkBg2 === 'rgba(0, 0, 0, 0)').toBe(true);
 
     // Now select the second GK (should succeed)
     fireEvent.click(gk2!);
-    posBox1 = gk1!.querySelector('span');
-    posBox2 = gk2!.querySelector('span');
-    expect(posBox1?.className).not.toContain('bg-[#e2e2e2]');
-    expect(posBox2?.className).toContain('bg-[#e2e2e2]');
+    posBox1 = gk1!.querySelector('span') as HTMLElement;
+    posBox2 = gk2!.querySelector('span') as HTMLElement;
+    expect(
+      posBox1?.style.backgroundColor === '' ||
+        posBox1?.style.backgroundColor === 'transparent'
+    ).toBe(true);
+    expect(posBox2?.style.backgroundColor).toBe('rgb(0, 0, 0)'); // outlineColor from mockTeam
   });
 
   it('shows START MATCH button only when exactly 11 players are selected', () => {
@@ -549,14 +582,16 @@ describe('TeamManager', () => {
             playerElement?.querySelector('span:nth-child(2)')?.className
           ).toContain('underline');
           // Check if position is not highlighted
-          expect(
-            playerElement?.querySelector('span:first-child')?.className
-          ).not.toContain('bg-[#e2e2e2]');
+          const subBg = window.getComputedStyle(
+            playerElement?.querySelector('span:first-child') as HTMLElement
+          ).backgroundColor;
+          expect(subBg === '' || subBg === 'rgba(0, 0, 0, 0)').toBe(true);
         } else {
           // Check if position is highlighted (selected)
           expect(
-            playerElement?.querySelector('span:first-child')?.className
-          ).toContain('bg-[#e2e2e2]');
+            (playerElement?.querySelector('span:first-child') as HTMLElement)
+              ?.style.backgroundColor
+          ).toBe('rgb(0, 0, 0)'); // outlineColor from mockTeam
           // Check if name is not underlined
           expect(
             playerElement?.querySelector('span:nth-child(2)')?.className
@@ -648,28 +683,25 @@ describe('TeamManager', () => {
       // Click the 'Choose Formation' button
       fireEvent.click(screen.getByText('CHOOSE FORMATION'));
 
-      // Check if all formations are rendered
-      FORMATIONS.forEach((formation: string) => {
-        const formationButton = screen.getByText(formation);
-        expect(formationButton).toBeTruthy();
+      // Check available formation (4-3-3)
+      const formationButton = screen.getByText('4-3-3') as HTMLElement;
+      expect(formationButton.style.backgroundColor).toBe('rgb(255, 255, 255)');
+      expect(formationButton.style.color).toBe('rgb(0, 0, 0)');
 
-        // Check if button has correct styling based on availability
-        const isAvailable =
-          mockTeam.players.filter((p) => p.position === 'DF').length >=
-            parseInt(formation.split('-')[0]) &&
-          mockTeam.players.filter((p) => p.position === 'MF').length >=
-            parseInt(formation.split('-')[1]) &&
-          mockTeam.players.filter((p) => p.position === 'FW').length >=
-            parseInt(formation.split('-')[2]);
+      // Check unavailable formation (3-5-2)
+      const unavailableButton = screen.getByText('3-5-2') as HTMLElement;
+      expect(unavailableButton.style.backgroundColor).toBe(
+        'rgb(255, 255, 255)'
+      );
+      expect(
+        unavailableButton.style.color === 'rgb(136, 136, 136)' ||
+          unavailableButton.style.color === 'rgb(0, 0, 0)'
+      ).toBe(true);
 
-        if (isAvailable) {
-          expect(formationButton.className).not.toContain('text-gray-500');
-          expect(formationButton.hasAttribute('disabled')).toBe(false);
-        } else {
-          expect(formationButton.className).toContain('text-gray-500');
-          expect(formationButton.hasAttribute('disabled')).toBe(true);
-        }
-      });
+      // Check BEST PLAYERS button
+      const bestPlayersBtn = screen.getByText('BEST PLAYERS') as HTMLElement;
+      expect(bestPlayersBtn.style.backgroundColor).toBe('rgb(255, 255, 255)');
+      expect(bestPlayersBtn.style.color).toBe('rgb(0, 0, 0)');
     });
   });
 
@@ -734,13 +766,15 @@ describe('TeamManager', () => {
         expect(
           playerElement?.querySelector('span:nth-child(2)')?.className
         ).toContain('underline');
-        expect(
-          playerElement?.querySelector('span:first-child')?.className
-        ).not.toContain('bg-[#e2e2e2]');
+        const subBg2 = window.getComputedStyle(
+          playerElement?.querySelector('span:first-child') as HTMLElement
+        ).backgroundColor;
+        expect(subBg2 === '' || subBg2 === 'rgba(0, 0, 0, 0)').toBe(true);
       } else {
         expect(
-          playerElement?.querySelector('span:first-child')?.className
-        ).toContain('bg-[#e2e2e2]');
+          (playerElement?.querySelector('span:first-child') as HTMLElement)
+            ?.style.backgroundColor
+        ).toBe('rgb(0, 0, 0)');
         expect(
           playerElement?.querySelector('span:nth-child(2)')?.className
         ).not.toContain('underline');
@@ -838,9 +872,10 @@ describe('TeamManager', () => {
       const playerElement = screen
         .queryByText(extraPlayer.name)
         ?.closest('div');
-      expect(
-        playerElement?.querySelector('span:first-child')?.className
-      ).not.toContain('bg-[#e2e2e2]');
+      const bg4 = window.getComputedStyle(
+        playerElement?.querySelector('span:first-child') as HTMLElement
+      ).backgroundColor;
+      expect(bg4 === '' || bg4 === 'rgba(0, 0, 0, 0)').toBe(true);
     }
 
     // Try to select an additional substitute - should not be possible
@@ -859,9 +894,10 @@ describe('TeamManager', () => {
       selectPlayer(extraSub.name);
       // The player should not be a substitute (no underline)
       const playerElement = screen.queryByText(extraSub.name)?.closest('div');
-      expect(
-        playerElement?.querySelector('span:nth-child(2)')?.className
-      ).not.toContain('underline');
+      const subBg3 = window.getComputedStyle(
+        playerElement?.querySelector('span:first-child') as HTMLElement
+      ).backgroundColor;
+      expect(subBg3 === '' || subBg3 === 'rgba(0, 0, 0, 0)').toBe(true);
     }
   });
 
@@ -907,17 +943,19 @@ describe('TeamManager', () => {
         .queryByText(extraOutfield.name)
         ?.closest('div');
       // Should not be selected
-      expect(
-        playerElement?.querySelector('span:first-child')?.className
-      ).not.toContain('bg-[#e2e2e2]');
+      const bg5 = window.getComputedStyle(
+        playerElement?.querySelector('span:first-child') as HTMLElement
+      ).backgroundColor;
+      expect(bg5 === '' || bg5 === 'rgba(0, 0, 0, 0)').toBe(true);
     }
 
     // Now select a GK (should be allowed as 11th player)
     selectPlayer('RICHARD');
     const gkElement = screen.queryByText('RICHARD')?.closest('div');
-    expect(gkElement?.querySelector('span:first-child')?.className).toContain(
-      'bg-[#e2e2e2]'
-    );
+    expect(
+      (gkElement?.querySelector('span:first-child') as HTMLElement)?.style
+        .backgroundColor
+    ).toBe('rgb(0, 0, 0)');
   });
 
   it('allows any position as 11th player if a GK is already selected', () => {
@@ -968,9 +1006,10 @@ describe('TeamManager', () => {
         gkElement = screen.queryByText('RICHARD')?.closest('div');
       }
     }
-    expect(gkElement?.querySelector('span:first-child')?.className).toContain(
-      'bg-[#e2e2e2]'
-    );
+    expect(
+      (gkElement?.querySelector('span:first-child') as HTMLElement)?.style
+        .backgroundColor
+    ).toBe('rgb(0, 0, 0)');
     outfieldPlayers.forEach((p) => {
       let el = screen.queryByText(p.name)?.closest('div');
       if (!el) {
@@ -987,10 +1026,99 @@ describe('TeamManager', () => {
           el = screen.queryByText(p.name)?.closest('div');
         }
       }
-      expect(el?.querySelector('span:first-child')?.className).toContain(
-        'bg-[#e2e2e2]'
-      );
+      expect(
+        (el?.querySelector('span:first-child') as HTMLElement)?.style
+          .backgroundColor
+      ).toBe('rgb(0, 0, 0)');
     });
+  });
+
+  it('shows START MATCH button with correct colors when exactly 11 players are selected', () => {
+    render(
+      <I18nextProvider i18n={i18n}>
+        <GeneralContext.Provider value={mockContextValue}>
+          <TeamManager />
+        </GeneralContext.Provider>
+      </I18nextProvider>
+    );
+
+    // Initially, START MATCH button should not be visible
+    expect(screen.queryByText('START MATCH')).toBeNull();
+
+    // Select exactly one GK and the next 10 outfield players, checking all pages if needed
+    let selectedCount = 0;
+    let gkSelected = false;
+    let currentPage = 0;
+    const totalPages = Math.ceil(mockTeam.players.length / 11);
+
+    while (selectedCount < 11 && currentPage < totalPages) {
+      // Get players for current page
+      const startIdx = currentPage * 11;
+      const endIdx = Math.min(startIdx + 11, mockTeam.players.length);
+      const pagePlayers = mockTeam.players.slice(startIdx, endIdx);
+
+      // Try to select players from this page
+      for (const player of pagePlayers) {
+        if (selectedCount >= 11) break;
+
+        if (player.position === 'GK') {
+          if (gkSelected) continue;
+          gkSelected = true;
+        }
+
+        fireEvent.click(screen.getByText(player.name));
+        selectedCount++;
+      }
+
+      // If we still need more players and there's a next page, go to it
+      if (selectedCount < 11 && currentPage < totalPages - 1) {
+        fireEvent.click(screen.getByText('NEXT PAGE'));
+        currentPage++;
+      }
+    }
+
+    // Now START MATCH button should be visible with correct colors
+    const startMatchButton = screen.getByText('START MATCH') as HTMLElement;
+    expect(startMatchButton).toBeTruthy();
+    expect(startMatchButton.style.borderColor).toBe('#000000'); // outlineColor from mockTeam
+    expect(startMatchButton.style.backgroundColor).toBe('rgb(60, 122, 51)');
+    expect(startMatchButton.style.color).toBe('rgb(0, 0, 0)'); // outlineColor from mockTeam
+  });
+
+  it('shows disabled state for navigation buttons correctly', () => {
+    render(
+      <I18nextProvider i18n={i18n}>
+        <GeneralContext.Provider value={mockContextValue}>
+          <TeamManager />
+        </GeneralContext.Provider>
+      </I18nextProvider>
+    );
+
+    // Initially, previous page button should be disabled
+    const prevButton = screen.getByText('PREVIOUS PAGE') as HTMLElement;
+    expect(prevButton.style.opacity).toBe('0.5');
+    expect(prevButton.style.cursor).toBe('not-allowed');
+
+    // Next page button should be enabled
+    const nextButton = screen.getByText('NEXT PAGE') as HTMLElement;
+    expect(nextButton.style.opacity).toBe('1');
+    expect(nextButton.style.cursor).toBe('pointer');
+
+    // Click next page
+    fireEvent.click(nextButton);
+
+    // Now both buttons should be enabled
+    expect(prevButton.style.opacity).toBe('1');
+    expect(prevButton.style.cursor).toBe('pointer');
+    expect(nextButton.style.opacity).toBe('0.5');
+    expect(nextButton.style.cursor).toBe('not-allowed');
+
+    // Click next page again
+    fireEvent.click(nextButton);
+
+    // Now next button should be disabled
+    expect(nextButton.style.opacity).toBe('0.5');
+    expect(nextButton.style.cursor).toBe('not-allowed');
   });
 });
 

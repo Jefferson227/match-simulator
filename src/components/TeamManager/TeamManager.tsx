@@ -278,13 +278,39 @@ const TeamManager: React.FC = () => {
     setShowFormationGrid(false);
   };
 
+  // Extract team colors with fallbacks
+  const teamColors = state.selectedTeam?.colors || {};
+  const backgroundColor = teamColors.background || '#1e1e1e';
+  const outlineColor = teamColors.outline || '#e2e2e2';
+  const nameColor = teamColors.name || '#e2e2e2';
+
   return (
-    <div className="font-press-start min-h-screen bg-[#3d7a33]">
-      <div className="bg-[#1e1e1e] border-4 border-[#e2e2e2] w-[350px] mx-auto mt-[26px] mb-[15px]">
-        <div className="bg-[#1e1e1e] text-[#e2e2e2] text-center text-[20px] py-2 border-b-4 border-[#e2e2e2] uppercase">
+    <div
+      className="font-press-start min-h-screen"
+      style={{ backgroundColor: '#3d7a33' }}
+    >
+      <div
+        className="w-[350px] mx-auto mt-[26px] mb-[15px]"
+        style={{ backgroundColor, border: `4px solid ${outlineColor}` }}
+      >
+        <div
+          className="text-center text-[20px] py-2 uppercase"
+          style={{
+            backgroundColor,
+            color: nameColor,
+            borderBottom: `4px solid ${outlineColor}`,
+          }}
+        >
           {state.selectedTeam?.name}
         </div>
-        <div className="bg-[#1e1e1e] text-white text-center text-[18px] py-2 border-b-4 border-[#e2e2e2]">
+        <div
+          className="text-center text-[18px] py-2"
+          style={{
+            backgroundColor,
+            color: nameColor,
+            borderBottom: `4px solid ${outlineColor}`,
+          }}
+        >
           {showFormationGrid
             ? t('teamManager.chooseFormation')
             : selectedCount < 11
@@ -293,17 +319,26 @@ const TeamManager: React.FC = () => {
         </div>
         {/* Player List or Formation Grid */}
         {showFormationGrid ? (
-          <div className="bg-[#1e1e1e] text-white py-2 mx-2 mb-[50px] grid grid-cols-2 gap-4">
+          <div
+            className="py-2 mx-2 mb-[50px] grid grid-cols-2 gap-4"
+            style={{ backgroundColor, color: '#fff' }}
+          >
             {FORMATIONS.map((formation) => {
               const isAvailable = isFormationAvailable(formation);
               return (
                 <button
                   key={formation}
-                  className={`border-4 border-[#e2e2e2] ${
-                    isAvailable
-                      ? 'bg-[#1e1e1e] text-white hover:bg-[#2e2e2e]'
-                      : 'bg-[#1e1e1e] text-gray-500 cursor-not-allowed'
-                  } py-4 text-[18px] font-press-start`}
+                  className={`border-4 py-4 text-[18px] font-press-start ${
+                    isAvailable ? '' : 'text-gray-500 cursor-not-allowed'
+                  }`}
+                  style={{
+                    borderColor: outlineColor,
+                    backgroundColor,
+                    color: isAvailable ? nameColor : '#888',
+                    ...(isAvailable && {
+                      transition: 'background 0.2s',
+                    }),
+                  }}
                   onClick={() =>
                     isAvailable && selectBestPlayersForFormation(formation)
                   }
@@ -314,14 +349,22 @@ const TeamManager: React.FC = () => {
               );
             })}
             <button
-              className="col-span-2 border-4 border-[#e2e2e2] bg-[#1e1e1e] text-white py-4 text-[18px] font-press-start mt-4"
+              className="col-span-2 border-4 py-4 text-[18px] font-press-start mt-4"
+              style={{
+                borderColor: outlineColor,
+                backgroundColor,
+                color: nameColor,
+              }}
               onClick={() => setShowFormationGrid(false)}
             >
               {t('teamManager.bestPlayers')}
             </button>
           </div>
         ) : (
-          <div className="bg-[#1e1e1e] text-white py-2 mx-2 mb-[50px]">
+          <div
+            className="py-2 mx-2 mb-[50px]"
+            style={{ backgroundColor, color: '#fff' }}
+          >
             {paginatedPlayers.map((player) => {
               const selState =
                 playerStates[player.id] ?? PlayerSelectionState.Unselected;
@@ -334,25 +377,46 @@ const TeamManager: React.FC = () => {
                   <span
                     className={
                       selState === PlayerSelectionState.Selected
-                        ? 'bg-[#e2e2e2] text-[#1e1e1e] px-2 my-[2px] mr-2 min-w-[36px] text-center'
-                        : 'bg-transparent text-[#e2e2e2] px-2 my-[2px] mr-2 min-w-[36px] text-center'
+                        ? 'px-2 my-[2px] mr-2 min-w-[36px] text-center'
+                        : 'bg-transparent px-2 my-[2px] mr-2 min-w-[36px] text-center'
                     }
-                    style={{ transition: 'background 0.2s, color 0.2s' }}
+                    style={
+                      selState === PlayerSelectionState.Selected
+                        ? {
+                            backgroundColor: outlineColor,
+                            color: backgroundColor,
+                            transition: 'background 0.2s, color 0.2s',
+                          }
+                        : {
+                            color: nameColor,
+                            transition: 'background 0.2s, color 0.2s',
+                          }
+                    }
                   >
                     {player.position}
                   </span>
                   <span
                     className={
                       selState === PlayerSelectionState.Substitute
-                        ? 'flex-1 uppercase text-left underline decoration-2 decoration-[#e2e2e2] underline-offset-2'
+                        ? 'flex-1 uppercase text-left underline decoration-2 underline-offset-2'
                         : 'flex-1 uppercase text-left'
+                    }
+                    style={
+                      selState === PlayerSelectionState.Substitute
+                        ? {
+                            textDecorationColor: outlineColor,
+                            color: nameColor,
+                          }
+                        : { color: nameColor }
                     }
                   >
                     {player.name.length > 14
                       ? utils.shortenPlayerName(player.name)
                       : player.name}
                   </span>
-                  <span className="ml-2">{player.strength}</span>
+                  <span className="ml-2" style={{ color: nameColor }}>
+                    {player.strength}
+                  </span>
                 </div>
               );
             })}
@@ -362,7 +426,12 @@ const TeamManager: React.FC = () => {
         {!showFormationGrid && (
           <div className="flex flex-col items-center gap-2 py-[17px]">
             <button
-              className="w-[90%] border-[4px] border-[#e2e2e2] bg-[#1e1e1e] text-white py-[17px] text-[16px]"
+              className="w-[90%] border-[4px] py-[17px] text-[16px]"
+              style={{
+                borderColor: outlineColor,
+                backgroundColor,
+                color: nameColor,
+              }}
               onClick={() => setShowFormationGrid(true)}
             >
               {t('teamManager.chooseFormation')}
@@ -374,7 +443,12 @@ const TeamManager: React.FC = () => {
       {showFormationGrid ? (
         <div className="flex flex-col items-center gap-2">
           <button
-            className="w-[350px] border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-4 text-[16px]"
+            className="w-[350px] border-4 py-4 text-[16px]"
+            style={{
+              borderColor: '#e2e2e2',
+              backgroundColor: '#3c7a33',
+              color: '#e2e2e2',
+            }}
             onClick={() => setShowFormationGrid(false)}
           >
             {t('teamManager.goBack')}
@@ -384,30 +458,47 @@ const TeamManager: React.FC = () => {
         <>
           <div className="flex w-[350px] justify-between gap-2 mx-auto">
             <button
-              className="w-1/2 border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-2 px-3 leading-[19px] text-[16px]"
+              className="w-1/2 border-4 py-2 px-3 leading-[19px] text-[16px]"
+              style={{
+                borderColor: '#e2e2e2',
+                backgroundColor: '#3c7a33',
+                color: '#e2e2e2',
+                opacity: currentPage === 0 ? 0.5 : 1,
+                cursor: currentPage === 0 ? 'not-allowed' : 'pointer',
+              }}
               onClick={handlePrevPage}
               disabled={currentPage === 0}
-              style={
-                currentPage === 0 ? { opacity: 0.5, cursor: 'not-allowed' } : {}
-              }
             >
               {t('teamManager.prevPage')}
             </button>
             <button
-              className="w-1/2 border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-2 px-3 leading-[19px] text-[16px]"
+              className="w-1/2 border-4 py-2 px-3 leading-[19px] text-[16px]"
+              style={{
+                borderColor: '#e2e2e2',
+                backgroundColor: '#3c7a33',
+                color: '#e2e2e2',
+                opacity:
+                  currentPage === totalPages - 1 || totalPages === 0 ? 0.5 : 1,
+                cursor:
+                  currentPage === totalPages - 1 || totalPages === 0
+                    ? 'not-allowed'
+                    : 'pointer',
+              }}
               onClick={handleNextPage}
               disabled={currentPage === totalPages - 1 || totalPages === 0}
-              style={
-                currentPage === totalPages - 1 || totalPages === 0
-                  ? { opacity: 0.5, cursor: 'not-allowed' }
-                  : {}
-              }
             >
               {t('teamManager.nextPage')}
             </button>
           </div>
           {selectedCount === 11 && (
-            <button className="w-[350px] border-4 border-[#e2e2e2] bg-[#3c7a33] text-[#e2e2e2] py-4 text-[16px] mt-2">
+            <button
+              className="w-[350px] border-4 py-4 text-[16px] mt-2"
+              style={{
+                borderColor: outlineColor,
+                backgroundColor: '#3c7a33',
+                color: outlineColor,
+              }}
+            >
               {t('teamManager.startMatch')}
             </button>
           )}
