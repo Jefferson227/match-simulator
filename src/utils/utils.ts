@@ -128,12 +128,12 @@ function getPreviousFieldArea(
   }
 }
 
-function getTeamFormation(team: { players: { position: string }[] }): string {
-  if (!team.players) return '';
+function getTeamFormation(starters: { position: string }[]): string {
+  if (!starters) return '';
 
-  const defenders = team.players.filter((p) => p.position === 'DF').length;
-  const midfielders = team.players.filter((p) => p.position === 'MF').length;
-  const forwards = team.players.filter((p) => p.position === 'FW').length;
+  const defenders = starters.filter((p) => p.position === 'DF').length;
+  const midfielders = starters.filter((p) => p.position === 'MF').length;
+  const forwards = starters.filter((p) => p.position === 'FW').length;
   return `${defenders}-${midfielders}-${forwards}`;
 }
 

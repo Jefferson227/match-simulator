@@ -57,34 +57,36 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
           className="max-h-[60px] border-b-3 text-[16px] py-[10px] px-[22px] text-[#e2e2e2]"
           style={{ borderColor: teamSquadView.team.colors.outline }}
         >
-          {utils.getTeamFormation(teamSquadView.team)}
+          {utils.getTeamFormation(teamSquadView.team.starters)}
         </div>
         <div className={showSubstitutes ? 'hidden' : 'block mt-[10px]'}>
-          {teamSquadView.team.players.map((player) => (
+          {teamSquadView.team.starters.map((starter) => (
             <div
               className="text-[14px] flex justify-between py-0.5 px-6 uppercase cursor-pointer"
-              key={player.id}
+              key={starter.id}
               style={{
                 color:
-                  player.id === selectedPlayer?.id
+                  starter.id === selectedPlayer?.id
                     ? teamSquadView.team.colors.background
                     : teamSquadView.team.colors.name,
                 backgroundColor:
-                  player.id === selectedPlayer?.id
+                  starter.id === selectedPlayer?.id
                     ? teamSquadView.team.colors.name
                     : teamSquadView.team.colors.background,
               }}
               onClick={() =>
-                player.id !== selectedPlayer?.id
-                  ? setSelectedPlayer(player)
+                starter.id !== selectedPlayer?.id
+                  ? setSelectedPlayer(starter)
                   : setSelectedPlayer(null)
               }
             >
               <div className="w-8">
-                {t(`teamPlayers.positions.${player.position}`)}
+                {t(`teamPlayers.positions.${starter.position}`)}
               </div>
-              <div className="w-[200px] text-left">{player.name}</div>
-              <div className="w-8">{player.strength}</div>
+              <div className="w-[200px] text-left">
+                {utils.shortenPlayerName(starter.name)}
+              </div>
+              <div className="w-8">{starter.strength}</div>
             </div>
           ))}
         </div>
@@ -118,7 +120,9 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
               <div className="w-8">
                 {t(`teamPlayers.positions.${substitute.position}`)}
               </div>
-              <div className="w-[200px] text-left">{substitute.name}</div>
+              <div className="w-[200px] text-left">
+                {utils.shortenPlayerName(substitute.name)}
+              </div>
               <div className="w-8">{substitute.strength}</div>
             </div>
           ))}
