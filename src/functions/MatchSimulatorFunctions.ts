@@ -90,7 +90,7 @@ function handleBallShoot(
     : match.homeTeam;
 
   // Get all players from the current position from the team with the ball possession
-  const offensivePlayers = teamWithBallPossession.players.filter(
+  const offensivePlayers = teamWithBallPossession.starters.filter(
     (p) => p.position === getPlayerPosition(match.ballPossession.position)
   );
 

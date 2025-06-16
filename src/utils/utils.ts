@@ -165,7 +165,7 @@ function getTeamMoodPercentage(team: { overallMood: number }): number {
 
 function getMaxTeamStrength(
   team: {
-    players: { strength: number; position: string }[];
+    starters: { strength: number; position: string }[];
     morale: number;
     overallMood: number;
   },
@@ -175,7 +175,7 @@ function getMaxTeamStrength(
   // The players' mood can add or remove up to 10% to the team strength
   const teamMoralePercentage = getTeamMoralePercentage(team);
   const teamMoodPercentage = getTeamMoodPercentage(team);
-  const teamStrength = team.players
+  const teamStrength = team.starters
     .filter((p) => p.position === position)
     .reduce((acc, player) => acc + player.strength, 0);
 
@@ -187,7 +187,7 @@ function getMaxTeamStrength(
 }
 
 function getMaxDefenseStrength(team: {
-  players: { strength: number; position: string }[];
+  starters: { strength: number; position: string }[];
   morale: number;
   overallMood: number;
 }): number {
@@ -195,7 +195,7 @@ function getMaxDefenseStrength(team: {
   // The players' mood can add or remove up to 10% to the team strength
   const teamMoralePercentage = getTeamMoralePercentage(team);
   const teamMoodPercentage = getTeamMoodPercentage(team);
-  const teamStrength = team.players
+  const teamStrength = team.starters
     .filter((p) => p.position === 'DF' || p.position === 'GK')
     .reduce((acc, player) => acc + player.strength, 0);
 
