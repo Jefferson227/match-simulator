@@ -55,7 +55,10 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
         </div>
         <div
           className="max-h-[60px] border-b-3 text-[16px] py-[10px] px-[22px] text-[#e2e2e2]"
-          style={{ borderColor: teamSquadView.team.colors.outline }}
+          style={{
+            color: teamSquadView.team.colors.name,
+            borderColor: teamSquadView.team.colors.outline,
+          }}
         >
           {utils.getTeamFormation(teamSquadView.team.starters)}
         </div>
