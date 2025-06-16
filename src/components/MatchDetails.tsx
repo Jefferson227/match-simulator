@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Match, Scorer } from '../types';
+import utils from '../utils/utils';
 
 interface MatchDetailsProps {
   match: Match;
@@ -60,7 +61,7 @@ const MatchDetails: FC<MatchDetailsProps> = ({ match, scorers, onBack }) => {
               }`}
             >
               <span className="text-white text-[16px] uppercase">
-                {scorer.playerName} {scorer.time}'
+                {utils.shortenPlayerName(scorer.playerName)} {scorer.time}'
               </span>
             </div>
           ))

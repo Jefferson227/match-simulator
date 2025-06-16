@@ -7,6 +7,7 @@ import { MatchContext } from '../../contexts/MatchContext';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import teamService from '../../services/teamService';
 import MatchDetails from '../MatchDetails';
+import utils from '../../utils/utils';
 
 const MatchSimulator: FC = () => {
   const [time, setTime] = useState<number>(0);
@@ -87,7 +88,9 @@ const MatchSimulator: FC = () => {
               <TeamComponent team={match.visitorTeam} matchId={match.id} />
               <div className="absolute -bottom-8 left-0 text-[14px] text-[#e2e2e2] uppercase">
                 {match?.lastScorer
-                  ? `${match.lastScorer.playerName} ${match.lastScorer.time}'`
+                  ? `${utils.shortenPlayerName(match.lastScorer.playerName)} ${
+                      match.lastScorer.time
+                    }'`
                   : null}
               </div>
             </div>
