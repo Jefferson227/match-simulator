@@ -43,7 +43,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
         className="w-[350px] mx-auto mt-[26px] mb-[15px] flex flex-col items-center"
         style={{ backgroundColor: '#397a33', border: '4px solid #e2e2e2' }}
       >
-        <div className="text-center text-[22px] text-white font-bold mt-6 mb-2 tracking-wider">
+        <div className="text-center text-[18px] text-white font-bold mt-6 mb-2 tracking-wider">
           TABLE STANDINGS
         </div>
         <div
@@ -52,8 +52,8 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
         >
           <table className="w-full border-separate border-spacing-0">
             <thead>
-              <tr className="text-[22px] text-white">
-                <th className="text-left pl-4 pb-2">TEAM</th>
+              <tr className="text-[18px] text-white">
+                <th className="font-normal">TM</th>
                 <th className="font-normal">W</th>
                 <th className="font-normal">D</th>
                 <th className="font-normal">L</th>
@@ -65,7 +65,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
               {standings.map((row, idx) => (
                 <tr
                   key={idx}
-                  className="text-[22px] text-white border-t border-white"
+                  className="text-[18px] text-white border-t border-white"
                   style={{
                     borderTop: idx === 0 ? 'none' : '2px solid #e2e2e2',
                   }}
@@ -83,20 +83,20 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
         </div>
         <div className="flex justify-between w-full px-6 mb-8 mt-2">
           <button
-            className="border-4 border-white w-[80px] h-[56px] flex items-center justify-center text-[32px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition"
+            className="border-4 border-white w-[80px] h-[56px] flex items-center justify-center text-[18px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition"
             onClick={onPrev}
             aria-label="Previous"
           >
             {'<'}
           </button>
           <button
-            className="border-4 border-white w-[180px] h-[56px] flex items-center justify-center text-[22px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition mx-2"
+            className="border-4 border-white w-[180px] h-[56px] flex items-center justify-center text-[18px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition mx-2"
             onClick={onContinue}
           >
             CONTINUE
           </button>
           <button
-            className="border-4 border-white w-[80px] h-[56px] flex items-center justify-center text-[32px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition"
+            className="border-4 border-white w-[80px] h-[56px] flex items-center justify-center text-[18px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition"
             onClick={onNext}
             aria-label="Next"
           >
