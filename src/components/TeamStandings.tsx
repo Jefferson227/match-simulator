@@ -50,30 +50,28 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
           <table className="w-full border-separate border-spacing-0">
             <thead>
               <tr className="text-[18px] text-white">
-                <th className="font-normal"></th>
-                <th className="font-normal"></th>
-                <th className="font-normal">W</th>
-                <th className="font-normal">D</th>
-                <th className="font-normal">L</th>
-                <th className="font-normal">GD</th>
-                <th className="font-normal pr-4">PTS</th>
+                <th className="font-normal w-[56px] text-center"> </th>
+                <th className="font-normal w-[56px] text-center"> </th>
+                <th className="font-normal w-[56px] text-center">W</th>
+                <th className="font-normal w-[56px] text-center">D</th>
+                <th className="font-normal w-[56px] text-center">L</th>
+                <th className="font-normal w-[56px] text-center pr-0">PTS</th>
               </tr>
             </thead>
             <tbody>
               {standings.map((row, idx) => (
                 <React.Fragment key={idx}>
-                  <tr className="text-[18px] text-white" style={{}}>
-                    <td className="pl-4 py-2 text-center">{idx + 1}</td>
-                    <td className="text-center">{row.team}</td>
-                    <td className="text-center">{row.w}</td>
-                    <td className="text-center">{row.d}</td>
-                    <td className="text-center">{row.l}</td>
-                    <td className="text-center">{row.gd}</td>
-                    <td className="pr-4 text-center">{row.pts}</td>
+                  <tr className="text-[18px] text-white">
+                    <td className="w-[56px] text-center py-2">{idx + 1}</td>
+                    <td className="w-[56px] text-center">{row.team}</td>
+                    <td className="w-[56px] text-center">{row.w}</td>
+                    <td className="w-[56px] text-center">{row.d}</td>
+                    <td className="w-[56px] text-center">{row.l}</td>
+                    <td className="w-[56px] text-center pr-0">{row.pts}</td>
                   </tr>
                   {idx < standings.length - 1 && (
                     <tr>
-                      <td colSpan={7} style={{ padding: 0, border: 0 }}>
+                      <td colSpan={6} style={{ padding: 0, border: 0 }}>
                         <div
                           style={{
                             height: '4px',
