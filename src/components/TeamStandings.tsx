@@ -53,7 +53,8 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
           <table className="w-full border-separate border-spacing-0">
             <thead>
               <tr className="text-[18px] text-white">
-                <th className="font-normal">TM</th>
+                <th className="font-normal"></th>
+                <th className="font-normal"></th>
                 <th className="font-normal">W</th>
                 <th className="font-normal">D</th>
                 <th className="font-normal">L</th>
@@ -70,7 +71,8 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
                     borderTop: idx === 0 ? 'none' : '2px solid #e2e2e2',
                   }}
                 >
-                  <td className="pl-4 py-2">{row.team}</td>
+                  <td className="pl-4 py-2">{idx + 1}</td>
+                  <td className="text-center">{row.team}</td>
                   <td className="text-center">{row.w}</td>
                   <td className="text-center">{row.d}</td>
                   <td className="text-center">{row.l}</td>
