@@ -24,7 +24,7 @@ enum PlayerSelectionState {
 
 const TeamManager: React.FC = () => {
   const { t } = useTranslation();
-  const { getBaseTeam, setMatchTeam, state, setMatchStarted } =
+  const { getBaseTeam, setMatchTeam, state, setScreenDisplayed } =
     useContext(GeneralContext);
   const [isMatchTeamSet, setIsMatchTeamSet] = useState(false);
   const [showFormationGrid, setShowFormationGrid] = useState(false);
@@ -42,7 +42,6 @@ const TeamManager: React.FC = () => {
   useEffect(() => {
     if (isMatchTeamSet) {
       setIsMatchTeamSet(false);
-      setMatchStarted(true);
     }
   }, [isMatchTeamSet]);
 
@@ -532,7 +531,7 @@ const TeamManager: React.FC = () => {
                 const matchTeam = createMatchTeam();
                 if (matchTeam) {
                   setMatchTeam(matchTeam);
-                  setIsMatchTeamSet(true);
+                  setScreenDisplayed('MatchSimulator');
                 }
               }}
             >

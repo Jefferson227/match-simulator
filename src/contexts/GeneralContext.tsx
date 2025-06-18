@@ -11,6 +11,7 @@ interface GeneralContextType {
   setMatchStarted: (isStarted: boolean) => void;
   setMatchTeam: (team: MatchTeam) => void;
   setMatchOtherTeams: () => void;
+  setScreenDisplayed: (screen: string) => void;
 }
 
 // Create the default context value
@@ -20,13 +21,14 @@ const defaultContextValue: GeneralContextType = {
     baseTeam: {} as BaseTeam,
     matchTeam: null,
     matchOtherTeams: [],
-    isMatchStarted: false,
+    screenDisplayed: 'TeamManager',
   },
   setCurrentPage: () => {},
   getBaseTeam: () => {},
   setMatchStarted: () => {},
   setMatchTeam: () => {},
   setMatchOtherTeams: () => {},
+  setScreenDisplayed: () => {},
 };
 
 // Create the context
@@ -46,7 +48,7 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
     baseTeam: {} as BaseTeam,
     matchTeam: null,
     matchOtherTeams: [],
-    isMatchStarted: false,
+    screenDisplayed: 'TeamManager',
   });
 
   const setCurrentPage = (page: number) =>
@@ -65,6 +67,9 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
 
   const setMatchOtherTeams = () => dispatch({ type: 'SET_MATCH_OTHER_TEAMS' });
 
+  const setScreenDisplayed = (screen: string) =>
+    dispatch({ type: 'SET_SCREEN_DISPLAYED', payload: screen });
+
   return (
     <GeneralContext.Provider
       value={{
@@ -74,6 +79,7 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
         setMatchStarted,
         setMatchTeam,
         setMatchOtherTeams,
+        setScreenDisplayed,
       }}
     >
       {children}

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { GeneralContext } from '../contexts/GeneralContext';
 
 interface TeamStanding {
   team: string;
@@ -34,6 +35,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
   onNext,
   onContinue,
 }) => {
+  const { setScreenDisplayed } = useContext(GeneralContext);
   const RESULTS_PER_PAGE = 12;
   const [page, setPage] = useState(0);
   const totalPages = Math.ceil(standings.length / RESULTS_PER_PAGE);
@@ -123,7 +125,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
         </button>
         <button
           className="border-4 border-white w-[180px] h-[56px] flex items-center justify-center text-[18px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition mx-2 cursor-pointer"
-          onClick={onContinue}
+          onClick={() => setScreenDisplayed('TeamManager')}
         >
           CONTINUE
         </button>

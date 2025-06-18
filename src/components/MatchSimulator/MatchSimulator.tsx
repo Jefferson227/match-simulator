@@ -14,7 +14,8 @@ const MatchSimulator: FC = () => {
   const [detailsMatchId, setDetailsMatchId] = useState<string | null>(null);
   const { matches, teamSquadView, setMatches, increaseScore, setScorer } =
     useContext(MatchContext);
-  const { state, setMatchOtherTeams } = useContext(GeneralContext);
+  const { state, setMatchOtherTeams, setScreenDisplayed } =
+    useContext(GeneralContext);
   const { getTeams } = teamService;
 
   useEffect(() => {
@@ -43,6 +44,7 @@ const MatchSimulator: FC = () => {
 
   useEffect(() => {
     let timer: number | undefined;
+    let standingsTimeout: number | undefined;
 
     if (!detailsMatchId && !teamSquadView && time < 90) {
       timer = window.setInterval(() => {
@@ -58,10 +60,26 @@ const MatchSimulator: FC = () => {
       if (timer) clearInterval(timer);
     }
 
+    // After match ends, show standings after 5 seconds
+    if (time >= 90 && !teamSquadView && !detailsMatchId) {
+      standingsTimeout = window.setTimeout(() => {
+        setScreenDisplayed('TeamStandings');
+      }, 5000);
+    }
+
     return () => {
       if (timer) clearInterval(timer);
+      if (standingsTimeout) clearTimeout(standingsTimeout);
     };
-  }, [time, matches, teamSquadView, detailsMatchId, setScorer, increaseScore]);
+  }, [
+    time,
+    matches,
+    teamSquadView,
+    detailsMatchId,
+    setScorer,
+    increaseScore,
+    setScreenDisplayed,
+  ]);
 
   return (
     <div className="font-press-start">
