@@ -39,14 +39,17 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
       className="font-press-start min-h-screen"
       style={{ backgroundColor: '#3d7a33' }}
     >
+      <div className="text-center text-[18px] text-white font-bold mt-6 mb-2 tracking-wider">
+        TABLE STANDINGS
+      </div>
       <div
-        className="w-[350px] h-[610px] mx-auto mt-[26px] mb-0 flex flex-col items-center"
+        className="w-[350px] h-[610px] mx-auto mt-0 mb-0 flex flex-col items-center"
         style={{ backgroundColor: '#397a33', border: '4px solid #e2e2e2' }}
       >
-        <div className="text-center text-[18px] text-white font-bold mt-6 mb-2 tracking-wider">
-          TABLE STANDINGS
-        </div>
-        <div className="w-full" style={{ maxHeight: 536, overflowY: 'auto' }}>
+        <div
+          className="w-full mt-[14px]"
+          style={{ maxHeight: 587, overflowY: 'auto' }}
+        >
           <table className="w-full border-separate border-spacing-0">
             <thead>
               <tr className="text-[18px] text-white">
