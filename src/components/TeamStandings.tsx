@@ -55,7 +55,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
                 <th className="font-normal w-[56px] text-center">W</th>
                 <th className="font-normal w-[56px] text-center">D</th>
                 <th className="font-normal w-[56px] text-center">L</th>
-                <th className="font-normal w-[56px] text-center pr-0">PTS</th>
+                <th className="font-normal w-[56px] text-center pr-3">PTS</th>
               </tr>
             </thead>
             <tbody>
