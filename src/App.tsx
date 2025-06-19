@@ -5,7 +5,7 @@ import TeamManager from './components/TeamManager/TeamManager';
 import { GeneralContext } from './contexts/GeneralContext';
 import { FC, useContext } from 'react';
 import MatchSimulator from './components/MatchSimulator/MatchSimulator';
-import TeamStandings from './components/TeamStandings';
+import TeamStandings from './components/TeamStandings/TeamStandings';
 
 const AppContent: FC = () => {
   const { state } = useContext(GeneralContext);

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { GeneralContext } from '../contexts/GeneralContext';
+import { GeneralContext } from '../../contexts/GeneralContext';
 
 interface TeamStanding {
   team: string;
