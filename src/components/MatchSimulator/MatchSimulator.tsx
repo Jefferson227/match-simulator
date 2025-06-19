@@ -106,7 +106,7 @@ const MatchSimulator: FC = () => {
         <div className="flex flex-col items-center">
           {matches.map((match, index) => (
             <div
-              className="w-[320px] flex justify-between items-center mb-[58px] relative"
+              className="w-[320px] flex justify-between items-center mb-[48px] relative"
               key={index}
             >
               <TeamComponent team={match.homeTeam} matchId={match.id} />
@@ -116,7 +116,7 @@ const MatchSimulator: FC = () => {
                 onClick={() => setDetailsMatchId(match.id)}
               />
               <TeamComponent team={match.visitorTeam} matchId={match.id} />
-              <div className="absolute -bottom-8 left-0 text-[14px] text-[#e2e2e2] uppercase">
+              <div className="absolute -bottom-7 left-0 text-[14px] text-[#e2e2e2] uppercase">
                 {match?.lastScorer
                   ? `${utils.shortenPlayerName(match.lastScorer.playerName)} ${
                       match.lastScorer.time

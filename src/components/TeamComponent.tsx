@@ -12,7 +12,7 @@ const TeamComponent: FC<TeamComponentProps> = ({ team, matchId }) => {
 
   return (
     <div
-      className="w-[95px] h-[58px] border-[4px] box-content cursor-pointer"
+      className="w-[95px] h-[39px] border-[4px] box-content cursor-pointer"
       style={{ borderColor: team.colors.outline }}
       onClick={() => setTeamSquadView({ team, matchId })}
     >
