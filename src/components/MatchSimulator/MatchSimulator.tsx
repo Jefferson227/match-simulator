@@ -24,22 +24,22 @@ const MatchSimulator: FC = () => {
 
   useEffect(() => {
     // TODO: Set the matches from the generalReducer
-    // setMatches(getTeams(1));
-    // setMatches(getTeams(2));
     if (state.matchOtherTeams.length === 0) return;
 
-    setMatches({
-      homeTeam: state.matchOtherTeams[0],
-      visitorTeam: state.matchOtherTeams[1],
-    });
-    setMatches({
-      homeTeam: state.matchOtherTeams[2],
-      visitorTeam: state.matchOtherTeams[3],
-    });
-    setMatches({
-      homeTeam: state.matchOtherTeams[4],
-      visitorTeam: state.matchOtherTeams[5],
-    });
+    setMatches([
+      {
+        homeTeam: state.matchOtherTeams[0],
+        visitorTeam: state.matchOtherTeams[1],
+      },
+      {
+        homeTeam: state.matchOtherTeams[2],
+        visitorTeam: state.matchOtherTeams[3],
+      },
+      {
+        homeTeam: state.matchOtherTeams[4],
+        visitorTeam: state.matchOtherTeams[5],
+      },
+    ]);
   }, [state.matchOtherTeams]);
 
   useEffect(() => {

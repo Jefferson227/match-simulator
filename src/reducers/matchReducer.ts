@@ -10,85 +10,83 @@ export const matchReducer = (
 ): MatchState => {
   switch (action.type) {
     case 'SET_MATCHES': {
-      const { homeTeam, visitorTeam } = action.payload;
-
-      var updatedHomeTeam: MatchTeam = {
-        ...homeTeam,
-        starters: addPlayerAttributes(homeTeam.starters),
-        substitutes: addPlayerAttributes(homeTeam.substitutes),
-        isHomeTeam: true,
-        score: 0,
-        morale: 50,
-        overallMood: 0,
-        overallStrength: getSum(homeTeam.starters.map((p) => p.strength)),
-        attackStrength: getSum(
-          homeTeam.starters
-            .filter((p) => p.position === 'FW')
-            .map((p) => p.strength)
-        ),
-        midfieldStrength: getSum(
-          homeTeam.starters
-            .filter((p) => p.position === 'MF')
-            .map((p) => p.strength)
-        ),
-        defenseStrength: getSum(
-          homeTeam.starters
-            .filter((p) => p.position === 'DF' || p.position === 'GK')
-            .map((p) => p.strength)
-        ),
-      };
-
-      updatedHomeTeam.overallMood = getAverage(
-        updatedHomeTeam.starters.map((p) => p.mood)
-      );
-
-      var updatedVisitorTeam: MatchTeam = {
-        ...visitorTeam,
-        starters: addPlayerAttributes(visitorTeam.starters),
-        substitutes: addPlayerAttributes(visitorTeam.substitutes),
-        isHomeTeam: false,
-        score: 0,
-        morale: 50,
-        overallMood: 0,
-        overallStrength: getSum(visitorTeam.starters.map((p) => p.strength)),
-        attackStrength: getSum(
-          visitorTeam.starters
-            .filter((p) => p.position === 'FW')
-            .map((p) => p.strength)
-        ),
-        midfieldStrength: getSum(
-          visitorTeam.starters
-            .filter((p) => p.position === 'MF')
-            .map((p) => p.strength)
-        ),
-        defenseStrength: getSum(
-          visitorTeam.starters
-            .filter((p) => p.position === 'DF' || p.position === 'GK')
-            .map((p) => p.strength)
-        ),
-      };
-
-      updatedVisitorTeam.overallMood = getAverage(
-        updatedVisitorTeam.starters.map((p) => p.mood)
-      );
-
+      // Accept an array of { homeTeam, visitorTeam }
+      const matchesPayload = Array.isArray(action.payload)
+        ? action.payload
+        : [action.payload];
+      const newMatches = matchesPayload.map(({ homeTeam, visitorTeam }) => {
+        var updatedHomeTeam = {
+          ...homeTeam,
+          starters: addPlayerAttributes(homeTeam.starters),
+          substitutes: addPlayerAttributes(homeTeam.substitutes),
+          isHomeTeam: true,
+          score: 0,
+          morale: 50,
+          overallMood: 0,
+          overallStrength: getSum(homeTeam.starters.map((p) => p.strength)),
+          attackStrength: getSum(
+            homeTeam.starters
+              .filter((p) => p.position === 'FW')
+              .map((p) => p.strength)
+          ),
+          midfieldStrength: getSum(
+            homeTeam.starters
+              .filter((p) => p.position === 'MF')
+              .map((p) => p.strength)
+          ),
+          defenseStrength: getSum(
+            homeTeam.starters
+              .filter((p) => p.position === 'DF' || p.position === 'GK')
+              .map((p) => p.strength)
+          ),
+        };
+        updatedHomeTeam.overallMood = getAverage(
+          updatedHomeTeam.starters.map((p) => p.mood)
+        );
+        var updatedVisitorTeam = {
+          ...visitorTeam,
+          starters: addPlayerAttributes(visitorTeam.starters),
+          substitutes: addPlayerAttributes(visitorTeam.substitutes),
+          isHomeTeam: false,
+          score: 0,
+          morale: 50,
+          overallMood: 0,
+          overallStrength: getSum(visitorTeam.starters.map((p) => p.strength)),
+          attackStrength: getSum(
+            visitorTeam.starters
+              .filter((p) => p.position === 'FW')
+              .map((p) => p.strength)
+          ),
+          midfieldStrength: getSum(
+            visitorTeam.starters
+              .filter((p) => p.position === 'MF')
+              .map((p) => p.strength)
+          ),
+          defenseStrength: getSum(
+            visitorTeam.starters
+              .filter((p) => p.position === 'DF' || p.position === 'GK')
+              .map((p) => p.strength)
+          ),
+        };
+        updatedVisitorTeam.overallMood = getAverage(
+          updatedVisitorTeam.starters.map((p) => p.mood)
+        );
+        return {
+          id: crypto.randomUUID(),
+          homeTeam: { ...updatedHomeTeam },
+          visitorTeam: { ...updatedVisitorTeam },
+          lastScorer: null,
+          ballPossession: {
+            isHomeTeam: true,
+            position: 'midfield' as 'midfield',
+          },
+          shotAttempts: 0,
+          scorers: [],
+        };
+      });
       return {
         ...state,
-        matches: [
-          ...state.matches,
-          {
-            id: crypto.randomUUID(),
-            homeTeam: { ...updatedHomeTeam },
-            visitorTeam: { ...updatedVisitorTeam },
-            lastScorer: null,
-            ballPossession: {
-              isHomeTeam: true,
-              position: 'midfield', // defense, midfield, attack
-            },
-            shotAttempts: 0,
-            scorers: [],
-          },
-        ],
+        matches: newMatches,
       };
     }
     case 'SET_SCORER': {

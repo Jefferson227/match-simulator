@@ -11,7 +11,7 @@ import {
 export type MatchAction =
   | {
       type: 'SET_MATCHES';
-      payload: { homeTeam: MatchTeam; visitorTeam: MatchTeam };
+      payload: { homeTeam: MatchTeam; visitorTeam: MatchTeam }[];
     }
   | { type: 'SET_SCORER'; payload: { matchId: string; scorer: Scorer } }
   | {
@@ -27,7 +27,9 @@ export type MatchAction =
 interface MatchContextType {
   matches: Match[];
   teamSquadView: TeamSquadView | null | undefined;
-  setMatches: (teams: { homeTeam: MatchTeam; visitorTeam: MatchTeam }) => void;
+  setMatches: (
+    teams: { homeTeam: MatchTeam; visitorTeam: MatchTeam }[]
+  ) => void;
   setScorer: (matchId: string, scorer: Scorer) => void;
   increaseScore: (matchId: string, scorerTeam: { isHomeTeam: boolean }) => void;
   setTeamSquadView: (teamSquadView: TeamSquadView | null) => void;
@@ -56,8 +58,9 @@ export const MatchProvider: React.FC<MatchProviderProps> = ({ children }) => {
     matches: [],
   });
 
-  const setMatches = (teams: { homeTeam: MatchTeam; visitorTeam: MatchTeam }) =>
-    dispatch({ type: 'SET_MATCHES', payload: teams });
+  const setMatches = (
+    teams: { homeTeam: MatchTeam; visitorTeam: MatchTeam }[]
+  ) => dispatch({ type: 'SET_MATCHES', payload: teams });
 
   const setScorer = (matchId: string, scorer: Scorer) =>
     dispatch({ type: 'SET_SCORER', payload: { matchId, scorer } });
