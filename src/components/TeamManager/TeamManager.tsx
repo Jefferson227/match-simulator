@@ -26,7 +26,6 @@ const TeamManager: React.FC = () => {
   const { t } = useTranslation();
   const { getBaseTeam, setMatchTeam, state, setScreenDisplayed } =
     useContext(GeneralContext);
-  const [isMatchTeamSet, setIsMatchTeamSet] = useState(false);
   const [showFormationGrid, setShowFormationGrid] = useState(false);
   const [playerStates, setPlayerStates] = useState<{
     [id: string]: PlayerSelectionState;
@@ -37,13 +36,6 @@ const TeamManager: React.FC = () => {
   useEffect(() => {
     getBaseTeam();
   }, []);
-
-  // Hiding the team manager screen and showing the match simulator
-  useEffect(() => {
-    if (isMatchTeamSet) {
-      setIsMatchTeamSet(false);
-    }
-  }, [isMatchTeamSet]);
 
   const handlePlayerClick = (id: string) => {
     setPlayerStates((prev) => {
