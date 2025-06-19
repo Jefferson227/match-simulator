@@ -126,13 +126,15 @@ const mockContextValue = {
   state: {
     baseTeam: mockTeam,
     matchTeam: null,
-    isMatchStarted: false,
-    currentPage: 0,
+    currentPage: 1,
+    matchOtherTeams: [],
+    screenDisplayed: 'TeamManager',
   },
   setMatchTeam: jest.fn(),
   getBaseTeam: jest.fn(),
-  setMatchStarted: jest.fn(),
   setCurrentPage: jest.fn(),
+  setMatchOtherTeams: jest.fn(),
+  setScreenDisplayed: jest.fn(),
 };
 
 // Add a mock team with 15 players for pagination tests
@@ -276,13 +278,15 @@ describe('TeamManager', () => {
       state: {
         baseTeam: {} as BaseTeam,
         matchTeam: null,
-        isMatchStarted: false,
-        currentPage: 0,
+        currentPage: 1,
+        matchOtherTeams: [],
+        screenDisplayed: 'TeamManager',
       },
       setMatchTeam: jest.fn(),
       getBaseTeam: jest.fn(),
-      setMatchStarted: jest.fn(),
       setCurrentPage: jest.fn(),
+      setMatchOtherTeams: jest.fn(),
+      setScreenDisplayed: jest.fn(),
     };
     render(
       <GeneralContext.Provider value={contextWithNoTeam}>
@@ -580,13 +584,15 @@ describe('TeamManager', () => {
         state: {
           baseTeam: limitedTeam,
           matchTeam: null,
-          isMatchStarted: false,
-          currentPage: 0,
+          currentPage: 1,
+          matchOtherTeams: [],
+          screenDisplayed: 'TeamManager',
         },
         setMatchTeam: jest.fn(),
         getBaseTeam: jest.fn(),
-        setMatchStarted: jest.fn(),
         setCurrentPage: jest.fn(),
+        setMatchOtherTeams: jest.fn(),
+        setScreenDisplayed: jest.fn(),
       };
 
       render(
@@ -891,13 +897,15 @@ describe('TeamManager pagination', () => {
           state: {
             baseTeam: mockTeamManyPlayers,
             matchTeam: null,
-            isMatchStarted: false,
-            currentPage: 0,
+            currentPage: 1,
+            matchOtherTeams: [],
+            screenDisplayed: 'TeamManager',
           },
           setMatchTeam: jest.fn(),
           getBaseTeam: jest.fn(),
-          setMatchStarted: jest.fn(),
           setCurrentPage: jest.fn(),
+          setMatchOtherTeams: jest.fn(),
+          setScreenDisplayed: jest.fn(),
         }}
       >
         <TeamManager />
@@ -918,13 +926,15 @@ describe('TeamManager pagination', () => {
           state: {
             baseTeam: mockTeamManyPlayers,
             matchTeam: null,
-            isMatchStarted: false,
-            currentPage: 0,
+            currentPage: 1,
+            matchOtherTeams: [],
+            screenDisplayed: 'TeamManager',
           },
           setMatchTeam: jest.fn(),
           getBaseTeam: jest.fn(),
-          setMatchStarted: jest.fn(),
           setCurrentPage: jest.fn(),
+          setMatchOtherTeams: jest.fn(),
+          setScreenDisplayed: jest.fn(),
         }}
       >
         <TeamManager />
@@ -946,13 +956,15 @@ describe('TeamManager pagination', () => {
           state: {
             baseTeam: mockTeamManyPlayers,
             matchTeam: null,
-            isMatchStarted: false,
-            currentPage: 0,
+            currentPage: 1,
+            matchOtherTeams: [],
+            screenDisplayed: 'TeamManager',
           },
           setMatchTeam: jest.fn(),
           getBaseTeam: jest.fn(),
-          setMatchStarted: jest.fn(),
           setCurrentPage: jest.fn(),
+          setMatchOtherTeams: jest.fn(),
+          setScreenDisplayed: jest.fn(),
         }}
       >
         <TeamManager />

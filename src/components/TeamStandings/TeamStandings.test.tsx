@@ -14,12 +14,10 @@ const mockGeneralContextValue = {
     baseTeam: {} as BaseTeam,
     matchTeam: null,
     matchOtherTeams: [],
-    isMatchStarted: false,
     screenDisplayed: 'TeamManager' as any, // Using any to bypass type mismatch
   },
   setCurrentPage: jest.fn(),
   getBaseTeam: jest.fn(),
-  setMatchStarted: jest.fn(),
   setMatchTeam: jest.fn(),
   setMatchOtherTeams: jest.fn(),
   setScreenDisplayed: mockSetScreenDisplayed,

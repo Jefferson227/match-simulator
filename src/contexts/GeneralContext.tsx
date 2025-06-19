@@ -8,7 +8,6 @@ interface GeneralContextType {
   state: GeneralState;
   setCurrentPage: (page: number) => void;
   getBaseTeam: () => void;
-  setMatchStarted: (isStarted: boolean) => void;
   setMatchTeam: (team: MatchTeam) => void;
   setMatchOtherTeams: () => void;
   setScreenDisplayed: (screen: string) => void;
@@ -25,7 +24,6 @@ const defaultContextValue: GeneralContextType = {
   },
   setCurrentPage: () => {},
   getBaseTeam: () => {},
-  setMatchStarted: () => {},
   setMatchTeam: () => {},
   setMatchOtherTeams: () => {},
   setScreenDisplayed: () => {},
@@ -59,9 +57,6 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
     dispatch({ type: 'SET_BASE_TEAM', payload: baseTeam });
   };
 
-  const setMatchStarted = (isStarted: boolean) =>
-    dispatch({ type: 'SET_MATCH_STARTED', payload: isStarted });
-
   const setMatchTeam = (team: MatchTeam) =>
     dispatch({ type: 'SET_MATCH_TEAM', payload: team });
 
@@ -76,7 +71,6 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
         state,
         setCurrentPage,
         getBaseTeam,
-        setMatchStarted,
         setMatchTeam,
         setMatchOtherTeams,
         setScreenDisplayed,
