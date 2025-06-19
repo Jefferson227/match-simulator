@@ -23,21 +23,33 @@ const MatchSimulator: FC = () => {
   }, []);
 
   useEffect(() => {
-    // TODO: Set the matches from the generalReducer
     if (state.matchOtherTeams.length === 0) return;
 
+    // Create a copy of the teams array to shuffle
+    const shuffledTeams = [...state.matchOtherTeams];
+
+    // Fisher-Yates shuffle algorithm
+    for (let i = shuffledTeams.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledTeams[i], shuffledTeams[j]] = [
+        shuffledTeams[j],
+        shuffledTeams[i],
+      ];
+    }
+
+    // Create matches with randomized pairs
     setMatches([
       {
-        homeTeam: state.matchOtherTeams[0],
-        visitorTeam: state.matchOtherTeams[1],
+        homeTeam: shuffledTeams[0],
+        visitorTeam: shuffledTeams[1],
       },
       {
-        homeTeam: state.matchOtherTeams[2],
-        visitorTeam: state.matchOtherTeams[3],
+        homeTeam: shuffledTeams[2],
+        visitorTeam: shuffledTeams[3],
       },
       {
-        homeTeam: state.matchOtherTeams[4],
-        visitorTeam: state.matchOtherTeams[5],
+        homeTeam: shuffledTeams[4],
+        visitorTeam: shuffledTeams[5],
       },
     ]);
   }, [state.matchOtherTeams]);
