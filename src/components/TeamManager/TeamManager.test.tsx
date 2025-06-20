@@ -257,17 +257,25 @@ describe('TeamManager', () => {
     expect(chooseFormationBtn.style.backgroundColor).toBe('rgb(255, 255, 255)');
     expect(chooseFormationBtn.style.color).toBe('rgb(0, 0, 0)');
 
-    const prevPageBtn = screen.getByText('PREVIOUS PAGE');
+    // Check for navigation buttons (now without text, just symbols)
+    const prevPageBtn = screen.getByText('<');
     expect(prevPageBtn).toBeTruthy();
     expect(prevPageBtn.style.borderColor).toBe('#e2e2e2');
     expect(prevPageBtn.style.backgroundColor).toBe('rgb(60, 122, 51)');
     expect(prevPageBtn.style.color).toBe('rgb(226, 226, 226)');
 
-    const nextPageBtn = screen.getByText('NEXT PAGE');
+    const nextPageBtn = screen.getByText('>');
     expect(nextPageBtn).toBeTruthy();
     expect(nextPageBtn.style.borderColor).toBe('#e2e2e2');
     expect(nextPageBtn.style.backgroundColor).toBe('rgb(60, 122, 51)');
     expect(nextPageBtn.style.color).toBe('rgb(226, 226, 226)');
+
+    // Check for the new "more info" button
+    const moreInfoBtn = screen.getByText('MORE INFO');
+    expect(moreInfoBtn).toBeTruthy();
+    expect(moreInfoBtn.style.borderColor).toBe('#e2e2e2');
+    expect(moreInfoBtn.style.backgroundColor).toBe('rgb(60, 122, 51)');
+    expect(moreInfoBtn.style.color).toBe('rgb(226, 226, 226)');
 
     // START MATCH button should not be visible initially
     expect(screen.queryByText('START MATCH')).toBeNull();
@@ -321,8 +329,9 @@ describe('TeamManager', () => {
 
     // Player list and navigation buttons should be hidden
     expect(screen.queryByText('Player 1')).toBeNull();
-    expect(screen.queryByText('PREVIOUS PAGE')).toBeNull();
-    expect(screen.queryByText('NEXT PAGE')).toBeNull();
+    expect(screen.queryByText('<')).toBeNull();
+    expect(screen.queryByText('>')).toBeNull();
+    expect(screen.queryByText('MORE INFO')).toBeNull();
     expect(screen.queryByText('START MATCH')).toBeNull();
 
     // Formation section should show 'CHOOSE FORMATION'
@@ -348,8 +357,9 @@ describe('TeamManager', () => {
     // Wait for the player list and navigation buttons to be visible again
     await waitFor(() => {
       expect(screen.getByText('Player 1')).toBeTruthy();
-      expect(screen.getByText('PREVIOUS PAGE')).toBeTruthy();
-      expect(screen.getByText('NEXT PAGE')).toBeTruthy();
+      expect(screen.getByText('<')).toBeTruthy();
+      expect(screen.getByText('>')).toBeTruthy();
+      expect(screen.getByText('MORE INFO')).toBeTruthy();
       // START MATCH button should not be visible
       expect(screen.queryByText('START MATCH')).toBeNull();
 
@@ -509,7 +519,7 @@ describe('TeamManager', () => {
 
       // If we still need more players and there's a next page, go to it
       if (selectedCount < 11 && currentPage < totalPages - 1) {
-        fireEvent.click(screen.getByText('NEXT PAGE'));
+        fireEvent.click(screen.getByText('>'));
         currentPage++;
       }
     }
@@ -716,8 +726,8 @@ describe('TeamManager', () => {
       let extraOutfieldDiv = screen
         .queryByText(extraOutfield.name)
         ?.closest('div');
-      let nextPageButton = screen.getByText('NEXT PAGE');
-      let prevPageButton = screen.getByText('PREVIOUS PAGE');
+      let nextPageButton = screen.getByText('>');
+      let prevPageButton = screen.getByText('<');
       let tries = 0;
       while (!extraOutfieldDiv && tries < 5) {
         if (!nextPageButton.hasAttribute('disabled')) {
@@ -730,8 +740,8 @@ describe('TeamManager', () => {
         extraOutfieldDiv = screen
           .queryByText(extraOutfield.name)
           ?.closest('div');
-        nextPageButton = screen.getByText('NEXT PAGE');
-        prevPageButton = screen.getByText('PREVIOUS PAGE');
+        nextPageButton = screen.getByText('>');
+        prevPageButton = screen.getByText('<');
         tries++;
       }
       if (extraOutfieldDiv) {
@@ -752,12 +762,12 @@ describe('TeamManager', () => {
     // Helper function to select a player by name
     const selectPlayer = (playerName: string) => {
       let playerElement = screen.queryByText(playerName)?.closest('div');
-      const nextPageButton = screen.getByText('NEXT PAGE');
+      const nextPageButton = screen.getByText('>');
       if (!playerElement && !nextPageButton.hasAttribute('disabled')) {
         fireEvent.click(nextPageButton);
         playerElement = screen.queryByText(playerName)?.closest('div');
       }
-      const prevPageButton = screen.getByText('PREVIOUS PAGE');
+      const prevPageButton = screen.getByText('<');
       if (!playerElement && !prevPageButton.hasAttribute('disabled')) {
         fireEvent.click(prevPageButton);
         playerElement = screen.queryByText(playerName)?.closest('div');
@@ -776,14 +786,14 @@ describe('TeamManager', () => {
     let gkElement = screen.queryByText('Player 1')?.closest('div');
     // If not found, try navigating pages
     if (!gkElement) {
-      const nextPageButton = screen.getByText('NEXT PAGE');
+      const nextPageButton = screen.getByText('>');
       if (!nextPageButton.hasAttribute('disabled')) {
         fireEvent.click(nextPageButton);
         gkElement = screen.queryByText('Player 1')?.closest('div');
       }
     }
     if (!gkElement) {
-      const prevPageButton = screen.getByText('PREVIOUS PAGE');
+      const prevPageButton = screen.getByText('<');
       if (!prevPageButton.hasAttribute('disabled')) {
         fireEvent.click(prevPageButton);
         gkElement = screen.queryByText('Player 1')?.closest('div');
@@ -796,14 +806,14 @@ describe('TeamManager', () => {
     outfieldPlayers.forEach((p) => {
       let el = screen.queryByText(p.name)?.closest('div');
       if (!el) {
-        const nextPageButton = screen.getByText('NEXT PAGE');
+        const nextPageButton = screen.getByText('>');
         if (!nextPageButton.hasAttribute('disabled')) {
           fireEvent.click(nextPageButton);
           el = screen.queryByText(p.name)?.closest('div');
         }
       }
       if (!el) {
-        const prevPageButton = screen.getByText('PREVIOUS PAGE');
+        const prevPageButton = screen.getByText('<');
         if (!prevPageButton.hasAttribute('disabled')) {
           fireEvent.click(prevPageButton);
           el = screen.queryByText(p.name)?.closest('div');
@@ -853,7 +863,7 @@ describe('TeamManager', () => {
 
       // If we still need more players and there's a next page, go to it
       if (selectedCount < 11 && currentPage < totalPages - 1) {
-        fireEvent.click(screen.getByText('NEXT PAGE'));
+        fireEvent.click(screen.getByText('>'));
         currentPage++;
       }
     }
@@ -872,12 +882,24 @@ describe('TeamManager', () => {
         <TeamManager />
       </GeneralContext.Provider>
     );
-    const prevButton = screen.getByText('PREVIOUS PAGE') as HTMLElement;
-    const nextButton = screen.getByText('NEXT PAGE') as HTMLElement;
+    const prevButton = screen.getByText('<') as HTMLElement;
+    const nextButton = screen.getByText('>') as HTMLElement;
     expect(prevButton.style.opacity).toBe('0.5');
     expect(prevButton.style.cursor).toBe('not-allowed');
     expect(nextButton.style.opacity).toBe('1');
     expect(nextButton.style.cursor).toBe('pointer');
+  });
+
+  it('shows disabled state for more info button correctly', () => {
+    render(
+      <GeneralContext.Provider value={mockContextValue}>
+        <TeamManager />
+      </GeneralContext.Provider>
+    );
+    const moreInfoButton = screen.getByText('MORE INFO') as HTMLElement;
+    expect(moreInfoButton.style.opacity).toBe('0.5');
+    expect(moreInfoButton.style.cursor).toBe('not-allowed');
+    expect(moreInfoButton.hasAttribute('disabled')).toBe(true);
   });
 });
 
@@ -940,7 +962,7 @@ describe('TeamManager pagination', () => {
         <TeamManager />
       </GeneralContext.Provider>
     );
-    fireEvent.click(screen.getByText('NEXT PAGE'));
+    fireEvent.click(screen.getByText('>'));
     for (let i = 12; i <= 15; i++) {
       expect(screen.getByText(`Player ${i}`)).toBeTruthy();
     }
@@ -970,8 +992,8 @@ describe('TeamManager pagination', () => {
         <TeamManager />
       </GeneralContext.Provider>
     );
-    const prevBtn = screen.getByText('PREVIOUS PAGE');
-    const nextBtn = screen.getByText('NEXT PAGE');
+    const prevBtn = screen.getByText('<');
+    const nextBtn = screen.getByText('>');
     expect(prevBtn.hasAttribute('disabled')).toBe(true);
     expect(nextBtn.hasAttribute('disabled')).toBe(false);
     fireEvent.click(nextBtn);
