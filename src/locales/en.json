@@ -17,11 +17,10 @@
   },
   "teamManager": {
     "chooseFormation": "CHOOSE FORMATION",
-    "prevPage": "PREVIOUS PAGE",
-    "nextPage": "NEXT PAGE",
     "startMatch": "START MATCH",
     "goBack": "GO BACK",
     "bestPlayers": "BEST PLAYERS",
-    "selectedCount": "{{count}} SELECTED"
+    "selectedCount": "{{count}} SELECTED",
+    "moreInfo": "MORE INFO"
   }
 }
