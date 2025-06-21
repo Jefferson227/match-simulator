@@ -6,16 +6,29 @@ import { GeneralContext } from './contexts/GeneralContext';
 import { FC, useContext } from 'react';
 import MatchSimulator from './components/MatchSimulator/MatchSimulator';
 import TeamStandings from './components/TeamStandings/TeamStandings';
+import InitialScreen from './components/InitialScreen/InitialScreen';
 
 const AppContent: FC = () => {
   const { state } = useContext(GeneralContext);
-  return (
-    <div className="text-center min-h-screen bg-[#3d7a33]">
-      {state.screenDisplayed === 'TeamManager' && <TeamManager />}
-      {state.screenDisplayed === 'MatchSimulator' && <MatchSimulator />}
-      {state.screenDisplayed === 'TeamStandings' && <TeamStandings />}
-    </div>
-  );
+
+  if (!state.baseTeam) {
+    return null;
+  }
+
+  if (state.screenDisplayed === 'InitialScreen') {
+    return <InitialScreen />;
+  }
+  if (state.screenDisplayed === 'TeamManager') {
+    return <TeamManager />;
+  }
+  if (state.screenDisplayed === 'MatchSimulator') {
+    return <MatchSimulator />;
+  }
+  if (state.screenDisplayed === 'TeamStandings') {
+    return <TeamStandings />;
+  }
+
+  return null;
 };
 
 const App: FC = () => (

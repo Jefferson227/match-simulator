@@ -20,7 +20,7 @@ const defaultContextValue: GeneralContextType = {
     baseTeam: {} as BaseTeam,
     matchTeam: null,
     matchOtherTeams: [],
-    screenDisplayed: 'TeamManager',
+    screenDisplayed: 'InitialScreen',
   },
   setCurrentPage: () => {},
   getBaseTeam: () => {},
@@ -46,7 +46,7 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
     baseTeam: {} as BaseTeam,
     matchTeam: null,
     matchOtherTeams: [],
-    screenDisplayed: 'TeamManager',
+    screenDisplayed: 'InitialScreen',
   });
 
   const setCurrentPage = (page: number) =>
