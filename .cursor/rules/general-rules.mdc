@@ -1,7 +1,371 @@
----
-description: 
-globs: 
-alwaysApply: true
----
-- You're a very experienced Full Stack Developer using HTML, CSS, React, and TailwindCSS
-- You follow the TDD approach when writing components and functions, meaning that the tests should be written first
+# Match Simulator - Cursor Rules
+
+## Project Overview
+
+A React-based football match simulator with team management, player selection, and match simulation capabilities. Built with TypeScript, TailwindCSS, and follows TDD principles.
+
+## Tech Stack
+
+- **Frontend**: React 18+ with TypeScript
+- **Styling**: TailwindCSS with custom CSS
+- **Testing**: Jest + React Testing Library
+- **State Management**: React Context + useReducer
+- **Build Tool**: Vite
+- **Internationalization**: react-i18next
+- **Font**: Press Start 2P (retro gaming style)
+
+## Project Structure
+
+```
+match-simulator/
+├── src/
+│   ├── components/
+│   │   ├── TeamManager/
+│   │   │   ├── TeamManager.tsx
+│   │   │   └── TeamManager.test.tsx
+│   │   ├── TeamStandings/
+│   │   │   ├── TeamStandings.tsx
+│   │   │   └── TeamStandings.test.tsx
+│   │   ├── MatchSimulator/
+│   │   │   └── MatchSimulator.tsx
+│   │   ├── TeamComponent.tsx
+│   │   ├── Score.tsx
+│   │   ├── MatchDetails.tsx
+│   │   └── TeamPlayers.tsx
+│   ├── contexts/
+│   │   ├── GeneralContext.tsx
+│   │   └── MatchContext.tsx
+│   ├── reducers/
+│   │   ├── generalReducer.ts
+│   │   └── matchReducer.ts
+│   ├── services/
+│   │   ├── teamService.ts
+│   │   └── matchService.ts
+│   ├── types/
+│   │   └── index.ts
+│   ├── utils/
+│   │   └── utils.ts
+│   ├── locales/
+│   │   ├── en/
+│   │   │   └── en.json
+│   │   └── pt/
+│   │       └── pt-BR.json
+│   └── App.tsx
+├── public/
+└── package.json
+```
+
+## Core Architecture
+
+### State Management
+
+- **GeneralContext**: Manages global app state (current page, base team, match team, screen navigation)
+- **MatchContext**: Manages match-specific state (match progress, scores, events)
+- Uses `useReducer` pattern for predictable state updates
+
+### Key Types
+
+```typescript
+interface BaseTeam {
+  id: string;
+  name: string;
+  abbreviation: string;
+  colors: TeamColors;
+  players: Player[];
+  morale: number;
+  formation: string;
+  overallMood: number;
+  overallStrength: number;
+  attackStrength: number;
+  midfieldStrength: number;
+  defenseStrength: number;
+}
+
+interface Player {
+  id: string;
+  name: string;
+  position: 'GK' | 'DF' | 'MF' | 'FW';
+  strength: number;
+  mood: number;
+}
+
+interface MatchTeam extends BaseTeam {
+  starters: Player[];
+  substitutes: Player[];
+  score: number;
+  isHomeTeam: boolean;
+}
+```
+
+## Component Architecture
+
+### 1. TeamManager Component
+
+**Location**: `src/components/TeamManager/`
+**Purpose**: Team selection and formation management
+
+**Key Features**:
+
+- Player selection with tri-state system (Unselected → Selected → Substitute)
+- Formation selection (4-4-2, 4-3-3, 3-5-2, etc.)
+- Pagination (11 players per page)
+- GK restriction (only one GK can be selected)
+- 11-player requirement for match start
+- Best players auto-selection
+
+**UI Elements**:
+
+- Team name display
+- Player list with position, name, strength
+- Formation grid
+- Navigation buttons (`<`, `>`, `MORE INFO`)
+- `CHOOSE FORMATION` button
+- `START MATCH` button (appears when 11 players selected)
+
+**Testing**: Comprehensive test suite with 21 test cases covering all functionality
+
+### 2. TeamStandings Component
+
+**Location**: `src/components/TeamStandings/`
+**Purpose**: Display team standings table
+
+**Key Features**:
+
+- Paginated standings display (12 teams per page)
+- Team position, wins, draws, losses, points
+- Navigation between pages
+- Continue button to return to TeamManager
+
+**UI Elements**:
+
+- Standings table with headers (W, D, L, PTS)
+- Position numbers
+- Navigation buttons (`<`, `>`)
+- `CONTINUE` button
+
+**Testing**: 19 test cases covering rendering, pagination, navigation, and edge cases
+
+### 3. MatchSimulator Component
+
+**Location**: `src/components/MatchSimulator/`
+**Purpose**: Match simulation and display
+
+**Key Features**:
+
+- Real-time match simulation
+- Score updates
+- Match events
+- Team performance tracking
+
+## Testing Strategy
+
+### TDD Approach
+
+- Tests written before implementation
+- Comprehensive coverage of all component functionality
+- Mock context providers for isolated testing
+- Testing user interactions, state changes, and UI updates
+
+### Test Structure
+
+```typescript
+describe('ComponentName', () => {
+  describe('Rendering', () => {
+    // Basic rendering tests
+  });
+
+  describe('User Interactions', () => {
+    // Click events, form submissions
+  });
+
+  describe('State Management', () => {
+    // Context updates, state changes
+  });
+
+  describe('Edge Cases', () => {
+    // Error handling, boundary conditions
+  });
+});
+```
+
+### Mock Patterns
+
+```typescript
+const mockContextValue = {
+  state: {
+    baseTeam: mockTeam,
+    matchTeam: null,
+    currentPage: 1,
+    matchOtherTeams: [],
+    screenDisplayed: 'TeamManager',
+  },
+  setMatchTeam: jest.fn(),
+  getBaseTeam: jest.fn(),
+  setCurrentPage: jest.fn(),
+  setMatchOtherTeams: jest.fn(),
+  setScreenDisplayed: jest.fn(),
+};
+```
+
+## Styling Guidelines
+
+### Color Scheme
+
+- **Primary Green**: `#3d7a33` (background)
+- **Secondary Green**: `#397a33` (containers)
+- **Border Gray**: `#e2e2e2`
+- **Text White**: `#ffffff`
+- **Disabled Gray**: `#888888`
+
+### Typography
+
+- **Font Family**: Press Start 2P (retro gaming style)
+- **Sizes**: 15px, 16px, 18px, 20px
+- **Text Transform**: Uppercase for headers and buttons
+
+### Layout
+
+- **Container Width**: 350px (mobile-first)
+- **Button Heights**: 56px, 70px
+- **Border Width**: 4px
+- **Spacing**: Consistent padding and margins
+
+## Internationalization
+
+### Supported Languages
+
+- English (`en`)
+- Portuguese (`pt-BR`)
+
+### Translation Keys
+
+```json
+{
+  "teamManager": {
+    "chooseFormation": "CHOOSE FORMATION",
+    "selectedCount": "{{count}} SELECTED",
+    "bestPlayers": "BEST PLAYERS",
+    "goBack": "GO BACK",
+    "startMatch": "START MATCH",
+    "moreInfo": "MORE INFO"
+  }
+}
+```
+
+## Development Rules
+
+### 1. Component Organization
+
+- Each component gets its own folder
+- Include both `.tsx` and `.test.tsx` files
+- Use index exports for clean imports
+
+### 2. State Management
+
+- Use Context for global state
+- Keep component state local when possible
+- Use useReducer for complex state logic
+
+### 3. Testing Requirements
+
+- Write tests before implementing features
+- Test all user interactions
+- Mock external dependencies
+- Test edge cases and error states
+
+### 4. Styling
+
+- Use TailwindCSS classes
+- Follow the established color scheme
+- Maintain consistent spacing
+- Use the Press Start 2P font
+
+### 5. TypeScript
+
+- Define interfaces for all data structures
+- Use strict typing
+- Avoid `any` types unless absolutely necessary
+
+## Current Features
+
+### ✅ Implemented
+
+- Team management with player selection
+- Formation selection and validation
+- Team standings display
+- Pagination for both players and standings
+- Internationalization (EN/PT)
+- Comprehensive test coverage
+- Responsive design
+
+### 🔄 In Progress
+
+- Match simulation logic
+- Score tracking
+- Match events and statistics
+
+### 📋 Planned
+
+- Player statistics tracking
+- Season management
+- Multiple team support
+- Advanced match analytics
+
+## File Naming Conventions
+
+- Components: PascalCase (`TeamManager.tsx`)
+- Tests: Same name with `.test.tsx` extension
+- Utilities: camelCase (`utils.ts`)
+- Types: camelCase (`index.ts`)
+- Contexts: PascalCase with `Context` suffix
+- Reducers: camelCase with `Reducer` suffix
+
+## Import Patterns
+
+```typescript
+// Components
+import TeamManager from './components/TeamManager/TeamManager';
+
+// Contexts
+import { GeneralContext } from './contexts/GeneralContext';
+
+// Types
+import { BaseTeam, Player } from './types';
+
+// Utilities
+import utils from './utils/utils';
+```
+
+## Testing Commands
+
+```bash
+# Run all tests
+npm test
+
+# Run specific component tests
+npm test -- --testPathPattern=TeamManager.test.tsx
+
+# Run tests in watch mode
+npm test -- --watch
+
+# Run tests with coverage
+npm test -- --coverage
+```
+
+## Build and Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+This document should be updated whenever significant changes are made to the project architecture, components, or development patterns.
