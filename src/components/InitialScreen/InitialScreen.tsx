@@ -100,9 +100,12 @@ const InitialScreen: React.FC = () => {
       style={{ backgroundColor: '#3d7a33', color: 'white' }}
     >
       <div className="flex-grow flex items-center justify-center">
-        <div className="flex flex-wrap justify-center items-center gap-2 max-w-4xl">
+        <div
+          className="flex flex-wrap justify-center items-center gap-2 max-w-4xl"
+          data-testid="logo-container"
+        >
           {/* WINNING */}
-          <div className="flex items-end">
+          <div className="flex items-end" data-testid="winning-container">
             <PixelLetter letter="W" />
             <PixelLetter letter="I" />
             <PixelLetter letter="N" />
@@ -113,7 +116,7 @@ const InitialScreen: React.FC = () => {
           </div>
 
           {/* PIXELS */}
-          <div className="flex items-end">
+          <div className="flex items-end" data-testid="pixels-container">
             <PixelLetter letter="P" />
             <PixelLetter letter="I" />
             <PixelLetter letter="X" />
