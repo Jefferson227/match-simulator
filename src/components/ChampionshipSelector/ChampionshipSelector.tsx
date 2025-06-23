@@ -40,7 +40,7 @@ const ChampionshipSelector: React.FC = () => {
     >
       <h1 className="text-lg mb-8">SELECT CHAMPIONSHIP</h1>
 
-      <div className="flex flex-col gap-4 w-full h-[560px] max-w-md px-4">
+      <div className="flex flex-col gap-4 w-full h-[560px] max-w-md px-6">
         {selectedChampionships.map((champ) => (
           <button
             key={champ}
@@ -51,16 +51,16 @@ const ChampionshipSelector: React.FC = () => {
         ))}
       </div>
 
-      <div className="flex justify-between w-full max-w-md px-4 mt-8">
+      <div className="flex justify-between w-[390px] px-6 max-w-md mt-8">
         <button
           onClick={handlePrevPage}
-          className="border-4 border-white w-20 h-20 flex items-center justify-center text-3xl transition hover:bg-white hover:text-[#3d7a33]"
+          className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33]"
         >
           &lt;
         </button>
         <button
           onClick={handleNextPage}
-          className="border-4 border-white w-20 h-20 flex items-center justify-center text-3xl transition hover:bg-white hover:text-[#3d7a33]"
+          className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33]"
         >
           &gt;
         </button>
