@@ -48,7 +48,8 @@ const ChampionshipSelector: React.FC = () => {
         {selectedChampionships.map((champ) => (
           <button
             key={champ}
-            className="w-[342px] h-[80px] px-4 border-4 border-white text-lg uppercase transition hover:bg-white hover:text-[#3d7a33]"
+            disabled={champ !== 'BRASILEIRÃO SÉRIE A'}
+            className="w-[342px] h-[80px] px-4 border-4 border-white text-lg uppercase transition hover:bg-white hover:text-[#3d7a33] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {champ}
           </button>

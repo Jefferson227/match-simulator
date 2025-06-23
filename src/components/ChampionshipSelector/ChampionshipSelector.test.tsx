@@ -14,6 +14,18 @@ describe('ChampionshipSelector', () => {
     expect(screen.queryByText('LA LIGA')).not.toBeInTheDocument();
   });
 
+  test('only the "BRASILEIRÃO SÉRIE A" button is enabled', () => {
+    render(<ChampionshipSelector />);
+
+    const serieAButton = screen.getByText('BRASILEIRÃO SÉRIE A');
+    const serieBButton = screen.getByText('BRASILEIRÃO SÉRIE B');
+    const bundesligaButton = screen.getByText('BUNDESLIGA');
+
+    expect(serieAButton).not.toBeDisabled();
+    expect(serieBButton).toBeDisabled();
+    expect(bundesligaButton).toBeDisabled();
+  });
+
   test('previous button is disabled on the first page', () => {
     render(<ChampionshipSelector />);
     const prevButton = screen.getByText('<');
