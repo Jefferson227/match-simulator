@@ -44,7 +44,7 @@ const ChampionshipSelector: React.FC = () => {
       className="font-press-start flex flex-col items-center justify-center py-8"
       style={{ backgroundColor: '#3d7a33', color: 'white' }}
     >
-      <h1 className="text-lg mb-8">
+      <h1 className="text-lg mb-8 text-center">
         {t('championshipSelector.selectChampionship')}
       </h1>
 
