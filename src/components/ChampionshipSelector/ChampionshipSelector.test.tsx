@@ -14,6 +14,18 @@ describe('ChampionshipSelector', () => {
     expect(screen.queryByText('LA LIGA')).not.toBeInTheDocument();
   });
 
+  test('previous button is disabled on the first page', () => {
+    render(<ChampionshipSelector />);
+    const prevButton = screen.getByText('<');
+    expect(prevButton).toBeDisabled();
+  });
+
+  test('next button is enabled on the first page', () => {
+    render(<ChampionshipSelector />);
+    const nextButton = screen.getByText('>');
+    expect(nextButton).not.toBeDisabled();
+  });
+
   test('paginates to the next page of championships', () => {
     render(<ChampionshipSelector />);
 
@@ -23,6 +35,15 @@ describe('ChampionshipSelector', () => {
     expect(screen.queryByText('BRASILEIRÃO SÉRIE A')).not.toBeInTheDocument();
     expect(screen.getByText('LA LIGA')).toBeInTheDocument();
     expect(screen.getByText('LIGUE 1')).toBeInTheDocument();
+  });
+
+  test('next button is disabled on the last page', () => {
+    render(<ChampionshipSelector />);
+
+    const nextButton = screen.getByText('>');
+    fireEvent.click(nextButton); // Click to go to the last page
+
+    expect(nextButton).toBeDisabled();
   });
 
   test('paginates to the previous page of championships', () => {

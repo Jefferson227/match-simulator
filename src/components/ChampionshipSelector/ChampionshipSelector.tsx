@@ -20,11 +20,15 @@ const ChampionshipSelector: React.FC = () => {
   const totalPages = Math.ceil(championships.length / CHAMPIONSHIPS_PER_PAGE);
 
   const handleNextPage = () => {
-    setCurrentPage((prev) => (prev + 1) % totalPages);
+    if (currentPage < totalPages - 1) {
+      setCurrentPage((prev) => prev + 1);
+    }
   };
 
   const handlePrevPage = () => {
-    setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
+    if (currentPage > 0) {
+      setCurrentPage((prev) => prev - 1);
+    }
   };
 
   const startIndex = currentPage * CHAMPIONSHIPS_PER_PAGE;
@@ -54,13 +58,15 @@ const ChampionshipSelector: React.FC = () => {
       <div className="flex justify-between w-[390px] px-6 max-w-md mt-8">
         <button
           onClick={handlePrevPage}
-          className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33]"
+          disabled={currentPage === 0}
+          className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] disabled:opacity-50 disabled:cursor-not-allowed"
         >
           &lt;
         </button>
         <button
           onClick={handleNextPage}
-          className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33]"
+          disabled={currentPage >= totalPages - 1}
+          className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] disabled:opacity-50 disabled:cursor-not-allowed"
         >
           &gt;
         </button>
