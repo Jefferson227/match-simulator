@@ -25,5 +25,8 @@
   },
   "championshipSelector": {
     "selectChampionship": "SELECIONAR LIGA"
+  },
+  "teamSelector": {
+    "selectATeam": "SELECIONE UM TIME"
   }
 }

@@ -25,5 +25,8 @@
   },
   "championshipSelector": {
     "selectChampionship": "SELECT CHAMPIONSHIP"
+  },
+  "teamSelector": {
+    "selectATeam": "SELECT A TEAM"
   }
 }
