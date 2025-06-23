@@ -1,0 +1,72 @@
+import React, { useState } from 'react';
+
+const championships = [
+  'BRASILEIRÃO SÉRIE A',
+  'BRASILEIRÃO SÉRIE B',
+  'BRASILEIRÃO SÉRIE C',
+  'BRASILEIRÃO SÉRIE D',
+  'PREMIER LEAGUE',
+  'BUNDESLIGA',
+  'LA LIGA',
+  'SERIE A',
+  'LIGUE 1',
+];
+
+const CHAMPIONSHIPS_PER_PAGE = 6;
+
+const ChampionshipSelector: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const totalPages = Math.ceil(championships.length / CHAMPIONSHIPS_PER_PAGE);
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => (prev + 1) % totalPages);
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
+  };
+
+  const startIndex = currentPage * CHAMPIONSHIPS_PER_PAGE;
+  const selectedChampionships = championships.slice(
+    startIndex,
+    startIndex + CHAMPIONSHIPS_PER_PAGE
+  );
+
+  return (
+    <div
+      className="font-press-start flex flex-col items-center justify-center py-8"
+      style={{ backgroundColor: '#3d7a33', color: 'white' }}
+    >
+      <h1 className="text-lg mb-8">SELECT CHAMPIONSHIP</h1>
+
+      <div className="flex flex-col gap-4 w-full h-[560px] max-w-md px-4">
+        {selectedChampionships.map((champ) => (
+          <button
+            key={champ}
+            className="w-[342px] h-[80px] px-4 border-4 border-white text-lg uppercase transition hover:bg-white hover:text-[#3d7a33]"
+          >
+            {champ}
+          </button>
+        ))}
+      </div>
+
+      <div className="flex justify-between w-full max-w-md px-4 mt-8">
+        <button
+          onClick={handlePrevPage}
+          className="border-4 border-white w-20 h-20 flex items-center justify-center text-3xl transition hover:bg-white hover:text-[#3d7a33]"
+        >
+          &lt;
+        </button>
+        <button
+          onClick={handleNextPage}
+          className="border-4 border-white w-20 h-20 flex items-center justify-center text-3xl transition hover:bg-white hover:text-[#3d7a33]"
+        >
+          &gt;
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default ChampionshipSelector;
