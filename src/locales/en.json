@@ -22,5 +22,8 @@
     "bestPlayers": "BEST PLAYERS",
     "selectedCount": "{{count}} SELECTED",
     "moreInfo": "MORE INFO"
+  },
+  "championshipSelector": {
+    "selectChampionship": "SELECT CHAMPIONSHIP"
   }
 }

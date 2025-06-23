@@ -3,6 +3,17 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ChampionshipSelector from './ChampionshipSelector';
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      if (key === 'championshipSelector.selectChampionship') {
+        return 'SELECT CHAMPIONSHIP';
+      }
+      return key;
+    },
+  }),
+}));
+
 describe('ChampionshipSelector', () => {
   test('renders the component and initial championships', () => {
     render(<ChampionshipSelector />);

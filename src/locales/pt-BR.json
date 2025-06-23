@@ -22,5 +22,8 @@
     "bestPlayers": "MELHORES JOGADORES",
     "selectedCount": "{{count}} SELECIONADO(S)",
     "moreInfo": "MAIS INFO."
+  },
+  "championshipSelector": {
+    "selectChampionship": "SELECIONE O CAMPEONATO"
   }
 }

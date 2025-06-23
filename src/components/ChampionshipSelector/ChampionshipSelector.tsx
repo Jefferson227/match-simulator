@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const championships = [
   'BRASILEIRÃO SÉRIE A',
@@ -15,6 +16,7 @@ const championships = [
 const CHAMPIONSHIPS_PER_PAGE = 6;
 
 const ChampionshipSelector: React.FC = () => {
+  const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(0);
 
   const totalPages = Math.ceil(championships.length / CHAMPIONSHIPS_PER_PAGE);
@@ -42,7 +44,9 @@ const ChampionshipSelector: React.FC = () => {
       className="font-press-start flex flex-col items-center justify-center py-8"
       style={{ backgroundColor: '#3d7a33', color: 'white' }}
     >
-      <h1 className="text-lg mb-8">SELECT CHAMPIONSHIP</h1>
+      <h1 className="text-lg mb-8">
+        {t('championshipSelector.selectChampionship')}
+      </h1>
 
       <div className="flex flex-col gap-4 w-full h-[560px] max-w-md px-6">
         {selectedChampionships.map((champ) => (
