@@ -526,23 +526,25 @@ const TeamManager: React.FC = () => {
             </button>
           </div>
           {selectedCount === 11 && (
-            <button
-              className="w-[350px] border-4 py-4 text-[16px] mt-2"
-              style={{
-                borderColor: '#e2e2e2',
-                backgroundColor: '#3c7a33',
-                color: '#e2e2e2',
-              }}
-              onClick={() => {
-                const matchTeam = createMatchTeam();
-                if (matchTeam) {
-                  setMatchTeam(matchTeam);
-                  setScreenDisplayed('MatchSimulator');
-                }
-              }}
-            >
-              {t('teamManager.startMatch')}
-            </button>
+            <div className="w-[350px] mx-auto mt-2">
+              <button
+                className="w-full border-4 py-4 text-[16px]"
+                style={{
+                  borderColor: '#e2e2e2',
+                  backgroundColor: '#3c7a33',
+                  color: '#e2e2e2',
+                }}
+                onClick={() => {
+                  const matchTeam = createMatchTeam();
+                  if (matchTeam) {
+                    setMatchTeam(matchTeam);
+                    setScreenDisplayed('MatchSimulator');
+                  }
+                }}
+              >
+                {t('teamManager.startMatch')}
+              </button>
+            </div>
           )}
         </>
       )}
