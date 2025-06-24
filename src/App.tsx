@@ -6,6 +6,7 @@ import { GeneralContext } from './contexts/GeneralContext';
 import { FC, useContext } from 'react';
 import MatchSimulator from './components/MatchSimulator/MatchSimulator';
 import TeamStandings from './components/TeamStandings/TeamStandings';
+import TeamSelector from './components/TeamSelector/TeamSelector';
 import InitialScreen from './components/InitialScreen/InitialScreen';
 
 const AppContent: FC = () => {
@@ -26,6 +27,9 @@ const AppContent: FC = () => {
   }
   if (state.screenDisplayed === 'TeamStandings') {
     return <TeamStandings />;
+  }
+  if (state.screenDisplayed === 'TeamSelector') {
+    return <TeamSelector />;
   }
 
   return null;
