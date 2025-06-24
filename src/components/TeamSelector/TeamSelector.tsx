@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import { GeneralContext } from '../../contexts/GeneralContext';
 
 const teams = [
   {
@@ -53,6 +54,7 @@ const TEAMS_PER_PAGE = 9;
 
 const TeamSelector: React.FC = () => {
   const { t } = useTranslation();
+  const { setScreenDisplayed } = useContext(GeneralContext);
   const [currentPage, setCurrentPage] = useState(0);
 
   const totalPages = Math.ceil(teams.length / TEAMS_PER_PAGE);
@@ -69,6 +71,10 @@ const TeamSelector: React.FC = () => {
     }
   };
 
+  const handleTeamClick = (teamName: string) => {
+    setScreenDisplayed('TeamManager');
+  };
+
   const startIndex = currentPage * TEAMS_PER_PAGE;
   const selectedTeams = teams.slice(startIndex, startIndex + TEAMS_PER_PAGE);
 
@@ -83,6 +89,7 @@ const TeamSelector: React.FC = () => {
         {selectedTeams.map((team) => (
           <button
             key={team.name}
+            onClick={() => handleTeamClick(team.name)}
             style={{
               backgroundColor: team.colors.bg,
               borderColor: team.colors.border,
