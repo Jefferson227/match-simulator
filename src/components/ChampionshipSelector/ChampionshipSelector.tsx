@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import { GeneralContext } from '../../contexts/GeneralContext';
 
 const championships = [
   'BRASILEIRÃO SÉRIE A',
@@ -17,6 +18,7 @@ const CHAMPIONSHIPS_PER_PAGE = 6;
 
 const ChampionshipSelector: React.FC = () => {
   const { t } = useTranslation();
+  const { setScreenDisplayed } = useContext(GeneralContext);
   const [currentPage, setCurrentPage] = useState(0);
 
   const totalPages = Math.ceil(championships.length / CHAMPIONSHIPS_PER_PAGE);
@@ -30,6 +32,12 @@ const ChampionshipSelector: React.FC = () => {
   const handlePrevPage = () => {
     if (currentPage > 0) {
       setCurrentPage((prev) => prev - 1);
+    }
+  };
+
+  const handleChampionshipClick = (championship: string) => {
+    if (championship === 'BRASILEIRÃO SÉRIE A') {
+      setScreenDisplayed('TeamSelector');
     }
   };
 
@@ -52,6 +60,7 @@ const ChampionshipSelector: React.FC = () => {
         {selectedChampionships.map((champ) => (
           <button
             key={champ}
+            onClick={() => handleChampionshipClick(champ)}
             disabled={champ !== 'BRASILEIRÃO SÉRIE A'}
             className="w-[342px] h-[80px] px-4 border-4 border-white text-lg uppercase transition hover:bg-white hover:text-[#3d7a33] disabled:opacity-50 disabled:cursor-not-allowed"
           >
