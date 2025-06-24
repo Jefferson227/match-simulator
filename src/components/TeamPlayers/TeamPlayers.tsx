@@ -45,7 +45,7 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
         }}
       >
         <div
-          className="max-h-[80px] border-b-3 text-[20px] py-[10px] px-[22px] uppercase"
+          className="max-h-[80px] border-b-3 text-[20px] py-[10px] px-[22px] text-center uppercase"
           style={{
             color: teamSquadView.team.colors.name,
             borderColor: teamSquadView.team.colors.outline,
@@ -54,7 +54,7 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
           {teamSquadView.team.name}
         </div>
         <div
-          className="max-h-[60px] border-b-3 text-[16px] py-[10px] px-[22px] text-[#e2e2e2]"
+          className="max-h-[60px] border-b-3 text-[16px] py-[10px] px-[22px] text-[#e2e2e2] text-center"
           style={{
             color: teamSquadView.team.colors.name,
             borderColor: teamSquadView.team.colors.outline,
@@ -135,17 +135,19 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
             showSubstitutes ? 'hidden' : 'block'
           }`}
         >
-          <button
-            className="w-[318px] h-[58px] text-[16px] border-0 outline outline-4"
-            style={{
-              backgroundColor: teamSquadView.team.colors.background,
-              outlineColor: teamSquadView.team.colors.outline,
-              color: teamSquadView.team.colors.name,
-            }}
-            onClick={() => setShowSubstitutes(true)}
-          >
-            {t('teamPlayers.seeSubstitutes')}
-          </button>
+          <div className="w-[350px] mx-auto">
+            <button
+              className="w-[322px] h-[58px] text-[16px] border-0 outline outline-4 mx-auto block"
+              style={{
+                backgroundColor: teamSquadView.team.colors.background,
+                outlineColor: teamSquadView.team.colors.outline,
+                color: teamSquadView.team.colors.name,
+              }}
+              onClick={() => setShowSubstitutes(true)}
+            >
+              {t('teamPlayers.seeSubstitutes')}
+            </button>
+          </div>
         </div>
 
         <div
@@ -155,45 +157,47 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
               : 'hidden'
           }
         >
-          <button
-            className="w-[318px] h-[58px] text-[16px] border-0 outline outline-4"
-            style={{
-              backgroundColor: teamSquadView.team.colors.background,
-              outlineColor: teamSquadView.team.colors.outline,
-              color: teamSquadView.team.colors.name,
-            }}
-            onClick={() => {
-              if (selectedPlayer && selectedSubstitute) {
-                confirmSubstitution({
-                  matchId: teamSquadView.matchId,
-                  team: teamSquadView.team,
-                  selectedPlayer,
-                  selectedSubstitute,
-                });
-                setSelectedPlayer(null);
-                setSelectedSubstitute(null);
-                setShowSubstitutes(false);
-              }
-            }}
-          >
-            {t('teamPlayers.confirmSubstitution')}
-          </button>
+          <div className="w-[350px] mx-auto">
+            <button
+              className="w-[322px] h-[58px] text-[16px] border-0 outline outline-4 mx-auto block"
+              style={{
+                backgroundColor: teamSquadView.team.colors.background,
+                outlineColor: teamSquadView.team.colors.outline,
+                color: teamSquadView.team.colors.name,
+              }}
+              onClick={() => {
+                if (selectedPlayer && selectedSubstitute) {
+                  confirmSubstitution({
+                    matchId: teamSquadView.matchId,
+                    team: teamSquadView.team,
+                    selectedPlayer,
+                    selectedSubstitute,
+                  });
+                  setSelectedPlayer(null);
+                  setSelectedSubstitute(null);
+                  setShowSubstitutes(false);
+                }
+              }}
+            >
+              {t('teamPlayers.confirmSubstitution')}
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="mt-[18px] ">
+      <div className="w-[350px] mx-auto mt-[4px] flex flex-wrap justify-between gap-0">
         <button
           className={`${
             showSubstitutes ? 'inline-block' : 'hidden'
-          } w-[159px] h-[58px] outline outline-4 outline-[#e2e2e2] border-0 text-[#e2e2e2] bg-[#3d7a33] text-[16px] mt-4 mr-[24px]`}
+          } w-[159px] h-[58px] outline outline-4 outline-[#e2e2e2] border-0 text-[#e2e2e2] bg-[#3d7a33] text-[16px] mt-4`}
           onClick={() => setShowSubstitutes(false)}
         >
           {t('teamPlayers.backToMainTeam')}
         </button>
         <button
           className={`${
-            showSubstitutes ? 'w-[159px]' : 'w-[318px]'
-          } h-[58px] outline outline-4 outline-[#e2e2e2] border-0 inline-block text-[#e2e2e2] bg-[#3d7a33] text-[16px] mt-4`}
+            showSubstitutes ? 'w-[159px]' : 'w-full'
+          } h-[58px] outline outline-4 outline-[#e2e2e2] border-0 block mx-auto text-[#e2e2e2] bg-[#3d7a33] text-[16px] mt-4`}
           onClick={() => setTeamSquadView(null)}
         >
           {t('teamPlayers.backToMatch')}
