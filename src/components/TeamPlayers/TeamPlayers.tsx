@@ -185,7 +185,7 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
         </div>
       </div>
 
-      <div className="w-[350px] mx-auto mt-[4px] flex flex-wrap justify-between gap-0">
+      <div className="w-[350px] mx-auto mt-[4px] flex justify-between gap-0">
         <button
           className={`${
             showSubstitutes ? 'inline-block' : 'hidden'
@@ -197,7 +197,7 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
         <button
           className={`${
             showSubstitutes ? 'w-[159px]' : 'w-full'
-          } h-[58px] outline outline-4 outline-[#e2e2e2] border-0 block mx-auto text-[#e2e2e2] bg-[#3d7a33] text-[16px] mt-4`}
+          } h-[58px] outline outline-4 outline-[#e2e2e2] border-0 text-[#e2e2e2] bg-[#3d7a33] text-[16px] mt-4`}
           onClick={() => setTeamSquadView(null)}
         >
           {t('teamPlayers.backToMatch')}
