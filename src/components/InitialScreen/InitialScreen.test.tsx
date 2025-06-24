@@ -67,13 +67,13 @@ describe('InitialScreen', () => {
     expect(pixelsContainer).toBeInTheDocument();
   });
 
-  test('calls setScreenDisplayed with "TeamManager" when New Game button is clicked', () => {
+  test('calls setScreenDisplayed with "ChampionshipSelector" when New Game button is clicked', () => {
     renderWithContext(<InitialScreen />);
 
     const newGameButton = screen.getByRole('button', { name: /new game/i });
     fireEvent.click(newGameButton);
 
-    expect(mockSetScreenDisplayed).toHaveBeenCalledWith('TeamManager');
+    expect(mockSetScreenDisplayed).toHaveBeenCalledWith('ChampionshipSelector');
     expect(mockSetScreenDisplayed).toHaveBeenCalledTimes(1);
   });
 
