@@ -5,7 +5,7 @@ const InitialScreen: React.FC = () => {
   const { setScreenDisplayed } = useContext(GeneralContext);
 
   const handleNewGame = () => {
-    setScreenDisplayed('TeamManager');
+    setScreenDisplayed('ChampionshipSelector');
   };
 
   // Pixel art data for "WINNING PIXELS"
@@ -134,7 +134,10 @@ const InitialScreen: React.FC = () => {
         >
           New Game
         </button>
-        <button className="w-full max-w-xs border-4 border-white py-4 text-lg uppercase transition hover:bg-white hover:text-[#3d7a33]">
+        <button
+          className="w-full max-w-xs border-4 border-white py-4 text-lg uppercase transition hover:bg-white hover:text-[#3d7a33] opacity-50"
+          disabled
+        >
           Load Game
         </button>
       </div>
