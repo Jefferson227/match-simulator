@@ -42,10 +42,6 @@ function transformToBaseTeam(jsonData: any): BaseTeam {
     morale: 100, // Default morale
     formation: '4-4-2', // Default formation
     overallMood: 100, // Default overall mood
-    overallStrength: 0, // Will be calculated
-    attackStrength: 0, // Will be calculated
-    midfieldStrength: 0, // Will be calculated
-    defenseStrength: 0, // Will be calculated
   };
 }
 
@@ -143,9 +139,6 @@ function transformToMatchTeam(baseTeam: BaseTeam): MatchTeam {
     score: 0,
     morale: 100,
     overallMood: 100,
-    overallStrength: 0,
-    attackStrength: 0,
-    midfieldStrength: 0,
   };
 }
 

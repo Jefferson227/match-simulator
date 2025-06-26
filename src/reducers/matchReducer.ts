@@ -23,22 +23,6 @@ export const matchReducer = (
           score: 0,
           morale: 50,
           overallMood: 0,
-          overallStrength: getSum(homeTeam.starters.map((p) => p.strength)),
-          attackStrength: getSum(
-            homeTeam.starters
-              .filter((p) => p.position === 'FW')
-              .map((p) => p.strength)
-          ),
-          midfieldStrength: getSum(
-            homeTeam.starters
-              .filter((p) => p.position === 'MF')
-              .map((p) => p.strength)
-          ),
-          defenseStrength: getSum(
-            homeTeam.starters
-              .filter((p) => p.position === 'DF' || p.position === 'GK')
-              .map((p) => p.strength)
-          ),
         };
         updatedHomeTeam.overallMood = getAverage(
           updatedHomeTeam.starters.map((p) => p.mood)
@@ -51,22 +35,6 @@ export const matchReducer = (
           score: 0,
           morale: 50,
           overallMood: 0,
-          overallStrength: getSum(visitorTeam.starters.map((p) => p.strength)),
-          attackStrength: getSum(
-            visitorTeam.starters
-              .filter((p) => p.position === 'FW')
-              .map((p) => p.strength)
-          ),
-          midfieldStrength: getSum(
-            visitorTeam.starters
-              .filter((p) => p.position === 'MF')
-              .map((p) => p.strength)
-          ),
-          defenseStrength: getSum(
-            visitorTeam.starters
-              .filter((p) => p.position === 'DF' || p.position === 'GK')
-              .map((p) => p.strength)
-          ),
         };
         updatedVisitorTeam.overallMood = getAverage(
           updatedVisitorTeam.starters.map((p) => p.mood)

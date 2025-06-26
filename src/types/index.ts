@@ -29,10 +29,6 @@ export interface Team {
   morale: number;
   formation: string;
   overallMood: number;
-  overallStrength: number;
-  attackStrength: number;
-  midfieldStrength: number;
-  defenseStrength: number;
 }
 
 export interface BaseTeam {
@@ -44,10 +40,6 @@ export interface BaseTeam {
   morale: number;
   formation: string;
   overallMood: number;
-  overallStrength: number;
-  attackStrength: number;
-  midfieldStrength: number;
-  defenseStrength: number;
 }
 
 export interface MatchTeam {
@@ -62,10 +54,6 @@ export interface MatchTeam {
   score: number;
   morale: number;
   overallMood: number;
-  overallStrength: number;
-  attackStrength: number;
-  midfieldStrength: number;
-  defenseStrength: number;
 }
 
 export interface Scorer {
