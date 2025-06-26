@@ -1,18 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GeneralContext } from '../../contexts/GeneralContext';
-
-const championships = [
-  'BRASILEIRÃO SÉRIE A',
-  'BRASILEIRÃO SÉRIE B',
-  'BRASILEIRÃO SÉRIE C',
-  'BRASILEIRÃO SÉRIE D',
-  'PREMIER LEAGUE',
-  'BUNDESLIGA',
-  'LA LIGA',
-  'SERIE A',
-  'LIGUE 1',
-];
+import generalService from '../../services/generalService';
 
 const CHAMPIONSHIPS_PER_PAGE = 6;
 
@@ -21,6 +10,7 @@ const ChampionshipSelector: React.FC = () => {
   const { setScreenDisplayed } = useContext(GeneralContext);
   const [currentPage, setCurrentPage] = useState(0);
 
+  const championships = generalService.getAllChampionships();
   const totalPages = Math.ceil(championships.length / CHAMPIONSHIPS_PER_PAGE);
 
   const handleNextPage = () => {
@@ -35,8 +25,11 @@ const ChampionshipSelector: React.FC = () => {
     }
   };
 
-  const handleChampionshipClick = (championship: string) => {
-    if (championship === 'BRASILEIRÃO SÉRIE A') {
+  const handleChampionshipClick = (championship: {
+    id: string;
+    name: string;
+  }) => {
+    if (championship.name === 'BRASILEIRÃO SÉRIE A') {
       setScreenDisplayed('TeamSelector');
     }
   };
@@ -59,12 +52,12 @@ const ChampionshipSelector: React.FC = () => {
       <div className="flex flex-col gap-4 w-full h-[560px] max-w-md px-6">
         {selectedChampionships.map((champ) => (
           <button
-            key={champ}
+            key={champ.id}
             onClick={() => handleChampionshipClick(champ)}
-            disabled={champ !== 'BRASILEIRÃO SÉRIE A'}
+            disabled={champ.name !== 'BRASILEIRÃO SÉRIE A'}
             className="w-[342px] h-[80px] px-4 border-4 border-white text-lg uppercase transition hover:bg-white hover:text-[#3d7a33] disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {champ}
+            {champ.name}
           </button>
         ))}
       </div>
