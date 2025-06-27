@@ -3,47 +3,61 @@
     {
       "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
       "name": "BRASILEIRÃO SÉRIE A",
-      "fileName": "brasileirao-serie-a"
+      "internalName": "brasileirao-serie-a",
+      "numberOfTeams": 20,
+      "promotionTeams": 4,
+      "relegationTeams": 4,
+      "relegationChampionship": "brasileirao-serie-b"
     },
     {
       "id": "b2c3d4e5-f6g7-8901-bcde-f23456789012",
       "name": "BRASILEIRÃO SÉRIE B",
-      "fileName": "brasileirao-serie-b"
+      "internalName": "brasileirao-serie-b",
+      "numberOfTeams": 20,
+      "promotionTeams": 4,
+      "relegationTeams": 4,
+      "promotionChampionship": "brasileirao-serie-a",
+      "relegationChampionship": "brasileirao-serie-c"
     },
     {
       "id": "c3d4e5f6-g7h8-9012-cdef-345678901234",
       "name": "BRASILEIRÃO SÉRIE C",
-      "fileName": "brasileirao-serie-c"
+      "internalName": "brasileirao-serie-c",
+      "numberOfTeams": 20,
+      "promotionTeams": 4,
+      "relegationTeams": 4,
+      "promotionChampionship": "brasileirao-serie-b",
+      "relegationChampionship": "brasileirao-serie-d"
     },
     {
       "id": "d4e5f6g7-h8i9-0123-defg-456789012345",
       "name": "BRASILEIRÃO SÉRIE D",
-      "fileName": "brasileirao-serie-d"
+      "internalName": "brasileirao-serie-d"
     },
     {
       "id": "e5f6g7h8-i9j0-1234-efgh-567890123456",
       "name": "PREMIER LEAGUE",
-      "fileName": "premier-league"
+      "internalName": "premier-league"
     },
     {
       "id": "f6g7h8i9-j0k1-2345-fghi-678901234567",
       "name": "BUNDESLIGA",
-      "fileName": "bundesliga"
+      "internalName": "bundesliga"
     },
     {
       "id": "g7h8i9j0-k1l2-3456-ghij-789012345678",
       "name": "LA LIGA",
-      "fileName": "la-liga"
+      "internalName": "la-liga"
     },
     {
       "id": "h8i9j0k1-l2m3-4567-hijk-890123456789",
       "name": "SERIE A",
-      "fileName": "serie-a"
+      "internalName": "serie-a"
     },
     {
       "id": "i9j0k1l2-m3n4-5678-ijkl-901234567890",
       "name": "LIGUE 1",
-      "fileName": "ligue-1"
+      "internalName": "ligue-1"
     }
   ]
 }
