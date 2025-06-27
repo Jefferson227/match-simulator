@@ -1,0 +1,33 @@
+{
+  "name": "Sport Club Corinthians Paulista",
+  "shortName": "Corinthians",
+  "abbreviation": "COR",
+  "colors": {
+    "outline": "#242021",
+    "background": "#FAFAFC",
+    "name": "#242021"
+  },
+  "initialOverallStrength": 80,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Cássio", "strength": 0 },
+    { "position": "GK", "name": "Carlos Miguel", "strength": 0 },
+    { "position": "DF", "name": "Fagner", "strength": 0 },
+    { "position": "DF", "name": "Fábio Santos", "strength": 0 },
+    { "position": "DF", "name": "Gil", "strength": 0 },
+    { "position": "DF", "name": "Bruno Méndez", "strength": 0 },
+    { "position": "DF", "name": "Murillo", "strength": 0 },
+    { "position": "DF", "name": "Raul Gustavo", "strength": 0 },
+    { "position": "MF", "name": "Maycon", "strength": 0 },
+    { "position": "MF", "name": "Fausto Vera", "strength": 0 },
+    { "position": "MF", "name": "Renato Augusto", "strength": 0 },
+    { "position": "MF", "name": "Paulinho", "strength": 0 },
+    { "position": "MF", "name": "Giuliano", "strength": 0 },
+    { "position": "FW", "name": "Yuri Alberto", "strength": 0 },
+    { "position": "FW", "name": "Roger Guedes", "strength": 0 },
+    { "position": "FW", "name": "Adson", "strength": 0 },
+    { "position": "FW", "name": "Róger Guedes", "strength": 0 }
+  ]
+}

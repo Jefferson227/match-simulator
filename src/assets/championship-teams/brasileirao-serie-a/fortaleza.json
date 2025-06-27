@@ -1,0 +1,33 @@
+{
+  "name": "Fortaleza Esporte Clube",
+  "shortName": "Fortaleza",
+  "abbreviation": "FOR",
+  "colors": {
+    "outline": "#f42b08",
+    "background": "#0161aa",
+    "name": "#FAFAFC"
+  },
+  "initialOverallStrength": 70,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "João Ricardo", "strength": 0 },
+    { "position": "GK", "name": "Fernando Miguel", "strength": 0 },
+    { "position": "DF", "name": "Titi", "strength": 0 },
+    { "position": "DF", "name": "Briseño", "strength": 0 },
+    { "position": "DF", "name": "Bruno Pacheco", "strength": 0 },
+    { "position": "DF", "name": "Dodô", "strength": 0 },
+    { "position": "DF", "name": "Brayan Ceballos", "strength": 0 },
+    { "position": "DF", "name": "Lucas Sasha", "strength": 0 },
+    { "position": "MF", "name": "Caio Alexandre", "strength": 0 },
+    { "position": "MF", "name": "Hércules", "strength": 0 },
+    { "position": "MF", "name": "Calebe", "strength": 0 },
+    { "position": "MF", "name": "Romarinho", "strength": 0 },
+    { "position": "MF", "name": "Moisés", "strength": 0 },
+    { "position": "FW", "name": "Thiago Galhardo", "strength": 0 },
+    { "position": "FW", "name": "Silvio Romero", "strength": 0 },
+    { "position": "FW", "name": "Lucas Lima", "strength": 0 },
+    { "position": "FW", "name": "Marinho", "strength": 0 }
+  ]
+}

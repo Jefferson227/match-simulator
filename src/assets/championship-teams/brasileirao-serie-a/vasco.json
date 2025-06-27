@@ -1,0 +1,33 @@
+{
+  "name": "Vasco da Gama",
+  "shortName": "Vasco",
+  "abbreviation": "VAS",
+  "colors": {
+    "outline": "#242021",
+    "background": "#FAFAFC",
+    "name": "#242021"
+  },
+  "initialOverallStrength": 74,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Léo Jardim", "strength": 0 },
+    { "position": "GK", "name": "Halls", "strength": 0 },
+    { "position": "DF", "name": "Léo", "strength": 0 },
+    { "position": "DF", "name": "Capasso", "strength": 0 },
+    { "position": "DF", "name": "Pumita Rodríguez", "strength": 0 },
+    { "position": "DF", "name": "Lucas Piton", "strength": 0 },
+    { "position": "DF", "name": "Robson", "strength": 0 },
+    { "position": "DF", "name": "Miranda", "strength": 0 },
+    { "position": "MF", "name": "Zé Gabriel", "strength": 0 },
+    { "position": "MF", "name": "Andrey Santos", "strength": 0 },
+    { "position": "MF", "name": "Paulinho", "strength": 0 },
+    { "position": "MF", "name": "Marlon Gomes", "strength": 0 },
+    { "position": "MF", "name": "Galdames", "strength": 0 },
+    { "position": "FW", "name": "Pedro Raul", "strength": 0 },
+    { "position": "FW", "name": "Alex Teixeira", "strength": 0 },
+    { "position": "FW", "name": "Figueiredo", "strength": 0 },
+    { "position": "FW", "name": "Erick Marcus", "strength": 0 }
+  ]
+}

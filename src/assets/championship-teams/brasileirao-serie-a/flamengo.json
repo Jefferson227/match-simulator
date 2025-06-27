@@ -1,0 +1,116 @@
+{
+  "name": "Clube de Regatas do Flamengo",
+  "shortName": "Flamengo",
+  "abbreviation": "FLA",
+  "colors": {
+    "outline": "#EC2125",
+    "background": "#030101",
+    "name": "#FAFAFC"
+  },
+  "initialOverallStrength": 100,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Rossi",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Santos",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Fabricio Bruno",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Léo Pereira",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "David Luiz",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Varela",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ayrton Lucas",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Wesley",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Allan",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Thiago Maia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gerson",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Arrascaeta",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "De la Cruz",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Victor Hugo",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Pedro",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Gabigol",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Bruno Henrique",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Luiz Araújo",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Everton Cebolinha",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Matheus Gonçalves",
+      "strength": 0
+    }
+  ]
+}

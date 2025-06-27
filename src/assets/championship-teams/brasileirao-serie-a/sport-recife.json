@@ -1,0 +1,33 @@
+{
+  "name": "Sport Club do Recife",
+  "shortName": "Recife",
+  "abbreviation": "REC",
+  "colors": {
+    "outline": "#b6881f",
+    "background": "#242021",
+    "name": "#a82123"
+  },
+  "initialOverallStrength": 55,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Mailson", "strength": 0 },
+    { "position": "GK", "name": "Renan", "strength": 0 },
+    { "position": "DF", "name": "Rafael Thyere", "strength": 0 },
+    { "position": "DF", "name": "Sabino", "strength": 0 },
+    { "position": "DF", "name": "Lucas Siqueira", "strength": 0 },
+    { "position": "DF", "name": "Lucas Mendes", "strength": 0 },
+    { "position": "DF", "name": "Lucas Ramon", "strength": 0 },
+    { "position": "DF", "name": "Lucas Beraldo", "strength": 0 },
+    { "position": "MF", "name": "Lucas Evangelista", "strength": 0 },
+    { "position": "MF", "name": "Lucas Silva", "strength": 0 },
+    { "position": "MF", "name": "Lucas Lima", "strength": 0 },
+    { "position": "MF", "name": "Lucas Moura", "strength": 0 },
+    { "position": "MF", "name": "Lucas Paquetá", "strength": 0 },
+    { "position": "FW", "name": "Lucas Braga", "strength": 0 },
+    { "position": "FW", "name": "Lucas Perri", "strength": 0 },
+    { "position": "FW", "name": "Lucas Santos", "strength": 0 },
+    { "position": "FW", "name": "Lucas Oliveira", "strength": 0 }
+  ]
+}

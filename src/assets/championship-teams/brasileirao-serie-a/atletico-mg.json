@@ -1,0 +1,116 @@
+{
+  "name": "Clube Atlético Mineiro",
+  "shortName": "Atlético-MG",
+  "abbreviation": "ATM",
+  "colors": {
+    "outline": "#FAFAFC",
+    "background": "#242021",
+    "name": "#FAFAFC"
+  },
+  "initialOverallStrength": 86,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Everson",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Matheus Mendes",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Rever",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Jemerson",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bruno Fuchs",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Guga",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Rubens",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Dodô",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Otávio",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Allan",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gustavo Scarpa",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Hulk",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Pavón",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Igor Gomes",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Paulinho",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Eduardo Vargas",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Ademir",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Cadu",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Alisson",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Matheus Cunha",
+      "strength": 0
+    }
+  ]
+}

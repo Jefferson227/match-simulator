@@ -1,0 +1,116 @@
+{
+  "name": "Fluminense Football Club",
+  "shortName": "Fluminense",
+  "abbreviation": "FLU",
+  "colors": {
+    "outline": "#962B3C",
+    "background": "#06714D",
+    "name": "#FAFAFC"
+  },
+  "initialOverallStrength": 88,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Fábio",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Vitor Eudes",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Nino",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Felipe Melo",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Samuel Xavier",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Marcelo",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Diogo Barbosa",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Guga",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "André",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Martinelli",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Ganso",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Arias",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Lima",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Keno",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Germán Cano",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "John Kennedy",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Lelê",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Isaac",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Arthur",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Matheus Martins",
+      "strength": 0
+    }
+  ]
+}

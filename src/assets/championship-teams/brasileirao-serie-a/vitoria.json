@@ -1,0 +1,33 @@
+{
+  "name": "Esporte Clube Vitória",
+  "shortName": "Vitoria",
+  "abbreviation": "VIT",
+  "colors": {
+    "outline": "#a82123",
+    "background": "#242021",
+    "name": "#a82123"
+  },
+  "initialOverallStrength": 72,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Lucas Arcanjo", "strength": 0 },
+    { "position": "GK", "name": "João Gabriel", "strength": 0 },
+    { "position": "DF", "name": "Zé Ivaldo", "strength": 0 },
+    { "position": "DF", "name": "Wagner Leonardo", "strength": 0 },
+    { "position": "DF", "name": "Lucas Esteves", "strength": 0 },
+    { "position": "DF", "name": "Matheusinho", "strength": 0 },
+    { "position": "DF", "name": "Lucas Fonseca", "strength": 0 },
+    { "position": "DF", "name": "João Victor", "strength": 0 },
+    { "position": "MF", "name": "Willian Oliveira", "strength": 0 },
+    { "position": "MF", "name": "Rodrigo Andrade", "strength": 0 },
+    { "position": "MF", "name": "Matheus Trindade", "strength": 0 },
+    { "position": "MF", "name": "Osvaldo", "strength": 0 },
+    { "position": "MF", "name": "Iago Maidana", "strength": 0 },
+    { "position": "FW", "name": "Alê", "strength": 0 },
+    { "position": "FW", "name": "Matheusinho", "strength": 0 },
+    { "position": "FW", "name": "Everaldo", "strength": 0 },
+    { "position": "FW", "name": "Gabriel", "strength": 0 }
+  ]
+}

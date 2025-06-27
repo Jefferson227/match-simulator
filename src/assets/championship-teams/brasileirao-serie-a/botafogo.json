@@ -1,0 +1,116 @@
+{
+  "name": "Botafogo de Futebol e Regatas",
+  "shortName": "Botafogo",
+  "abbreviation": "BOT",
+  "colors": {
+    "outline": "#FAFAFC",
+    "background": "#242021",
+    "name": "#FAFAFC"
+  },
+  "initialOverallStrength": 99,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Gatito Fernández",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Lucas Perri",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Adryelson",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Victor Cuesta",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Hugo",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Rafael",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Marçal",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Sander",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Tchê Tchê",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Danilo Barbosa",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Eduardo",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Carlos Eduardo",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Júnior Santos",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Luis Henrique",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Tiquinho Soares",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Matheus Nascimento",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Jeffinho",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Victor Sá",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Kauê",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Diego Hernández",
+      "strength": 0
+    }
+  ]
+}

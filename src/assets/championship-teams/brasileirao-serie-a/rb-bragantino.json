@@ -1,0 +1,116 @@
+{
+  "name": "Red Bull Bragantino",
+  "shortName": "Bragantino",
+  "abbreviation": "RB",
+  "colors": {
+    "outline": "#212156",
+    "background": "#FAFAFC",
+    "name": "#D71D3F"
+  },
+  "initialOverallStrength": 90,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Cleiton",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Jadson",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Léo Ortiz",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Natan",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Luan Cândido",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Juninho Capixaba",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Aderlan",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Pedro Henrique",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Lucas Evangelista",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Eric Ramires",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Hurtado",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Sorriso",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Matheus Fernandes",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gustavinho",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Eduardo Sasha",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Thiago Borbas",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Helinho",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Vitinho",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Nathan",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Luan",
+      "strength": 0
+    }
+  ]
+}

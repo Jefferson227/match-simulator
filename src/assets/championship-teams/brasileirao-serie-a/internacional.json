@@ -1,0 +1,116 @@
+{
+  "name": "Sport Club Internacional",
+  "shortName": "Internacional",
+  "abbreviation": "INT",
+  "colors": {
+    "outline": "#FAFAFC",
+    "background": "#e52329",
+    "name": "#FAFAFC"
+  },
+  "initialOverallStrength": 98,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Rochet",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Keiller",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Vitão",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Mercado",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Robert Renan",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bustos",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Renê",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Thauan Lara",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Aránguiz",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Maurício",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Alan Patrick",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Wanderson",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "De Pena",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Estevão",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Enner Valencia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Lucca",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rômulo",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Pedro Henrique",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Johnny",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Carlos de Pena",
+      "strength": 0
+    }
+  ]
+}

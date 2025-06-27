@@ -1,0 +1,116 @@
+{
+  "name": "Cruzeiro Esporte Clube",
+  "shortName": "Cruzeiro",
+  "abbreviation": "CRU",
+  "colors": {
+    "outline": "#FAFAFC",
+    "background": "#183D8F",
+    "name": "#FAFAFC"
+  },
+  "initialOverallStrength": 92,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Rafael Cabral",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Anderson",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Zé Ivaldo",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Lucas Oliveira",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "William",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Neris",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Marllon",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Kaiki",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Lucas Silva",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Ramiro",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Mateus Vital",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Bruno Rodrigues",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jajá",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Fernando",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Gilberto",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Arthur Gomes",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Wesley",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Henrique Dourado",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rafael Elias",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Pedro",
+      "strength": 0
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "name": "Esporte Clube Bahia",
+  "shortName": "Bahia",
+  "abbreviation": "BAH",
+  "colors": {
+    "outline": "#DC3726",
+    "background": "#055191",
+    "name": "#FAFAFC"
+  },
+  "initialOverallStrength": 83,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Marcos Felipe",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Danilo Fernandes",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Vitor Hugo",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Kanu",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Raul Gustavo",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Nino Paraíba",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Lucas Fonseca",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Matheus Bahia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Rezende",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Cauly",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Thaciano",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Everaldo",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Acevedo",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jean Lucas",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Biel",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Ademir",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Gabriel Teixeira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Luciano Juba",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rafael Ratão",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Vitor Jacaré",
+      "strength": 0
+    }
+  ]
+}
