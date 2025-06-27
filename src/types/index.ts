@@ -34,12 +34,14 @@ export interface Team {
 export interface BaseTeam {
   id: string;
   name: string;
+  shortName: string;
   abbreviation: string;
   colors: TeamColors;
   players: Player[]; // All available players
   morale: number;
   formation: string;
   overallMood: number;
+  initialOverallStrength: number;
 }
 
 export interface MatchTeam {
