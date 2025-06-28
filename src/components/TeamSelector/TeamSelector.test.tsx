@@ -7,62 +7,104 @@ import { GeneralContext } from '../../contexts/GeneralContext';
 // Mock the team service
 jest.mock('../../services/teamService', () => ({
   loadTeamsForChampionship: jest.fn(),
+  loadSpecificTeam: jest.fn(),
 }));
 
 const mockLoadTeamsForChampionship =
   require('../../services/teamService').loadTeamsForChampionship;
+const mockLoadSpecificTeam =
+  require('../../services/teamService').loadSpecificTeam;
 
 const mockTeams = [
   {
     name: 'FLAMENGO',
+    fileName: 'flamengo',
     colors: { bg: '#000000', border: '#ff0000', text: '#ffffff' },
   },
   {
     name: 'CRUZEIRO',
+    fileName: 'cruzeiro',
     colors: { bg: '#00008B', border: '#ffffff', text: '#ffffff' },
   },
   {
     name: 'BRAGANTINO',
+    fileName: 'rb-bragantino',
     colors: { bg: '#ffffff', border: '#00008B', text: '#ff0000' },
   },
   {
     name: 'PALMEIRAS',
+    fileName: 'palmeiras',
     colors: { bg: '#006400', border: '#ffffff', text: '#ffffff' },
   },
   {
     name: 'BAHIA',
+    fileName: 'bahia',
     colors: { bg: '#0000CD', border: '#ff0000', text: '#ffffff' },
   },
   {
     name: 'FLUMINENSE',
+    fileName: 'fluminense',
     colors: { bg: '#006400', border: '#800000', text: '#ffffff' },
   },
   {
     name: 'A. MINEIRO',
+    fileName: 'atletico-mg',
     colors: { bg: '#000000', border: '#ffffff', text: '#ffffff' },
   },
   {
     name: 'BOTAFOGO',
+    fileName: 'botafogo',
     colors: { bg: '#000000', border: '#ffffff', text: '#ffffff' },
   },
   {
     name: 'MIRASSOL',
+    fileName: 'mirassol',
     colors: { bg: '#ffff00', border: '#006400', text: '#006400' },
   },
   {
     name: 'CORINTHIANS',
+    fileName: 'corinthians',
     colors: { bg: '#000000', border: '#ffffff', text: '#ffffff' },
   },
   {
     name: 'SÃO PAULO',
+    fileName: 'sao-paulo',
     colors: { bg: '#ffffff', border: '#ff0000', text: '#000000' },
   },
 ];
 
+const mockBaseTeam = {
+  id: 'test-id',
+  name: 'Clube de Regatas do Flamengo',
+  shortName: 'Flamengo',
+  abbreviation: 'FLA',
+  colors: {
+    outline: '#EC2125',
+    background: '#030101',
+    name: '#FAFAFC',
+  },
+  players: [
+    { id: '1', position: 'GK', name: 'Rossi', strength: 85, mood: 100 },
+    {
+      id: '2',
+      position: 'DF',
+      name: 'Fabricio Bruno',
+      strength: 82,
+      mood: 100,
+    },
+  ],
+  morale: 100,
+  formation: '4-4-2',
+  overallMood: 100,
+  initialOverallStrength: 100,
+};
+
 const mockSetScreenDisplayed = jest.fn();
+const mockSetBaseTeam = jest.fn();
 
 const mockGeneralContextValue = {
   setScreenDisplayed: mockSetScreenDisplayed,
+  setBaseTeam: mockSetBaseTeam,
   state: {
     currentPage: 1,
     baseTeam: {},
@@ -99,6 +141,7 @@ describe('TeamSelector', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockLoadTeamsForChampionship.mockResolvedValue(mockTeams);
+    mockLoadSpecificTeam.mockResolvedValue(mockBaseTeam);
   });
 
   test('renders the component and initial teams', async () => {
@@ -129,7 +172,7 @@ describe('TeamSelector', () => {
     expect(screen.getByText('CORINTHIANS')).toBeInTheDocument();
   });
 
-  test('calls setScreenDisplayed with "TeamManager" when a team is clicked', async () => {
+  test('loads team data and navigates to TeamManager when a team is clicked', async () => {
     renderWithContext(<TeamSelector />);
 
     await waitFor(() => {
@@ -139,11 +182,17 @@ describe('TeamSelector', () => {
     const flamengoButton = screen.getByText('FLAMENGO');
     fireEvent.click(flamengoButton);
 
-    expect(mockSetScreenDisplayed).toHaveBeenCalledWith('TeamManager');
-    expect(mockSetScreenDisplayed).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(mockLoadSpecificTeam).toHaveBeenCalledWith(
+        'brasileirao-serie-a',
+        'flamengo'
+      );
+      expect(mockSetBaseTeam).toHaveBeenCalledWith(mockBaseTeam);
+      expect(mockSetScreenDisplayed).toHaveBeenCalledWith('TeamManager');
+    });
   });
 
-  test('calls setScreenDisplayed with "TeamManager" when any team is clicked', async () => {
+  test('loads team data and navigates to TeamManager when any team is clicked', async () => {
     renderWithContext(<TeamSelector />);
 
     await waitFor(() => {
@@ -153,8 +202,14 @@ describe('TeamSelector', () => {
     const cruzeiroButton = screen.getByText('CRUZEIRO');
     fireEvent.click(cruzeiroButton);
 
-    expect(mockSetScreenDisplayed).toHaveBeenCalledWith('TeamManager');
-    expect(mockSetScreenDisplayed).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(mockLoadSpecificTeam).toHaveBeenCalledWith(
+        'brasileirao-serie-a',
+        'cruzeiro'
+      );
+      expect(mockSetBaseTeam).toHaveBeenCalledWith(mockBaseTeam);
+      expect(mockSetScreenDisplayed).toHaveBeenCalledWith('TeamManager');
+    });
   });
 
   test('previous button is disabled on the first page', async () => {
@@ -223,6 +278,23 @@ describe('TeamSelector', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Failed to load teams')).toBeInTheDocument();
+    });
+  });
+
+  test('shows error when team data loading fails', async () => {
+    mockLoadSpecificTeam.mockResolvedValue(null);
+
+    renderWithContext(<TeamSelector />);
+
+    await waitFor(() => {
+      expect(screen.getByText('FLAMENGO')).toBeInTheDocument();
+    });
+
+    const flamengoButton = screen.getByText('FLAMENGO');
+    fireEvent.click(flamengoButton);
+
+    await waitFor(() => {
+      expect(screen.getByText('Failed to load team data')).toBeInTheDocument();
     });
   });
 });

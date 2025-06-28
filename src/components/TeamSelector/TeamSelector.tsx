@@ -4,13 +4,14 @@ import { GeneralContext } from '../../contexts/GeneralContext';
 import {
   loadTeamsForChampionship,
   TeamSelectorTeam,
+  loadSpecificTeam,
 } from '../../services/teamService';
 
 const TEAMS_PER_PAGE = 9;
 
 const TeamSelector: React.FC = () => {
   const { t } = useTranslation();
-  const { setScreenDisplayed } = useContext(GeneralContext);
+  const { setScreenDisplayed, setBaseTeam } = useContext(GeneralContext);
   const [currentPage, setCurrentPage] = useState(0);
   const [teams, setTeams] = useState<TeamSelectorTeam[]>([]);
   const [loading, setLoading] = useState(true);
@@ -50,8 +51,31 @@ const TeamSelector: React.FC = () => {
     }
   };
 
-  const handleTeamClick = (teamName: string) => {
-    setScreenDisplayed('TeamManager');
+  const handleTeamClick = async (teamFileName: string) => {
+    try {
+      if (teamFileName) {
+        // Load the specific team data
+        const baseTeam = await loadSpecificTeam(
+          'brasileirao-serie-a',
+          teamFileName
+        );
+
+        if (baseTeam) {
+          // Set the loaded team as the base team
+          setBaseTeam(baseTeam);
+          setScreenDisplayed('TeamManager');
+        } else {
+          console.error('Failed to load team data');
+          setError('Failed to load team data');
+        }
+      } else {
+        console.error(`No file name mapping found for team: ${teamFileName}`);
+        setError('Team not found');
+      }
+    } catch (err) {
+      console.error('Failed to load team:', err);
+      setError('Failed to load team');
+    }
   };
 
   const startIndex = currentPage * TEAMS_PER_PAGE;
@@ -91,8 +115,8 @@ const TeamSelector: React.FC = () => {
       <div className="flex flex-col gap-4 w-full h-[560px] max-w-md px-6">
         {selectedTeams.map((team) => (
           <button
-            key={team.name}
-            onClick={() => handleTeamClick(team.name)}
+            key={team.fileName}
+            onClick={() => handleTeamClick(team.fileName)}
             style={{
               backgroundColor: team.colors.bg,
               borderColor: team.colors.border,

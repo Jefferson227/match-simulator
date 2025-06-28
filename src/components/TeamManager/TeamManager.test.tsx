@@ -132,6 +132,7 @@ const mockContextValue = {
   },
   setMatchTeam: jest.fn(),
   getBaseTeam: jest.fn(),
+  setBaseTeam: jest.fn(),
   setCurrentPage: jest.fn(),
   setMatchOtherTeams: jest.fn(),
   setScreenDisplayed: jest.fn(),
@@ -216,14 +217,39 @@ describe('TeamManager', () => {
     jest.clearAllMocks();
   });
 
-  it('calls getBaseTeam on mount', async () => {
+  it('calls getBaseTeam on mount when no team is set', async () => {
+    const contextWithNoTeam = {
+      state: {
+        baseTeam: {} as BaseTeam,
+        matchTeam: null,
+        currentPage: 1,
+        matchOtherTeams: [],
+        screenDisplayed: 'TeamManager',
+      },
+      setMatchTeam: jest.fn(),
+      getBaseTeam: jest.fn(),
+      setCurrentPage: jest.fn(),
+      setMatchOtherTeams: jest.fn(),
+      setScreenDisplayed: jest.fn(),
+    };
+
+    render(
+      <GeneralContext.Provider value={contextWithNoTeam}>
+        <TeamManager />
+      </GeneralContext.Provider>
+    );
+
+    expect(contextWithNoTeam.getBaseTeam).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not call getBaseTeam on mount when team is already set', async () => {
     render(
       <GeneralContext.Provider value={mockContextValue}>
         <TeamManager />
       </GeneralContext.Provider>
     );
 
-    expect(mockContextValue.getBaseTeam).toHaveBeenCalledTimes(1);
+    expect(mockContextValue.getBaseTeam).not.toHaveBeenCalled();
   });
 
   it('renders the team information correctly', () => {

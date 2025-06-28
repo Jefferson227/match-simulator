@@ -34,7 +34,10 @@ const TeamManager: React.FC = () => {
   const PLAYERS_PER_PAGE = 11;
 
   useEffect(() => {
-    getBaseTeam();
+    // Only load default team if no team is already set
+    if (!state.baseTeam || !state.baseTeam.id) {
+      getBaseTeam();
+    }
   }, []);
 
   const handlePlayerClick = (id: string) => {

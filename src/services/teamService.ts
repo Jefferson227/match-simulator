@@ -206,6 +206,7 @@ function getAutomaticSubstitutes(players: Player[]): Player[] {
 
 export interface TeamSelectorTeam {
   name: string;
+  fileName: string;
   colors: {
     bg: string;
     border: string;
@@ -246,6 +247,7 @@ export const loadTeamsForChampionship = async (
             border: teamDataObj.colors.outline,
             text: teamDataObj.colors.name,
           },
+          fileName: teamFileName,
         });
       } catch (error) {
         console.error(`Failed to load team ${teamFileName}:`, error);
@@ -260,11 +262,45 @@ export const loadTeamsForChampionship = async (
   }
 };
 
+export const loadSpecificTeam = async (
+  championshipInternalName: string,
+  teamFileName: string
+): Promise<BaseTeam | null> => {
+  try {
+    const teamData = await import(
+      `../assets/championship-teams/${championshipInternalName}/${teamFileName}.json`
+    );
+    const teamDataObj = teamData.default;
+
+    // Transform the team data to BaseTeam format
+    return {
+      id: crypto.randomUUID(),
+      name: teamDataObj.name,
+      shortName: teamDataObj.shortName,
+      abbreviation: teamDataObj.abbreviation,
+      colors: teamDataObj.colors,
+      players: teamDataObj.players.map((player: any) => ({
+        ...player,
+        id: crypto.randomUUID(),
+        mood: 100, // Default mood
+      })),
+      morale: 100, // Default morale
+      formation: '4-4-2', // Default formation
+      overallMood: 100, // Default overall mood
+      initialOverallStrength: teamDataObj.initialOverallStrength || 80,
+    };
+  } catch (error) {
+    console.error(`Failed to load team ${teamFileName}:`, error);
+    return null;
+  }
+};
+
 const teamService = {
   getTeams,
   getBaseTeam,
   getOtherMatchTeams,
   loadTeamsForChampionship,
+  loadSpecificTeam,
 };
 
 export default teamService;
