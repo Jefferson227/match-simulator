@@ -27,9 +27,9 @@ const ChampionshipSelector: React.FC = () => {
 
   const handleChampionshipClick = (championship: {
     id: string;
-    name: string;
+    internalName: string;
   }) => {
-    if (championship.name === 'BRASILEIRÃO SÉRIE A') {
+    if (championship.internalName === 'brasileirao-serie-a') {
       setScreenDisplayed('TeamSelector');
     }
   };
@@ -54,7 +54,7 @@ const ChampionshipSelector: React.FC = () => {
           <button
             key={champ.id}
             onClick={() => handleChampionshipClick(champ)}
-            disabled={champ.name !== 'BRASILEIRÃO SÉRIE A'}
+            disabled={champ.internalName !== 'brasileirao-serie-a'}
             className="w-[342px] h-[80px] px-4 border-4 border-white text-lg uppercase transition hover:bg-white hover:text-[#3d7a33] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {champ.name}

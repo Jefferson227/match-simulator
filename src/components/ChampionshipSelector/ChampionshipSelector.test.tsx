@@ -8,15 +8,31 @@ jest.mock('../../services/generalService', () => ({
   __esModule: true,
   default: {
     getAllChampionships: () => [
-      { id: '1', name: 'BRASILEIRÃO SÉRIE A' },
-      { id: '2', name: 'BRASILEIRÃO SÉRIE B' },
-      { id: '3', name: 'BRASILEIRÃO SÉRIE C' },
-      { id: '4', name: 'BRASILEIRÃO SÉRIE D' },
-      { id: '5', name: 'PREMIER LEAGUE' },
-      { id: '6', name: 'BUNDESLIGA' },
-      { id: '7', name: 'LA LIGA' },
-      { id: '8', name: 'SERIE A' },
-      { id: '9', name: 'LIGUE 1' },
+      {
+        id: '1',
+        name: 'BRASILEIRÃO SÉRIE A',
+        internalName: 'brasileirao-serie-a',
+      },
+      {
+        id: '2',
+        name: 'BRASILEIRÃO SÉRIE B',
+        internalName: 'brasileirao-serie-b',
+      },
+      {
+        id: '3',
+        name: 'BRASILEIRÃO SÉRIE C',
+        internalName: 'brasileirao-serie-c',
+      },
+      {
+        id: '4',
+        name: 'BRASILEIRÃO SÉRIE D',
+        internalName: 'brasileirao-serie-d',
+      },
+      { id: '5', name: 'PREMIER LEAGUE', internalName: 'premier-league' },
+      { id: '6', name: 'BUNDESLIGA', internalName: 'bundesliga' },
+      { id: '7', name: 'LA LIGA', internalName: 'la-liga' },
+      { id: '8', name: 'SERIE A', internalName: 'serie-a' },
+      { id: '9', name: 'LIGUE 1', internalName: 'ligue-1' },
     ],
   },
 }));
