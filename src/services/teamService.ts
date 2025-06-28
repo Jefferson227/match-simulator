@@ -272,6 +272,8 @@ export const loadSpecificTeam = async (
     );
     const teamDataObj = teamData.default;
 
+    const initialOverallStrength = teamDataObj.initialOverallStrength || 80;
+
     // Transform the team data to BaseTeam format
     return {
       id: crypto.randomUUID(),
@@ -279,15 +281,25 @@ export const loadSpecificTeam = async (
       shortName: teamDataObj.shortName,
       abbreviation: teamDataObj.abbreviation,
       colors: teamDataObj.colors,
-      players: teamDataObj.players.map((player: any) => ({
-        ...player,
-        id: crypto.randomUUID(),
-        mood: 100, // Default mood
-      })),
+      players: teamDataObj.players.map((player: any) => {
+        // Calculate random strength based on team's initialOverallStrength
+        const minStrength = Math.max(1, initialOverallStrength - 5);
+        const maxStrength = Math.min(100, initialOverallStrength + 5);
+        const randomStrength =
+          Math.floor(Math.random() * (maxStrength - minStrength + 1)) +
+          minStrength;
+
+        return {
+          ...player,
+          id: crypto.randomUUID(),
+          strength: randomStrength, // Set calculated strength
+          mood: 100, // Default mood
+        };
+      }),
       morale: 100, // Default morale
       formation: '4-4-2', // Default formation
       overallMood: 100, // Default overall mood
-      initialOverallStrength: teamDataObj.initialOverallStrength || 80,
+      initialOverallStrength: initialOverallStrength,
     };
   } catch (error) {
     console.error(`Failed to load team ${teamFileName}:`, error);
