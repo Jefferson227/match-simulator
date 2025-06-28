@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { GeneralContext } from '../../contexts/GeneralContext';
+import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 
 interface TeamStanding {
   team: string;
@@ -36,6 +37,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
   onContinue,
 }) => {
   const { setScreenDisplayed } = useContext(GeneralContext);
+  const { state: championshipState } = useChampionshipContext();
   const RESULTS_PER_PAGE = 12;
   const [page, setPage] = useState(0);
   const totalPages = Math.ceil(standings.length / RESULTS_PER_PAGE);
@@ -51,6 +53,13 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
     if (page < totalPages - 1) setPage(page + 1);
   };
 
+  const handleContinue = () => {
+    setScreenDisplayed('TeamManager');
+  };
+
+  const totalRounds = championshipState.seasonMatchCalendar.length;
+  const isSeasonComplete = championshipState.currentRound >= totalRounds;
+
   return (
     <div
       className="font-press-start min-h-screen"
@@ -58,6 +67,14 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
     >
       <div className="text-center text-[18px] text-white font-bold mt-6 mb-2 tracking-wider">
         TABLE STANDINGS
+      </div>
+      <div className="text-center text-[14px] text-white mb-2">
+        Round {championshipState.currentRound} of {totalRounds}
+        {isSeasonComplete && (
+          <span className="block text-[12px] text-yellow-300">
+            SEASON COMPLETE!
+          </span>
+        )}
       </div>
       <div
         className="w-[350px] h-[610px] mx-auto mt-0 mb-0 flex flex-col items-center"
@@ -125,9 +142,9 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
         </button>
         <button
           className="border-4 border-white w-[180px] h-[56px] flex items-center justify-center text-[18px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition mx-2 cursor-pointer"
-          onClick={() => setScreenDisplayed('TeamManager')}
+          onClick={handleContinue}
         >
-          CONTINUE
+          {isSeasonComplete ? 'NEW SEASON' : 'CONTINUE'}
         </button>
         <button
           className={`border-4 w-[80px] h-[56px] flex items-center justify-center text-[18px] bg-transparent transition ${

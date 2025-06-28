@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import { useChampionshipContext } from '../../contexts/ChampionshipContext';
+import { generateSeasonMatchCalendar } from '../../services/teamService';
 import utils from '../../utils/utils';
 import { MatchTeam, Player } from '../../types';
 
@@ -26,7 +27,12 @@ enum PlayerSelectionState {
 const TeamManager: React.FC = () => {
   const { t } = useTranslation();
   const { setMatchTeam, setScreenDisplayed } = useContext(GeneralContext);
-  const { state: championshipState } = useChampionshipContext();
+  const {
+    state: championshipState,
+    incrementCurrentRound,
+    setCurrentRound,
+    setSeasonMatchCalendar,
+  } = useChampionshipContext();
   const [showFormationGrid, setShowFormationGrid] = useState(false);
   const [playerStates, setPlayerStates] = useState<{
     [id: string]: PlayerSelectionState;
@@ -299,6 +305,37 @@ const TeamManager: React.FC = () => {
     };
   };
 
+  const handleStartMatch = () => {
+    const matchTeam = createMatchTeam();
+    if (matchTeam) {
+      setMatchTeam(matchTeam);
+
+      // Check if we've completed all rounds
+      const totalRounds = championshipState.seasonMatchCalendar.length;
+      if (championshipState.currentRound >= totalRounds) {
+        // Reset to round 1 and regenerate calendar
+        setCurrentRound(1);
+
+        // Regenerate the season calendar for a new season
+        if (
+          championshipState.humanPlayerBaseTeam &&
+          championshipState.teamsControlledAutomatically.length > 0
+        ) {
+          const newCalendar = generateSeasonMatchCalendar(
+            championshipState.humanPlayerBaseTeam,
+            championshipState.teamsControlledAutomatically
+          );
+          setSeasonMatchCalendar(newCalendar);
+        }
+      } else {
+        // Increment to next round
+        incrementCurrentRound();
+      }
+
+      setScreenDisplayed('MatchSimulator');
+    }
+  };
+
   // Extract team colors with fallbacks
   const teamColors = baseTeam?.colors || {
     background: '#1e1e1e',
@@ -538,13 +575,7 @@ const TeamManager: React.FC = () => {
                   backgroundColor: '#3c7a33',
                   color: '#e2e2e2',
                 }}
-                onClick={() => {
-                  const matchTeam = createMatchTeam();
-                  if (matchTeam) {
-                    setMatchTeam(matchTeam);
-                    setScreenDisplayed('MatchSimulator');
-                  }
-                }}
+                onClick={handleStartMatch}
               >
                 {t('teamManager.startMatch')}
               </button>

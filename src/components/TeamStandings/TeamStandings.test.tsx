@@ -3,6 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import TeamStandings from './TeamStandings';
 import { GeneralContext } from '../../contexts/GeneralContext';
+import { ChampionshipProvider } from '../../contexts/ChampionshipContext';
 import { BaseTeam, MatchTeam } from '../../types';
 
 // Mock the GeneralContext
@@ -18,6 +19,7 @@ const mockGeneralContextValue = {
   },
   setCurrentPage: jest.fn(),
   getBaseTeam: jest.fn(),
+  setBaseTeam: jest.fn(),
   setMatchTeam: jest.fn(),
   setMatchOtherTeams: jest.fn(),
   setScreenDisplayed: mockSetScreenDisplayed,
@@ -26,7 +28,7 @@ const mockGeneralContextValue = {
 const renderWithContext = (component: React.ReactElement) => {
   return render(
     <GeneralContext.Provider value={mockGeneralContextValue}>
-      {component}
+      <ChampionshipProvider>{component}</ChampionshipProvider>
     </GeneralContext.Provider>
   );
 };
@@ -213,7 +215,7 @@ describe('TeamStandings', () => {
     test('calls setScreenDisplayed when CONTINUE button is clicked', () => {
       renderWithContext(<TeamStandings />);
 
-      const continueButton = screen.getByText('CONTINUE');
+      const continueButton = screen.getByText('NEW SEASON');
       fireEvent.click(continueButton);
 
       expect(mockSetScreenDisplayed).toHaveBeenCalledWith('TeamManager');
@@ -273,7 +275,7 @@ describe('TeamStandings', () => {
 
       renderWithContext(<TeamStandings onContinue={mockOnContinue} />);
 
-      const continueButton = screen.getByText('CONTINUE');
+      const continueButton = screen.getByText('NEW SEASON');
       fireEvent.click(continueButton);
 
       // The component doesn't actually call onContinue, so we should test the actual behavior

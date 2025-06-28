@@ -87,6 +87,7 @@ export interface Match {
   latestGoal?: {
     scorerName: string;
   };
+  round?: number;
 }
 
 export interface TeamSquadView {

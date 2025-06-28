@@ -15,6 +15,8 @@ interface ChampionshipContextType {
   setHumanPlayerBaseTeam: (team: BaseTeam) => void;
   setTeamsControlledAutomatically: (teams: BaseTeam[]) => void;
   setSeasonMatchCalendar: (matches: SeasonRound[]) => void;
+  setCurrentRound: (round: number) => void;
+  incrementCurrentRound: () => void;
 }
 
 // Create the context
@@ -52,6 +54,14 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({
     dispatch({ type: 'SET_SEASON_MATCH_CALENDAR', payload: matches });
   };
 
+  const setCurrentRound = (round: number) => {
+    dispatch({ type: 'SET_CURRENT_ROUND', payload: round });
+  };
+
+  const incrementCurrentRound = () => {
+    dispatch({ type: 'INCREMENT_CURRENT_ROUND' });
+  };
+
   const value: ChampionshipContextType = {
     state,
     dispatch,
@@ -59,6 +69,8 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({
     setHumanPlayerBaseTeam,
     setTeamsControlledAutomatically,
     setSeasonMatchCalendar,
+    setCurrentRound,
+    incrementCurrentRound,
   };
 
   return (

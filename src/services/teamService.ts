@@ -466,6 +466,66 @@ export const generateSeasonMatchCalendar = (
   return seasonRounds;
 };
 
+export const getCurrentRoundMatches = (
+  seasonCalendar: SeasonRound[],
+  currentRound: number,
+  humanPlayerTeam: BaseTeam
+): { homeTeam: MatchTeam; visitorTeam: MatchTeam }[] => {
+  // Find the current round
+  const currentRoundData = seasonCalendar.find(
+    (round) => round.roundNumber === currentRound
+  );
+
+  if (!currentRoundData) {
+    // If round not found, return empty array
+    return [];
+  }
+
+  // Transform season matches to MatchTeam format for MatchSimulator
+  return currentRoundData.matches.map((seasonMatch) => {
+    // Transform home team
+    const homeMatchTeam: MatchTeam = {
+      ...seasonMatch.homeTeam,
+      starters: getAutomaticStarters(seasonMatch.homeTeam.players),
+      substitutes: getAutomaticSubstitutes(
+        seasonMatch.homeTeam.players.filter(
+          (player) =>
+            !getAutomaticStarters(seasonMatch.homeTeam.players).some(
+              (starter) => starter.id === player.id
+            )
+        )
+      ),
+      isHomeTeam: true,
+      score: 0,
+      morale: 100,
+      overallMood: 100,
+    };
+
+    // Transform away team
+    const awayMatchTeam: MatchTeam = {
+      ...seasonMatch.awayTeam,
+      starters: getAutomaticStarters(seasonMatch.awayTeam.players),
+      substitutes: getAutomaticSubstitutes(
+        seasonMatch.awayTeam.players.filter(
+          (player) =>
+            !getAutomaticStarters(seasonMatch.awayTeam.players).some(
+              (starter) => starter.id === player.id
+            )
+        )
+      ),
+      isHomeTeam: false,
+      score: 0,
+      morale: 100,
+      overallMood: 100,
+    };
+
+    return {
+      homeTeam: homeMatchTeam,
+      visitorTeam: awayMatchTeam,
+    };
+  });
+};
+
 const teamService = {
   getTeams,
   getBaseTeam,
@@ -474,6 +534,7 @@ const teamService = {
   loadSpecificTeam,
   loadAllTeamsExceptOne,
   generateSeasonMatchCalendar,
+  getCurrentRoundMatches,
 };
 
 export default teamService;

@@ -5,7 +5,8 @@ import Functions from '../../functions/MatchSimulatorFunctions';
 import TeamPlayers from '../TeamPlayers/TeamPlayers';
 import { MatchContext } from '../../contexts/MatchContext';
 import { GeneralContext } from '../../contexts/GeneralContext';
-import teamService from '../../services/teamService';
+import { useChampionshipContext } from '../../contexts/ChampionshipContext';
+import { getCurrentRoundMatches } from '../../services/teamService';
 import MatchDetails from '../MatchDetails';
 import utils from '../../utils/utils';
 
@@ -16,43 +17,45 @@ const MatchSimulator: FC = () => {
     useContext(MatchContext);
   const { state, setMatchOtherTeams, setScreenDisplayed } =
     useContext(GeneralContext);
-  const { getTeams } = teamService;
+  const { state: championshipState } = useChampionshipContext();
 
   useEffect(() => {
-    setMatchOtherTeams();
-  }, []);
+    // Only set matches if not already set for this round
+    if (
+      championshipState.seasonMatchCalendar.length > 0 &&
+      championshipState.humanPlayerBaseTeam &&
+      (matches.length === 0 ||
+        matches[0]?.round !== championshipState.currentRound)
+    ) {
+      const currentRoundMatches = getCurrentRoundMatches(
+        championshipState.seasonMatchCalendar,
+        championshipState.currentRound,
+        championshipState.humanPlayerBaseTeam
+      );
 
-  useEffect(() => {
-    if (state.matchOtherTeams.length === 0) return;
+      // Transform to the format expected by MatchSimulator
+      const transformedMatches = currentRoundMatches.map((match) => ({
+        id: crypto.randomUUID(),
+        homeTeam: match.homeTeam,
+        visitorTeam: match.visitorTeam,
+        lastScorer: null,
+        ballPossession: {
+          isHomeTeam: true,
+          position: 'midfield' as const,
+        },
+        shotAttempts: 0,
+        scorers: [],
+        round: championshipState.currentRound, // Add round info
+      }));
 
-    // Create a copy of the teams array to shuffle
-    const shuffledTeams = [...state.matchOtherTeams];
-
-    // Fisher-Yates shuffle algorithm
-    for (let i = shuffledTeams.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffledTeams[i], shuffledTeams[j]] = [
-        shuffledTeams[j],
-        shuffledTeams[i],
-      ];
+      setMatches(transformedMatches);
     }
-
-    // Create matches with randomized pairs
-    setMatches([
-      {
-        homeTeam: shuffledTeams[0],
-        visitorTeam: shuffledTeams[1],
-      },
-      {
-        homeTeam: shuffledTeams[2],
-        visitorTeam: shuffledTeams[3],
-      },
-      {
-        homeTeam: shuffledTeams[4],
-        visitorTeam: shuffledTeams[5],
-      },
-    ]);
-  }, [state.matchOtherTeams]);
+    // eslint-disable-next-line
+  }, [
+    championshipState.seasonMatchCalendar,
+    championshipState.currentRound,
+    championshipState.humanPlayerBaseTeam,
+  ]);
 
   useEffect(() => {
     let timer: number | undefined;
