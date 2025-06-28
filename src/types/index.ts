@@ -120,3 +120,18 @@ export interface IncreaseScoreParams {
     isHomeTeam: boolean;
   };
 }
+
+export interface SeasonMatch {
+  id: string;
+  round: number;
+  homeTeam: BaseTeam;
+  awayTeam: BaseTeam;
+  isPlayed: boolean;
+  homeTeamScore?: number;
+  awayTeamScore?: number;
+}
+
+export interface SeasonRound {
+  roundNumber: number;
+  matches: SeasonMatch[];
+}

@@ -7,6 +7,7 @@ import {
   TeamSelectorTeam,
   loadSpecificTeam,
   loadAllTeamsExceptOne,
+  generateSeasonMatchCalendar,
 } from '../../services/teamService';
 
 const TEAMS_PER_PAGE = 9;
@@ -80,8 +81,12 @@ const TeamSelector: React.FC = () => {
           // Set the automatically controlled teams
           setTeamsControlledAutomatically(automaticTeams);
 
-          // Set the season match calendar (empty for now)
-          setSeasonMatchCalendar([]);
+          // Generate and set the season match calendar
+          const seasonCalendar = generateSeasonMatchCalendar(
+            baseTeam,
+            automaticTeams
+          );
+          setSeasonMatchCalendar(seasonCalendar);
 
           setScreenDisplayed('TeamManager');
         } else {

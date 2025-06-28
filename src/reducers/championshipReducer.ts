@@ -1,11 +1,11 @@
-import { BaseTeam } from '../types';
+import { BaseTeam, SeasonRound } from '../types';
 
 // Championship state interface
 export interface ChampionshipState {
   selectedChampionship: string | null;
   humanPlayerBaseTeam: BaseTeam | null;
   teamsControlledAutomatically: BaseTeam[];
-  seasonMatchCalendar: any[]; // TODO: Define proper type in next iteration
+  seasonMatchCalendar: SeasonRound[];
 }
 
 // Championship action types
@@ -13,7 +13,7 @@ export type ChampionshipAction =
   | { type: 'SET_CHAMPIONSHIP'; payload: string }
   | { type: 'SET_HUMAN_PLAYER_BASE_TEAM'; payload: BaseTeam }
   | { type: 'SET_TEAMS_CONTROLLED_AUTOMATICALLY'; payload: BaseTeam[] }
-  | { type: 'SET_SEASON_MATCH_CALENDAR'; payload: any[] } // TODO: Define proper type in next iteration
+  | { type: 'SET_SEASON_MATCH_CALENDAR'; payload: SeasonRound[] }
   | { type: 'RESET' };
 
 // Initial state

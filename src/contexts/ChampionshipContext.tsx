@@ -5,7 +5,7 @@ import {
   championshipReducer,
   initialChampionshipState,
 } from '../reducers/championshipReducer';
-import { BaseTeam } from '../types';
+import { BaseTeam, SeasonRound } from '../types';
 
 // Championship context interface
 interface ChampionshipContextType {
@@ -14,7 +14,7 @@ interface ChampionshipContextType {
   setChampionship: (internalName: string) => void;
   setHumanPlayerBaseTeam: (team: BaseTeam) => void;
   setTeamsControlledAutomatically: (teams: BaseTeam[]) => void;
-  setSeasonMatchCalendar: (matches: any[]) => void;
+  setSeasonMatchCalendar: (matches: SeasonRound[]) => void;
 }
 
 // Create the context
@@ -48,7 +48,7 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({
     dispatch({ type: 'SET_TEAMS_CONTROLLED_AUTOMATICALLY', payload: teams });
   };
 
-  const setSeasonMatchCalendar = (matches: any[]) => {
+  const setSeasonMatchCalendar = (matches: SeasonRound[]) => {
     dispatch({ type: 'SET_SEASON_MATCH_CALENDAR', payload: matches });
   };
 

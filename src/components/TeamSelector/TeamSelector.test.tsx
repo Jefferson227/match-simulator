@@ -9,6 +9,7 @@ jest.mock('../../services/teamService', () => ({
   loadTeamsForChampionship: jest.fn(),
   loadSpecificTeam: jest.fn(),
   loadAllTeamsExceptOne: jest.fn(),
+  generateSeasonMatchCalendar: jest.fn(),
 }));
 
 const mockLoadTeamsForChampionship =
@@ -17,6 +18,8 @@ const mockLoadSpecificTeam =
   require('../../services/teamService').loadSpecificTeam;
 const mockLoadAllTeamsExceptOne =
   require('../../services/teamService').loadAllTeamsExceptOne;
+const mockGenerateSeasonMatchCalendar =
+  require('../../services/teamService').generateSeasonMatchCalendar;
 
 const mockTeams = [
   {
@@ -153,12 +156,28 @@ jest.mock('react-i18next', () => ({
   }),
 }));
 
+const mockSeasonCalendar = [
+  {
+    roundNumber: 1,
+    matches: [
+      {
+        id: 'match-1',
+        round: 1,
+        homeTeam: mockBaseTeam,
+        awayTeam: mockBaseTeam,
+        isPlayed: false,
+      },
+    ],
+  },
+];
+
 describe('TeamSelector', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockLoadTeamsForChampionship.mockResolvedValue(mockTeams);
     mockLoadSpecificTeam.mockResolvedValue(mockBaseTeam);
     mockLoadAllTeamsExceptOne.mockResolvedValue([mockBaseTeam]);
+    mockGenerateSeasonMatchCalendar.mockReturnValue(mockSeasonCalendar);
     mockSetHumanPlayerBaseTeam.mockClear();
     mockSetTeamsControlledAutomatically.mockClear();
     mockSetSeasonMatchCalendar.mockClear();
@@ -211,11 +230,17 @@ describe('TeamSelector', () => {
         'brasileirao-serie-a',
         'flamengo'
       );
+      expect(mockGenerateSeasonMatchCalendar).toHaveBeenCalledWith(
+        mockBaseTeam,
+        [mockBaseTeam]
+      );
       expect(mockSetHumanPlayerBaseTeam).toHaveBeenCalledWith(mockBaseTeam);
       expect(mockSetTeamsControlledAutomatically).toHaveBeenCalledWith([
         mockBaseTeam,
       ]);
-      expect(mockSetSeasonMatchCalendar).toHaveBeenCalledWith([]);
+      expect(mockSetSeasonMatchCalendar).toHaveBeenCalledWith(
+        mockSeasonCalendar
+      );
       expect(mockSetScreenDisplayed).toHaveBeenCalledWith('TeamManager');
     });
   });
@@ -239,11 +264,17 @@ describe('TeamSelector', () => {
         'brasileirao-serie-a',
         'cruzeiro'
       );
+      expect(mockGenerateSeasonMatchCalendar).toHaveBeenCalledWith(
+        mockBaseTeam,
+        [mockBaseTeam]
+      );
       expect(mockSetHumanPlayerBaseTeam).toHaveBeenCalledWith(mockBaseTeam);
       expect(mockSetTeamsControlledAutomatically).toHaveBeenCalledWith([
         mockBaseTeam,
       ]);
-      expect(mockSetSeasonMatchCalendar).toHaveBeenCalledWith([]);
+      expect(mockSetSeasonMatchCalendar).toHaveBeenCalledWith(
+        mockSeasonCalendar
+      );
       expect(mockSetScreenDisplayed).toHaveBeenCalledWith('TeamManager');
     });
   });

@@ -381,6 +381,83 @@ export const loadAllTeamsExceptOne = async (
   }
 };
 
+export interface SeasonMatch {
+  id: string;
+  round: number;
+  homeTeam: BaseTeam;
+  awayTeam: BaseTeam;
+  isPlayed: boolean;
+  homeTeamScore?: number;
+  awayTeamScore?: number;
+}
+
+export interface SeasonRound {
+  roundNumber: number;
+  matches: SeasonMatch[];
+}
+
+export const generateSeasonMatchCalendar = (
+  humanPlayerTeam: BaseTeam,
+  teamsControlledAutomatically: BaseTeam[]
+): SeasonRound[] => {
+  // Combine all teams
+  const allTeams = [humanPlayerTeam, ...teamsControlledAutomatically];
+  const totalTeams = allTeams.length;
+
+  // Calculate number of rounds: (totalTeams * 2) - 2
+  const totalRounds = totalTeams * 2 - 2;
+
+  // Calculate matches per round: totalTeams / 2
+  const matchesPerRound = totalTeams / 2;
+
+  const seasonRounds: SeasonRound[] = [];
+
+  // Generate rounds
+  for (let round = 1; round <= totalRounds; round++) {
+    const roundMatches: SeasonMatch[] = [];
+
+    // For each round, create matches between teams
+    // This is a simplified round-robin algorithm
+    for (let i = 0; i < matchesPerRound; i++) {
+      const homeTeamIndex = i;
+      const awayTeamIndex = totalTeams - 1 - i;
+
+      // Skip if we're trying to match a team with itself
+      if (homeTeamIndex !== awayTeamIndex) {
+        const homeTeam = allTeams[homeTeamIndex];
+        const awayTeam = allTeams[awayTeamIndex];
+
+        const match: SeasonMatch = {
+          id: crypto.randomUUID(),
+          round: round,
+          homeTeam: homeTeam,
+          awayTeam: awayTeam,
+          isPlayed: false,
+        };
+
+        roundMatches.push(match);
+      }
+    }
+
+    // Rotate teams for the next round (except the first team)
+    if (round < totalRounds) {
+      const teamsToRotate = allTeams.slice(1);
+      const lastTeam = teamsToRotate.pop();
+      if (lastTeam) {
+        teamsToRotate.unshift(lastTeam);
+      }
+      allTeams.splice(1, allTeams.length - 1, ...teamsToRotate);
+    }
+
+    seasonRounds.push({
+      roundNumber: round,
+      matches: roundMatches,
+    });
+  }
+
+  return seasonRounds;
+};
+
 const teamService = {
   getTeams,
   getBaseTeam,
@@ -388,6 +465,7 @@ const teamService = {
   loadTeamsForChampionship,
   loadSpecificTeam,
   loadAllTeamsExceptOne,
+  generateSeasonMatchCalendar,
 };
 
 export default teamService;
