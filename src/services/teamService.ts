@@ -402,7 +402,15 @@ export const generateSeasonMatchCalendar = (
 ): SeasonRound[] => {
   // Combine all teams
   const allTeams = [humanPlayerTeam, ...teamsControlledAutomatically];
-  const totalTeams = allTeams.length;
+
+  // Shuffle the teams to ensure random match distribution
+  const shuffledTeams = [...allTeams];
+  for (let i = shuffledTeams.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledTeams[i], shuffledTeams[j]] = [shuffledTeams[j], shuffledTeams[i]];
+  }
+
+  const totalTeams = shuffledTeams.length;
 
   // Calculate number of rounds: (totalTeams * 2) - 2
   const totalRounds = totalTeams * 2 - 2;
@@ -424,8 +432,8 @@ export const generateSeasonMatchCalendar = (
 
       // Skip if we're trying to match a team with itself
       if (homeTeamIndex !== awayTeamIndex) {
-        const homeTeam = allTeams[homeTeamIndex];
-        const awayTeam = allTeams[awayTeamIndex];
+        const homeTeam = shuffledTeams[homeTeamIndex];
+        const awayTeam = shuffledTeams[awayTeamIndex];
 
         const match: SeasonMatch = {
           id: crypto.randomUUID(),
@@ -441,12 +449,12 @@ export const generateSeasonMatchCalendar = (
 
     // Rotate teams for the next round (except the first team)
     if (round < totalRounds) {
-      const teamsToRotate = allTeams.slice(1);
+      const teamsToRotate = shuffledTeams.slice(1);
       const lastTeam = teamsToRotate.pop();
       if (lastTeam) {
         teamsToRotate.unshift(lastTeam);
       }
-      allTeams.splice(1, allTeams.length - 1, ...teamsToRotate);
+      shuffledTeams.splice(1, shuffledTeams.length - 1, ...teamsToRotate);
     }
 
     seasonRounds.push({
