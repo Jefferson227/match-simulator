@@ -105,11 +105,13 @@ const mockBaseTeam = {
 // Mock the ChampionshipContext
 const mockSetHumanPlayerBaseTeam = jest.fn();
 const mockSetTeamsControlledAutomatically = jest.fn();
+const mockSetSeasonMatchCalendar = jest.fn();
 
 jest.mock('../../contexts/ChampionshipContext', () => ({
   useChampionshipContext: () => ({
     setHumanPlayerBaseTeam: mockSetHumanPlayerBaseTeam,
     setTeamsControlledAutomatically: mockSetTeamsControlledAutomatically,
+    setSeasonMatchCalendar: mockSetSeasonMatchCalendar,
   }),
 }));
 
@@ -159,6 +161,7 @@ describe('TeamSelector', () => {
     mockLoadAllTeamsExceptOne.mockResolvedValue([mockBaseTeam]);
     mockSetHumanPlayerBaseTeam.mockClear();
     mockSetTeamsControlledAutomatically.mockClear();
+    mockSetSeasonMatchCalendar.mockClear();
   });
 
   test('renders the component and initial teams', async () => {
@@ -212,6 +215,7 @@ describe('TeamSelector', () => {
       expect(mockSetTeamsControlledAutomatically).toHaveBeenCalledWith([
         mockBaseTeam,
       ]);
+      expect(mockSetSeasonMatchCalendar).toHaveBeenCalledWith([]);
       expect(mockSetScreenDisplayed).toHaveBeenCalledWith('TeamManager');
     });
   });
@@ -239,6 +243,7 @@ describe('TeamSelector', () => {
       expect(mockSetTeamsControlledAutomatically).toHaveBeenCalledWith([
         mockBaseTeam,
       ]);
+      expect(mockSetSeasonMatchCalendar).toHaveBeenCalledWith([]);
       expect(mockSetScreenDisplayed).toHaveBeenCalledWith('TeamManager');
     });
   });

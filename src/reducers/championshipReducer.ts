@@ -5,6 +5,7 @@ export interface ChampionshipState {
   selectedChampionship: string | null;
   humanPlayerBaseTeam: BaseTeam | null;
   teamsControlledAutomatically: BaseTeam[];
+  seasonMatchCalendar: any[]; // TODO: Define proper type in next iteration
 }
 
 // Championship action types
@@ -12,6 +13,7 @@ export type ChampionshipAction =
   | { type: 'SET_CHAMPIONSHIP'; payload: string }
   | { type: 'SET_HUMAN_PLAYER_BASE_TEAM'; payload: BaseTeam }
   | { type: 'SET_TEAMS_CONTROLLED_AUTOMATICALLY'; payload: BaseTeam[] }
+  | { type: 'SET_SEASON_MATCH_CALENDAR'; payload: any[] } // TODO: Define proper type in next iteration
   | { type: 'RESET' };
 
 // Initial state
@@ -19,6 +21,7 @@ export const initialChampionshipState: ChampionshipState = {
   selectedChampionship: null,
   humanPlayerBaseTeam: null,
   teamsControlledAutomatically: [],
+  seasonMatchCalendar: [],
 };
 
 // Championship reducer
@@ -41,6 +44,11 @@ export const championshipReducer = (
       return {
         ...state,
         teamsControlledAutomatically: action.payload,
+      };
+    case 'SET_SEASON_MATCH_CALENDAR':
+      return {
+        ...state,
+        seasonMatchCalendar: action.payload,
       };
     case 'RESET':
       return initialChampionshipState;

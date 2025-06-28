@@ -14,6 +14,7 @@ interface ChampionshipContextType {
   setChampionship: (internalName: string) => void;
   setHumanPlayerBaseTeam: (team: BaseTeam) => void;
   setTeamsControlledAutomatically: (teams: BaseTeam[]) => void;
+  setSeasonMatchCalendar: (matches: any[]) => void;
 }
 
 // Create the context
@@ -47,12 +48,17 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({
     dispatch({ type: 'SET_TEAMS_CONTROLLED_AUTOMATICALLY', payload: teams });
   };
 
+  const setSeasonMatchCalendar = (matches: any[]) => {
+    dispatch({ type: 'SET_SEASON_MATCH_CALENDAR', payload: matches });
+  };
+
   const value: ChampionshipContextType = {
     state,
     dispatch,
     setChampionship,
     setHumanPlayerBaseTeam,
     setTeamsControlledAutomatically,
+    setSeasonMatchCalendar,
   };
 
   return (

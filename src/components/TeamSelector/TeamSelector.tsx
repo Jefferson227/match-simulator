@@ -14,8 +14,11 @@ const TEAMS_PER_PAGE = 9;
 const TeamSelector: React.FC = () => {
   const { t } = useTranslation();
   const { setScreenDisplayed } = useContext(GeneralContext);
-  const { setHumanPlayerBaseTeam, setTeamsControlledAutomatically } =
-    useChampionshipContext();
+  const {
+    setHumanPlayerBaseTeam,
+    setTeamsControlledAutomatically,
+    setSeasonMatchCalendar,
+  } = useChampionshipContext();
   const [currentPage, setCurrentPage] = useState(0);
   const [teams, setTeams] = useState<TeamSelectorTeam[]>([]);
   const [loading, setLoading] = useState(true);
@@ -76,6 +79,9 @@ const TeamSelector: React.FC = () => {
 
           // Set the automatically controlled teams
           setTeamsControlledAutomatically(automaticTeams);
+
+          // Set the season match calendar (empty for now)
+          setSeasonMatchCalendar([]);
 
           setScreenDisplayed('TeamManager');
         } else {
