@@ -8,12 +8,15 @@ import { GeneralContext } from '../../contexts/GeneralContext';
 jest.mock('../../services/teamService', () => ({
   loadTeamsForChampionship: jest.fn(),
   loadSpecificTeam: jest.fn(),
+  loadAllTeamsExceptOne: jest.fn(),
 }));
 
 const mockLoadTeamsForChampionship =
   require('../../services/teamService').loadTeamsForChampionship;
 const mockLoadSpecificTeam =
   require('../../services/teamService').loadSpecificTeam;
+const mockLoadAllTeamsExceptOne =
+  require('../../services/teamService').loadAllTeamsExceptOne;
 
 const mockTeams = [
   {
@@ -101,10 +104,12 @@ const mockBaseTeam = {
 
 // Mock the ChampionshipContext
 const mockSetHumanPlayerBaseTeam = jest.fn();
+const mockSetTeamsControlledAutomatically = jest.fn();
 
 jest.mock('../../contexts/ChampionshipContext', () => ({
   useChampionshipContext: () => ({
     setHumanPlayerBaseTeam: mockSetHumanPlayerBaseTeam,
+    setTeamsControlledAutomatically: mockSetTeamsControlledAutomatically,
   }),
 }));
 
@@ -151,7 +156,9 @@ describe('TeamSelector', () => {
     jest.clearAllMocks();
     mockLoadTeamsForChampionship.mockResolvedValue(mockTeams);
     mockLoadSpecificTeam.mockResolvedValue(mockBaseTeam);
+    mockLoadAllTeamsExceptOne.mockResolvedValue([mockBaseTeam]);
     mockSetHumanPlayerBaseTeam.mockClear();
+    mockSetTeamsControlledAutomatically.mockClear();
   });
 
   test('renders the component and initial teams', async () => {
@@ -197,7 +204,14 @@ describe('TeamSelector', () => {
         'brasileirao-serie-a',
         'flamengo'
       );
+      expect(mockLoadAllTeamsExceptOne).toHaveBeenCalledWith(
+        'brasileirao-serie-a',
+        'flamengo'
+      );
       expect(mockSetHumanPlayerBaseTeam).toHaveBeenCalledWith(mockBaseTeam);
+      expect(mockSetTeamsControlledAutomatically).toHaveBeenCalledWith([
+        mockBaseTeam,
+      ]);
       expect(mockSetScreenDisplayed).toHaveBeenCalledWith('TeamManager');
     });
   });
@@ -217,7 +231,14 @@ describe('TeamSelector', () => {
         'brasileirao-serie-a',
         'cruzeiro'
       );
+      expect(mockLoadAllTeamsExceptOne).toHaveBeenCalledWith(
+        'brasileirao-serie-a',
+        'cruzeiro'
+      );
       expect(mockSetHumanPlayerBaseTeam).toHaveBeenCalledWith(mockBaseTeam);
+      expect(mockSetTeamsControlledAutomatically).toHaveBeenCalledWith([
+        mockBaseTeam,
+      ]);
       expect(mockSetScreenDisplayed).toHaveBeenCalledWith('TeamManager');
     });
   });

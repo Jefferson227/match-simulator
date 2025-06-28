@@ -4,18 +4,21 @@ import { BaseTeam } from '../types';
 export interface ChampionshipState {
   selectedChampionship: string | null;
   humanPlayerBaseTeam: BaseTeam | null;
+  teamsControlledAutomatically: BaseTeam[];
 }
 
 // Championship action types
 export type ChampionshipAction =
   | { type: 'SET_CHAMPIONSHIP'; payload: string }
   | { type: 'SET_HUMAN_PLAYER_BASE_TEAM'; payload: BaseTeam }
+  | { type: 'SET_TEAMS_CONTROLLED_AUTOMATICALLY'; payload: BaseTeam[] }
   | { type: 'RESET' };
 
 // Initial state
 export const initialChampionshipState: ChampionshipState = {
   selectedChampionship: null,
   humanPlayerBaseTeam: null,
+  teamsControlledAutomatically: [],
 };
 
 // Championship reducer
@@ -33,6 +36,11 @@ export const championshipReducer = (
       return {
         ...state,
         humanPlayerBaseTeam: action.payload,
+      };
+    case 'SET_TEAMS_CONTROLLED_AUTOMATICALLY':
+      return {
+        ...state,
+        teamsControlledAutomatically: action.payload,
       };
     case 'RESET':
       return initialChampionshipState;

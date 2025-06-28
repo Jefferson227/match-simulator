@@ -13,6 +13,7 @@ interface ChampionshipContextType {
   dispatch: React.Dispatch<ChampionshipAction>;
   setChampionship: (internalName: string) => void;
   setHumanPlayerBaseTeam: (team: BaseTeam) => void;
+  setTeamsControlledAutomatically: (teams: BaseTeam[]) => void;
 }
 
 // Create the context
@@ -42,11 +43,16 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({
     dispatch({ type: 'SET_HUMAN_PLAYER_BASE_TEAM', payload: team });
   };
 
+  const setTeamsControlledAutomatically = (teams: BaseTeam[]) => {
+    dispatch({ type: 'SET_TEAMS_CONTROLLED_AUTOMATICALLY', payload: teams });
+  };
+
   const value: ChampionshipContextType = {
     state,
     dispatch,
     setChampionship,
     setHumanPlayerBaseTeam,
+    setTeamsControlledAutomatically,
   };
 
   return (

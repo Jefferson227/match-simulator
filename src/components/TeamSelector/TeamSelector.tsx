@@ -6,6 +6,7 @@ import {
   loadTeamsForChampionship,
   TeamSelectorTeam,
   loadSpecificTeam,
+  loadAllTeamsExceptOne,
 } from '../../services/teamService';
 
 const TEAMS_PER_PAGE = 9;
@@ -13,7 +14,8 @@ const TEAMS_PER_PAGE = 9;
 const TeamSelector: React.FC = () => {
   const { t } = useTranslation();
   const { setScreenDisplayed } = useContext(GeneralContext);
-  const { setHumanPlayerBaseTeam } = useChampionshipContext();
+  const { setHumanPlayerBaseTeam, setTeamsControlledAutomatically } =
+    useChampionshipContext();
   const [currentPage, setCurrentPage] = useState(0);
   const [teams, setTeams] = useState<TeamSelectorTeam[]>([]);
   const [loading, setLoading] = useState(true);
@@ -65,6 +67,16 @@ const TeamSelector: React.FC = () => {
         if (baseTeam) {
           // Set the loaded team as the human player's base team
           setHumanPlayerBaseTeam(baseTeam);
+
+          // Load all other teams in the championship for automatic control
+          const automaticTeams = await loadAllTeamsExceptOne(
+            'brasileirao-serie-a',
+            teamFileName
+          );
+
+          // Set the automatically controlled teams
+          setTeamsControlledAutomatically(automaticTeams);
+
           setScreenDisplayed('TeamManager');
         } else {
           console.error('Failed to load team data');
