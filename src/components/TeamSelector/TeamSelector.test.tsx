@@ -99,12 +99,20 @@ const mockBaseTeam = {
   initialOverallStrength: 100,
 };
 
+// Mock the ChampionshipContext
+const mockSetHumanPlayerBaseTeam = jest.fn();
+
+jest.mock('../../contexts/ChampionshipContext', () => ({
+  useChampionshipContext: () => ({
+    setHumanPlayerBaseTeam: mockSetHumanPlayerBaseTeam,
+  }),
+}));
+
+// Mock the GeneralContext
 const mockSetScreenDisplayed = jest.fn();
-const mockSetBaseTeam = jest.fn();
 
 const mockGeneralContextValue = {
   setScreenDisplayed: mockSetScreenDisplayed,
-  setBaseTeam: mockSetBaseTeam,
   state: {
     currentPage: 1,
     baseTeam: {},
@@ -114,6 +122,7 @@ const mockGeneralContextValue = {
   },
   setCurrentPage: jest.fn(),
   getBaseTeam: jest.fn(),
+  setBaseTeam: jest.fn(),
   setMatchTeam: jest.fn(),
   setMatchOtherTeams: jest.fn(),
 };
@@ -142,6 +151,7 @@ describe('TeamSelector', () => {
     jest.clearAllMocks();
     mockLoadTeamsForChampionship.mockResolvedValue(mockTeams);
     mockLoadSpecificTeam.mockResolvedValue(mockBaseTeam);
+    mockSetHumanPlayerBaseTeam.mockClear();
   });
 
   test('renders the component and initial teams', async () => {
@@ -187,7 +197,7 @@ describe('TeamSelector', () => {
         'brasileirao-serie-a',
         'flamengo'
       );
-      expect(mockSetBaseTeam).toHaveBeenCalledWith(mockBaseTeam);
+      expect(mockSetHumanPlayerBaseTeam).toHaveBeenCalledWith(mockBaseTeam);
       expect(mockSetScreenDisplayed).toHaveBeenCalledWith('TeamManager');
     });
   });
@@ -207,7 +217,7 @@ describe('TeamSelector', () => {
         'brasileirao-serie-a',
         'cruzeiro'
       );
-      expect(mockSetBaseTeam).toHaveBeenCalledWith(mockBaseTeam);
+      expect(mockSetHumanPlayerBaseTeam).toHaveBeenCalledWith(mockBaseTeam);
       expect(mockSetScreenDisplayed).toHaveBeenCalledWith('TeamManager');
     });
   });

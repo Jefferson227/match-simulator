@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GeneralContext } from '../../contexts/GeneralContext';
+import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import {
   loadTeamsForChampionship,
   TeamSelectorTeam,
@@ -11,7 +12,8 @@ const TEAMS_PER_PAGE = 9;
 
 const TeamSelector: React.FC = () => {
   const { t } = useTranslation();
-  const { setScreenDisplayed, setBaseTeam } = useContext(GeneralContext);
+  const { setScreenDisplayed } = useContext(GeneralContext);
+  const { setHumanPlayerBaseTeam } = useChampionshipContext();
   const [currentPage, setCurrentPage] = useState(0);
   const [teams, setTeams] = useState<TeamSelectorTeam[]>([]);
   const [loading, setLoading] = useState(true);
@@ -61,8 +63,8 @@ const TeamSelector: React.FC = () => {
         );
 
         if (baseTeam) {
-          // Set the loaded team as the base team
-          setBaseTeam(baseTeam);
+          // Set the loaded team as the human player's base team
+          setHumanPlayerBaseTeam(baseTeam);
           setScreenDisplayed('TeamManager');
         } else {
           console.error('Failed to load team data');

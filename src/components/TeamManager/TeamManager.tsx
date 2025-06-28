@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GeneralContext } from '../../contexts/GeneralContext';
+import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import utils from '../../utils/utils';
 import { MatchTeam, Player } from '../../types';
 
@@ -24,8 +25,8 @@ enum PlayerSelectionState {
 
 const TeamManager: React.FC = () => {
   const { t } = useTranslation();
-  const { getBaseTeam, setMatchTeam, state, setScreenDisplayed } =
-    useContext(GeneralContext);
+  const { setMatchTeam, setScreenDisplayed } = useContext(GeneralContext);
+  const { state: championshipState } = useChampionshipContext();
   const [showFormationGrid, setShowFormationGrid] = useState(false);
   const [playerStates, setPlayerStates] = useState<{
     [id: string]: PlayerSelectionState;
@@ -33,16 +34,12 @@ const TeamManager: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0); // 0-based page index
   const PLAYERS_PER_PAGE = 11;
 
-  useEffect(() => {
-    // Only load default team if no team is already set
-    if (!state.baseTeam || !state.baseTeam.id) {
-      getBaseTeam();
-    }
-  }, []);
+  // Get the human player's base team from championship context
+  const baseTeam = championshipState.humanPlayerBaseTeam;
 
   const handlePlayerClick = (id: string) => {
     setPlayerStates((prev) => {
-      const player = state.baseTeam?.players.find((p: Player) => p.id === id);
+      const player = baseTeam?.players.find((p: Player) => p.id === id);
       if (!player) return prev;
       const currentState = prev[id] ?? PlayerSelectionState.Unselected;
 
@@ -55,7 +52,7 @@ const TeamManager: React.FC = () => {
       ).length;
 
       // Check if there's a GK selected
-      const hasGKSelected = state.baseTeam?.players.some(
+      const hasGKSelected = baseTeam?.players.some(
         (p: Player) =>
           p.position === 'GK' &&
           (prev[p.id] ?? PlayerSelectionState.Unselected) ===
@@ -67,7 +64,7 @@ const TeamManager: React.FC = () => {
         player.position === 'GK' &&
         (currentState + 1) % 3 === PlayerSelectionState.Selected
       ) {
-        const anotherGKSelected = state.baseTeam?.players.some(
+        const anotherGKSelected = baseTeam?.players.some(
           (p: Player) =>
             p.position === 'GK' &&
             p.id !== id &&
@@ -100,7 +97,7 @@ const TeamManager: React.FC = () => {
           if (selectedCount === 10) {
             // Check if a GK is already selected (including this one if it's a GK)
             const willBeGK = player.position === 'GK';
-            const gkAlreadySelected = state.baseTeam?.players.some(
+            const gkAlreadySelected = baseTeam?.players.some(
               (p: Player) =>
                 p.position === 'GK' &&
                 (p.id === id && !willBeGK
@@ -144,7 +141,7 @@ const TeamManager: React.FC = () => {
   };
 
   // Pagination logic
-  const players = state.baseTeam?.players || [];
+  const players = baseTeam?.players || [];
   const totalPages = Math.ceil(players.length / PLAYERS_PER_PAGE);
   const paginatedPlayers = players.slice(
     currentPage * PLAYERS_PER_PAGE,
@@ -161,7 +158,7 @@ const TeamManager: React.FC = () => {
   useEffect(() => {
     // Reset to first page if team changes or player count changes
     setCurrentPage(0);
-  }, [state.baseTeam?.id, players.length]);
+  }, [baseTeam?.id, players.length]);
 
   // Count selected players
   const selectedCount = Object.values(playerStates).filter(
@@ -173,7 +170,7 @@ const TeamManager: React.FC = () => {
     if (selectedCount !== 11) return null;
 
     const selectedPlayers =
-      state.baseTeam?.players.filter(
+      baseTeam?.players.filter(
         (player) => playerStates[player.id] === PlayerSelectionState.Selected
       ) || [];
 
@@ -187,7 +184,7 @@ const TeamManager: React.FC = () => {
   // Function to check if a formation is available based on team's players
   const isFormationAvailable = (formation: string) => {
     const [df, mf, fw] = formation.split('-').map(Number);
-    const players = state.baseTeam?.players || [];
+    const players = baseTeam?.players || [];
 
     const dfCount = players.filter((p) => p.position === 'DF').length;
     const mfCount = players.filter((p) => p.position === 'MF').length;
@@ -200,7 +197,7 @@ const TeamManager: React.FC = () => {
   // Function to select best players for a formation
   const selectBestPlayersForFormation = (formation: string) => {
     const [df, mf, fw] = formation.split('-').map(Number);
-    const players = state.baseTeam?.players || [];
+    const players = baseTeam?.players || [];
 
     // Reset all selections
     const newPlayerStates: { [id: string]: PlayerSelectionState } = {};
@@ -284,17 +281,17 @@ const TeamManager: React.FC = () => {
   };
 
   const createMatchTeam = (): MatchTeam | null => {
-    if (!state.baseTeam || selectedCount !== 11) return null;
+    if (!baseTeam || selectedCount !== 11) return null;
 
-    const starters = state.baseTeam.players.filter(
+    const starters = baseTeam.players.filter(
       (player) => playerStates[player.id] === PlayerSelectionState.Selected
     );
-    const substitutes = state.baseTeam.players.filter(
+    const substitutes = baseTeam.players.filter(
       (player) => playerStates[player.id] === PlayerSelectionState.Substitute
     );
 
     return {
-      ...state.baseTeam,
+      ...baseTeam,
       starters,
       substitutes,
       score: 0,
@@ -303,7 +300,11 @@ const TeamManager: React.FC = () => {
   };
 
   // Extract team colors with fallbacks
-  const teamColors = state.baseTeam?.colors || {};
+  const teamColors = baseTeam?.colors || {
+    background: '#1e1e1e',
+    outline: '#e2e2e2',
+    name: '#e2e2e2',
+  };
   const backgroundColor = teamColors.background || '#1e1e1e';
   const outlineColor = teamColors.outline || '#e2e2e2';
   const nameColor = teamColors.name || '#e2e2e2';
@@ -325,7 +326,7 @@ const TeamManager: React.FC = () => {
             borderBottom: `4px solid ${outlineColor}`,
           }}
         >
-          {state.baseTeam?.name}
+          {baseTeam?.name}
         </div>
         <div
           className="text-center text-[18px] py-2"

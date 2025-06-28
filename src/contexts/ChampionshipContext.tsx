@@ -5,12 +5,14 @@ import {
   championshipReducer,
   initialChampionshipState,
 } from '../reducers/championshipReducer';
+import { BaseTeam } from '../types';
 
 // Championship context interface
 interface ChampionshipContextType {
   state: ChampionshipState;
   dispatch: React.Dispatch<ChampionshipAction>;
   setChampionship: (internalName: string) => void;
+  setHumanPlayerBaseTeam: (team: BaseTeam) => void;
 }
 
 // Create the context
@@ -36,10 +38,15 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({
     dispatch({ type: 'SET_CHAMPIONSHIP', payload: internalName });
   };
 
+  const setHumanPlayerBaseTeam = (team: BaseTeam) => {
+    dispatch({ type: 'SET_HUMAN_PLAYER_BASE_TEAM', payload: team });
+  };
+
   const value: ChampionshipContextType = {
     state,
     dispatch,
     setChampionship,
+    setHumanPlayerBaseTeam,
   };
 
   return (
