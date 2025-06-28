@@ -7,7 +7,29 @@
       "numberOfTeams": 20,
       "promotionTeams": 4,
       "relegationTeams": 4,
-      "relegationChampionship": "brasileirao-serie-b"
+      "relegationChampionship": "brasileirao-serie-b",
+      "teams": [
+        "atletico-mg",
+        "bahia",
+        "botafogo",
+        "ceara",
+        "corinthians",
+        "cruzeiro",
+        "flamengo",
+        "fluminense",
+        "fortaleza",
+        "gremio",
+        "internacional",
+        "juventude",
+        "mirassol",
+        "palmeiras",
+        "rb-bragantino",
+        "santos",
+        "sao-paulo",
+        "sport-recife",
+        "vasco",
+        "vitoria"
+      ]
     },
     {
       "id": "b2c3d4e5-f6g7-8901-bcde-f23456789012",

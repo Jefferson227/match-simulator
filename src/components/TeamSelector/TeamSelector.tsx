@@ -1,54 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GeneralContext } from '../../contexts/GeneralContext';
-
-const teams = [
-  {
-    name: 'FLAMENGO',
-    colors: { bg: '#000000', border: '#ff0000', text: '#ffffff' },
-  },
-  {
-    name: 'CRUZEIRO',
-    colors: { bg: '#00008B', border: '#ffffff', text: '#ffffff' },
-  },
-  {
-    name: 'BRAGANTINO',
-    colors: { bg: '#ffffff', border: '#00008B', text: '#ff0000' },
-  },
-  {
-    name: 'PALMEIRAS',
-    colors: { bg: '#006400', border: '#ffffff', text: '#ffffff' },
-  },
-  {
-    name: 'BAHIA',
-    colors: { bg: '#0000CD', border: '#ff0000', text: '#ffffff' },
-  },
-  {
-    name: 'FLUMINENSE',
-    colors: { bg: '#006400', border: '#800000', text: '#ffffff' },
-  },
-  {
-    name: 'A. MINEIRO',
-    colors: { bg: '#000000', border: '#ffffff', text: '#ffffff' },
-  },
-  {
-    name: 'BOTAFOGO',
-    colors: { bg: '#000000', border: '#ffffff', text: '#ffffff' },
-  },
-  {
-    name: 'MIRASSOL',
-    colors: { bg: '#ffff00', border: '#006400', text: '#006400' },
-  },
-  // Add more teams to test pagination
-  {
-    name: 'CORINTHIANS',
-    colors: { bg: '#000000', border: '#ffffff', text: '#ffffff' },
-  },
-  {
-    name: 'SÃO PAULO',
-    colors: { bg: '#ffffff', border: '#ff0000', text: '#000000' },
-  },
-];
+import {
+  loadTeamsForChampionship,
+  TeamSelectorTeam,
+} from '../../services/teamService';
 
 const TEAMS_PER_PAGE = 9;
 
@@ -56,6 +12,29 @@ const TeamSelector: React.FC = () => {
   const { t } = useTranslation();
   const { setScreenDisplayed } = useContext(GeneralContext);
   const [currentPage, setCurrentPage] = useState(0);
+  const [teams, setTeams] = useState<TeamSelectorTeam[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadTeams = async () => {
+      try {
+        setLoading(true);
+        const loadedTeams = await loadTeamsForChampionship(
+          'brasileirao-serie-a'
+        );
+        setTeams(loadedTeams);
+        setError(null);
+      } catch (err) {
+        console.error('Failed to load teams:', err);
+        setError('Failed to load teams');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadTeams();
+  }, []);
 
   const totalPages = Math.ceil(teams.length / TEAMS_PER_PAGE);
 
@@ -77,6 +56,30 @@ const TeamSelector: React.FC = () => {
 
   const startIndex = currentPage * TEAMS_PER_PAGE;
   const selectedTeams = teams.slice(startIndex, startIndex + TEAMS_PER_PAGE);
+
+  if (loading) {
+    return (
+      <div
+        className="font-press-start flex flex-col items-center justify-center py-8"
+        style={{ backgroundColor: '#3d7a33', color: 'white' }}
+      >
+        <h1 className="text-lg mb-8">{t('teamSelector.selectATeam')}</h1>
+        <div className="text-center">Loading teams...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div
+        className="font-press-start flex flex-col items-center justify-center py-8"
+        style={{ backgroundColor: '#3d7a33', color: 'white' }}
+      >
+        <h1 className="text-lg mb-8">{t('teamSelector.selectATeam')}</h1>
+        <div className="text-center text-red-300">{error}</div>
+      </div>
+    );
+  }
 
   return (
     <div

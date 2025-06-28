@@ -10,6 +10,7 @@ import fortalezaJson from '../assets/fortaleza.json';
 import abcJson from '../assets/abc.json';
 import { Team, Player, BaseTeam, MatchTeam } from '../types';
 import matchService from './matchService';
+import generalParameters from '../assets/general-parameters.json';
 
 function getTeams(matchNumber: number): { homeTeam: Team; visitorTeam: Team } {
   switch (matchNumber) {
@@ -32,6 +33,7 @@ function transformToBaseTeam(jsonData: any): BaseTeam {
   return {
     id: crypto.randomUUID(),
     name: jsonData.name,
+    shortName: jsonData.shortName,
     abbreviation: jsonData.abbreviation,
     colors: jsonData.colors,
     players: jsonData.players.map((player: any) => ({
@@ -42,6 +44,7 @@ function transformToBaseTeam(jsonData: any): BaseTeam {
     morale: 100, // Default morale
     formation: '4-4-2', // Default formation
     overallMood: 100, // Default overall mood
+    initialOverallStrength: jsonData.initialOverallStrength || 80, // Default strength
   };
 }
 
@@ -201,10 +204,67 @@ function getAutomaticSubstitutes(players: Player[]): Player[] {
   return substitutes.slice(0, 7);
 }
 
+export interface TeamSelectorTeam {
+  name: string;
+  colors: {
+    bg: string;
+    border: string;
+    text: string;
+  };
+}
+
+export const loadTeamsForChampionship = async (
+  championshipInternalName: string
+): Promise<TeamSelectorTeam[]> => {
+  try {
+    // Find the championship configuration
+    const championship = generalParameters.championships.find(
+      (champ) => champ.internalName === championshipInternalName
+    );
+
+    if (!championship || !championship.teams) {
+      throw new Error(
+        `Championship ${championshipInternalName} not found or has no teams`
+      );
+    }
+
+    const teams: TeamSelectorTeam[] = [];
+
+    // Load each team's data
+    for (const teamFileName of championship.teams) {
+      try {
+        const teamData = await import(
+          `../assets/championship-teams/${championshipInternalName}/${teamFileName}.json`
+        );
+        const teamDataObj = teamData.default;
+
+        // Convert team colors to the format expected by TeamSelector
+        teams.push({
+          name: teamDataObj.shortName.toUpperCase(),
+          colors: {
+            bg: teamDataObj.colors.background,
+            border: teamDataObj.colors.outline,
+            text: teamDataObj.colors.name,
+          },
+        });
+      } catch (error) {
+        console.error(`Failed to load team ${teamFileName}:`, error);
+        // Continue loading other teams even if one fails
+      }
+    }
+
+    return teams;
+  } catch (error) {
+    console.error('Error loading teams:', error);
+    throw error;
+  }
+};
+
 const teamService = {
   getTeams,
   getBaseTeam,
   getOtherMatchTeams,
+  loadTeamsForChampionship,
 };
 
 export default teamService;
