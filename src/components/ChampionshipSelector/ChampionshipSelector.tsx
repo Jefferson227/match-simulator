@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GeneralContext } from '../../contexts/GeneralContext';
+import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import generalService from '../../services/generalService';
 
 const CHAMPIONSHIPS_PER_PAGE = 6;
@@ -8,6 +9,7 @@ const CHAMPIONSHIPS_PER_PAGE = 6;
 const ChampionshipSelector: React.FC = () => {
   const { t } = useTranslation();
   const { setScreenDisplayed } = useContext(GeneralContext);
+  const { setChampionship } = useChampionshipContext();
   const [currentPage, setCurrentPage] = useState(0);
 
   const championships = generalService.getAllChampionships();
@@ -30,6 +32,7 @@ const ChampionshipSelector: React.FC = () => {
     internalName: string;
   }) => {
     if (championship.internalName === 'brasileirao-serie-a') {
+      setChampionship(championship.internalName);
       setScreenDisplayed('TeamSelector');
     }
   };

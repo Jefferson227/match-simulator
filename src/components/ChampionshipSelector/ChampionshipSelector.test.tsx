@@ -48,6 +48,15 @@ jest.mock('react-i18next', () => ({
   }),
 }));
 
+// Mock the ChampionshipContext
+const mockSetChampionship = jest.fn();
+
+jest.mock('../../contexts/ChampionshipContext', () => ({
+  useChampionshipContext: () => ({
+    setChampionship: mockSetChampionship,
+  }),
+}));
+
 // Mock the GeneralContext
 const mockSetScreenDisplayed = jest.fn();
 
@@ -71,6 +80,7 @@ jest.mock('react', () => ({
 describe('ChampionshipSelector', () => {
   beforeEach(() => {
     mockSetScreenDisplayed.mockClear();
+    mockSetChampionship.mockClear();
   });
 
   test('renders the component and initial championships', () => {
@@ -140,12 +150,13 @@ describe('ChampionshipSelector', () => {
     expect(screen.queryByText('LA LIGA')).not.toBeInTheDocument();
   });
 
-  test('calls setScreenDisplayed when clicking on BRASILEIRÃO SÉRIE A', () => {
+  test('calls setChampionship and setScreenDisplayed when clicking on BRASILEIRÃO SÉRIE A', () => {
     render(<ChampionshipSelector />);
 
     const serieAButton = screen.getByText('BRASILEIRÃO SÉRIE A');
     fireEvent.click(serieAButton);
 
+    expect(mockSetChampionship).toHaveBeenCalledWith('brasileirao-serie-a');
     expect(mockSetScreenDisplayed).toHaveBeenCalledWith('TeamSelector');
   });
 
@@ -155,6 +166,7 @@ describe('ChampionshipSelector', () => {
     const serieBButton = screen.getByText('BRASILEIRÃO SÉRIE B');
     fireEvent.click(serieBButton);
 
+    expect(mockSetChampionship).not.toHaveBeenCalled();
     expect(mockSetScreenDisplayed).not.toHaveBeenCalled();
   });
 });

@@ -1,16 +1,16 @@
 // Championship state interface
 export interface ChampionshipState {
-  // TODO: Add championship state properties
+  selectedChampionship: string | null;
 }
 
 // Championship action types
 export type ChampionshipAction =
-  // TODO: Add championship action types
-  { type: 'RESET' };
+  | { type: 'SET_CHAMPIONSHIP'; payload: string }
+  | { type: 'RESET' };
 
 // Initial state
 export const initialChampionshipState: ChampionshipState = {
-  // TODO: Initialize championship state
+  selectedChampionship: null,
 };
 
 // Championship reducer
@@ -19,6 +19,11 @@ export const championshipReducer = (
   action: ChampionshipAction
 ): ChampionshipState => {
   switch (action.type) {
+    case 'SET_CHAMPIONSHIP':
+      return {
+        ...state,
+        selectedChampionship: action.payload,
+      };
     case 'RESET':
       return initialChampionshipState;
     default:

@@ -10,6 +10,7 @@ import {
 interface ChampionshipContextType {
   state: ChampionshipState;
   dispatch: React.Dispatch<ChampionshipAction>;
+  setChampionship: (internalName: string) => void;
 }
 
 // Create the context
@@ -31,9 +32,14 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({
     initialChampionshipState
   );
 
+  const setChampionship = (internalName: string) => {
+    dispatch({ type: 'SET_CHAMPIONSHIP', payload: internalName });
+  };
+
   const value: ChampionshipContextType = {
     state,
     dispatch,
+    setChampionship,
   };
 
   return (
