@@ -169,6 +169,14 @@ export const matchReducer = (
         }),
       };
     }
+    case 'LOAD_STATE': {
+      const { matches, teamSquadView } = action.payload;
+      return {
+        ...state,
+        matches,
+        teamSquadView,
+      };
+    }
     default:
       return state;
   }

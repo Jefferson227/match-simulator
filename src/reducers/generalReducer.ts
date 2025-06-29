@@ -16,7 +16,8 @@ export type GeneralAction =
   | { type: 'SET_BASE_TEAM'; payload: BaseTeam }
   | { type: 'SET_MATCH_TEAM'; payload: MatchTeam }
   | { type: 'SET_MATCH_OTHER_TEAMS' }
-  | { type: 'SET_SCREEN_DISPLAYED'; payload: string };
+  | { type: 'SET_SCREEN_DISPLAYED'; payload: string }
+  | { type: 'LOAD_STATE'; payload: GeneralState };
 
 // Create the reducer
 export const generalReducer = (
@@ -51,6 +52,8 @@ export const generalReducer = (
       };
     case 'SET_SCREEN_DISPLAYED':
       return { ...state, screenDisplayed: action.payload };
+    case 'LOAD_STATE':
+      return action.payload;
     default:
       return state;
   }

@@ -19,6 +19,7 @@ interface ChampionshipContextType {
   incrementCurrentRound: () => void;
   updateTableStandings: (matches: Match[]) => void;
   getTableStandings: () => TableStanding[];
+  loadState: (state: ChampionshipState) => void;
 }
 
 // Create the context
@@ -72,6 +73,10 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({
     return state.tableStandings;
   };
 
+  const loadState = (newState: ChampionshipState) => {
+    dispatch({ type: 'LOAD_STATE', payload: newState });
+  };
+
   const value: ChampionshipContextType = {
     state,
     dispatch,
@@ -83,6 +88,7 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({
     incrementCurrentRound,
     updateTableStandings,
     getTableStandings,
+    loadState,
   };
 
   return (

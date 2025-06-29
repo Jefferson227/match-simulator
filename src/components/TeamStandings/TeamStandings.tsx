@@ -1,6 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import { useChampionshipContext } from '../../contexts/ChampionshipContext';
+import { MatchContext } from '../../contexts/MatchContext';
+import sessionService from '../../services/sessionService';
 
 interface TeamStanding {
   team: string;
@@ -24,11 +26,22 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
   onNext,
   onContinue,
 }) => {
-  const { setScreenDisplayed } = useContext(GeneralContext);
+  const { setScreenDisplayed, state: generalState } =
+    useContext(GeneralContext);
   const { state: championshipState, getTableStandings } =
     useChampionshipContext();
+  const { matches } = useContext(MatchContext);
   const RESULTS_PER_PAGE = 12;
   const [page, setPage] = useState(0);
+
+  // Save session when TeamStandings is displayed (after each round)
+  useEffect(() => {
+    sessionService.saveSession({
+      general: generalState,
+      championship: championshipState,
+      matches,
+    });
+  }, [generalState, championshipState, matches]);
 
   // Use prop standings if provided (for tests), otherwise use real standings from context
   const tableStandings = propStandings

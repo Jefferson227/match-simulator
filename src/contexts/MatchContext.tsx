@@ -22,7 +22,11 @@ export type MatchAction =
       type: 'SET_TEAM_SQUAD_VIEW';
       payload: { teamSquadView: TeamSquadView | null };
     }
-  | { type: 'CONFIRM_SUBSTITUTION'; payload: SubstitutionParams };
+  | { type: 'CONFIRM_SUBSTITUTION'; payload: SubstitutionParams }
+  | {
+      type: 'LOAD_STATE';
+      payload: { matches: Match[]; teamSquadView: TeamSquadView | null };
+    };
 
 interface MatchContextType {
   matches: Match[];
@@ -34,6 +38,7 @@ interface MatchContextType {
   increaseScore: (matchId: string, scorerTeam: { isHomeTeam: boolean }) => void;
   setTeamSquadView: (teamSquadView: TeamSquadView | null) => void;
   confirmSubstitution: (params: SubstitutionParams) => void;
+  loadState: (matches: Match[], teamSquadView: TeamSquadView | null) => void;
 }
 
 const defaultContextValue: MatchContextType = {
@@ -44,6 +49,7 @@ const defaultContextValue: MatchContextType = {
   increaseScore: () => {},
   setTeamSquadView: () => {},
   confirmSubstitution: () => {},
+  loadState: () => {},
 };
 
 export const MatchContext =
@@ -86,6 +92,12 @@ export const MatchProvider: React.FC<MatchProviderProps> = ({ children }) => {
       payload: params,
     });
 
+  const loadState = (matches: Match[], teamSquadView: TeamSquadView | null) =>
+    dispatch({
+      type: 'LOAD_STATE',
+      payload: { matches, teamSquadView },
+    });
+
   return (
     <MatchContext.Provider
       value={{
@@ -96,6 +108,7 @@ export const MatchProvider: React.FC<MatchProviderProps> = ({ children }) => {
         increaseScore,
         setTeamSquadView,
         confirmSubstitution,
+        loadState,
       }}
     >
       {children}

@@ -3,11 +3,25 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import InitialScreen from './InitialScreen';
 import { GeneralContext } from '../../contexts/GeneralContext';
+import { ChampionshipProvider } from '../../contexts/ChampionshipContext';
+import { MatchProvider } from '../../contexts/MatchContext';
+
+// Mock the session service
+jest.mock('../../services/sessionService', () => ({
+  hasSession: jest.fn(() => false),
+  loadSession: jest.fn(() => null),
+  clearSession: jest.fn(),
+  saveSession: jest.fn(),
+}));
 
 const mockSetScreenDisplayed = jest.fn();
+const mockLoadGeneralState = jest.fn();
+const mockLoadChampionshipState = jest.fn();
+const mockLoadMatchState = jest.fn();
 
 const mockGeneralContextValue = {
   setScreenDisplayed: mockSetScreenDisplayed,
+  loadState: mockLoadGeneralState,
   state: {
     currentPage: 1,
     baseTeam: {},
@@ -24,7 +38,9 @@ const mockGeneralContextValue = {
 const renderWithContext = (component: React.ReactElement) => {
   return render(
     <GeneralContext.Provider value={mockGeneralContextValue as any}>
-      {component}
+      <ChampionshipProvider>
+        <MatchProvider>{component}</MatchProvider>
+      </ChampionshipProvider>
     </GeneralContext.Provider>
   );
 };

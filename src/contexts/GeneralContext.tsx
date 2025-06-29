@@ -12,6 +12,7 @@ interface GeneralContextType {
   setMatchTeam: (team: MatchTeam) => void;
   setMatchOtherTeams: () => void;
   setScreenDisplayed: (screen: string) => void;
+  loadState: (state: GeneralState) => void;
 }
 
 // Create the default context value
@@ -29,6 +30,7 @@ const defaultContextValue: GeneralContextType = {
   setMatchTeam: () => {},
   setMatchOtherTeams: () => {},
   setScreenDisplayed: () => {},
+  loadState: () => {},
 };
 
 // Create the context
@@ -70,6 +72,9 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
   const setScreenDisplayed = (screen: string) =>
     dispatch({ type: 'SET_SCREEN_DISPLAYED', payload: screen });
 
+  const loadState = (newState: GeneralState) =>
+    dispatch({ type: 'LOAD_STATE', payload: newState });
+
   return (
     <GeneralContext.Provider
       value={{
@@ -80,6 +85,7 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
         setMatchTeam,
         setMatchOtherTeams,
         setScreenDisplayed,
+        loadState,
       }}
     >
       {children}

@@ -1,11 +1,39 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { GeneralContext } from '../../contexts/GeneralContext';
+import { useChampionshipContext } from '../../contexts/ChampionshipContext';
+import { MatchContext } from '../../contexts/MatchContext';
+import sessionService from '../../services/sessionService';
 
 const InitialScreen: React.FC = () => {
-  const { setScreenDisplayed } = useContext(GeneralContext);
+  const { setScreenDisplayed, loadState: loadGeneralState } =
+    useContext(GeneralContext);
+  const { loadState: loadChampionshipState } = useChampionshipContext();
+  const { loadState: loadMatchState } = useContext(MatchContext);
+  const [hasSession, setHasSession] = useState(false);
+
+  // Check for existing session on component mount
+  useEffect(() => {
+    const sessionExists = sessionService.hasSession();
+    setHasSession(sessionExists);
+  }, []);
 
   const handleNewGame = () => {
+    // Clear any existing session when starting a new game
+    sessionService.clearSession();
     setScreenDisplayed('ChampionshipSelector');
+  };
+
+  const handleLoadGame = () => {
+    const session = sessionService.loadSession();
+    if (session) {
+      // Load all states from session
+      loadGeneralState(session.general);
+      loadChampionshipState(session.championship);
+      loadMatchState(session.matches, null); // teamSquadView is not critical for resuming
+
+      // Go directly to TeamManager screen
+      setScreenDisplayed('TeamManager');
+    }
   };
 
   // Pixel art data for "WINNING PIXELS"
@@ -135,8 +163,13 @@ const InitialScreen: React.FC = () => {
           New Game
         </button>
         <button
-          className="w-full max-w-xs border-4 border-white py-4 text-lg uppercase transition hover:bg-white hover:text-[#3d7a33] opacity-50"
-          disabled
+          onClick={handleLoadGame}
+          className={`w-full max-w-xs border-4 py-4 text-lg uppercase transition ${
+            hasSession
+              ? 'border-white hover:bg-white hover:text-[#3d7a33]'
+              : 'border-white opacity-50 cursor-not-allowed'
+          }`}
+          disabled={!hasSession}
         >
           Load Game
         </button>
