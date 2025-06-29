@@ -17,7 +17,8 @@ const MatchSimulator: FC = () => {
     useContext(MatchContext);
   const { state, setMatchOtherTeams, setScreenDisplayed } =
     useContext(GeneralContext);
-  const { state: championshipState } = useChampionshipContext();
+  const { state: championshipState, updateTableStandings } =
+    useChampionshipContext();
 
   useEffect(() => {
     // Only set matches if not already set for this round
@@ -75,8 +76,9 @@ const MatchSimulator: FC = () => {
       if (timer) clearInterval(timer);
     }
 
-    // After match ends, show standings after 5 seconds
+    // After match ends, update standings and show standings after 5 seconds
     if (time >= 90 && !teamSquadView && !detailsMatchId) {
+      updateTableStandings(matches);
       standingsTimeout = window.setTimeout(() => {
         setScreenDisplayed('TeamStandings');
       }, 5000);
@@ -94,6 +96,7 @@ const MatchSimulator: FC = () => {
     setScorer,
     increaseScore,
     setScreenDisplayed,
+    updateTableStandings,
   ]);
 
   return (
