@@ -19,7 +19,7 @@ interface TeamStandingsProps {
 }
 
 const TeamStandings: React.FC<TeamStandingsProps> = ({
-  standings: _standings,
+  standings: propStandings,
   onPrev,
   onNext,
   onContinue,
@@ -30,8 +30,18 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
   const RESULTS_PER_PAGE = 12;
   const [page, setPage] = useState(0);
 
-  // Use real standings from context
-  const tableStandings = getTableStandings();
+  // Use prop standings if provided (for tests), otherwise use real standings from context
+  const tableStandings = propStandings
+    ? propStandings.map((s) => ({
+        teamAbbreviation: s.team,
+        wins: s.w,
+        draws: s.d,
+        losses: s.l,
+        goalDifference: s.gd,
+        points: s.pts,
+      }))
+    : getTableStandings();
+
   const standings: TeamStanding[] =
     tableStandings.length > 0
       ? tableStandings.map((s) => ({
@@ -159,12 +169,12 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
         </button>
         <button
           className={`border-4 w-[80px] h-[56px] flex items-center justify-center text-[18px] bg-transparent transition ${
-            page === totalPages - 1
+            page >= totalPages - 1 || totalPages <= 1
               ? 'border-[#b0b0b0] text-[#b0b0b0] cursor-not-allowed'
               : 'border-white text-white hover:bg-white hover:text-[#397a33] cursor-pointer'
           }`}
           onClick={handleNextPage}
-          disabled={page === totalPages - 1}
+          disabled={page >= totalPages - 1 || totalPages <= 1}
           aria-label="Next"
         >
           {'>'}
