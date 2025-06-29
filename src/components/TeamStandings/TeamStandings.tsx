@@ -35,7 +35,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
   const standings: TeamStanding[] =
     tableStandings.length > 0
       ? tableStandings.map((s) => ({
-          team: s.teamName,
+          team: s.teamAbbreviation,
           w: s.wins,
           d: s.draws,
           l: s.losses,

@@ -140,6 +140,7 @@ export interface SeasonRound {
 export interface TableStanding {
   teamId: string;
   teamName: string;
+  teamAbbreviation: string;
   wins: number;
   draws: number;
   losses: number;

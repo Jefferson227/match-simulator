@@ -48,6 +48,7 @@ function calculateUpdatedStandings(
       standingsMap.set(team.id, {
         teamId: team.id,
         teamName: team.name,
+        teamAbbreviation: team.abbreviation || team.name,
         wins: 0,
         draws: 0,
         losses: 0,
