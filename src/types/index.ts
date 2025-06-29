@@ -136,3 +136,15 @@ export interface SeasonRound {
   roundNumber: number;
   matches: SeasonMatch[];
 }
+
+export interface TableStanding {
+  teamId: string;
+  teamName: string;
+  wins: number;
+  draws: number;
+  losses: number;
+  goalsFor: number;
+  goalsAgainst: number;
+  goalDifference: number;
+  points: number;
+}

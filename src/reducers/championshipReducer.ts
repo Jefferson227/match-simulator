@@ -1,4 +1,4 @@
-import { BaseTeam, SeasonRound } from '../types';
+import { BaseTeam, SeasonRound, TableStanding, Match } from '../types';
 
 // Championship state interface
 export interface ChampionshipState {
@@ -7,6 +7,7 @@ export interface ChampionshipState {
   teamsControlledAutomatically: BaseTeam[];
   seasonMatchCalendar: SeasonRound[];
   currentRound: number;
+  tableStandings: TableStanding[];
 }
 
 // Championship action types
@@ -17,6 +18,7 @@ export type ChampionshipAction =
   | { type: 'SET_SEASON_MATCH_CALENDAR'; payload: SeasonRound[] }
   | { type: 'SET_CURRENT_ROUND'; payload: number }
   | { type: 'INCREMENT_CURRENT_ROUND' }
+  | { type: 'UPDATE_TABLE_STANDINGS'; payload: Match[] }
   | { type: 'RESET' };
 
 // Initial state
@@ -26,7 +28,76 @@ export const initialChampionshipState: ChampionshipState = {
   teamsControlledAutomatically: [],
   seasonMatchCalendar: [],
   currentRound: 1,
+  tableStandings: [],
 };
+
+function calculateUpdatedStandings(
+  prevStandings: TableStanding[],
+  matches: Match[]
+): TableStanding[] {
+  // Create a map for quick lookup
+  const standingsMap = new Map<string, TableStanding>();
+  prevStandings.forEach((standing) => {
+    standingsMap.set(standing.teamId, { ...standing });
+  });
+
+  // Helper to get or create a standing
+  function getOrCreate(team: Match['homeTeam'] | Match['visitorTeam']) {
+    if (!standingsMap.has(team.id)) {
+      standingsMap.set(team.id, {
+        teamId: team.id,
+        teamName: team.name,
+        wins: 0,
+        draws: 0,
+        losses: 0,
+        goalsFor: 0,
+        goalsAgainst: 0,
+        goalDifference: 0,
+        points: 0,
+      });
+    }
+    return standingsMap.get(team.id)!;
+  }
+
+  for (const match of matches) {
+    const home = getOrCreate(match.homeTeam);
+    const away = getOrCreate(match.visitorTeam);
+    const homeGoals = match.homeTeam.score || 0;
+    const awayGoals = match.visitorTeam.score || 0;
+
+    // Update goals for/against
+    home.goalsFor += homeGoals;
+    home.goalsAgainst += awayGoals;
+    away.goalsFor += awayGoals;
+    away.goalsAgainst += homeGoals;
+
+    // Win/draw/loss/points
+    if (homeGoals > awayGoals) {
+      home.wins += 1;
+      home.points += 3;
+      away.losses += 1;
+    } else if (homeGoals < awayGoals) {
+      away.wins += 1;
+      away.points += 3;
+      home.losses += 1;
+    } else {
+      home.draws += 1;
+      away.draws += 1;
+      home.points += 1;
+      away.points += 1;
+    }
+  }
+
+  // Update goal difference
+  for (const standing of standingsMap.values()) {
+    standing.goalDifference = standing.goalsFor - standing.goalsAgainst;
+  }
+
+  // Return sorted standings
+  return Array.from(standingsMap.values()).sort(
+    (a, b) => b.points - a.points || b.goalDifference - a.goalDifference
+  );
+}
 
 // Championship reducer
 export const championshipReducer = (
@@ -63,6 +134,14 @@ export const championshipReducer = (
       return {
         ...state,
         currentRound: state.currentRound + 1,
+      };
+    case 'UPDATE_TABLE_STANDINGS':
+      return {
+        ...state,
+        tableStandings: calculateUpdatedStandings(
+          state.tableStandings,
+          action.payload
+        ),
       };
     case 'RESET':
       return initialChampionshipState;

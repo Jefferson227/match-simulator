@@ -5,7 +5,7 @@ import {
   championshipReducer,
   initialChampionshipState,
 } from '../reducers/championshipReducer';
-import { BaseTeam, SeasonRound } from '../types';
+import { BaseTeam, SeasonRound, Match } from '../types';
 
 // Championship context interface
 interface ChampionshipContextType {
@@ -17,6 +17,7 @@ interface ChampionshipContextType {
   setSeasonMatchCalendar: (matches: SeasonRound[]) => void;
   setCurrentRound: (round: number) => void;
   incrementCurrentRound: () => void;
+  updateTableStandings: (matches: Match[]) => void;
 }
 
 // Create the context
@@ -62,6 +63,10 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({
     dispatch({ type: 'INCREMENT_CURRENT_ROUND' });
   };
 
+  const updateTableStandings = (matches: Match[]) => {
+    dispatch({ type: 'UPDATE_TABLE_STANDINGS', payload: matches });
+  };
+
   const value: ChampionshipContextType = {
     state,
     dispatch,
@@ -71,6 +76,7 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({
     setSeasonMatchCalendar,
     setCurrentRound,
     incrementCurrentRound,
+    updateTableStandings,
   };
 
   return (
