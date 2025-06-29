@@ -18,28 +18,39 @@ interface TeamStandingsProps {
   onContinue?: () => void;
 }
 
-const placeholderStandings: TeamStanding[] = Array.from(
-  { length: 16 },
-  (_, i) => ({
-    team: 'CEA',
-    w: 4,
-    d: 3,
-    l: 1,
-    gd: 10,
-    pts: 10,
-  })
-);
-
 const TeamStandings: React.FC<TeamStandingsProps> = ({
-  standings = placeholderStandings,
+  standings: _standings,
   onPrev,
   onNext,
   onContinue,
 }) => {
   const { setScreenDisplayed } = useContext(GeneralContext);
-  const { state: championshipState } = useChampionshipContext();
+  const { state: championshipState, getTableStandings } =
+    useChampionshipContext();
   const RESULTS_PER_PAGE = 12;
   const [page, setPage] = useState(0);
+
+  // Use real standings from context
+  const tableStandings = getTableStandings();
+  const standings: TeamStanding[] =
+    tableStandings.length > 0
+      ? tableStandings.map((s) => ({
+          team: s.teamName,
+          w: s.wins,
+          d: s.draws,
+          l: s.losses,
+          gd: s.goalDifference,
+          pts: s.points,
+        }))
+      : Array.from({ length: 16 }, (_, i) => ({
+          team: 'CEA',
+          w: 4,
+          d: 3,
+          l: 1,
+          gd: 10,
+          pts: 10,
+        }));
+
   const totalPages = Math.ceil(standings.length / RESULTS_PER_PAGE);
   const paginatedStandings = standings.slice(
     page * RESULTS_PER_PAGE,

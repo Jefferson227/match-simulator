@@ -13,12 +13,30 @@ import utils from '../../utils/utils';
 const MatchSimulator: FC = () => {
   const [time, setTime] = useState<number>(0);
   const [detailsMatchId, setDetailsMatchId] = useState<string | null>(null);
+  const [standingsUpdated, setStandingsUpdated] = useState(false);
+  const [standingsTimeoutSet, setStandingsTimeoutSet] = useState(false);
   const { matches, teamSquadView, setMatches, increaseScore, setScorer } =
     useContext(MatchContext);
   const { state, setMatchOtherTeams, setScreenDisplayed } =
     useContext(GeneralContext);
   const { state: championshipState, updateTableStandings } =
     useChampionshipContext();
+
+  // Reset timer and detailsMatchId when leaving MatchSimulator
+  useEffect(() => {
+    if (state.screenDisplayed !== 'MatchSimulator') {
+      setTime(0);
+      setDetailsMatchId(null);
+    }
+  }, [state.screenDisplayed]);
+
+  // Reset standingsUpdated and standingsTimeoutSet when a new round starts (time resets to 0)
+  useEffect(() => {
+    if (time === 0) {
+      setStandingsUpdated(false);
+      setStandingsTimeoutSet(false);
+    }
+  }, [time]);
 
   useEffect(() => {
     // Only set matches if not already set for this round
@@ -60,7 +78,6 @@ const MatchSimulator: FC = () => {
 
   useEffect(() => {
     let timer: number | undefined;
-    let standingsTimeout: number | undefined;
 
     if (!detailsMatchId && !teamSquadView && time < 90) {
       timer = window.setInterval(() => {
@@ -77,16 +94,23 @@ const MatchSimulator: FC = () => {
     }
 
     // After match ends, update standings and show standings after 5 seconds
-    if (time >= 90 && !teamSquadView && !detailsMatchId) {
+    if (
+      time >= 90 &&
+      !teamSquadView &&
+      !detailsMatchId &&
+      !standingsUpdated &&
+      !standingsTimeoutSet
+    ) {
       updateTableStandings(matches);
-      standingsTimeout = window.setTimeout(() => {
+      setStandingsUpdated(true);
+      setStandingsTimeoutSet(true);
+      window.setTimeout(() => {
         setScreenDisplayed('TeamStandings');
       }, 5000);
     }
 
     return () => {
       if (timer) clearInterval(timer);
-      if (standingsTimeout) clearTimeout(standingsTimeout);
     };
   }, [
     time,
@@ -97,6 +121,8 @@ const MatchSimulator: FC = () => {
     increaseScore,
     setScreenDisplayed,
     updateTableStandings,
+    standingsUpdated,
+    standingsTimeoutSet,
   ]);
 
   return (

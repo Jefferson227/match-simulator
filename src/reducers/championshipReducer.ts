@@ -19,6 +19,7 @@ export type ChampionshipAction =
   | { type: 'SET_CURRENT_ROUND'; payload: number }
   | { type: 'INCREMENT_CURRENT_ROUND' }
   | { type: 'UPDATE_TABLE_STANDINGS'; payload: Match[] }
+  | { type: 'GET_TABLE_STANDINGS' }
   | { type: 'RESET' };
 
 // Initial state
@@ -32,7 +33,7 @@ export const initialChampionshipState: ChampionshipState = {
 };
 
 function calculateUpdatedStandings(
-  prevStandings: TableStanding[],
+  prevStandings: TableStanding[] = [],
   matches: Match[]
 ): TableStanding[] {
   // Create a map for quick lookup
@@ -143,6 +144,8 @@ export const championshipReducer = (
           action.payload
         ),
       };
+    case 'GET_TABLE_STANDINGS':
+      return state;
     case 'RESET':
       return initialChampionshipState;
     default:
