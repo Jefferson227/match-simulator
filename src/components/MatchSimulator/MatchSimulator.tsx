@@ -49,7 +49,8 @@ const MatchSimulator: FC = () => {
       const currentRoundMatches = getCurrentRoundMatches(
         championshipState.seasonMatchCalendar,
         championshipState.currentRound,
-        championshipState.humanPlayerBaseTeam
+        championshipState.humanPlayerBaseTeam,
+        state.matchTeam || undefined
       );
 
       // Transform to the format expected by MatchSimulator
@@ -74,6 +75,7 @@ const MatchSimulator: FC = () => {
     championshipState.seasonMatchCalendar,
     championshipState.currentRound,
     championshipState.humanPlayerBaseTeam,
+    state.matchTeam,
   ]);
 
   useEffect(() => {

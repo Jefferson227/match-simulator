@@ -49,7 +49,12 @@ function transformToBaseTeam(jsonData: any): BaseTeam {
 }
 
 function loadHomeTeam(homeTeamJson: BaseTeam): Team {
-  const homeTeam = { ...homeTeamJson } as Team;
+  const homeTeam: Team = {
+    ...homeTeamJson,
+    substitutes: [],
+    score: 0,
+    isHomeTeam: true,
+  };
   homeTeam.players = homeTeam.players.map((player: Player, index: number) => {
     let column: number;
     switch (player.position) {
@@ -73,14 +78,16 @@ function loadHomeTeam(homeTeamJson: BaseTeam): Team {
       fieldPosition: { row: (index % 5) + 1, column }, // rows 1 to 5
     };
   });
-  homeTeam.substitutes = [];
-  homeTeam.score = 0;
-  homeTeam.isHomeTeam = true;
   return homeTeam;
 }
 
 function loadVisitorTeam(visitorTeamJson: BaseTeam): Team {
-  const visitorTeam = { ...visitorTeamJson } as Team;
+  const visitorTeam: Team = {
+    ...visitorTeamJson,
+    substitutes: [],
+    score: 0,
+    isHomeTeam: false,
+  };
   visitorTeam.players = visitorTeam.players.map(
     (player: Player, index: number) => {
       let column: number;
@@ -106,9 +113,6 @@ function loadVisitorTeam(visitorTeamJson: BaseTeam): Team {
       };
     }
   );
-  visitorTeam.substitutes = [];
-  visitorTeam.score = 0;
-  visitorTeam.isHomeTeam = false;
   return visitorTeam;
 }
 
@@ -469,7 +473,8 @@ export const generateSeasonMatchCalendar = (
 export const getCurrentRoundMatches = (
   seasonCalendar: SeasonRound[],
   currentRound: number,
-  humanPlayerTeam: BaseTeam
+  humanPlayerTeam: BaseTeam,
+  humanPlayerMatchTeam?: MatchTeam
 ): { homeTeam: MatchTeam; visitorTeam: MatchTeam }[] => {
   // Find the current round
   const currentRoundData = seasonCalendar.find(
@@ -483,41 +488,65 @@ export const getCurrentRoundMatches = (
 
   // Transform season matches to MatchTeam format for MatchSimulator
   return currentRoundData.matches.map((seasonMatch) => {
+    // Check if the human player's team is playing in this match
+    const isHumanPlayerHome = seasonMatch.homeTeam.id === humanPlayerTeam.id;
+    const isHumanPlayerAway = seasonMatch.awayTeam.id === humanPlayerTeam.id;
+
     // Transform home team
-    const homeMatchTeam: MatchTeam = {
-      ...seasonMatch.homeTeam,
-      starters: getAutomaticStarters(seasonMatch.homeTeam.players),
-      substitutes: getAutomaticSubstitutes(
-        seasonMatch.homeTeam.players.filter(
-          (player) =>
-            !getAutomaticStarters(seasonMatch.homeTeam.players).some(
-              (starter) => starter.id === player.id
-            )
-        )
-      ),
-      isHomeTeam: true,
-      score: 0,
-      morale: 100,
-      overallMood: 100,
-    };
+    let homeMatchTeam: MatchTeam;
+    if (isHumanPlayerHome && humanPlayerMatchTeam) {
+      // Use the human player's match team (with correct formation and players)
+      homeMatchTeam = {
+        ...humanPlayerMatchTeam,
+        isHomeTeam: true,
+      };
+    } else {
+      // Use automatic selection for AI teams
+      homeMatchTeam = {
+        ...seasonMatch.homeTeam,
+        starters: getAutomaticStarters(seasonMatch.homeTeam.players),
+        substitutes: getAutomaticSubstitutes(
+          seasonMatch.homeTeam.players.filter(
+            (player) =>
+              !getAutomaticStarters(seasonMatch.homeTeam.players).some(
+                (starter) => starter.id === player.id
+              )
+          )
+        ),
+        isHomeTeam: true,
+        score: 0,
+        morale: 100,
+        overallMood: 100,
+      };
+    }
 
     // Transform away team
-    const awayMatchTeam: MatchTeam = {
-      ...seasonMatch.awayTeam,
-      starters: getAutomaticStarters(seasonMatch.awayTeam.players),
-      substitutes: getAutomaticSubstitutes(
-        seasonMatch.awayTeam.players.filter(
-          (player) =>
-            !getAutomaticStarters(seasonMatch.awayTeam.players).some(
-              (starter) => starter.id === player.id
-            )
-        )
-      ),
-      isHomeTeam: false,
-      score: 0,
-      morale: 100,
-      overallMood: 100,
-    };
+    let awayMatchTeam: MatchTeam;
+    if (isHumanPlayerAway && humanPlayerMatchTeam) {
+      // Use the human player's match team (with correct formation and players)
+      awayMatchTeam = {
+        ...humanPlayerMatchTeam,
+        isHomeTeam: false,
+      };
+    } else {
+      // Use automatic selection for AI teams
+      awayMatchTeam = {
+        ...seasonMatch.awayTeam,
+        starters: getAutomaticStarters(seasonMatch.awayTeam.players),
+        substitutes: getAutomaticSubstitutes(
+          seasonMatch.awayTeam.players.filter(
+            (player) =>
+              !getAutomaticStarters(seasonMatch.awayTeam.players).some(
+                (starter) => starter.id === player.id
+              )
+          )
+        ),
+        isHomeTeam: false,
+        score: 0,
+        morale: 100,
+        overallMood: 100,
+      };
+    }
 
     return {
       homeTeam: homeMatchTeam,
