@@ -29,7 +29,7 @@ export const initialChampionshipState: ChampionshipState = {
   humanPlayerBaseTeam: null,
   teamsControlledAutomatically: [],
   seasonMatchCalendar: [],
-  currentRound: 1,
+  currentRound: 0,
   tableStandings: [],
 };
 
