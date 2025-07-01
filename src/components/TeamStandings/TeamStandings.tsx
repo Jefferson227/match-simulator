@@ -99,10 +99,10 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
       className="font-press-start min-h-screen"
       style={{ backgroundColor: '#3d7a33' }}
     >
-      <div className="text-center text-[18px] text-white font-bold mt-6 mb-2 tracking-wider">
+      <div className="text-center text-[18px] text-white mt-6 mb-2 tracking-wider">
         TABLE STANDINGS
       </div>
-      <div className="text-center text-[14px] text-white mb-2">
+      <div className="text-center text-[14px] text-white mb-2 uppercase">
         Round {championshipState.currentRound} of {totalRounds}
         {isSeasonComplete && (
           <span className="block text-[12px] text-yellow-300">
