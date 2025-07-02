@@ -155,10 +155,19 @@ const MatchSimulator: FC = () => {
   return (
     <div className="font-press-start relative min-h-screen">
       <div
-        className="h-[33px] bg-[#fbff21] mb-[33px]"
+        className="h-[33px] bg-[#fbff21] mb-[18px]"
         style={{ width: `${(time * 100) / 90}%` }}
       >
         <p className="m-0 pt-1 text-right pr-2 text-[20px] text-[#1e1e1e]">{`${time}'`}</p>
+      </div>
+      <div className="mb-[18px] text-center text-white text-sm uppercase">
+        {championshipState.currentRound &&
+          championshipState.seasonMatchCalendar.length > 0 &&
+          !teamSquadView && (
+            <span>
+              {`Round ${championshipState.currentRound} of ${championshipState.seasonMatchCalendar.length}`}
+            </span>
+          )}
       </div>
 
       {!teamSquadView && !detailsMatchId ? (
