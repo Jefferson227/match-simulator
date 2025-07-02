@@ -10,11 +10,14 @@ import { getCurrentRoundMatches } from '../../services/teamService';
 import MatchDetails from '../MatchDetails';
 import utils from '../../utils/utils';
 
+const MATCHES_PER_PAGE = 6;
+
 const MatchSimulator: FC = () => {
   const [time, setTime] = useState<number>(0);
   const [detailsMatchId, setDetailsMatchId] = useState<string | null>(null);
   const [standingsUpdated, setStandingsUpdated] = useState(false);
   const [standingsTimeoutSet, setStandingsTimeoutSet] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
   const { matches, teamSquadView, setMatches, increaseScore, setScorer } =
     useContext(MatchContext);
   const { state, setMatchOtherTeams, setScreenDisplayed } =
@@ -27,6 +30,7 @@ const MatchSimulator: FC = () => {
     if (state.screenDisplayed !== 'MatchSimulator') {
       setTime(0);
       setDetailsMatchId(null);
+      setCurrentPage(0);
     }
   }, [state.screenDisplayed]);
 
@@ -35,6 +39,7 @@ const MatchSimulator: FC = () => {
     if (time === 0) {
       setStandingsUpdated(false);
       setStandingsTimeoutSet(false);
+      setCurrentPage(0);
     }
   }, [time]);
 
@@ -127,8 +132,28 @@ const MatchSimulator: FC = () => {
     standingsTimeoutSet,
   ]);
 
+  const totalPages = Math.ceil(matches.length / MATCHES_PER_PAGE);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
+  const startIndex = currentPage * MATCHES_PER_PAGE;
+  const selectedMatches = matches.slice(
+    startIndex,
+    startIndex + MATCHES_PER_PAGE
+  );
+
   return (
-    <div className="font-press-start">
+    <div className="font-press-start relative min-h-screen">
       <div
         className="h-[33px] bg-[#fbff21] mb-[33px]"
         style={{ width: `${(time * 100) / 90}%` }}
@@ -138,7 +163,7 @@ const MatchSimulator: FC = () => {
 
       {!teamSquadView && !detailsMatchId ? (
         <div className="flex flex-col items-center">
-          {matches.map((match, index) => (
+          {selectedMatches.map((match, index) => (
             <div
               className="w-[320px] flex justify-between items-center mb-[48px] relative"
               key={index}
@@ -161,6 +186,28 @@ const MatchSimulator: FC = () => {
           ))}
         </div>
       ) : null}
+
+      {/* Fixed pagination buttons at the bottom, always visible */}
+      {matches.length > MATCHES_PER_PAGE &&
+        !teamSquadView &&
+        !detailsMatchId && (
+          <div className="fixed left-1/2 transform -translate-x-1/2 bottom-20 z-50 flex justify-between w-[390px] px-6 max-w-md">
+            <button
+              onClick={handlePrevPage}
+              disabled={currentPage === 0}
+              className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              &lt;
+            </button>
+            <button
+              onClick={handleNextPage}
+              disabled={currentPage >= totalPages - 1}
+              className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              &gt;
+            </button>
+          </div>
+        )}
 
       {detailsMatchId &&
         (() => {
