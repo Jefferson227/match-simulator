@@ -3,6 +3,7 @@ import { GeneralContext } from '../../contexts/GeneralContext';
 import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import { MatchContext } from '../../contexts/MatchContext';
 import sessionService from '../../services/sessionService';
+import generalService from '../../services/generalService';
 
 interface TeamStanding {
   team: string;
@@ -94,13 +95,23 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
   const totalRounds = championshipState.seasonMatchCalendar.length;
   const isSeasonComplete = championshipState.currentRound >= totalRounds;
 
+  // Get championship display name
+  let championshipName = championshipState.selectedChampionship;
+  if (championshipState.selectedChampionship) {
+    const allChamps = generalService.getAllChampionships();
+    const foundChamp = allChamps.find(
+      (c) => c.internalName === championshipState.selectedChampionship
+    );
+    if (foundChamp) championshipName = foundChamp.name;
+  }
+
   return (
     <div
       className="font-press-start min-h-screen"
       style={{ backgroundColor: '#3d7a33' }}
     >
-      <div className="text-center text-[18px] text-white mt-6 mb-2 tracking-wider">
-        TABLE STANDINGS
+      <div className="text-center text-[16px] text-white mt-6 mb-2 tracking-wider uppercase">
+        {championshipName}
       </div>
       <div className="text-center text-[14px] text-white mb-2 uppercase">
         Round {championshipState.currentRound} of {totalRounds}
