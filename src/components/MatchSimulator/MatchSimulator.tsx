@@ -172,51 +172,52 @@ const MatchSimulator: FC = () => {
 
       {!teamSquadView && !detailsMatchId ? (
         <div className="flex flex-col items-center">
-          {selectedMatches.map((match, index) => (
-            <div
-              className="w-[320px] flex justify-between items-center mb-[48px] relative"
-              key={index}
-            >
-              <TeamComponent team={match.homeTeam} matchId={match.id} />
-              <Score
-                homeScore={match.homeTeam.score || 0}
-                guestScore={match.visitorTeam.score || 0}
-                onClick={() => setDetailsMatchId(match.id)}
-              />
-              <TeamComponent team={match.visitorTeam} matchId={match.id} />
-              <div className="absolute -bottom-7 left-0 text-[14px] text-[#e2e2e2] uppercase">
-                {match?.lastScorer
-                  ? `${utils.shortenPlayerName(match.lastScorer.playerName)} ${
-                      match.lastScorer.time
-                    }'`
-                  : null}
+          <div className="h-[579px]">
+            {selectedMatches.map((match, index) => (
+              <div
+                className="w-[320px] flex justify-between items-center mb-[48px] relative"
+                key={index}
+              >
+                <TeamComponent team={match.homeTeam} matchId={match.id} />
+                <Score
+                  homeScore={match.homeTeam.score || 0}
+                  guestScore={match.visitorTeam.score || 0}
+                  onClick={() => setDetailsMatchId(match.id)}
+                />
+                <TeamComponent team={match.visitorTeam} matchId={match.id} />
+                <div className="absolute -bottom-7 left-0 text-[14px] text-[#e2e2e2] uppercase">
+                  {match?.lastScorer
+                    ? `${utils.shortenPlayerName(
+                        match.lastScorer.playerName
+                      )} ${match.lastScorer.time}'`
+                    : null}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          {matches.length > MATCHES_PER_PAGE &&
+            !teamSquadView &&
+            !detailsMatchId && (
+              <div className="w-[320px] flex justify-between items-center mb-[48px] relative">
+                <button
+                  onClick={handlePrevPage}
+                  disabled={currentPage === 0}
+                  className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  &lt;
+                </button>
+                <button
+                  onClick={handleNextPage}
+                  disabled={currentPage >= totalPages - 1}
+                  className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  &gt;
+                </button>
+              </div>
+            )}
         </div>
       ) : null}
-
-      {/* Fixed pagination buttons at the bottom, always visible */}
-      {matches.length > MATCHES_PER_PAGE &&
-        !teamSquadView &&
-        !detailsMatchId && (
-          <div className="fixed left-1/2 transform -translate-x-1/2 bottom-20 z-50 flex justify-between w-[390px] px-6 max-w-md">
-            <button
-              onClick={handlePrevPage}
-              disabled={currentPage === 0}
-              className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              &lt;
-            </button>
-            <button
-              onClick={handleNextPage}
-              disabled={currentPage >= totalPages - 1}
-              className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              &gt;
-            </button>
-          </div>
-        )}
 
       {detailsMatchId &&
         (() => {
