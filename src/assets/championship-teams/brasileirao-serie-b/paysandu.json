@@ -3,9 +3,9 @@
   "shortName": "Paysandu",
   "abbreviation": "PAY",
   "colors": {
-    "outline": "#FFD700",
-    "background": "#000080",
-    "name": "#FFFFFF"
+    "outline": "#fafafc",
+    "background": "#3885c6",
+    "name": "#fafafc"
   },
   "initialOverallStrength": 55,
   "formation": "",

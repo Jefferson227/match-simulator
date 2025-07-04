@@ -3,9 +3,9 @@
   "shortName": "Criciúma",
   "abbreviation": "CRI",
   "colors": {
-    "outline": "#FFD700",
-    "background": "#000000",
-    "name": "#FFFFFF"
+    "outline": "#1f1f1f",
+    "background": "#fcd116",
+    "name": "#1f1f1f"
   },
   "initialOverallStrength": 59,
   "formation": "",

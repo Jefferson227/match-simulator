@@ -3,9 +3,9 @@
   "shortName": "América-MG",
   "abbreviation": "AME",
   "colors": {
-    "outline": "#0066CC",
-    "background": "#FFFFFF",
-    "name": "#0066CC"
+    "outline": "#f3f5f4",
+    "background": "#016538",
+    "name": "#f3f5f4"
   },
   "initialOverallStrength": 66,
   "formation": "",

@@ -3,9 +3,9 @@
   "shortName": "Volta Redonda",
   "abbreviation": "VRF",
   "colors": {
-    "outline": "#FF0000",
-    "background": "#FFFFFF",
-    "name": "#FF0000"
+    "outline": "#fafafc",
+    "background": "#1f1f1f",
+    "name": "#f8de05"
   },
   "initialOverallStrength": 57,
   "formation": "",

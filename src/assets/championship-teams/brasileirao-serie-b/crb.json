@@ -3,9 +3,9 @@
   "shortName": "CRB",
   "abbreviation": "CRB",
   "colors": {
-    "outline": "#FFD700",
-    "background": "#000080",
-    "name": "#FFFFFF"
+    "outline": "#cd2f33",
+    "background": "#fafafc",
+    "name": "#cd2f33"
   },
   "initialOverallStrength": 68,
   "formation": "",

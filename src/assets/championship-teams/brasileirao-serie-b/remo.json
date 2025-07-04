@@ -3,9 +3,9 @@
   "shortName": "Remo",
   "abbreviation": "REM",
   "colors": {
-    "outline": "#000080",
-    "background": "#FFFFFF",
-    "name": "#000080"
+    "outline": "#fafafc",
+    "background": "#273649",
+    "name": "#fafafc"
   },
   "initialOverallStrength": 70,
   "formation": "",

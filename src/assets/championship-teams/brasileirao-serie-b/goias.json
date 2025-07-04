@@ -3,9 +3,9 @@
   "shortName": "Goiás",
   "abbreviation": "GOI",
   "colors": {
-    "outline": "#008000",
-    "background": "#FFFFFF",
-    "name": "#008000"
+    "outline": "#fafafc",
+    "background": "#00685b",
+    "name": "#fafafc"
   },
   "initialOverallStrength": 75,
   "formation": "",

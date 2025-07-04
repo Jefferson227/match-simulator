@@ -3,9 +3,9 @@
   "shortName": "Vila Nova",
   "abbreviation": "VIL",
   "colors": {
-    "outline": "#FFD700",
-    "background": "#000000",
-    "name": "#FFFFFF"
+    "outline": "#fafafc",
+    "background": "#e22028",
+    "name": "#fafafc"
   },
   "initialOverallStrength": 63,
   "formation": "",

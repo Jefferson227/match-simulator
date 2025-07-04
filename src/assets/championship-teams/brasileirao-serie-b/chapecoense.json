@@ -3,9 +3,9 @@
   "shortName": "Chapecoense",
   "abbreviation": "CHA",
   "colors": {
-    "outline": "#0066CC",
-    "background": "#FFFFFF",
-    "name": "#0066CC"
+    "outline": "#fafafc",
+    "background": "#0c8e3a",
+    "name": "#fafafc"
   },
   "initialOverallStrength": 64,
   "formation": "",

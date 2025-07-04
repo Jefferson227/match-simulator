@@ -3,9 +3,9 @@
   "shortName": "Botafogo-SP",
   "abbreviation": "BOT",
   "colors": {
-    "outline": "#000000",
-    "background": "#FFFFFF",
-    "name": "#000000"
+    "outline": "#ed2f26",
+    "background": "#fafafc",
+    "name": "#1f1f1f"
   },
   "initialOverallStrength": 58,
   "formation": "",

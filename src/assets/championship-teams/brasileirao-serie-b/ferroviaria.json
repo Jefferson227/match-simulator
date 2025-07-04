@@ -3,9 +3,9 @@
   "shortName": "Ferroviária",
   "abbreviation": "FER",
   "colors": {
-    "outline": "#FF6B35",
-    "background": "#FFFFFF",
-    "name": "#FF6B35"
+    "outline": "#fafafc",
+    "background": "#a44045",
+    "name": "#fafafc"
   },
   "initialOverallStrength": 61,
   "formation": "",

@@ -3,9 +3,9 @@
   "shortName": "Novorizontino",
   "abbreviation": "NOV",
   "colors": {
-    "outline": "#0066CC",
-    "background": "#FFFFFF",
-    "name": "#0066CC"
+    "outline": "#fcf206",
+    "background": "#1f1f1f",
+    "name": "#fafafc"
   },
   "initialOverallStrength": 72,
   "formation": "",

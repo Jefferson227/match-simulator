@@ -3,9 +3,9 @@
   "shortName": "Coritiba",
   "abbreviation": "COR",
   "colors": {
-    "outline": "#0066CC",
-    "background": "#FFFFFF",
-    "name": "#0066CC"
+    "outline": "#fafafc",
+    "background": "#09554f",
+    "name": "#fafafc"
   },
   "initialOverallStrength": 75,
   "formation": "",

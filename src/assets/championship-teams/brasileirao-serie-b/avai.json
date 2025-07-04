@@ -3,9 +3,9 @@
   "shortName": "Avaí",
   "abbreviation": "AVA",
   "colors": {
-    "outline": "#0066CC",
-    "background": "#FFFFFF",
-    "name": "#0066CC"
+    "outline": "#03689a",
+    "background": "#fafafc",
+    "name": "#03689a"
   },
   "initialOverallStrength": 70,
   "formation": "",

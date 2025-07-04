@@ -3,9 +3,9 @@
   "shortName": "Cuiabá",
   "abbreviation": "CUI",
   "colors": {
-    "outline": "#FFE600",
-    "background": "#006600",
-    "name": "#FFFFFF"
+    "outline": "#faab19",
+    "background": "#0e743b",
+    "name": "#fafafc"
   },
   "initialOverallStrength": 67,
   "formation": "",

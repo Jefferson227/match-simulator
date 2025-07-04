@@ -3,9 +3,9 @@
   "shortName": "Operário-PR",
   "abbreviation": "OPE",
   "colors": {
-    "outline": "#FFD700",
-    "background": "#000000",
-    "name": "#FFFFFF"
+    "outline": "#1f1f1f",
+    "background": "#fafafc",
+    "name": "#1f1f1f"
   },
   "initialOverallStrength": 60,
   "formation": "",

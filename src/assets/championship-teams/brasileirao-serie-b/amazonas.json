@@ -3,9 +3,9 @@
   "shortName": "Amazonas",
   "abbreviation": "AMA",
   "colors": {
-    "outline": "#FFD700",
-    "background": "#006400",
-    "name": "#FFFFFF"
+    "outline": "#fbab2c",
+    "background": "#05030e",
+    "name": "#fbab2c"
   },
   "initialOverallStrength": 56,
   "formation": "",
