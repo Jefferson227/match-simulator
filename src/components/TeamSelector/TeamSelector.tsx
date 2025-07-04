@@ -16,6 +16,7 @@ const TeamSelector: React.FC = () => {
   const { t } = useTranslation();
   const { setScreenDisplayed } = useContext(GeneralContext);
   const {
+    state: championshipState,
     setHumanPlayerBaseTeam,
     setTeamsControlledAutomatically,
     setSeasonMatchCalendar,
@@ -29,8 +30,10 @@ const TeamSelector: React.FC = () => {
     const loadTeams = async () => {
       try {
         setLoading(true);
+        const selectedChampionship =
+          championshipState.selectedChampionship || 'brasileirao-serie-a';
         const loadedTeams = await loadTeamsForChampionship(
-          'brasileirao-serie-a'
+          selectedChampionship
         );
         setTeams(loadedTeams);
         setError(null);
@@ -43,7 +46,7 @@ const TeamSelector: React.FC = () => {
     };
 
     loadTeams();
-  }, []);
+  }, [championshipState.selectedChampionship]);
 
   const totalPages = Math.ceil(teams.length / TEAMS_PER_PAGE);
 
@@ -62,9 +65,11 @@ const TeamSelector: React.FC = () => {
   const handleTeamClick = async (teamFileName: string) => {
     try {
       if (teamFileName) {
+        const selectedChampionship =
+          championshipState.selectedChampionship || 'brasileirao-serie-a';
         // Load the specific team data
         const baseTeam = await loadSpecificTeam(
-          'brasileirao-serie-a',
+          selectedChampionship,
           teamFileName
         );
 
@@ -74,7 +79,7 @@ const TeamSelector: React.FC = () => {
 
           // Load all other teams in the championship for automatic control
           const automaticTeams = await loadAllTeamsExceptOne(
-            'brasileirao-serie-a',
+            selectedChampionship,
             teamFileName
           );
 
