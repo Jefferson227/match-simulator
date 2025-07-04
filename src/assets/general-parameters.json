@@ -39,7 +39,29 @@
       "promotionTeams": 4,
       "relegationTeams": 4,
       "promotionChampionship": "brasileirao-serie-a",
-      "relegationChampionship": "brasileirao-serie-c"
+      "relegationChampionship": "brasileirao-serie-c",
+      "teams": [
+        "amazonas",
+        "america-mg",
+        "athletic",
+        "athletico-paranaense",
+        "atletico-go",
+        "avai",
+        "botafogo-sp",
+        "chapecoense",
+        "coritiba",
+        "crb",
+        "criciuma",
+        "cuiaba",
+        "ferroviaria",
+        "goias",
+        "novorizontino",
+        "operario-pr",
+        "paysandu",
+        "remo",
+        "vila-nova",
+        "volta-redonda"
+      ]
     },
     {
       "id": "c3d4e5f6-g7h8-9012-cdef-345678901234",
