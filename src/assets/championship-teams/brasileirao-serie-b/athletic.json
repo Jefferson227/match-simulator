@@ -1,0 +1,39 @@
+{
+  "name": "Athletic Club",
+  "shortName": "Athletic",
+  "abbreviation": "ATH",
+  "colors": {
+    "outline": "#000000",
+    "background": "#FFFFFF",
+    "name": "#000000"
+  },
+  "initialOverallStrength": 73,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Matheus Nogueira", "strength": 0 },
+    { "position": "GK", "name": "Lucas Perri", "strength": 0 },
+    { "position": "DF", "name": "Lucas Halter", "strength": 0 },
+    { "position": "DF", "name": "Matheus Mendes", "strength": 0 },
+    { "position": "DF", "name": "Lucas Kal", "strength": 0 },
+    { "position": "DF", "name": "Matheus Alexandre", "strength": 0 },
+    { "position": "DF", "name": "Lucas Pires", "strength": 0 },
+    { "position": "DF", "name": "Matheus França", "strength": 0 },
+    { "position": "MF", "name": "Lucas Silva", "strength": 0 },
+    { "position": "MF", "name": "Matheus Pereira", "strength": 0 },
+    { "position": "MF", "name": "Lucas Lima", "strength": 0 },
+    { "position": "MF", "name": "Matheus Cunha", "strength": 0 },
+    { "position": "MF", "name": "Lucas Evangelista", "strength": 0 },
+    { "position": "MF", "name": "Matheus Henrique", "strength": 0 },
+    { "position": "MF", "name": "Lucas Paquetá", "strength": 0 },
+    { "position": "FW", "name": "Matheus Martins", "strength": 0 },
+    { "position": "FW", "name": "Lucas Moura", "strength": 0 },
+    { "position": "FW", "name": "Matheus Nascimento", "strength": 0 },
+    { "position": "FW", "name": "Lucas Santos", "strength": 0 },
+    { "position": "FW", "name": "Matheus Oliveira", "strength": 0 },
+    { "position": "FW", "name": "Lucas Alves", "strength": 0 },
+    { "position": "FW", "name": "Matheus Costa", "strength": 0 },
+    { "position": "FW", "name": "Lucas Rocha", "strength": 0 }
+  ]
+}

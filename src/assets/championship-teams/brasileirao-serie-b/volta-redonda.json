@@ -1,0 +1,39 @@
+{
+  "name": "Volta Redonda Futebol Clube",
+  "shortName": "Volta Redonda",
+  "abbreviation": "VRF",
+  "colors": {
+    "outline": "#FF0000",
+    "background": "#FFFFFF",
+    "name": "#FF0000"
+  },
+  "initialOverallStrength": 70,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Matheus Nogueira", "strength": 0 },
+    { "position": "GK", "name": "João Carlos", "strength": 0 },
+    { "position": "DF", "name": "Rafael Donato", "strength": 0 },
+    { "position": "DF", "name": "Bruno Silva", "strength": 0 },
+    { "position": "DF", "name": "Lucas Rocha", "strength": 0 },
+    { "position": "DF", "name": "João Paulo", "strength": 0 },
+    { "position": "DF", "name": "Rafael Vaz", "strength": 0 },
+    { "position": "DF", "name": "Bruno Alves", "strength": 0 },
+    { "position": "MF", "name": "Lucas Lima", "strength": 0 },
+    { "position": "MF", "name": "Rafael Silva", "strength": 0 },
+    { "position": "MF", "name": "Bruno Henrique", "strength": 0 },
+    { "position": "MF", "name": "Lucas Moura", "strength": 0 },
+    { "position": "MF", "name": "Rafael Alves", "strength": 0 },
+    { "position": "MF", "name": "Bruno Santos", "strength": 0 },
+    { "position": "MF", "name": "Lucas Oliveira", "strength": 0 },
+    { "position": "FW", "name": "Rafael Martins", "strength": 0 },
+    { "position": "FW", "name": "Bruno Pereira", "strength": 0 },
+    { "position": "FW", "name": "Lucas Santos", "strength": 0 },
+    { "position": "FW", "name": "Rafael Lima", "strength": 0 },
+    { "position": "FW", "name": "Bruno Costa", "strength": 0 },
+    { "position": "FW", "name": "Lucas Almeida", "strength": 0 },
+    { "position": "FW", "name": "Rafael Silva", "strength": 0 },
+    { "position": "FW", "name": "Bruno Mendes", "strength": 0 }
+  ]
+}

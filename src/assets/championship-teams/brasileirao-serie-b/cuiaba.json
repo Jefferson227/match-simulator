@@ -1,0 +1,39 @@
+{
+  "name": "Cuiabá Esporte Clube",
+  "shortName": "Cuiabá",
+  "abbreviation": "CUI",
+  "colors": {
+    "outline": "#FFE600",
+    "background": "#006600",
+    "name": "#FFFFFF"
+  },
+  "initialOverallStrength": 76,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Walter", "strength": 0 },
+    { "position": "GK", "name": "João Carlos", "strength": 0 },
+    { "position": "DF", "name": "Alan Empereur", "strength": 0 },
+    { "position": "DF", "name": "Marlon", "strength": 0 },
+    { "position": "DF", "name": "Uendel", "strength": 0 },
+    { "position": "DF", "name": "Paulão", "strength": 0 },
+    { "position": "DF", "name": "Lucas Mineiro", "strength": 0 },
+    { "position": "DF", "name": "Ramon", "strength": 0 },
+    { "position": "DF", "name": "Matheus Alexandre", "strength": 0 },
+    { "position": "MF", "name": "Denilson", "strength": 0 },
+    { "position": "MF", "name": "Pepê", "strength": 0 },
+    { "position": "MF", "name": "Lucas Fernandes", "strength": 0 },
+    { "position": "MF", "name": "Fernando Sobral", "strength": 0 },
+    { "position": "MF", "name": "André Luis", "strength": 0 },
+    { "position": "MF", "name": "Ronald", "strength": 0 },
+    { "position": "MF", "name": "Clayson", "strength": 0 },
+    { "position": "FW", "name": "Deyverson", "strength": 0 },
+    { "position": "FW", "name": "Isidro Pitta", "strength": 0 },
+    { "position": "FW", "name": "Jonathan Cafú", "strength": 0 },
+    { "position": "FW", "name": "Elton", "strength": 0 },
+    { "position": "FW", "name": "Felipe Marques", "strength": 0 },
+    { "position": "FW", "name": "André", "strength": 0 },
+    { "position": "FW", "name": "Alesson", "strength": 0 }
+  ]
+}

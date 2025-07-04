@@ -1,0 +1,38 @@
+{
+  "name": "América Futebol Clube",
+  "shortName": "América-MG",
+  "abbreviation": "AME",
+  "colors": {
+    "outline": "#0066CC",
+    "background": "#FFFFFF",
+    "name": "#0066CC"
+  },
+  "initialOverallStrength": 75,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Matheus Cavichioli", "strength": 0 },
+    { "position": "GK", "name": "João Ricardo", "strength": 0 },
+    { "position": "DF", "name": "Eder", "strength": 0 },
+    { "position": "DF", "name": "Iago Maidana", "strength": 0 },
+    { "position": "DF", "name": "Danilo Avelar", "strength": 0 },
+    { "position": "DF", "name": "Ricardo Silva", "strength": 0 },
+    { "position": "DF", "name": "Marlon", "strength": 0 },
+    { "position": "DF", "name": "Juninho", "strength": 0 },
+    { "position": "MF", "name": "Juninho", "strength": 0 },
+    { "position": "MF", "name": "Alerrandro", "strength": 0 },
+    { "position": "MF", "name": "Felipe Azevedo", "strength": 0 },
+    { "position": "MF", "name": "Rodriguinho", "strength": 0 },
+    { "position": "MF", "name": "Ademir", "strength": 0 },
+    { "position": "MF", "name": "Everaldo", "strength": 0 },
+    { "position": "FW", "name": "Henrique Almeida", "strength": 0 },
+    { "position": "FW", "name": "Wellington Paulista", "strength": 0 },
+    { "position": "FW", "name": "Felipe Azevedo", "strength": 0 },
+    { "position": "FW", "name": "Rodriguinho", "strength": 0 },
+    { "position": "FW", "name": "Ademir", "strength": 0 },
+    { "position": "FW", "name": "Everaldo", "strength": 0 },
+    { "position": "FW", "name": "Henrique Almeida", "strength": 0 },
+    { "position": "FW", "name": "Wellington Paulista", "strength": 0 }
+  ]
+}

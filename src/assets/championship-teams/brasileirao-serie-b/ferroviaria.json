@@ -1,0 +1,39 @@
+{
+  "name": "Associação Ferroviária de Esportes",
+  "shortName": "Ferroviária",
+  "abbreviation": "FER",
+  "colors": {
+    "outline": "#FF6B35",
+    "background": "#FFFFFF",
+    "name": "#FF6B35"
+  },
+  "initialOverallStrength": 72,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "João Paulo", "strength": 0 },
+    { "position": "GK", "name": "Rafael Santos", "strength": 0 },
+    { "position": "DF", "name": "Bruno Silva", "strength": 0 },
+    { "position": "DF", "name": "Lucas Mendes", "strength": 0 },
+    { "position": "DF", "name": "Rafael Vaz", "strength": 0 },
+    { "position": "DF", "name": "Bruno Alves", "strength": 0 },
+    { "position": "DF", "name": "Lucas Rocha", "strength": 0 },
+    { "position": "DF", "name": "Rafael Costa", "strength": 0 },
+    { "position": "MF", "name": "Bruno Henrique", "strength": 0 },
+    { "position": "MF", "name": "Lucas Lima", "strength": 0 },
+    { "position": "MF", "name": "Rafael Silva", "strength": 0 },
+    { "position": "MF", "name": "Bruno César", "strength": 0 },
+    { "position": "MF", "name": "Lucas Moura", "strength": 0 },
+    { "position": "MF", "name": "Rafael Alves", "strength": 0 },
+    { "position": "MF", "name": "Bruno Santos", "strength": 0 },
+    { "position": "FW", "name": "Lucas Oliveira", "strength": 0 },
+    { "position": "FW", "name": "Rafael Martins", "strength": 0 },
+    { "position": "FW", "name": "Bruno Pereira", "strength": 0 },
+    { "position": "FW", "name": "Lucas Santos", "strength": 0 },
+    { "position": "FW", "name": "Rafael Lima", "strength": 0 },
+    { "position": "FW", "name": "Bruno Costa", "strength": 0 },
+    { "position": "FW", "name": "Lucas Almeida", "strength": 0 },
+    { "position": "FW", "name": "Rafael Silva", "strength": 0 }
+  ]
+}

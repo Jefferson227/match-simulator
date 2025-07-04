@@ -1,0 +1,37 @@
+{
+  "name": "Atlético Clube Goianiense",
+  "shortName": "Atlético-GO",
+  "abbreviation": "ACG",
+  "colors": {
+    "outline": "#E30613",
+    "background": "#000000",
+    "name": "#FFFFFF"
+  },
+  "initialOverallStrength": 77,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Ronaldo", "strength": 0 },
+    { "position": "GK", "name": "Luan Polli", "strength": 0 },
+    { "position": "DF", "name": "Dudu", "strength": 0 },
+    { "position": "DF", "name": "Lucas Gazal", "strength": 0 },
+    { "position": "DF", "name": "Alix Vinícius", "strength": 0 },
+    { "position": "DF", "name": "Heron", "strength": 0 },
+    { "position": "DF", "name": "Bruno Tubarão", "strength": 0 },
+    { "position": "DF", "name": "Maguinho", "strength": 0 },
+    { "position": "MF", "name": "Baralhas", "strength": 0 },
+    { "position": "MF", "name": "Rhaldney", "strength": 0 },
+    { "position": "MF", "name": "Shaylon", "strength": 0 },
+    { "position": "MF", "name": "Matheus Peixoto", "strength": 0 },
+    { "position": "MF", "name": "Gabriel Baralhas", "strength": 0 },
+    { "position": "MF", "name": "Bruno Mezenga", "strength": 0 },
+    { "position": "FW", "name": "Luiz Fernando", "strength": 0 },
+    { "position": "FW", "name": "Airton", "strength": 0 },
+    { "position": "FW", "name": "Felipe Vizeu", "strength": 0 },
+    { "position": "FW", "name": "Jorginho", "strength": 0 },
+    { "position": "FW", "name": "Gustavo Coutinho", "strength": 0 },
+    { "position": "FW", "name": "Everton Felipe", "strength": 0 },
+    { "position": "FW", "name": "Yuri Lima", "strength": 0 }
+  ]
+}

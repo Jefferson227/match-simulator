@@ -1,0 +1,37 @@
+{
+  "name": "Club Athletico Paranaense",
+  "shortName": "Athletico-PR",
+  "abbreviation": "CAP",
+  "colors": {
+    "outline": "#E30613",
+    "background": "#000000",
+    "name": "#FFFFFF"
+  },
+  "initialOverallStrength": 78,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Bento", "strength": 0 },
+    { "position": "GK", "name": "Léo Linck", "strength": 0 },
+    { "position": "DF", "name": "Thiago Heleno", "strength": 0 },
+    { "position": "DF", "name": "Pedro Henrique", "strength": 0 },
+    { "position": "DF", "name": "Khellven", "strength": 0 },
+    { "position": "DF", "name": "Matheus Felipe", "strength": 0 },
+    { "position": "DF", "name": "Esquivel", "strength": 0 },
+    { "position": "DF", "name": "Cacá", "strength": 0 },
+    { "position": "MF", "name": "Fernandinho", "strength": 0 },
+    { "position": "MF", "name": "Erick", "strength": 0 },
+    { "position": "MF", "name": "Christian", "strength": 0 },
+    { "position": "MF", "name": "Vitor Bueno", "strength": 0 },
+    { "position": "MF", "name": "Hugo Moura", "strength": 0 },
+    { "position": "MF", "name": "Alex Santana", "strength": 0 },
+    { "position": "FW", "name": "Pablo", "strength": 0 },
+    { "position": "FW", "name": "Canobbio", "strength": 0 },
+    { "position": "FW", "name": "Cuello", "strength": 0 },
+    { "position": "FW", "name": "Willian Bigode", "strength": 0 },
+    { "position": "FW", "name": "Julimar", "strength": 0 },
+    { "position": "FW", "name": "Rômulo", "strength": 0 },
+    { "position": "FW", "name": "Bruno Zapelli", "strength": 0 }
+  ]
+}
