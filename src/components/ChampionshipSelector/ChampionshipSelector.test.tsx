@@ -93,7 +93,7 @@ describe('ChampionshipSelector', () => {
     expect(screen.queryByText('LA LIGA')).not.toBeInTheDocument();
   });
 
-  test('only the "BRASILEIRÃO SÉRIE A" button is enabled', () => {
+  test('only the "BRASILEIRÃO SÉRIE A" and "BRASILEIRÃO SÉRIE B" buttons are enabled', () => {
     render(<ChampionshipSelector />);
 
     const serieAButton = screen.getByText('BRASILEIRÃO SÉRIE A');
@@ -101,7 +101,7 @@ describe('ChampionshipSelector', () => {
     const bundesligaButton = screen.getByText('BUNDESLIGA');
 
     expect(serieAButton).not.toBeDisabled();
-    expect(serieBButton).toBeDisabled();
+    expect(serieBButton).not.toBeDisabled();
     expect(bundesligaButton).toBeDisabled();
   });
 
@@ -150,21 +150,28 @@ describe('ChampionshipSelector', () => {
     expect(screen.queryByText('LA LIGA')).not.toBeInTheDocument();
   });
 
-  test('calls setChampionship and setScreenDisplayed when clicking on BRASILEIRÃO SÉRIE A', () => {
+  test('calls setChampionship and setScreenDisplayed when clicking on BRASILEIRÃO SÉRIE A or SÉRIE B', () => {
     render(<ChampionshipSelector />);
 
     const serieAButton = screen.getByText('BRASILEIRÃO SÉRIE A');
     fireEvent.click(serieAButton);
-
     expect(mockSetChampionship).toHaveBeenCalledWith('brasileirao-serie-a');
+    expect(mockSetScreenDisplayed).toHaveBeenCalledWith('TeamSelector');
+
+    mockSetChampionship.mockClear();
+    mockSetScreenDisplayed.mockClear();
+
+    const serieBButton = screen.getByText('BRASILEIRÃO SÉRIE B');
+    fireEvent.click(serieBButton);
+    expect(mockSetChampionship).toHaveBeenCalledWith('brasileirao-serie-b');
     expect(mockSetScreenDisplayed).toHaveBeenCalledWith('TeamSelector');
   });
 
   test('does not call setScreenDisplayed when clicking on disabled championships', () => {
     render(<ChampionshipSelector />);
 
-    const serieBButton = screen.getByText('BRASILEIRÃO SÉRIE B');
-    fireEvent.click(serieBButton);
+    const bundesligaButton = screen.getByText('BUNDESLIGA');
+    fireEvent.click(bundesligaButton);
 
     expect(mockSetChampionship).not.toHaveBeenCalled();
     expect(mockSetScreenDisplayed).not.toHaveBeenCalled();

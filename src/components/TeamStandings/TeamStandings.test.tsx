@@ -3,8 +3,12 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import TeamStandings from './TeamStandings';
 import { GeneralContext } from '../../contexts/GeneralContext';
-import { ChampionshipProvider } from '../../contexts/ChampionshipContext';
+import {
+  ChampionshipProvider,
+  useChampionshipContext,
+} from '../../contexts/ChampionshipContext';
 import { BaseTeam, MatchTeam } from '../../types';
+import { initialChampionshipState } from '../../reducers/championshipReducer';
 
 // Mock the GeneralContext
 const mockSetScreenDisplayed = jest.fn();
@@ -23,6 +27,7 @@ const mockGeneralContextValue = {
   setMatchTeam: jest.fn(),
   setMatchOtherTeams: jest.fn(),
   setScreenDisplayed: mockSetScreenDisplayed,
+  loadState: jest.fn(),
 };
 
 const renderWithContext = (component: React.ReactElement) => {
@@ -42,7 +47,6 @@ describe('TeamStandings', () => {
     test('renders the component with default placeholder standings', () => {
       renderWithContext(<TeamStandings />);
 
-      expect(screen.getByText('TABLE STANDINGS')).toBeInTheDocument();
       expect(screen.getByText('W')).toBeInTheDocument();
       expect(screen.getByText('D')).toBeInTheDocument();
       expect(screen.getByText('L')).toBeInTheDocument();
@@ -279,10 +283,9 @@ describe('TeamStandings', () => {
     test('applies correct CSS classes and styling', () => {
       renderWithContext(<TeamStandings />);
 
-      // Test the main container
-      const mainContainer = screen
-        .getByText('TABLE STANDINGS')
-        .closest('div')?.parentElement;
+      // Test the main container - find it by the table element
+      const mainContainer = screen.getByRole('table').closest('div')
+        ?.parentElement?.parentElement;
       expect(mainContainer).toHaveClass('font-press-start', 'min-h-screen');
 
       // Test the table container - find the div with the specific classes
@@ -330,7 +333,6 @@ describe('TeamStandings', () => {
     test('handles empty standings array', () => {
       renderWithContext(<TeamStandings standings={[]} />);
 
-      expect(screen.getByText('TABLE STANDINGS')).toBeInTheDocument();
       expect(screen.getByText('W')).toBeInTheDocument();
       expect(screen.getByText('D')).toBeInTheDocument();
       expect(screen.getByText('L')).toBeInTheDocument();

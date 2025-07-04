@@ -112,9 +112,24 @@ const mockSetSeasonMatchCalendar = jest.fn();
 
 jest.mock('../../contexts/ChampionshipContext', () => ({
   useChampionshipContext: () => ({
+    state: {
+      selectedChampionship: 'brasileirao-serie-a',
+      humanPlayerBaseTeam: null,
+      teamsControlledAutomatically: [],
+      seasonMatchCalendar: [],
+      currentRound: 0,
+      tableStandings: [],
+    },
     setHumanPlayerBaseTeam: mockSetHumanPlayerBaseTeam,
     setTeamsControlledAutomatically: mockSetTeamsControlledAutomatically,
     setSeasonMatchCalendar: mockSetSeasonMatchCalendar,
+    setChampionship: jest.fn(),
+    setCurrentRound: jest.fn(),
+    incrementCurrentRound: jest.fn(),
+    updateTableStandings: jest.fn(),
+    getTableStandings: jest.fn(() => []),
+    loadState: jest.fn(),
+    dispatch: jest.fn(),
   }),
 }));
 
