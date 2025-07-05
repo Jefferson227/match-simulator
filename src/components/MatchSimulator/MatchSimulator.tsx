@@ -165,7 +165,7 @@ const MatchSimulator: FC = () => {
           championshipState.seasonMatchCalendar.length > 0 &&
           !teamSquadView && (
             <span>
-              {`Round ${championshipState.currentRound} of ${championshipState.seasonMatchCalendar.length}`}
+              {`${championshipState.year} - Round ${championshipState.currentRound} of ${championshipState.seasonMatchCalendar.length}`}
             </span>
           )}
       </div>

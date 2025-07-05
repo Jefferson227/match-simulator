@@ -20,6 +20,8 @@ interface ChampionshipContextType {
   updateTableStandings: (matches: Match[]) => void;
   getTableStandings: () => TableStanding[];
   loadState: (state: ChampionshipState) => void;
+  setYear: (year: number) => void;
+  incrementYear: () => void;
 }
 
 // Create the context
@@ -77,6 +79,14 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({
     dispatch({ type: 'LOAD_STATE', payload: newState });
   };
 
+  const setYear = (year: number) => {
+    dispatch({ type: 'SET_YEAR', payload: year });
+  };
+
+  const incrementYear = () => {
+    dispatch({ type: 'INCREMENT_YEAR' });
+  };
+
   const value: ChampionshipContextType = {
     state,
     dispatch,
@@ -89,6 +99,8 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({
     updateTableStandings,
     getTableStandings,
     loadState,
+    setYear,
+    incrementYear,
   };
 
   return (

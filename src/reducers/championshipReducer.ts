@@ -8,6 +8,7 @@ export interface ChampionshipState {
   seasonMatchCalendar: SeasonRound[];
   currentRound: number;
   tableStandings: TableStanding[];
+  year: number;
 }
 
 // Championship action types
@@ -21,7 +22,9 @@ export type ChampionshipAction =
   | { type: 'UPDATE_TABLE_STANDINGS'; payload: Match[] }
   | { type: 'GET_TABLE_STANDINGS' }
   | { type: 'RESET' }
-  | { type: 'LOAD_STATE'; payload: ChampionshipState };
+  | { type: 'LOAD_STATE'; payload: ChampionshipState }
+  | { type: 'SET_YEAR'; payload: number }
+  | { type: 'INCREMENT_YEAR' };
 
 // Initial state
 export const initialChampionshipState: ChampionshipState = {
@@ -31,6 +34,7 @@ export const initialChampionshipState: ChampionshipState = {
   seasonMatchCalendar: [],
   currentRound: 0,
   tableStandings: [],
+  year: 0,
 };
 
 function calculateUpdatedStandings(
@@ -152,6 +156,16 @@ export const championshipReducer = (
       return initialChampionshipState;
     case 'LOAD_STATE':
       return action.payload;
+    case 'SET_YEAR':
+      return {
+        ...state,
+        year: action.payload,
+      };
+    case 'INCREMENT_YEAR':
+      return {
+        ...state,
+        year: state.year + 1,
+      };
     default:
       return state;
   }

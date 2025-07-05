@@ -9,7 +9,7 @@ const CHAMPIONSHIPS_PER_PAGE = 6;
 const ChampionshipSelector: React.FC = () => {
   const { t } = useTranslation();
   const { setScreenDisplayed } = useContext(GeneralContext);
-  const { setChampionship } = useChampionshipContext();
+  const { setChampionship, setYear } = useChampionshipContext();
   const [currentPage, setCurrentPage] = useState(0);
 
   const championships = generalService.getAllChampionships();
@@ -36,6 +36,7 @@ const ChampionshipSelector: React.FC = () => {
       championship.internalName === 'brasileirao-serie-b'
     ) {
       setChampionship(championship.internalName);
+      setYear(new Date().getFullYear()); // Set initial year to current year
       setScreenDisplayed('TeamSelector');
     }
   };

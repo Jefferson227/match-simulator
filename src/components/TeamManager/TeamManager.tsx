@@ -32,6 +32,7 @@ const TeamManager: React.FC = () => {
     incrementCurrentRound,
     setCurrentRound,
     setSeasonMatchCalendar,
+    incrementYear,
   } = useChampionshipContext();
   const [showFormationGrid, setShowFormationGrid] = useState(false);
   const [playerStates, setPlayerStates] = useState<{
@@ -313,6 +314,9 @@ const TeamManager: React.FC = () => {
       // Check if we've completed all rounds
       const totalRounds = championshipState.seasonMatchCalendar.length;
       if (championshipState.currentRound >= totalRounds) {
+        // Increment year for new season
+        incrementYear();
+
         // Reset to round 1 and regenerate calendar
         setCurrentRound(1);
 
