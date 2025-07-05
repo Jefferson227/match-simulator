@@ -50,10 +50,12 @@ jest.mock('react-i18next', () => ({
 
 // Mock the ChampionshipContext
 const mockSetChampionship = jest.fn();
+const mockSetYear = jest.fn();
 
 jest.mock('../../contexts/ChampionshipContext', () => ({
   useChampionshipContext: () => ({
     setChampionship: mockSetChampionship,
+    setYear: mockSetYear,
   }),
 }));
 
@@ -81,6 +83,7 @@ describe('ChampionshipSelector', () => {
   beforeEach(() => {
     mockSetScreenDisplayed.mockClear();
     mockSetChampionship.mockClear();
+    mockSetYear.mockClear();
   });
 
   test('renders the component and initial championships', () => {
