@@ -18,6 +18,7 @@ const MatchSimulator: FC = () => {
   const [standingsUpdated, setStandingsUpdated] = useState(false);
   const [standingsTimeoutSet, setStandingsTimeoutSet] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
+  const [clockSpeed, setClockSpeed] = useState<number>(1000); // Default 1 second
   const { matches, teamSquadView, setMatches, increaseScore, setScorer } =
     useContext(MatchContext);
   const { state, setMatchOtherTeams, setScreenDisplayed } =
@@ -40,8 +41,20 @@ const MatchSimulator: FC = () => {
       setStandingsUpdated(false);
       setStandingsTimeoutSet(false);
       setCurrentPage(0);
+      setClockSpeed(1000); // Reset clock speed to default when new round starts
     }
   }, [time]);
+
+  // Handle clock speed changes
+  const handleClockClick = () => {
+    if (clockSpeed === 1000) {
+      setClockSpeed(500); // 0.5 seconds
+    } else if (clockSpeed === 500) {
+      setClockSpeed(250); // 0.25 seconds
+    } else {
+      setClockSpeed(1000); // Back to 1 second
+    }
+  };
 
   useEffect(() => {
     // Only set matches if not already set for this round
@@ -89,7 +102,7 @@ const MatchSimulator: FC = () => {
     if (!detailsMatchId && !teamSquadView && time < 90) {
       timer = window.setInterval(() => {
         setTime((prevTime) => prevTime + 1);
-      }, 1000);
+      }, clockSpeed);
     }
 
     if (matches.length > 0 && time < 90) {
@@ -130,6 +143,7 @@ const MatchSimulator: FC = () => {
     updateTableStandings,
     standingsUpdated,
     standingsTimeoutSet,
+    clockSpeed,
   ]);
 
   const totalPages = Math.ceil(matches.length / MATCHES_PER_PAGE);
@@ -155,8 +169,12 @@ const MatchSimulator: FC = () => {
   return (
     <div className="font-press-start relative min-h-screen">
       <div
-        className="h-[33px] bg-[#fbff21] mb-[18px]"
+        className="h-[33px] bg-[#fbff21] mb-[18px] cursor-pointer transition-all duration-200 hover:bg-[#e6e600]"
         style={{ width: `${(time * 100) / 90}%` }}
+        onClick={handleClockClick}
+        title={`Clock Speed: ${
+          clockSpeed === 1000 ? '1x' : clockSpeed === 500 ? '2x' : '4x'
+        }`}
       >
         <p className="m-0 pt-1 text-right pr-2 text-[20px] text-[#1e1e1e]">{`${time}'`}</p>
       </div>
