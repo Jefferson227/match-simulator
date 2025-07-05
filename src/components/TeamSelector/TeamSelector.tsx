@@ -152,7 +152,7 @@ const TeamSelector: React.FC = () => {
               borderColor: team.colors.border,
               color: team.colors.text,
             }}
-            className="w-[342px] h-[48px] px-4 border-4 text-lg uppercase"
+            className="w-[342px] h-[48px] px-4 border-4 text-lg uppercase mx-auto"
           >
             {team.name}
           </button>
