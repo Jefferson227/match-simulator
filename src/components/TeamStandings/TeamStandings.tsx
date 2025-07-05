@@ -29,8 +29,13 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
 }) => {
   const { setScreenDisplayed, state: generalState } =
     useContext(GeneralContext);
-  const { state: championshipState, getTableStandings } =
-    useChampionshipContext();
+  const {
+    state: championshipState,
+    getTableStandings,
+    setChampionship,
+    incrementYear,
+    setCurrentRound,
+  } = useChampionshipContext();
   const { matches } = useContext(MatchContext);
   const RESULTS_PER_PAGE = 12;
   const [page, setPage] = useState(0);
@@ -89,6 +94,47 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
   };
 
   const handleContinue = () => {
+    // Only handle promotion logic if season is complete
+    if (isSeasonComplete) {
+      // Get current championship configuration
+      const allChamps = generalService.getAllChampionships();
+      const currentChamp = allChamps.find(
+        (c) => c.internalName === championshipState.selectedChampionship
+      );
+
+      if (
+        currentChamp &&
+        currentChamp.promotionTeams &&
+        currentChamp.promotionChampionship
+      ) {
+        // Get human player's team from general context
+        const humanPlayerTeam = generalState.baseTeam;
+
+        // Check if human player's team is in the top promotion positions
+        const humanPlayerTeamInStandings = standings.find(
+          (standing) => standing.team === humanPlayerTeam.abbreviation
+        );
+
+        if (humanPlayerTeamInStandings) {
+          // Find the position of human player's team in standings
+          const humanPlayerPosition =
+            standings.findIndex(
+              (standing) => standing.team === humanPlayerTeam.abbreviation
+            ) + 1; // +1 because array index is 0-based but position is 1-based
+
+          // Check if human player's team is in promotion zone
+          if (humanPlayerPosition <= currentChamp.promotionTeams) {
+            // Promote the team to the higher division
+            setChampionship(currentChamp.promotionChampionship);
+          }
+        }
+      }
+
+      // Increment year and reset round for new season
+      incrementYear();
+      setCurrentRound(0);
+    }
+
     setScreenDisplayed('TeamManager');
   };
 
