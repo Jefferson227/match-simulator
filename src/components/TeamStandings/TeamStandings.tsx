@@ -165,8 +165,12 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
         {championshipName}
       </div>
       <div className="text-center text-[14px] text-white mb-2 uppercase">
-        {championshipState.year} - Round {championshipState.currentRound} of{' '}
-        {totalRounds}
+        {!isSeasonComplete && (
+          <>
+            {championshipState.year} - Round {championshipState.currentRound} of{' '}
+            {totalRounds}
+          </>
+        )}
         {isSeasonComplete && (
           <span className="block text-[12px] text-yellow-300">
             SEASON COMPLETE!
