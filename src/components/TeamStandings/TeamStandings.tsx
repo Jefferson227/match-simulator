@@ -21,16 +21,10 @@ interface TeamStanding {
 
 interface TeamStandingsProps {
   standings?: TeamStanding[];
-  onPrev?: () => void;
-  onNext?: () => void;
-  onContinue?: () => void;
 }
 
 const TeamStandings: React.FC<TeamStandingsProps> = ({
   standings: propStandings,
-  onPrev,
-  onNext,
-  onContinue,
 }) => {
   const { setScreenDisplayed, state: generalState } =
     useContext(GeneralContext);
@@ -38,8 +32,6 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
     state: championshipState,
     getTableStandings,
     setChampionship,
-    incrementYear,
-    setCurrentRound,
     setTeamsControlledAutomatically,
     setSeasonMatchCalendar,
   } = useChampionshipContext();
