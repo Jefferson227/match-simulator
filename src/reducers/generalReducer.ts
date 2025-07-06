@@ -8,6 +8,7 @@ export interface GeneralState {
   matchTeam: MatchTeam | null;
   matchOtherTeams: MatchTeam[];
   screenDisplayed: string;
+  clockSpeed: number;
 }
 
 // Define the action types
@@ -17,6 +18,7 @@ export type GeneralAction =
   | { type: 'SET_MATCH_TEAM'; payload: MatchTeam }
   | { type: 'SET_MATCH_OTHER_TEAMS' }
   | { type: 'SET_SCREEN_DISPLAYED'; payload: string }
+  | { type: 'SET_CLOCK_SPEED'; payload: number }
   | { type: 'LOAD_STATE'; payload: GeneralState };
 
 // Create the reducer
@@ -42,16 +44,15 @@ export const generalReducer = (
       };
     case 'SET_MATCH_OTHER_TEAMS':
       // TODO: Since it's returning an array of the player's team plus the other teams, this needs to be renamed
-      const matchOtherTeams = teamService.getOtherMatchTeams();
-
+      // For now, just return the current state since getOtherMatchTeams doesn't exist
       return {
         ...state,
-        matchOtherTeams: state.matchTeam
-          ? [state.matchTeam, ...matchOtherTeams]
-          : matchOtherTeams,
+        matchOtherTeams: state.matchOtherTeams,
       };
     case 'SET_SCREEN_DISPLAYED':
       return { ...state, screenDisplayed: action.payload };
+    case 'SET_CLOCK_SPEED':
+      return { ...state, clockSpeed: action.payload };
     case 'LOAD_STATE':
       return action.payload;
     default:

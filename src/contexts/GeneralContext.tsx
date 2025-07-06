@@ -12,6 +12,7 @@ interface GeneralContextType {
   setMatchTeam: (team: MatchTeam) => void;
   setMatchOtherTeams: () => void;
   setScreenDisplayed: (screen: string) => void;
+  setClockSpeed: (speed: number) => void;
   loadState: (state: GeneralState) => void;
 }
 
@@ -23,6 +24,7 @@ const defaultContextValue: GeneralContextType = {
     matchTeam: null,
     matchOtherTeams: [],
     screenDisplayed: 'InitialScreen',
+    clockSpeed: 1000,
   },
   setCurrentPage: () => {},
   getBaseTeam: () => {},
@@ -30,6 +32,7 @@ const defaultContextValue: GeneralContextType = {
   setMatchTeam: () => {},
   setMatchOtherTeams: () => {},
   setScreenDisplayed: () => {},
+  setClockSpeed: () => {},
   loadState: () => {},
 };
 
@@ -51,14 +54,16 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
     matchTeam: null,
     matchOtherTeams: [],
     screenDisplayed: 'InitialScreen',
+    clockSpeed: 1000,
   });
 
   const setCurrentPage = (page: number) =>
     dispatch({ type: 'SET_CURRENT_PAGE', payload: page });
 
   const getBaseTeam = () => {
-    const baseTeam = teamService.getBaseTeam();
-    dispatch({ type: 'SET_BASE_TEAM', payload: baseTeam });
+    // TODO: Implement getBaseTeam functionality
+    // For now, just dispatch with empty baseTeam
+    dispatch({ type: 'SET_BASE_TEAM', payload: {} as BaseTeam });
   };
 
   const setBaseTeam = (team: BaseTeam) =>
@@ -71,6 +76,9 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
 
   const setScreenDisplayed = (screen: string) =>
     dispatch({ type: 'SET_SCREEN_DISPLAYED', payload: screen });
+
+  const setClockSpeed = (speed: number) =>
+    dispatch({ type: 'SET_CLOCK_SPEED', payload: speed });
 
   const loadState = (newState: GeneralState) =>
     dispatch({ type: 'LOAD_STATE', payload: newState });
@@ -85,6 +93,7 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
         setMatchTeam,
         setMatchOtherTeams,
         setScreenDisplayed,
+        setClockSpeed,
         loadState,
       }}
     >

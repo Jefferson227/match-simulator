@@ -18,10 +18,9 @@ const MatchSimulator: FC = () => {
   const [standingsUpdated, setStandingsUpdated] = useState(false);
   const [standingsTimeoutSet, setStandingsTimeoutSet] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
-  const [clockSpeed, setClockSpeed] = useState<number>(1000); // Default 1 second
   const { matches, teamSquadView, setMatches, increaseScore, setScorer } =
     useContext(MatchContext);
-  const { state, setMatchOtherTeams, setScreenDisplayed } =
+  const { state, setMatchOtherTeams, setScreenDisplayed, setClockSpeed } =
     useContext(GeneralContext);
   const { state: championshipState, updateTableStandings } =
     useChampionshipContext();
@@ -41,15 +40,15 @@ const MatchSimulator: FC = () => {
       setStandingsUpdated(false);
       setStandingsTimeoutSet(false);
       setCurrentPage(0);
-      setClockSpeed(1000); // Reset clock speed to default when new round starts
+      // Removed setClockSpeed(1000) to avoid infinite loop and preserve user preference
     }
   }, [time]);
 
   // Handle clock speed changes
   const handleClockClick = () => {
-    if (clockSpeed === 1000) {
+    if (state.clockSpeed === 1000) {
       setClockSpeed(500); // 0.5 seconds
-    } else if (clockSpeed === 500) {
+    } else if (state.clockSpeed === 500) {
       setClockSpeed(250); // 0.25 seconds
     } else {
       setClockSpeed(1000); // Back to 1 second
@@ -102,7 +101,7 @@ const MatchSimulator: FC = () => {
     if (!detailsMatchId && !teamSquadView && time < 90) {
       timer = window.setInterval(() => {
         setTime((prevTime) => prevTime + 1);
-      }, clockSpeed);
+      }, state.clockSpeed);
     }
 
     if (matches.length > 0 && time < 90) {
@@ -143,7 +142,7 @@ const MatchSimulator: FC = () => {
     updateTableStandings,
     standingsUpdated,
     standingsTimeoutSet,
-    clockSpeed,
+    state.clockSpeed,
   ]);
 
   const totalPages = Math.ceil(matches.length / MATCHES_PER_PAGE);
@@ -173,7 +172,11 @@ const MatchSimulator: FC = () => {
         style={{ width: `${(time * 100) / 90}%` }}
         onClick={handleClockClick}
         title={`Clock Speed: ${
-          clockSpeed === 1000 ? '1x' : clockSpeed === 500 ? '2x' : '4x'
+          state.clockSpeed === 1000
+            ? '1x'
+            : state.clockSpeed === 500
+            ? '2x'
+            : '4x'
         }`}
       >
         <p className="m-0 pt-1 text-right pr-2 text-[20px] text-[#1e1e1e]">{`${time}'`}</p>
