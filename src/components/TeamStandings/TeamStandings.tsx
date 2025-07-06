@@ -4,6 +4,11 @@ import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import { MatchContext } from '../../contexts/MatchContext';
 import sessionService from '../../services/sessionService';
 import generalService from '../../services/generalService';
+import {
+  generateSeasonMatchCalendar,
+  loadAllTeamsExceptOne,
+} from '../../services/teamService';
+import { BaseTeam } from '../../types';
 
 interface TeamStanding {
   team: string;
@@ -35,6 +40,8 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
     setChampionship,
     incrementYear,
     setCurrentRound,
+    setTeamsControlledAutomatically,
+    setSeasonMatchCalendar,
   } = useChampionshipContext();
   const { matches } = useContext(MatchContext);
   const RESULTS_PER_PAGE = 12;
@@ -127,14 +134,43 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
             // Promote the team to the higher division
             setChampionship(currentChamp.promotionChampionship);
 
-            /*
-            TODO: Add logic to handle promotion
-            - Load the teams from the promotion championship
-            - Remove the last "promotionTeams" from the promotion championship (automatic relegation from the promotion championship to be developed)
-            - Add the last "promotionTeams - 1" from the current championship
-            - Set the teams controlled automatically
-            - Generate the new season match calendar
-            */
+            // Load all other teams in the championship for automatic control
+            loadAllTeamsExceptOne(
+              currentChamp.promotionChampionship,
+              '',
+              humanPlayerTeam?.abbreviation
+            ).then((allTeamsFromPromotionChampionship) => {
+              const promotionChampionshipWithoutRelegatedTeams =
+                allTeamsFromPromotionChampionship.slice(
+                  0,
+                  allTeamsFromPromotionChampionship.length -
+                    (currentChamp?.promotionTeams ?? 0)
+                );
+
+              // Get the promoted teams from the current championship without the human player's team
+              const promotedTeamsAbbreviations = standings
+                .slice(0, currentChamp?.promotionTeams ?? 0)
+                .map((t) => t.team);
+
+              const promotedTeamsFromCurrentChampionship =
+                championshipState.teamsControlledAutomatically.filter((t) =>
+                  promotedTeamsAbbreviations.includes(t.abbreviation)
+                );
+
+              const teamsToBeControlledAutomatically = [
+                ...promotionChampionshipWithoutRelegatedTeams,
+                ...promotedTeamsFromCurrentChampionship,
+              ];
+
+              setTeamsControlledAutomatically(teamsToBeControlledAutomatically);
+
+              // Generate and set the season match calendar
+              const seasonCalendar = generateSeasonMatchCalendar(
+                humanPlayerTeam as BaseTeam,
+                teamsToBeControlledAutomatically
+              );
+              setSeasonMatchCalendar(seasonCalendar);
+            });
           }
         }
       }
