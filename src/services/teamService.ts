@@ -166,7 +166,8 @@ export const loadSpecificTeam = async (
 
 export const loadAllTeamsExceptOne = async (
   championshipInternalName: string,
-  excludedTeamFileName: string
+  excludedTeamFileName: string,
+  excludedTeamAbbreviation?: string
 ): Promise<BaseTeam[]> => {
   try {
     // Find the championship configuration
@@ -185,7 +186,7 @@ export const loadAllTeamsExceptOne = async (
     // Load each team's data except the excluded one
     for (const teamFileName of championship.teams) {
       if (teamFileName === excludedTeamFileName) {
-        continue; // Skip the excluded team
+        continue; // Skip the excluded team, in case the excluded file name is passed
       }
 
       try {
@@ -193,6 +194,13 @@ export const loadAllTeamsExceptOne = async (
           `../assets/championship-teams/${championshipInternalName}/${teamFileName}.json`
         );
         const teamDataObj = teamData.default;
+
+        if (
+          excludedTeamAbbreviation &&
+          teamDataObj.abbreviation === excludedTeamAbbreviation
+        ) {
+          continue; // Skip the excluded team, in case the excluded abbreviation is passed
+        }
 
         const initialOverallStrength = teamDataObj.initialOverallStrength || 80;
 

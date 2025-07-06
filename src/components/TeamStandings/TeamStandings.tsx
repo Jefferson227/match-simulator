@@ -4,6 +4,11 @@ import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import { MatchContext } from '../../contexts/MatchContext';
 import sessionService from '../../services/sessionService';
 import generalService from '../../services/generalService';
+import {
+  generateSeasonMatchCalendar,
+  loadAllTeamsExceptOne,
+} from '../../services/teamService';
+import { BaseTeam } from '../../types';
 
 interface TeamStanding {
   team: string;
@@ -16,21 +21,20 @@ interface TeamStanding {
 
 interface TeamStandingsProps {
   standings?: TeamStanding[];
-  onPrev?: () => void;
-  onNext?: () => void;
-  onContinue?: () => void;
 }
 
 const TeamStandings: React.FC<TeamStandingsProps> = ({
   standings: propStandings,
-  onPrev,
-  onNext,
-  onContinue,
 }) => {
   const { setScreenDisplayed, state: generalState } =
     useContext(GeneralContext);
-  const { state: championshipState, getTableStandings } =
-    useChampionshipContext();
+  const {
+    state: championshipState,
+    getTableStandings,
+    setChampionship,
+    setTeamsControlledAutomatically,
+    setSeasonMatchCalendar,
+  } = useChampionshipContext();
   const { matches } = useContext(MatchContext);
   const RESULTS_PER_PAGE = 12;
   const [page, setPage] = useState(0);
@@ -89,6 +93,134 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
   };
 
   const handleContinue = () => {
+    // Only handle promotion logic if season is complete
+    if (isSeasonComplete) {
+      // Get current championship configuration
+      const allChamps = generalService.getAllChampionships();
+      const currentChamp = allChamps.find(
+        (c) => c.internalName === championshipState.selectedChampionship
+      );
+
+      if (
+        currentChamp &&
+        currentChamp.promotionTeams &&
+        currentChamp.promotionChampionship
+      ) {
+        // Get human player's team from general context
+        const humanPlayerTeam = championshipState.humanPlayerBaseTeam;
+
+        // Check if human player's team is in the top promotion positions
+        const humanPlayerTeamInStandings = standings.find(
+          (standing) => standing.team === humanPlayerTeam?.abbreviation
+        );
+
+        if (humanPlayerTeamInStandings) {
+          // Find the position of human player's team in standings
+          const humanPlayerPosition =
+            standings.findIndex(
+              (standing) => standing.team === humanPlayerTeam?.abbreviation
+            ) + 1; // +1 because array index is 0-based but position is 1-based
+
+          // Implement promotion logic including human player's team
+          if (humanPlayerPosition <= currentChamp.promotionTeams) {
+            // Promote the team to the higher division
+            setChampionship(currentChamp.promotionChampionship);
+
+            // Load all teams from the promotion championship
+            loadAllTeamsExceptOne(
+              currentChamp.promotionChampionship,
+              '',
+              humanPlayerTeam?.abbreviation
+            ).then((allTeamsFromPromotionChampionship) => {
+              // TODO: Implement a proper logic to remove the relegated teams from the promotion championship
+              const promotionChampionshipWithoutRelegatedTeams =
+                allTeamsFromPromotionChampionship.slice(
+                  0,
+                  allTeamsFromPromotionChampionship.length -
+                    (currentChamp?.promotionTeams ?? 0)
+                );
+
+              // Get the promoted teams from the current championship without the human player's team
+              const promotedTeamsAbbreviations = standings
+                .slice(0, currentChamp?.promotionTeams ?? 0)
+                .map((t) => t.team);
+
+              const promotedTeamsFromCurrentChampionship =
+                championshipState.teamsControlledAutomatically.filter((t) =>
+                  promotedTeamsAbbreviations.includes(t.abbreviation)
+                );
+
+              const teamsToBeControlledAutomatically = [
+                ...promotionChampionshipWithoutRelegatedTeams,
+                ...promotedTeamsFromCurrentChampionship,
+              ];
+
+              setTeamsControlledAutomatically(teamsToBeControlledAutomatically);
+
+              // Generate and set the season match calendar
+              const seasonCalendar = generateSeasonMatchCalendar(
+                humanPlayerTeam as BaseTeam,
+                teamsToBeControlledAutomatically
+              );
+              setSeasonMatchCalendar(seasonCalendar);
+            });
+
+            return;
+          }
+
+          // Load all teams from the promotion championship
+          loadAllTeamsExceptOne(
+            currentChamp.promotionChampionship,
+            '',
+            humanPlayerTeam?.abbreviation
+          ).then((allTeamsFromPromotionChampionship) => {
+            // TODO: Implement a proper logic to get the relegated teams from the promotion championship
+            const relegatedTeamsFromPromotionChampionship =
+              allTeamsFromPromotionChampionship.slice(
+                -(currentChamp?.promotionTeams ?? 0)
+              );
+
+            // Get the relegated teams abbreviations from the current championship
+            const relegatedTeamsAbbreviations = standings
+              .slice(-(currentChamp?.promotionTeams ?? 0))
+              .map((t) => t.team);
+
+            // If the human player's team is in the relegated teams, show the game over screen
+            if (
+              relegatedTeamsAbbreviations.includes(
+                humanPlayerTeam?.abbreviation ?? ''
+              )
+            ) {
+              console.error(
+                "Game over! Your team was relegated to a championship that doesn't exist"
+              );
+              return;
+            }
+
+            // Get the remaining teams from the current championship, not considering the relegated teams
+            const remainingTeamsFromCurrentChampionship =
+              championshipState.teamsControlledAutomatically.filter(
+                (t) => !relegatedTeamsAbbreviations.includes(t.abbreviation)
+              );
+
+            const teamsToBeControlledAutomatically = [
+              ...remainingTeamsFromCurrentChampionship,
+              ...relegatedTeamsFromPromotionChampionship,
+            ];
+
+            setTeamsControlledAutomatically(teamsToBeControlledAutomatically);
+
+            // Generate and set the season match calendar
+            const seasonCalendar = generateSeasonMatchCalendar(
+              humanPlayerTeam as BaseTeam,
+              teamsToBeControlledAutomatically
+            );
+            setSeasonMatchCalendar(seasonCalendar);
+          });
+        }
+      }
+    }
+
     setScreenDisplayed('TeamManager');
   };
 
