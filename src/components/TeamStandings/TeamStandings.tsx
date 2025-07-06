@@ -129,10 +129,6 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
           }
         }
       }
-
-      // Increment year and reset round for new season
-      incrementYear();
-      setCurrentRound(0);
     }
 
     setScreenDisplayed('TeamManager');
