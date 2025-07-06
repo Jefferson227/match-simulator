@@ -126,6 +126,15 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
           if (humanPlayerPosition <= currentChamp.promotionTeams) {
             // Promote the team to the higher division
             setChampionship(currentChamp.promotionChampionship);
+
+            /*
+            TODO: Add logic to handle promotion
+            - Load the teams from the promotion championship
+            - Remove the last "promotionTeams" from the promotion championship (automatic relegation from the promotion championship to be developed)
+            - Add the last "promotionTeams - 1" from the current championship
+            - Set the teams controlled automatically
+            - Generate the new season match calendar
+            */
           }
         }
       }
