@@ -132,6 +132,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
               '',
               humanPlayerTeam?.abbreviation
             ).then((allTeamsFromPromotionChampionship) => {
+              // TODO: Implement a proper logic to remove the relegated teams from the promotion championship
               const promotionChampionshipWithoutRelegatedTeams =
                 allTeamsFromPromotionChampionship.slice(
                   0,
@@ -173,6 +174,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
             '',
             humanPlayerTeam?.abbreviation
           ).then((allTeamsFromPromotionChampionship) => {
+            // TODO: Implement a proper logic to get the relegated teams from the promotion championship
             const relegatedTeamsFromPromotionChampionship =
               allTeamsFromPromotionChampionship.slice(
                 -(currentChamp?.promotionTeams ?? 0)
