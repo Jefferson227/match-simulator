@@ -108,18 +108,18 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
         currentChamp.promotionChampionship
       ) {
         // Get human player's team from general context
-        const humanPlayerTeam = generalState.baseTeam;
+        const humanPlayerTeam = championshipState.humanPlayerBaseTeam;
 
         // Check if human player's team is in the top promotion positions
         const humanPlayerTeamInStandings = standings.find(
-          (standing) => standing.team === humanPlayerTeam.abbreviation
+          (standing) => standing.team === humanPlayerTeam?.abbreviation
         );
 
         if (humanPlayerTeamInStandings) {
           // Find the position of human player's team in standings
           const humanPlayerPosition =
             standings.findIndex(
-              (standing) => standing.team === humanPlayerTeam.abbreviation
+              (standing) => standing.team === humanPlayerTeam?.abbreviation
             ) + 1; // +1 because array index is 0-based but position is 1-based
 
           // Check if human player's team is in promotion zone
