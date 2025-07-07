@@ -1,4 +1,10 @@
-import { BaseTeam, SeasonRound, TableStanding, Match } from '../types';
+import {
+  BaseTeam,
+  SeasonRound,
+  TableStanding,
+  Match,
+  ChampionshipConfig,
+} from '../types';
 
 // Championship state interface
 export interface ChampionshipState {
@@ -9,7 +15,7 @@ export interface ChampionshipState {
   currentRound: number;
   tableStandings: TableStanding[];
   year: number;
-  otherChampionships: any[];
+  otherChampionships: ChampionshipConfig[];
 }
 
 // Championship action types
@@ -26,7 +32,7 @@ export type ChampionshipAction =
   | { type: 'LOAD_STATE'; payload: ChampionshipState }
   | { type: 'SET_YEAR'; payload: number }
   | { type: 'INCREMENT_YEAR' }
-  | { type: 'SET_OTHER_CHAMPIONSHIPS'; payload: any[] };
+  | { type: 'SET_OTHER_CHAMPIONSHIPS'; payload: ChampionshipConfig[] };
 
 // Initial state
 export const initialChampionshipState: ChampionshipState = {

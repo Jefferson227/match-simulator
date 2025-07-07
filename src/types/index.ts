@@ -149,3 +149,20 @@ export interface TableStanding {
   goalDifference: number;
   points: number;
 }
+
+export interface ChampionshipTeam {
+  fileName: string;
+  abbreviation: string;
+}
+
+export interface ChampionshipConfig {
+  id: string;
+  name: string;
+  internalName: string;
+  numberOfTeams?: number;
+  promotionTeams?: number;
+  relegationTeams?: number;
+  promotionChampionship?: string;
+  relegationChampionship?: string;
+  teams?: ChampionshipTeam[]; // or string[] if not yet migrated
+}

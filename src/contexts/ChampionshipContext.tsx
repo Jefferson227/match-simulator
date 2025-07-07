@@ -5,7 +5,13 @@ import {
   championshipReducer,
   initialChampionshipState,
 } from '../reducers/championshipReducer';
-import { BaseTeam, SeasonRound, Match, TableStanding } from '../types';
+import {
+  BaseTeam,
+  SeasonRound,
+  Match,
+  TableStanding,
+  ChampionshipConfig,
+} from '../types';
 
 // Championship context interface
 interface ChampionshipContextType {
@@ -22,7 +28,7 @@ interface ChampionshipContextType {
   loadState: (state: ChampionshipState) => void;
   setYear: (year: number) => void;
   incrementYear: () => void;
-  setOtherChampionships: (champs: any[]) => void;
+  setOtherChampionships: (champs: ChampionshipConfig[]) => void;
 }
 
 // Create the context
@@ -88,7 +94,7 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({
     dispatch({ type: 'INCREMENT_YEAR' });
   };
 
-  const setOtherChampionships = (champs: any[]) => {
+  const setOtherChampionships = (champs: ChampionshipConfig[]) => {
     dispatch({ type: 'SET_OTHER_CHAMPIONSHIPS', payload: champs });
   };
 
