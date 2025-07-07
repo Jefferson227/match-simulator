@@ -22,6 +22,7 @@ interface ChampionshipContextType {
   loadState: (state: ChampionshipState) => void;
   setYear: (year: number) => void;
   incrementYear: () => void;
+  setOtherChampionships: (champs: any[]) => void;
 }
 
 // Create the context
@@ -87,6 +88,10 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({
     dispatch({ type: 'INCREMENT_YEAR' });
   };
 
+  const setOtherChampionships = (champs: any[]) => {
+    dispatch({ type: 'SET_OTHER_CHAMPIONSHIPS', payload: champs });
+  };
+
   const value: ChampionshipContextType = {
     state,
     dispatch,
@@ -101,6 +106,7 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({
     loadState,
     setYear,
     incrementYear,
+    setOtherChampionships,
   };
 
   return (

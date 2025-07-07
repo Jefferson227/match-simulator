@@ -9,7 +9,8 @@ const CHAMPIONSHIPS_PER_PAGE = 6;
 const ChampionshipSelector: React.FC = () => {
   const { t } = useTranslation();
   const { setScreenDisplayed } = useContext(GeneralContext);
-  const { setChampionship, setYear } = useChampionshipContext();
+  const { setChampionship, setYear, setOtherChampionships } =
+    useChampionshipContext();
   const [currentPage, setCurrentPage] = useState(0);
 
   const championships = generalService.getAllChampionships();
@@ -37,6 +38,11 @@ const ChampionshipSelector: React.FC = () => {
     ) {
       setChampionship(championship.internalName);
       setYear(new Date().getFullYear()); // Set initial year to current year
+
+      const otherChamps = championships.filter(
+        (c) => c.internalName !== championship.internalName
+      );
+      setOtherChampionships(otherChamps);
       setScreenDisplayed('TeamSelector');
     }
   };
