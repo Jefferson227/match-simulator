@@ -247,6 +247,75 @@ export const loadAllTeamsExceptOne = async (
   }
 };
 
+export const loadAllTeams = async (
+  championshipInternalName: string
+): Promise<BaseTeam[]> => {
+  try {
+    // Find the championship configuration
+    const championship = generalParameters.championships.find(
+      (champ) => champ.internalName === championshipInternalName
+    );
+
+    if (!championship || !championship.teams) {
+      throw new Error(
+        `Championship ${championshipInternalName} not found or has no teams`
+      );
+    }
+
+    const teams: BaseTeam[] = [];
+
+    // Load each team's data
+    for (const teamFileName of championship.teams) {
+      try {
+        const teamData = await import(
+          `../assets/championship-teams/${championshipInternalName}/${teamFileName}.json`
+        );
+        const teamDataObj = teamData.default;
+
+        const initialOverallStrength = teamDataObj.initialOverallStrength || 80;
+
+        // Transform the team data to BaseTeam format
+        const baseTeam: BaseTeam = {
+          id: crypto.randomUUID(),
+          name: teamDataObj.name,
+          shortName: teamDataObj.shortName,
+          abbreviation: teamDataObj.abbreviation,
+          colors: teamDataObj.colors,
+          players: teamDataObj.players.map((player: any) => {
+            // Calculate random strength based on team's initialOverallStrength
+            const minStrength = Math.max(1, initialOverallStrength - 5);
+            const maxStrength = Math.min(100, initialOverallStrength + 5);
+            const randomStrength =
+              Math.floor(Math.random() * (maxStrength - minStrength + 1)) +
+              minStrength;
+
+            return {
+              ...player,
+              id: crypto.randomUUID(),
+              strength: randomStrength, // Set calculated strength
+              mood: 100, // Default mood
+            };
+          }),
+          morale: 100, // Default morale
+          formation: '4-4-2', // Default formation
+          overallMood: 100, // Default overall mood
+          initialOverallStrength: initialOverallStrength,
+        };
+
+        teams.push(baseTeam);
+      } catch (error) {
+        console.error(`Failed to load team ${teamFileName}:`, error);
+        // Continue loading other teams even if one fails
+      }
+    }
+
+    return teams;
+  } catch (error) {
+    console.error('Error loading teams:', error);
+    throw error;
+  }
+};
+
 export const loadAllTeamsFromContextExceptOne = async (
   otherChampionships: ChampionshipConfig[],
   championshipInternalName: string,
@@ -455,6 +524,7 @@ const teamService = {
   loadTeamsForChampionship,
   loadSpecificTeam,
   loadAllTeamsExceptOne,
+  loadAllTeams,
   generateSeasonMatchCalendar,
   getCurrentRoundMatches,
   loadAllTeamsFromContextExceptOne,
