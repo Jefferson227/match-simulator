@@ -86,6 +86,8 @@ const TeamSelector: React.FC = () => {
           // Set the automatically controlled teams
           setTeamsControlledAutomatically(automaticTeams);
 
+          // TODO: Set the automatically controlled teams for the other championships
+
           // Generate and set the season match calendar
           const seasonCalendar = generateSeasonMatchCalendar(
             baseTeam,
