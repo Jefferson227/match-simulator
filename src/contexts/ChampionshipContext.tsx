@@ -12,6 +12,7 @@ import {
   TableStanding,
   ChampionshipConfig,
 } from '../types';
+import teamService from '../services/teamService';
 
 // Championship context interface
 interface ChampionshipContextType {
@@ -29,6 +30,7 @@ interface ChampionshipContextType {
   setYear: (year: number) => void;
   incrementYear: () => void;
   setOtherChampionships: (champs: ChampionshipConfig[]) => void;
+  setTeamsControlledAutomaticallyForOtherChampionships: () => Promise<void>;
 }
 
 // Create the context
@@ -98,6 +100,28 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({
     dispatch({ type: 'SET_OTHER_CHAMPIONSHIPS', payload: champs });
   };
 
+  const setTeamsControlledAutomaticallyForOtherChampionships = async () => {
+    const { otherChampionships, humanPlayerBaseTeam } = state;
+    if (!humanPlayerBaseTeam) return;
+    const updatedChamps = await Promise.all(
+      otherChampionships.map(async (champ) => {
+        const teams = await teamService.loadAllTeamsFromContextExceptOne(
+          otherChampionships,
+          champ.internalName,
+          humanPlayerBaseTeam.abbreviation
+        );
+        return {
+          ...champ,
+          teamsControlledAutomatically: teams,
+        };
+      })
+    );
+    dispatch({
+      type: 'SET_TEAMS_CONTROLLED_AUTOMATICALLY_FOR_OTHER_CHAMPIONSHIPS',
+      payload: updatedChamps,
+    });
+  };
+
   const value: ChampionshipContextType = {
     state,
     dispatch,
@@ -113,6 +137,7 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({
     setYear,
     incrementYear,
     setOtherChampionships,
+    setTeamsControlledAutomaticallyForOtherChampionships,
   };
 
   return (

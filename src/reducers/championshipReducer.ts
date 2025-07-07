@@ -32,7 +32,11 @@ export type ChampionshipAction =
   | { type: 'LOAD_STATE'; payload: ChampionshipState }
   | { type: 'SET_YEAR'; payload: number }
   | { type: 'INCREMENT_YEAR' }
-  | { type: 'SET_OTHER_CHAMPIONSHIPS'; payload: ChampionshipConfig[] };
+  | { type: 'SET_OTHER_CHAMPIONSHIPS'; payload: ChampionshipConfig[] }
+  | {
+      type: 'SET_TEAMS_CONTROLLED_AUTOMATICALLY_FOR_OTHER_CHAMPIONSHIPS';
+      payload: ChampionshipConfig[];
+    };
 
 // Initial state
 export const initialChampionshipState: ChampionshipState = {
@@ -176,6 +180,11 @@ export const championshipReducer = (
         year: state.year + 1,
       };
     case 'SET_OTHER_CHAMPIONSHIPS':
+      return {
+        ...state,
+        otherChampionships: action.payload,
+      };
+    case 'SET_TEAMS_CONTROLLED_AUTOMATICALLY_FOR_OTHER_CHAMPIONSHIPS':
       return {
         ...state,
         otherChampionships: action.payload,

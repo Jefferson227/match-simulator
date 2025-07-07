@@ -1,6 +1,7 @@
 import { Player, BaseTeam, MatchTeam } from '../types';
 import matchService from './matchService';
 import generalParameters from '../assets/general-parameters.json';
+import { ChampionshipConfig } from '../types';
 
 function getAutomaticStarters(players: Player[]): Player[] {
   // Get a random formation
@@ -246,6 +247,40 @@ export const loadAllTeamsExceptOne = async (
   }
 };
 
+export const loadAllTeamsFromContextExceptOne = async (
+  otherChampionships: ChampionshipConfig[],
+  championshipInternalName: string,
+  excludedTeamAbbreviation: string
+): Promise<BaseTeam[]> => {
+  const championship = otherChampionships.find(
+    (champ) => champ.internalName === championshipInternalName
+  );
+  if (!championship || !championship.teams) {
+    return [];
+  }
+  const teams: BaseTeam[] = [];
+  for (const team of championship.teams) {
+    if (
+      team.abbreviation.toLowerCase() === excludedTeamAbbreviation.toLowerCase()
+    ) {
+      continue;
+    }
+    try {
+      const baseTeam = await loadSpecificTeam(
+        championshipInternalName,
+        team.fileName
+      );
+      if (baseTeam) {
+        teams.push(baseTeam);
+      }
+    } catch (error) {
+      // Skip teams that fail to load
+      continue;
+    }
+  }
+  return teams;
+};
+
 export interface SeasonMatch {
   id: string;
   round: number;
@@ -422,6 +457,7 @@ const teamService = {
   loadAllTeamsExceptOne,
   generateSeasonMatchCalendar,
   getCurrentRoundMatches,
+  loadAllTeamsFromContextExceptOne,
 };
 
 export default teamService;
