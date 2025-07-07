@@ -257,9 +257,7 @@ export const loadAllTeams = async (
     );
 
     if (!championship || !championship.teams) {
-      throw new Error(
-        `Championship ${championshipInternalName} not found or has no teams`
-      );
+      return [];
     }
 
     const teams: BaseTeam[] = [];

@@ -20,6 +20,7 @@ const TeamSelector: React.FC = () => {
     setHumanPlayerBaseTeam,
     setTeamsControlledAutomatically,
     setSeasonMatchCalendar,
+    setTeamsControlledAutomaticallyForOtherChampionships,
   } = useChampionshipContext();
   const [currentPage, setCurrentPage] = useState(0);
   const [teams, setTeams] = useState<TeamSelectorTeam[]>([]);
@@ -86,7 +87,10 @@ const TeamSelector: React.FC = () => {
           // Set the automatically controlled teams
           setTeamsControlledAutomatically(automaticTeams);
 
-          // TODO: Set the automatically controlled teams for the other championships
+          // Set the automatically controlled teams for the other championships
+          setTeamsControlledAutomaticallyForOtherChampionships(
+            selectedChampionship
+          );
 
           // Generate and set the season match calendar
           const seasonCalendar = generateSeasonMatchCalendar(
