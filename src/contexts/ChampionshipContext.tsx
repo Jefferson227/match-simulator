@@ -101,15 +101,10 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({
   };
 
   const setTeamsControlledAutomaticallyForOtherChampionships = async () => {
-    const { otherChampionships, humanPlayerBaseTeam } = state;
-    if (!humanPlayerBaseTeam) return;
+    const { otherChampionships } = state;
     const updatedChamps = await Promise.all(
       otherChampionships.map(async (champ) => {
-        const teams = await teamService.loadAllTeamsFromContextExceptOne(
-          otherChampionships,
-          champ.internalName,
-          humanPlayerBaseTeam.abbreviation
-        );
+        const teams = await teamService.loadAllTeams(champ.internalName);
         return {
           ...champ,
           teamsControlledAutomatically: teams,
