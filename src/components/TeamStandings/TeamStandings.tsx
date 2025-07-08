@@ -37,6 +37,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
     incrementYear,
     setCurrentRound,
     incrementCurrentRound,
+    resetTableStandings,
   } = useChampionshipContext();
   const { matches } = useContext(MatchContext);
   const RESULTS_PER_PAGE = 12;
@@ -222,6 +223,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
         }
       }
 
+      resetTableStandings();
       incrementYear();
     }
 

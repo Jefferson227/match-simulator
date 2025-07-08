@@ -27,6 +27,7 @@ export type ChampionshipAction =
   | { type: 'SET_CURRENT_ROUND'; payload: number }
   | { type: 'INCREMENT_CURRENT_ROUND' }
   | { type: 'UPDATE_TABLE_STANDINGS'; payload: Match[] }
+  | { type: 'RESET_TABLE_STANDINGS' }
   | { type: 'GET_TABLE_STANDINGS' }
   | { type: 'RESET' }
   | { type: 'LOAD_STATE'; payload: ChampionshipState }
@@ -162,6 +163,11 @@ export const championshipReducer = (
           state.tableStandings,
           action.payload
         ),
+      };
+    case 'RESET_TABLE_STANDINGS':
+      return {
+        ...state,
+        tableStandings: [],
       };
     case 'GET_TABLE_STANDINGS':
       return state;
