@@ -310,32 +310,6 @@ const TeamManager: React.FC = () => {
     const matchTeam = createMatchTeam();
     if (matchTeam) {
       setMatchTeam(matchTeam);
-
-      // Check if we've completed all rounds
-      const totalRounds = championshipState.seasonMatchCalendar.length;
-      if (championshipState.currentRound >= totalRounds) {
-        // Increment year for new season
-        incrementYear();
-
-        // Reset to round 1 and regenerate calendar
-        setCurrentRound(1);
-
-        // Regenerate the season calendar for a new season
-        if (
-          championshipState.humanPlayerBaseTeam &&
-          championshipState.teamsControlledAutomatically.length > 0
-        ) {
-          const newCalendar = generateSeasonMatchCalendar(
-            championshipState.humanPlayerBaseTeam,
-            championshipState.teamsControlledAutomatically
-          );
-          setSeasonMatchCalendar(newCalendar);
-        }
-      } else {
-        // Increment to next round
-        incrementCurrentRound();
-      }
-
       setScreenDisplayed('MatchSimulator');
     }
   };

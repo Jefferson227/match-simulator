@@ -34,6 +34,9 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
     setChampionship,
     setTeamsControlledAutomatically,
     setSeasonMatchCalendar,
+    incrementYear,
+    setCurrentRound,
+    incrementCurrentRound,
   } = useChampionshipContext();
   const { matches } = useContext(MatchContext);
   const RESULTS_PER_PAGE = 12;
@@ -164,61 +167,70 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
               );
               setSeasonMatchCalendar(seasonCalendar);
             });
+          } else {
+            // The human player's team wasn't promoted
+            // Load all teams from the promotion championship
+            loadAllTeamsExceptOne(
+              currentChamp.promotionChampionship,
+              '',
+              humanPlayerTeam?.abbreviation
+            ).then((allTeamsFromPromotionChampionship) => {
+              // TODO: Implement a proper logic to get the relegated teams from the promotion championship
+              const relegatedTeamsFromPromotionChampionship =
+                allTeamsFromPromotionChampionship.slice(
+                  -(currentChamp?.promotionTeams ?? 0)
+                );
 
-            return;
+              // Get the relegated teams abbreviations from the current championship
+              const relegatedTeamsAbbreviations = standings
+                .slice(-(currentChamp?.promotionTeams ?? 0))
+                .map((t) => t.team);
+
+              // If the human player's team is in the relegated teams, show the game over screen
+              if (
+                relegatedTeamsAbbreviations.includes(
+                  humanPlayerTeam?.abbreviation ?? ''
+                )
+              ) {
+                console.error(
+                  "Game over! Your team was relegated to a championship that doesn't exist"
+                );
+                return;
+              }
+
+              // Get the remaining teams from the current championship, not considering the relegated teams
+              const remainingTeamsFromCurrentChampionship =
+                championshipState.teamsControlledAutomatically.filter(
+                  (t) => !relegatedTeamsAbbreviations.includes(t.abbreviation)
+                );
+
+              const teamsToBeControlledAutomatically = [
+                ...remainingTeamsFromCurrentChampionship,
+                ...relegatedTeamsFromPromotionChampionship,
+              ];
+
+              setTeamsControlledAutomatically(teamsToBeControlledAutomatically);
+
+              // Generate and set the season match calendar
+              const seasonCalendar = generateSeasonMatchCalendar(
+                humanPlayerTeam as BaseTeam,
+                teamsToBeControlledAutomatically
+              );
+              setSeasonMatchCalendar(seasonCalendar);
+            });
           }
-
-          // Load all teams from the promotion championship
-          loadAllTeamsExceptOne(
-            currentChamp.promotionChampionship,
-            '',
-            humanPlayerTeam?.abbreviation
-          ).then((allTeamsFromPromotionChampionship) => {
-            // TODO: Implement a proper logic to get the relegated teams from the promotion championship
-            const relegatedTeamsFromPromotionChampionship =
-              allTeamsFromPromotionChampionship.slice(
-                -(currentChamp?.promotionTeams ?? 0)
-              );
-
-            // Get the relegated teams abbreviations from the current championship
-            const relegatedTeamsAbbreviations = standings
-              .slice(-(currentChamp?.promotionTeams ?? 0))
-              .map((t) => t.team);
-
-            // If the human player's team is in the relegated teams, show the game over screen
-            if (
-              relegatedTeamsAbbreviations.includes(
-                humanPlayerTeam?.abbreviation ?? ''
-              )
-            ) {
-              console.error(
-                "Game over! Your team was relegated to a championship that doesn't exist"
-              );
-              return;
-            }
-
-            // Get the remaining teams from the current championship, not considering the relegated teams
-            const remainingTeamsFromCurrentChampionship =
-              championshipState.teamsControlledAutomatically.filter(
-                (t) => !relegatedTeamsAbbreviations.includes(t.abbreviation)
-              );
-
-            const teamsToBeControlledAutomatically = [
-              ...remainingTeamsFromCurrentChampionship,
-              ...relegatedTeamsFromPromotionChampionship,
-            ];
-
-            setTeamsControlledAutomatically(teamsToBeControlledAutomatically);
-
-            // Generate and set the season match calendar
-            const seasonCalendar = generateSeasonMatchCalendar(
-              humanPlayerTeam as BaseTeam,
-              teamsToBeControlledAutomatically
-            );
-            setSeasonMatchCalendar(seasonCalendar);
-          });
         }
       }
+
+      incrementYear();
+    }
+
+    // Check if we've completed all rounds
+    const totalRounds = championshipState.seasonMatchCalendar.length;
+    if (championshipState.currentRound >= totalRounds) {
+      setCurrentRound(1);
+    } else {
+      incrementCurrentRound();
     }
 
     setScreenDisplayed('TeamManager');
