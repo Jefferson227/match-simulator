@@ -45,7 +45,7 @@ export const initialChampionshipState: ChampionshipState = {
   humanPlayerBaseTeam: null,
   teamsControlledAutomatically: [],
   seasonMatchCalendar: [],
-  currentRound: 0,
+  currentRound: 1,
   tableStandings: [],
   year: 0,
   otherChampionships: [],
