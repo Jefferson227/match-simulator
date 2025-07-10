@@ -8,6 +8,7 @@ import {
   loadSpecificTeam,
   loadAllTeamsExceptOne,
   generateSeasonMatchCalendar,
+  loadAllTeams,
 } from '../../services/teamService';
 
 const TEAMS_PER_PAGE = 9;
@@ -68,6 +69,7 @@ const TeamSelector: React.FC = () => {
       if (teamFileName) {
         const selectedChampionship =
           championshipState.selectedChampionship || 'brasileirao-serie-a';
+
         // Load the specific team data
         const baseTeam = await loadSpecificTeam(
           selectedChampionship,
@@ -86,6 +88,15 @@ const TeamSelector: React.FC = () => {
 
           // Set the automatically controlled teams
           setTeamsControlledAutomatically(automaticTeams);
+
+          // Get all other championships that weren't selected
+          for (const otherChampionship of championshipState.otherChampionships) {
+            const automaticTeamsForOtherChampionship = await loadAllTeams(
+              otherChampionship.internalName
+            );
+
+            // TODO: Set the players to each of the other championships
+          }
 
           // Set the automatically controlled teams for the other championships
           setTeamsControlledAutomaticallyForOtherChampionships(
