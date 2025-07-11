@@ -22,6 +22,7 @@ const TeamSelector: React.FC = () => {
     setTeamsControlledAutomatically,
     setSeasonMatchCalendar,
     setTeamsControlledAutomaticallyForOtherChampionships,
+    setOtherChampionships,
   } = useChampionshipContext();
   const [currentPage, setCurrentPage] = useState(0);
   const [teams, setTeams] = useState<TeamSelectorTeam[]>([]);
@@ -90,18 +91,24 @@ const TeamSelector: React.FC = () => {
           setTeamsControlledAutomatically(automaticTeams);
 
           // Get all other championships that weren't selected
-          for (const otherChampionship of championshipState.otherChampionships) {
-            const automaticTeamsForOtherChampionship = await loadAllTeams(
-              otherChampionship.internalName
-            );
+          const updatedOtherChampionships = await Promise.all(
+            championshipState.otherChampionships.map(
+              async (otherChampionship) => {
+                const automaticTeamsForOtherChampionship = await loadAllTeams(
+                  otherChampionship.internalName
+                );
 
-            // TODO: Set the players to each of the other championships
-          }
-
-          // Set the automatically controlled teams for the other championships
-          setTeamsControlledAutomaticallyForOtherChampionships(
-            selectedChampionship
+                return {
+                  ...otherChampionship,
+                  teamsControlledAutomatically:
+                    automaticTeamsForOtherChampionship,
+                };
+              }
+            )
           );
+
+          // Set all the automatically controlled teams for other championships at once
+          setOtherChampionships(updatedOtherChampionships);
 
           // Generate and set the season match calendar
           const seasonCalendar = generateSeasonMatchCalendar(

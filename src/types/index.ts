@@ -165,4 +165,5 @@ export interface ChampionshipConfig {
   promotionChampionship?: string;
   relegationChampionship?: string;
   teams?: ChampionshipTeam[]; // or string[] if not yet migrated
+  teamsControlledAutomatically?: BaseTeam[];
 }
