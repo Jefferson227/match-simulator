@@ -21,7 +21,6 @@ const TeamSelector: React.FC = () => {
     setHumanPlayerBaseTeam,
     setTeamsControlledAutomatically,
     setSeasonMatchCalendar,
-    setTeamsControlledAutomaticallyForOtherChampionships,
     setOtherChampionships,
   } = useChampionshipContext();
   const [currentPage, setCurrentPage] = useState(0);
