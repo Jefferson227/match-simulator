@@ -127,9 +127,6 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
 
           // Implement promotion logic including human player's team
           if (humanPlayerPosition <= currentChamp.promotionTeams) {
-            // Promote the team to the higher division
-            setChampionship(currentChamp.promotionChampionship);
-
             // Load all teams from the promotion championship from the context
             const promotionChampionship =
               championshipState.otherChampionships.find(
@@ -166,6 +163,26 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
               ...promotedTeamsFromCurrentChampionship,
             ];
 
+            /*
+            TODO: Relegate the teams from the current championship
+            - Detach the relegated teams from the current championship
+            - Detach the promoted teams from the relegation championship
+            - Add the relegated teams from the current championship to the relegation championship
+            - Add the promoted teams from the relegation championship to the current championship
+            - Set the teams to be controlled automatically for the current championship
+            - Add/update the current championship in the context (championshipState.otherChampionships)
+            */
+
+            /*
+            TODO: Relegate the teams from the current championship
+            - Detach the relegated teams from the current championship
+            - Detach the promoted teams from the relegation championship
+            - Add the relegated teams from the current championship to the relegation championship
+            - Add the promoted teams from the relegation championship to the current championship
+            - Set the teams to be controlled automatically for the current championship
+            - Add/update the current championship in the context (championshipState.otherChampionships)
+            */
+
             // Update the context state with the teams to be controlled automatically for the next season
             setTeamsControlledAutomatically(teamsToBeControlledAutomatically);
 
@@ -176,13 +193,8 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
             );
             setSeasonMatchCalendar(seasonCalendar);
 
-            /*
-            TODO: Relegate the teams from the promotion championship
-            - Get the relegated teams from the promotion championship
-            - Get the remaining teams from the current championship
-            - Set the teams to be controlled automatically for the current championship
-            - Add/update the current championship in the context (championshipState.otherChampionships)
-            */
+            // Promote the team to the higher division
+            setChampionship(currentChamp.promotionChampionship);
           } else {
             // The human player's team wasn't promoted
             // Load all teams from the promotion championship
