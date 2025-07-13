@@ -223,7 +223,12 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
               ...promotedTeamsFromRelegationChampionship,
             ];
 
-            // TODO: Create a new ChampionshipConfig object with the array of adjusted teams, and with the other data from the current championship
+            const newChampionshipConfig = {
+              ...currentChamp,
+              teamsControlledAutomatically:
+                adjustedTeamsToBeControlledAutomatically,
+            };
+
             // TODO: Add the new ChampionshipConfig object in the context (championshipState.otherChampionships)
 
             // Set the promotion championship as the current championship
