@@ -224,14 +224,43 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
               ...promotedTeamsFromRelegationChampionship,
             ];
 
+            // Create a new ChampionshipConfig object, as the current championship will be included in the otherChampionships array in the context
             const newChampionshipConfig = {
               ...currentChamp,
               teamsControlledAutomatically:
                 adjustedTeamsToBeControlledAutomatically,
             };
 
+            // Get the relegated teams from the current championship
+            const relegatedTeamsFromCurrentChampionship =
+              championshipState.teamsControlledAutomatically.filter((t) =>
+                relegatedTeamsAbbreviations.includes(t.abbreviation)
+              );
+
+            // Get the remaining teams from the relegation championship
+            const remainingTeamsFromRelegationChampionship =
+              relegationChampionshipTeams?.slice(
+                -(relegationChampionship?.promotionTeams ?? 0)
+              ) ?? [];
+
+            // Gather the teams to be controlled automatically to be set to the relegation championship
+            const teamsToBeControlledAutomaticallyForRelegationChampionship = [
+              ...remainingTeamsFromRelegationChampionship,
+              ...relegatedTeamsFromCurrentChampionship,
+            ];
+
+            // Create a new ChampionshipConfig object for the relegation championship
+            const newRelegationChampionshipConfig = {
+              ...relegationChampionship!,
+              teamsControlledAutomatically:
+                teamsToBeControlledAutomaticallyForRelegationChampionship,
+            };
+
             // Add the new ChampionshipConfig object in the context (championshipState.otherChampionships)
             addOrUpdateOtherChampionship(newChampionshipConfig);
+
+            // Add the new ChampionshipConfig object for the relegation championship in the context (championshipState.otherChampionships)
+            addOrUpdateOtherChampionship(newRelegationChampionshipConfig);
 
             // Set the promotion championship as the current championship
             setChampionship(currentChamp.promotionChampionship);
