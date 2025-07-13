@@ -237,11 +237,16 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
                 relegatedTeamsAbbreviations.includes(t.abbreviation)
               );
 
-            // Get the remaining teams from the relegation championship
+            // Get the remaining teams from the relegation championship, not including the promoted teams
             const remainingTeamsFromRelegationChampionship =
-              relegationChampionshipTeams?.slice(
-                -(relegationChampionship?.promotionTeams ?? 0)
-              ) ?? [];
+              relegationChampionshipTeams
+                ?.filter(
+                  (t) =>
+                    !promotedTeamsFromRelegationChampionship
+                      .map((promotedTeam) => promotedTeam.id)
+                      .includes(t.id)
+                )
+                .slice(-(relegationChampionship?.promotionTeams ?? 0)) ?? [];
 
             // Gather the teams to be controlled automatically to be set to the relegation championship
             const teamsToBeControlledAutomaticallyForRelegationChampionship = [
