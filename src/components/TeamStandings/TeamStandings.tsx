@@ -180,6 +180,52 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
             - Add promoted teams from the relegation championship to the current championship
             */
 
+            // Get the relegated teams from the promotion championship
+            const relegatedTeamsFromPromotionChampionship =
+              promotionChampionshipTeams?.slice(
+                -(promotionChampionship?.relegationTeams ?? 0)
+              ) ?? [];
+
+            // Get the relegated teams abbreviations from the current championship
+            const relegatedTeamsAbbreviations = standings
+              .slice(-(currentChamp?.relegationTeams ?? 0))
+              .map((t) => t.team);
+
+            // Get the remaining teams from the current championship, not considering the relegated teams and the promoted teams
+            const remainingTeamsFromCurrentChampionship =
+              championshipState.teamsControlledAutomatically.filter(
+                (t) =>
+                  !relegatedTeamsAbbreviations.includes(t.abbreviation) &&
+                  !promotedTeamsAbbreviations.includes(t.abbreviation)
+              );
+
+            // Get the relegation championship
+            const relegationChampionship =
+              championshipState.otherChampionships.find(
+                (c) => c.internalName === currentChamp.relegationChampionship
+              );
+
+            // Get the teams from the relegation championship
+            const relegationChampionshipTeams =
+              relegationChampionship?.teamsControlledAutomatically;
+
+            // Get the promoted teams from the relegation championship
+            const promotedTeamsFromRelegationChampionship =
+              relegationChampionshipTeams?.slice(
+                0,
+                relegationChampionship?.promotionTeams ?? 0
+              ) ?? [];
+
+            // Gather the teams to be controlled automatically for the next season into a single array
+            const adjustedTeamsToBeControlledAutomatically = [
+              ...remainingTeamsFromCurrentChampionship,
+              ...relegatedTeamsFromPromotionChampionship,
+              ...promotedTeamsFromRelegationChampionship,
+            ];
+
+            // TODO: Create a new ChampionshipConfig object with the array of adjusted teams, and with the other data from the current championship
+            // TODO: Add the new ChampionshipConfig object in the context (championshipState.otherChampionships)
+
             // Set the promotion championship as the current championship
             setChampionship(currentChamp.promotionChampionship);
           } else {
