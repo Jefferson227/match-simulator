@@ -163,37 +163,24 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
               ...promotedTeamsFromCurrentChampionship,
             ];
 
-            /*
-            TODO: Relegate the teams from the current championship
-            - Detach the relegated teams from the current championship
-            - Detach the promoted teams from the relegation championship
-            - Add the relegated teams from the current championship to the relegation championship
-            - Add the promoted teams from the relegation championship to the current championship
-            - Set the teams to be controlled automatically for the current championship
-            - Add/update the current championship in the context (championshipState.otherChampionships)
-            */
-
-            /*
-            TODO: Relegate the teams from the current championship
-            - Detach the relegated teams from the current championship
-            - Detach the promoted teams from the relegation championship
-            - Add the relegated teams from the current championship to the relegation championship
-            - Add the promoted teams from the relegation championship to the current championship
-            - Set the teams to be controlled automatically for the current championship
-            - Add/update the current championship in the context (championshipState.otherChampionships)
-            */
-
             // Update the context state with the teams to be controlled automatically for the next season
             setTeamsControlledAutomatically(teamsToBeControlledAutomatically);
 
-            // Generate and set the season match calendar
+            // Generate and set the season match calendar for the next season
             const seasonCalendar = generateSeasonMatchCalendar(
               humanPlayerTeam as BaseTeam,
               teamsToBeControlledAutomatically
             );
             setSeasonMatchCalendar(seasonCalendar);
 
-            // Promote the team to the higher division
+            /*
+            TODO: Relegate the teams from the current championship
+            - Add relegated teams from the promotion championship to the current championship
+            - Send relegated teams from the current championship to the relegation championship
+            - Add promoted teams from the relegation championship to the current championship
+            */
+
+            // Set the promotion championship as the current championship
             setChampionship(currentChamp.promotionChampionship);
           } else {
             // The human player's team wasn't promoted
