@@ -1,0 +1,40 @@
+{
+  "name": "Associação Atlética Ponte Preta",
+  "shortName": "Ponte Preta",
+  "abbreviation": "PON",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#000000",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 43,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "João Paulo", "strength": 0 },
+    { "position": "GK", "name": "Matheus Cardoso", "strength": 0 },
+    { "position": "DF", "name": "Luan", "strength": 0 },
+    { "position": "DF", "name": "Rafael Vaz", "strength": 0 },
+    { "position": "DF", "name": "Fábio Ferreira", "strength": 0 },
+    { "position": "DF", "name": "João Victor", "strength": 0 },
+    { "position": "DF", "name": "Matheus Jesus", "strength": 0 },
+    { "position": "DF", "name": "Lucas Barcelos", "strength": 0 },
+    { "position": "MF", "name": "Felipe Amaral", "strength": 0 },
+    { "position": "MF", "name": "Rafael Longuine", "strength": 0 },
+    { "position": "MF", "name": "João Pedro", "strength": 0 },
+    { "position": "MF", "name": "Matheus Oliveira", "strength": 0 },
+    { "position": "MF", "name": "Lucas Fernandes", "strength": 0 },
+    { "position": "MF", "name": "Felipe Santos", "strength": 0 },
+    { "position": "FW", "name": "Rafael Silva", "strength": 0 },
+    { "position": "FW", "name": "João Lucas", "strength": 0 },
+    { "position": "FW", "name": "Matheus Costa", "strength": 0 },
+    { "position": "FW", "name": "Lucas Santos", "strength": 0 },
+    { "position": "FW", "name": "Felipe Oliveira", "strength": 0 },
+    { "position": "FW", "name": "Rafael Costa", "strength": 0 },
+    { "position": "FW", "name": "João Santos", "strength": 0 },
+    { "position": "FW", "name": "Matheus Oliveira", "strength": 0 },
+    { "position": "FW", "name": "Lucas Costa", "strength": 0 },
+    { "position": "FW", "name": "Felipe Santos", "strength": 0 }
+  ]
+}

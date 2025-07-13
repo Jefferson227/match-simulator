@@ -1,0 +1,42 @@
+{
+  "name": "Londrina Esporte Clube",
+  "shortName": "Londrina",
+  "abbreviation": "LON",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#059669",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 42,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Carlos Eduardo", "strength": 0 },
+    { "position": "GK", "name": "Rafael Martins", "strength": 0 },
+    { "position": "DF", "name": "Bruno Santos", "strength": 0 },
+    { "position": "DF", "name": "Marcelo Costa", "strength": 0 },
+    { "position": "DF", "name": "Thiago Silva", "strength": 0 },
+    { "position": "DF", "name": "Rafael Lima", "strength": 0 },
+    { "position": "DF", "name": "Lucas Mendes", "strength": 0 },
+    { "position": "DF", "name": "Gabriel Santos", "strength": 0 },
+    { "position": "MF", "name": "João Pedro", "strength": 0 },
+    { "position": "MF", "name": "Matheus Oliveira", "strength": 0 },
+    { "position": "MF", "name": "Felipe Costa", "strength": 0 },
+    { "position": "MF", "name": "Rafael Silva", "strength": 0 },
+    { "position": "MF", "name": "Lucas Santos", "strength": 0 },
+    { "position": "MF", "name": "Gabriel Costa", "strength": 0 },
+    { "position": "FW", "name": "João Silva", "strength": 0 },
+    { "position": "FW", "name": "Matheus Costa", "strength": 0 },
+    { "position": "FW", "name": "Felipe Santos", "strength": 0 },
+    { "position": "FW", "name": "Rafael Costa", "strength": 0 },
+    { "position": "FW", "name": "Lucas Silva", "strength": 0 },
+    { "position": "FW", "name": "Gabriel Oliveira", "strength": 0 },
+    { "position": "FW", "name": "João Costa", "strength": 0 },
+    { "position": "FW", "name": "Matheus Santos", "strength": 0 },
+    { "position": "FW", "name": "Felipe Silva", "strength": 0 },
+    { "position": "FW", "name": "Rafael Oliveira", "strength": 0 },
+    { "position": "FW", "name": "Lucas Costa", "strength": 0 },
+    { "position": "FW", "name": "Gabriel Santos", "strength": 0 }
+  ]
+}
