@@ -37,7 +37,9 @@
       "internalName": "brasileirao-serie-b",
       "numberOfTeams": 20,
       "promotionTeams": 4,
+      "relegationTeams": 4,
       "promotionChampionship": "brasileirao-serie-a",
+      "relegationChampionship": "brasileirao-serie-c",
       "teams": [
         "amazonas",
         "america-mg",
