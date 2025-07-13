@@ -174,13 +174,6 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
             );
             setSeasonMatchCalendar(seasonCalendar);
 
-            /*
-            TODO: Relegate the teams from the current championship
-            - Add relegated teams from the promotion championship to the current championship
-            - Send relegated teams from the current championship to the relegation championship
-            - Add promoted teams from the relegation championship to the current championship
-            */
-
             // Get the relegated teams from the promotion championship
             const relegatedTeamsFromPromotionChampionship =
               promotionChampionshipTeams?.slice(
