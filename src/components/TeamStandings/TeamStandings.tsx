@@ -262,6 +262,12 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
 
             // Set the promotion championship as the current championship
             setChampionship(currentChamp.promotionChampionship);
+          } else if (
+            humanPlayerPosition >=
+            (currentChamp.numberOfTeams ?? 20) -
+              (currentChamp.relegationTeams ?? 4)
+          ) {
+            // TODO: Implement the logic to handle the case where the human player's team was relegated
           } else {
             // The human player's team wasn't promoted
             // Load all teams from the promotion championship
