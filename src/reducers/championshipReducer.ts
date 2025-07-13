@@ -34,6 +34,7 @@ export type ChampionshipAction =
   | { type: 'SET_YEAR'; payload: number }
   | { type: 'INCREMENT_YEAR' }
   | { type: 'SET_OTHER_CHAMPIONSHIPS'; payload: ChampionshipConfig[] }
+  | { type: 'ADD_OR_UPDATE_OTHER_CHAMPIONSHIP'; payload: ChampionshipConfig }
   | {
       type: 'SET_TEAMS_CONTROLLED_AUTOMATICALLY_FOR_OTHER_CHAMPIONSHIPS';
       payload: ChampionshipConfig[];
@@ -189,6 +190,25 @@ export const championshipReducer = (
       return {
         ...state,
         otherChampionships: action.payload,
+      };
+    case 'ADD_OR_UPDATE_OTHER_CHAMPIONSHIP':
+      return {
+        ...state,
+        otherChampionships: (() => {
+          const existingIndex = state.otherChampionships.findIndex(
+            (champ) => champ.internalName === action.payload.internalName
+          );
+
+          if (existingIndex >= 0) {
+            // Update existing championship
+            return state.otherChampionships.map((champ, index) =>
+              index === existingIndex ? action.payload : champ
+            );
+          } else {
+            // Add new championship
+            return [...state.otherChampionships, action.payload];
+          }
+        })(),
       };
     case 'SET_TEAMS_CONTROLLED_AUTOMATICALLY_FOR_OTHER_CHAMPIONSHIPS':
       return {

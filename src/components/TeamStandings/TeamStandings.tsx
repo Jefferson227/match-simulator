@@ -38,6 +38,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
     setCurrentRound,
     incrementCurrentRound,
     resetTableStandings,
+    addOrUpdateOtherChampionship,
   } = useChampionshipContext();
   const { matches } = useContext(MatchContext);
   const RESULTS_PER_PAGE = 12;
@@ -229,7 +230,8 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
                 adjustedTeamsToBeControlledAutomatically,
             };
 
-            // TODO: Add the new ChampionshipConfig object in the context (championshipState.otherChampionships)
+            // Add the new ChampionshipConfig object in the context (championshipState.otherChampionships)
+            addOrUpdateOtherChampionship(newChampionshipConfig);
 
             // Set the promotion championship as the current championship
             setChampionship(currentChamp.promotionChampionship);
