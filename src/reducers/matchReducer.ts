@@ -4,16 +4,11 @@ import { MatchAction } from '../contexts/MatchContext';
 
 const { addPlayerAttributes, getAverage, getSum } = utils;
 
-export const matchReducer = (
-  state: MatchState,
-  action: MatchAction
-): MatchState => {
+export const matchReducer = (state: MatchState, action: MatchAction): MatchState => {
   switch (action.type) {
     case 'SET_MATCHES': {
       // Accept an array of { homeTeam, visitorTeam }
-      const matchesPayload = Array.isArray(action.payload)
-        ? action.payload
-        : [action.payload];
+      const matchesPayload = Array.isArray(action.payload) ? action.payload : [action.payload];
       const newMatches = matchesPayload.map(({ homeTeam, visitorTeam }) => {
         var updatedHomeTeam = {
           ...homeTeam,
@@ -24,9 +19,7 @@ export const matchReducer = (
           morale: 50,
           overallMood: 0,
         };
-        updatedHomeTeam.overallMood = getAverage(
-          updatedHomeTeam.starters.map((p) => p.mood)
-        );
+        updatedHomeTeam.overallMood = getAverage(updatedHomeTeam.starters.map((p) => p.mood));
         var updatedVisitorTeam = {
           ...visitorTeam,
           starters: addPlayerAttributes(visitorTeam.starters),
@@ -36,9 +29,7 @@ export const matchReducer = (
           morale: 50,
           overallMood: 0,
         };
-        updatedVisitorTeam.overallMood = getAverage(
-          updatedVisitorTeam.starters.map((p) => p.mood)
-        );
+        updatedVisitorTeam.overallMood = getAverage(updatedVisitorTeam.starters.map((p) => p.mood));
         return {
           id: crypto.randomUUID(),
           homeTeam: { ...updatedHomeTeam },
@@ -65,9 +56,7 @@ export const matchReducer = (
         matches: state.matches.map((m) => {
           if (m.id === matchId) {
             // Determine if the scorer is from the home team
-            const isHomeTeam = m.homeTeam.starters.some(
-              (p) => p.name === scorer.playerName
-            );
+            const isHomeTeam = m.homeTeam.starters.some((p) => p.name === scorer.playerName);
             return {
               ...m,
               lastScorer: {
@@ -120,8 +109,7 @@ export const matchReducer = (
       };
     }
     case 'CONFIRM_SUBSTITUTION': {
-      const { matchId, team, selectedPlayer, selectedSubstitute } =
-        action.payload;
+      const { matchId, team, selectedPlayer, selectedSubstitute } = action.payload;
 
       return {
         ...state,
@@ -131,32 +119,28 @@ export const matchReducer = (
           // Create a new copy of the match
           const updatedMatch = { ...match };
 
-          const isTeamHomeOrVisitor = team.isHomeTeam
-            ? 'homeTeam'
-            : 'visitorTeam';
+          const isTeamHomeOrVisitor = team.isHomeTeam ? 'homeTeam' : 'visitorTeam';
 
           // Remove the substituted player from the main squad
-          const filteredPlayers = updatedMatch[
-            isTeamHomeOrVisitor
-          ].starters.filter((p) => p.id !== selectedPlayer.id);
-
-          // Sort the players from the main squad plus the substitute by order
-          const sortedPlayers = [...filteredPlayers, selectedSubstitute].sort(
-            (a, b) => {
-              if ((a.order ?? 0) < (b.order ?? 0)) {
-                return -1; // a comes before b
-              }
-              if ((a.order ?? 0) > (b.order ?? 0)) {
-                return 1; // a comes after b
-              }
-              return 0; // a and b are equal
-            }
+          const filteredPlayers = updatedMatch[isTeamHomeOrVisitor].starters.filter(
+            (p) => p.id !== selectedPlayer.id
           );
 
+          // Sort the players from the main squad plus the substitute by order
+          const sortedPlayers = [...filteredPlayers, selectedSubstitute].sort((a, b) => {
+            if ((a.order ?? 0) < (b.order ?? 0)) {
+              return -1; // a comes before b
+            }
+            if ((a.order ?? 0) > (b.order ?? 0)) {
+              return 1; // a comes after b
+            }
+            return 0; // a and b are equal
+          });
+
           // Remove the changed player from the substitutes
-          const filteredSubstitutes = updatedMatch[
-            isTeamHomeOrVisitor
-          ].substitutes.filter((s) => s.id !== selectedSubstitute.id);
+          const filteredSubstitutes = updatedMatch[isTeamHomeOrVisitor].substitutes.filter(
+            (s) => s.id !== selectedSubstitute.id
+          );
 
           // Update the team
           updatedMatch[isTeamHomeOrVisitor] = {
