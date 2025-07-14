@@ -149,6 +149,9 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
               humanPlayerTeam as BaseTeam
             );
           } else {
+            // TODO: Implement the logic to handle the case where the human player's team was not promoted or relegated
+            // TODO: Create a new function on promotionRelegationService to handle this case
+
             // The human player's team wasn't promoted
             // Load all teams from the promotion championship
             loadAllTeamsExceptOne(
