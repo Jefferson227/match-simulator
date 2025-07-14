@@ -236,15 +236,12 @@ export const handleRelegationLogic = (
     );
 
   // Get the remaining teams from the promotion championship, not including the relegated teams
-  const remainingTeamsFromPromotionChampionship =
-    promotionChampionshipTeams
-      ?.filter(
-        (t: BaseTeam) =>
-          !relegatedTeamsFromPromotionChampionship
-            .map((relegatedTeam: BaseTeam) => relegatedTeam.id)
-            .includes(t.id)
-      )
-      .slice(-(promotionChampionship?.relegationTeams ?? 0)) ?? [];
+  const remainingTeamsFromPromotionChampionship = promotionChampionshipTeams?.filter(
+    (t: BaseTeam) =>
+      !relegatedTeamsFromPromotionChampionship
+        .map((relegatedTeam: BaseTeam) => relegatedTeam.id)
+        .includes(t.id)
+  );
 
   // Gather the teams to be controlled automatically to be set to the promotion championship
   const teamsToBeControlledAutomaticallyForPromotionChampionship = [
