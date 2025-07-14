@@ -17,20 +17,17 @@ export const handlePromotionLogic = (
 ) => {
   // Load all teams from the promotion championship from the context
   const promotionChampionship = championshipState.otherChampionships.find(
-    (champ: ChampionshipConfig) =>
-      champ.internalName === currentChamp.promotionChampionship
+    (champ: ChampionshipConfig) => champ.internalName === currentChamp.promotionChampionship
   );
 
   // Get the teams from the promotion championship without the relegated teams
-  const promotionChampionshipTeams =
-    promotionChampionship?.teamsControlledAutomatically;
+  const promotionChampionshipTeams = promotionChampionship?.teamsControlledAutomatically;
 
   // Remove the relegated teams from the promotion championship
-  const promotionChampionshipWithoutRelegatedTeams =
-    promotionChampionshipTeams?.slice(
-      0,
-      promotionChampionshipTeams?.length - (currentChamp?.promotionTeams ?? 0)
-    );
+  const promotionChampionshipWithoutRelegatedTeams = promotionChampionshipTeams?.slice(
+    0,
+    promotionChampionshipTeams?.length - (currentChamp?.promotionTeams ?? 0)
+  );
 
   // Get the abbreviations of the promoted teams from the current championship
   const promotedTeamsAbbreviations = standings
@@ -61,9 +58,7 @@ export const handlePromotionLogic = (
 
   // Get the relegated teams from the promotion championship
   const relegatedTeamsFromPromotionChampionship =
-    promotionChampionshipTeams?.slice(
-      -(promotionChampionship?.relegationTeams ?? 0)
-    ) ?? [];
+    promotionChampionshipTeams?.slice(-(promotionChampionship?.relegationTeams ?? 0)) ?? [];
 
   // Get the relegated teams abbreviations from the current championship
   const relegatedTeamsAbbreviations = standings
@@ -80,20 +75,15 @@ export const handlePromotionLogic = (
 
   // Get the relegation championship
   const relegationChampionship = championshipState.otherChampionships.find(
-    (c: ChampionshipConfig) =>
-      c.internalName === currentChamp.relegationChampionship
+    (c: ChampionshipConfig) => c.internalName === currentChamp.relegationChampionship
   );
 
   // Get the teams from the relegation championship
-  const relegationChampionshipTeams =
-    relegationChampionship?.teamsControlledAutomatically;
+  const relegationChampionshipTeams = relegationChampionship?.teamsControlledAutomatically;
 
   // Get the promoted teams from the relegation championship
   const promotedTeamsFromRelegationChampionship =
-    relegationChampionshipTeams?.slice(
-      0,
-      relegationChampionship?.promotionTeams ?? 0
-    ) ?? [];
+    relegationChampionshipTeams?.slice(0, relegationChampionship?.promotionTeams ?? 0) ?? [];
 
   // Gather the teams to be controlled automatically for the next season into a single array
   const adjustedTeamsToBeControlledAutomatically = [
@@ -134,8 +124,7 @@ export const handlePromotionLogic = (
   // Create a new ChampionshipConfig object for the relegation championship
   const newRelegationChampionshipConfig = {
     ...relegationChampionship!,
-    teamsControlledAutomatically:
-      teamsToBeControlledAutomaticallyForRelegationChampionship,
+    teamsControlledAutomatically: teamsToBeControlledAutomaticallyForRelegationChampionship,
   };
 
   // Add the new ChampionshipConfig object in the context (championshipState.otherChampionships)
