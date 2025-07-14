@@ -4,11 +4,11 @@ import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import { MatchContext } from '../../contexts/MatchContext';
 import sessionService from '../../services/sessionService';
 import generalService from '../../services/generalService';
+import { generateSeasonMatchCalendar, loadAllTeamsExceptOne } from '../../services/teamService';
 import {
-  generateSeasonMatchCalendar,
-  loadAllTeamsExceptOne,
-} from '../../services/teamService';
-import { handlePromotionLogic } from '../../services/promotionRelegationService';
+  handlePromotionLogic,
+  handleRelegationLogic,
+} from '../../services/promotionRelegationService';
 import { BaseTeam } from '../../types';
 
 interface TeamStanding {
@@ -24,11 +24,8 @@ interface TeamStandingsProps {
   standings?: TeamStanding[];
 }
 
-const TeamStandings: React.FC<TeamStandingsProps> = ({
-  standings: propStandings,
-}) => {
-  const { setScreenDisplayed, state: generalState } =
-    useContext(GeneralContext);
+const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings }) => {
+  const { setScreenDisplayed, state: generalState } = useContext(GeneralContext);
   const {
     state: championshipState,
     getTableStandings,
@@ -107,11 +104,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
         (c) => c.internalName === championshipState.selectedChampionship
       );
 
-      if (
-        currentChamp &&
-        currentChamp.promotionTeams &&
-        currentChamp.promotionChampionship
-      ) {
+      if (currentChamp && currentChamp.promotionTeams && currentChamp.promotionChampionship) {
         // Get human player's team from general context
         const humanPlayerTeam = championshipState.humanPlayerBaseTeam;
 
@@ -123,9 +116,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
         if (humanPlayerTeamInStandings) {
           // Find the position of human player's team in standings
           const humanPlayerPosition =
-            standings.findIndex(
-              (standing) => standing.team === humanPlayerTeam?.abbreviation
-            ) + 1; // +1 because array index is 0-based but position is 1-based
+            standings.findIndex((standing) => standing.team === humanPlayerTeam?.abbreviation) + 1; // +1 because array index is 0-based but position is 1-based
 
           // Implement promotion logic including human player's team
           if (humanPlayerPosition <= currentChamp.promotionTeams) {
@@ -143,10 +134,20 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
             );
           } else if (
             humanPlayerPosition >=
-            (currentChamp.numberOfTeams ?? 20) -
-              (currentChamp.relegationTeams ?? 4)
+            (currentChamp.numberOfTeams ?? 20) - (currentChamp.relegationTeams ?? 4)
           ) {
-            // TODO: Implement the logic to handle the case where the human player's team was relegated
+            handleRelegationLogic(
+              {
+                setTeamsControlledAutomatically,
+                setSeasonMatchCalendar,
+                setChampionship,
+                addOrUpdateOtherChampionship,
+              },
+              currentChamp,
+              championshipState,
+              standings,
+              humanPlayerTeam as BaseTeam
+            );
           } else {
             // The human player's team wasn't promoted
             // Load all teams from the promotion championship
@@ -157,9 +158,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
             ).then((allTeamsFromPromotionChampionship) => {
               // TODO: Implement a proper logic to get the relegated teams from the promotion championship
               const relegatedTeamsFromPromotionChampionship =
-                allTeamsFromPromotionChampionship.slice(
-                  -(currentChamp?.promotionTeams ?? 0)
-                );
+                allTeamsFromPromotionChampionship.slice(-(currentChamp?.promotionTeams ?? 0));
 
               // Get the relegated teams abbreviations from the current championship
               const relegatedTeamsAbbreviations = standings
@@ -167,11 +166,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
                 .map((t) => t.team);
 
               // If the human player's team is in the relegated teams, show the game over screen
-              if (
-                relegatedTeamsAbbreviations.includes(
-                  humanPlayerTeam?.abbreviation ?? ''
-                )
-              ) {
+              if (relegatedTeamsAbbreviations.includes(humanPlayerTeam?.abbreviation ?? '')) {
                 console.error(
                   "Game over! Your team was relegated to a championship that doesn't exist"
                 );
@@ -231,34 +226,25 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({
   }
 
   return (
-    <div
-      className="font-press-start min-h-screen"
-      style={{ backgroundColor: '#3d7a33' }}
-    >
+    <div className="font-press-start min-h-screen" style={{ backgroundColor: '#3d7a33' }}>
       <div className="text-center text-[16px] text-white mt-6 mb-2 tracking-wider uppercase">
         {championshipName}
       </div>
       <div className="text-center text-[14px] text-white mb-2 uppercase">
         {!isSeasonComplete && (
           <>
-            {championshipState.year} - Round {championshipState.currentRound} of{' '}
-            {totalRounds}
+            {championshipState.year} - Round {championshipState.currentRound} of {totalRounds}
           </>
         )}
         {isSeasonComplete && (
-          <span className="block text-[12px] text-yellow-300">
-            SEASON COMPLETE!
-          </span>
+          <span className="block text-[12px] text-yellow-300">SEASON COMPLETE!</span>
         )}
       </div>
       <div
         className="w-[350px] h-[610px] mx-auto mt-0 mb-0 flex flex-col items-center"
         style={{ backgroundColor: '#397a33', border: '4px solid #e2e2e2' }}
       >
-        <div
-          className="w-full mt-[14px]"
-          style={{ maxHeight: 587, overflowY: 'auto' }}
-        >
+        <div className="w-full mt-[14px]" style={{ maxHeight: 587, overflowY: 'auto' }}>
           <table className="w-full border-separate border-spacing-0">
             <thead>
               <tr className="text-[18px] text-white">
