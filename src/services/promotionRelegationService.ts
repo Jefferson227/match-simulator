@@ -8,23 +8,46 @@ interface PromotionRelegationContext {
   addOrUpdateOtherChampionship: (championship: ChampionshipConfig) => void;
 }
 
-function getRelegatedTeamsAutomatically(championship: ChampionshipConfig) {
-  const teams = championship.teamsControlledAutomatically;
-  if (!teams) {
-    return [];
+function getRelegatedTeamsAutomatically(championship: ChampionshipConfig): BaseTeam[] {
+  const teams: BaseTeam[] = championship.teamsControlledAutomatically || [];
+  if (teams.length === 0 || !championship.relegationTeams) return [];
+
+  // Initialize win counters
+  const winCounts: Record<string, number> = {};
+  teams.forEach((team) => {
+    winCounts[team.abbreviation] = 0;
+  });
+
+  // Each team plays every other team twice
+  for (let i = 0; i < teams.length; i++) {
+    for (let j = 0; j < teams.length; j++) {
+      if (i === j) continue;
+      const teamA = teams[i];
+      const teamB = teams[j];
+      // Play two matches (home and away)
+      for (let match = 0; match < 2; match++) {
+        let winner: BaseTeam | null = null;
+        while (!winner) {
+          const scoreA = Math.floor(Math.random() * (teamA.initialOverallStrength + 1));
+          const scoreB = Math.floor(Math.random() * (teamB.initialOverallStrength + 1));
+          if (scoreA > scoreB) {
+            winner = teamA;
+          } else if (scoreB > scoreA) {
+            winner = teamB;
+          }
+          // If tie, repeat
+        }
+        winCounts[winner.abbreviation] += 1;
+      }
+    }
   }
 
-  for (const team of teams) {
-    // Each team "plays" against all other teams twice by comparing their initial overall strength
-    // In the "match", a random number between 0 and team.initialOverallStrength is generated
-    // The team who generates the highest number is the winner
-    // If both teams generate the same number, new numbers are generated and compared again, until one team wins
-    // The number of wins is counted for each team
-    // At the end of the "championship", the teams with less number of wins (controlled by championship.relegationTeams) are considered relegated
-    // The relegated teams are returned as an array of BaseTeam objects
-  }
-
-  return [];
+  // Sort teams by win count ascending (fewest wins first)
+  const sortedTeams = [...teams].sort(
+    (a, b) => winCounts[a.abbreviation] - winCounts[b.abbreviation]
+  );
+  // Return the teams with the fewest wins (relegationTeams)
+  return sortedTeams.slice(0, championship.relegationTeams);
 }
 
 export const handlePromotionLogic = (
