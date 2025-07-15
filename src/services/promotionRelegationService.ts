@@ -8,6 +8,25 @@ interface PromotionRelegationContext {
   addOrUpdateOtherChampionship: (championship: ChampionshipConfig) => void;
 }
 
+function getRelegatedTeamsAutomatically(championship: ChampionshipConfig) {
+  const teams = championship.teamsControlledAutomatically;
+  if (!teams) {
+    return [];
+  }
+
+  for (const team of teams) {
+    // Each team "plays" against all other teams twice by comparing their initial overall strength
+    // In the "match", a random number between 0 and team.initialOverallStrength is generated
+    // The team who generates the highest number is the winner
+    // If both teams generate the same number, new numbers are generated and compared again, until one team wins
+    // The number of wins is counted for each team
+    // At the end of the "championship", the teams with less number of wins (controlled by championship.relegationTeams) are considered relegated
+    // The relegated teams are returned as an array of BaseTeam objects
+  }
+
+  return [];
+}
+
 export const handlePromotionLogic = (
   context: PromotionRelegationContext,
   currentChamp: ChampionshipConfig,
