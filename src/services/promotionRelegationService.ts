@@ -30,12 +30,23 @@ function getTeamsByPerformance(
       if (i === j) continue;
       const teamA = teams[i];
       const teamB = teams[j];
+
+      // Calculate average strength for each team from all players
+      const teamAAverageStrength =
+        teamA.players.length > 0
+          ? teamA.players.reduce((sum, player) => sum + player.strength, 0) / teamA.players.length
+          : 0;
+      const teamBAverageStrength =
+        teamB.players.length > 0
+          ? teamB.players.reduce((sum, player) => sum + player.strength, 0) / teamB.players.length
+          : 0;
+
       // Play two matches (home and away)
       for (let match = 0; match < 2; match++) {
         let winner: BaseTeam | null = null;
         while (!winner) {
-          const scoreA = Math.floor(Math.random() * (teamA.initialOverallStrength + 1));
-          const scoreB = Math.floor(Math.random() * (teamB.initialOverallStrength + 1));
+          const scoreA = Math.floor(Math.random() * (teamAAverageStrength + 1));
+          const scoreB = Math.floor(Math.random() * (teamBAverageStrength + 1));
           if (scoreA > scoreB) {
             winner = teamA;
           } else if (scoreB > scoreA) {
