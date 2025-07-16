@@ -50,6 +50,48 @@ function getRelegatedTeamsAutomatically(championship: ChampionshipConfig): BaseT
   return sortedTeams.slice(0, championship.relegationTeams);
 }
 
+function getPromotedTeamsAutomatically(championship: ChampionshipConfig): BaseTeam[] {
+  const teams: BaseTeam[] = championship.teamsControlledAutomatically || [];
+  if (teams.length === 0 || !championship.promotionTeams) return [];
+
+  // Initialize win counters
+  const winCounts: Record<string, number> = {};
+  teams.forEach((team) => {
+    winCounts[team.abbreviation] = 0;
+  });
+
+  // Each team plays every other team twice
+  for (let i = 0; i < teams.length; i++) {
+    for (let j = 0; j < teams.length; j++) {
+      if (i === j) continue;
+      const teamA = teams[i];
+      const teamB = teams[j];
+      // Play two matches (home and away)
+      for (let match = 0; match < 2; match++) {
+        let winner: BaseTeam | null = null;
+        while (!winner) {
+          const scoreA = Math.floor(Math.random() * (teamA.initialOverallStrength + 1));
+          const scoreB = Math.floor(Math.random() * (teamB.initialOverallStrength + 1));
+          if (scoreA > scoreB) {
+            winner = teamA;
+          } else if (scoreB > scoreA) {
+            winner = teamB;
+          }
+          // If tie, repeat
+        }
+        winCounts[winner.abbreviation] += 1;
+      }
+    }
+  }
+
+  // Sort teams by win count descending (most wins first)
+  const sortedTeams = [...teams].sort(
+    (a, b) => winCounts[b.abbreviation] - winCounts[a.abbreviation]
+  );
+  // Return the teams with the most wins (promotionTeams)
+  return sortedTeams.slice(0, championship.promotionTeams);
+}
+
 export const handlePromotionLogic = (
   context: PromotionRelegationContext,
   currentChamp: ChampionshipConfig,
