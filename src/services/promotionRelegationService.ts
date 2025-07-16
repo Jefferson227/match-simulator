@@ -84,13 +84,18 @@ export const handlePromotionLogic = (
     (champ: ChampionshipConfig) => champ.internalName === currentChamp.promotionChampionship
   );
 
-  // Get the teams from the promotion championship without the relegated teams
+  // Get the relegated teams from the promotion championship
+  const relegatedTeamsFromPromotionChampionship = getTeamsByPerformance(
+    promotionChampionship!,
+    'relegation'
+  );
+
+  // Get the teams from the promotion championship
   const promotionChampionshipTeams = promotionChampionship?.teamsControlledAutomatically;
 
   // Remove the relegated teams from the promotion championship
-  const promotionChampionshipWithoutRelegatedTeams = promotionChampionshipTeams?.slice(
-    0,
-    promotionChampionshipTeams?.length - (currentChamp?.promotionTeams ?? 0)
+  const promotionChampionshipWithoutRelegatedTeams = promotionChampionshipTeams?.filter(
+    (t: BaseTeam) => !relegatedTeamsFromPromotionChampionship.map((team) => team.id).includes(t.id)
   );
 
   // Get the abbreviations of the promoted teams from the current championship
@@ -120,10 +125,6 @@ export const handlePromotionLogic = (
   );
   context.setSeasonMatchCalendar(seasonCalendar);
 
-  // Get the relegated teams from the promotion championship
-  const relegatedTeamsFromPromotionChampionship =
-    promotionChampionshipTeams?.slice(-(promotionChampionship?.relegationTeams ?? 0)) ?? [];
-
   // Get the relegated teams abbreviations from the current championship
   const relegatedTeamsAbbreviations = standings
     .slice(-(currentChamp?.relegationTeams ?? 0))
@@ -146,8 +147,10 @@ export const handlePromotionLogic = (
   const relegationChampionshipTeams = relegationChampionship?.teamsControlledAutomatically;
 
   // Get the promoted teams from the relegation championship
-  const promotedTeamsFromRelegationChampionship =
-    relegationChampionshipTeams?.slice(0, relegationChampionship?.promotionTeams ?? 0) ?? [];
+  const promotedTeamsFromRelegationChampionship = getTeamsByPerformance(
+    relegationChampionship!,
+    'promotion'
+  );
 
   // Gather the teams to be controlled automatically for the next season into a single array
   const adjustedTeamsToBeControlledAutomatically = [
