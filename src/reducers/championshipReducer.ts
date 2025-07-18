@@ -1,10 +1,4 @@
-import {
-  BaseTeam,
-  SeasonRound,
-  TableStanding,
-  Match,
-  ChampionshipConfig,
-} from '../types';
+import { BaseTeam, SeasonRound, TableStanding, Match, ChampionshipConfig } from '../types';
 
 // Championship state interface
 export interface ChampionshipState {
@@ -160,10 +154,7 @@ export const championshipReducer = (
     case 'UPDATE_TABLE_STANDINGS':
       return {
         ...state,
-        tableStandings: calculateUpdatedStandings(
-          state.tableStandings,
-          action.payload
-        ),
+        tableStandings: calculateUpdatedStandings(state.tableStandings, action.payload),
       };
     case 'RESET_TABLE_STANDINGS':
       return {
