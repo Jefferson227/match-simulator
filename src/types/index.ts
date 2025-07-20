@@ -1,6 +1,6 @@
-// Import types for use in this file
-import { Player } from './player';
-import { TeamColors, BaseTeam, MatchTeam } from './team/team';
+// Import types from their respective domain files
+import { Player } from './player/index.js';
+import { TeamColors, BaseTeam, MatchTeam } from './team/index.js';
 import { 
   Scorer, 
   Match, 
@@ -11,31 +11,28 @@ import {
   IncreaseScoreParams, 
   SeasonMatch, 
   SeasonRound 
-} from './match/match';
+} from './match/index.js';
 import { 
   ChampionshipTeam, 
   ChampionshipConfig, 
   ChampionshipState, 
-  ChampionshipAction 
-} from './championship/championship';
-import { 
-  TableStanding, 
-  TableProps 
-} from './championship/table';
+  ChampionshipAction,
+  TableStanding,
+  TableProps
+} from './championship/index.js';
 
-// Re-export all types from their respective domain files for backward compatibility
-export * from './player';
-export * from './team/team';
-export * from './match/match';
-export * from './championship/championship';
-export * from './championship/table';
+// Re-export all types from their respective domain files
+export * from './player/index.js';
+export * from './team/index.js';
+export * from './match/index.js';
+export * from './championship/index.js';
 
 // Export commonly used types for easy access
 export type {
   BaseTeam,
   MatchTeam,
   TeamColors
-} from './team/team';
+} from './team/index.js';
 
 export type {
   Scorer,
@@ -47,21 +44,20 @@ export type {
   IncreaseScoreParams,
   SeasonMatch,
   SeasonRound
-} from './match/match';
+} from './match/index.js';
 
 export type {
   ChampionshipTeam,
   ChampionshipConfig,
   ChampionshipState,
-  ChampionshipAction
-} from './championship/championship';
-
-export type {
+  ChampionshipAction,
   TableStanding,
   TableProps
-} from './championship/table';
+} from './championship/index.js';
 
-// Common types that don't belong to a specific domain
+/**
+ * Common types that don't belong to a specific domain
+ */
 export interface Team {
   id?: string;
   name: string;
