@@ -151,7 +151,7 @@ export const loadSpecificTeam = async (
           mood: 100, // Default mood
         };
       }),
-      morale: 100, // Default morale
+      morale: 50, // Default morale
       formation: '4-4-2', // Default formation
       overallMood: 100, // Default overall mood
       initialOverallStrength: initialOverallStrength,
@@ -218,7 +218,7 @@ export const loadAllTeamsExceptOne = async (
               mood: 100, // Default mood
             };
           }),
-          morale: 100, // Default morale
+          morale: 50, // Default morale
           formation: '4-4-2', // Default formation
           overallMood: 100, // Default overall mood
           initialOverallStrength: initialOverallStrength,
