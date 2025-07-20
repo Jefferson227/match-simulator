@@ -1,16 +1,22 @@
 import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+// Using relative imports to ensure proper resolution during build
 import { GeneralContext } from '../../../../contexts/GeneralContext';
-import { useChampionshipContext } from '../../../../contexts/ChampionshipContext';
+import { useChampionship } from '../../../../features/championship/hooks';
 import generalService from '../../../../services/generalService';
+
+interface Championship {
+  id: string;
+  name: string;
+  internalName: string;
+}
 
 const CHAMPIONSHIPS_PER_PAGE = 6;
 
 const ChampionshipSelector: React.FC = () => {
   const { t } = useTranslation();
   const { setScreenDisplayed } = useContext(GeneralContext);
-  const { setChampionship, setYear, setOtherChampionships } =
-    useChampionshipContext();
+  const { setChampionship, setYear, setOtherChampionships } = useChampionship();
   const [currentPage, setCurrentPage] = useState(0);
 
   const championships = generalService.getAllChampionships();
@@ -28,10 +34,7 @@ const ChampionshipSelector: React.FC = () => {
     }
   };
 
-  const handleChampionshipClick = (championship: {
-    id: string;
-    internalName: string;
-  }) => {
+  const handleChampionshipClick = (championship: Championship) => {
     if (
       championship.internalName === 'brasileirao-serie-a' ||
       championship.internalName === 'brasileirao-serie-b'
@@ -40,7 +43,7 @@ const ChampionshipSelector: React.FC = () => {
       setYear(new Date().getFullYear()); // Set initial year to current year
 
       const otherChamps = championships.filter(
-        (c) => c.internalName !== championship.internalName
+        (c: Championship) => c.internalName !== championship.internalName
       );
       setOtherChampionships(otherChamps);
       setScreenDisplayed('TeamSelector');
@@ -63,7 +66,7 @@ const ChampionshipSelector: React.FC = () => {
       </h1>
 
       <div className="flex flex-col gap-4 w-full h-[560px] max-w-md px-6">
-        {selectedChampionships.map((champ) => (
+        {selectedChampionships.map((champ: Championship) => (
           <button
             key={champ.id}
             onClick={() => handleChampionshipClick(champ)}
