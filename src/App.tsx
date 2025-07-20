@@ -8,7 +8,7 @@ import MatchSimulator from './components/MatchSimulator/MatchSimulator';
 import TeamStandings from './components/TeamStandings/TeamStandings';
 import TeamSelector from './components/TeamSelector/TeamSelector';
 import InitialScreen from './components/InitialScreen/InitialScreen';
-import ChampionshipSelector from './components/ChampionshipSelector/ChampionshipSelector';
+import { ChampionshipSelector } from './features/championship';
 
 const AppContent: FC = () => {
   const { state } = useContext(GeneralContext);

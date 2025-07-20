@@ -1,8 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { GeneralContext } from '../../contexts/GeneralContext';
-import { useChampionshipContext } from '../../contexts/ChampionshipContext';
-import generalService from '../../services/generalService';
+import { GeneralContext } from '../../../../contexts/GeneralContext';
+import { useChampionshipContext } from '../../../../contexts/ChampionshipContext';
+import generalService from '../../../../services/generalService';
 
 const CHAMPIONSHIPS_PER_PAGE = 6;
 

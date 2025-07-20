@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import ChampionshipSelector from './ChampionshipSelector';
 
 // Mock the generalService
-jest.mock('../../services/generalService', () => ({
+jest.mock('../../../../../services/generalService', () => ({
   __esModule: true,
   default: {
     getAllChampionships: () => [

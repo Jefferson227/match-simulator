@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import reactPlugin from '@vitejs/plugin-react-swc';
 import { VitePWA } from 'vite-plugin-pwa';
+import path from 'path';
 
 // Use dynamic import for tailwindcss to avoid ESM issues
 export default defineConfig(async () => {
@@ -8,6 +9,15 @@ export default defineConfig(async () => {
   const tailwindcss = await import('@tailwindcss/vite');
 
   return {
+    resolve: {
+      alias: [
+        { find: '@features', replacement: path.resolve(__dirname, 'src/features') },
+        { find: '@types', replacement: path.resolve(__dirname, 'src/types') },
+        { find: '@components', replacement: path.resolve(__dirname, 'src/components') },
+        { find: '@contexts', replacement: path.resolve(__dirname, 'src/contexts') },
+        { find: '@services', replacement: path.resolve(__dirname, 'src/services') }
+      ]
+    },
     plugins: [
       reactPlugin(),
       tailwindcss.default(),

@@ -1,19 +1,65 @@
 // Import types for use in this file
 import { Player } from './player';
-import { TeamColors } from './team/team';
+import { TeamColors, BaseTeam, MatchTeam } from './team/team';
+import { 
+  Scorer, 
+  Match, 
+  TeamSquadView, 
+  MatchState, 
+  SubstitutionParams, 
+  SetScorerParams, 
+  IncreaseScoreParams, 
+  SeasonMatch, 
+  SeasonRound 
+} from './match/match';
+import { 
+  ChampionshipTeam, 
+  ChampionshipConfig, 
+  ChampionshipState, 
+  ChampionshipAction 
+} from './championship/championship';
+import { 
+  TableStanding, 
+  TableProps 
+} from './championship/table';
 
-// Re-export all types from their respective domain files
+// Re-export all types from their respective domain files for backward compatibility
 export * from './player';
-
 export * from './team/team';
 export * from './match/match';
-
 export * from './championship/championship';
 export * from './championship/table';
 
-// Re-export commonly used types for backward compatibility
-export type { BaseTeam, MatchTeam } from './team/team';
-export type { Scorer, Match, TeamSquadView, MatchState, SubstitutionParams, SetScorerParams, IncreaseScoreParams, SeasonMatch, SeasonRound } from './match/match';
+// Export commonly used types for easy access
+export type {
+  BaseTeam,
+  MatchTeam,
+  TeamColors
+} from './team/team';
+
+export type {
+  Scorer,
+  Match,
+  TeamSquadView,
+  MatchState,
+  SubstitutionParams,
+  SetScorerParams,
+  IncreaseScoreParams,
+  SeasonMatch,
+  SeasonRound
+} from './match/match';
+
+export type {
+  ChampionshipTeam,
+  ChampionshipConfig,
+  ChampionshipState,
+  ChampionshipAction
+} from './championship/championship';
+
+export type {
+  TableStanding,
+  TableProps
+} from './championship/table';
 
 // Common types that don't belong to a specific domain
 export interface Team {
@@ -29,7 +75,3 @@ export interface Team {
   formation: string;
   overallMood: number;
 }
-
-// Export types that are used across multiple domains
-export type { ChampionshipTeam, ChampionshipConfig, ChampionshipState } from './championship/championship';
-export type { TableStanding } from './championship/table';
