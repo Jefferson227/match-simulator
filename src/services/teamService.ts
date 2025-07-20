@@ -82,9 +82,7 @@ export const loadTeamsForChampionship = async (
     );
 
     if (!championship || !championship.teams) {
-      throw new Error(
-        `Championship ${championshipInternalName} not found or has no teams`
-      );
+      throw new Error(`Championship ${championshipInternalName} not found or has no teams`);
     }
 
     const teams: TeamSelectorTeam[] = [];
@@ -144,8 +142,7 @@ export const loadSpecificTeam = async (
         const minStrength = Math.max(1, initialOverallStrength - 5);
         const maxStrength = Math.min(100, initialOverallStrength + 5);
         const randomStrength =
-          Math.floor(Math.random() * (maxStrength - minStrength + 1)) +
-          minStrength;
+          Math.floor(Math.random() * (maxStrength - minStrength + 1)) + minStrength;
 
         return {
           ...player,
@@ -177,9 +174,7 @@ export const loadAllTeamsExceptOne = async (
     );
 
     if (!championship || !championship.teams) {
-      throw new Error(
-        `Championship ${championshipInternalName} not found or has no teams`
-      );
+      throw new Error(`Championship ${championshipInternalName} not found or has no teams`);
     }
 
     const teams: BaseTeam[] = [];
@@ -196,10 +191,7 @@ export const loadAllTeamsExceptOne = async (
         );
         const teamDataObj = teamData.default;
 
-        if (
-          excludedTeamAbbreviation &&
-          teamDataObj.abbreviation === excludedTeamAbbreviation
-        ) {
+        if (excludedTeamAbbreviation && teamDataObj.abbreviation === excludedTeamAbbreviation) {
           continue; // Skip the excluded team, in case the excluded abbreviation is passed
         }
 
@@ -217,8 +209,7 @@ export const loadAllTeamsExceptOne = async (
             const minStrength = Math.max(1, initialOverallStrength - 5);
             const maxStrength = Math.min(100, initialOverallStrength + 5);
             const randomStrength =
-              Math.floor(Math.random() * (maxStrength - minStrength + 1)) +
-              minStrength;
+              Math.floor(Math.random() * (maxStrength - minStrength + 1)) + minStrength;
 
             return {
               ...player,
@@ -247,9 +238,7 @@ export const loadAllTeamsExceptOne = async (
   }
 };
 
-export const loadAllTeams = async (
-  championshipInternalName: string
-): Promise<BaseTeam[]> => {
+export const loadAllTeams = async (championshipInternalName: string): Promise<BaseTeam[]> => {
   try {
     // Find the championship configuration
     const championship = generalParameters.championships.find(
@@ -284,8 +273,7 @@ export const loadAllTeams = async (
             const minStrength = Math.max(1, initialOverallStrength - 5);
             const maxStrength = Math.min(100, initialOverallStrength + 5);
             const randomStrength =
-              Math.floor(Math.random() * (maxStrength - minStrength + 1)) +
-              minStrength;
+              Math.floor(Math.random() * (maxStrength - minStrength + 1)) + minStrength;
 
             return {
               ...player,
@@ -327,16 +315,11 @@ export const loadAllTeamsFromContextExceptOne = async (
   }
   const teams: BaseTeam[] = [];
   for (const team of championship.teams) {
-    if (
-      team.abbreviation.toLowerCase() === excludedTeamAbbreviation.toLowerCase()
-    ) {
+    if (team.abbreviation.toLowerCase() === excludedTeamAbbreviation.toLowerCase()) {
       continue;
     }
     try {
-      const baseTeam = await loadSpecificTeam(
-        championshipInternalName,
-        team.fileName
-      );
+      const baseTeam = await loadSpecificTeam(championshipInternalName, team.fileName);
       if (baseTeam) {
         teams.push(baseTeam);
       }
@@ -440,9 +423,7 @@ export const getCurrentRoundMatches = (
   humanPlayerMatchTeam?: MatchTeam
 ): { homeTeam: MatchTeam; visitorTeam: MatchTeam }[] => {
   // Find the current round
-  const currentRoundData = seasonCalendar.find(
-    (round) => round.roundNumber === currentRound
-  );
+  const currentRoundData = seasonCalendar.find((round) => round.roundNumber === currentRound);
 
   if (!currentRoundData) {
     // If round not found, return empty array
