@@ -1,27 +1,16 @@
-import React from 'react';
-import { useTeamManagement } from '../../features/team/hooks';
-import FormationSelector from '../../features/team/components/FormationSelector';
-import PlayerList from '../../features/team/components/PlayerList';
-import { BaseTeam as Team } from '../../types/team/team';
-import { Player } from '../../types/player/player';
+import React, { useState } from 'react';
+import { useTeamManagement } from '../../hooks';
+import FormationSelector from '../FormationSelector';
+import PlayerList from '../PlayerList';
+import { BaseTeam as Team } from '../../../../types/team/team';
+import { Player } from '../../../../types/player/player';
 
 interface TeamManagerProps {
   team: Team;
   className?: string;
-  onSave?: (team: Team) => void;
-  onCancel?: () => void;
 }
 
-/**
- * TeamManager component that integrates the Team Management feature module.
- * Provides UI for managing team formation, player selection, and team configuration.
- */
-const TeamManager: React.FC<TeamManagerProps> = ({ 
-  team, 
-  className = '',
-  onSave,
-  onCancel
-}) => {
+const TeamManager: React.FC<TeamManagerProps> = ({ team, className = '' }) => {
   const {
     players,
     formation,
@@ -34,15 +23,16 @@ const TeamManager: React.FC<TeamManagerProps> = ({
     error,
   } = useTeamManagement(team);
 
-  const [selectedPlayer, setSelectedPlayer] = React.useState<Player | null>(null);
-  const [isSaving, setIsSaving] = React.useState(false);
+  const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      const updatedTeam = await saveTeam();
-      if (onSave && updatedTeam) {
-        onSave(updatedTeam);
+      const success = await saveTeam();
+      if (success) {
+        // Show success message or navigate away
+        console.log('Team saved successfully!');
       }
     } catch (err) {
       console.error('Failed to save team:', err);
@@ -66,7 +56,7 @@ const TeamManager: React.FC<TeamManagerProps> = ({
         
         <div className="mb-6">
           <FormationSelector 
-            formation={formation}
+            selectedFormation={formation}
             onFormationChange={updateFormation}
             className="max-w-xs"
           />
@@ -126,15 +116,6 @@ const TeamManager: React.FC<TeamManagerProps> = ({
         )}
 
         <div className="mt-6 flex justify-end space-x-3">
-          {onCancel && (
-            <button
-              type="button"
-              onClick={onCancel}
-              className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Cancel
-            </button>
-          )}
           <button
             type="button"
             onClick={handleSave}
