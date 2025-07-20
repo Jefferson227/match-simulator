@@ -4,7 +4,6 @@ import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import { MatchContext } from '../../contexts/MatchContext';
 import sessionService from '../../services/sessionService';
 import generalService from '../../services/generalService';
-import { generateSeasonMatchCalendar, loadAllTeamsExceptOne } from '../../services/teamService';
 import {
   handlePromotionLogic,
   handleRelegationLogic,
