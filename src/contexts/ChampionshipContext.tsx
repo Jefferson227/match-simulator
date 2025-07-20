@@ -5,14 +5,7 @@ import {
   championshipReducer,
   initialChampionshipState,
 } from '../reducers/championshipReducer';
-import {
-  BaseTeam,
-  SeasonRound,
-  Match,
-  TableStanding,
-  ChampionshipConfig,
-} from '../types';
-import teamService from '../services/teamService';
+import { BaseTeam, SeasonRound, Match, TableStanding, ChampionshipConfig } from '../types';
 
 // Championship context interface
 interface ChampionshipContextType {
