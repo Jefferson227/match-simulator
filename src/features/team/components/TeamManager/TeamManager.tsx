@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTeamManagement } from '../../hooks';
 import FormationSelector from '../FormationSelector';
-import PlayerList from '../PlayerList';
-import { BaseTeam as Team } from '../../../../types/team/team';
-import { Player } from '../../../../types/player/player';
+import { PlayerDetails, TeamSquad } from './components';
+import type { BaseTeam as Team } from '../../../../types/team/team';
+import type { Player } from '../../../../types/player/player';
 
 interface TeamManagerProps {
   team: Team;
@@ -13,10 +13,6 @@ interface TeamManagerProps {
 const TeamManager: React.FC<TeamManagerProps> = ({ team, className = '' }) => {
   const {
     players,
-    formation,
-    updateFormation,
-    addPlayer,
-    removePlayer,
     updatePlayerPosition,
     saveTeam,
     isLoading,
@@ -26,27 +22,38 @@ const TeamManager: React.FC<TeamManagerProps> = ({ team, className = '' }) => {
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
-  const handleSave = async () => {
+  // Memoize filtered players to prevent unnecessary re-renders
+  const { startingPlayers, substitutePlayers } = useMemo(() => ({
+    startingPlayers: players.filter(p => p.position && p.position !== 'SUB'),
+    substitutePlayers: players.filter(p => !p.position || p.position === 'SUB')
+  }), [players]);
+
+  const handleSave = async (): Promise<void> => {
     setIsSaving(true);
     try {
       const success = await saveTeam();
       if (success) {
-        // Show success message or navigate away
+        // TODO: Replace with proper toast notification
         console.log('Team saved successfully!');
       }
     } catch (err) {
       console.error('Failed to save team:', err);
+      // Error is already handled in the hook
     } finally {
       setIsSaving(false);
     }
   };
 
-  const handlePlayerSelect = (player: Player) => {
+  const handlePlayerSelect = (player: Player): void => {
     setSelectedPlayer(player);
   };
 
-  const handlePositionChange = (playerId: string, position: string) => {
+  const handlePositionChange = (playerId: string, position: string): void => {
     updatePlayerPosition(playerId, position);
+    // Update the selected player's position if it's the currently selected one
+    if (selectedPlayer?.id === playerId) {
+      setSelectedPlayer({ ...selectedPlayer, position });
+    }
   };
 
   return (
@@ -56,63 +63,24 @@ const TeamManager: React.FC<TeamManagerProps> = ({ team, className = '' }) => {
         
         <div className="mb-6">
           <FormationSelector 
-            selectedFormation={formation}
-            onFormationChange={updateFormation}
             className="max-w-xs"
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h3 className="text-lg font-semibold mb-3">Starting XI</h3>
-            <PlayerList 
-              players={players.filter(p => p.position && p.position !== 'SUB')}
-              onSelectPlayer={handlePlayerSelect}
-              selectedPlayerId={selectedPlayer?.id}
-              showPosition
-              showActions
-              className="border rounded-lg overflow-hidden"
-            />
-          </div>
-          
-          <div>
-            <h3 className="text-lg font-semibold mb-3">Substitutes</h3>
-            <PlayerList 
-              players={players.filter(p => !p.position || p.position === 'SUB')}
-              onSelectPlayer={handlePlayerSelect}
-              selectedPlayerId={selectedPlayer?.id}
-              showPosition
-              showActions
-              className="border rounded-lg overflow-hidden"
-            />
-          </div>
-        </div>
+        <TeamSquad 
+          startingPlayers={startingPlayers}
+          substitutePlayers={substitutePlayers}
+          selectedPlayerId={selectedPlayer?.id}
+          onPlayerSelect={handlePlayerSelect}
+          className="mb-6"
+        />
 
         {selectedPlayer && (
-          <div className="mt-6 p-4 border rounded-lg bg-gray-50">
-            <h3 className="text-lg font-semibold mb-3">Player Details</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="font-medium">Name:</p>
-                <p>{selectedPlayer.name}</p>
-              </div>
-              <div>
-                <p className="font-medium">Position:</p>
-                <select
-                  value={selectedPlayer.position || ''}
-                  onChange={(e) => handlePositionChange(selectedPlayer.id, e.target.value)}
-                  className="mt-1 block w-full pl-3 pr-10 py-1 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                >
-                  <option value="">Select position</option>
-                  <option value="GK">Goalkeeper</option>
-                  <option value="DEF">Defender</option>
-                  <option value="MID">Midfielder</option>
-                  <option value="FWD">Forward</option>
-                  <option value="SUB">Substitute</option>
-                </select>
-              </div>
-            </div>
-          </div>
+          <PlayerDetails 
+            player={selectedPlayer}
+            onPositionChange={handlePositionChange}
+            className="mb-6"
+          />
         )}
 
         <div className="mt-6 flex justify-end space-x-3">
