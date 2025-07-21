@@ -5,7 +5,7 @@ import TeamManager from './features/team/components/TeamManager';
 import { GeneralContext } from './contexts/GeneralContext';
 import { FC, useContext } from 'react';
 import { MatchSimulator } from './features/match';
-import TeamStandings from './components/TeamStandings/TeamStandings';
+import { Standings } from './features/standings';
 import TeamSelector from './components/TeamSelector/TeamSelector';
 import InitialScreen from './components/InitialScreen/InitialScreen';
 import { ChampionshipSelector } from './features/championship';
@@ -30,7 +30,7 @@ const AppContent: FC = () => {
     return <MatchSimulator />;
   }
   if (state.screenDisplayed === 'TeamStandings') {
-    return <TeamStandings />;
+    return <Standings />;
   }
   if (state.screenDisplayed === 'TeamSelector') {
     return <TeamSelector />;
