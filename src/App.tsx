@@ -1,10 +1,10 @@
 import AppProviders from './providers/AppProviders';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
-import TeamManager from './components/TeamManager/TeamManager';
+import TeamManager from './features/team/components/TeamManager';
 import { GeneralContext } from './contexts/GeneralContext';
 import { FC, useContext } from 'react';
-import MatchSimulator from './components/MatchSimulator/MatchSimulator';
+import { MatchSimulator } from './features/match';
 import TeamStandings from './components/TeamStandings/TeamStandings';
 import TeamSelector from './components/TeamSelector/TeamSelector';
 import InitialScreen from './components/InitialScreen/InitialScreen';
@@ -24,7 +24,7 @@ const AppContent: FC = () => {
     return <ChampionshipSelector />;
   }
   if (state.screenDisplayed === 'TeamManager') {
-    return <TeamManager />;
+    return <TeamManager team={state.baseTeam} />;
   }
   if (state.screenDisplayed === 'MatchSimulator') {
     return <MatchSimulator />;

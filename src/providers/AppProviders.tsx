@@ -1,9 +1,9 @@
 import { FC, ReactNode, useContext } from 'react';
-import { MatchProvider } from '../contexts/MatchContext';
 import { GeneralProvider } from '../contexts/GeneralContext';
 import { GeneralContext } from '../contexts/GeneralContext';
 import { ChampionshipProvider } from '../contexts/ChampionshipContext';
 import { TeamProvider } from '../features/team/providers';
+import { MatchProvider } from '../features/match/contexts';
 
 interface AppProvidersProps {
   children: ReactNode;
