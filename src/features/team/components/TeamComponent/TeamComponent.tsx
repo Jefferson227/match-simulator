@@ -1,6 +1,6 @@
 import { FC, useContext } from 'react';
-import { MatchContext } from '../contexts/MatchContext';
-import { MatchTeam } from '../types';
+import { MatchContext } from '../../../../contexts/MatchContext';
+import { MatchTeam } from '../../../../types';
 
 interface TeamComponentProps {
   team: MatchTeam;

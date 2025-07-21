@@ -5,9 +5,9 @@ import TeamManager from './features/team/components/TeamManager';
 import { GeneralContext } from './contexts/GeneralContext';
 import { FC, useContext } from 'react';
 import { MatchSimulator } from './features/match';
-import { TeamStandings } from './features/standings';
-import TeamSelector from './components/TeamSelector/TeamSelector';
-import InitialScreen from './components/InitialScreen/InitialScreen';
+import TeamStandings from './features/standings/components/TeamStandings';
+import TeamSelector from './features/team/components/TeamSelector';
+import InitialScreen from './shared/components/InitialScreen';
 import { ChampionshipSelector } from './features/championship';
 
 const AppContent: FC = () => {

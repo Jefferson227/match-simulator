@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { GeneralContext } from '../../contexts/GeneralContext';
-import { useChampionshipContext } from '../../contexts/ChampionshipContext';
+import { GeneralContext } from '../../../../contexts/GeneralContext';
+import { useChampionshipContext } from '../../../../contexts/ChampionshipContext';
 import {
   loadTeamsForChampionship,
   TeamSelectorTeam,
@@ -9,7 +9,7 @@ import {
   loadAllTeamsExceptOne,
   generateSeasonMatchCalendar,
   loadAllTeams,
-} from '../../services/teamService';
+} from '../../../../services/teamService';
 
 const TEAMS_PER_PAGE = 9;
 

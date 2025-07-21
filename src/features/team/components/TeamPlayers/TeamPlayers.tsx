@@ -1,8 +1,8 @@
 import { FC, useContext, useState, useEffect } from 'react';
-import { MatchContext } from '../../contexts/MatchContext';
+import { MatchContext } from '../../../../contexts/MatchContext';
 import { useTranslation } from 'react-i18next';
-import { TeamSquadView, Player } from '../../types';
-import utils from '../../utils/utils';
+import { TeamSquadView, Player } from '../../../../types';
+import utils from '../../../../utils/utils';
 
 interface TeamPlayersProps {
   teamSquadView: TeamSquadView;
