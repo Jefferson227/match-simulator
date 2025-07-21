@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMatchSimulation } from '../../hooks/useMatchSimulation';
-import { useMatchContext } from '../../contexts/MatchContext';
-import Score from './Score';
-import TeamComponent from './TeamComponent';
-import MatchDetails from './MatchDetails';
-import TeamPlayers from './TeamPlayers';
-import { Match, TeamSquadView } from '../../types';
+import { GeneralContext } from '@contexts/GeneralContext';
+import { MatchContext } from '../../contexts/MatchContext';
+import type { Match } from '../../types';
+import Score from '../Score/Score';
+import TeamComponent from '../TeamComponent/TeamComponent';
+import MatchDetails from '../MatchDetails/MatchDetails';
+import TeamPlayers from '../TeamPlayers/TeamPlayers';
+import useMatchSimulation from '../../hooks/useMatchSimulation';
 
 interface MatchSimulatorProps {
   initialMatches?: Match[];
@@ -38,7 +39,8 @@ const MatchSimulator: React.FC<MatchSimulatorProps> = ({
   className = '',
 }) => {
   const { t } = useTranslation();
-  const { matches, teamSquadView, setTeamSquadView, setDetailsMatchId } = useMatchContext();
+  const { setScreenDisplayed } = useContext(GeneralContext);
+  const { matches, teamSquadView, setTeamSquadView } = useContext(MatchContext);
   const [currentPage, setCurrentPage] = useState(0);
   const [detailsMatch, setDetailsMatch] = useState<Match | null>(null);
 
@@ -79,14 +81,18 @@ const MatchSimulator: React.FC<MatchSimulatorProps> = ({
     const match = matches.find((m) => m.id === matchId);
     if (match) {
       setDetailsMatch(match);
-      setDetailsMatchId(matchId);
+      // Set team squad view to show the home team by default
+      setTeamSquadView({
+        matchId: match.id,
+        team: match.homeTeam,
+        isHomeTeam: true
+      });
     }
   };
 
   // Handle back from details view
   const handleBackFromDetails = () => {
     setDetailsMatch(null);
-    setDetailsMatchId(null);
   };
 
   // Calculate pagination
@@ -146,6 +152,12 @@ const MatchSimulator: React.FC<MatchSimulatorProps> = ({
                 {t('match.pause')}
               </button>
             )}
+            <button
+              onClick={() => setScreenDisplayed('TeamStandings')}
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 ml-2"
+            >
+              {t('match.viewStandings')}
+            </button>
             <button
               onClick={resetMatch}
               className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
