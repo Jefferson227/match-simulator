@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react';
-import { useTeamManagement } from '../../hooks';
+import React, { useMemo, useState, useEffect } from 'react';
+import { useTeam } from '../../contexts/TeamContext';
 import FormationSelector from '../FormationSelector';
 import { PlayerDetails, TeamSquad } from './components';
 import type { BaseTeam as Team } from '../../../../types/team/team';
@@ -12,47 +12,85 @@ interface TeamManagerProps {
 
 const TeamManager: React.FC<TeamManagerProps> = ({ team, className = '' }) => {
   const {
-    players,
-    updatePlayerPosition,
-    saveTeam,
+    // State
+    availablePlayers: players,
+    selectedFormation,
+    selectedPlayerId,
     isLoading,
     error,
-  } = useTeamManagement(team);
+    
+    // Actions
+    setFormation,
+    updatePlayerPosition,
+    selectPlayer,
+    saveTeam,
+  } = useTeam();
 
-  const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [localError, setLocalError] = useState<Error | null>(null);
+  
+  // Set the initial team when the component mounts or team prop changes
+  useEffect(() => {
+    if (team) {
+      selectTeam(team);
+    }
+  }, [team, selectTeam]);
+  
+  // Find the selected player from the players array
+  const selectedPlayer = useMemo(() => {
+    return selectedPlayerId ? players.find(p => p.id === selectedPlayerId) || null : null;
+  }, [players, selectedPlayerId]);
 
   // Memoize filtered players to prevent unnecessary re-renders
   const { startingPlayers, substitutePlayers } = useMemo(() => ({
     startingPlayers: players.filter(p => p.position && p.position !== 'SUB'),
     substitutePlayers: players.filter(p => !p.position || p.position === 'SUB')
   }), [players]);
+  
+  // Handle formation change
+  const handleFormationChange = async (formation: string): Promise<void> => {
+    try {
+      await setFormation(formation);
+      setLocalError(null);
+    } catch (err) {
+      console.error('Failed to update formation:', err);
+      setLocalError(err instanceof Error ? err : new Error('Failed to update formation'));
+    }
+  };
 
   const handleSave = async (): Promise<void> => {
     setIsSaving(true);
+    setLocalError(null);
+    
     try {
       const success = await saveTeam();
       if (success) {
         // TODO: Replace with proper toast notification
         console.log('Team saved successfully!');
+      } else {
+        throw new Error('Failed to save team');
       }
     } catch (err) {
       console.error('Failed to save team:', err);
-      // Error is already handled in the hook
+      setLocalError(err instanceof Error ? err : new Error('Failed to save team'));
     } finally {
       setIsSaving(false);
     }
   };
 
   const handlePlayerSelect = (player: Player): void => {
-    setSelectedPlayer(player);
+    selectPlayer(player.id);
   };
 
-  const handlePositionChange = (playerId: string, position: string): void => {
-    updatePlayerPosition(playerId, position);
-    // Update the selected player's position if it's the currently selected one
-    if (selectedPlayer?.id === playerId) {
-      setSelectedPlayer({ ...selectedPlayer, position });
+  const handlePositionChange = async (playerId: string, position: string): Promise<void> => {
+    try {
+      const success = await updatePlayerPosition(playerId, position);
+      if (!success) {
+        throw new Error('Failed to update player position');
+      }
+    } catch (err) {
+      console.error('Failed to update player position:', err);
+      setLocalError(err instanceof Error ? err : new Error('Failed to update player position'));
     }
   };
 
@@ -64,6 +102,9 @@ const TeamManager: React.FC<TeamManagerProps> = ({ team, className = '' }) => {
         <div className="mb-6">
           <FormationSelector 
             className="max-w-xs"
+            selectedFormation={selectedFormation}
+            onFormationChange={handleFormationChange}
+            disabled={isLoading || isSaving}
           />
         </div>
 
@@ -94,9 +135,10 @@ const TeamManager: React.FC<TeamManagerProps> = ({ team, className = '' }) => {
           </button>
         </div>
 
-        {error && (
-          <div className="mt-4 text-sm text-red-600">
-            Error: {error.message}
+        {(error || localError) && (
+          <div className="mt-4 p-3 bg-red-50 border-l-4 border-red-400 text-red-700">
+            <p className="font-medium">Error</p>
+            <p className="text-sm">{(error || localError)?.message}</p>
           </div>
         )}
       </div>
