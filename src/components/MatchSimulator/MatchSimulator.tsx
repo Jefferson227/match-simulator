@@ -18,12 +18,10 @@ const MatchSimulator: FC = () => {
   const [standingsUpdated, setStandingsUpdated] = useState(false);
   const [standingsTimeoutSet, setStandingsTimeoutSet] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
-  const { matches, teamSquadView, setMatches, increaseScore, setScorer } =
-    useContext(MatchContext);
+  const { matches, teamSquadView, setMatches, increaseScore, setScorer } = useContext(MatchContext);
   const { state, setMatchOtherTeams, setScreenDisplayed, setClockSpeed } =
     useContext(GeneralContext);
-  const { state: championshipState, updateTableStandings } =
-    useChampionshipContext();
+  const { state: championshipState, updateTableStandings } = useChampionshipContext();
 
   // Reset timer and detailsMatchId when leaving MatchSimulator
   useEffect(() => {
@@ -60,8 +58,7 @@ const MatchSimulator: FC = () => {
     if (
       championshipState.seasonMatchCalendar.length > 0 &&
       championshipState.humanPlayerBaseTeam &&
-      (matches.length === 0 ||
-        matches[0]?.round !== championshipState.currentRound)
+      (matches.length === 0 || matches[0]?.round !== championshipState.currentRound)
     ) {
       const currentRoundMatches = getCurrentRoundMatches(
         championshipState.seasonMatchCalendar,
@@ -176,10 +173,7 @@ const MatchSimulator: FC = () => {
   };
 
   const startIndex = currentPage * MATCHES_PER_PAGE;
-  const selectedMatches = matches.slice(
-    startIndex,
-    startIndex + MATCHES_PER_PAGE
-  );
+  const selectedMatches = matches.slice(startIndex, startIndex + MATCHES_PER_PAGE);
 
   return (
     <div className="font-press-start relative min-h-screen">
@@ -188,11 +182,7 @@ const MatchSimulator: FC = () => {
         style={{ width: `${(time * 100) / 90}%` }}
         onClick={handleClockClick}
         title={`Clock Speed: ${
-          state.clockSpeed === 1000
-            ? '1x'
-            : state.clockSpeed === 500
-            ? '2x'
-            : '4x'
+          state.clockSpeed === 1000 ? '1x' : state.clockSpeed === 500 ? '2x' : '4x'
         }`}
       >
         <p className="m-0 pt-1 text-right pr-2 text-[20px] text-[#1e1e1e]">{`${time}'`}</p>
@@ -224,35 +214,33 @@ const MatchSimulator: FC = () => {
                 <TeamComponent team={match.visitorTeam} matchId={match.id} />
                 <div className="absolute -bottom-7 left-0 text-[14px] text-[#e2e2e2] uppercase">
                   {match?.lastScorer
-                    ? `${utils.shortenPlayerName(
-                        match.lastScorer.playerName
-                      )} ${match.lastScorer.time}'`
+                    ? `${utils.shortenPlayerName(match.lastScorer.playerName)} ${
+                        match.lastScorer.time
+                      }'`
                     : null}
                 </div>
               </div>
             ))}
           </div>
 
-          {matches.length > MATCHES_PER_PAGE &&
-            !teamSquadView &&
-            !detailsMatchId && (
-              <div className="w-[320px] flex justify-between items-center mb-[48px] relative">
-                <button
-                  onClick={handlePrevPage}
-                  disabled={currentPage === 0}
-                  className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  &lt;
-                </button>
-                <button
-                  onClick={handleNextPage}
-                  disabled={currentPage >= totalPages - 1}
-                  className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  &gt;
-                </button>
-              </div>
-            )}
+          {matches.length > MATCHES_PER_PAGE && !teamSquadView && !detailsMatchId && (
+            <div className="w-[320px] flex justify-between items-center mb-[48px] relative">
+              <button
+                onClick={handlePrevPage}
+                disabled={currentPage === 0}
+                className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                &lt;
+              </button>
+              <button
+                onClick={handleNextPage}
+                disabled={currentPage >= totalPages - 1}
+                className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                &gt;
+              </button>
+            </div>
+          )}
         </div>
       ) : null}
 
