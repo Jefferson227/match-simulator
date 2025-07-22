@@ -25,6 +25,7 @@ interface ChampionshipContextType {
   incrementYear: () => void;
   setOtherChampionships: (champs: ChampionshipConfig[]) => void;
   addOrUpdateOtherChampionship: (championship: ChampionshipConfig) => void;
+  updateTeamMorale: (matches: Match[]) => void;
 }
 
 // Create the context
@@ -98,6 +99,13 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({ chil
     });
   };
 
+  const updateTeamMorale = (matches: Match[]) => {
+    dispatch({
+      type: 'UPDATE_TEAM_MORALE',
+      payload: matches,
+    });
+  };
+
   const value: ChampionshipContextType = {
     state,
     dispatch,
@@ -115,6 +123,7 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({ chil
     incrementYear,
     setOtherChampionships,
     addOrUpdateOtherChampionship,
+    updateTeamMorale,
   };
 
   return <ChampionshipContext.Provider value={value}>{children}</ChampionshipContext.Provider>;

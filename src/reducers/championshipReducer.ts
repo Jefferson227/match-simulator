@@ -32,7 +32,8 @@ export type ChampionshipAction =
   | {
       type: 'SET_TEAMS_CONTROLLED_AUTOMATICALLY_FOR_OTHER_CHAMPIONSHIPS';
       payload: ChampionshipConfig[];
-    };
+    }
+  | { type: 'UPDATE_TEAM_MORALE'; payload: Match[] };
 
 // Initial state
 export const initialChampionshipState: ChampionshipState = {
@@ -115,6 +116,89 @@ function calculateUpdatedStandings(
   );
 }
 
+// Helper function to update team morale and player strength
+function updateTeamMoraleAndStrength(teams: BaseTeam[], matches: Match[]): BaseTeam[] {
+  // Create a map of team ID to match results
+  const teamResults = new Map<string, 'win' | 'loss' | 'draw'>();
+
+  // Process each match to determine results
+  for (const match of matches) {
+    const homeScore = match.homeTeam.score || 0;
+    const awayScore = match.visitorTeam.score || 0;
+
+    if (homeScore > awayScore) {
+      teamResults.set(match.homeTeam.id, 'win');
+      teamResults.set(match.visitorTeam.id, 'loss');
+    } else if (homeScore < awayScore) {
+      teamResults.set(match.homeTeam.id, 'loss');
+      teamResults.set(match.visitorTeam.id, 'win');
+    } else {
+      teamResults.set(match.homeTeam.id, 'draw');
+      teamResults.set(match.visitorTeam.id, 'draw');
+    }
+  }
+
+  // Update each team's morale and player strength
+  return teams.map((team) => {
+    const result = teamResults.get(team.id);
+    if (!result) return team; // Team not in any matches
+
+    // Create a deep copy of the team to avoid mutating the original
+    const updatedTeam = JSON.parse(JSON.stringify(team)) as BaseTeam;
+
+    // Update team morale based on match result
+    if (result === 'win') {
+      updatedTeam.morale = Math.min(100, (updatedTeam.morale || 50) + 10);
+    } else if (result === 'loss') {
+      updatedTeam.morale = Math.max(0, (updatedTeam.morale || 50) - 10);
+    } else {
+      // draw
+      updatedTeam.morale = Math.min(100, (updatedTeam.morale || 50) + 5);
+    }
+
+    // Update player strength based on morale
+    if (updatedTeam.players && updatedTeam.players.length > 0) {
+      const morale = updatedTeam.morale || 50;
+      let playersToUpdate = 0;
+      let strengthChange = 0;
+
+      if (morale <= 35) {
+        // Decrease strength for 1-5 random players
+        playersToUpdate = Math.min(updatedTeam.players.length, Math.floor(Math.random() * 5) + 1);
+        strengthChange = -1;
+      } else if (morale > 65) {
+        // Increase strength for 1-5 random players
+        playersToUpdate = Math.min(updatedTeam.players.length, Math.floor(Math.random() * 5) + 1);
+        strengthChange = 1;
+      }
+
+      if (playersToUpdate > 0) {
+        // Create a copy of players array
+        const players = [...updatedTeam.players];
+
+        // Select random players to update
+        for (let i = 0; i < playersToUpdate; i++) {
+          const randomIndex = Math.floor(Math.random() * players.length);
+          const player = players[randomIndex];
+
+          // Update player strength, ensuring it stays within 1-100 range
+          if (player.strength !== undefined) {
+            player.strength = Math.max(1, Math.min(100, (player.strength || 50) + strengthChange));
+          }
+
+          // Remove from pool to avoid updating the same player twice
+          players.splice(randomIndex, 1);
+          if (players.length === 0) break;
+        }
+
+        updatedTeam.players = players;
+      }
+    }
+
+    return updatedTeam;
+  });
+}
+
 // Championship reducer
 export const championshipReducer = (
   state: ChampionshipState,
@@ -182,6 +266,23 @@ export const championshipReducer = (
         ...state,
         otherChampionships: action.payload,
       };
+    case 'UPDATE_TEAM_MORALE':
+      // Update morale for both human-controlled and AI-controlled teams
+      const updatedHumanTeam = state.humanPlayerBaseTeam
+        ? updateTeamMoraleAndStrength([state.humanPlayerBaseTeam], action.payload)[0]
+        : null;
+
+      const updatedAITeams = updateTeamMoraleAndStrength(
+        state.teamsControlledAutomatically,
+        action.payload
+      );
+
+      return {
+        ...state,
+        humanPlayerBaseTeam: updatedHumanTeam,
+        teamsControlledAutomatically: updatedAITeams,
+      };
+
     case 'ADD_OR_UPDATE_OTHER_CHAMPIONSHIP':
       return {
         ...state,
