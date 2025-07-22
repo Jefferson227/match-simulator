@@ -172,25 +172,30 @@ function updateTeamMoraleAndStrength(teams: BaseTeam[], matches: Match[]): BaseT
         strengthChange = 1;
       }
 
-      if (playersToUpdate > 0) {
-        // Create a copy of players array
+      if (playersToUpdate > 0 && updatedTeam.players && updatedTeam.players.length > 0) {
+        // Create a copy of the players array to avoid mutating the original
         const players = [...updatedTeam.players];
+        const updatedIndices = new Set<number>();
+        let updatesRemaining = Math.min(playersToUpdate, players.length);
 
-        // Select random players to update
-        for (let i = 0; i < playersToUpdate; i++) {
+        // Select and update random players
+        while (updatesRemaining > 0 && updatedIndices.size < players.length) {
           const randomIndex = Math.floor(Math.random() * players.length);
+          
+          // Skip if we've already updated this player
+          if (updatedIndices.has(randomIndex)) continue;
+          
           const player = players[randomIndex];
-
+          
           // Update player strength, ensuring it stays within 1-100 range
           if (player.strength !== undefined) {
             player.strength = Math.max(1, Math.min(100, (player.strength || 50) + strengthChange));
+            updatedIndices.add(randomIndex);
+            updatesRemaining--;
           }
-
-          // Remove from pool to avoid updating the same player twice
-          players.splice(randomIndex, 1);
-          if (players.length === 0) break;
         }
 
+        // Update the team with the modified players
         updatedTeam.players = players;
       }
     }
