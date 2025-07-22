@@ -171,21 +171,6 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
       incrementYear();
     }
 
-    /*
-    TODO: Apply logic to update team morale
-    - The logic applies to all teams in the current championship only
-    - Morale increase/decrease logic:
-      - If the team wins a match, morale gets increased by 10
-      - If the team loses a match, morale gets decreased by 10
-      - If the team draws a match, morale gets increased by 5
-      - The team's morale can't go below 0 or above 100
-
-    - Players' strength increase/decrease logic:
-      - If the team's morale is less or equal to 35, a random number of players between 1 and 5 get their strength decreased by 1
-      - If the team's morale is above 35 and less or equal to 65, no player's strength changes
-      - If the team's morale is above 65, a random number of players between 1 and 5 get their strength increased by 1
-    */
-
     // Check if we've completed all rounds
     const totalRounds = championshipState.seasonMatchCalendar.length;
     if (championshipState.currentRound >= totalRounds) {
