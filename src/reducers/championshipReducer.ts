@@ -163,12 +163,12 @@ function updateTeamMoraleAndStrength(teams: BaseTeam[], matches: Match[]): BaseT
       let strengthChange = 0;
 
       if (morale <= 35) {
-        // Decrease strength for 1-5 random players
-        playersToUpdate = Math.min(updatedTeam.players.length, Math.floor(Math.random() * 5) + 1);
+        // Decrease strength for 3-5 random players
+        playersToUpdate = Math.min(updatedTeam.players.length, Math.floor(Math.random() * 3) + 3);
         strengthChange = -1;
       } else if (morale > 65) {
-        // Increase strength for 1-5 random players
-        playersToUpdate = Math.min(updatedTeam.players.length, Math.floor(Math.random() * 5) + 1);
+        // Increase strength for 3-5 random players
+        playersToUpdate = Math.min(updatedTeam.players.length, Math.floor(Math.random() * 3) + 3);
         strengthChange = 1;
       }
 
