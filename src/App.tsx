@@ -9,6 +9,7 @@ import TeamStandings from './components/TeamStandings/TeamStandings';
 import TeamSelector from './components/TeamSelector/TeamSelector';
 import InitialScreen from './components/InitialScreen/InitialScreen';
 import ChampionshipSelector from './components/ChampionshipSelector/ChampionshipSelector';
+import TeamAdditionalInfo from './components/TeamAdditionalInfo/TeamAdditionalInfo';
 
 const AppContent: FC = () => {
   const { state } = useContext(GeneralContext);
@@ -28,6 +29,25 @@ const AppContent: FC = () => {
   }
   if (state.screenDisplayed === 'MatchSimulator') {
     return <MatchSimulator />;
+  }
+  if (state.screenDisplayed === 'TeamAdditionalInfo') {
+    return (
+      <TeamAdditionalInfo
+        onBack={() => {
+          // You can customize this navigation based on your app's flow
+          // For example, go back to the previous screen
+          window.history.back();
+        }}
+        onPrevious={() => {
+          // Handle previous team
+          console.log('Previous team');
+        }}
+        onNext={() => {
+          // Handle next team
+          console.log('Next team');
+        }}
+      />
+    );
   }
   if (state.screenDisplayed === 'TeamStandings') {
     return <TeamStandings />;
