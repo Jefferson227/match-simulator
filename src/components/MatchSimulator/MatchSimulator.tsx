@@ -121,12 +121,11 @@ const MatchSimulator: FC = () => {
       !standingsUpdated &&
       !standingsTimeoutSet
     ) {
-      // Update team morale based on match results
-      updateTeamMorale(matches);
       updateTableStandings(matches);
       setStandingsUpdated(true);
       setStandingsTimeoutSet(true);
       window.setTimeout(() => {
+        updateTeamMorale(matches);
         setScreenDisplayed('TeamStandings');
       }, 5000);
     }
