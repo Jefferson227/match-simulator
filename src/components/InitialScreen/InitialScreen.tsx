@@ -119,10 +119,7 @@ const InitialScreen: React.FC = () => {
         {pixels.map((row, rowIndex) => (
           <div key={rowIndex} className="flex gap-0.5">
             {row.map((pixel, colIndex) => (
-              <div
-                key={colIndex}
-                className={`w-2 h-2 ${pixel ? 'bg-white' : 'bg-transparent'}`}
-              />
+              <div key={colIndex} className={`w-2 h-2 ${pixel ? 'bg-white' : 'bg-transparent'}`} />
             ))}
           </div>
         ))}
