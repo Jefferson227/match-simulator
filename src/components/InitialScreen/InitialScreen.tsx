@@ -3,18 +3,26 @@ import { GeneralContext } from '../../contexts/GeneralContext';
 import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import { MatchContext } from '../../contexts/MatchContext';
 import sessionService from '../../services/sessionService';
+import buildVersionData from '../../assets/build-version.json';
 
 const InitialScreen: React.FC = () => {
-  const { setScreenDisplayed, loadState: loadGeneralState } =
-    useContext(GeneralContext);
+  const { setScreenDisplayed, loadState: loadGeneralState } = useContext(GeneralContext);
   const { loadState: loadChampionshipState } = useChampionshipContext();
   const { loadState: loadMatchState } = useContext(MatchContext);
   const [hasSession, setHasSession] = useState(false);
+  const [buildVersion, setBuildVersion] = useState('');
 
-  // Check for existing session on component mount
+  // Check for existing session and load build version on component mount
   useEffect(() => {
     const sessionExists = sessionService.hasSession();
     setHasSession(sessionExists);
+
+    // Set build version from the imported JSON
+    if (buildVersionData && buildVersionData.buildVersion) {
+      setBuildVersion(buildVersionData.buildVersion);
+    } else {
+      setBuildVersion('DEV');
+    }
   }, []);
 
   const handleNewGame = () => {
@@ -176,8 +184,8 @@ const InitialScreen: React.FC = () => {
       </div>
 
       <div className="mt-16 text-center">
-        <p>DEVELOPED BY</p>
-        <p>JEFFERSON227</p>
+        <p>BUILD VERSION</p>
+        <p>{buildVersion}</p>
       </div>
     </div>
   );
