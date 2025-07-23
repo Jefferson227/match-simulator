@@ -21,7 +21,11 @@ const MatchSimulator: FC = () => {
   const { matches, teamSquadView, setMatches, increaseScore, setScorer } = useContext(MatchContext);
   const { state, setMatchOtherTeams, setScreenDisplayed, setClockSpeed } =
     useContext(GeneralContext);
-  const { state: championshipState, updateTableStandings, updateTeamMorale } = useChampionshipContext();
+  const {
+    state: championshipState,
+    updateTableStandings,
+    updateTeamMorale,
+  } = useChampionshipContext();
 
   // Reset timer and detailsMatchId when leaving MatchSimulator
   useEffect(() => {
