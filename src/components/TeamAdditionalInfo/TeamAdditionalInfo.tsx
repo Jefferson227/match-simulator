@@ -5,6 +5,7 @@ interface TeamAdditionalInfoProps {
   morale?: number;
   championshipName?: string;
   roundInfo?: string;
+  season?: string;
   position?: string;
   nextOpponent?: string;
   nextOpponentPosition?: string;
@@ -17,7 +18,8 @@ const TeamAdditionalInfo: React.FC<TeamAdditionalInfoProps> = ({
   teamName = 'CEARÁ SPORTING CLUB',
   morale = 75, // 0-100
   championshipName = 'BRASILEIRÃO SÉRIE A',
-  roundInfo = 'ROUND 13 OF 38 - 2025',
+  roundInfo = 'ROUND 13 OF 38',
+  season = '2025',
   position = '12TH PLACE',
   nextOpponent = 'CRUZEIRO',
   nextOpponentPosition = '3RD PLACE',
@@ -42,9 +44,9 @@ const TeamAdditionalInfo: React.FC<TeamAdditionalInfoProps> = ({
       </div>
 
       <div className="mb-5 p-3 bg-black/20 border-2 border-white">
-        <div className="font-bold mb-2 underline">CHAMPIONSHIP</div>
         <div className="flex flex-col gap-2 text-sm">
           <div>{championshipName}</div>
+          <div>SEASON {season}</div>
           <div>{roundInfo}</div>
           <div>{position}</div>
         </div>
