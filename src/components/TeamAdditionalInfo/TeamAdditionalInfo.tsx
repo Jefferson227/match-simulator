@@ -28,12 +28,12 @@ const TeamAdditionalInfo: React.FC<TeamAdditionalInfoProps> = ({
   return (
     <div className="w-[350px] mt-[26px] bg-[#3c7a33] text-white font-press-start p-5 border-4 border-white mx-auto">
       <div className="bg-black text-white p-2 text-center mb-5 border-2 border-white">
-        <h2 className="m-0 text-base uppercase tracking-wider">{teamName}</h2>
+        <h2 className="m-0 text-[17px] uppercase tracking-wider">{teamName}</h2>
       </div>
 
       <div className="mb-5 p-3 bg-black/20 border-2 border-white">
-        <div className="font-bold mb-2 underline">MORALE</div>
-        <div className="w-full h-5 bg-gray-200 border-2 border-black my-2 overflow-hidden">
+        <div className="mb-2 text-[17px]">MORALE</div>
+        <div className="w-full h-5 bg-[#316229] border-2 border-white my-2 overflow-hidden">
           <div
             className="h-full bg-green-500 transition-all duration-300"
             style={{ width: `${morale}%` }}
