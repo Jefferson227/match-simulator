@@ -53,9 +53,11 @@ const TeamAdditionalInfo: React.FC<TeamAdditionalInfoProps> = ({
       </div>
 
       <div className="mb-5 p-3 bg-black/20 border-2 border-white">
-        <div className="font-bold mb-2 underline">NEXT MATCH</div>
-        <div className="flex flex-col items-center p-2">
-          <div className="text-lg font-bold mb-1">{nextOpponent}</div>
+        <div className="mb-2 text-[17px]">NEXT MATCH</div>
+        <div className="flex flex-col items-center">
+          <div className="bg-blue-600 border-2 border-white w-[100%] mx-auto text-[17px] mb-2 flex justify-center items-center">
+            {nextOpponent}
+          </div>
           <div className="text-xs opacity-80">{nextOpponentPosition}</div>
         </div>
       </div>
