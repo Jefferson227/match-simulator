@@ -1,5 +1,19 @@
-import { BaseTeam, ChampionshipConfig, Match, SeasonRound } from '../../types';
-import { ChampionshipState } from './ChampionshipState';
+import { BaseTeam, ChampionshipConfig, Match, SeasonRound, TableStanding } from '../../types';
+
+export interface ChampionshipState {
+  selectedChampionship: string | null;
+  promotionChampionship?: string | null;
+  relegationChampionship?: string | null;
+  promotionTeams?: number | null;
+  relegationTeams?: number | null;
+  humanPlayerBaseTeam: BaseTeam | null;
+  teamsControlledAutomatically: BaseTeam[];
+  seasonMatchCalendar: SeasonRound[];
+  currentRound: number;
+  tableStandings: TableStanding[];
+  year: number;
+  otherChampionships: ChampionshipConfig[];
+}
 
 // Championship action types
 export type ChampionshipAction =

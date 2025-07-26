@@ -1,5 +1,4 @@
-import { ChampionshipAction } from '../../reducers/championshipReducer';
-import { ChampionshipState } from '../../reducers/types/ChampionshipState';
+import { ChampionshipAction, ChampionshipState } from '../../reducers/types';
 import { BaseTeam, SeasonRound, Match, TableStanding, ChampionshipConfig } from '../../types';
 import { ReactNode } from 'react';
 

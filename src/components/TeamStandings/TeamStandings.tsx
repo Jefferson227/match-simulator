@@ -10,20 +10,7 @@ import {
   handleNoPromotionAndNoRelegationLogic,
 } from '../../services/promotionRelegationService';
 import { BaseTeam } from '../../types';
-
-interface TeamStanding {
-  teamId: string;
-  teamAbbreviation: string;
-  wins: number;
-  draws: number;
-  losses: number;
-  goalDifference: number;
-  points: number;
-}
-
-interface TeamStandingsProps {
-  standings?: TeamStanding[];
-}
+import { TeamStanding, TeamStandingsProps } from './types';
 
 const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings }) => {
   const { setScreenDisplayed, state: generalState } = useContext(GeneralContext);

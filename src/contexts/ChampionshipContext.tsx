@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useReducer } from 'react';
 import { championshipReducer, initialChampionshipState } from '../reducers/championshipReducer';
-import { ChampionshipState } from '../reducers/types/ChampionshipState';
 import { BaseTeam, SeasonRound, Match, ChampionshipConfig } from '../types';
 import { ChampionshipContextType, ChampionshipProviderProps } from './types';
+import { ChampionshipState } from '../reducers/types';
 
 // Create the context
 const ChampionshipContext = createContext<ChampionshipContextType | undefined>(undefined);

@@ -1,4 +1,5 @@
-import { ChampionshipState } from '../../reducers/types/ChampionshipState';
+import { ChampionshipState } from '../../reducers/types';
+import { BaseTeam, ChampionshipConfig } from '../../types';
 
 function getTeamsByPerformance(
   championship: ChampionshipConfig,
