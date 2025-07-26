@@ -70,3 +70,7 @@ export const hasPromotionChampionship = (championship: ChampionshipState): boole
 export const hasRelegationChampionship = (championship: ChampionshipState): boolean => {
   return championship.relegationChampionship !== undefined;
 };
+
+export const movePromotedTeamsToPromotionChampionship = (championship: ChampionshipState) => {
+  // getPromotedTeams(championship);
+};
