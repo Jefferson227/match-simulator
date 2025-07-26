@@ -104,66 +104,64 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
         (c) => c.internalName === championshipState.selectedChampionship
       );
 
-      if (currentChamp && currentChamp.promotionTeams && currentChamp.promotionChampionship) {
-        // Get human player's team from general context
-        const humanPlayerTeam = championshipState.humanPlayerBaseTeam;
+      // Get human player's team from general context
+      const humanPlayerTeam = championshipState.humanPlayerBaseTeam;
 
-        // Check if human player's team is in the top promotion positions
-        const humanPlayerTeamInStandings = standings.find(
-          (standing) => standing.team === humanPlayerTeam?.abbreviation
-        );
+      // Check if human player's team is in the top promotion positions
+      const humanPlayerTeamInStandings = standings.find(
+        (standing) => standing.team === humanPlayerTeam?.abbreviation
+      );
 
-        if (humanPlayerTeamInStandings) {
-          // Find the position of human player's team in standings
-          const humanPlayerPosition =
-            standings.findIndex((standing) => standing.team === humanPlayerTeam?.abbreviation) + 1; // +1 because array index is 0-based but position is 1-based
+      if (humanPlayerTeamInStandings && currentChamp && currentChamp.promotionTeams) {
+        // Find the position of human player's team in standings
+        const humanPlayerPosition =
+          standings.findIndex((standing) => standing.team === humanPlayerTeam?.abbreviation) + 1; // +1 because array index is 0-based but position is 1-based
 
-          // Run promotion logic considering human player's team is among the promoted teams
-          if (humanPlayerPosition <= currentChamp.promotionTeams) {
-            handlePromotionLogic(
-              {
-                setTeamsControlledAutomatically,
-                setSeasonMatchCalendar,
-                setChampionship,
-                addOrUpdateOtherChampionship,
-              },
-              currentChamp,
-              championshipState,
-              standings,
-              humanPlayerTeam as BaseTeam
-            );
-          } else if (
-            humanPlayerPosition >=
-            (currentChamp.numberOfTeams ?? 20) - (currentChamp.relegationTeams ?? 4)
-          ) {
-            // Run promotion logic considering human player's team is among the relegated teams
-            handleRelegationLogic(
-              {
-                setTeamsControlledAutomatically,
-                setSeasonMatchCalendar,
-                setChampionship,
-                addOrUpdateOtherChampionship,
-              },
-              currentChamp,
-              championshipState,
-              standings,
-              humanPlayerTeam as BaseTeam
-            );
-          } else {
-            // Run promotion logic considering human player's team is neither among the promoted teams nor among the relegated teams
-            handleNoPromotionAndNoRelegationLogic(
-              {
-                setTeamsControlledAutomatically,
-                setSeasonMatchCalendar,
-                setChampionship,
-                addOrUpdateOtherChampionship,
-              },
-              currentChamp,
-              championshipState,
-              standings,
-              humanPlayerTeam as BaseTeam
-            );
-          }
+        // Run promotion logic considering human player's team is among the promoted teams
+        if (humanPlayerPosition <= currentChamp.promotionTeams) {
+          handlePromotionLogic(
+            {
+              setTeamsControlledAutomatically,
+              setSeasonMatchCalendar,
+              setChampionship,
+              addOrUpdateOtherChampionship,
+            },
+            currentChamp,
+            championshipState,
+            standings,
+            humanPlayerTeam as BaseTeam
+          );
+        } else if (
+          humanPlayerPosition >=
+          (currentChamp.numberOfTeams ?? 20) - (currentChamp.relegationTeams ?? 4)
+        ) {
+          // Run promotion logic considering human player's team is among the relegated teams
+          handleRelegationLogic(
+            {
+              setTeamsControlledAutomatically,
+              setSeasonMatchCalendar,
+              setChampionship,
+              addOrUpdateOtherChampionship,
+            },
+            currentChamp,
+            championshipState,
+            standings,
+            humanPlayerTeam as BaseTeam
+          );
+        } else {
+          // Run promotion logic considering human player's team is neither among the promoted teams nor among the relegated teams
+          handleNoPromotionAndNoRelegationLogic(
+            {
+              setTeamsControlledAutomatically,
+              setSeasonMatchCalendar,
+              setChampionship,
+              addOrUpdateOtherChampionship,
+            },
+            currentChamp,
+            championshipState,
+            standings,
+            humanPlayerTeam as BaseTeam
+          );
         }
       }
 
