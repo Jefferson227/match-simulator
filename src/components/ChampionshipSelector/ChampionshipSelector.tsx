@@ -9,8 +9,7 @@ const CHAMPIONSHIPS_PER_PAGE = 6;
 const ChampionshipSelector: React.FC = () => {
   const { t } = useTranslation();
   const { setScreenDisplayed } = useContext(GeneralContext);
-  const { setChampionship, setYear, setOtherChampionships } =
-    useChampionshipContext();
+  const { setChampionship, setYear, setOtherChampionships } = useChampionshipContext();
   const [currentPage, setCurrentPage] = useState(0);
 
   // TODO: Return ChampionshipConfig[] from getAllChampionships
@@ -29,10 +28,7 @@ const ChampionshipSelector: React.FC = () => {
     }
   };
 
-  const handleChampionshipClick = (championship: {
-    id: string;
-    internalName: string;
-  }) => {
+  const handleChampionshipClick = (championship: ChampionshipConfig) => {
     if (
       championship.internalName === 'brasileirao-serie-a' ||
       championship.internalName === 'brasileirao-serie-b'
@@ -41,9 +37,7 @@ const ChampionshipSelector: React.FC = () => {
       setChampionship(championship.internalName);
       setYear(new Date().getFullYear()); // Set initial year to current year
 
-      const otherChamps = championships.filter(
-        (c) => c.internalName !== championship.internalName
-      );
+      const otherChamps = championships.filter((c) => c.internalName !== championship.internalName);
       setOtherChampionships(otherChamps);
       setScreenDisplayed('TeamSelector');
     }
@@ -60,9 +54,7 @@ const ChampionshipSelector: React.FC = () => {
       className="font-press-start flex flex-col items-center justify-center py-8"
       style={{ backgroundColor: '#3d7a33', color: 'white' }}
     >
-      <h1 className="text-lg mb-8 text-center">
-        {t('championshipSelector.selectChampionship')}
-      </h1>
+      <h1 className="text-lg mb-8 text-center">{t('championshipSelector.selectChampionship')}</h1>
 
       <div className="flex flex-col gap-4 w-full h-[560px] max-w-md px-6">
         {selectedChampionships.map((champ) => (
