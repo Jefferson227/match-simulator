@@ -90,6 +90,12 @@ const TeamAdditionalInfo: React.FC = () => {
       })()
     : 'N/A';
 
+  // Determine if human player team is playing at home or away
+  const isHomeTeam = nextMatch
+    ? nextMatch.homeTeam.id === championshipState.humanPlayerBaseTeam?.id
+    : false;
+  const matchLocation = isHomeTeam ? 'HOME' : 'AWAY';
+
   // Extract team colors with fallbacks
   const teamColors = championshipState.humanPlayerBaseTeam?.colors || {
     background: '#1e1e1e',
@@ -167,7 +173,10 @@ const TeamAdditionalInfo: React.FC = () => {
           >
             {nextOpponent}
           </div>
-          <div className="text-xs opacity-80">{nextOpponentPosition}</div>
+          <div className="text-xs opacity-80 flex justify-between w-full">
+            <span className="text-left">{matchLocation}</span>
+            <span className="text-right">{nextOpponentPosition}</span>
+          </div>
         </div>
       </div>
 
