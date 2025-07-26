@@ -6,16 +6,7 @@ import { generateSeasonMatchCalendar } from '../../services/teamService';
 import utils from '../../utils/utils';
 import { MatchTeam, Player } from '../../types';
 
-export const FORMATIONS = [
-  '5-3-2',
-  '3-5-2',
-  '4-4-2',
-  '4-3-3',
-  '4-2-4',
-  '5-4-1',
-  '3-4-3',
-  '3-3-4',
-];
+export const FORMATIONS = ['5-3-2', '3-5-2', '4-4-2', '4-3-3', '4-2-4', '5-4-1', '3-4-3', '3-3-4'];
 
 // Enum for player selection state
 enum PlayerSelectionState {
@@ -62,21 +53,16 @@ const TeamManager: React.FC = () => {
       const hasGKSelected = baseTeam?.players.some(
         (p: Player) =>
           p.position === 'GK' &&
-          (prev[p.id] ?? PlayerSelectionState.Unselected) ===
-            PlayerSelectionState.Selected
+          (prev[p.id] ?? PlayerSelectionState.Unselected) === PlayerSelectionState.Selected
       );
 
       // If this is a GK and trying to select, check if another GK is already selected
-      if (
-        player.position === 'GK' &&
-        (currentState + 1) % 3 === PlayerSelectionState.Selected
-      ) {
+      if (player.position === 'GK' && (currentState + 1) % 3 === PlayerSelectionState.Selected) {
         const anotherGKSelected = baseTeam?.players.some(
           (p: Player) =>
             p.position === 'GK' &&
             p.id !== id &&
-            (prev[p.id] ?? PlayerSelectionState.Unselected) ===
-              PlayerSelectionState.Selected
+            (prev[p.id] ?? PlayerSelectionState.Unselected) === PlayerSelectionState.Selected
         );
         if (anotherGKSelected) {
           // Don't allow selecting another GK
@@ -96,8 +82,7 @@ const TeamManager: React.FC = () => {
 
       // If we haven't reached the player limit yet, use the tri-state cycle
       if (selectedCount < 11) {
-        const nextState =
-          ((prev[id] ?? PlayerSelectionState.Unselected) + 1) % 3;
+        const nextState = ((prev[id] ?? PlayerSelectionState.Unselected) + 1) % 3;
         // If trying to select as starter (not substitute or unselect)
         if (nextState === PlayerSelectionState.Selected) {
           // If this would be the 11th selected player
@@ -210,9 +195,7 @@ const TeamManager: React.FC = () => {
     const newPlayerStates: { [id: string]: PlayerSelectionState } = {};
 
     // Select best GK
-    const gks = players
-      .filter((p) => p.position === 'GK')
-      .sort((a, b) => b.strength - a.strength);
+    const gks = players.filter((p) => p.position === 'GK').sort((a, b) => b.strength - a.strength);
     if (gks.length > 0) {
       newPlayerStates[gks[0].id] = PlayerSelectionState.Selected;
     }
@@ -325,10 +308,7 @@ const TeamManager: React.FC = () => {
   const nameColor = teamColors.name || '#e2e2e2';
 
   return (
-    <div
-      className="font-press-start min-h-screen"
-      style={{ backgroundColor: '#3d7a33' }}
-    >
+    <div className="font-press-start min-h-screen" style={{ backgroundColor: '#3d7a33' }}>
       <div
         className="w-[350px] mx-auto mt-[26px] mb-[15px]"
         style={{ backgroundColor, border: `4px solid ${outlineColor}` }}
@@ -379,9 +359,7 @@ const TeamManager: React.FC = () => {
                       transition: 'background 0.2s',
                     }),
                   }}
-                  onClick={() =>
-                    isAvailable && selectBestPlayersForFormation(formation)
-                  }
+                  onClick={() => isAvailable && selectBestPlayersForFormation(formation)}
                   disabled={!isAvailable}
                 >
                   {formation}
@@ -406,8 +384,7 @@ const TeamManager: React.FC = () => {
             style={{ backgroundColor, color: '#fff' }}
           >
             {paginatedPlayers.map((player) => {
-              const selState =
-                playerStates[player.id] ?? PlayerSelectionState.Unselected;
+              const selState = playerStates[player.id] ?? PlayerSelectionState.Unselected;
               return (
                 <div
                   key={player.id}
@@ -450,9 +427,7 @@ const TeamManager: React.FC = () => {
                         : { color: nameColor }
                     }
                   >
-                    {player.name.length > 14
-                      ? utils.shortenPlayerName(player.name)
-                      : player.name}
+                    {player.name.length > 14 ? utils.shortenPlayerName(player.name) : player.name}
                   </span>
                   <span className="ml-2" style={{ color: nameColor }}>
                     {player.strength}
@@ -517,11 +492,8 @@ const TeamManager: React.FC = () => {
                 borderColor: '#e2e2e2',
                 backgroundColor: '#3c7a33',
                 color: '#e2e2e2',
-                opacity: 0.5,
-                cursor: 'not-allowed',
               }}
-              onClick={() => {}}
-              disabled={true}
+              onClick={() => setScreenDisplayed('TeamAdditionalInfo')}
             >
               {t('teamManager.moreInfo')}
             </button>
@@ -531,12 +503,9 @@ const TeamManager: React.FC = () => {
                 borderColor: '#e2e2e2',
                 backgroundColor: '#3c7a33',
                 color: '#e2e2e2',
-                opacity:
-                  currentPage === totalPages - 1 || totalPages === 0 ? 0.5 : 1,
+                opacity: currentPage === totalPages - 1 || totalPages === 0 ? 0.5 : 1,
                 cursor:
-                  currentPage === totalPages - 1 || totalPages === 0
-                    ? 'not-allowed'
-                    : 'pointer',
+                  currentPage === totalPages - 1 || totalPages === 0 ? 'not-allowed' : 'pointer',
               }}
               onClick={handleNextPage}
               disabled={currentPage === totalPages - 1 || totalPages === 0}

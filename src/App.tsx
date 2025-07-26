@@ -31,23 +31,7 @@ const AppContent: FC = () => {
     return <MatchSimulator />;
   }
   if (state.screenDisplayed === 'TeamAdditionalInfo') {
-    return (
-      <TeamAdditionalInfo
-        onBack={() => {
-          // You can customize this navigation based on your app's flow
-          // For example, go back to the previous screen
-          window.history.back();
-        }}
-        onPrevious={() => {
-          // Handle previous team
-          console.log('Previous team');
-        }}
-        onNext={() => {
-          // Handle next team
-          console.log('Next team');
-        }}
-      />
-    );
+    return <TeamAdditionalInfo />;
   }
   if (state.screenDisplayed === 'TeamStandings') {
     return <TeamStandings />;
