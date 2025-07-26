@@ -1,5 +1,6 @@
 import generalParameters from '../assets/general-parameters.json';
 
+// TODO: Return ChampionshipConfig[] from getAllChampionships
 function getAllChampionships(): {
   id: string;
   name: string;

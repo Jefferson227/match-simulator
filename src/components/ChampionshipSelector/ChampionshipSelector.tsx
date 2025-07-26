@@ -13,6 +13,7 @@ const ChampionshipSelector: React.FC = () => {
     useChampionshipContext();
   const [currentPage, setCurrentPage] = useState(0);
 
+  // TODO: Return ChampionshipConfig[] from getAllChampionships
   const championships = generalService.getAllChampionships();
   const totalPages = Math.ceil(championships.length / CHAMPIONSHIPS_PER_PAGE);
 
@@ -36,6 +37,7 @@ const ChampionshipSelector: React.FC = () => {
       championship.internalName === 'brasileirao-serie-a' ||
       championship.internalName === 'brasileirao-serie-b'
     ) {
+      // TODO: Set internalName, promotionChampionship, relegationChampionship, promotionTeams and relegationTeams
       setChampionship(championship.internalName);
       setYear(new Date().getFullYear()); // Set initial year to current year
 
