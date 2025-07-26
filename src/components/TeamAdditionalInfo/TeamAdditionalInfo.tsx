@@ -165,8 +165,9 @@ const TeamAdditionalInfo: React.FC = () => {
 
       <div className="flex justify-between mt-5">
         <button
-          className="h-[70px] w-1/3 bg-transparent border-4 border-white text-white px-4 py-2 me-2 font-press-start text-[16px] transition-all hover:bg-white/20 active:translate-y-px"
+          className="h-[70px] w-1/3 bg-transparent border-4 border-white text-white px-4 py-2 me-2 font-press-start text-[16px] transition-all opacity-50 cursor-not-allowed"
           onClick={handlePrevious}
+          disabled={true}
         >
           &lt;
         </button>
@@ -177,8 +178,9 @@ const TeamAdditionalInfo: React.FC = () => {
           BACK
         </button>
         <button
-          className="h-[70px] w-1/3 bg-transparent border-4 border-white text-white px-4 py-2 ms-2 font-press-start text-[16px] transition-all hover:bg-white/20 active:translate-y-px"
+          className="h-[70px] w-1/3 bg-transparent border-4 border-white text-white px-4 py-2 ms-2 font-press-start text-[16px] transition-all opacity-50 cursor-not-allowed"
           onClick={handleNext}
+          disabled={true}
         >
           &gt;
         </button>
