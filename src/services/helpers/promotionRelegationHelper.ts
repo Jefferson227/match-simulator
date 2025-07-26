@@ -64,6 +64,7 @@ function getTeamsByPerformance(
   // Return the appropriate number of teams
   return sortedTeams.slice(0, teamCount);
 }
+
 export const hasPromotionChampionship = (championship: ChampionshipState): boolean => {
   return championship.promotionChampionship !== undefined;
 };

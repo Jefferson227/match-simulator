@@ -37,17 +37,14 @@ const defaultContextValue: GeneralContextType = {
 };
 
 // Create the context
-export const GeneralContext =
-  createContext<GeneralContextType>(defaultContextValue);
+export const GeneralContext = createContext<GeneralContextType>(defaultContextValue);
 
 // Create the provider component
 interface GeneralProviderProps {
   children: ReactNode;
 }
 
-export const GeneralProvider: React.FC<GeneralProviderProps> = ({
-  children,
-}) => {
+export const GeneralProvider: React.FC<GeneralProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(generalReducer, {
     currentPage: 1,
     baseTeam: {} as BaseTeam,
@@ -57,8 +54,7 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
     clockSpeed: 1000,
   });
 
-  const setCurrentPage = (page: number) =>
-    dispatch({ type: 'SET_CURRENT_PAGE', payload: page });
+  const setCurrentPage = (page: number) => dispatch({ type: 'SET_CURRENT_PAGE', payload: page });
 
   const getBaseTeam = () => {
     // TODO: Implement getBaseTeam functionality
@@ -66,22 +62,18 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
     dispatch({ type: 'SET_BASE_TEAM', payload: {} as BaseTeam });
   };
 
-  const setBaseTeam = (team: BaseTeam) =>
-    dispatch({ type: 'SET_BASE_TEAM', payload: team });
+  const setBaseTeam = (team: BaseTeam) => dispatch({ type: 'SET_BASE_TEAM', payload: team });
 
-  const setMatchTeam = (team: MatchTeam) =>
-    dispatch({ type: 'SET_MATCH_TEAM', payload: team });
+  const setMatchTeam = (team: MatchTeam) => dispatch({ type: 'SET_MATCH_TEAM', payload: team });
 
   const setMatchOtherTeams = () => dispatch({ type: 'SET_MATCH_OTHER_TEAMS' });
 
   const setScreenDisplayed = (screen: string) =>
     dispatch({ type: 'SET_SCREEN_DISPLAYED', payload: screen });
 
-  const setClockSpeed = (speed: number) =>
-    dispatch({ type: 'SET_CLOCK_SPEED', payload: speed });
+  const setClockSpeed = (speed: number) => dispatch({ type: 'SET_CLOCK_SPEED', payload: speed });
 
-  const loadState = (newState: GeneralState) =>
-    dispatch({ type: 'LOAD_STATE', payload: newState });
+  const loadState = (newState: GeneralState) => dispatch({ type: 'LOAD_STATE', payload: newState });
 
   return (
     <GeneralContext.Provider
