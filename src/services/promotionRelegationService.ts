@@ -102,7 +102,7 @@ export const handlePromotionRelegationLogic = (
   }
 
   if (hasRelegationChampionship(currentChampionship)) {
-    moveRelegatedTeamsToCurrentChampionship(currentChampionship);
+    moveRelegatedTeamsToRelegationChampionship(currentChampionship);
     movePromotedTeamsToCurrentChampionship(relegationChampionship);
   }
 
