@@ -12,12 +12,13 @@ import {
 import { BaseTeam } from '../../types';
 
 interface TeamStanding {
-  team: string;
-  w: number;
-  d: number;
-  l: number;
-  gd: number;
-  pts: number;
+  teamId: string;
+  teamAbbreviation: string;
+  wins: number;
+  draws: number;
+  losses: number;
+  goalDifference: number;
+  points: number;
 }
 
 interface TeamStandingsProps {
@@ -54,32 +55,35 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
   // Use prop standings if provided (for tests), otherwise use real standings from context
   const tableStandings = propStandings
     ? propStandings.map((s) => ({
-        teamAbbreviation: s.team,
-        wins: s.w,
-        draws: s.d,
-        losses: s.l,
-        goalDifference: s.gd,
-        points: s.pts,
+        teamId: s.teamId,
+        teamAbbreviation: s.teamAbbreviation,
+        wins: s.wins,
+        draws: s.draws,
+        losses: s.losses,
+        goalDifference: s.goalDifference,
+        points: s.points,
       }))
     : getTableStandings();
 
   const standings: TeamStanding[] =
     tableStandings.length > 0
       ? tableStandings.map((s) => ({
-          team: s.teamAbbreviation,
-          w: s.wins,
-          d: s.draws,
-          l: s.losses,
-          gd: s.goalDifference,
-          pts: s.points,
+          teamId: s.teamId,
+          teamAbbreviation: s.teamAbbreviation,
+          wins: s.wins,
+          draws: s.draws,
+          losses: s.losses,
+          goalDifference: s.goalDifference,
+          points: s.points,
         }))
       : Array.from({ length: 16 }, (_, i) => ({
-          team: 'CEA',
-          w: 4,
-          d: 3,
-          l: 1,
-          gd: 10,
-          pts: 10,
+          teamId: `CEA${i}`,
+          teamAbbreviation: 'CEA',
+          wins: 4,
+          draws: 3,
+          losses: 1,
+          goalDifference: 10,
+          points: 10,
         }));
 
   const totalPages = Math.ceil(standings.length / RESULTS_PER_PAGE);
@@ -109,13 +113,15 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
 
       // Check if human player's team is in the top promotion positions
       const humanPlayerTeamInStandings = standings.find(
-        (standing) => standing.team === humanPlayerTeam?.abbreviation
+        (standing) => standing.teamAbbreviation === humanPlayerTeam?.abbreviation
       );
 
       if (humanPlayerTeamInStandings && currentChamp && currentChamp.promotionTeams) {
         // Find the position of human player's team in standings
         const humanPlayerPosition =
-          standings.findIndex((standing) => standing.team === humanPlayerTeam?.abbreviation) + 1; // +1 because array index is 0-based but position is 1-based
+          standings.findIndex(
+            (standing) => standing.teamAbbreviation === humanPlayerTeam?.abbreviation
+          ) + 1; // +1 because array index is 0-based but position is 1-based
 
         // Run promotion logic considering human player's team is among the promoted teams
         if (humanPlayerPosition <= currentChamp.promotionTeams) {
@@ -226,16 +232,16 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
             </thead>
             <tbody>
               {paginatedStandings.map((row, idx) => (
-                <React.Fragment key={idx}>
+                <React.Fragment key={row.teamId}>
                   <tr className="text-[18px] text-white">
                     <td className="w-[56px] text-center py-2">
                       {page * RESULTS_PER_PAGE + idx + 1}
                     </td>
-                    <td className="w-[56px] text-center">{row.team}</td>
-                    <td className="w-[56px] text-center">{row.w}</td>
-                    <td className="w-[56px] text-center">{row.d}</td>
-                    <td className="w-[56px] text-center">{row.l}</td>
-                    <td className="w-[56px] text-center pr-0">{row.pts}</td>
+                    <td className="w-[56px] text-center">{row.teamAbbreviation}</td>
+                    <td className="w-[56px] text-center">{row.wins}</td>
+                    <td className="w-[56px] text-center">{row.draws}</td>
+                    <td className="w-[56px] text-center">{row.losses}</td>
+                    <td className="w-[56px] text-center pr-0">{row.points}</td>
                   </tr>
                   {idx < paginatedStandings.length - 1 && (
                     <tr>
