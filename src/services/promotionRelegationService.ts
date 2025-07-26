@@ -207,7 +207,7 @@ export const handlePromotionLogic = (
     return;
   }
 
-  // TODO: Handle the case where the promotion championship is not found
+  // In case there is no promotion championship
   // Get the relegated teams abbreviations from the current championship
   const relegatedTeamsAbbreviations = standings
     .slice(-(currentChamp?.relegationTeams ?? 0))
@@ -349,6 +349,8 @@ export const handleRelegationLogic = (
   const promotionChampionship = championshipState.otherChampionships.find(
     (c: ChampionshipConfig) => c.internalName === currentChamp.promotionChampionship
   );
+
+  // TODO: Handle the case where there is no promotion championship
 
   // Get the teams from the promotion championship
   const promotionChampionshipTeams = promotionChampionship?.teamsControlledAutomatically;
