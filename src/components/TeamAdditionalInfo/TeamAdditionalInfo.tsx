@@ -115,7 +115,6 @@ const TeamAdditionalInfo: React.FC = () => {
   return (
     <div className="w-[350px] mt-[26px] bg-[#3c7a33] text-white font-press-start p-5 border-4 border-white mx-auto">
       <div
-        id="team-name"
         className="p-2 text-center mb-5 border-4"
         style={{
           backgroundColor: teamColors.background,
@@ -151,7 +150,6 @@ const TeamAdditionalInfo: React.FC = () => {
         <div className="mb-2 text-[17px]">NEXT MATCH</div>
         <div className="flex flex-col items-center">
           <div
-            id="next-opponent"
             className="bg-blue-600 border-4 border-white w-[100%] mx-auto text-[17px] mb-2 flex justify-center items-center h-12 uppercase"
             style={{
               backgroundColor: opponentColors.background,
