@@ -33,7 +33,6 @@ const ChampionshipSelector: React.FC = () => {
       championship.internalName === 'brasileirao-serie-a' ||
       championship.internalName === 'brasileirao-serie-b'
     ) {
-      // TODO: Set internalName, promotionChampionship, relegationChampionship, promotionTeams and relegationTeams
       setChampionship(championship);
       setYear(new Date().getFullYear()); // Set initial year to current year
 

@@ -396,8 +396,6 @@ export const handleRelegationLogic = (
     (c: ChampionshipConfig) => c.internalName === currentChamp.promotionChampionship
   );
 
-  // TODO: Handle the case where there is no promotion championship
-
   // Get the teams from the promotion championship
   const promotionChampionshipTeams = promotionChampionship?.teamsControlledAutomatically;
 
