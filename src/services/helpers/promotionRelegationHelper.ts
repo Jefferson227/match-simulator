@@ -1,5 +1,5 @@
 import { ChampionshipState } from '../../reducers/types';
-import { BaseTeam, ChampionshipConfig } from '../../types';
+import { BaseTeam, ChampionshipConfig, TableStanding } from '../../types';
 
 function getTeamsByPerformance(
   championship: ChampionshipConfig,
@@ -65,6 +65,34 @@ function getTeamsByPerformance(
   return sortedTeams.slice(0, teamCount);
 }
 
+function isHumanPlayerTeamPromoted(
+  championship: ChampionshipState,
+  promotionTeams: number
+): boolean {
+  const humanPlayerPosition =
+    championship.tableStandings.findIndex(
+      (standing) => standing.teamId === championship.humanPlayerBaseTeam?.id
+    ) + 1; // +1 because array index is 0-based but position is 1-based
+
+  return humanPlayerPosition <= promotionTeams;
+}
+
+export const getPromotedTeams = (championship: ChampionshipState): BaseTeam[] => {
+  if (!championship.promotionTeams || championship.promotionTeams === 0) return [];
+
+  const promotedTeamsIds: string[] = championship.tableStandings
+    .slice(0, championship.promotionTeams)
+    .map((t: TableStanding) => t.teamId);
+
+  const promotedTeamsControlledAutomatically = championship.teamsControlledAutomatically.filter(
+    (t: BaseTeam) => promotedTeamsIds.includes(t.id)
+  );
+
+  return isHumanPlayerTeamPromoted(championship, championship.promotionTeams)
+    ? [...promotedTeamsControlledAutomatically, championship.humanPlayerBaseTeam]
+    : [...promotedTeamsControlledAutomatically];
+};
+
 export const hasPromotionChampionship = (championship: ChampionshipState): boolean => {
   return championship.promotionChampionship !== undefined;
 };
@@ -74,5 +102,6 @@ export const hasRelegationChampionship = (championship: ChampionshipState): bool
 };
 
 export const movePromotedTeamsToPromotionChampionship = (championship: ChampionshipState) => {
-  // getPromotedTeams(championship);
+  const promotedTeams = getPromotedTeams(championship);
+  // getTeamsFromPromotionChampionshipWithoutRelegatedTeams(championship.promotionChampionship);
 };

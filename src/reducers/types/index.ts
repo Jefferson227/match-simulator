@@ -6,7 +6,7 @@ export interface ChampionshipState {
   relegationChampionship?: string | null;
   promotionTeams?: number | null;
   relegationTeams?: number | null;
-  humanPlayerBaseTeam: BaseTeam | null;
+  humanPlayerBaseTeam: BaseTeam;
   teamsControlledAutomatically: BaseTeam[];
   seasonMatchCalendar: SeasonRound[];
   currentRound: number;
