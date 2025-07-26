@@ -1,20 +1,9 @@
 import { BaseTeam, SeasonRound, TableStanding, Match, ChampionshipConfig } from '../types';
-
-// Championship state interface
-export interface ChampionshipState {
-  selectedChampionship: string | null;
-  humanPlayerBaseTeam: BaseTeam | null;
-  teamsControlledAutomatically: BaseTeam[];
-  seasonMatchCalendar: SeasonRound[];
-  currentRound: number;
-  tableStandings: TableStanding[];
-  year: number;
-  otherChampionships: ChampionshipConfig[];
-}
+import { ChampionshipState } from './types/ChampionshipState';
 
 // Championship action types
 export type ChampionshipAction =
-  | { type: 'SET_CHAMPIONSHIP'; payload: string }
+  | { type: 'SET_CHAMPIONSHIP'; payload: ChampionshipConfig }
   | { type: 'SET_HUMAN_PLAYER_BASE_TEAM'; payload: BaseTeam }
   | { type: 'SET_TEAMS_CONTROLLED_AUTOMATICALLY'; payload: BaseTeam[] }
   | { type: 'SET_SEASON_MATCH_CALENDAR'; payload: SeasonRound[] }
@@ -213,7 +202,11 @@ export const championshipReducer = (
     case 'SET_CHAMPIONSHIP':
       return {
         ...state,
-        selectedChampionship: action.payload,
+        selectedChampionship: action.payload.internalName,
+        promotionChampionship: action.payload.promotionChampionship,
+        relegationChampionship: action.payload.relegationChampionship,
+        promotionTeams: action.payload.promotionTeams,
+        relegationTeams: action.payload.relegationTeams,
       };
     case 'SET_HUMAN_PLAYER_BASE_TEAM':
       return {

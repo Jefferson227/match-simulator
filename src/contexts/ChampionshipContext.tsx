@@ -11,7 +11,7 @@ import { BaseTeam, SeasonRound, Match, TableStanding, ChampionshipConfig } from 
 interface ChampionshipContextType {
   state: ChampionshipState;
   dispatch: React.Dispatch<ChampionshipAction>;
-  setChampionship: (internalName: string) => void;
+  setChampionship: (championship: ChampionshipConfig) => void;
   setHumanPlayerBaseTeam: (team: BaseTeam) => void;
   setTeamsControlledAutomatically: (teams: BaseTeam[]) => void;
   setSeasonMatchCalendar: (matches: SeasonRound[]) => void;
@@ -40,8 +40,8 @@ interface ChampionshipProviderProps {
 export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(championshipReducer, initialChampionshipState);
 
-  const setChampionship = (internalName: string) => {
-    dispatch({ type: 'SET_CHAMPIONSHIP', payload: internalName });
+  const setChampionship = (championship: ChampionshipConfig) => {
+    dispatch({ type: 'SET_CHAMPIONSHIP', payload: championship });
   };
 
   const setHumanPlayerBaseTeam = (team: BaseTeam) => {

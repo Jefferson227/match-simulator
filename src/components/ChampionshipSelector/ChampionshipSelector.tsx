@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import generalService from '../../services/generalService';
+import { ChampionshipConfig } from '../../types';
 
 const CHAMPIONSHIPS_PER_PAGE = 6;
 
@@ -12,7 +13,6 @@ const ChampionshipSelector: React.FC = () => {
   const { setChampionship, setYear, setOtherChampionships } = useChampionshipContext();
   const [currentPage, setCurrentPage] = useState(0);
 
-  // TODO: Return ChampionshipConfig[] from getAllChampionships
   const championships = generalService.getAllChampionships();
   const totalPages = Math.ceil(championships.length / CHAMPIONSHIPS_PER_PAGE);
 
@@ -34,7 +34,7 @@ const ChampionshipSelector: React.FC = () => {
       championship.internalName === 'brasileirao-serie-b'
     ) {
       // TODO: Set internalName, promotionChampionship, relegationChampionship, promotionTeams and relegationTeams
-      setChampionship(championship.internalName);
+      setChampionship(championship);
       setYear(new Date().getFullYear()); // Set initial year to current year
 
       const otherChamps = championships.filter((c) => c.internalName !== championship.internalName);

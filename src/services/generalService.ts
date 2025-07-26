@@ -1,17 +1,8 @@
 import generalParameters from '../assets/general-parameters.json';
+import { ChampionshipConfig } from '../types';
 
-// TODO: Return ChampionshipConfig[] from getAllChampionships
-function getAllChampionships(): {
-  id: string;
-  name: string;
-  internalName: string;
-  numberOfTeams?: number;
-  promotionTeams?: number;
-  relegationTeams?: number;
-  promotionChampionship?: string;
-  relegationChampionship?: string;
-}[] {
-  return generalParameters.championships;
+function getAllChampionships(): ChampionshipConfig[] {
+  return generalParameters.championships as ChampionshipConfig[];
 }
 
 const generalService = { getAllChampionships };
