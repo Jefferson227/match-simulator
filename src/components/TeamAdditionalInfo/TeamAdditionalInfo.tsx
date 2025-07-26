@@ -131,8 +131,16 @@ const TeamAdditionalInfo: React.FC = () => {
         <div className="mb-2 text-[17px]">MORALE</div>
         <div className="w-full h-8 bg-[#316229] border-4 border-white my-2 overflow-hidden">
           <div
-            className="h-full bg-green-500 transition-all duration-300"
-            style={{ width: `${championshipState.humanPlayerBaseTeam?.morale || 75}%` }}
+            className="h-full transition-all duration-300"
+            style={{
+              width: `${championshipState.humanPlayerBaseTeam?.morale || 75}%`,
+              backgroundColor: (() => {
+                const morale = championshipState.humanPlayerBaseTeam?.morale || 75;
+                if (morale <= 35) return '#ef4444'; // red
+                if (morale < 65) return '#eab308'; // yellow
+                return '#22c55e'; // green
+              })(),
+            }}
           />
         </div>
       </div>
