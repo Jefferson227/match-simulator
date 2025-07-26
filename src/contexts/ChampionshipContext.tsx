@@ -1,40 +1,11 @@
-import React, { createContext, useContext, useReducer, ReactNode } from 'react';
-import {
-  ChampionshipState,
-  ChampionshipAction,
-  championshipReducer,
-  initialChampionshipState,
-} from '../reducers/championshipReducer';
-import { BaseTeam, SeasonRound, Match, TableStanding, ChampionshipConfig } from '../types';
-
-// Championship context interface
-interface ChampionshipContextType {
-  state: ChampionshipState;
-  dispatch: React.Dispatch<ChampionshipAction>;
-  setChampionship: (championship: ChampionshipConfig) => void;
-  setHumanPlayerBaseTeam: (team: BaseTeam) => void;
-  setTeamsControlledAutomatically: (teams: BaseTeam[]) => void;
-  setSeasonMatchCalendar: (matches: SeasonRound[]) => void;
-  setCurrentRound: (round: number) => void;
-  incrementCurrentRound: () => void;
-  updateTableStandings: (matches: Match[]) => void;
-  resetTableStandings: () => void;
-  getTableStandings: () => TableStanding[];
-  loadState: (state: ChampionshipState) => void;
-  setYear: (year: number) => void;
-  incrementYear: () => void;
-  setOtherChampionships: (champs: ChampionshipConfig[]) => void;
-  addOrUpdateOtherChampionship: (championship: ChampionshipConfig) => void;
-  updateTeamMorale: (matches: Match[]) => void;
-}
+import React, { createContext, useContext, useReducer } from 'react';
+import { championshipReducer, initialChampionshipState } from '../reducers/championshipReducer';
+import { ChampionshipState } from '../reducers/types/ChampionshipState';
+import { BaseTeam, SeasonRound, Match, ChampionshipConfig } from '../types';
+import { ChampionshipContextType, ChampionshipProviderProps } from './types';
 
 // Create the context
 const ChampionshipContext = createContext<ChampionshipContextType | undefined>(undefined);
-
-// Championship provider props
-interface ChampionshipProviderProps {
-  children: ReactNode;
-}
 
 // Championship provider component
 export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({ children }) => {
