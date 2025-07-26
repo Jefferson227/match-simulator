@@ -77,6 +77,13 @@ const TeamAdditionalInfo: React.FC = () => {
       })()
     : 'N/A';
 
+  // Extract team colors with fallbacks
+  const teamColors = championshipState.humanPlayerBaseTeam?.colors || {
+    background: '#1e1e1e',
+    outline: '#e2e2e2',
+    name: '#e2e2e2',
+  };
+
   // Button handlers
   const handleBack = () => {
     setScreenDisplayed('TeamManager');
@@ -94,7 +101,15 @@ const TeamAdditionalInfo: React.FC = () => {
 
   return (
     <div className="w-[350px] mt-[26px] bg-[#3c7a33] text-white font-press-start p-5 border-4 border-white mx-auto">
-      <div className="bg-black text-white p-2 text-center mb-5 border-4 border-white">
+      <div
+        id="team-name"
+        className="p-2 text-center mb-5 border-4"
+        style={{
+          backgroundColor: teamColors.background,
+          borderColor: teamColors.outline,
+          color: teamColors.name,
+        }}
+      >
         <h2 className="m-0 text-[17px] uppercase tracking-wider">
           {championshipState.humanPlayerBaseTeam?.name || 'TEAM NAME'}
         </h2>
