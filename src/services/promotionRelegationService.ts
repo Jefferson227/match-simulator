@@ -72,6 +72,52 @@ function getTeamsByPerformance(
   return sortedTeams.slice(0, teamCount);
 }
 
+export const handlePromotionRelegationLogic = (
+  context: PromotionRelegationContext,
+  currentChamp: ChampionshipConfig,
+  championshipState: any,
+  standings: any[],
+  humanPlayerTeam: BaseTeam
+) => {
+  /*
+  # Main logic
+  - If promotion championship doesn't exist, keep promoted teams from current championship in the same championship
+  - If promotion championship exists:
+    - Move promoted teams from current championship to promotion championship
+    - Move relegated teams from promotion championship to current championship
+  - If relegation championship doesn't exist, keep relegated teams from current championship in the same championship
+  - If relegation championship exists:
+    - Move relegated teams from current championship to relegation championship
+    - Move promoted teams from relegation championship to current championship
+  - If human player team was promoted, set promotion championship as the current championship
+  - If human player team was relegated, set relegation championship as the current championship
+  - If human player team was neither promoted nor relegated, set current championship as the current championship
+  - Generate season match calendar for next season
+  */
+  /*
+  # Pseudo code
+  if (hasPromotionChampionship(currentChampionship)) {
+    movePromotedTeamsToPromotionChampionship(currentChampionship);
+    moveRelegatedTeamsToCurrentChampionship(promotionChampionship);
+  }
+
+  if (hasRelegationChampionship(currentChampionship)) {
+    moveRelegatedTeamsToCurrentChampionship(currentChampionship);
+    movePromotedTeamsToCurrentChampionship(relegationChampionship);
+  }
+
+  if (humanPlayerTeamWasPromoted) {
+    setChampionship(currentChampionship, promotionChampionship);
+  }
+
+  if (humanPlayerTeamWasRelegated) {
+    setChampionship(currentChampionship, relegationChampionship);
+  }
+
+  generateSeasonMatchCalendar(currentChampionship);
+  */
+};
+
 export const handlePromotionLogic = (
   context: PromotionRelegationContext,
   currentChamp: ChampionshipConfig,
