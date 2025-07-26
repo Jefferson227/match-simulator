@@ -57,9 +57,22 @@ const TeamAdditionalInfo: React.FC = () => {
   );
   const nextOpponent = nextMatch
     ? nextMatch.homeTeam.id === championshipState.humanPlayerBaseTeam?.id
-      ? nextMatch.awayTeam.name
-      : nextMatch.homeTeam.name
+      ? nextMatch.awayTeam.shortName || nextMatch.awayTeam.name
+      : nextMatch.homeTeam.shortName || nextMatch.homeTeam.name
     : 'N/A';
+
+  // Get opponent team colors
+  const opponentTeam = nextMatch
+    ? nextMatch.homeTeam.id === championshipState.humanPlayerBaseTeam?.id
+      ? nextMatch.awayTeam
+      : nextMatch.homeTeam
+    : null;
+
+  const opponentColors = opponentTeam?.colors || {
+    background: '#3b82f6',
+    outline: '#ffffff',
+    name: '#ffffff',
+  };
 
   // Get next opponent position
   const nextOpponentPosition = nextMatch
@@ -137,7 +150,15 @@ const TeamAdditionalInfo: React.FC = () => {
       <div className="mb-5 p-3 bg-black/20 border-4 border-white">
         <div className="mb-2 text-[17px]">NEXT MATCH</div>
         <div className="flex flex-col items-center">
-          <div className="bg-blue-600 border-4 border-white w-[100%] mx-auto text-[17px] mb-2 flex justify-center items-center h-12">
+          <div
+            id="next-opponent"
+            className="bg-blue-600 border-4 border-white w-[100%] mx-auto text-[17px] mb-2 flex justify-center items-center h-12 uppercase"
+            style={{
+              backgroundColor: opponentColors.background,
+              borderColor: opponentColors.outline,
+              color: opponentColors.name,
+            }}
+          >
             {nextOpponent}
           </div>
           <div className="text-xs opacity-80">{nextOpponentPosition}</div>
