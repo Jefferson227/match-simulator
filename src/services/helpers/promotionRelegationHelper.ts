@@ -1,5 +1,6 @@
 import { ChampionshipState } from '../../reducers/types';
 import { BaseTeam, ChampionshipConfig, TableStanding } from '../../types';
+import { PromotionResult } from '../types';
 
 function getTeamsByPerformance(
   championship: ChampionshipConfig,
@@ -77,21 +78,19 @@ function isHumanPlayerTeamPromoted(
   return humanPlayerPosition <= promotionTeams;
 }
 
-function getTeamsFromPromotionChampionshipWithoutRelegatedTeams(
-  championshipState: ChampionshipState,
-  promotionChampionshipName: string
-) {
-  const promotionChampionship = championshipState.otherChampionships.find(
-    (champ: ChampionshipConfig) => champ.internalName === promotionChampionshipName
-  );
+function removeTeamsFromChampionship(championshipTeams: BaseTeam[], teamsToRemove: BaseTeam[]) {
+  const teamsToRemoveIds = teamsToRemove.map((team) => team.id);
+  return championshipTeams.filter((team) => !teamsToRemoveIds.includes(team.id));
+}
 
-  if (!promotionChampionship?.teamsControlledAutomatically) return [];
+function getPromotionChampionship(currentChampionship: ChampionshipState): ChampionshipConfig {
+  return currentChampionship.otherChampionships.find(
+    (champ: ChampionshipConfig) => champ.internalName === currentChampionship.promotionChampionship!
+  )!;
+}
 
-  const relegatedTeams = getTeamsByPerformance(promotionChampionship, 'relegation');
-
-  return promotionChampionship.teamsControlledAutomatically.filter(
-    (team) => !relegatedTeams.map((team) => team.id).includes(team.id)
-  );
+function getRelegatedTeams(championship: ChampionshipConfig): BaseTeam[] {
+  return getTeamsByPerformance(championship, 'relegation');
 }
 
 export const getPromotedTeams = (championship: ChampionshipState): BaseTeam[] => {
@@ -118,11 +117,49 @@ export const hasRelegationChampionship = (championship: ChampionshipState): bool
   return championship.relegationChampionship !== undefined;
 };
 
-export const movePromotedTeamsToPromotionChampionship = (championship: ChampionshipState) => {
-  const promotedTeams = getPromotedTeams(championship);
-  const teamsFromPromotionChampionshipWithoutRelegatedTeams =
-    getTeamsFromPromotionChampionshipWithoutRelegatedTeams(
-      championship,
-      championship.promotionChampionship!
-    );
+export const movePromotedTeamsToPromotionChampionship = (
+  currentChampionship: ChampionshipState
+): PromotionResult => {
+  /**
+   * - If the human player team is among the promoted teams:
+   *   - Get the promoted teams (without the human player team) from the current championship
+   *   - Get the relegated teams from the promotion championship
+   *   - Get the teams from the promotion championship without the relegated teams
+   *   - Get the teams from the current championship without the promoted teams
+   *   - Add the promoted teams from the current championship to the promotion championship
+   *   - Add the relegated teams from the promotion championship to the current championship
+   *   - Return a new object containing the updated teams from the promotion championship and the current championship
+   * - If the human player team is not among the promoted teams:
+   *   - Get the promoted teams from the current championship
+   *   - Get the relegated teams from the promotion championship
+   *   - Get the teams from the promotion championship without the relegated teams
+   *   - Get the teams from the current championship without the promoted teams
+   *   - Add the promoted teams from the current championship to the promotion championship
+   *   - Add the relegated teams from the promotion championship to the current championship
+   *   - Return a new object containing the updated teams from the promotion championship and the current championship
+   */
+
+  const promotedTeamsFromCurrentChampionship = getPromotedTeams(currentChampionship);
+  const promotionChampionship = getPromotionChampionship(currentChampionship);
+  const relegatedTeamsFromPromotionChampionship = getRelegatedTeams(promotionChampionship);
+  const teamsFromPromotionChampionshipWithoutRelegatedTeams = removeTeamsFromChampionship(
+    promotionChampionship.teamsControlledAutomatically!,
+    relegatedTeamsFromPromotionChampionship
+  );
+  const teamsFromCurrentChampionshipWithoutPromotedTeams = removeTeamsFromChampionship(
+    currentChampionship.teamsControlledAutomatically!,
+    promotedTeamsFromCurrentChampionship
+  );
+  const updatedPromotionChampionshipTeams = [
+    ...teamsFromPromotionChampionshipWithoutRelegatedTeams,
+    ...promotedTeamsFromCurrentChampionship,
+  ];
+  const updatedCurrentChampionshipTeams = [
+    ...teamsFromCurrentChampionshipWithoutPromotedTeams,
+    ...relegatedTeamsFromPromotionChampionship,
+  ];
+  return {
+    promotionChampionshipTeams: updatedPromotionChampionshipTeams,
+    currentChampionshipTeams: updatedCurrentChampionshipTeams,
+  };
 };
