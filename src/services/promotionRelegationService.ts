@@ -1,12 +1,6 @@
 import { BaseTeam, ChampionshipConfig } from '../types';
 import { generateSeasonMatchCalendar } from './teamService';
-
-interface PromotionRelegationContext {
-  setTeamsControlledAutomatically: (teams: BaseTeam[]) => void;
-  setSeasonMatchCalendar: (calendar: any) => void;
-  setChampionship: (championship: string) => void;
-  addOrUpdateOtherChampionship: (championship: ChampionshipConfig) => void;
-}
+import { PromotionRelegationContext } from './types';
 
 function getTeamsByPerformance(
   championship: ChampionshipConfig,
