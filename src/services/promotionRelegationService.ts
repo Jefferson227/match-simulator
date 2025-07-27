@@ -1,6 +1,11 @@
+import { ChampionshipState } from '../reducers/types';
 import { BaseTeam, ChampionshipConfig } from '../types';
 import { generateSeasonMatchCalendar } from './teamService';
 import { PromotionRelegationContext } from './types';
+import {
+  hasPromotionChampionship,
+  movePromotedTeamsToPromotionChampionship,
+} from './helpers/promotionRelegationHelper';
 
 function getTeamsByPerformance(
   championship: ChampionshipConfig,
@@ -69,7 +74,7 @@ function getTeamsByPerformance(
 export const handlePromotionRelegationLogic = (
   context: PromotionRelegationContext,
   currentChamp: ChampionshipConfig,
-  championshipState: any,
+  championshipState: ChampionshipState,
   standings: any[],
   humanPlayerTeam: BaseTeam
 ) => {
@@ -110,6 +115,11 @@ export const handlePromotionRelegationLogic = (
 
   generateSeasonMatchCalendar(currentChampionship);
   */
+  const currentChampionship = championshipState;
+
+  if (hasPromotionChampionship(currentChampionship)) {
+    const promotionResult = movePromotedTeamsToPromotionChampionship(currentChampionship);
+  }
 };
 
 export const handlePromotionLogic = (
