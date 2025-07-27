@@ -77,6 +77,23 @@ function isHumanPlayerTeamPromoted(
   return humanPlayerPosition <= promotionTeams;
 }
 
+function getTeamsFromPromotionChampionshipWithoutRelegatedTeams(
+  championshipState: ChampionshipState,
+  promotionChampionshipName: string
+) {
+  const promotionChampionship = championshipState.otherChampionships.find(
+    (champ: ChampionshipConfig) => champ.internalName === promotionChampionshipName
+  );
+
+  if (!promotionChampionship?.teamsControlledAutomatically) return [];
+
+  const relegatedTeams = getTeamsByPerformance(promotionChampionship, 'relegation');
+
+  return promotionChampionship.teamsControlledAutomatically.filter(
+    (team) => !relegatedTeams.map((team) => team.id).includes(team.id)
+  );
+}
+
 export const getPromotedTeams = (championship: ChampionshipState): BaseTeam[] => {
   if (!championship.promotionTeams || championship.promotionTeams === 0) return [];
 
@@ -103,5 +120,9 @@ export const hasRelegationChampionship = (championship: ChampionshipState): bool
 
 export const movePromotedTeamsToPromotionChampionship = (championship: ChampionshipState) => {
   const promotedTeams = getPromotedTeams(championship);
-  // getTeamsFromPromotionChampionshipWithoutRelegatedTeams(championship.promotionChampionship);
+  const teamsFromPromotionChampionshipWithoutRelegatedTeams =
+    getTeamsFromPromotionChampionshipWithoutRelegatedTeams(
+      championship,
+      championship.promotionChampionship!
+    );
 };
