@@ -66,18 +66,6 @@ function getTeamsByPerformance(
   return sortedTeams.slice(0, teamCount);
 }
 
-function isHumanPlayerTeamPromoted(
-  championship: ChampionshipState,
-  promotionTeams: number
-): boolean {
-  const humanPlayerPosition =
-    championship.tableStandings.findIndex(
-      (standing) => standing.teamId === championship.humanPlayerBaseTeam?.id
-    ) + 1; // +1 because array index is 0-based but position is 1-based
-
-  return humanPlayerPosition <= promotionTeams;
-}
-
 function removeTeamsFromChampionship(championshipTeams: BaseTeam[], teamsToRemove: BaseTeam[]) {
   const teamsToRemoveIds = teamsToRemove.map((team) => team.id);
   return championshipTeams.filter((team) => !teamsToRemoveIds.includes(team.id));
@@ -116,20 +104,28 @@ function getPromotedTeamsFromOtherChampionship(championship: ChampionshipConfig)
   return getTeamsByPerformance(championship, 'promotion');
 }
 
-export const getPromotedTeams = (championship: ChampionshipState): BaseTeam[] => {
+function getPromotedTeamsFromCurrentChampionship(championship: ChampionshipState): BaseTeam[] {
   if (!championship.promotionTeams || championship.promotionTeams === 0) return [];
 
   const promotedTeamsIds: string[] = championship.tableStandings
     .slice(0, championship.promotionTeams)
     .map((t: TableStanding) => t.teamId);
 
-  const promotedTeamsControlledAutomatically = championship.teamsControlledAutomatically.filter(
-    (t: BaseTeam) => promotedTeamsIds.includes(t.id)
+  return championship.teamsControlledAutomatically.filter((t: BaseTeam) =>
+    promotedTeamsIds.includes(t.id)
   );
+}
 
-  return isHumanPlayerTeamPromoted(championship, championship.promotionTeams)
-    ? [...promotedTeamsControlledAutomatically, championship.humanPlayerBaseTeam]
-    : [...promotedTeamsControlledAutomatically];
+export const isHumanPlayerTeamPromoted = (
+  championship: ChampionshipState,
+  promotionTeams: number
+): boolean => {
+  const humanPlayerPosition =
+    championship.tableStandings.findIndex(
+      (standing) => standing.teamId === championship.humanPlayerBaseTeam?.id
+    ) + 1; // +1 because array index is 0-based but position is 1-based
+
+  return humanPlayerPosition <= promotionTeams;
 };
 
 export const hasPromotionChampionship = (championship: ChampionshipState): boolean => {
@@ -162,9 +158,12 @@ export const movePromotedTeamsToPromotionChampionship = (
    *   - Return a new object containing the updated teams from the promotion championship and the current championship
    */
 
-  const promotedTeamsFromCurrentChampionship = getPromotedTeams(currentChampionship);
+  const promotedTeamsFromCurrentChampionship =
+    getPromotedTeamsFromCurrentChampionship(currentChampionship);
+
   const promotionChampionship = getPromotionChampionship(currentChampionship);
   const relegatedTeamsFromPromotionChampionship = getRelegatedTeams(promotionChampionship);
+
   const teamsFromPromotionChampionshipWithoutRelegatedTeams = removeTeamsFromChampionship(
     promotionChampionship.teamsControlledAutomatically!,
     relegatedTeamsFromPromotionChampionship
