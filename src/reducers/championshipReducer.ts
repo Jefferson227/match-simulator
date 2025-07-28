@@ -2,13 +2,13 @@ import {
   calculateUpdatedStandings,
   updateTeamMoraleAndStrength,
 } from './helpers/championshipReducerHelper';
-import { ChampionshipAction } from './types';
-import { ChampionshipState } from './types/ChampionshipState';
+import { ChampionshipAction, ChampionshipState } from './types';
+import { BaseTeam } from '../types';
 
 // Initial state
 export const initialChampionshipState: ChampionshipState = {
   selectedChampionship: null,
-  humanPlayerBaseTeam: null,
+  humanPlayerBaseTeam: {} as BaseTeam,
   teamsControlledAutomatically: [],
   seasonMatchCalendar: [],
   currentRound: 1,
@@ -92,7 +92,7 @@ export const championshipReducer = (
       // Update morale for both human-controlled and AI-controlled teams
       const updatedHumanTeam = state.humanPlayerBaseTeam
         ? updateTeamMoraleAndStrength([state.humanPlayerBaseTeam], action.payload)[0]
-        : null;
+        : ({} as BaseTeam);
 
       const updatedAITeams = updateTeamMoraleAndStrength(
         state.teamsControlledAutomatically,
