@@ -5,6 +5,7 @@ import { PromotionRelegationContext } from './types';
 import {
   hasPromotionChampionship,
   movePromotedTeamsToPromotionChampionship,
+  moveRelegatedTeamsToRelegationChampionship,
 } from './helpers/promotionRelegationHelper';
 
 function getTeamsByPerformance(
@@ -119,6 +120,10 @@ export const handlePromotionRelegationLogic = (
 
   if (hasPromotionChampionship(currentChampionship)) {
     const promotionResult = movePromotedTeamsToPromotionChampionship(currentChampionship);
+    const relegationResult = moveRelegatedTeamsToRelegationChampionship(
+      currentChampionship,
+      promotionResult
+    );
   }
 };
 
