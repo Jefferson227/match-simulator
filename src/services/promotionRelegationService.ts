@@ -123,11 +123,13 @@ export const handlePromotionRelegationLogic = (
   let promotionResult = {} as PromotionResult;
   let relegationResult = {} as RelegationResult;
 
+  // TODO: Check if the standings are needed to determine the promotion
   if (hasPromotionChampionship(currentChampionship)) {
     promotionResult = movePromotedTeamsToPromotionChampionship(currentChampionship);
     // TODO: Run the addOrUpdateOtherChampionship for the promotion championship
   }
 
+  // TODO: Check if the standings are needed to determine the relegation
   if (hasRelegationChampionship(currentChampionship)) {
     relegationResult = moveRelegatedTeamsToRelegationChampionship(
       currentChampionship,
