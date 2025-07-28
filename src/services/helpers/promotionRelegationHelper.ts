@@ -188,7 +188,8 @@ export const movePromotedTeamsToPromotionChampionship = (
 };
 
 export const moveRelegatedTeamsToRelegationChampionship = (
-  currentChampionship: ChampionshipState
+  currentChampionship: ChampionshipState,
+  promotionResult: PromotionResult
 ): RelegationResult => {
   /**
    *   - Get the relegated teams from the current championship (don't include the human player team, if it's among the relegated teams)
@@ -200,8 +201,10 @@ export const moveRelegatedTeamsToRelegationChampionship = (
    *   - Return a new object containing the updated teams from the relegation championship and the current championship
    */
 
-  const relegatedTeamsFromCurrentChampionship =
-    getRelegatedTeamsFromCurrentChampionship(currentChampionship);
+  const relegatedTeamsFromCurrentChampionship = getRelegatedTeamsFromCurrentChampionship(
+    currentChampionship,
+    promotionResult.currentChampionshipTeams
+  );
 
   const relegationChampionship = getRelegationChampionship(currentChampionship);
   const promotedTeamsFromRelegationChampionship =
@@ -212,7 +215,7 @@ export const moveRelegatedTeamsToRelegationChampionship = (
     promotedTeamsFromRelegationChampionship
   );
   const teamsFromCurrentChampionshipWithoutRelegatedTeams = removeTeamsFromChampionship(
-    currentChampionship.teamsControlledAutomatically!,
+    promotionResult.currentChampionshipTeams,
     relegatedTeamsFromCurrentChampionship
   );
   const updatedRelegationChampionshipTeams = [
