@@ -1,6 +1,6 @@
 import { ChampionshipState } from '../../reducers/types';
 import { BaseTeam, ChampionshipConfig, TableStanding } from '../../types';
-import { PromotionResult } from '../types';
+import { PromotionResult, RelegationResult } from '../types';
 
 function getTeamsByPerformance(
   championship: ChampionshipConfig,
@@ -89,8 +89,31 @@ function getPromotionChampionship(currentChampionship: ChampionshipState): Champ
   )!;
 }
 
+function getRelegationChampionship(currentChampionship: ChampionshipState): ChampionshipConfig {
+  return currentChampionship.otherChampionships.find(
+    (champ: ChampionshipConfig) =>
+      champ.internalName === currentChampionship.relegationChampionship!
+  )!;
+}
+
 function getRelegatedTeams(championship: ChampionshipConfig): BaseTeam[] {
   return getTeamsByPerformance(championship, 'relegation');
+}
+
+function getRelegatedTeamsFromCurrentChampionship(championship: ChampionshipState): BaseTeam[] {
+  if (!championship.relegationTeams || championship.relegationTeams === 0) return [];
+
+  const relegatedTeamsIds: string[] = championship.tableStandings
+    .slice(championship.tableStandings.length - championship.relegationTeams)
+    .map((t: TableStanding) => t.teamId);
+
+  return championship.teamsControlledAutomatically.filter((t: BaseTeam) =>
+    relegatedTeamsIds.includes(t.id)
+  );
+}
+
+function getPromotedTeamsFromOtherChampionship(championship: ChampionshipConfig): BaseTeam[] {
+  return getTeamsByPerformance(championship, 'promotion');
 }
 
 export const getPromotedTeams = (championship: ChampionshipState): BaseTeam[] => {
@@ -160,6 +183,48 @@ export const movePromotedTeamsToPromotionChampionship = (
   ];
   return {
     promotionChampionshipTeams: updatedPromotionChampionshipTeams,
+    currentChampionshipTeams: updatedCurrentChampionshipTeams,
+  };
+};
+
+export const moveRelegatedTeamsToRelegationChampionship = (
+  currentChampionship: ChampionshipState
+): RelegationResult => {
+  /**
+   *   - Get the relegated teams from the current championship (don't include the human player team, if it's among the relegated teams)
+   *   - Get the promoted teams from the relegation championship
+   *   - Get the teams from the relegation championship without the promoted teams
+   *   - Get the teams from the current championship without the relegated teams
+   *   - Add the relegated teams from the current championship to the relegation championship
+   *   - Add the promoted teams from the relegation championship to the current championship
+   *   - Return a new object containing the updated teams from the relegation championship and the current championship
+   */
+
+  const relegatedTeamsFromCurrentChampionship =
+    getRelegatedTeamsFromCurrentChampionship(currentChampionship);
+
+  const relegationChampionship = getRelegationChampionship(currentChampionship);
+  const promotedTeamsFromRelegationChampionship =
+    getPromotedTeamsFromOtherChampionship(relegationChampionship);
+
+  const teamsFromRelegationChampionshipWithoutPromotedTeams = removeTeamsFromChampionship(
+    relegationChampionship.teamsControlledAutomatically!,
+    promotedTeamsFromRelegationChampionship
+  );
+  const teamsFromCurrentChampionshipWithoutRelegatedTeams = removeTeamsFromChampionship(
+    currentChampionship.teamsControlledAutomatically!,
+    relegatedTeamsFromCurrentChampionship
+  );
+  const updatedRelegationChampionshipTeams = [
+    ...teamsFromRelegationChampionshipWithoutPromotedTeams,
+    ...relegatedTeamsFromCurrentChampionship,
+  ];
+  const updatedCurrentChampionshipTeams = [
+    ...teamsFromCurrentChampionshipWithoutRelegatedTeams,
+    ...promotedTeamsFromRelegationChampionship,
+  ];
+  return {
+    relegationChampionshipTeams: updatedRelegationChampionshipTeams,
     currentChampionshipTeams: updatedCurrentChampionshipTeams,
   };
 };
