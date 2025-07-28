@@ -129,6 +129,19 @@ export const isHumanPlayerTeamPromoted = (
   return humanPlayerPosition <= promotionTeams;
 };
 
+export const isHumanPlayerTeamRelegated = (
+  championship: ChampionshipState,
+  relegationTeams: number
+): boolean => {
+  const humanPlayerPosition =
+    championship.tableStandings.findIndex(
+      (standing) => standing.teamId === championship.humanPlayerBaseTeam?.id
+    ) + 1; // +1 because array index is 0-based but position is 1-based
+
+  // TODO: Replace this 20 by adding the numberOfTeams at the moment the championship is selected
+  return humanPlayerPosition > 20 - relegationTeams;
+};
+
 export const hasPromotionChampionship = (championship: ChampionshipState): boolean => {
   return championship.promotionChampionship !== undefined;
 };

@@ -1,9 +1,12 @@
 import { ChampionshipState } from '../reducers/types';
 import { BaseTeam, ChampionshipConfig } from '../types';
-import { generateSeasonMatchCalendar } from './teamService';
-import { PromotionRelegationContext } from './types';
+import { generateSeasonMatchCalendar, SeasonRound } from './teamService';
+import { PromotionRelegationContext, PromotionResult, RelegationResult } from './types';
 import {
   hasPromotionChampionship,
+  hasRelegationChampionship,
+  isHumanPlayerTeamPromoted,
+  isHumanPlayerTeamRelegated,
   movePromotedTeamsToPromotionChampionship,
   moveRelegatedTeamsToRelegationChampionship,
 } from './helpers/promotionRelegationHelper';
@@ -117,14 +120,42 @@ export const handlePromotionRelegationLogic = (
   generateSeasonMatchCalendar(currentChampionship);
   */
   const currentChampionship = championshipState;
+  let promotionResult = {} as PromotionResult;
+  let relegationResult = {} as RelegationResult;
 
   if (hasPromotionChampionship(currentChampionship)) {
-    const promotionResult = movePromotedTeamsToPromotionChampionship(currentChampionship);
-    const relegationResult = moveRelegatedTeamsToRelegationChampionship(
+    promotionResult = movePromotedTeamsToPromotionChampionship(currentChampionship);
+    // TODO: Run the addOrUpdateOtherChampionship for the promotion championship
+  }
+
+  if (hasRelegationChampionship(currentChampionship)) {
+    relegationResult = moveRelegatedTeamsToRelegationChampionship(
       currentChampionship,
       promotionResult
     );
+    // TODO: Run the addOrUpdateOtherChampionship for the relegation championship
   }
+
+  // TODO: Replace this 4 by currentChampionship.promotionTeams
+  let seasonCalendar: SeasonRound[] = [];
+  if (isHumanPlayerTeamPromoted(currentChampionship, 4)) {
+    context.setChampionship(currentChampionship.promotionChampionship!);
+    seasonCalendar = generateSeasonMatchCalendar(
+      humanPlayerTeam,
+      promotionResult.promotionChampionshipTeams
+    );
+  }
+
+  // TODO: Replace this 4 by currentChampionship.relegationTeams
+  if (isHumanPlayerTeamRelegated(currentChampionship, 4)) {
+    context.setChampionship(currentChampionship.relegationChampionship!);
+    seasonCalendar = generateSeasonMatchCalendar(
+      humanPlayerTeam,
+      relegationResult.relegationChampionshipTeams
+    );
+  }
+
+  context.setSeasonMatchCalendar(seasonCalendar);
 };
 
 export const handlePromotionLogic = (
