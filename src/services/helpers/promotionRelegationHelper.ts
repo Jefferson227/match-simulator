@@ -88,16 +88,17 @@ function getRelegatedTeams(championship: ChampionshipConfig): BaseTeam[] {
   return getTeamsByPerformance(championship, 'relegation');
 }
 
-function getRelegatedTeamsFromCurrentChampionship(championship: ChampionshipState): BaseTeam[] {
+function getRelegatedTeamsFromCurrentChampionship(
+  championship: ChampionshipState,
+  updateChampionshipTeams: BaseTeam[]
+): BaseTeam[] {
   if (!championship.relegationTeams || championship.relegationTeams === 0) return [];
 
   const relegatedTeamsIds: string[] = championship.tableStandings
     .slice(championship.tableStandings.length - championship.relegationTeams)
     .map((t: TableStanding) => t.teamId);
 
-  return championship.teamsControlledAutomatically.filter((t: BaseTeam) =>
-    relegatedTeamsIds.includes(t.id)
-  );
+  return updateChampionshipTeams.filter((t: BaseTeam) => relegatedTeamsIds.includes(t.id));
 }
 
 function getPromotedTeamsFromOtherChampionship(championship: ChampionshipConfig): BaseTeam[] {
