@@ -146,6 +146,10 @@ export const handlePromotionRelegationLogic = (
       humanPlayerTeam,
       promotionResult.promotionChampionshipTeams
     );
+
+    if (currentChampionship.promotionChampionship) {
+      context.setChampionship(currentChampionship.promotionChampionship);
+    }
   }
 
   // TODO: Replace this 4 by currentChampionship.relegationTeams
@@ -155,6 +159,10 @@ export const handlePromotionRelegationLogic = (
       humanPlayerTeam,
       relegationResult.relegationChampionshipTeams
     );
+
+    if (currentChampionship.relegationChampionship) {
+      context.setChampionship(currentChampionship.relegationChampionship);
+    }
   }
 
   context.setSeasonMatchCalendar(seasonCalendar);
