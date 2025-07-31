@@ -126,7 +126,18 @@ export const handlePromotionRelegationLogic = (
   // TODO: Check if the standings are needed to determine the promotion
   if (hasPromotionChampionship(currentChampionship)) {
     promotionResult = movePromotedTeamsToPromotionChampionship(currentChampionship);
-    // TODO: Run the addOrUpdateOtherChampionship for the promotion championship
+
+    // TODO: Encapsulate this logic in a separate function
+    if (promotionResult.promotionChampionshipTeams) {
+      const promotionChampionship = currentChampionship.otherChampionships.find(
+        (championship) => championship.internalName === championship.promotionChampionship
+      );
+      const newPromotionChampionshipObject = {
+        ...promotionChampionship,
+        teamsControlledAutomatically: promotionResult.promotionChampionshipTeams,
+      } as ChampionshipConfig;
+      context.addOrUpdateOtherChampionship(newPromotionChampionshipObject);
+    }
   }
 
   // TODO: Check if the standings are needed to determine the relegation
@@ -135,7 +146,17 @@ export const handlePromotionRelegationLogic = (
       currentChampionship,
       promotionResult
     );
-    // TODO: Run the addOrUpdateOtherChampionship for the relegation championship
+    // TODO: Encapsulate this logic in a separate function
+    if (relegationResult.relegationChampionshipTeams) {
+      const relegationChampionship = currentChampionship.otherChampionships.find(
+        (championship) => championship.internalName === championship.relegationChampionship
+      );
+      const newRelegationChampionshipObject = {
+        ...relegationChampionship,
+        teamsControlledAutomatically: relegationResult.relegationChampionshipTeams,
+      } as ChampionshipConfig;
+      context.addOrUpdateOtherChampionship(newRelegationChampionshipObject);
+    }
   }
 
   // TODO: Replace this 4 by currentChampionship.promotionTeams
