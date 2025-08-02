@@ -117,29 +117,27 @@ function getPromotedTeamsFromCurrentChampionship(championship: ChampionshipState
   );
 }
 
-export const isHumanPlayerTeamPromoted = (
-  championship: ChampionshipState,
-  promotionTeams: number
-): boolean => {
+export const isHumanPlayerTeamPromoted = (championship: ChampionshipState): boolean => {
+  if (!championship?.promotionTeams) return false;
+
   const humanPlayerPosition =
     championship.tableStandings.findIndex(
       (standing) => standing.teamId === championship.humanPlayerBaseTeam?.id
     ) + 1; // +1 because array index is 0-based but position is 1-based
 
-  return humanPlayerPosition <= promotionTeams;
+  return humanPlayerPosition <= championship.promotionTeams;
 };
 
-export const isHumanPlayerTeamRelegated = (
-  championship: ChampionshipState,
-  relegationTeams: number
-): boolean => {
+export const isHumanPlayerTeamRelegated = (championship: ChampionshipState): boolean => {
+  if (!championship?.relegationTeams) return false;
+
   const humanPlayerPosition =
     championship.tableStandings.findIndex(
       (standing) => standing.teamId === championship.humanPlayerBaseTeam?.id
     ) + 1; // +1 because array index is 0-based but position is 1-based
 
-  // TODO: Replace this 20 by adding the numberOfTeams at the moment the championship is selected
-  return humanPlayerPosition > 20 - relegationTeams;
+  const championshipTeamsCount = championship.tableStandings.length;
+  return humanPlayerPosition > championshipTeamsCount - championship.relegationTeams;
 };
 
 export const hasPromotionChampionship = (championship: ChampionshipState): boolean => {

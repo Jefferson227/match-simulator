@@ -159,9 +159,8 @@ export const handlePromotionRelegationLogic = (
     }
   }
 
-  // TODO: Replace this 4 by currentChampionship.promotionTeams
   let seasonCalendar: SeasonRound[] = [];
-  if (isHumanPlayerTeamPromoted(currentChampionship, 4)) {
+  if (isHumanPlayerTeamPromoted(currentChampionship)) {
     context.setChampionship(currentChampionship.promotionChampionship!);
     seasonCalendar = generateSeasonMatchCalendar(
       humanPlayerTeam,
@@ -173,8 +172,7 @@ export const handlePromotionRelegationLogic = (
     }
   }
 
-  // TODO: Replace this 4 by currentChampionship.relegationTeams
-  if (isHumanPlayerTeamRelegated(currentChampionship, 4)) {
+  if (isHumanPlayerTeamRelegated(currentChampionship)) {
     context.setChampionship(currentChampionship.relegationChampionship!);
     seasonCalendar = generateSeasonMatchCalendar(
       humanPlayerTeam,
