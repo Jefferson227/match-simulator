@@ -185,6 +185,7 @@ export const handlePromotionRelegationLogic = (
   }
 
   context.setSeasonMatchCalendar(seasonCalendar);
+  // TODO: Add a new reducer to update all the state changes related to promotion/relegation at once
 };
 
 export const handlePromotionLogic = (
