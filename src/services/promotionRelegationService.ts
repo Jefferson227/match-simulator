@@ -1,7 +1,7 @@
 import { ChampionshipState, ChampionshipUpdate } from '../reducers/types';
 import { BaseTeam, ChampionshipConfig } from '../types';
 import { generateSeasonMatchCalendar, SeasonRound } from './teamService';
-import { PromotionRelegationContext, PromotionResult, RelegationResult } from './types';
+import { PromotionResult, RelegationResult } from './types';
 import {
   hasPromotionChampionship,
   hasRelegationChampionship,
@@ -77,9 +77,8 @@ function getTeamsByPerformance(
 }
 
 export const handlePromotionRelegationLogic = (
-  context: PromotionRelegationContext,
-  championshipState: ChampionshipState,
-  humanPlayerTeam: BaseTeam
+  updateChampionshipState: (championshipUpdateObject: ChampionshipUpdate) => void,
+  championshipState: ChampionshipState
 ) => {
   /*
   # Main logic
@@ -153,7 +152,7 @@ export const handlePromotionRelegationLogic = (
 
   if (isHumanPlayerTeamPromoted(currentChampionship)) {
     seasonCalendar = generateSeasonMatchCalendar(
-      humanPlayerTeam,
+      currentChampionship.humanPlayerBaseTeam,
       promotionResult.promotionChampionshipTeams
     );
 
@@ -164,7 +163,7 @@ export const handlePromotionRelegationLogic = (
 
   if (isHumanPlayerTeamRelegated(currentChampionship)) {
     seasonCalendar = generateSeasonMatchCalendar(
-      humanPlayerTeam,
+      currentChampionship.humanPlayerBaseTeam,
       relegationResult.relegationChampionshipTeams
     );
 
@@ -173,7 +172,7 @@ export const handlePromotionRelegationLogic = (
     }
   }
 
-  context.updateChampionshipState({
+  updateChampionshipState({
     newChampionshipName,
     newPromotionChampionship,
     newRelegationChampionship,
@@ -181,6 +180,7 @@ export const handlePromotionRelegationLogic = (
   });
 };
 
+// TODO: Remove this function if it's not being used anymore
 export const handlePromotionLogic = (
   context: PromotionRelegationContext,
   currentChamp: ChampionshipConfig,
@@ -388,6 +388,7 @@ export const handlePromotionLogic = (
   context.addOrUpdateOtherChampionship(newRelegationChampionshipConfig);
 };
 
+// TODO: Remove this function if it's not being used anymore
 export const handleRelegationLogic = (
   context: PromotionRelegationContext,
   currentChamp: ChampionshipConfig,
@@ -519,6 +520,7 @@ export const handleRelegationLogic = (
   }
 };
 
+// TODO: Remove this function if it's not being used anymore
 export const handleNoPromotionAndNoRelegationLogic = (
   context: PromotionRelegationContext,
   currentChamp: ChampionshipConfig,

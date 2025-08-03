@@ -8,6 +8,7 @@ import {
   handlePromotionLogic,
   handleRelegationLogic,
   handleNoPromotionAndNoRelegationLogic,
+  handlePromotionRelegationLogic,
 } from '../../services/promotionRelegationService';
 import { BaseTeam } from '../../types';
 import { TeamStanding, TeamStandingsProps } from './types';
@@ -25,6 +26,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
     incrementCurrentRound,
     resetTableStandings,
     addOrUpdateOtherChampionship,
+    updateChampionshipState,
   } = useChampionshipContext();
   const { matches } = useContext(MatchContext);
   const RESULTS_PER_PAGE = 12;
@@ -87,82 +89,12 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
   };
 
   const handleContinue = () => {
-    // Only handle promotion logic if season is complete
     if (isSeasonComplete) {
-      // Get current championship configuration
-      const allChamps = generalService.getAllChampionships();
-      const currentChamp = allChamps.find(
-        (c) => c.internalName === championshipState.selectedChampionship
-      );
-
-      // Get human player's team from general context
-      const humanPlayerTeam = championshipState.humanPlayerBaseTeam;
-
-      // Check if human player's team is in the top promotion positions
-      const humanPlayerTeamInStandings = standings.find(
-        (standing) => standing.teamAbbreviation === humanPlayerTeam?.abbreviation
-      );
-
-      if (humanPlayerTeamInStandings && currentChamp && currentChamp.promotionTeams) {
-        // Find the position of human player's team in standings
-        const humanPlayerPosition =
-          standings.findIndex(
-            (standing) => standing.teamAbbreviation === humanPlayerTeam?.abbreviation
-          ) + 1; // +1 because array index is 0-based but position is 1-based
-
-        // Run promotion logic considering human player's team is among the promoted teams
-        if (humanPlayerPosition <= currentChamp.promotionTeams) {
-          handlePromotionLogic(
-            {
-              setTeamsControlledAutomatically,
-              setSeasonMatchCalendar,
-              setChampionship,
-              addOrUpdateOtherChampionship,
-            },
-            currentChamp,
-            championshipState,
-            standings,
-            humanPlayerTeam as BaseTeam
-          );
-        } else if (
-          humanPlayerPosition >=
-          (currentChamp.numberOfTeams ?? 20) - (currentChamp.relegationTeams ?? 4)
-        ) {
-          // Run promotion logic considering human player's team is among the relegated teams
-          handleRelegationLogic(
-            {
-              setTeamsControlledAutomatically,
-              setSeasonMatchCalendar,
-              setChampionship,
-              addOrUpdateOtherChampionship,
-            },
-            currentChamp,
-            championshipState,
-            standings,
-            humanPlayerTeam as BaseTeam
-          );
-        } else {
-          // Run promotion logic considering human player's team is neither among the promoted teams nor among the relegated teams
-          handleNoPromotionAndNoRelegationLogic(
-            {
-              setTeamsControlledAutomatically,
-              setSeasonMatchCalendar,
-              setChampionship,
-              addOrUpdateOtherChampionship,
-            },
-            currentChamp,
-            championshipState,
-            standings,
-            humanPlayerTeam as BaseTeam
-          );
-        }
-      }
-
+      handlePromotionRelegationLogic(updateChampionshipState, championshipState);
       resetTableStandings();
       incrementYear();
     }
 
-    // Check if we've completed all rounds
     const totalRounds = championshipState.seasonMatchCalendar.length;
     if (championshipState.currentRound >= totalRounds) {
       setCurrentRound(1);
