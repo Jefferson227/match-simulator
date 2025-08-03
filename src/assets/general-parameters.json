@@ -68,9 +68,7 @@
       "internalName": "brasileirao-serie-c",
       "numberOfTeams": 20,
       "promotionTeams": 4,
-      "relegationTeams": 4,
       "promotionChampionship": "brasileirao-serie-b",
-      "relegationChampionship": "brasileirao-serie-d",
       "teams": ["caxias", "ponte-preta", "ypiranga", "londrina"]
     },
     {
