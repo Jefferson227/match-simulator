@@ -19,6 +19,7 @@ export interface ChampionshipUpdate {
   newChampionshipName: string;
   newPromotionChampionship: ChampionshipConfig | undefined;
   newRelegationChampionship: ChampionshipConfig | undefined;
+  updatedTeamsControlledAutomatically: BaseTeam[];
   seasonCalendar: SeasonRound[];
 }
 

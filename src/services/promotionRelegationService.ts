@@ -162,12 +162,20 @@ export const handlePromotionRelegationLogic = (
 
   let seasonCalendar: SeasonRound[] = [];
   let newChampionshipName = '';
+  let updatedTeamsControlledAutomatically: BaseTeam[] = [];
 
   if (isHumanPlayerTeamPromoted(currentChampionship)) {
+    const promotionChampionshipTeamsWithoutHumanTeam =
+      promotionResult.promotionChampionshipTeams.filter(
+        (t) => t.id !== currentChampionship.humanPlayerBaseTeam.id
+      );
+
     seasonCalendar = generateSeasonMatchCalendar(
       currentChampionship.humanPlayerBaseTeam,
-      promotionResult.promotionChampionshipTeams
+      promotionChampionshipTeamsWithoutHumanTeam
     );
+
+    updatedTeamsControlledAutomatically = [...promotionChampionshipTeamsWithoutHumanTeam];
 
     if (currentChampionship.promotionChampionship) {
       newChampionshipName = currentChampionship.promotionChampionship;
@@ -175,10 +183,17 @@ export const handlePromotionRelegationLogic = (
   }
 
   if (isHumanPlayerTeamRelegated(currentChampionship)) {
+    const relegationChampionshipTeamsWithoutHumanTeam =
+      relegationResult.relegationChampionshipTeams.filter(
+        (t) => t.id !== currentChampionship.humanPlayerBaseTeam.id
+      );
+
     seasonCalendar = generateSeasonMatchCalendar(
       currentChampionship.humanPlayerBaseTeam,
-      relegationResult.relegationChampionshipTeams
+      relegationChampionshipTeamsWithoutHumanTeam
     );
+
+    updatedTeamsControlledAutomatically = [...relegationChampionshipTeamsWithoutHumanTeam];
 
     if (currentChampionship.relegationChampionship) {
       newChampionshipName = currentChampionship.relegationChampionship;
@@ -186,13 +201,13 @@ export const handlePromotionRelegationLogic = (
   }
 
   if (seasonCalendar.length === 0) {
-    const teamsControlledAutomatically = updatedCurrentChampionshipTeams.filter(
+    updatedTeamsControlledAutomatically = updatedCurrentChampionshipTeams.filter(
       (t) => t.id !== currentChampionship.humanPlayerBaseTeam.id
     );
 
     seasonCalendar = generateSeasonMatchCalendar(
       currentChampionship.humanPlayerBaseTeam,
-      teamsControlledAutomatically
+      updatedTeamsControlledAutomatically
     );
   }
 
@@ -200,6 +215,7 @@ export const handlePromotionRelegationLogic = (
     newChampionshipName,
     newPromotionChampionship,
     newRelegationChampionship,
+    updatedTeamsControlledAutomatically,
     seasonCalendar,
   });
 };
