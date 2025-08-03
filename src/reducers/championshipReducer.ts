@@ -129,6 +129,8 @@ export const championshipReducer = (
         ...state,
         otherChampionships: action.payload,
       };
+    case 'UPDATE_CHAMPIONSHIP_STATE':
+      return state;
     default:
       return state;
   }

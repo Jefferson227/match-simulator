@@ -1,4 +1,4 @@
-import { ChampionshipState } from '../reducers/types';
+import { ChampionshipState, ChampionshipUpdate } from '../reducers/types';
 import { BaseTeam, ChampionshipConfig } from '../types';
 import { generateSeasonMatchCalendar, SeasonRound } from './teamService';
 import { PromotionRelegationContext, PromotionResult, RelegationResult } from './types';
@@ -77,9 +77,7 @@ function getTeamsByPerformance(
 
 export const handlePromotionRelegationLogic = (
   context: PromotionRelegationContext,
-  currentChamp: ChampionshipConfig,
   championshipState: ChampionshipState,
-  standings: any[],
   humanPlayerTeam: BaseTeam
 ) => {
   /*
@@ -123,6 +121,7 @@ export const handlePromotionRelegationLogic = (
   let promotionResult = {} as PromotionResult;
   let relegationResult = {} as RelegationResult;
 
+  let newPromotionChampionship = {} as ChampionshipConfig;
   if (hasPromotionChampionship(currentChampionship)) {
     promotionResult = movePromotedTeamsToPromotionChampionship(currentChampionship);
 
@@ -131,14 +130,15 @@ export const handlePromotionRelegationLogic = (
       const promotionChampionship = currentChampionship.otherChampionships.find(
         (championship) => championship.internalName === championship.promotionChampionship
       );
-      const newPromotionChampionshipObject = {
+
+      newPromotionChampionship = {
         ...promotionChampionship,
         teamsControlledAutomatically: promotionResult.promotionChampionshipTeams,
       } as ChampionshipConfig;
-      context.addOrUpdateOtherChampionship(newPromotionChampionshipObject);
     }
   }
 
+  let newRelegationChampionship = {} as ChampionshipConfig;
   if (hasRelegationChampionship(currentChampionship)) {
     relegationResult = moveRelegatedTeamsToRelegationChampionship(
       currentChampionship,
@@ -149,41 +149,44 @@ export const handlePromotionRelegationLogic = (
       const relegationChampionship = currentChampionship.otherChampionships.find(
         (championship) => championship.internalName === championship.relegationChampionship
       );
-      const newRelegationChampionshipObject = {
+
+      newRelegationChampionship = {
         ...relegationChampionship,
         teamsControlledAutomatically: relegationResult.relegationChampionshipTeams,
       } as ChampionshipConfig;
-      context.addOrUpdateOtherChampionship(newRelegationChampionshipObject);
     }
   }
 
   let seasonCalendar: SeasonRound[] = [];
+  let newChampionshipName = '';
   if (isHumanPlayerTeamPromoted(currentChampionship)) {
-    context.setChampionship(currentChampionship.promotionChampionship!);
     seasonCalendar = generateSeasonMatchCalendar(
       humanPlayerTeam,
       promotionResult.promotionChampionshipTeams
     );
 
     if (currentChampionship.promotionChampionship) {
-      context.setChampionship(currentChampionship.promotionChampionship);
+      newChampionshipName = currentChampionship.promotionChampionship;
     }
   }
 
   if (isHumanPlayerTeamRelegated(currentChampionship)) {
-    context.setChampionship(currentChampionship.relegationChampionship!);
     seasonCalendar = generateSeasonMatchCalendar(
       humanPlayerTeam,
       relegationResult.relegationChampionshipTeams
     );
 
     if (currentChampionship.relegationChampionship) {
-      context.setChampionship(currentChampionship.relegationChampionship);
+      newChampionshipName = currentChampionship.relegationChampionship;
     }
   }
 
-  context.setSeasonMatchCalendar(seasonCalendar);
-  // TODO: Add a new reducer to update all the state changes related to promotion/relegation at once
+  context.updateChampionshipState({
+    newChampionshipName,
+    newPromotionChampionship,
+    newRelegationChampionship,
+    seasonCalendar,
+  });
 };
 
 export const handlePromotionLogic = (

@@ -1,4 +1,5 @@
 import { BaseTeam, Match, TableStanding } from '../../types';
+import { ChampionshipConfig } from '../../types';
 
 export function calculateUpdatedStandings(
   prevStandings: TableStanding[] = [],
@@ -155,4 +156,21 @@ export function updateTeamMoraleAndStrength(teams: BaseTeam[], matches: Match[])
 
     return updatedTeam;
   });
+}
+
+export function addOrUpdateOtherChampionship(
+  otherChampionships: ChampionshipConfig[],
+  teamToAddOrUpdate: ChampionshipConfig
+): ChampionshipConfig[] {
+  const existingIndex = otherChampionships.findIndex(
+    (champ) => champ.internalName === teamToAddOrUpdate.internalName
+  );
+
+  if (existingIndex >= 0) {
+    return otherChampionships.map((champ, index) =>
+      index === existingIndex ? teamToAddOrUpdate : champ
+    );
+  }
+
+  return [...otherChampionships, teamToAddOrUpdate];
 }

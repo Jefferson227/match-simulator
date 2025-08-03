@@ -2,7 +2,7 @@ import React, { createContext, useContext, useReducer } from 'react';
 import { championshipReducer, initialChampionshipState } from '../reducers/championshipReducer';
 import { BaseTeam, SeasonRound, Match, ChampionshipConfig } from '../types';
 import { ChampionshipContextType, ChampionshipProviderProps } from './types';
-import { ChampionshipState } from '../reducers/types';
+import { ChampionshipState, ChampionshipUpdate } from '../reducers/types';
 
 // Create the context
 const ChampionshipContext = createContext<ChampionshipContextType | undefined>(undefined);
@@ -77,6 +77,13 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({ chil
     });
   };
 
+  const updateChampionshipState = (updateChampionshipObject: ChampionshipUpdate) => {
+    dispatch({
+      type: 'UPDATE_CHAMPIONSHIP_STATE',
+      payload: updateChampionshipObject,
+    });
+  };
+
   const value: ChampionshipContextType = {
     state,
     dispatch,
@@ -95,6 +102,7 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({ chil
     setOtherChampionships,
     addOrUpdateOtherChampionship,
     updateTeamMorale,
+    updateChampionshipState,
   };
 
   return <ChampionshipContext.Provider value={value}>{children}</ChampionshipContext.Provider>;

@@ -15,6 +15,13 @@ export interface ChampionshipState {
   otherChampionships: ChampionshipConfig[];
 }
 
+export interface ChampionshipUpdate {
+  newChampionshipName: string;
+  newPromotionChampionship: ChampionshipConfig;
+  newRelegationChampionship: ChampionshipConfig;
+  seasonCalendar: SeasonRound[];
+}
+
 // Championship action types
 export type ChampionshipAction =
   | { type: 'SET_CHAMPIONSHIP'; payload: ChampionshipConfig }
@@ -36,4 +43,5 @@ export type ChampionshipAction =
       type: 'SET_TEAMS_CONTROLLED_AUTOMATICALLY_FOR_OTHER_CHAMPIONSHIPS';
       payload: ChampionshipConfig[];
     }
-  | { type: 'UPDATE_TEAM_MORALE'; payload: Match[] };
+  | { type: 'UPDATE_TEAM_MORALE'; payload: Match[] }
+  | { type: 'UPDATE_CHAMPIONSHIP_STATE'; payload: ChampionshipUpdate };
