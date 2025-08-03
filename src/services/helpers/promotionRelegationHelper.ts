@@ -242,3 +242,20 @@ export const moveRelegatedTeamsToRelegationChampionship = (
     currentChampionshipTeams: updatedCurrentChampionshipTeams,
   };
 };
+
+export const getNewChampionship = (
+  championshipTeams: BaseTeam[],
+  otherChampionships: ChampionshipConfig[],
+  championshipName: string
+) => {
+  if (!championshipTeams) return;
+
+  const newChampionship = otherChampionships.find(
+    (championship) => championship.internalName === championshipName
+  );
+
+  return {
+    ...newChampionship,
+    teamsControlledAutomatically: championshipTeams,
+  } as ChampionshipConfig;
+};

@@ -9,6 +9,7 @@ import {
   isHumanPlayerTeamRelegated,
   movePromotedTeamsToPromotionChampionship,
   moveRelegatedTeamsToRelegationChampionship,
+  getNewChampionship,
 } from './helpers/promotionRelegationHelper';
 
 function getTeamsByPerformance(
@@ -119,46 +120,37 @@ export const handlePromotionRelegationLogic = (
   */
   const currentChampionship = championshipState;
   let promotionResult = {} as PromotionResult;
-  let relegationResult = {} as RelegationResult;
-
   let newPromotionChampionship: ChampionshipConfig | undefined;
+
   if (hasPromotionChampionship(currentChampionship)) {
     promotionResult = movePromotedTeamsToPromotionChampionship(currentChampionship);
 
-    // TODO: Encapsulate this logic in a separate function
-    if (promotionResult.promotionChampionshipTeams) {
-      const promotionChampionship = currentChampionship.otherChampionships.find(
-        (championship) => championship.internalName === championship.promotionChampionship
-      );
-
-      newPromotionChampionship = {
-        ...promotionChampionship,
-        teamsControlledAutomatically: promotionResult.promotionChampionshipTeams,
-      } as ChampionshipConfig;
-    }
+    newPromotionChampionship = getNewChampionship(
+      promotionResult.promotionChampionshipTeams,
+      currentChampionship.otherChampionships,
+      currentChampionship.promotionChampionship!
+    );
   }
 
+  let relegationResult = {} as RelegationResult;
   let newRelegationChampionship: ChampionshipConfig | undefined;
+
   if (hasRelegationChampionship(currentChampionship)) {
     relegationResult = moveRelegatedTeamsToRelegationChampionship(
       currentChampionship,
       promotionResult
     );
-    // TODO: Encapsulate this logic in a separate function
-    if (relegationResult.relegationChampionshipTeams) {
-      const relegationChampionship = currentChampionship.otherChampionships.find(
-        (championship) => championship.internalName === championship.relegationChampionship
-      );
 
-      newRelegationChampionship = {
-        ...relegationChampionship,
-        teamsControlledAutomatically: relegationResult.relegationChampionshipTeams,
-      } as ChampionshipConfig;
-    }
+    newRelegationChampionship = getNewChampionship(
+      relegationResult.relegationChampionshipTeams,
+      currentChampionship.otherChampionships,
+      currentChampionship.relegationChampionship!
+    );
   }
 
   let seasonCalendar: SeasonRound[] = [];
   let newChampionshipName = '';
+
   if (isHumanPlayerTeamPromoted(currentChampionship)) {
     seasonCalendar = generateSeasonMatchCalendar(
       humanPlayerTeam,
