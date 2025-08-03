@@ -10,6 +10,9 @@ import {
   movePromotedTeamsToPromotionChampionship,
   moveRelegatedTeamsToRelegationChampionship,
   getNewChampionship,
+  getChampionshipConfigFromState,
+  getChampionshipFullName,
+  getNewChampionshipStateAttributes,
 } from './helpers/promotionRelegationHelper';
 
 function getTeamsByPerformance(
@@ -121,14 +124,14 @@ export const handlePromotionRelegationLogic = (
   // TODO: If a team is promoted from série B to série A, séries A and C get updated, but not série B, and it needs to be fixed
   const currentChampionship = championshipState;
   let promotionResult = {} as PromotionResult;
-  let newPromotionChampionship: ChampionshipConfig | undefined;
+  let newPromotionChampionshipConfig: ChampionshipConfig | undefined;
   let updatedCurrentChampionshipTeams: BaseTeam[];
 
   if (hasPromotionChampionship(currentChampionship)) {
     promotionResult = movePromotedTeamsToPromotionChampionship(currentChampionship);
     updatedCurrentChampionshipTeams = [...promotionResult.currentChampionshipTeams];
 
-    newPromotionChampionship = getNewChampionship(
+    newPromotionChampionshipConfig = getNewChampionship(
       promotionResult.promotionChampionshipTeams,
       currentChampionship.otherChampionships,
       currentChampionship.promotionChampionship!
@@ -141,7 +144,7 @@ export const handlePromotionRelegationLogic = (
   }
 
   let relegationResult = {} as RelegationResult;
-  let newRelegationChampionship: ChampionshipConfig | undefined;
+  let newRelegationChampionshipConfig: ChampionshipConfig | undefined;
 
   if (hasRelegationChampionship(currentChampionship)) {
     relegationResult = moveRelegatedTeamsToRelegationChampionship(
@@ -150,7 +153,7 @@ export const handlePromotionRelegationLogic = (
     );
     updatedCurrentChampionshipTeams = [...relegationResult.currentChampionshipTeams];
 
-    newRelegationChampionship = getNewChampionship(
+    newRelegationChampionshipConfig = getNewChampionship(
       relegationResult.relegationChampionshipTeams,
       currentChampionship.otherChampionships,
       currentChampionship.relegationChampionship!
@@ -163,8 +166,9 @@ export const handlePromotionRelegationLogic = (
   }
 
   let seasonCalendar: SeasonRound[] = [];
-  let newChampionshipName = '';
   let updatedTeamsControlledAutomatically: BaseTeam[] = [];
+  let previousChampionship: ChampionshipConfig | undefined;
+  let championshipUpdateObject = {} as ChampionshipUpdate;
 
   if (isHumanPlayerTeamPromoted(currentChampionship)) {
     const promotionChampionshipTeamsWithoutHumanTeam =
@@ -180,7 +184,15 @@ export const handlePromotionRelegationLogic = (
     updatedTeamsControlledAutomatically = [...promotionChampionshipTeamsWithoutHumanTeam];
 
     if (currentChampionship.promotionChampionship) {
-      newChampionshipName = currentChampionship.promotionChampionship;
+      previousChampionship = getChampionshipConfigFromState(
+        currentChampionship,
+        updatedCurrentChampionshipTeams
+      );
+
+      championshipUpdateObject = getNewChampionshipStateAttributes(
+        currentChampionship,
+        currentChampionship.promotionChampionship
+      );
     }
   }
 
@@ -198,7 +210,15 @@ export const handlePromotionRelegationLogic = (
     updatedTeamsControlledAutomatically = [...relegationChampionshipTeamsWithoutHumanTeam];
 
     if (currentChampionship.relegationChampionship) {
-      newChampionshipName = currentChampionship.relegationChampionship;
+      previousChampionship = getChampionshipConfigFromState(
+        currentChampionship,
+        updatedCurrentChampionshipTeams
+      );
+
+      championshipUpdateObject = getNewChampionshipStateAttributes(
+        currentChampionship,
+        currentChampionship.relegationChampionship
+      );
     }
   }
 
@@ -214,9 +234,10 @@ export const handlePromotionRelegationLogic = (
   }
 
   updateChampionshipState({
-    newChampionshipName,
-    newPromotionChampionship,
-    newRelegationChampionship,
+    ...championshipUpdateObject,
+    newPromotionChampionshipConfig,
+    newRelegationChampionshipConfig,
+    previousChampionship,
     updatedTeamsControlledAutomatically,
     seasonCalendar,
   });

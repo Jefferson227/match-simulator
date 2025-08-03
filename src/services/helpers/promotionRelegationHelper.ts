@@ -1,5 +1,6 @@
-import { ChampionshipState } from '../../reducers/types';
+import { ChampionshipState, ChampionshipUpdate } from '../../reducers/types';
 import { BaseTeam, ChampionshipConfig, TableStanding } from '../../types';
+import { SeasonRound } from '../teamService';
 import { PromotionResult, RelegationResult } from '../types';
 
 function getTeamsByPerformance(
@@ -258,4 +259,61 @@ export const getNewChampionship = (
     ...newChampionship,
     teamsControlledAutomatically: championshipTeams,
   } as ChampionshipConfig;
+};
+
+export const getChampionshipConfigFromState = (
+  championshipState: ChampionshipState,
+  updatedChampionshipTeams: BaseTeam[]
+) => {
+  championshipState;
+  const numberOfTeams = [
+    ...championshipState.teamsControlledAutomatically,
+    championshipState.humanPlayerBaseTeam,
+  ].length;
+
+  return {
+    id: championshipState.championshipConfigId,
+    name: championshipState.name,
+    internalName: championshipState.selectedChampionship,
+    numberOfTeams,
+    promotionTeams: championshipState.promotionTeams,
+    relegationTeams: championshipState.relegationChampionship,
+    promotionChampionship: championshipState.promotionChampionship,
+    relegationChampionship: championshipState.relegationChampionship,
+    teamsControlledAutomatically: updatedChampionshipTeams,
+  } as ChampionshipConfig;
+};
+
+export const getChampionshipFullName = (
+  championshipState: ChampionshipState,
+  internalName: string
+) => {
+  const championship = championshipState.otherChampionships.find(
+    (t) => t.internalName === internalName
+  );
+
+  return championship?.name || '';
+};
+
+export const getNewChampionshipStateAttributes = (
+  championshipState: ChampionshipState,
+  championshipInternalName: string
+): ChampionshipUpdate => {
+  const championship = championshipState.otherChampionships.find(
+    (t) => t.internalName === championshipInternalName
+  );
+
+  return {
+    newSelectedChampionship: championship?.internalName || '',
+    newChampionshipFullName: championship?.name || '',
+    newPromotionChampionshipName: championship?.promotionChampionship || '',
+    newRelegationChampionshipName: championship?.relegationChampionship || '',
+    newPromotionTeams: championship?.promotionTeams,
+    newRelegationTeams: championship?.relegationTeams,
+    newPromotionChampionshipConfig: {} as ChampionshipConfig,
+    newRelegationChampionshipConfig: {} as ChampionshipConfig,
+    previousChampionship: {} as ChampionshipConfig,
+    updatedTeamsControlledAutomatically: [] as BaseTeam[],
+    seasonCalendar: [] as SeasonRound[],
+  };
 };

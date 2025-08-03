@@ -27,6 +27,8 @@ export const championshipReducer = (
     case 'SET_CHAMPIONSHIP':
       return {
         ...state,
+        championshipConfigId: action.payload.id,
+        name: action.payload.name,
         selectedChampionship: action.payload.internalName,
         promotionChampionship: action.payload.promotionChampionship,
         relegationChampionship: action.payload.relegationChampionship,
@@ -132,25 +134,37 @@ export const championshipReducer = (
       };
     case 'UPDATE_CHAMPIONSHIP_STATE':
       let otherChampionships = [...state.otherChampionships];
-      if (action.payload.newPromotionChampionship) {
+      if (action.payload.newPromotionChampionshipConfig) {
         otherChampionships = addOrUpdateOtherChampionship(
           otherChampionships,
-          action.payload.newPromotionChampionship
+          action.payload.newPromotionChampionshipConfig
         );
       }
 
-      if (action.payload.newRelegationChampionship) {
+      if (action.payload.newRelegationChampionshipConfig) {
         otherChampionships = addOrUpdateOtherChampionship(
           otherChampionships,
-          action.payload.newRelegationChampionship
+          action.payload.newRelegationChampionshipConfig
+        );
+      }
+
+      if (action.payload.previousChampionship) {
+        otherChampionships = addOrUpdateOtherChampionship(
+          otherChampionships,
+          action.payload.previousChampionship
         );
       }
 
       return {
         ...state,
         otherChampionships,
-        selectedChampionship: action.payload.newChampionshipName
-          ? action.payload.newChampionshipName
+        name: action.payload.newChampionshipFullName,
+        promotionChampionship: action.payload.newPromotionChampionshipName,
+        relegationChampionship: action.payload.newRelegationChampionshipName,
+        promotionTeams: action.payload.newPromotionTeams,
+        relegationTeams: action.payload.newRelegationTeams,
+        selectedChampionship: action.payload.newSelectedChampionship
+          ? action.payload.newSelectedChampionship
           : state.selectedChampionship,
         seasonMatchCalendar: action.payload.seasonCalendar,
       };

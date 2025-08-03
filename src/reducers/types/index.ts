@@ -1,6 +1,8 @@
 import { BaseTeam, ChampionshipConfig, Match, SeasonRound, TableStanding } from '../../types';
 
 export interface ChampionshipState {
+  championshipConfigId: string | null;
+  name: string | null;
   selectedChampionship: string | null;
   promotionChampionship?: string | null;
   relegationChampionship?: string | null;
@@ -16,9 +18,15 @@ export interface ChampionshipState {
 }
 
 export interface ChampionshipUpdate {
-  newChampionshipName: string;
-  newPromotionChampionship: ChampionshipConfig | undefined;
-  newRelegationChampionship: ChampionshipConfig | undefined;
+  newSelectedChampionship: string;
+  newChampionshipFullName: string;
+  newPromotionChampionshipName: string | null;
+  newRelegationChampionshipName: string | null;
+  newPromotionTeams: number | undefined;
+  newRelegationTeams: number | undefined;
+  newPromotionChampionshipConfig: ChampionshipConfig | undefined;
+  newRelegationChampionshipConfig: ChampionshipConfig | undefined;
+  previousChampionship: ChampionshipConfig | undefined;
   updatedTeamsControlledAutomatically: BaseTeam[];
   seasonCalendar: SeasonRound[];
 }
