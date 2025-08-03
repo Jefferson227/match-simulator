@@ -1,4 +1,5 @@
 import {
+  addOrUpdateOtherChampionship,
   calculateUpdatedStandings,
   updateTeamMoraleAndStrength,
 } from './helpers/championshipReducerHelper';
@@ -130,7 +131,29 @@ export const championshipReducer = (
         otherChampionships: action.payload,
       };
     case 'UPDATE_CHAMPIONSHIP_STATE':
-      return state;
+      let otherChampionships = [...state.otherChampionships];
+      if (action.payload.newPromotionChampionship) {
+        otherChampionships = addOrUpdateOtherChampionship(
+          otherChampionships,
+          action.payload.newPromotionChampionship
+        );
+      }
+
+      if (action.payload.newRelegationChampionship) {
+        otherChampionships = addOrUpdateOtherChampionship(
+          otherChampionships,
+          action.payload.newRelegationChampionship
+        );
+      }
+
+      return {
+        ...state,
+        otherChampionships,
+        selectedChampionship: action.payload.newChampionshipName
+          ? action.payload.newChampionshipName
+          : state.selectedChampionship,
+        seasonMatchCalendar: action.payload.seasonCalendar,
+      };
     default:
       return state;
   }

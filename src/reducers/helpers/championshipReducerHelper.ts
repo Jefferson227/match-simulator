@@ -160,17 +160,17 @@ export function updateTeamMoraleAndStrength(teams: BaseTeam[], matches: Match[])
 
 export function addOrUpdateOtherChampionship(
   otherChampionships: ChampionshipConfig[],
-  teamToAddOrUpdate: ChampionshipConfig
+  updatedChampionship: ChampionshipConfig
 ): ChampionshipConfig[] {
   const existingIndex = otherChampionships.findIndex(
-    (champ) => champ.internalName === teamToAddOrUpdate.internalName
+    (champ) => champ.internalName === updatedChampionship.internalName
   );
 
   if (existingIndex >= 0) {
     return otherChampionships.map((champ, index) =>
-      index === existingIndex ? teamToAddOrUpdate : champ
+      index === existingIndex ? updatedChampionship : champ
     );
   }
 
-  return [...otherChampionships, teamToAddOrUpdate];
+  return [...otherChampionships, updatedChampionship];
 }

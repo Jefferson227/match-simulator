@@ -121,7 +121,7 @@ export const handlePromotionRelegationLogic = (
   let promotionResult = {} as PromotionResult;
   let relegationResult = {} as RelegationResult;
 
-  let newPromotionChampionship = {} as ChampionshipConfig;
+  let newPromotionChampionship: ChampionshipConfig | undefined;
   if (hasPromotionChampionship(currentChampionship)) {
     promotionResult = movePromotedTeamsToPromotionChampionship(currentChampionship);
 
@@ -138,7 +138,7 @@ export const handlePromotionRelegationLogic = (
     }
   }
 
-  let newRelegationChampionship = {} as ChampionshipConfig;
+  let newRelegationChampionship: ChampionshipConfig | undefined;
   if (hasRelegationChampionship(currentChampionship)) {
     relegationResult = moveRelegatedTeamsToRelegationChampionship(
       currentChampionship,

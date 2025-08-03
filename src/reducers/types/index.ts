@@ -17,8 +17,8 @@ export interface ChampionshipState {
 
 export interface ChampionshipUpdate {
   newChampionshipName: string;
-  newPromotionChampionship: ChampionshipConfig;
-  newRelegationChampionship: ChampionshipConfig;
+  newPromotionChampionship: ChampionshipConfig | undefined;
+  newRelegationChampionship: ChampionshipConfig | undefined;
   seasonCalendar: SeasonRound[];
 }
 
