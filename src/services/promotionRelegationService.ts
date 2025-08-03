@@ -117,6 +117,8 @@ export const handlePromotionRelegationLogic = (
 
   generateSeasonMatchCalendar(currentChampionship);
   */
+
+  // TODO: If a team is promoted from série B to série A, séries A and C get updated, but not série B, and it needs to be fixed
   const currentChampionship = championshipState;
   let promotionResult = {} as PromotionResult;
   let newPromotionChampionship: ChampionshipConfig | undefined;
