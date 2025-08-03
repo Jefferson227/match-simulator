@@ -5,7 +5,6 @@
       "name": "BRASILEIRÃO SÉRIE A",
       "internalName": "brasileirao-serie-a",
       "numberOfTeams": 20,
-      "promotionTeams": 4,
       "relegationTeams": 4,
       "relegationChampionship": "brasileirao-serie-b",
       "teams": [
