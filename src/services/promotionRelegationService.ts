@@ -185,6 +185,17 @@ export const handlePromotionRelegationLogic = (
     }
   }
 
+  if (seasonCalendar.length === 0) {
+    const teamsControlledAutomatically = updatedCurrentChampionshipTeams.filter(
+      (t) => t.id !== currentChampionship.humanPlayerBaseTeam.id
+    );
+
+    seasonCalendar = generateSeasonMatchCalendar(
+      currentChampionship.humanPlayerBaseTeam,
+      teamsControlledAutomatically
+    );
+  }
+
   updateChampionshipState({
     newChampionshipName,
     newPromotionChampionship,
