@@ -11,6 +11,7 @@ const InitialScreen: React.FC = () => {
   const { loadState: loadMatchState } = useContext(MatchContext);
   const [hasSession, setHasSession] = useState(false);
   const [buildVersion, setBuildVersion] = useState('');
+  const [championshipState, setChampionshipState] = useState<string | null>(null);
 
   // Check for existing session and load build version on component mount
   useEffect(() => {
@@ -41,6 +42,32 @@ const InitialScreen: React.FC = () => {
 
       // Go directly to TeamManager screen
       setScreenDisplayed('TeamManager');
+    }
+  };
+
+  // Handler to show championship state from localStorage
+  const handleShowState = () => {
+    try {
+      const sessionRaw = localStorage.getItem('match-simulator-session');
+      if (sessionRaw) {
+        const sessionObj = JSON.parse(sessionRaw);
+        if (sessionObj && sessionObj.championship) {
+          setChampionshipState(JSON.stringify(sessionObj.championship, null, 2));
+        } else {
+          setChampionshipState('No championship property found in session.');
+        }
+      } else {
+        setChampionshipState('No match-simulator-session found in localStorage.');
+      }
+    } catch (e) {
+      setChampionshipState('Error parsing session or championship state.');
+    }
+  };
+
+  // Handler to copy championship state to clipboard
+  const handleCopyState = () => {
+    if (championshipState) {
+      navigator.clipboard.writeText(championshipState);
     }
   };
 
@@ -178,7 +205,35 @@ const InitialScreen: React.FC = () => {
         >
           Load Game
         </button>
+        {/* Show State Button */}
+        <button
+          onClick={handleShowState}
+          className="w-full max-w-xs border-4 border-yellow-400 py-4 text-lg uppercase transition hover:bg-yellow-400 hover:text-[#3d7a33]"
+          style={{ color: '#3d7a33' }}
+        >
+          Show State
+        </button>
+        {/* Copy State Button (only show if championshipState is present) */}
+        {championshipState && (
+          <button
+            onClick={handleCopyState}
+            className="w-full max-w-xs border-4 border-blue-400 py-4 text-lg uppercase transition hover:bg-blue-400 hover:text-[#3d7a33]"
+            style={{ color: '#3d7a33', marginTop: '0.5rem' }}
+          >
+            Copy State
+          </button>
+        )}
       </div>
+
+      {/* Championship State Display */}
+      {championshipState && (
+        <div
+          className="w-full max-w-2xl bg-black bg-opacity-80 text-green-200 p-4 mt-4 rounded overflow-auto"
+          style={{ fontFamily: 'monospace', fontSize: '0.85rem' }}
+        >
+          <pre data-testid="championship-state">{championshipState}</pre>
+        </div>
+      )}
 
       <div className="mt-16 text-center">
         <p>BUILD VERSION</p>
