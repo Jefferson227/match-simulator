@@ -44,6 +44,34 @@ const InitialScreen: React.FC = () => {
     }
   };
 
+  const handleCopyState = async () => {
+    const sessionJson = localStorage.getItem('match-simulator-session');
+    if (!sessionJson) {
+      return;
+    }
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(sessionJson);
+        return;
+      }
+    } catch (_error) {
+      // fall through to fallback
+    }
+    // Fallback copy method
+    const textArea = document.createElement('textarea');
+    textArea.value = sessionJson;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-9999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand('copy');
+    } finally {
+      document.body.removeChild(textArea);
+    }
+  };
+
   // Pixel art data for "WINNING PIXELS"
   const pixelData = {
     W: [
@@ -177,6 +205,17 @@ const InitialScreen: React.FC = () => {
           disabled={!hasSession}
         >
           Load Game
+        </button>
+        <button
+          onClick={handleCopyState}
+          className={`w-full max-w-xs border-4 py-4 text-lg uppercase transition ${
+            hasSession
+              ? 'border-white hover:bg-white hover:text-[#3d7a33]'
+              : 'border-white opacity-50 cursor-not-allowed'
+          }`}
+          disabled={!hasSession}
+        >
+          Copy State
         </button>
       </div>
 
