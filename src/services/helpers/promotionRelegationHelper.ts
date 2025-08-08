@@ -1,7 +1,7 @@
 import { ChampionshipState, ChampionshipUpdate } from '../../reducers/types';
 import { BaseTeam, ChampionshipConfig, TableStanding } from '../../types';
 import { SeasonRound } from '../teamService';
-import { PromotionResult, RelegationResult } from '../types';
+import { PromotionResult, RelegationResult, UpdatedTeams } from '../types';
 
 function getTeamsByPerformance(
   championship: ChampionshipConfig,
@@ -151,7 +151,7 @@ export const hasRelegationChampionship = (championship: ChampionshipState): bool
 
 export const movePromotedTeamsToPromotionChampionship = (
   currentChampionship: ChampionshipState
-): PromotionResult => {
+): UpdatedTeams => {
   /**
    * - If the human player team is among the promoted teams:
    *   - Get the promoted teams (without the human player team) from the current championship
@@ -195,6 +195,7 @@ export const movePromotedTeamsToPromotionChampionship = (
   ];
   return {
     promotionChampionshipTeams: updatedPromotionChampionshipTeams,
+    relegationChampionshipTeams: [],
     currentChampionshipTeams: updatedCurrentChampionshipTeams,
   };
 };

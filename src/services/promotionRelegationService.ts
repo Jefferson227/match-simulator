@@ -14,30 +14,40 @@ import {
   getNewChampionshipStateAttributes,
 } from './helpers/promotionRelegationHelper';
 
+function handlePromotion(championshipState: ChampionshipState): PromotionResult {
+  if (!hasPromotionChampionship(championshipState)) {
+    return {
+      updatedCurrentChampionshipTeams: [
+        ...championshipState.teamsControlledAutomatically,
+        championshipState.humanPlayerBaseTeam,
+      ],
+    };
+  }
+
+  const promotionUpdatedTeams = movePromotedTeamsToPromotionChampionship(championshipState);
+  const updatedCurrentChampionshipTeams = [...promotionUpdatedTeams.currentChampionshipTeams];
+  const newPromotionChampionshipConfig = getNewChampionship(
+    promotionUpdatedTeams.promotionChampionshipTeams!,
+    championshipState.otherChampionships,
+    championshipState.promotionChampionship!
+  );
+
+  return {
+    newPromotionChampionshipConfig,
+    promotionUpdatedTeams,
+    updatedCurrentChampionshipTeams,
+  };
+}
+
 export const handlePromotionRelegationLogic = (
   updateChampionshipState: (championshipUpdateObject: ChampionshipUpdate) => void,
   championshipState: ChampionshipState
 ) => {
   const currentChampionship = championshipState;
-  let promotionResult = {} as PromotionResult;
   let newPromotionChampionshipConfig: ChampionshipConfig | undefined;
   let updatedCurrentChampionshipTeams: BaseTeam[];
 
-  if (hasPromotionChampionship(currentChampionship)) {
-    promotionResult = movePromotedTeamsToPromotionChampionship(currentChampionship);
-    updatedCurrentChampionshipTeams = [...promotionResult.currentChampionshipTeams];
-
-    newPromotionChampionshipConfig = getNewChampionship(
-      promotionResult.promotionChampionshipTeams,
-      currentChampionship.otherChampionships,
-      currentChampionship.promotionChampionship!
-    );
-  } else {
-    updatedCurrentChampionshipTeams = [
-      ...currentChampionship.teamsControlledAutomatically,
-      currentChampionship.humanPlayerBaseTeam,
-    ];
-  }
+  const promotionResult = handlePromotion(championshipState);
 
   let relegationResult = {} as RelegationResult;
   let newRelegationChampionshipConfig: ChampionshipConfig | undefined;
@@ -45,7 +55,7 @@ export const handlePromotionRelegationLogic = (
   if (hasRelegationChampionship(currentChampionship)) {
     relegationResult = moveRelegatedTeamsToRelegationChampionship(
       currentChampionship,
-      updatedCurrentChampionshipTeams
+      promotionResult.updatedCurrentChampionshipTeams
     );
     updatedCurrentChampionshipTeams = [...relegationResult.currentChampionshipTeams];
 
@@ -68,7 +78,7 @@ export const handlePromotionRelegationLogic = (
 
   if (isHumanPlayerTeamPromoted(currentChampionship)) {
     const promotionChampionshipTeamsWithoutHumanTeam =
-      promotionResult.promotionChampionshipTeams.filter(
+      promotionResult.promotionUpdatedTeams!.promotionChampionshipTeams.filter(
         (t) => t.id !== currentChampionship.humanPlayerBaseTeam.id
       );
 
