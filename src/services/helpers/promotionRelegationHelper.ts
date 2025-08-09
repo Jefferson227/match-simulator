@@ -203,7 +203,7 @@ export const movePromotedTeamsToPromotionChampionship = (
 export const moveRelegatedTeamsToRelegationChampionship = (
   currentChampionship: ChampionshipState,
   currentChampionshipTeams: BaseTeam[]
-): RelegationResult => {
+): UpdatedTeams => {
   /**
    *   - Get the relegated teams from the current championship (don't include the human player team, if it's among the relegated teams)
    *   - Get the promoted teams from the relegation championship
@@ -241,6 +241,7 @@ export const moveRelegatedTeamsToRelegationChampionship = (
   ];
   return {
     relegationChampionshipTeams: updatedRelegationChampionshipTeams,
+    promotionChampionshipTeams: [],
     currentChampionshipTeams: updatedCurrentChampionshipTeams,
   };
 };
