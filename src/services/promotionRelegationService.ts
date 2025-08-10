@@ -168,12 +168,16 @@ export const handlePromotionRelegationLogic = (
     promotionResult.updatedCurrentChampionshipTeams
   );
 
-  const championshipUpdateObject = handleChampionshipUpdateObject(
+  let championshipUpdateObject = handleChampionshipUpdateObject(
     championshipState,
     promotionResult.promotionUpdatedTeams!.promotionChampionshipTeams,
     relegationResult.relegationUpdatedTeams!.relegationChampionshipTeams,
     relegationResult.updatedCurrentChampionshipTeams
   );
 
-  updateChampionshipState(championshipUpdateObject);
+  updateChampionshipState({
+    ...championshipUpdateObject,
+    newPromotionChampionshipConfig: promotionResult.newPromotionChampionshipConfig,
+    newRelegationChampionshipConfig: relegationResult.newRelegationChampionshipConfig,
+  });
 };
