@@ -70,6 +70,48 @@ function handleRelegation(
   };
 }
 
+function getChampionshipUpdateObject(
+  championshipState: ChampionshipState,
+  promotionOrRelegationTeams: BaseTeam[],
+  updatedCurrentChampionshipTeams: BaseTeam[],
+  isHumanPromotedOrRelegated: (championshipState: ChampionshipState) => boolean
+): ChampionshipUpdate {
+  if (!isHumanPromotedOrRelegated(championshipState)) return {} as ChampionshipUpdate;
+
+  const promotionOrRelegationTeamsWithoutHumanTeam = promotionOrRelegationTeams.filter(
+    (t) => t.id !== championshipState.humanPlayerBaseTeam.id
+  );
+
+  const updatedTeamsControlledAutomatically = [...promotionOrRelegationTeamsWithoutHumanTeam];
+
+  const seasonCalendar = generateSeasonMatchCalendar(
+    championshipState.humanPlayerBaseTeam,
+    promotionOrRelegationTeamsWithoutHumanTeam
+  );
+
+  let championshipUpdateObject = {} as ChampionshipUpdate;
+  let previousChampionship = {} as ChampionshipConfig;
+
+  if (championshipState.promotionChampionship) {
+    previousChampionship = getChampionshipConfigFromState(
+      championshipState,
+      updatedCurrentChampionshipTeams
+    );
+
+    championshipUpdateObject = getNewChampionshipStateAttributes(
+      championshipState,
+      championshipState.promotionChampionship
+    );
+  }
+
+  return {
+    ...championshipUpdateObject,
+    seasonCalendar,
+    previousChampionship,
+    updatedTeamsControlledAutomatically,
+  };
+}
+
 function handleChampionshipUpdateObject(
   championshipState: ChampionshipState,
   promotionChampionshipTeams: BaseTeam[],
@@ -77,52 +119,23 @@ function handleChampionshipUpdateObject(
   updatedCurrentChampionshipTeams: BaseTeam[]
 ): ChampionshipUpdate {
   let championshipUpdateObject = {} as ChampionshipUpdate;
-  let seasonCalendar = [] as SeasonRound[];
 
   if (isHumanPlayerTeamPromoted(championshipState)) {
-    const promotionChampionshipTeamsWithoutHumanTeam = promotionChampionshipTeams.filter(
-      (t) => t.id !== championshipState.humanPlayerBaseTeam.id
+    return getChampionshipUpdateObject(
+      championshipState,
+      promotionChampionshipTeams,
+      updatedCurrentChampionshipTeams,
+      isHumanPlayerTeamPromoted
     );
-
-    seasonCalendar = generateSeasonMatchCalendar(
-      championshipState.humanPlayerBaseTeam,
-      promotionChampionshipTeamsWithoutHumanTeam
-    );
-
-    if (championshipState.promotionChampionship) {
-      const previousChampionship = getChampionshipConfigFromState(
-        championshipState,
-        updatedCurrentChampionshipTeams
-      );
-
-      championshipUpdateObject = getNewChampionshipStateAttributes(
-        championshipState,
-        championshipState.promotionChampionship
-      );
-    }
   }
 
   if (isHumanPlayerTeamRelegated(championshipState)) {
-    const relegationChampionshipTeamsWithoutHumanTeam = relegationChampionshipTeams.filter(
-      (t) => t.id !== championshipState.humanPlayerBaseTeam.id
+    return getChampionshipUpdateObject(
+      championshipState,
+      relegationChampionshipTeams,
+      updatedCurrentChampionshipTeams,
+      isHumanPlayerTeamRelegated
     );
-
-    seasonCalendar = generateSeasonMatchCalendar(
-      championshipState.humanPlayerBaseTeam,
-      relegationChampionshipTeamsWithoutHumanTeam
-    );
-
-    if (championshipState.relegationChampionship) {
-      const previousChampionship = getChampionshipConfigFromState(
-        championshipState,
-        updatedCurrentChampionshipTeams
-      );
-
-      championshipUpdateObject = getNewChampionshipStateAttributes(
-        championshipState,
-        championshipState.relegationChampionship
-      );
-    }
   }
 
   if (seasonCalendar.length === 0) {
@@ -136,6 +149,7 @@ function handleChampionshipUpdateObject(
     );
   }
 
+  championshipUpdateObject = { ...championshipUpdateObject, previousChampionship };
   return championshipUpdateObject;
 }
 
