@@ -4,13 +4,7 @@ import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import { MatchContext } from '../../contexts/MatchContext';
 import sessionService from '../../services/sessionService';
 import generalService from '../../services/generalService';
-import {
-  handlePromotionLogic,
-  handleRelegationLogic,
-  handleNoPromotionAndNoRelegationLogic,
-  handlePromotionRelegationLogic,
-} from '../../services/promotionRelegationService';
-import { BaseTeam } from '../../types';
+import { handlePromotionRelegationLogic } from '../../services/promotionRelegationService';
 import { TeamStanding, TeamStandingsProps } from './types';
 
 const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings }) => {
@@ -18,14 +12,10 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
   const {
     state: championshipState,
     getTableStandings,
-    setChampionship,
-    setTeamsControlledAutomatically,
-    setSeasonMatchCalendar,
     incrementYear,
     setCurrentRound,
     incrementCurrentRound,
     resetTableStandings,
-    addOrUpdateOtherChampionship,
     updateChampionshipState,
   } = useChampionshipContext();
   const { matches } = useContext(MatchContext);

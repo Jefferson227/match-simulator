@@ -1,6 +1,6 @@
 import { ChampionshipState, ChampionshipUpdate } from '../reducers/types';
 import { BaseTeam, ChampionshipConfig } from '../types';
-import { generateSeasonMatchCalendar, SeasonRound } from './teamService';
+import { generateSeasonMatchCalendar } from './teamService';
 import { PromotionResult, RelegationResult } from './types';
 import {
   hasPromotionChampionship,
