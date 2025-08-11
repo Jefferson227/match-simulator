@@ -52,9 +52,7 @@ function getPlayerOrder(position: string): number {
   }
 }
 
-function getPlayerPosition(
-  position: 'defense' | 'midfield' | 'attack'
-): 'GK' | 'DF' | 'MF' | 'FW' {
+function getPlayerPosition(position: 'defense' | 'midfield' | 'attack'): 'GK' | 'DF' | 'MF' | 'FW' {
   switch (position) {
     case 'defense': {
       return 'DF';
@@ -180,9 +178,7 @@ function getMaxTeamStrength(
     .reduce((acc, player) => acc + player.strength, 0);
 
   return Math.round(
-    teamStrength *
-      (1 + teamMoralePercentage / 100) *
-      (1 + teamMoodPercentage / 100)
+    teamStrength * (1 + teamMoralePercentage / 100) * (1 + teamMoodPercentage / 100)
   );
 }
 
@@ -200,9 +196,7 @@ function getMaxDefenseStrength(team: {
     .reduce((acc, player) => acc + player.strength, 0);
 
   return Math.round(
-    teamStrength *
-      (1 + teamMoralePercentage / 100) *
-      (1 + teamMoodPercentage / 100)
+    teamStrength * (1 + teamMoralePercentage / 100) * (1 + teamMoodPercentage / 100)
   );
 }
 
@@ -226,11 +220,7 @@ function getMaxShooterStrength(
   const teamMoralePercentage = getTeamMoralePercentage(team);
   const playerMoodPercentage = getPlayerMoodPercentage(player);
 
-  return (
-    player.strength *
-    (1 + teamMoralePercentage / 100) *
-    (1 + playerMoodPercentage / 100)
-  );
+  return player.strength * (1 + teamMoralePercentage / 100) * (1 + playerMoodPercentage / 100);
 }
 
 function shortenPlayerName(name: string): string {
