@@ -2,6 +2,7 @@ import { ChampionshipState, ChampionshipUpdate } from '../../reducers/types';
 import { BaseTeam, ChampionshipConfig, TableStanding } from '../../types';
 import { SeasonRound } from '../teamService';
 import { UpdatedTeams } from '../types';
+import utils from '../../utils/utils';
 
 function getTeamsByPerformance(
   championship: ChampionshipConfig,
@@ -142,11 +143,11 @@ export const isHumanPlayerTeamRelegated = (championship: ChampionshipState): boo
 };
 
 export const hasPromotionChampionship = (championship: ChampionshipState): boolean => {
-  return championship.promotionChampionship !== undefined;
+  return !utils.isNullOrWhitespace(championship.promotionChampionship);
 };
 
 export const hasRelegationChampionship = (championship: ChampionshipState): boolean => {
-  return championship.relegationChampionship !== undefined;
+  return !utils.isNullOrWhitespace(championship.relegationChampionship);
 };
 
 export const movePromotedTeamsToPromotionChampionship = (
@@ -299,8 +300,10 @@ export const getChampionshipFullName = (
 
 export const getNewChampionshipStateAttributes = (
   championshipState: ChampionshipState,
-  championshipInternalName: string
+  championshipInternalName: string | undefined | null
 ): ChampionshipUpdate => {
+  if (utils.isNullOrWhitespace(championshipInternalName)) return {} as ChampionshipUpdate;
+
   const championship = championshipState.otherChampionships.find(
     (t) => t.internalName === championshipInternalName
   );

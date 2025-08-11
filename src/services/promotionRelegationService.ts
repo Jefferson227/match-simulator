@@ -2,6 +2,7 @@ import { ChampionshipState, ChampionshipUpdate } from '../reducers/types';
 import { BaseTeam, ChampionshipConfig } from '../types';
 import { generateSeasonMatchCalendar } from './teamService';
 import { PromotionResult, RelegationResult } from './types';
+import utils from '../utils/utils';
 import {
   hasPromotionChampionship,
   hasRelegationChampionship,
@@ -74,6 +75,7 @@ function getChampionshipUpdateObject(
   championshipState: ChampionshipState,
   promotionOrRelegationTeams: BaseTeam[],
   updatedCurrentChampionshipTeams: BaseTeam[],
+  promotionOrRelegationChampionshipName: string | undefined | null,
   isHumanPromotedOrRelegated: (championshipState: ChampionshipState) => boolean
 ): ChampionshipUpdate {
   if (!isHumanPromotedOrRelegated(championshipState)) return {} as ChampionshipUpdate;
@@ -92,7 +94,7 @@ function getChampionshipUpdateObject(
   let championshipUpdateObject = {} as ChampionshipUpdate;
   let previousChampionship = {} as ChampionshipConfig;
 
-  if (championshipState.promotionChampionship) {
+  if (!utils.isNullOrWhitespace(promotionOrRelegationChampionshipName)) {
     previousChampionship = getChampionshipConfigFromState(
       championshipState,
       updatedCurrentChampionshipTeams
@@ -100,7 +102,7 @@ function getChampionshipUpdateObject(
 
     championshipUpdateObject = getNewChampionshipStateAttributes(
       championshipState,
-      championshipState.promotionChampionship
+      promotionOrRelegationChampionshipName
     );
   }
 
@@ -137,6 +139,7 @@ function handleChampionshipUpdateObject(
       championshipState,
       promotionChampionshipTeams,
       updatedCurrentChampionshipTeams,
+      championshipState.promotionChampionship,
       isHumanPlayerTeamPromoted
     );
   }
@@ -146,6 +149,7 @@ function handleChampionshipUpdateObject(
       championshipState,
       relegationChampionshipTeams,
       updatedCurrentChampionshipTeams,
+      championshipState.relegationChampionship,
       isHumanPlayerTeamRelegated
     );
   }
@@ -170,8 +174,8 @@ export const handlePromotionRelegationLogic = (
 
   let championshipUpdateObject = handleChampionshipUpdateObject(
     championshipState,
-    promotionResult.promotionUpdatedTeams!.promotionChampionshipTeams,
-    relegationResult.relegationUpdatedTeams!.relegationChampionshipTeams,
+    promotionResult.promotionUpdatedTeams?.promotionChampionshipTeams || [],
+    relegationResult.relegationUpdatedTeams?.relegationChampionshipTeams || [],
     relegationResult.updatedCurrentChampionshipTeams
   );
 
