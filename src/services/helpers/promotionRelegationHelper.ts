@@ -1,7 +1,7 @@
 import { ChampionshipState, ChampionshipUpdate } from '../../reducers/types';
 import { BaseTeam, ChampionshipConfig, TableStanding } from '../../types';
 import { SeasonRound } from '../teamService';
-import { PromotionResult, RelegationResult, UpdatedTeams } from '../types';
+import { UpdatedTeams } from '../types';
 
 function getTeamsByPerformance(
   championship: ChampionshipConfig,
