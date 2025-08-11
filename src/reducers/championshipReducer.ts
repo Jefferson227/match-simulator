@@ -5,6 +5,7 @@ import {
 } from './helpers/championshipReducerHelper';
 import { ChampionshipAction, ChampionshipState } from './types';
 import { BaseTeam } from '../types';
+import utils from '../utils/utils';
 
 // Initial state
 export const initialChampionshipState: ChampionshipState = {
@@ -133,6 +134,8 @@ export const championshipReducer = (
         otherChampionships: action.payload,
       };
     case 'UPDATE_CHAMPIONSHIP_STATE':
+      if (!utils.allAttributesHaveValues(action.payload)) return { ...state };
+
       let otherChampionships = [...state.otherChampionships];
       if (action.payload.newPromotionChampionshipConfig) {
         otherChampionships = addOrUpdateOtherChampionship(

@@ -250,6 +250,10 @@ function shortenPlayerName(name: string): string {
   return `${parts[0][0]}. ${lastName.slice(0, maxLastNameLen)}`;
 }
 
+function allAttributesHaveValues(obj: Object): boolean {
+  return Object.values(obj).every((value) => value !== null && value !== undefined && value !== '');
+}
+
 const utils = {
   addPlayerAttributes,
   getRandomNumber,
@@ -264,6 +268,7 @@ const utils = {
   getMaxShooterStrength,
   getMaxDefenseStrength,
   shortenPlayerName,
+  allAttributesHaveValues,
 };
 
 export default utils;
