@@ -18,6 +18,7 @@ import {
 function handlePromotion(championshipState: ChampionshipState): PromotionResult {
   if (!hasPromotionChampionship(championshipState)) {
     return {
+      promotionChampionshipTeams: [],
       updatedCurrentChampionshipTeams: [
         ...championshipState.teamsControlledAutomatically,
         championshipState.humanPlayerBaseTeam,
@@ -27,15 +28,17 @@ function handlePromotion(championshipState: ChampionshipState): PromotionResult 
 
   const promotionUpdatedTeams = movePromotedTeamsToPromotionChampionship(championshipState);
   const updatedCurrentChampionshipTeams = [...promotionUpdatedTeams.currentChampionshipTeams];
+  const promotionChampionshipTeams = promotionUpdatedTeams.promotionChampionshipTeams || [];
+
   const newPromotionChampionshipConfig = getNewChampionship(
-    promotionUpdatedTeams.promotionChampionshipTeams!,
+    promotionChampionshipTeams,
     championshipState.otherChampionships,
     championshipState.promotionChampionship!
   );
 
   return {
     newPromotionChampionshipConfig,
-    promotionUpdatedTeams,
+    promotionChampionshipTeams,
     updatedCurrentChampionshipTeams,
   };
 }
@@ -174,7 +177,7 @@ export const handlePromotionRelegationLogic = (
 
   let championshipUpdateObject = handleChampionshipUpdateObject(
     championshipState,
-    promotionResult.promotionUpdatedTeams?.promotionChampionshipTeams || [],
+    promotionResult.promotionChampionshipTeams || [],
     relegationResult.relegationUpdatedTeams?.relegationChampionshipTeams || [],
     relegationResult.updatedCurrentChampionshipTeams
   );

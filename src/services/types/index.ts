@@ -9,7 +9,7 @@ export interface UpdatedTeams {
 
 export interface PromotionResult {
   newPromotionChampionshipConfig?: ChampionshipConfig;
-  promotionUpdatedTeams?: UpdatedTeams;
+  promotionChampionshipTeams: BaseTeam[];
   updatedCurrentChampionshipTeams: BaseTeam[];
 }
 
