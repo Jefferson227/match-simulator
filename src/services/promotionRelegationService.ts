@@ -49,6 +49,7 @@ function handleRelegation(
 ): RelegationResult {
   if (!hasRelegationChampionship(championshipState)) {
     return {
+      relegationChampionshipTeams: [],
       updatedCurrentChampionshipTeams: [
         ...championshipState.teamsControlledAutomatically,
         championshipState.humanPlayerBaseTeam,
@@ -61,15 +62,17 @@ function handleRelegation(
     updatedCurrentChampionshipTeamsAfterPromotion
   );
   const updatedCurrentChampionshipTeams = [...relegationUpdatedTeams.currentChampionshipTeams];
+  const relegationChampionshipTeams = relegationUpdatedTeams.relegationChampionshipTeams || [];
+
   const newRelegationChampionshipConfig = getNewChampionship(
-    relegationUpdatedTeams.relegationChampionshipTeams,
+    relegationChampionshipTeams,
     championshipState.otherChampionships,
     championshipState.relegationChampionship!
   );
 
   return {
     newRelegationChampionshipConfig,
-    relegationUpdatedTeams,
+    relegationChampionshipTeams,
     updatedCurrentChampionshipTeams,
   };
 }
@@ -178,7 +181,7 @@ export const handlePromotionRelegationLogic = (
   let championshipUpdateObject = handleChampionshipUpdateObject(
     championshipState,
     promotionResult.promotionChampionshipTeams || [],
-    relegationResult.relegationUpdatedTeams?.relegationChampionshipTeams || [],
+    relegationResult.relegationChampionshipTeams || [],
     relegationResult.updatedCurrentChampionshipTeams
   );
 

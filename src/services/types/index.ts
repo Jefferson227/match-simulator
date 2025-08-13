@@ -15,6 +15,6 @@ export interface PromotionResult {
 
 export interface RelegationResult {
   newRelegationChampionshipConfig?: ChampionshipConfig;
-  relegationUpdatedTeams?: UpdatedTeams;
+  relegationChampionshipTeams: BaseTeam[];
   updatedCurrentChampionshipTeams: BaseTeam[];
 }
