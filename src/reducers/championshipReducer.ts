@@ -10,6 +10,8 @@ import utils from '../utils/utils';
 // Initial state
 export const initialChampionshipState: ChampionshipState = {
   selectedChampionship: null,
+  championshipConfigId: null,
+  name: null,
   humanPlayerBaseTeam: {} as BaseTeam,
   teamsControlledAutomatically: [],
   seasonMatchCalendar: [],
