@@ -136,8 +136,6 @@ export const championshipReducer = (
         otherChampionships: action.payload,
       };
     case 'UPDATE_CHAMPIONSHIP_STATE':
-      if (!utils.allAttributesHaveValues(action.payload)) return { ...state };
-
       let otherChampionships = [...state.otherChampionships];
       if (action.payload.newPromotionChampionshipConfig) {
         otherChampionships = addOrUpdateOtherChampionship(
