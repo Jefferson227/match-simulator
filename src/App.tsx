@@ -10,6 +10,7 @@ import TeamSelector from './components/TeamSelector/TeamSelector';
 import InitialScreen from './components/InitialScreen/InitialScreen';
 import ChampionshipSelector from './components/ChampionshipSelector/ChampionshipSelector';
 import TeamAdditionalInfo from './components/TeamAdditionalInfo/TeamAdditionalInfo';
+import ChampionshipDetails from './components/ChampionshipDetails/ChampionshipDetails';
 
 const AppContent: FC = () => {
   const { state } = useContext(GeneralContext);
@@ -32,6 +33,9 @@ const AppContent: FC = () => {
   }
   if (state.screenDisplayed === 'TeamAdditionalInfo') {
     return <TeamAdditionalInfo />;
+  }
+  if (state.screenDisplayed === 'ChampionshipDetails') {
+    return <ChampionshipDetails />;
   }
   if (state.screenDisplayed === 'TeamStandings') {
     return <TeamStandings />;

@@ -11,3 +11,10 @@ export interface TeamStanding {
 export interface TeamStandingsProps {
   standings?: TeamStanding[];
 }
+
+export interface TopScorer {
+  playerName: string;
+  teamAbbreviation: string;
+  goals: number;
+  position: number;
+}

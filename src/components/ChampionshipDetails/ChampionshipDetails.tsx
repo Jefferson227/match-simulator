@@ -1,0 +1,151 @@
+import React, { useContext, useEffect } from 'react';
+import { GeneralContext } from '../../contexts/GeneralContext';
+import { useChampionshipContext } from '../../contexts/ChampionshipContext';
+import { MatchContext } from '../../contexts/MatchContext';
+import { TopScorer } from '../TeamStandings/types';
+import sessionService from '../../services/sessionService';
+import generalService from '../../services/generalService';
+
+const ChampionshipDetails: React.FC = () => {
+  const { setScreenDisplayed, state: generalState } = useContext(GeneralContext);
+  const { state: championshipState } = useChampionshipContext();
+  const { matches } = useContext(MatchContext);
+
+  // Save session when ChampionshipDetails is displayed
+  useEffect(() => {
+    sessionService.saveSession({
+      general: generalState,
+      championship: championshipState,
+      matches,
+    });
+  }, [generalState, championshipState, matches]);
+
+  // Calculate top scorers from all matches
+  const calculateTopScorers = (): TopScorer[] => {
+    const scorerMap = new Map<
+      string,
+      { playerName: string; teamAbbreviation: string; goals: number }
+    >();
+
+    // Go through all matches and count goals for each player
+    matches.forEach((match) => {
+      match.scorers?.forEach((scorer) => {
+        const key = scorer.playerName;
+        const existing = scorerMap.get(key);
+
+        if (existing) {
+          existing.goals += 1;
+        } else {
+          // Find which team the scorer belongs to
+          const isHomeTeam = scorer.isHomeTeam;
+          const team = isHomeTeam ? match.homeTeam : match.visitorTeam;
+
+          scorerMap.set(key, {
+            playerName: scorer.playerName,
+            teamAbbreviation: team.abbreviation || team.name.substring(0, 3).toUpperCase(),
+            goals: 1,
+          });
+        }
+      });
+    });
+
+    // Convert to array, sort by goals, and take top 10
+    return Array.from(scorerMap.values())
+      .sort((a, b) => b.goals - a.goals)
+      .slice(0, 10)
+      .map((scorer, index) => ({
+        ...scorer,
+        position: index + 1,
+      }));
+  };
+
+  const topScorers = calculateTopScorers();
+
+  // Get championship display name
+  let championshipName = championshipState.selectedChampionship;
+  if (championshipState.selectedChampionship) {
+    const allChamps = generalService.getAllChampionships();
+    const foundChamp = allChamps.find(
+      (c) => c.internalName === championshipState.selectedChampionship
+    );
+    if (foundChamp) championshipName = foundChamp.name;
+  }
+
+  const handleBack = () => {
+    setScreenDisplayed('TeamAdditionalInfo');
+  };
+
+  return (
+    <div className="font-press-start min-h-screen" style={{ backgroundColor: '#3d7a33' }}>
+      <div className="text-center text-[16px] text-white mt-6 mb-2 tracking-wider uppercase">
+        {championshipName}
+      </div>
+      <div className="text-center text-[14px] text-white mb-2 uppercase">
+        {championshipState.year} - TOP SCORERS
+      </div>
+      <div
+        className="w-[350px] h-[610px] mx-auto mt-0 mb-0 flex flex-col items-center"
+        style={{ backgroundColor: '#397a33', border: '4px solid #e2e2e2' }}
+      >
+        <div className="w-full mt-[14px]" style={{ maxHeight: 587, overflowY: 'auto' }}>
+          <table className="w-full border-separate border-spacing-0">
+            <thead>
+              <tr className="text-[18px] text-white">
+                <th className="font-normal w-[56px] text-center"></th>
+                <th className="font-normal w-[140px] text-center"></th>
+                <th className="font-normal w-[80px] text-center"></th>
+                <th className="font-normal w-[80px] text-center pr-3"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {topScorers.map((scorer, idx) => (
+                <React.Fragment key={scorer.playerName}>
+                  <tr className="text-[14px] text-white">
+                    <td className="w-[56px] text-center py-4">{scorer.position}</td>
+                    <td className="w-[140px] uppercase">
+                      {scorer.playerName.length > 12
+                        ? scorer.playerName.substring(0, 12) + '...'
+                        : scorer.playerName}
+                    </td>
+                    <td className="w-[80px] text-center">{scorer.teamAbbreviation}</td>
+                    <td className="w-[80px] text-center pr-0">{scorer.goals}</td>
+                  </tr>
+                  {idx < topScorers.length - 1 && (
+                    <tr>
+                      <td colSpan={4} style={{ padding: 0, border: 0 }}>
+                        <div
+                          style={{
+                            height: '4px',
+                            background: '#e2e2e2',
+                            width: '100%',
+                          }}
+                        />
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
+              ))}
+              {topScorers.length === 0 && (
+                <tr>
+                  <td colSpan={4} className="text-center text-white text-[16px] py-8">
+                    NO GOALS SCORED YET
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className="flex justify-center w-[350px] mt-4 mx-auto">
+        <button
+          className="border-4 border-white w-[180px] h-[56px] flex items-center justify-center text-[18px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition cursor-pointer"
+          onClick={handleBack}
+        >
+          BACK
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default ChampionshipDetails;

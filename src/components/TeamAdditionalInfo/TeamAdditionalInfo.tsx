@@ -151,7 +151,13 @@ const TeamAdditionalInfo: React.FC = () => {
         </div>
       </div>
 
-      <div className="mb-5 p-3 bg-black/20 border-4 border-white">
+      <div
+        className="mb-5 p-3 bg-black/20 border-4 border-white cursor-pointer hover:bg-black/30 transition-colors"
+        onClick={() => setScreenDisplayed('ChampionshipDetails')}
+        role="button"
+        tabIndex={0}
+        aria-label="Click to view championship details and top scorers"
+      >
         <div className="flex flex-col gap-2 text-sm">
           <div>{championshipName}</div>
           <div>SEASON {championshipState.year}</div>
