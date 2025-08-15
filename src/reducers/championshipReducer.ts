@@ -155,20 +155,27 @@ export const championshipReducer = (
           otherChampionships,
           action.payload.previousChampionship
         );
+
+        return {
+          ...state,
+          otherChampionships,
+          name: action.payload.newChampionshipFullName,
+          promotionChampionship: action.payload.newPromotionChampionshipName,
+          relegationChampionship: action.payload.newRelegationChampionshipName,
+          promotionTeams: action.payload.newPromotionTeams,
+          relegationTeams: action.payload.newRelegationTeams,
+          selectedChampionship: action.payload.newSelectedChampionship
+            ? action.payload.newSelectedChampionship
+            : state.selectedChampionship,
+          seasonMatchCalendar: action.payload.seasonCalendar,
+        };
       }
 
       return {
         ...state,
         otherChampionships,
-        name: action.payload.newChampionshipFullName,
-        promotionChampionship: action.payload.newPromotionChampionshipName,
-        relegationChampionship: action.payload.newRelegationChampionshipName,
-        promotionTeams: action.payload.newPromotionTeams,
-        relegationTeams: action.payload.newRelegationTeams,
-        selectedChampionship: action.payload.newSelectedChampionship
-          ? action.payload.newSelectedChampionship
-          : state.selectedChampionship,
         seasonMatchCalendar: action.payload.seasonCalendar,
+        teamsControlledAutomatically: action.payload.updatedTeamsControlledAutomatically,
       };
     default:
       return state;

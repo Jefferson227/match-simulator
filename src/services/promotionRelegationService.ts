@@ -160,12 +160,13 @@ function handleChampionshipUpdateObject(
     );
   }
 
+  const updatedTeamsControlledAutomatically = [...updatedCurrentChampionshipTeams];
   const seasonCalendar = getSeasonCalendarForCurrentChampionship(
     championshipState,
     updatedCurrentChampionshipTeams
   );
 
-  return { seasonCalendar } as ChampionshipUpdate;
+  return { seasonCalendar, updatedTeamsControlledAutomatically } as ChampionshipUpdate;
 }
 
 export const handlePromotionRelegationLogic = (
