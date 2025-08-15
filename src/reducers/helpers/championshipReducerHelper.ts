@@ -102,25 +102,24 @@ export function updateTeamMoraleAndStrength(teams: BaseTeam[], matches: Match[])
 
     // Update team morale based on match result
     if (result === 'win') {
-      updatedTeam.morale = Math.min(100, (updatedTeam.morale || 50) + 10);
+      updatedTeam.morale = Math.min(100, (updatedTeam.morale || 0) + 10);
     } else if (result === 'loss') {
-      updatedTeam.morale = Math.max(0, (updatedTeam.morale || 50) - 10);
+      updatedTeam.morale = Math.max(0, (updatedTeam.morale || 0) - 10);
     } else {
       // draw
-      updatedTeam.morale = Math.min(100, (updatedTeam.morale || 50) + 5);
+      updatedTeam.morale = Math.min(100, (updatedTeam.morale || 0) + 5);
     }
 
     // Update player strength based on morale
     if (updatedTeam.players && updatedTeam.players.length > 0) {
-      const morale = updatedTeam.morale || 50;
       let playersToUpdate = 0;
       let strengthChange = 0;
 
-      if (morale <= 35) {
+      if (updatedTeam.morale <= 35) {
         // Decrease strength for 3-5 random players
         playersToUpdate = Math.min(updatedTeam.players.length, Math.floor(Math.random() * 3) + 3);
         strengthChange = -1;
-      } else if (morale > 65) {
+      } else if (updatedTeam.morale > 65) {
         // Increase strength for 3-5 random players
         playersToUpdate = Math.min(updatedTeam.players.length, Math.floor(Math.random() * 3) + 3);
         strengthChange = 1;

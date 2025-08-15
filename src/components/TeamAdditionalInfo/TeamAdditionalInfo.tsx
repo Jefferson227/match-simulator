@@ -139,9 +139,9 @@ const TeamAdditionalInfo: React.FC = () => {
           <div
             className="h-full transition-all duration-300"
             style={{
-              width: `${championshipState.humanPlayerBaseTeam?.morale || 75}%`,
+              width: `${championshipState.humanPlayerBaseTeam?.morale || 0}%`,
               backgroundColor: (() => {
-                const morale = championshipState.humanPlayerBaseTeam?.morale || 75;
+                const morale = championshipState.humanPlayerBaseTeam?.morale || 0;
                 if (morale <= 35) return '#ef4444'; // red
                 if (morale < 65) return '#eab308'; // yellow
                 return '#22c55e'; // green
