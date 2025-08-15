@@ -5,6 +5,7 @@ import { MatchContext } from '../../contexts/MatchContext';
 import { TopScorer } from '../TeamStandings/types';
 import sessionService from '../../services/sessionService';
 import generalService from '../../services/generalService';
+import utils from '../../utils/utils';
 
 const ChampionshipDetails: React.FC = () => {
   const { setScreenDisplayed, state: generalState } = useContext(GeneralContext);
@@ -104,7 +105,7 @@ const ChampionshipDetails: React.FC = () => {
                     <td className="w-[56px] text-center py-4">{scorer.position}</td>
                     <td className="w-[140px] uppercase">
                       {scorer.playerName.length > 12
-                        ? scorer.playerName.substring(0, 12) + '...'
+                        ? utils.shortenPlayerName(scorer.playerName)
                         : scorer.playerName}
                     </td>
                     <td className="w-[80px] text-center">{scorer.teamAbbreviation}</td>
