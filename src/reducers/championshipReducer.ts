@@ -168,6 +168,7 @@ export const championshipReducer = (
             ? action.payload.newSelectedChampionship
             : state.selectedChampionship,
           seasonMatchCalendar: action.payload.seasonCalendar,
+          teamsControlledAutomatically: action.payload.updatedTeamsControlledAutomatically,
         };
       }
 
