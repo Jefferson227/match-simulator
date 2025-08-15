@@ -5,7 +5,6 @@ import {
 } from './helpers/championshipReducerHelper';
 import { ChampionshipAction, ChampionshipState } from './types';
 import { BaseTeam } from '../types';
-import utils from '../utils/utils';
 
 // Initial state
 export const initialChampionshipState: ChampionshipState = {
