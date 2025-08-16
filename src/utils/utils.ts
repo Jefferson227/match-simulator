@@ -16,7 +16,6 @@ function addPlayerAttributes(players: Player[]): Player[] {
   return players
     .map((player) => {
       const updatedPlayer = { ...player };
-      updatedPlayer.id = Math.floor(Math.random() * 10000);
       updatedPlayer.order = getPlayerOrder(player.position);
       updatedPlayer.mood = getRandomNumber(0, 100);
       return updatedPlayer;
