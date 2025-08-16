@@ -1,7 +1,20 @@
 import { Player, BaseTeam, MatchTeam } from '../types';
+import { ChampionshipConfig } from '../types';
 import matchService from './matchService';
 import generalParameters from '../assets/general-parameters.json';
-import { ChampionshipConfig } from '../types';
+import utils from '../utils/utils';
+
+function getPlayersByPosition(players: Player[], position: string): Player[] {
+  return players
+    .filter((p) => p.position === position)
+    .map((p) => {
+      return {
+        ...p,
+        mood: utils.getRandomNumber(1, 100),
+      };
+    })
+    .sort((a, b) => b.strength - a.strength);
+}
 
 function getAutomaticStarters(players: Player[]): Player[] {
   // Get a random formation
@@ -11,18 +24,10 @@ function getAutomaticStarters(players: Player[]): Player[] {
   const [defCount, midCount, fwdCount] = formation.split('-').map(Number);
 
   // Sort players by strength within each position
-  const goalkeepers = players
-    .filter((p) => p.position === 'GK')
-    .sort((a, b) => b.strength - a.strength);
-  const defenders = players
-    .filter((p) => p.position === 'DF')
-    .sort((a, b) => b.strength - a.strength);
-  const midfielders = players
-    .filter((p) => p.position === 'MF')
-    .sort((a, b) => b.strength - a.strength);
-  const forwards = players
-    .filter((p) => p.position === 'FW')
-    .sort((a, b) => b.strength - a.strength);
+  const goalkeepers = getPlayersByPosition(players, 'GK');
+  const defenders = getPlayersByPosition(players, 'DF');
+  const midfielders = getPlayersByPosition(players, 'MF');
+  const forwards = getPlayersByPosition(players, 'FW');
 
   // Select starters based on formation
   const starters: Player[] = [
@@ -37,18 +42,10 @@ function getAutomaticStarters(players: Player[]): Player[] {
 
 function getAutomaticSubstitutes(players: Player[]): Player[] {
   // Sort players by strength within each position
-  const goalkeepers = players
-    .filter((p) => p.position === 'GK')
-    .sort((a, b) => b.strength - a.strength);
-  const defenders = players
-    .filter((p) => p.position === 'DF')
-    .sort((a, b) => b.strength - a.strength);
-  const midfielders = players
-    .filter((p) => p.position === 'MF')
-    .sort((a, b) => b.strength - a.strength);
-  const forwards = players
-    .filter((p) => p.position === 'FW')
-    .sort((a, b) => b.strength - a.strength);
+  const goalkeepers = getPlayersByPosition(players, 'GK');
+  const defenders = getPlayersByPosition(players, 'DF');
+  const midfielders = getPlayersByPosition(players, 'MF');
+  const forwards = getPlayersByPosition(players, 'FW');
 
   // Get substitutes based on position
   const substitutes: Player[] = [
