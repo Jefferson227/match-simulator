@@ -280,7 +280,7 @@ export const getChampionshipConfigFromState = (
     internalName: championshipState.selectedChampionship,
     numberOfTeams,
     promotionTeams: championshipState.promotionTeams,
-    relegationTeams: championshipState.relegationChampionship,
+    relegationTeams: championshipState.relegationTeams,
     promotionChampionship: championshipState.promotionChampionship,
     relegationChampionship: championshipState.relegationChampionship,
     teamsControlledAutomatically: updatedChampionshipTeams,
