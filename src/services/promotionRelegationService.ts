@@ -19,10 +19,7 @@ function handlePromotion(championshipState: ChampionshipState): PromotionResult 
   if (!hasPromotionChampionship(championshipState)) {
     return {
       promotionChampionshipTeams: [],
-      updatedCurrentChampionshipTeams: [
-        ...championshipState.teamsControlledAutomatically,
-        championshipState.humanPlayerBaseTeam,
-      ],
+      updatedCurrentChampionshipTeams: [...championshipState.teamsControlledAutomatically],
     };
   }
 
@@ -50,10 +47,7 @@ function handleRelegation(
   if (!hasRelegationChampionship(championshipState)) {
     return {
       relegationChampionshipTeams: [],
-      updatedCurrentChampionshipTeams: [
-        ...championshipState.teamsControlledAutomatically,
-        championshipState.humanPlayerBaseTeam,
-      ],
+      updatedCurrentChampionshipTeams: [...updatedCurrentChampionshipTeamsAfterPromotion],
     };
   }
 
