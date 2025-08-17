@@ -4,7 +4,7 @@ import { GeneralContext } from '../../contexts/GeneralContext';
 import generalService from '../../services/generalService';
 
 const TeamAdditionalInfo: React.FC = () => {
-  const { setScreenDisplayed } = useContext(GeneralContext);
+  const { setScreenDisplayed, setViewingTeam } = useContext(GeneralContext);
   const { state: championshipState, getTableStandings } = useChampionshipContext();
 
   // Helper function to get ordinal suffix
@@ -168,10 +168,13 @@ const TeamAdditionalInfo: React.FC = () => {
 
       <div 
         className="mb-5 p-3 bg-black/20 border-4 border-white cursor-pointer hover:bg-black/30 transition-colors"
-        onClick={() => setScreenDisplayed('TeamViewer')}
+        onClick={() => {
+          setViewingTeam(opponentTeam);
+          setScreenDisplayed('TeamViewer');
+        }}
         role="button"
         tabIndex={0}
-        aria-label="Click to view team details"
+        aria-label="Click to view opponent team details"
       >
         <div className="mb-2 text-[17px]">NEXT MATCH</div>
         <div className="flex flex-col items-center">

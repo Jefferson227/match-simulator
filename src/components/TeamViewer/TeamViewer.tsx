@@ -1,20 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import utils from '../../utils/utils';
 
 const TeamViewer: React.FC = () => {
-  const { t } = useTranslation();
-  const { setScreenDisplayed } = useContext(GeneralContext);
+  const { setScreenDisplayed, state } = useContext(GeneralContext);
   const {
     state: championshipState,
   } = useChampionshipContext();
   const [currentPage, setCurrentPage] = useState(0);
   const PLAYERS_PER_PAGE = 11;
 
-  // Get the human player's base team from championship context
-  const baseTeam = championshipState.humanPlayerBaseTeam;
+  // Get the team to display - either viewing team (opponent) or human player's team
+  const baseTeam = state.viewingTeam || championshipState.humanPlayerBaseTeam;
 
   // Pagination logic
   const players = baseTeam?.players || [];

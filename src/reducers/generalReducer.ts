@@ -9,6 +9,7 @@ export interface GeneralState {
   matchOtherTeams: MatchTeam[];
   screenDisplayed: string;
   clockSpeed: number;
+  viewingTeam: BaseTeam | null;
 }
 
 // Define the action types
@@ -19,6 +20,7 @@ export type GeneralAction =
   | { type: 'SET_MATCH_OTHER_TEAMS' }
   | { type: 'SET_SCREEN_DISPLAYED'; payload: string }
   | { type: 'SET_CLOCK_SPEED'; payload: number }
+  | { type: 'SET_VIEWING_TEAM'; payload: BaseTeam | null }
   | { type: 'LOAD_STATE'; payload: GeneralState };
 
 // Create the reducer
@@ -53,6 +55,8 @@ export const generalReducer = (
       return { ...state, screenDisplayed: action.payload };
     case 'SET_CLOCK_SPEED':
       return { ...state, clockSpeed: action.payload };
+    case 'SET_VIEWING_TEAM':
+      return { ...state, viewingTeam: action.payload };
     case 'LOAD_STATE':
       return action.payload;
     default:
