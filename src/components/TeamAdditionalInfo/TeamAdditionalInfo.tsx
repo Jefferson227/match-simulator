@@ -166,7 +166,13 @@ const TeamAdditionalInfo: React.FC = () => {
         </div>
       </div>
 
-      <div className="mb-5 p-3 bg-black/20 border-4 border-white">
+      <div 
+        className="mb-5 p-3 bg-black/20 border-4 border-white cursor-pointer hover:bg-black/30 transition-colors"
+        onClick={() => setScreenDisplayed('TeamViewer')}
+        role="button"
+        tabIndex={0}
+        aria-label="Click to view team details"
+      >
         <div className="mb-2 text-[17px]">NEXT MATCH</div>
         <div className="flex flex-col items-center">
           <div
