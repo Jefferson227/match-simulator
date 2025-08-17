@@ -19,8 +19,7 @@ const MatchSimulator: FC = () => {
   const [standingsTimeoutSet, setStandingsTimeoutSet] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const { matches, teamSquadView, setMatches, increaseScore, setScorer } = useContext(MatchContext);
-  const { state, setMatchOtherTeams, setScreenDisplayed, setClockSpeed } =
-    useContext(GeneralContext);
+  const { state, setScreenDisplayed, setClockSpeed } = useContext(GeneralContext);
   const {
     state: championshipState,
     updateTableStandings,
