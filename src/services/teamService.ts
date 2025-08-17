@@ -1,5 +1,6 @@
 import { Player, BaseTeam, MatchTeam } from '../types';
 import { ChampionshipConfig } from '../types';
+import { TeamSelectorTeam, SeasonMatch, SeasonRound } from './types';
 import matchService from './matchService';
 import generalParameters from '../assets/general-parameters.json';
 import utils from '../utils/utils';
@@ -57,16 +58,6 @@ function getAutomaticSubstitutes(players: Player[]): Player[] {
 
   // Limit to 7 substitutes
   return substitutes.slice(0, 7);
-}
-
-export interface TeamSelectorTeam {
-  name: string;
-  fileName: string;
-  colors: {
-    bg: string;
-    border: string;
-    text: string;
-  };
 }
 
 export const loadTeamsForChampionship = async (
@@ -327,21 +318,6 @@ export const loadAllTeamsFromContextExceptOne = async (
   }
   return teams;
 };
-
-export interface SeasonMatch {
-  id: string;
-  round: number;
-  homeTeam: BaseTeam;
-  awayTeam: BaseTeam;
-  isPlayed: boolean;
-  homeTeamScore?: number;
-  awayTeamScore?: number;
-}
-
-export interface SeasonRound {
-  roundNumber: number;
-  matches: SeasonMatch[];
-}
 
 export const generateSeasonMatchCalendar = (
   humanPlayerTeam: BaseTeam,
