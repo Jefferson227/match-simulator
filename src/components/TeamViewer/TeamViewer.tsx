@@ -5,9 +5,7 @@ import utils from '../../utils/utils';
 
 const TeamViewer: React.FC = () => {
   const { setScreenDisplayed, state } = useContext(GeneralContext);
-  const {
-    state: championshipState,
-  } = useChampionshipContext();
+  const { state: championshipState } = useChampionshipContext();
   const [currentPage, setCurrentPage] = useState(0);
   const PLAYERS_PER_PAGE = 11;
 
@@ -64,10 +62,10 @@ const TeamViewer: React.FC = () => {
         >
           {baseTeam?.name}
         </div>
-        
+
         {/* Morale Graph Section */}
         <div
-          className="p-3 mx-2 mt-2"
+          className="p-3 px-4 mt-2"
           style={{
             backgroundColor,
             borderBottom: `4px solid ${outlineColor}`,
@@ -93,28 +91,11 @@ const TeamViewer: React.FC = () => {
         </div>
 
         {/* Player List */}
-        <div
-          className="py-2 mx-2 mb-[50px] h-[307.5px]"
-          style={{ backgroundColor, color: '#fff' }}
-        >
+        <div className="py-2 mx-2 mb-[50px] h-[307.5px]" style={{ backgroundColor, color: '#fff' }}>
           {paginatedPlayers.map((player) => (
-            <div
-              key={player.id}
-              className="flex justify-between items-center px-2 text-[15px]"
-            >
-              <span
-                className="px-2 my-[2px] mr-2 min-w-[36px] text-center"
-                style={{
-                  backgroundColor: outlineColor,
-                  color: backgroundColor,
-                }}
-              >
-                {player.position}
-              </span>
-              <span
-                className="flex-1 uppercase text-left"
-                style={{ color: nameColor }}
-              >
+            <div key={player.id} className="flex justify-between items-center px-2 text-[15px]">
+              <span className="px-2 my-[2px] mr-2 min-w-[36px] text-center">{player.position}</span>
+              <span className="flex-1 uppercase text-left" style={{ color: nameColor }}>
                 {player.name.length > 14 ? utils.shortenPlayerName(player.name) : player.name}
               </span>
               <span className="ml-2" style={{ color: nameColor }}>
@@ -159,8 +140,7 @@ const TeamViewer: React.FC = () => {
             backgroundColor: '#3c7a33',
             color: '#e2e2e2',
             opacity: currentPage === totalPages - 1 || totalPages === 0 ? 0.5 : 1,
-            cursor:
-              currentPage === totalPages - 1 || totalPages === 0 ? 'not-allowed' : 'pointer',
+            cursor: currentPage === totalPages - 1 || totalPages === 0 ? 'not-allowed' : 'pointer',
           }}
           onClick={handleNextPage}
           disabled={currentPage === totalPages - 1 || totalPages === 0}
