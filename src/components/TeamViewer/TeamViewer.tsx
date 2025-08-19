@@ -10,7 +10,10 @@ const TeamViewer: React.FC = () => {
   const PLAYERS_PER_PAGE = 11;
 
   // Get the team to display - either viewing team (opponent) or human player's team
-  const baseTeam = state.viewingTeam || championshipState.humanPlayerBaseTeam;
+  const viewingTeam = championshipState.teamsControlledAutomatically.find(
+    (t) => t.id === state.viewingTeam?.id
+  );
+  const baseTeam = viewingTeam || championshipState.humanPlayerBaseTeam;
 
   // Pagination logic
   const players = baseTeam?.players || [];
