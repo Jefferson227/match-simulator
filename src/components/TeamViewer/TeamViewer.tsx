@@ -97,7 +97,12 @@ const TeamViewer: React.FC = () => {
         <div className="py-2 mx-2 mb-[50px] h-[307.5px]" style={{ backgroundColor, color: '#fff' }}>
           {paginatedPlayers.map((player) => (
             <div key={player.id} className="flex justify-between items-center px-2 text-[15px]">
-              <span className="px-2 my-[2px] mr-2 min-w-[36px] text-center">{player.position}</span>
+              <span
+                className="px-2 my-[2px] mr-2 min-w-[36px] text-center"
+                style={{ color: nameColor }}
+              >
+                {player.position}
+              </span>
               <span className="flex-1 uppercase text-left" style={{ color: nameColor }}>
                 {player.name.length > 14 ? utils.shortenPlayerName(player.name) : player.name}
               </span>
