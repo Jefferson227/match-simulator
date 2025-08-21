@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import { useChampionshipContext } from '../../contexts/ChampionshipContext';
-import { generateSeasonMatchCalendar } from '../../services/teamService';
 import utils from '../../utils/utils';
 import { MatchTeam, Player } from '../../types';
 
@@ -18,13 +17,7 @@ enum PlayerSelectionState {
 const TeamManager: React.FC = () => {
   const { t } = useTranslation();
   const { setMatchTeam, setScreenDisplayed } = useContext(GeneralContext);
-  const {
-    state: championshipState,
-    incrementCurrentRound,
-    setCurrentRound,
-    setSeasonMatchCalendar,
-    incrementYear,
-  } = useChampionshipContext();
+  const { state: championshipState } = useChampionshipContext();
   const [showFormationGrid, setShowFormationGrid] = useState(false);
   const [playerStates, setPlayerStates] = useState<{
     [id: string]: PlayerSelectionState;
