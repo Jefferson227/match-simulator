@@ -60,6 +60,21 @@ function getAutomaticSubstitutes(players: Player[]): Player[] {
   return substitutes.slice(0, 7);
 }
 
+function getAutomaticMatchTeam(baseTeam: BaseTeam, isHomeTeam: boolean): MatchTeam {
+  const starters = getAutomaticStarters(baseTeam.players);
+  const substitutes = getAutomaticSubstitutes(
+    baseTeam.players.filter((player) => !starters.some((starter) => starter.id === player.id))
+  );
+
+  return {
+    ...baseTeam,
+    starters,
+    substitutes,
+    isHomeTeam,
+    score: 0,
+  };
+}
+
 export const loadTeamsForChampionship = async (
   championshipInternalName: string
 ): Promise<TeamSelectorTeam[]> => {
@@ -404,6 +419,11 @@ export const getCurrentRoundMatches = (
     return [];
   }
 
+  const teamMap = new Map<string, BaseTeam>();
+  teamsControlledAutomatically.forEach((team) => {
+    teamMap.set(team.id, team);
+  });
+
   // Transform season matches to MatchTeam format for MatchSimulator
   return currentRoundData.matches.map((seasonMatch) => {
     // Check if the human player's team is playing in this match
@@ -420,22 +440,8 @@ export const getCurrentRoundMatches = (
       };
     } else {
       // Use automatic selection for AI teams
-      const homeTeam =
-        teamsControlledAutomatically.find((t) => t.id === seasonMatch.homeTeam.id) ||
-        seasonMatch.homeTeam;
-
-      homeMatchTeam = {
-        ...homeTeam,
-        starters: getAutomaticStarters(homeTeam.players),
-        substitutes: getAutomaticSubstitutes(
-          homeTeam.players.filter(
-            (player) =>
-              !getAutomaticStarters(homeTeam.players).some((starter) => starter.id === player.id)
-          )
-        ),
-        isHomeTeam: true,
-        score: 0,
-      };
+      const homeTeam = teamMap.get(seasonMatch.homeTeam.id) || seasonMatch.homeTeam;
+      homeMatchTeam = getAutomaticMatchTeam(homeTeam, true);
     }
 
     // Transform away team
@@ -448,22 +454,8 @@ export const getCurrentRoundMatches = (
       };
     } else {
       // Use automatic selection for AI teams
-      const awayTeam =
-        teamsControlledAutomatically.find((t) => t.id === seasonMatch.awayTeam.id) ||
-        seasonMatch.awayTeam;
-
-      awayMatchTeam = {
-        ...awayTeam,
-        starters: getAutomaticStarters(awayTeam.players),
-        substitutes: getAutomaticSubstitutes(
-          awayTeam.players.filter(
-            (player) =>
-              !getAutomaticStarters(awayTeam.players).some((starter) => starter.id === player.id)
-          )
-        ),
-        isHomeTeam: false,
-        score: 0,
-      };
+      const awayTeam = teamMap.get(seasonMatch.awayTeam.id) || seasonMatch.awayTeam;
+      awayMatchTeam = getAutomaticMatchTeam(awayTeam, false);
     }
 
     return {
