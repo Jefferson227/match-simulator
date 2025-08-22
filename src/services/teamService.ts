@@ -390,6 +390,7 @@ export const generateSeasonMatchCalendar = (
 };
 
 export const getCurrentRoundMatches = (
+  teamsControlledAutomatically: BaseTeam[],
   seasonCalendar: SeasonRound[],
   currentRound: number,
   humanPlayerTeam: BaseTeam,
@@ -419,21 +420,21 @@ export const getCurrentRoundMatches = (
       };
     } else {
       // Use automatic selection for AI teams
+      const homeTeam =
+        teamsControlledAutomatically.find((t) => t.id === seasonMatch.homeTeam.id) ||
+        seasonMatch.homeTeam;
+
       homeMatchTeam = {
-        ...seasonMatch.homeTeam,
-        starters: getAutomaticStarters(seasonMatch.homeTeam.players),
+        ...homeTeam,
+        starters: getAutomaticStarters(homeTeam.players),
         substitutes: getAutomaticSubstitutes(
-          seasonMatch.homeTeam.players.filter(
+          homeTeam.players.filter(
             (player) =>
-              !getAutomaticStarters(seasonMatch.homeTeam.players).some(
-                (starter) => starter.id === player.id
-              )
+              !getAutomaticStarters(homeTeam.players).some((starter) => starter.id === player.id)
           )
         ),
         isHomeTeam: true,
         score: 0,
-        morale: 100,
-        overallMood: 100,
       };
     }
 
@@ -447,21 +448,21 @@ export const getCurrentRoundMatches = (
       };
     } else {
       // Use automatic selection for AI teams
+      const awayTeam =
+        teamsControlledAutomatically.find((t) => t.id === seasonMatch.awayTeam.id) ||
+        seasonMatch.awayTeam;
+
       awayMatchTeam = {
-        ...seasonMatch.awayTeam,
-        starters: getAutomaticStarters(seasonMatch.awayTeam.players),
+        ...awayTeam,
+        starters: getAutomaticStarters(awayTeam.players),
         substitutes: getAutomaticSubstitutes(
-          seasonMatch.awayTeam.players.filter(
+          awayTeam.players.filter(
             (player) =>
-              !getAutomaticStarters(seasonMatch.awayTeam.players).some(
-                (starter) => starter.id === player.id
-              )
+              !getAutomaticStarters(awayTeam.players).some((starter) => starter.id === player.id)
           )
         ),
         isHomeTeam: false,
         score: 0,
-        morale: 100,
-        overallMood: 100,
       };
     }
 

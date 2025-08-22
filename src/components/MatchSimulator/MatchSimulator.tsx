@@ -64,6 +64,7 @@ const MatchSimulator: FC = () => {
       (matches.length === 0 || matches[0]?.round !== championshipState.currentRound)
     ) {
       const currentRoundMatches = getCurrentRoundMatches(
+        championshipState.teamsControlledAutomatically,
         championshipState.seasonMatchCalendar,
         championshipState.currentRound,
         championshipState.humanPlayerBaseTeam,
