@@ -19,7 +19,7 @@ const MatchSimulator: FC = () => {
   const [standingsTimeoutSet, setStandingsTimeoutSet] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const { matches, teamSquadView, setMatches, increaseScore, setScorer } = useContext(MatchContext);
-  const { state, setScreenDisplayed, setClockSpeed } = useContext(GeneralContext);
+  const { state, setScreenDisplayed, setIsRoundOver, setClockSpeed } = useContext(GeneralContext);
   const {
     state: championshipState,
     updateTableStandings,
@@ -126,6 +126,7 @@ const MatchSimulator: FC = () => {
       setStandingsTimeoutSet(true);
       window.setTimeout(() => {
         updateTeamMorale(matches);
+        setIsRoundOver(true);
         setScreenDisplayed('TeamStandings');
       }, 5000);
     }

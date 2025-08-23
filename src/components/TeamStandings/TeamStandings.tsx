@@ -10,7 +10,12 @@ import { TeamStanding, TeamStandingsProps } from './types';
 import { BaseTeam } from '../../types';
 
 const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings }) => {
-  const { setScreenDisplayed, setViewingTeam, state: generalState } = useContext(GeneralContext);
+  const {
+    setScreenDisplayed,
+    setIsRoundOver,
+    setViewingTeam,
+    state: generalState,
+  } = useContext(GeneralContext);
   const {
     state: championshipState,
     getTableStandings,
@@ -94,6 +99,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
       incrementCurrentRound();
     }
 
+    setIsRoundOver(false);
     setScreenDisplayed('TeamManager');
   };
 
@@ -218,7 +224,10 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
         <button
           className="border-4 border-white w-[180px] h-[56px] flex items-center justify-center text-[18px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition mx-2 cursor-pointer"
           style={{
-            display: generalState.previousScreenDisplayed !== 'MatchSimulator' ? 'block' : 'none',
+            display:
+              generalState.previousScreenDisplayed !== 'MatchSimulator' && !generalState.isRoundOver
+                ? 'block'
+                : 'none',
           }}
           onClick={handleBack}
         >
@@ -227,7 +236,10 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
         <button
           className="border-4 border-white w-[180px] h-[56px] flex items-center justify-center text-[18px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition mx-2 cursor-pointer"
           style={{
-            display: generalState.previousScreenDisplayed === 'MatchSimulator' ? 'block' : 'none',
+            display:
+              generalState.previousScreenDisplayed === 'MatchSimulator' || generalState.isRoundOver
+                ? 'block'
+                : 'none',
           }}
           onClick={handleContinue}
         >

@@ -1,7 +1,7 @@
 import React, { createContext, useReducer, ReactNode } from 'react';
-import { generalReducer, GeneralState } from '../reducers/generalReducer';
+import { generalReducer } from '../reducers/generalReducer';
 import { BaseTeam, MatchTeam } from '../types';
-import teamService from '../services/teamService';
+import { GeneralState } from '../reducers/types';
 
 // Define the context type
 interface GeneralContextType {
@@ -81,9 +81,11 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({ children }) =>
 
   const setClockSpeed = (speed: number) => dispatch({ type: 'SET_CLOCK_SPEED', payload: speed });
 
-  const setViewingTeam = (team: BaseTeam | null) => dispatch({ type: 'SET_VIEWING_TEAM', payload: team });
+  const setViewingTeam = (team: BaseTeam | null) =>
+    dispatch({ type: 'SET_VIEWING_TEAM', payload: team });
 
-  const setIsRoundOver = (isRoundOver: boolean) => dispatch({ type: 'SET_IS_ROUND_OVER', payload: isRoundOver });
+  const setIsRoundOver = (isRoundOver: boolean) =>
+    dispatch({ type: 'SET_IS_ROUND_OVER', payload: isRoundOver });
 
   const loadState = (newState: GeneralState) => dispatch({ type: 'LOAD_STATE', payload: newState });
 
