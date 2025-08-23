@@ -14,6 +14,7 @@ interface GeneralContextType {
   setScreenDisplayed: (screen: string) => void;
   setClockSpeed: (speed: number) => void;
   setViewingTeam: (team: BaseTeam | null) => void;
+  setIsRoundOver: (isRoundOver: boolean) => void;
   loadState: (state: GeneralState) => void;
 }
 
@@ -27,6 +28,7 @@ const defaultContextValue: GeneralContextType = {
     screenDisplayed: 'InitialScreen',
     clockSpeed: 1000,
     viewingTeam: null,
+    isRoundOver: false,
   },
   setCurrentPage: () => {},
   getBaseTeam: () => {},
@@ -36,6 +38,7 @@ const defaultContextValue: GeneralContextType = {
   setScreenDisplayed: () => {},
   setClockSpeed: () => {},
   setViewingTeam: () => {},
+  setIsRoundOver: () => {},
   loadState: () => {},
 };
 
@@ -56,6 +59,7 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({ children }) =>
     screenDisplayed: 'InitialScreen',
     clockSpeed: 1000,
     viewingTeam: null,
+    isRoundOver: false,
   });
 
   const setCurrentPage = (page: number) => dispatch({ type: 'SET_CURRENT_PAGE', payload: page });
@@ -79,6 +83,8 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({ children }) =>
 
   const setViewingTeam = (team: BaseTeam | null) => dispatch({ type: 'SET_VIEWING_TEAM', payload: team });
 
+  const setIsRoundOver = (isRoundOver: boolean) => dispatch({ type: 'SET_IS_ROUND_OVER', payload: isRoundOver });
+
   const loadState = (newState: GeneralState) => dispatch({ type: 'LOAD_STATE', payload: newState });
 
   return (
@@ -93,6 +99,7 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({ children }) =>
         setScreenDisplayed,
         setClockSpeed,
         setViewingTeam,
+        setIsRoundOver,
         loadState,
       }}
     >

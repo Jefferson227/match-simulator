@@ -34,6 +34,8 @@ export const generalReducer = (state: GeneralState, action: GeneralAction): Gene
       return { ...state, clockSpeed: action.payload };
     case 'SET_VIEWING_TEAM':
       return { ...state, viewingTeam: action.payload };
+    case 'SET_IS_ROUND_OVER':
+      return { ...state, isRoundOver: action.payload };
     case 'LOAD_STATE':
       return action.payload;
     default:

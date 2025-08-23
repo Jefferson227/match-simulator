@@ -71,6 +71,7 @@ export interface GeneralState {
   previousScreenDisplayed: string;
   clockSpeed: number;
   viewingTeam: BaseTeam | null;
+  isRoundOver: boolean;
 }
 
 export type GeneralAction =
@@ -81,4 +82,5 @@ export type GeneralAction =
   | { type: 'SET_SCREEN_DISPLAYED'; payload: string }
   | { type: 'SET_CLOCK_SPEED'; payload: number }
   | { type: 'SET_VIEWING_TEAM'; payload: BaseTeam | null }
+  | { type: 'SET_IS_ROUND_OVER'; payload: boolean }
   | { type: 'LOAD_STATE'; payload: GeneralState };
