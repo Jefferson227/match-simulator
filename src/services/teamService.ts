@@ -75,6 +75,32 @@ function getAutomaticMatchTeam(baseTeam: BaseTeam, isHomeTeam: boolean): MatchTe
   };
 }
 
+function getMatchTeam(
+  type: 'home' | 'away',
+  seasonMatchTeam: BaseTeam,
+  teamMap: Map<string, BaseTeam>,
+  humanPlayerBaseTeam: BaseTeam,
+  humanPlayerMatchTeam?: MatchTeam
+) {
+  const isHomeTeam = type === 'home';
+  const isHumanPlayerHomeAwayOrNone =
+    seasonMatchTeam.id === humanPlayerBaseTeam.id && isHomeTeam
+      ? 'home'
+      : seasonMatchTeam.id === humanPlayerBaseTeam.id && !isHomeTeam
+      ? 'away'
+      : 'none';
+
+  if (isHumanPlayerHomeAwayOrNone !== 'none' && humanPlayerMatchTeam) {
+    return {
+      ...humanPlayerMatchTeam,
+      isHomeTeam: isHumanPlayerHomeAwayOrNone === 'home',
+    };
+  }
+
+  const mappedTeam = teamMap.get(seasonMatchTeam.id) || seasonMatchTeam;
+  return getAutomaticMatchTeam(mappedTeam, isHomeTeam);
+}
+
 export const loadTeamsForChampionship = async (
   championshipInternalName: string
 ): Promise<TeamSelectorTeam[]> => {
@@ -411,11 +437,8 @@ export const getCurrentRoundMatches = (
   humanPlayerTeam: BaseTeam,
   humanPlayerMatchTeam?: MatchTeam
 ): { homeTeam: MatchTeam; visitorTeam: MatchTeam }[] => {
-  // Find the current round
   const currentRoundData = seasonCalendar.find((round) => round.roundNumber === currentRound);
-
   if (!currentRoundData) {
-    // If round not found, return empty array
     return [];
   }
 
@@ -424,43 +447,22 @@ export const getCurrentRoundMatches = (
     teamMap.set(team.id, team);
   });
 
-  // Transform season matches to MatchTeam format for MatchSimulator
   return currentRoundData.matches.map((seasonMatch) => {
-    // Check if the human player's team is playing in this match
-    const isHumanPlayerHome = seasonMatch.homeTeam.id === humanPlayerTeam.id;
-    const isHumanPlayerAway = seasonMatch.awayTeam.id === humanPlayerTeam.id;
-
-    // Transform home team
-    let homeMatchTeam: MatchTeam;
-    if (isHumanPlayerHome && humanPlayerMatchTeam) {
-      // Use the human player's match team (with correct formation and players)
-      homeMatchTeam = {
-        ...humanPlayerMatchTeam,
-        isHomeTeam: true,
-      };
-    } else {
-      // Use automatic selection for AI teams
-      const homeTeam = teamMap.get(seasonMatch.homeTeam.id) || seasonMatch.homeTeam;
-      homeMatchTeam = getAutomaticMatchTeam(homeTeam, true);
-    }
-
-    // Transform away team
-    let awayMatchTeam: MatchTeam;
-    if (isHumanPlayerAway && humanPlayerMatchTeam) {
-      // Use the human player's match team (with correct formation and players)
-      awayMatchTeam = {
-        ...humanPlayerMatchTeam,
-        isHomeTeam: false,
-      };
-    } else {
-      // Use automatic selection for AI teams
-      const awayTeam = teamMap.get(seasonMatch.awayTeam.id) || seasonMatch.awayTeam;
-      awayMatchTeam = getAutomaticMatchTeam(awayTeam, false);
-    }
-
     return {
-      homeTeam: homeMatchTeam,
-      visitorTeam: awayMatchTeam,
+      homeTeam: getMatchTeam(
+        'home',
+        seasonMatch.homeTeam,
+        teamMap,
+        humanPlayerTeam,
+        humanPlayerMatchTeam
+      ),
+      visitorTeam: getMatchTeam(
+        'away',
+        seasonMatch.awayTeam,
+        teamMap,
+        humanPlayerTeam,
+        humanPlayerMatchTeam
+      ),
     };
   });
 };
