@@ -36,7 +36,7 @@ const TeamViewer: React.FC = () => {
   }, [baseTeam?.id, players.length]);
 
   const handleBack = () => {
-    setScreenDisplayed('TeamAdditionalInfo');
+    setScreenDisplayed(state.previousScreenDisplayed);
   };
 
   // Extract team colors with fallbacks

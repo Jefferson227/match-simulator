@@ -98,6 +98,11 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
   };
 
   const handleBack = () => {
+    if (generalState.previousScreenDisplayed === 'TeamViewer') {
+      setScreenDisplayed('TeamManager');
+      return;
+    }
+
     setScreenDisplayed(generalState.previousScreenDisplayed);
   };
 
