@@ -4,11 +4,13 @@ import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import { MatchContext } from '../../contexts/MatchContext';
 import sessionService from '../../services/sessionService';
 import generalService from '../../services/generalService';
+import utils from '../../utils/utils';
 import { handlePromotionRelegationLogic } from '../../services/promotionRelegationService';
 import { TeamStanding, TeamStandingsProps } from './types';
+import { BaseTeam } from '../../types';
 
 const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings }) => {
-  const { setScreenDisplayed, state: generalState } = useContext(GeneralContext);
+  const { setScreenDisplayed, setViewingTeam, state: generalState } = useContext(GeneralContext);
   const {
     state: championshipState,
     getTableStandings,
@@ -99,6 +101,26 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
     setScreenDisplayed(generalState.previousScreenDisplayed);
   };
 
+  const handleViewTeam = (teamId: string) => {
+    if (utils.isNullOrWhitespace(teamId)) return;
+
+    if (championshipState.humanPlayerBaseTeam.id === teamId) {
+      setViewingTeam(championshipState.humanPlayerBaseTeam);
+      setScreenDisplayed('TeamViewer');
+    }
+
+    const teamMap = new Map<string, BaseTeam>();
+    championshipState.teamsControlledAutomatically.forEach((team) => {
+      teamMap.set(team.id, team);
+    });
+
+    const selectedTeam = teamMap.get(teamId);
+    if (!selectedTeam) return;
+
+    setViewingTeam(selectedTeam);
+    setScreenDisplayed('TeamViewer');
+  };
+
   const totalRounds = championshipState.seasonMatchCalendar.length;
   const isSeasonComplete = championshipState.currentRound >= totalRounds;
 
@@ -146,7 +168,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
             <tbody>
               {paginatedStandings.map((row, idx) => (
                 <React.Fragment key={row.teamId}>
-                  <tr className="text-[18px] text-white">
+                  <tr className="text-[18px] text-white" onClick={() => handleViewTeam(row.teamId)}>
                     <td className="w-[56px] text-center py-2">
                       {page * RESULTS_PER_PAGE + idx + 1}
                     </td>
