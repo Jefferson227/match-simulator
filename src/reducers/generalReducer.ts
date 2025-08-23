@@ -25,7 +25,11 @@ export const generalReducer = (state: GeneralState, action: GeneralAction): Gene
         matchOtherTeams: state.matchOtherTeams,
       };
     case 'SET_SCREEN_DISPLAYED':
-      return { ...state, screenDisplayed: action.payload };
+      return {
+        ...state,
+        previousScreenDisplayed: state.screenDisplayed,
+        screenDisplayed: action.payload,
+      };
     case 'SET_CLOCK_SPEED':
       return { ...state, clockSpeed: action.payload };
     case 'SET_VIEWING_TEAM':

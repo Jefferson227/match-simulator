@@ -68,6 +68,7 @@ export interface GeneralState {
   matchTeam: MatchTeam | null;
   matchOtherTeams: MatchTeam[];
   screenDisplayed: string;
+  previousScreenDisplayed: string;
   clockSpeed: number;
   viewingTeam: BaseTeam | null;
 }
