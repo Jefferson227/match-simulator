@@ -95,6 +95,10 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
     setScreenDisplayed('TeamManager');
   };
 
+  const handleBack = () => {
+    setScreenDisplayed(generalState.previousScreenDisplayed);
+  };
+
   const totalRounds = championshipState.seasonMatchCalendar.length;
   const isSeasonComplete = championshipState.currentRound >= totalRounds;
 
@@ -186,6 +190,18 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
         </button>
         <button
           className="border-4 border-white w-[180px] h-[56px] flex items-center justify-center text-[18px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition mx-2 cursor-pointer"
+          style={{
+            display: generalState.previousScreenDisplayed !== 'MatchSimulator' ? 'block' : 'none',
+          }}
+          onClick={handleBack}
+        >
+          BACK
+        </button>
+        <button
+          className="border-4 border-white w-[180px] h-[56px] flex items-center justify-center text-[18px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition mx-2 cursor-pointer"
+          style={{
+            display: generalState.previousScreenDisplayed === 'MatchSimulator' ? 'block' : 'none',
+          }}
           onClick={handleContinue}
         >
           {isSeasonComplete ? 'NEW SEASON' : 'CONTINUE'}

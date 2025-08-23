@@ -153,7 +153,7 @@ const TeamAdditionalInfo: React.FC = () => {
 
       <div
         className="mb-5 p-3 bg-black/20 border-4 border-white cursor-pointer hover:bg-black/30 transition-colors"
-        onClick={() => setScreenDisplayed('ChampionshipDetails')}
+        onClick={() => setScreenDisplayed('TeamStandings')}
         role="button"
         tabIndex={0}
         aria-label="Click to view championship details and top scorers"
@@ -166,7 +166,7 @@ const TeamAdditionalInfo: React.FC = () => {
         </div>
       </div>
 
-      <div 
+      <div
         className="mb-5 p-3 bg-black/20 border-4 border-white cursor-pointer hover:bg-black/30 transition-colors"
         onClick={() => {
           setViewingTeam(opponentTeam);
