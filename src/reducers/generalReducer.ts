@@ -1,33 +1,6 @@
-import { BaseTeam, MatchTeam } from '../types';
-import teamService from '../services/teamService';
+import { GeneralState, GeneralAction } from './types';
 
-// Define the state interface
-export interface GeneralState {
-  currentPage: number;
-  baseTeam: BaseTeam;
-  matchTeam: MatchTeam | null;
-  matchOtherTeams: MatchTeam[];
-  screenDisplayed: string;
-  clockSpeed: number;
-  viewingTeam: BaseTeam | null;
-}
-
-// Define the action types
-export type GeneralAction =
-  | { type: 'SET_CURRENT_PAGE'; payload: number }
-  | { type: 'SET_BASE_TEAM'; payload: BaseTeam }
-  | { type: 'SET_MATCH_TEAM'; payload: MatchTeam }
-  | { type: 'SET_MATCH_OTHER_TEAMS' }
-  | { type: 'SET_SCREEN_DISPLAYED'; payload: string }
-  | { type: 'SET_CLOCK_SPEED'; payload: number }
-  | { type: 'SET_VIEWING_TEAM'; payload: BaseTeam | null }
-  | { type: 'LOAD_STATE'; payload: GeneralState };
-
-// Create the reducer
-export const generalReducer = (
-  state: GeneralState,
-  action: GeneralAction
-): GeneralState => {
+export const generalReducer = (state: GeneralState, action: GeneralAction): GeneralState => {
   switch (action.type) {
     case 'SET_CURRENT_PAGE':
       return {

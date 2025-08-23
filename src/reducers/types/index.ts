@@ -1,4 +1,11 @@
-import { BaseTeam, ChampionshipConfig, Match, SeasonRound, TableStanding } from '../../types';
+import {
+  BaseTeam,
+  ChampionshipConfig,
+  Match,
+  SeasonRound,
+  TableStanding,
+  MatchTeam,
+} from '../../types';
 
 export interface ChampionshipState {
   championshipConfigId: string | null;
@@ -54,3 +61,23 @@ export type ChampionshipAction =
     }
   | { type: 'UPDATE_TEAM_MORALE'; payload: Match[] }
   | { type: 'UPDATE_CHAMPIONSHIP_STATE'; payload: ChampionshipUpdate };
+
+export interface GeneralState {
+  currentPage: number;
+  baseTeam: BaseTeam;
+  matchTeam: MatchTeam | null;
+  matchOtherTeams: MatchTeam[];
+  screenDisplayed: string;
+  clockSpeed: number;
+  viewingTeam: BaseTeam | null;
+}
+
+export type GeneralAction =
+  | { type: 'SET_CURRENT_PAGE'; payload: number }
+  | { type: 'SET_BASE_TEAM'; payload: BaseTeam }
+  | { type: 'SET_MATCH_TEAM'; payload: MatchTeam }
+  | { type: 'SET_MATCH_OTHER_TEAMS' }
+  | { type: 'SET_SCREEN_DISPLAYED'; payload: string }
+  | { type: 'SET_CLOCK_SPEED'; payload: number }
+  | { type: 'SET_VIEWING_TEAM'; payload: BaseTeam | null }
+  | { type: 'LOAD_STATE'; payload: GeneralState };
