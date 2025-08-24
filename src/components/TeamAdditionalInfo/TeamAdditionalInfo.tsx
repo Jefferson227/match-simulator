@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import generalService from '../../services/generalService';
 
 const TeamAdditionalInfo: React.FC = () => {
   const { setScreenDisplayed, setViewingTeam } = useContext(GeneralContext);
+  const [currentPage, setCurrentPage] = useState(1);
   const { state: championshipState, getTableStandings } = useChampionshipContext();
 
   // Helper function to get ordinal suffix
@@ -102,37 +103,26 @@ const TeamAdditionalInfo: React.FC = () => {
     outline: '#e2e2e2',
     name: '#e2e2e2',
   };
-
   // Button handlers
   const handleBack = () => {
     setScreenDisplayed('TeamManager');
   };
 
   const handlePrevious = () => {
-    // Handle previous team - could be implemented later
-    console.log('Previous team');
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
   };
 
   const handleNext = () => {
-    // Handle next team - could be implemented later
-    console.log('Next team');
+    if (currentPage < 2) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
-  return (
-    <div className="w-[350px] mt-[26px] bg-[#3c7a33] text-white font-press-start p-5 border-4 border-white mx-auto">
-      <div
-        className="p-2 text-center mb-5 border-4"
-        style={{
-          backgroundColor: teamColors.background,
-          borderColor: teamColors.outline,
-          color: teamColors.name,
-        }}
-      >
-        <h2 className="m-0 text-[17px] uppercase tracking-wider">
-          {championshipState.humanPlayerBaseTeam?.name || 'TEAM NAME'}
-        </h2>
-      </div>
-
+  // Render first page
+  const renderFirstPage = () => (
+    <>
       <div className="mb-5 p-3 bg-black/20 border-4 border-white">
         <div className="mb-2 text-[17px]">MORALE</div>
         <div className="w-full h-8 bg-[#316229] border-4 border-white my-2 overflow-hidden">
@@ -194,12 +184,56 @@ const TeamAdditionalInfo: React.FC = () => {
           </div>
         </div>
       </div>
+    </>
+  );
+
+  // Render second page
+  const renderSecondPage = () => (
+    <>
+      <div
+        className="mb-5 p-3 bg-black/20 border-4 border-white"
+        onClick={() => setScreenDisplayed('ChampionshipDetails')}
+      >
+        <div className="mb-3 text-[17px]">{championshipName}</div>
+        <div className="mb-2 text-sm">TOP SCORERS</div>
+      </div>
+
+      <div
+        className="mb-[12.375rem] p-3 bg-black/20 border-4 border-white"
+        onClick={() => setScreenDisplayed('ChampionshipDetails')}
+      >
+        <div className="mb-3 text-[17px]">MY TEAM</div>
+        <div className="mb-2 text-sm">TOP SCORERS</div>
+      </div>
+    </>
+  );
+
+  return (
+    <div className="w-[350px] h-[626.5px] mt-[26px] bg-[#3c7a33] text-white font-press-start p-5 border-4 border-white mx-auto">
+      <div
+        className="p-2 text-center mb-5 border-4"
+        style={{
+          backgroundColor: teamColors.background,
+          borderColor: teamColors.outline,
+          color: teamColors.name,
+        }}
+      >
+        <h2 className="m-0 text-[17px] uppercase tracking-wider">
+          {championshipState.humanPlayerBaseTeam?.name || 'TEAM NAME'}
+        </h2>
+      </div>
+
+      {currentPage === 1 ? renderFirstPage() : renderSecondPage()}
 
       <div className="flex justify-between mt-5">
         <button
-          className="h-[70px] w-1/3 bg-transparent border-4 border-white text-white px-4 py-2 me-2 font-press-start text-[16px] transition-all opacity-50 cursor-not-allowed"
+          className={`h-[70px] w-1/3 bg-transparent border-4 border-white text-white px-4 py-2 me-2 font-press-start text-[16px] transition-all ${
+            currentPage === 1
+              ? 'opacity-50 cursor-not-allowed'
+              : 'hover:bg-white/20 active:translate-y-px'
+          }`}
           onClick={handlePrevious}
-          disabled={true}
+          disabled={currentPage === 1}
         >
           &lt;
         </button>
@@ -210,9 +244,13 @@ const TeamAdditionalInfo: React.FC = () => {
           BACK
         </button>
         <button
-          className="h-[70px] w-1/3 bg-transparent border-4 border-white text-white px-4 py-2 ms-2 font-press-start text-[16px] transition-all opacity-50 cursor-not-allowed"
+          className={`h-[70px] w-1/3 bg-transparent border-4 border-white text-white px-4 py-2 ms-2 font-press-start text-[16px] transition-all ${
+            currentPage === 2
+              ? 'opacity-50 cursor-not-allowed'
+              : 'hover:bg-white/20 active:translate-y-px'
+          }`}
           onClick={handleNext}
-          disabled={true}
+          disabled={currentPage === 2}
         >
           &gt;
         </button>
