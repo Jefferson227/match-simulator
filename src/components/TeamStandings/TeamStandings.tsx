@@ -85,6 +85,14 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
     if (page < totalPages - 1) setPage(page + 1);
   };
 
+  const saveSession = () => {
+    sessionService.saveSession({
+      general: generalState,
+      championship: championshipState,
+      matches,
+    });
+  };
+
   const handleContinue = () => {
     if (isSeasonComplete) {
       handlePromotionRelegationLogic(updateChampionshipState, championshipState);
@@ -100,6 +108,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
     }
 
     setIsRoundOver(false);
+    saveSession();
     setScreenDisplayed('TeamManager');
   };
 
