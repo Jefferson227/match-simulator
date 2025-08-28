@@ -96,12 +96,17 @@ export const championshipReducer = (
     case 'UPDATE_TEAM_MORALE':
       // Update morale for both human-controlled and AI-controlled teams
       const updatedHumanTeam = state.humanPlayerBaseTeam
-        ? updateTeamMoraleAndStrength([state.humanPlayerBaseTeam], action.payload)[0]
+        ? updateTeamMoraleAndStrength(
+            [state.humanPlayerBaseTeam],
+            action.payload,
+            state.tableStandings
+          )[0]
         : ({} as BaseTeam);
 
       const updatedAITeams = updateTeamMoraleAndStrength(
         state.teamsControlledAutomatically,
-        action.payload
+        action.payload,
+        state.tableStandings
       );
 
       return {

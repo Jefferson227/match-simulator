@@ -71,7 +71,11 @@ export function calculateUpdatedStandings(
 }
 
 // Helper function to update team morale and player strength
-export function updateTeamMoraleAndStrength(teams: BaseTeam[], matches: Match[]): BaseTeam[] {
+export function updateTeamMoraleAndStrength(
+  teams: BaseTeam[],
+  matches: Match[],
+  tableStandings: TableStanding[]
+): BaseTeam[] {
   // Create a map of team ID to match results
   const teamResults = new Map<string, 'win' | 'loss' | 'draw'>();
 
@@ -101,13 +105,27 @@ export function updateTeamMoraleAndStrength(teams: BaseTeam[], matches: Match[])
     const updatedTeam = JSON.parse(JSON.stringify(team)) as BaseTeam;
 
     // Update team morale based on match result
+    // TODO: Wrap this logic in a helper function
     if (result === 'win') {
       updatedTeam.morale = Math.min(100, (updatedTeam.morale || 0) + 10);
     } else if (result === 'loss') {
       updatedTeam.morale = Math.max(0, (updatedTeam.morale || 0) - 10);
     } else {
       // draw
-      updatedTeam.morale = Math.min(100, (updatedTeam.morale || 0) + 5);
+      const tablePosition = tableStandings.find((position) => position.teamId === updatedTeam.id);
+      if (!tablePosition) {
+        updatedTeam.morale = Math.min(100, (updatedTeam.morale || 0) + 5);
+      } else if (
+        tablePosition.wins > tablePosition.draws &&
+        tablePosition.wins > tablePosition.losses
+      ) {
+        updatedTeam.morale = Math.min(100, (updatedTeam.morale || 0) + 2);
+      } else if (
+        tablePosition.losses > tablePosition.draws &&
+        tablePosition.losses > tablePosition.wins
+      ) {
+        updatedTeam.morale = Math.min(100, (updatedTeam.morale || 0) - 2);
+      }
     }
 
     // Update player strength based on morale
