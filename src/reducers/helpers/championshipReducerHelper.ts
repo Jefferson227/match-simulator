@@ -107,14 +107,14 @@ export function updateTeamMoraleAndStrength(
     // Update team morale based on match result
     // TODO: Wrap this logic in a helper function
     if (result === 'win') {
-      updatedTeam.morale = Math.min(100, (updatedTeam.morale || 0) + 10);
+      updatedTeam.morale = Math.min(100, (updatedTeam.morale || 0) + 5);
     } else if (result === 'loss') {
-      updatedTeam.morale = Math.max(0, (updatedTeam.morale || 0) - 10);
+      updatedTeam.morale = Math.max(0, (updatedTeam.morale || 0) - 5);
     } else {
       // draw
       const tablePosition = tableStandings.find((position) => position.teamId === updatedTeam.id);
       if (!tablePosition) {
-        updatedTeam.morale = Math.min(100, (updatedTeam.morale || 0) + 5);
+        updatedTeam.morale = Math.min(100, (updatedTeam.morale || 0) + 3);
       } else if (
         tablePosition.wins > tablePosition.draws &&
         tablePosition.wins > tablePosition.losses
