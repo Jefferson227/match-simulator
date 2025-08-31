@@ -62,15 +62,17 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
           goalDifference: s.goalDifference,
           points: s.points,
         }))
-      : Array.from({ length: 16 }, (_, i) => ({
-          teamId: `CEA${i}`,
-          teamAbbreviation: 'CEA',
-          wins: 4,
-          draws: 3,
-          losses: 1,
-          goalDifference: 10,
-          points: 10,
-        }));
+      : [...championshipState.teamsControlledAutomatically, championshipState.humanPlayerBaseTeam]
+          .map((s) => ({
+            teamId: s.id,
+            teamAbbreviation: s.abbreviation,
+            wins: 0,
+            draws: 0,
+            losses: 0,
+            goalDifference: 0,
+            points: 0,
+          }))
+          .sort((a, b) => (a.teamAbbreviation > b.teamAbbreviation ? 1 : -1));
 
   const totalPages = Math.ceil(standings.length / RESULTS_PER_PAGE);
   const paginatedStandings = standings.slice(
