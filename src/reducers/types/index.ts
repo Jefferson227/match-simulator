@@ -22,6 +22,7 @@ export interface ChampionshipState {
   tableStandings: TableStanding[];
   year: number;
   otherChampionships: ChampionshipConfig[];
+  topScorers: TopScorer[];
 }
 
 export interface ChampionshipUpdate {
@@ -36,6 +37,12 @@ export interface ChampionshipUpdate {
   previousChampionship: ChampionshipConfig | undefined;
   updatedTeamsControlledAutomatically: BaseTeam[];
   seasonCalendar: SeasonRound[];
+}
+
+export interface TopScorer {
+  teamId: string;
+  playerId: string;
+  goals: number;
 }
 
 // Championship action types

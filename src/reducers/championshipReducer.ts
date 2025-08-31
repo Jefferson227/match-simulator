@@ -18,6 +18,7 @@ export const initialChampionshipState: ChampionshipState = {
   tableStandings: [],
   year: 0,
   otherChampionships: [],
+  topScorers: [],
 };
 
 // Championship reducer
