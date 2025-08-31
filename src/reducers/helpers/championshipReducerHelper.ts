@@ -173,7 +173,6 @@ function updatePlayersStrength(team: BaseTeam, result: TeamMatchResult): Player[
    * If the team loses and the morale is "neutral", 1 to 3 players decrease their strength
    * If the team loses and the morale is "good", 1 player has strength decreased
    */
-  const strengthChange = 1;
   const moraleType = getTeamMoraleType(team.morale);
   const playersToUpdate = getPlayersToUpdate(team.players.length, moraleType, result);
 
