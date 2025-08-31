@@ -41,8 +41,8 @@ function getUpdatedTeamMorale(team: BaseTeam, result: TeamMatchResult): number {
 
 function getPlayersToUpdate(
   teamPlayers: number,
-  moraleType: 'bad' | 'neutral' | 'good',
-  result: 'win' | 'loss' | 'draw'
+  moraleType: MoraleType,
+  result: TeamMatchResult
 ): PlayerStrengthUpdate {
   /** TODO:
    * Update players strength based on the match result + team morale
