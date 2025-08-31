@@ -1,13 +1,14 @@
-import { BaseTeam, Match, TableStanding } from '../../types';
-import { ChampionshipConfig } from '../../types';
+import { BaseTeam, Match, TableStanding, ChampionshipConfig, Player } from '../../types';
+import utils from '../../utils/utils';
+import { PlayerStrengthUpdate, MoraleType, TeamMatchResult } from '../types';
 
-function getTeamMoraleType(morale: number): 'bad' | 'neutral' | 'good' {
+function getTeamMoraleType(morale: number): MoraleType {
   if (morale <= 35) return 'bad';
   if (morale > 65) return 'good';
   return 'neutral';
 }
 
-function getUpdatedTeamMorale(team: BaseTeam, result: 'win' | 'loss' | 'draw'): number {
+function getUpdatedTeamMorale(team: BaseTeam, result: TeamMatchResult): number {
   /** TODO:
    * Update team morale based on the match result + current morale
    * If the team wins and the morale is "bad", the morale gets increased by 10
@@ -36,6 +37,147 @@ function getUpdatedTeamMorale(team: BaseTeam, result: 'win' | 'loss' | 'draw'): 
   }
 
   return defaultMorale;
+}
+
+function getPlayersToUpdate(
+  teamPlayers: number,
+  moraleType: 'bad' | 'neutral' | 'good',
+  result: 'win' | 'loss' | 'draw'
+): PlayerStrengthUpdate {
+  /** TODO:
+   * Update players strength based on the match result + team morale
+   * If the team wins and the morale is "bad", 1 to 3 players increase their strength
+   * If the team wins and the morale is "neutral", 3 to 5 players increase their strength
+   * If the team wins and the morale is "good", 5 to 7 players increase their strength
+   * If the team draws and the morale is "bad", 1 player has the strength decreased
+   * If the team draws and the morale is "neutral", no player has the strength increased nor decreased
+   * If the team draws and the morale is "good", 1 player has the strength increased
+   * If the team loses and the morale is "bad", 3 to 5 players decrease their strength
+   * If the team loses and the morale is "neutral", 1 to 3 players decrease their strength
+   * If the team loses and the morale is "good", 1 player has strength decreased
+   */
+  let strengthChange = 0;
+
+  switch (result) {
+    case 'win':
+      strengthChange = 1;
+
+      switch (moraleType) {
+        case 'bad':
+          return {
+            numberOfPlayers: utils.getRandomNumberIntoRange(1, 3, teamPlayers),
+            strengthChange,
+          };
+        case 'neutral':
+          return {
+            numberOfPlayers: utils.getRandomNumberIntoRange(3, 5, teamPlayers),
+            strengthChange,
+          };
+        case 'good':
+          return {
+            numberOfPlayers: utils.getRandomNumberIntoRange(5, 7, teamPlayers),
+            strengthChange,
+          };
+      }
+      break;
+    case 'draw':
+      switch (moraleType) {
+        case 'bad':
+          return {
+            numberOfPlayers: 1,
+            strengthChange: -1,
+          };
+        case 'good':
+          return {
+            numberOfPlayers: 1,
+            strengthChange: 1,
+          };
+        case 'neutral':
+          return {
+            numberOfPlayers: 0,
+            strengthChange: 0,
+          };
+      }
+      break;
+    case 'loss':
+      strengthChange = -1;
+
+      switch (moraleType) {
+        case 'bad':
+          return {
+            numberOfPlayers: utils.getRandomNumberIntoRange(3, 5, teamPlayers),
+            strengthChange: -1,
+          };
+        case 'neutral':
+          return {
+            numberOfPlayers: utils.getRandomNumberIntoRange(1, 3, teamPlayers),
+            strengthChange: -1,
+          };
+        case 'good':
+          return {
+            numberOfPlayers: 1,
+            strengthChange: -1,
+          };
+      }
+      break;
+  }
+}
+
+function getPlayersWithUpdatedStrength(
+  playersToUpdate: PlayerStrengthUpdate,
+  team: BaseTeam
+): Player[] {
+  if (playersToUpdate.numberOfPlayers <= 0) return team.players;
+
+  if ((team.players?.length || 0) === 0) return [];
+
+  // Create a copy of the players array to avoid mutating the original
+  const players = [...team.players];
+  const updatedIndices = new Set<number>();
+  let updatesRemaining = Math.min(playersToUpdate.numberOfPlayers, players.length);
+
+  // Select and update random players
+  while (updatesRemaining > 0 && updatedIndices.size < players.length) {
+    const randomIndex = Math.floor(Math.random() * players.length);
+
+    // Skip if we've already updated this player
+    if (updatedIndices.has(randomIndex)) continue;
+
+    const player = players[randomIndex];
+
+    // Update player strength, ensuring it stays within 1-100 range
+    if (player.strength !== undefined) {
+      player.strength = Math.max(
+        1,
+        Math.min(100, (player.strength || 50) + playersToUpdate.strengthChange)
+      );
+      updatedIndices.add(randomIndex);
+      updatesRemaining--;
+    }
+  }
+
+  // Update the team with the modified players
+  return players;
+}
+
+function updatePlayersStrength(team: BaseTeam, result: TeamMatchResult): Player[] {
+  /** TODO:
+   * Update players strength based on the match result + team morale
+   * If the team wins and the morale is "bad", 1 to 3 players increase their strength
+   * If the team wins and the morale is "neutral", 3 to 5 players increase their strength
+   * If the team wins and the morale is "good", 5 to 7 players increase their strength
+   * If the team draws and the morale is "bad", 1 player has the strength decreased
+   * If the team draws and the morale is "neutral", no player has the strength increased nor decreased
+   * If the team draws and the morale is "good", 1 player has the strength increased
+   * If the team loses and the morale is "bad", 3 to 5 players decrease their strength
+   * If the team loses and the morale is "neutral", 1 to 3 players decrease their strength
+   * If the team loses and the morale is "good", 1 player has strength decreased
+   */
+  const strengthChange = 1;
+  const moraleType = getTeamMoraleType(team.morale);
+  const playersToUpdate = getPlayersToUpdate(team.players.length, moraleType, result);
+
+  return getPlayersWithUpdatedStrength(playersToUpdate, team);
 }
 
 export function calculateUpdatedStandings(
@@ -108,13 +250,9 @@ export function calculateUpdatedStandings(
 }
 
 // Helper function to update team morale and player strength
-export function updateTeamMoraleAndStrength(
-  teams: BaseTeam[],
-  matches: Match[],
-  tableStandings: TableStanding[]
-): BaseTeam[] {
+export function updateTeamMoraleAndStrength(teams: BaseTeam[], matches: Match[]): BaseTeam[] {
   // Create a map of team ID to match results
-  const teamResults = new Map<string, 'win' | 'loss' | 'draw'>();
+  const teamResults = new Map<string, TeamMatchResult>();
 
   // Process each match to determine results
   for (const match of matches) {
@@ -163,47 +301,7 @@ export function updateTeamMoraleAndStrength(
      * If the team loses and the morale is "neutral", up to 3 players decrease their strength
      * If the team loses and the morale is "good", no player has strength decreased
      */
-    if (updatedTeam.players && updatedTeam.players.length > 0) {
-      let playersToUpdate = 0;
-      let strengthChange = 0;
-
-      if (updatedTeam.morale <= 35) {
-        // Decrease strength for 3-5 random players
-        playersToUpdate = Math.min(updatedTeam.players.length, Math.floor(Math.random() * 3) + 3);
-        strengthChange = -1;
-      } else if (updatedTeam.morale > 65) {
-        // Increase strength for 3-5 random players
-        playersToUpdate = Math.min(updatedTeam.players.length, Math.floor(Math.random() * 3) + 3);
-        strengthChange = 1;
-      }
-
-      if (playersToUpdate > 0 && updatedTeam.players && updatedTeam.players.length > 0) {
-        // Create a copy of the players array to avoid mutating the original
-        const players = [...updatedTeam.players];
-        const updatedIndices = new Set<number>();
-        let updatesRemaining = Math.min(playersToUpdate, players.length);
-
-        // Select and update random players
-        while (updatesRemaining > 0 && updatedIndices.size < players.length) {
-          const randomIndex = Math.floor(Math.random() * players.length);
-
-          // Skip if we've already updated this player
-          if (updatedIndices.has(randomIndex)) continue;
-
-          const player = players[randomIndex];
-
-          // Update player strength, ensuring it stays within 1-100 range
-          if (player.strength !== undefined) {
-            player.strength = Math.max(1, Math.min(100, (player.strength || 50) + strengthChange));
-            updatedIndices.add(randomIndex);
-            updatesRemaining--;
-          }
-        }
-
-        // Update the team with the modified players
-        updatedTeam.players = players;
-      }
-    }
+    updatedTeam.players = updatePlayersStrength(updatedTeam, result);
 
     return updatedTeam;
   });

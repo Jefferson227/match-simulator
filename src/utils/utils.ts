@@ -243,6 +243,11 @@ function isNullOrWhitespace(str: string | null | undefined): boolean {
   return str === null || str === undefined || str.trim().length === 0;
 }
 
+function getRandomNumberIntoRange(from: number, to: number, minimum?: number) {
+  const randomNumber = Math.floor(Math.random() * (to - from + 1)) + from;
+  return minimum ? Math.min(minimum, randomNumber) : randomNumber;
+}
+
 const utils = {
   addPlayerAttributes,
   getRandomNumber,
@@ -258,6 +263,7 @@ const utils = {
   getMaxDefenseStrength,
   shortenPlayerName,
   isNullOrWhitespace,
+  getRandomNumberIntoRange,
 };
 
 export default utils;

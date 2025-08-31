@@ -74,6 +74,15 @@ export interface GeneralState {
   isRoundOver: boolean;
 }
 
+export interface PlayerStrengthUpdate {
+  numberOfPlayers: number;
+  strengthChange: number;
+}
+
+export type MoraleType = 'bad' | 'neutral' | 'good';
+
+export type TeamMatchResult = 'win' | 'loss' | 'draw';
+
 export type GeneralAction =
   | { type: 'SET_CURRENT_PAGE'; payload: number }
   | { type: 'SET_BASE_TEAM'; payload: BaseTeam }
