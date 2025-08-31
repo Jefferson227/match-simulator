@@ -104,8 +104,15 @@ export function updateTeamMoraleAndStrength(
     // Create a deep copy of the team to avoid mutating the original
     const updatedTeam = JSON.parse(JSON.stringify(team)) as BaseTeam;
 
-    // Update team morale based on match result
-    // TODO: Wrap this logic in a helper function
+    /** TODO:
+     * Update team morale based on the match result + current morale
+     * If the team wins and the morale is "bad", the morale gets increased by 10
+     * If the team wins and the morale is "neutral" or "good", the morale gets increased by 5
+     * If the team draws and the morale is "bad", the morale gets decreased by 2
+     * If the team draws and the morale is "neutral" or "good", the morale gets increased by 2
+     * If the team loses and the morale is "bad" or "neutral", the morale gets decreased by 5
+     * If the team loses and the morale is "good", the morale gets decreased by 10
+     */
     if (result === 'win') {
       updatedTeam.morale = Math.min(100, (updatedTeam.morale || 0) + 5);
     } else if (result === 'loss') {
@@ -128,7 +135,18 @@ export function updateTeamMoraleAndStrength(
       }
     }
 
-    // Update player strength based on morale
+    /** TODO:
+     * Update players strength based on the match result + team morale
+     * If the team wins and the morale is "bad", up to 3 players increase their strength
+     * If the team wins and the morale is "neutral", up to 5 players increase their strength
+     * If the team wins and the morale is "good", up to 7 players increase their strength
+     * If the team draws and the morale is "bad", 1 player has the strength decreased
+     * If the team draws and the morale is "neutral", no player has the strength increased nor decreased
+     * If the team draws and the morale is "good", 1 player has the strength
+     * If the team loses and the morale is "bad", up to 5 players decrease their strength
+     * If the team loses and the morale is "neutral", up to 3 players decrease their strength
+     * If the team loses and the morale is "good", no player has strength decreased
+     */
     if (updatedTeam.players && updatedTeam.players.length > 0) {
       let playersToUpdate = 0;
       let strengthChange = 0;
