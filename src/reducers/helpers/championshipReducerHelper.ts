@@ -9,31 +9,24 @@ function getTeamMoraleType(morale: number): MoraleType {
 }
 
 function getUpdatedTeamMorale(team: BaseTeam, result: TeamMatchResult): number {
-  /** TODO:
-   * Update team morale based on the match result + current morale
-   * If the team wins and the morale is "bad", the morale gets increased by 10
-   * If the team wins and the morale is "neutral" or "good", the morale gets increased by 5
-   * If the team draws and the morale is "bad", the morale gets decreased by 2
-   * If the team draws and the morale is "neutral" or "good", the morale gets increased by 2
-   * If the team loses and the morale is "bad" or "neutral", the morale gets decreased by 5
-   * If the team loses and the morale is "good", the morale gets decreased by 10
-   */
   const defaultMorale = 50;
   const moraleType = getTeamMoraleType(team.morale);
 
-  if (result === 'win') {
-    if (moraleType === 'bad') return team.morale + 10;
-    if (moraleType === 'neutral' || moraleType === 'good') return team.morale + 5;
-  }
-
-  if (result === 'draw') {
-    if (moraleType === 'bad') return team.morale - 2;
-    if (moraleType === 'neutral' || moraleType === 'good') return team.morale + 2;
-  }
-
-  if (result === 'loss') {
-    if (moraleType === 'bad' || moraleType === 'neutral') return team.morale - 5;
-    if (moraleType === 'good') return team.morale - 10;
+  switch (result) {
+    case 'win':
+      if (moraleType === 'bad') return team.morale + 10;
+      if (moraleType === 'neutral' || moraleType === 'good') return team.morale + 5;
+      break;
+    case 'draw':
+      if (moraleType === 'bad') return team.morale - 2;
+      if (moraleType === 'neutral' || moraleType === 'good') return team.morale + 2;
+      break;
+    case 'loss':
+      if (moraleType === 'bad' || moraleType === 'neutral') return team.morale - 5;
+      if (moraleType === 'good') return team.morale - 10;
+      break;
+    default:
+      return defaultMorale;
   }
 
   return defaultMorale;
