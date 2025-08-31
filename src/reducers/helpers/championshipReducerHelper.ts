@@ -148,6 +148,27 @@ function updatePlayersStrength(team: BaseTeam, result: TeamMatchResult): Player[
   return getPlayersWithUpdatedStrength(playersToUpdate, team);
 }
 
+function getTeamResults(matches: Match[]): Map<string, TeamMatchResult> {
+  const teamResults = new Map<string, TeamMatchResult>();
+  for (const match of matches) {
+    const homeScore = match.homeTeam.score || 0;
+    const awayScore = match.visitorTeam.score || 0;
+
+    if (homeScore > awayScore) {
+      teamResults.set(match.homeTeam.id, 'win');
+      teamResults.set(match.visitorTeam.id, 'loss');
+    } else if (homeScore < awayScore) {
+      teamResults.set(match.homeTeam.id, 'loss');
+      teamResults.set(match.visitorTeam.id, 'win');
+    } else {
+      teamResults.set(match.homeTeam.id, 'draw');
+      teamResults.set(match.visitorTeam.id, 'draw');
+    }
+  }
+
+  return teamResults;
+}
+
 export function calculateUpdatedStandings(
   prevStandings: TableStanding[] = [],
   matches: Match[]
@@ -217,34 +238,13 @@ export function calculateUpdatedStandings(
   );
 }
 
-// Helper function to update team morale and player strength
 export function updateTeamMoraleAndStrength(teams: BaseTeam[], matches: Match[]): BaseTeam[] {
-  // Create a map of team ID to match results
-  const teamResults = new Map<string, TeamMatchResult>();
+  const teamResults = getTeamResults(matches);
 
-  // Process each match to determine results
-  for (const match of matches) {
-    const homeScore = match.homeTeam.score || 0;
-    const awayScore = match.visitorTeam.score || 0;
-
-    if (homeScore > awayScore) {
-      teamResults.set(match.homeTeam.id, 'win');
-      teamResults.set(match.visitorTeam.id, 'loss');
-    } else if (homeScore < awayScore) {
-      teamResults.set(match.homeTeam.id, 'loss');
-      teamResults.set(match.visitorTeam.id, 'win');
-    } else {
-      teamResults.set(match.homeTeam.id, 'draw');
-      teamResults.set(match.visitorTeam.id, 'draw');
-    }
-  }
-
-  // Update each team's morale and player strength
   return teams.map((team) => {
     const result = teamResults.get(team.id);
     if (!result) return team; // Team not in any matches
 
-    // Create a deep copy of the team to avoid mutating the original
     const updatedTeam = JSON.parse(JSON.stringify(team)) as BaseTeam;
     updatedTeam.morale = getUpdatedTeamMorale(updatedTeam, result);
     updatedTeam.players = updatePlayersStrength(updatedTeam, result);
