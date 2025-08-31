@@ -37,18 +37,6 @@ function getPlayersToUpdate(
   moraleType: MoraleType,
   result: TeamMatchResult
 ): PlayerStrengthUpdate {
-  /** TODO:
-   * Update players strength based on the match result + team morale
-   * If the team wins and the morale is "bad", 1 to 3 players increase their strength
-   * If the team wins and the morale is "neutral", 3 to 5 players increase their strength
-   * If the team wins and the morale is "good", 5 to 7 players increase their strength
-   * If the team draws and the morale is "bad", 1 player has the strength decreased
-   * If the team draws and the morale is "neutral", no player has the strength increased nor decreased
-   * If the team draws and the morale is "good", 1 player has the strength increased
-   * If the team loses and the morale is "bad", 3 to 5 players decrease their strength
-   * If the team loses and the morale is "neutral", 1 to 3 players decrease their strength
-   * If the team loses and the morale is "good", 1 player has strength decreased
-   */
   let strengthChange = 0;
 
   switch (result) {
@@ -154,18 +142,6 @@ function getPlayersWithUpdatedStrength(
 }
 
 function updatePlayersStrength(team: BaseTeam, result: TeamMatchResult): Player[] {
-  /** TODO:
-   * Update players strength based on the match result + team morale
-   * If the team wins and the morale is "bad", 1 to 3 players increase their strength
-   * If the team wins and the morale is "neutral", 3 to 5 players increase their strength
-   * If the team wins and the morale is "good", 5 to 7 players increase their strength
-   * If the team draws and the morale is "bad", 1 player has the strength decreased
-   * If the team draws and the morale is "neutral", no player has the strength increased nor decreased
-   * If the team draws and the morale is "good", 1 player has the strength increased
-   * If the team loses and the morale is "bad", 3 to 5 players decrease their strength
-   * If the team loses and the morale is "neutral", 1 to 3 players decrease their strength
-   * If the team loses and the morale is "good", 1 player has strength decreased
-   */
   const moraleType = getTeamMoraleType(team.morale);
   const playersToUpdate = getPlayersToUpdate(team.players.length, moraleType, result);
 
@@ -270,29 +246,7 @@ export function updateTeamMoraleAndStrength(teams: BaseTeam[], matches: Match[])
 
     // Create a deep copy of the team to avoid mutating the original
     const updatedTeam = JSON.parse(JSON.stringify(team)) as BaseTeam;
-
-    /** TODO:
-     * Update team morale based on the match result + current morale
-     * If the team wins and the morale is "bad", the morale gets increased by 10
-     * If the team wins and the morale is "neutral" or "good", the morale gets increased by 5
-     * If the team draws and the morale is "bad", the morale gets decreased by 2
-     * If the team draws and the morale is "neutral" or "good", the morale gets increased by 2
-     * If the team loses and the morale is "bad" or "neutral", the morale gets decreased by 5
-     * If the team loses and the morale is "good", the morale gets decreased by 10
-     */
     updatedTeam.morale = getUpdatedTeamMorale(updatedTeam, result);
-    /** TODO:
-     * Update players strength based on the match result + team morale
-     * If the team wins and the morale is "bad", up to 3 players increase their strength
-     * If the team wins and the morale is "neutral", up to 5 players increase their strength
-     * If the team wins and the morale is "good", up to 7 players increase their strength
-     * If the team draws and the morale is "bad", 1 player has the strength decreased
-     * If the team draws and the morale is "neutral", no player has the strength increased nor decreased
-     * If the team draws and the morale is "good", 1 player has the strength
-     * If the team loses and the morale is "bad", up to 5 players decrease their strength
-     * If the team loses and the morale is "neutral", up to 3 players decrease their strength
-     * If the team loses and the morale is "good", no player has strength decreased
-     */
     updatedTeam.players = updatePlayersStrength(updatedTeam, result);
 
     return updatedTeam;
