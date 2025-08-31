@@ -1,6 +1,43 @@
 import { BaseTeam, Match, TableStanding } from '../../types';
 import { ChampionshipConfig } from '../../types';
 
+function getTeamMoraleType(morale: number): 'bad' | 'neutral' | 'good' {
+  if (morale <= 35) return 'bad';
+  if (morale > 65) return 'good';
+  return 'neutral';
+}
+
+function getUpdatedTeamMorale(team: BaseTeam, result: 'win' | 'loss' | 'draw'): number {
+  /** TODO:
+   * Update team morale based on the match result + current morale
+   * If the team wins and the morale is "bad", the morale gets increased by 10
+   * If the team wins and the morale is "neutral" or "good", the morale gets increased by 5
+   * If the team draws and the morale is "bad", the morale gets decreased by 2
+   * If the team draws and the morale is "neutral" or "good", the morale gets increased by 2
+   * If the team loses and the morale is "bad" or "neutral", the morale gets decreased by 5
+   * If the team loses and the morale is "good", the morale gets decreased by 10
+   */
+  const defaultMorale = 50;
+  const moraleType = getTeamMoraleType(team.morale);
+
+  if (result === 'win') {
+    if (moraleType === 'bad') return team.morale + 10;
+    if (moraleType === 'neutral' || moraleType === 'good') return team.morale + 5;
+  }
+
+  if (result === 'draw') {
+    if (moraleType === 'bad') return team.morale - 2;
+    if (moraleType === 'neutral' || moraleType === 'good') return team.morale + 2;
+  }
+
+  if (result === 'loss') {
+    if (moraleType === 'bad' || moraleType === 'neutral') return team.morale - 5;
+    if (moraleType === 'good') return team.morale - 10;
+  }
+
+  return defaultMorale;
+}
+
 export function calculateUpdatedStandings(
   prevStandings: TableStanding[] = [],
   matches: Match[]
@@ -113,28 +150,7 @@ export function updateTeamMoraleAndStrength(
      * If the team loses and the morale is "bad" or "neutral", the morale gets decreased by 5
      * If the team loses and the morale is "good", the morale gets decreased by 10
      */
-    if (result === 'win') {
-      updatedTeam.morale = Math.min(100, (updatedTeam.morale || 0) + 5);
-    } else if (result === 'loss') {
-      updatedTeam.morale = Math.max(0, (updatedTeam.morale || 0) - 5);
-    } else {
-      // draw
-      const tablePosition = tableStandings.find((position) => position.teamId === updatedTeam.id);
-      if (!tablePosition) {
-        updatedTeam.morale = Math.min(100, (updatedTeam.morale || 0) + 3);
-      } else if (
-        tablePosition.wins > tablePosition.draws &&
-        tablePosition.wins > tablePosition.losses
-      ) {
-        updatedTeam.morale = Math.min(100, (updatedTeam.morale || 0) + 2);
-      } else if (
-        tablePosition.losses > tablePosition.draws &&
-        tablePosition.losses > tablePosition.wins
-      ) {
-        updatedTeam.morale = Math.min(100, (updatedTeam.morale || 0) - 2);
-      }
-    }
-
+    updatedTeam.morale = getUpdatedTeamMorale(updatedTeam, result);
     /** TODO:
      * Update players strength based on the match result + team morale
      * If the team wins and the morale is "bad", up to 3 players increase their strength
