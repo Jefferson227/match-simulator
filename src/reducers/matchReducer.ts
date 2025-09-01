@@ -2,7 +2,7 @@ import utils from '../utils/utils';
 import { MatchState } from '../types';
 import { MatchAction } from '../contexts/MatchContext';
 
-const { addPlayerAttributes, getAverage, getSum } = utils;
+const { addPlayerAttributes, getAverage } = utils;
 
 export const matchReducer = (state: MatchState, action: MatchAction): MatchState => {
   switch (action.type) {
