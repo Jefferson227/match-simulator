@@ -85,9 +85,7 @@ function handleBallShoot(
     );
 
   // Get the opposing team
-  const opposingTeam = match.ballPossession.isHomeTeam
-    ? match.visitorTeam
-    : match.homeTeam;
+  const opposingTeam = match.ballPossession.isHomeTeam ? match.visitorTeam : match.homeTeam;
 
   // Get all players from the current position from the team with the ball possession
   const offensivePlayers = teamWithBallPossession.starters.filter(
@@ -95,12 +93,8 @@ function handleBallShoot(
   );
 
   // Roll the dice to choose one player from the current position to dispute against the opposing team
-  const shooter =
-    offensivePlayers[getRandomNumber(0, offensivePlayers.length - 1)];
-  const shooterMaxStrength = getMaxShooterStrength(
-    shooter,
-    teamWithBallPossession
-  );
+  const shooter = offensivePlayers[getRandomNumber(0, offensivePlayers.length - 1)];
+  const shooterMaxStrength = getMaxShooterStrength(shooter, teamWithBallPossession);
 
   // Get the sum of the strength of all DF players plus the GK from the opposing team
   const defensePlayersMaxStrength = getMaxDefenseStrength(opposingTeam);
@@ -128,9 +122,7 @@ function handleBallShoot(
 
   // Otherwise, the ball possession is switched to the opposing team
   match.ballPossession.isHomeTeam = !match.ballPossession.isHomeTeam;
-  match.ballPossession.position = getOpposingPosition(
-    match.ballPossession.position
-  );
+  match.ballPossession.position = getOpposingPosition(match.ballPossession.position);
 
   // Log the shot attempt failed
   if (match.homeTeam.name === debugTeam)
@@ -141,14 +133,10 @@ function handleBallShoot(
 
 function handleBallPassToNextArea(match: Match): void {
   // Get the team with the ball possession
-  var teamWithBallPossession = match.ballPossession.isHomeTeam
-    ? match.homeTeam
-    : match.visitorTeam;
+  var teamWithBallPossession = match.ballPossession.isHomeTeam ? match.homeTeam : match.visitorTeam;
 
   // Get the opposing team
-  var opposingTeam = match.ballPossession.isHomeTeam
-    ? match.visitorTeam
-    : match.homeTeam;
+  var opposingTeam = match.ballPossession.isHomeTeam ? match.visitorTeam : match.homeTeam;
 
   // Get the sum of the strength of all players in the position from the team with the ball possession
   const maxTeamWithBallPossessionStrength = getMaxTeamStrength(
@@ -170,18 +158,11 @@ function handleBallPassToNextArea(match: Match): void {
     1,
     maxTeamWithBallPossessionStrength
   );
-  const opposingTeamStrengthForDispute = getRandomNumber(
-    1,
-    maxOpposingTeamStrength
-  );
+  const opposingTeamStrengthForDispute = getRandomNumber(1, maxOpposingTeamStrength);
 
   // Considering the team with the ball possession wins the dispute, so the ball is passed to the next area
-  if (
-    teamWithBallPossessionStrengthForDispute >= opposingTeamStrengthForDispute
-  ) {
-    match.ballPossession.position = getNextFieldArea(
-      match.ballPossession.position
-    );
+  if (teamWithBallPossessionStrengthForDispute >= opposingTeamStrengthForDispute) {
+    match.ballPossession.position = getNextFieldArea(match.ballPossession.position);
 
     // Log the ball passed to the next area
     if (match.homeTeam.name === debugTeam)
@@ -204,14 +185,10 @@ function handleBallPassToNextArea(match: Match): void {
 
 function handleBallPassToPreviousArea(match: Match): void {
   // Get the team with the ball possession
-  var teamWithBallPossession = match.ballPossession.isHomeTeam
-    ? match.homeTeam
-    : match.visitorTeam;
+  var teamWithBallPossession = match.ballPossession.isHomeTeam ? match.homeTeam : match.visitorTeam;
 
   // Get the opposing team
-  var opposingTeam = match.ballPossession.isHomeTeam
-    ? match.visitorTeam
-    : match.homeTeam;
+  var opposingTeam = match.ballPossession.isHomeTeam ? match.visitorTeam : match.homeTeam;
 
   // Get the sum of the strength of all players in the position from the team with the ball possession
   const maxTeamWithBallPossessionStrength = getMaxTeamStrength(
@@ -233,18 +210,11 @@ function handleBallPassToPreviousArea(match: Match): void {
     1,
     maxTeamWithBallPossessionStrength
   );
-  const opposingTeamStrengthForDispute = getRandomNumber(
-    1,
-    maxOpposingTeamStrength
-  );
+  const opposingTeamStrengthForDispute = getRandomNumber(1, maxOpposingTeamStrength);
 
   // If the team with the ball possession wins the dispute, so the ball is passed to the previous area
-  if (
-    teamWithBallPossessionStrengthForDispute >= opposingTeamStrengthForDispute
-  ) {
-    match.ballPossession.position = getPreviousFieldArea(
-      match.ballPossession.position
-    );
+  if (teamWithBallPossessionStrengthForDispute >= opposingTeamStrengthForDispute) {
+    match.ballPossession.position = getPreviousFieldArea(match.ballPossession.position);
 
     // Log the ball passed to the previous area
     if (match.homeTeam.name === debugTeam)
@@ -267,14 +237,10 @@ function handleBallPassToPreviousArea(match: Match): void {
 
 function handleBallMovement(match: Match): void {
   // Get the team with the ball possession
-  var teamWithBallPossession = match.ballPossession.isHomeTeam
-    ? match.homeTeam
-    : match.visitorTeam;
+  var teamWithBallPossession = match.ballPossession.isHomeTeam ? match.homeTeam : match.visitorTeam;
 
   // Get the opposing team
-  var opposingTeam = match.ballPossession.isHomeTeam
-    ? match.visitorTeam
-    : match.homeTeam;
+  var opposingTeam = match.ballPossession.isHomeTeam ? match.visitorTeam : match.homeTeam;
 
   // Get the sum of the strength of all players in the position from the team with the ball possession
   const maxTeamWithBallPossessionStrength = getMaxTeamStrength(
@@ -296,15 +262,10 @@ function handleBallMovement(match: Match): void {
     1,
     maxTeamWithBallPossessionStrength
   );
-  const opposingTeamStrengthForDispute = getRandomNumber(
-    1,
-    maxOpposingTeamStrength
-  );
+  const opposingTeamStrengthForDispute = getRandomNumber(1, maxOpposingTeamStrength);
 
   // If the team with the ball possession wins the dispute, so the possession is maintained
-  if (
-    teamWithBallPossessionStrengthForDispute >= opposingTeamStrengthForDispute
-  ) {
+  if (teamWithBallPossessionStrengthForDispute >= opposingTeamStrengthForDispute) {
     // Log the ball movement within the same area
     if (match.homeTeam.name === debugTeam)
       console.log(
