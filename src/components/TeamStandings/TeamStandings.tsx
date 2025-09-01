@@ -24,6 +24,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
     incrementCurrentRound,
     resetTableStandings,
     updateChampionshipState,
+    updateTopScorers,
   } = useChampionshipContext();
   const { matches } = useContext(MatchContext);
   const RESULTS_PER_PAGE = 12;
@@ -109,6 +110,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
       incrementCurrentRound();
     }
 
+    updateTopScorers(matches);
     setIsRoundOver(false);
     saveSession();
     setScreenDisplayed('TeamManager');

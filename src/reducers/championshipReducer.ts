@@ -111,6 +111,36 @@ export const championshipReducer = (
         teamsControlledAutomatically: updatedAITeams,
       };
 
+    case 'UPDATE_TOP_SCORERS':
+      // Calculate top scorers from all matches
+      const scorerMap = new Map<string, { teamId: string; playerId: string; goals: number }>();
+
+      // TODO: playerId and teamId are missing from Scorer
+      action.payload.forEach((match) => {
+        match.scorers?.forEach((scorer) => {
+          const key = `${scorer.playerId}-${scorer.teamId}`;
+          const existing = scorerMap.get(key);
+
+          if (existing) {
+            existing.goals += 1;
+          } else {
+            scorerMap.set(key, {
+              teamId: scorer.teamId,
+              playerId: scorer.playerId,
+              goals: 1,
+            });
+          }
+        });
+      });
+
+      // Convert to array and sort by goals
+      const topScorers = Array.from(scorerMap.values()).sort((a, b) => b.goals - a.goals);
+
+      return {
+        ...state,
+        topScorers,
+      };
+
     case 'ADD_OR_UPDATE_OTHER_CHAMPIONSHIP':
       return {
         ...state,

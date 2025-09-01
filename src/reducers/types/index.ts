@@ -67,6 +67,7 @@ export type ChampionshipAction =
       payload: ChampionshipConfig[];
     }
   | { type: 'UPDATE_TEAM_MORALE'; payload: Match[] }
+  | { type: 'UPDATE_TOP_SCORERS'; payload: Match[] }
   | { type: 'UPDATE_CHAMPIONSHIP_STATE'; payload: ChampionshipUpdate };
 
 export interface GeneralState {

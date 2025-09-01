@@ -21,46 +21,44 @@ const ChampionshipDetails: React.FC = () => {
     });
   }, [generalState, championshipState, matches]);
 
-  // Calculate top scorers from all matches
-  const calculateTopScorers = (): TopScorer[] => {
-    const scorerMap = new Map<
-      string,
-      { playerName: string; teamAbbreviation: string; goals: number }
-    >();
-
-    // Go through all matches and count goals for each player
-    matches.forEach((match) => {
-      match.scorers?.forEach((scorer) => {
-        const key = scorer.playerName;
-        const existing = scorerMap.get(key);
-
-        if (existing) {
-          existing.goals += 1;
-        } else {
-          // Find which team the scorer belongs to
-          const isHomeTeam = scorer.isHomeTeam;
-          const team = isHomeTeam ? match.homeTeam : match.visitorTeam;
-
-          scorerMap.set(key, {
-            playerName: scorer.playerName,
-            teamAbbreviation: team.abbreviation || team.name.substring(0, 3).toUpperCase(),
-            goals: 1,
-          });
-        }
-      });
-    });
-
-    // Convert to array, sort by goals, and take top 10
-    return Array.from(scorerMap.values())
-      .sort((a, b) => b.goals - a.goals)
+  // Get top scorers with player and team names
+  const getTopScorersWithNames = () => {
+    return championshipState.topScorers
       .slice(0, 10)
-      .map((scorer, index) => ({
-        ...scorer,
-        position: index + 1,
-      }));
+      .map((scorer, index) => {
+        // Find player name from teams
+        let playerName = 'Unknown Player';
+        let teamAbbreviation = 'UNK';
+
+        // Check human player team
+        if (championshipState.humanPlayerBaseTeam.id === scorer.teamId) {
+          const player = championshipState.humanPlayerBaseTeam.players.find(p => p.id === scorer.playerId);
+          if (player) {
+            playerName = player.name;
+            teamAbbreviation = championshipState.humanPlayerBaseTeam.abbreviation;
+          }
+        } else {
+          // Check AI teams
+          const team = championshipState.teamsControlledAutomatically.find(t => t.id === scorer.teamId);
+          if (team) {
+            const player = team.players.find(p => p.id === scorer.playerId);
+            if (player) {
+              playerName = player.name;
+              teamAbbreviation = team.abbreviation;
+            }
+          }
+        }
+
+        return {
+          playerName,
+          teamAbbreviation,
+          goals: scorer.goals,
+          position: index + 1,
+        };
+      });
   };
 
-  const topScorers = calculateTopScorers();
+  const topScorers = getTopScorersWithNames();
 
   // Get championship display name
   let championshipName = championshipState.selectedChampionship;

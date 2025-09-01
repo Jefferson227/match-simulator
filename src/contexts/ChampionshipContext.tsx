@@ -77,6 +77,13 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({ chil
     });
   };
 
+  const updateTopScorers = (matches: Match[]) => {
+    dispatch({
+      type: 'UPDATE_TOP_SCORERS',
+      payload: matches,
+    });
+  };
+
   const updateChampionshipState = (updateChampionshipObject: ChampionshipUpdate) => {
     dispatch({
       type: 'UPDATE_CHAMPIONSHIP_STATE',
@@ -102,6 +109,7 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({ chil
     setOtherChampionships,
     addOrUpdateOtherChampionship,
     updateTeamMorale,
+    updateTopScorers,
     updateChampionshipState,
   };
 
