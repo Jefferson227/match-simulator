@@ -107,7 +107,13 @@ function handleBallShoot(
   if (shooterStrength > defenseStrength) {
     match.latestGoal = { scorerName: shooter.name };
 
-    setScorer(match.id, { playerName: shooter.name, time });
+    const scorer = {
+      teamId: teamWithBallPossession.id,
+      playerId: shooter.id,
+      playerName: shooter.name,
+      time,
+    } as Scorer;
+    setScorer(match.id, scorer);
     increaseScore(match.id, { isHomeTeam: match.ballPossession.isHomeTeam });
 
     // Log the goal

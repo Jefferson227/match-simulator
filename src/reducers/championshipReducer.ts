@@ -134,7 +134,9 @@ export const championshipReducer = (
       });
 
       // Convert to array and sort by goals
-      const topScorers = Array.from(scorerMap.values()).sort((a, b) => b.goals - a.goals);
+      const topScorers = [...state.topScorers, ...Array.from(scorerMap.values())].sort(
+        (a, b) => b.goals - a.goals
+      );
 
       return {
         ...state,

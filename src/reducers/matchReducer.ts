@@ -56,13 +56,10 @@ export const matchReducer = (state: MatchState, action: MatchAction): MatchState
         matches: state.matches.map((m) => {
           if (m.id === matchId) {
             // Determine if the scorer is from the home team
-            const isHomeTeam = m.homeTeam.starters.some((p) => p.name === scorer.playerName);
+            const isHomeTeam = m.homeTeam.starters.some((p) => p.id === scorer.playerId);
             return {
               ...m,
-              lastScorer: {
-                playerName: scorer.playerName,
-                time: scorer.time,
-              },
+              lastScorer: scorer,
               scorers: [...(m.scorers || []), { ...scorer, isHomeTeam }],
             };
           }

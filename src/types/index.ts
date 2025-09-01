@@ -59,6 +59,8 @@ export interface MatchTeam {
 }
 
 export interface Scorer {
+  teamId: string;
+  playerId: string;
   playerName: string;
   time: number;
 }
