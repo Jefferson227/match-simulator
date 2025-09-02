@@ -81,7 +81,7 @@ const TeamViewer: React.FC = () => {
             <div
               className="h-full transition-all duration-300"
               style={{
-                width: `${baseTeam?.morale || 0}%`,
+                width: `${(baseTeam?.morale || 0) <= 0 ? 0 : baseTeam?.morale}%`,
                 backgroundColor: (() => {
                   const morale = baseTeam?.morale || 0;
                   if (morale <= 35) return '#ef4444'; // red
