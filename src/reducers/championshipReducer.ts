@@ -3,7 +3,7 @@ import {
   calculateUpdatedStandings,
   updateTeamMoraleAndStrength,
 } from './helpers/championshipReducerHelper';
-import { ChampionshipAction, ChampionshipState } from './types';
+import { ChampionshipAction, ChampionshipState, TopScorer } from './types';
 import { BaseTeam } from '../types';
 
 // Initial state
@@ -113,9 +113,11 @@ export const championshipReducer = (
 
     case 'UPDATE_TOP_SCORERS':
       // Calculate top scorers from all matches
-      const scorerMap = new Map<string, { teamId: string; playerId: string; goals: number }>();
+      let scorerMap = new Map<string, TopScorer>();
+      state.topScorers.forEach((topScorer) =>
+        scorerMap.set(`${topScorer.playerId}-${topScorer.teamId}`, topScorer)
+      );
 
-      // TODO: playerId and teamId are missing from Scorer
       action.payload.forEach((match) => {
         match.scorers?.forEach((scorer) => {
           const key = `${scorer.playerId}-${scorer.teamId}`;
@@ -134,9 +136,7 @@ export const championshipReducer = (
       });
 
       // Convert to array and sort by goals
-      const topScorers = [...state.topScorers, ...Array.from(scorerMap.values())].sort(
-        (a, b) => b.goals - a.goals
-      );
+      const topScorers = Array.from(scorerMap.values()).sort((a, b) => b.goals - a.goals);
 
       return {
         ...state,
