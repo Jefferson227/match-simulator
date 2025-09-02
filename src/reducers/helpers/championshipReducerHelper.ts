@@ -12,24 +12,29 @@ function getUpdatedTeamMorale(team: BaseTeam, result: TeamMatchResult): number {
   const defaultMorale = 50;
   const moraleType = getTeamMoraleType(team.morale);
 
+  let morale = 0;
   switch (result) {
     case 'win':
-      if (moraleType === 'bad') return team.morale + 10;
-      if (moraleType === 'neutral' || moraleType === 'good') return team.morale + 5;
+      if (moraleType === 'bad') morale = team.morale + 10;
+      if (moraleType === 'neutral' || moraleType === 'good') morale = team.morale + 5;
       break;
     case 'draw':
-      if (moraleType === 'bad') return team.morale - 2;
-      if (moraleType === 'neutral' || moraleType === 'good') return team.morale + 2;
+      if (moraleType === 'bad') morale = team.morale - 2;
+      if (moraleType === 'neutral' || moraleType === 'good') morale = team.morale + 2;
       break;
     case 'loss':
-      if (moraleType === 'bad' || moraleType === 'neutral') return team.morale - 5;
-      if (moraleType === 'good') return team.morale - 10;
+      if (moraleType === 'bad' || moraleType === 'neutral') morale = team.morale - 5;
+      if (moraleType === 'good') morale = team.morale - 10;
       break;
     default:
-      return defaultMorale;
+      morale = defaultMorale;
+      break;
   }
 
-  return defaultMorale;
+  if (morale < 0) return 0;
+  if (morale > 100) return 100;
+
+  return morale;
 }
 
 function getPlayersToUpdate(
