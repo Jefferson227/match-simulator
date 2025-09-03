@@ -1,0 +1,39 @@
+{
+  "name": "Figueirense Futebol Clube",
+  "shortName": "Figueirense",
+  "abbreviation": "FIG",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#000000",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 50,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Wilson", "strength": 0 },
+    { "position": "GK", "name": "Pegorari", "strength": 0 },
+    { "position": "DF", "name": "Guilherme Santos", "strength": 0 },
+    { "position": "DF", "name": "Airton", "strength": 0 },
+    { "position": "DF", "name": "Paulo Ricardo", "strength": 0 },
+    { "position": "DF", "name": "Gabriel Santana", "strength": 0 },
+    { "position": "DF", "name": "Diego Renan", "strength": 0 },
+    { "position": "DF", "name": "Jeferson", "strength": 0 },
+    { "position": "MF", "name": "Patrick", "strength": 0 },
+    { "position": "MF", "name": "Fillipe Soutto", "strength": 0 },
+    { "position": "MF", "name": "João Diogo", "strength": 0 },
+    { "position": "MF", "name": "Drayan", "strength": 0 },
+    { "position": "MF", "name": "Jhonatan", "strength": 0 },
+    { "position": "MF", "name": "Zé Mateus", "strength": 0 },
+    { "position": "FW", "name": "Welder", "strength": 0 },
+    { "position": "FW", "name": "João Victor", "strength": 0 },
+    { "position": "FW", "name": "Janderson", "strength": 0 },
+    { "position": "FW", "name": "Edson Carioca", "strength": 0 },
+    { "position": "FW", "name": "Gabriel Taliari", "strength": 0 },
+    { "position": "FW", "name": "Rodrigo Alves", "strength": 0 },
+    { "position": "FW", "name": "Wilson Júnior", "strength": 0 },
+    { "position": "FW", "name": "Bruno Michel", "strength": 0 },
+    { "position": "FW", "name": "Vinícius", "strength": 0 }
+  ]
+}

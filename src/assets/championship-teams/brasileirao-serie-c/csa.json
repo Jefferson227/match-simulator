@@ -1,0 +1,39 @@
+{
+  "name": "Centro Sportivo Alagoano",
+  "shortName": "CSA",
+  "abbreviation": "CSA",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#0066cc",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 50,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Marcelo Carné", "strength": 0 },
+    { "position": "GK", "name": "Ygor", "strength": 0 },
+    { "position": "DF", "name": "Carlão", "strength": 0 },
+    { "position": "DF", "name": "Werley", "strength": 0 },
+    { "position": "DF", "name": "Lucão", "strength": 0 },
+    { "position": "DF", "name": "Guilherme Romão", "strength": 0 },
+    { "position": "DF", "name": "João Vitor", "strength": 0 },
+    { "position": "DF", "name": "Matheus Felipe", "strength": 0 },
+    { "position": "MF", "name": "Geovane", "strength": 0 },
+    { "position": "MF", "name": "Gabriel", "strength": 0 },
+    { "position": "MF", "name": "Yann Rolim", "strength": 0 },
+    { "position": "MF", "name": "Dellatorre", "strength": 0 },
+    { "position": "MF", "name": "Lucas Marques", "strength": 0 },
+    { "position": "MF", "name": "Gabriel Silva", "strength": 0 },
+    { "position": "FW", "name": "Leo Gamalho", "strength": 0 },
+    { "position": "FW", "name": "Iury Castilho", "strength": 0 },
+    { "position": "FW", "name": "Claudio", "strength": 0 },
+    { "position": "FW", "name": "João Pedro", "strength": 0 },
+    { "position": "FW", "name": "Gustavo Hebling", "strength": 0 },
+    { "position": "FW", "name": "Ryan", "strength": 0 },
+    { "position": "FW", "name": "Hyuri", "strength": 0 },
+    { "position": "FW", "name": "Marco Túlio", "strength": 0 },
+    { "position": "FW", "name": "Bressan", "strength": 0 }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "name": "Anápolis Futebol Clube",
+  "shortName": "Anápolis",
+  "abbreviation": "ANA",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#ff0000",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 50,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Klever", "strength": 0 },
+    { "position": "GK", "name": "Renan", "strength": 0 },
+    { "position": "DF", "name": "Luiz Otavio", "strength": 0 },
+    { "position": "DF", "name": "João Victor", "strength": 0 },
+    { "position": "DF", "name": "Robson", "strength": 0 },
+    { "position": "DF", "name": "Igor", "strength": 0 },
+    { "position": "DF", "name": "Rafael", "strength": 0 },
+    { "position": "DF", "name": "Wesley", "strength": 0 },
+    { "position": "MF", "name": "Gustavo", "strength": 0 },
+    { "position": "MF", "name": "Matheus Frizzo", "strength": 0 },
+    { "position": "MF", "name": "Diego Torres", "strength": 0 },
+    { "position": "MF", "name": "Lucão", "strength": 0 },
+    { "position": "MF", "name": "Pedro Henrique", "strength": 0 },
+    { "position": "MF", "name": "Juninho", "strength": 0 },
+    { "position": "FW", "name": "Dentinho", "strength": 0 },
+    { "position": "FW", "name": "Kanu", "strength": 0 },
+    { "position": "FW", "name": "Gabriel", "strength": 0 },
+    { "position": "FW", "name": "João Paulo", "strength": 0 },
+    { "position": "FW", "name": "Marcos Junior", "strength": 0 },
+    { "position": "FW", "name": "Igor Bahia", "strength": 0 },
+    { "position": "FW", "name": "Alerrandro", "strength": 0 },
+    { "position": "FW", "name": "Wanderson", "strength": 0 },
+    { "position": "FW", "name": "Leandro", "strength": 0 }
+  ]
+}

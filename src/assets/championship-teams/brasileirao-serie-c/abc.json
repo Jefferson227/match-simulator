@@ -1,0 +1,39 @@
+{
+  "name": "ABC Futebol Clube",
+  "shortName": "ABC",
+  "abbreviation": "ABC",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#000000",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 50,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Weldon", "strength": 0 },
+    { "position": "GK", "name": "Gustavo", "strength": 0 },
+    { "position": "DF", "name": "Daniel", "strength": 0 },
+    { "position": "DF", "name": "Alemão", "strength": 0 },
+    { "position": "DF", "name": "Marcos Antônio", "strength": 0 },
+    { "position": "DF", "name": "Wellington", "strength": 0 },
+    { "position": "DF", "name": "Richardson", "strength": 0 },
+    { "position": "DF", "name": "Vinicius", "strength": 0 },
+    { "position": "MF", "name": "Geovane", "strength": 0 },
+    { "position": "MF", "name": "Wallyson", "strength": 0 },
+    { "position": "MF", "name": "Nathan", "strength": 0 },
+    { "position": "MF", "name": "Pedro Paulo", "strength": 0 },
+    { "position": "MF", "name": "Thalles", "strength": 0 },
+    { "position": "MF", "name": "João Carlos", "strength": 0 },
+    { "position": "FW", "name": "Maycon Douglas", "strength": 0 },
+    { "position": "FW", "name": "Matheus", "strength": 0 },
+    { "position": "FW", "name": "Paulo Sérgio", "strength": 0 },
+    { "position": "FW", "name": "Jenison", "strength": 0 },
+    { "position": "FW", "name": "Thonny Anderson", "strength": 0 },
+    { "position": "FW", "name": "Fabinho", "strength": 0 },
+    { "position": "FW", "name": "Walisson Maia", "strength": 0 },
+    { "position": "FW", "name": "Erick", "strength": 0 },
+    { "position": "FW", "name": "Felipe Garcia", "strength": 0 }
+  ]
+}

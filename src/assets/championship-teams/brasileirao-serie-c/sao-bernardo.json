@@ -1,0 +1,39 @@
+{
+  "name": "São Bernardo Futebol Clube",
+  "shortName": "São Bernardo",
+  "abbreviation": "SBC",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#ffff00",
+    "name": "#000000"
+  },
+  "initialOverallStrength": 50,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Alex Muralha", "strength": 0 },
+    { "position": "GK", "name": "Pedro Rangel", "strength": 0 },
+    { "position": "DF", "name": "Matheus Salustiano", "strength": 0 },
+    { "position": "DF", "name": "Helder", "strength": 0 },
+    { "position": "DF", "name": "Augusto", "strength": 0 },
+    { "position": "DF", "name": "Dirceu", "strength": 0 },
+    { "position": "DF", "name": "Lucas Lima", "strength": 0 },
+    { "position": "DF", "name": "Wesley Alemão", "strength": 0 },
+    { "position": "MF", "name": "Pará", "strength": 0 },
+    { "position": "MF", "name": "Lucas Tocantins", "strength": 0 },
+    { "position": "MF", "name": "Fabrício Oya", "strength": 0 },
+    { "position": "MF", "name": "Kady", "strength": 0 },
+    { "position": "MF", "name": "Rodrigo Souza", "strength": 0 },
+    { "position": "MF", "name": "Romisson", "strength": 0 },
+    { "position": "FW", "name": "Silvinho", "strength": 0 },
+    { "position": "FW", "name": "Kayke", "strength": 0 },
+    { "position": "FW", "name": "Hugo Sanches", "strength": 0 },
+    { "position": "FW", "name": "Léo Itaperuna", "strength": 0 },
+    { "position": "FW", "name": "Matheus de Vargas", "strength": 0 },
+    { "position": "FW", "name": "Alex Sandro", "strength": 0 },
+    { "position": "FW", "name": "Arthur Henrique", "strength": 0 },
+    { "position": "FW", "name": "Rafael Costa", "strength": 0 },
+    { "position": "FW", "name": "Walterson", "strength": 0 }
+  ]
+}

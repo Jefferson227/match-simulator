@@ -1,0 +1,39 @@
+{
+  "name": "Botafogo da Paraíba",
+  "shortName": "Botafogo-PB",
+  "abbreviation": "BOT",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#000000",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 50,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Dalton", "strength": 0 },
+    { "position": "GK", "name": "Luan", "strength": 0 },
+    { "position": "DF", "name": "Lenon", "strength": 0 },
+    { "position": "DF", "name": "Romário", "strength": 0 },
+    { "position": "DF", "name": "Douglas", "strength": 0 },
+    { "position": "DF", "name": "Victor Ramos", "strength": 0 },
+    { "position": "DF", "name": "Pedro Ivo", "strength": 0 },
+    { "position": "DF", "name": "Willian Machado", "strength": 0 },
+    { "position": "MF", "name": "Bruno Jordão", "strength": 0 },
+    { "position": "MF", "name": "Henrique Dourado", "strength": 0 },
+    { "position": "MF", "name": "Rafael Elias", "strength": 0 },
+    { "position": "MF", "name": "Gustavo Blanco", "strength": 0 },
+    { "position": "MF", "name": "Kayque", "strength": 0 },
+    { "position": "MF", "name": "Felipe Ferreira", "strength": 0 },
+    { "position": "FW", "name": "Vinícius Leite", "strength": 0 },
+    { "position": "FW", "name": "João Pedro", "strength": 0 },
+    { "position": "FW", "name": "Bruno Batata", "strength": 0 },
+    { "position": "FW", "name": "Alexandre Jesus", "strength": 0 },
+    { "position": "FW", "name": "Pipico", "strength": 0 },
+    { "position": "FW", "name": "Jô", "strength": 0 },
+    { "position": "FW", "name": "Lelê", "strength": 0 },
+    { "position": "FW", "name": "Welinton", "strength": 0 },
+    { "position": "FW", "name": "Marcos Vinícius", "strength": 0 }
+  ]
+}

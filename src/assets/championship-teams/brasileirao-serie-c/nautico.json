@@ -1,0 +1,39 @@
+{
+  "name": "Clube Náutico Capibaribe",
+  "shortName": "Náutico",
+  "abbreviation": "NAU",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#ff0000",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 50,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Jefferson", "strength": 0 },
+    { "position": "GK", "name": "Wellerson", "strength": 0 },
+    { "position": "DF", "name": "Camutanga", "strength": 0 },
+    { "position": "DF", "name": "Joécio", "strength": 0 },
+    { "position": "DF", "name": "Iran", "strength": 0 },
+    { "position": "DF", "name": "Lucas Cândido", "strength": 0 },
+    { "position": "DF", "name": "Arnaldo", "strength": 0 },
+    { "position": "DF", "name": "Wendel", "strength": 0 },
+    { "position": "MF", "name": "Soares", "strength": 0 },
+    { "position": "MF", "name": "Marco Antônio", "strength": 0 },
+    { "position": "MF", "name": "Renato Palm", "strength": 0 },
+    { "position": "MF", "name": "Patrick Allan", "strength": 0 },
+    { "position": "MF", "name": "Geovane", "strength": 0 },
+    { "position": "MF", "name": "Kauan", "strength": 0 },
+    { "position": "FW", "name": "Samuel", "strength": 0 },
+    { "position": "FW", "name": "Gustavo Maia", "strength": 0 },
+    { "position": "FW", "name": "Paulo Sérgio", "strength": 0 },
+    { "position": "FW", "name": "Vitor Jacaré", "strength": 0 },
+    { "position": "FW", "name": "Bruno Mezenga", "strength": 0 },
+    { "position": "FW", "name": "Vagner Love", "strength": 0 },
+    { "position": "FW", "name": "Felipe Cardoso", "strength": 0 },
+    { "position": "FW", "name": "Robinho", "strength": 0 },
+    { "position": "FW", "name": "Marquinhos", "strength": 0 }
+  ]
+}

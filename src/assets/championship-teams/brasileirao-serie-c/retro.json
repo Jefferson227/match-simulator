@@ -1,0 +1,39 @@
+{
+  "name": "Retrô Futebol Clube",
+  "shortName": "Retrô",
+  "abbreviation": "RET",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#ff6600",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 50,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Darley", "strength": 0 },
+    { "position": "GK", "name": "Lucas Maticoli", "strength": 0 },
+    { "position": "DF", "name": "Guilherme Lazaroni", "strength": 0 },
+    { "position": "DF", "name": "Henrique Lordelo", "strength": 0 },
+    { "position": "DF", "name": "Diego Guerra", "strength": 0 },
+    { "position": "DF", "name": "Fransérgio", "strength": 0 },
+    { "position": "DF", "name": "Pierre", "strength": 0 },
+    { "position": "DF", "name": "Raí Ramos", "strength": 0 },
+    { "position": "MF", "name": "Richardson", "strength": 0 },
+    { "position": "MF", "name": "Mascote", "strength": 0 },
+    { "position": "MF", "name": "João Pedro", "strength": 0 },
+    { "position": "MF", "name": "Gelson", "strength": 0 },
+    { "position": "MF", "name": "Jeferson", "strength": 0 },
+    { "position": "MF", "name": "Gabriel Lima", "strength": 0 },
+    { "position": "FW", "name": "Denilson", "strength": 0 },
+    { "position": "FW", "name": "Pedro Vítor", "strength": 0 },
+    { "position": "FW", "name": "Fabrício Daniel", "strength": 0 },
+    { "position": "FW", "name": "Nininho", "strength": 0 },
+    { "position": "FW", "name": "Eudair", "strength": 0 },
+    { "position": "FW", "name": "Gabriel Santos", "strength": 0 },
+    { "position": "FW", "name": "Jobson", "strength": 0 },
+    { "position": "FW", "name": "Jonathan Cafu", "strength": 0 },
+    { "position": "FW", "name": "Thiaguinho", "strength": 0 }
+  ]
+}

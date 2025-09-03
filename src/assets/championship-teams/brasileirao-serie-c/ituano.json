@@ -1,0 +1,39 @@
+{
+  "name": "Ituano Futebol Clube",
+  "shortName": "Ituano",
+  "abbreviation": "ITU",
+  "colors": {
+    "outline": "#000000",
+    "background": "#ff0000",
+    "name": "#000000"
+  },
+  "initialOverallStrength": 50,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Jefferson Paulino", "strength": 0 },
+    { "position": "GK", "name": "Saulo", "strength": 0 },
+    { "position": "DF", "name": "Léo Oliveira", "strength": 0 },
+    { "position": "DF", "name": "Claudinho", "strength": 0 },
+    { "position": "DF", "name": "Gabriel Falcão", "strength": 0 },
+    { "position": "DF", "name": "Marcinho", "strength": 0 },
+    { "position": "DF", "name": "Richard Franco", "strength": 0 },
+    { "position": "DF", "name": "Wálber", "strength": 0 },
+    { "position": "MF", "name": "José Aldo", "strength": 0 },
+    { "position": "MF", "name": "Rodrigo", "strength": 0 },
+    { "position": "MF", "name": "Miquéias", "strength": 0 },
+    { "position": "MF", "name": "Bruno Xavier", "strength": 0 },
+    { "position": "MF", "name": "Leozinho", "strength": 0 },
+    { "position": "MF", "name": "João Carlos", "strength": 0 },
+    { "position": "FW", "name": "Thonny Anderson", "strength": 0 },
+    { "position": "FW", "name": "Vinícius Paiva", "strength": 0 },
+    { "position": "FW", "name": "Yann Rolim", "strength": 0 },
+    { "position": "FW", "name": "Eduardo Person", "strength": 0 },
+    { "position": "FW", "name": "Neto Berola", "strength": 0 },
+    { "position": "FW", "name": "Salatiel", "strength": 0 },
+    { "position": "FW", "name": "Zé Carlos", "strength": 0 },
+    { "position": "FW", "name": "Bruno Alves", "strength": 0 },
+    { "position": "FW", "name": "Kauan Richard", "strength": 0 }
+  ]
+}

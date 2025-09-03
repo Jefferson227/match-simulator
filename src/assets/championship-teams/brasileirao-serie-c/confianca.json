@@ -1,0 +1,39 @@
+{
+  "name": "Associação Desportiva Confiança",
+  "shortName": "Confiança",
+  "abbreviation": "CON",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#0066cc",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 50,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Rafael Santos", "strength": 0 },
+    { "position": "GK", "name": "Gabriel", "strength": 0 },
+    { "position": "DF", "name": "Nirley", "strength": 0 },
+    { "position": "DF", "name": "Dankler", "strength": 0 },
+    { "position": "DF", "name": "Marllon", "strength": 0 },
+    { "position": "DF", "name": "Wesley", "strength": 0 },
+    { "position": "DF", "name": "Igor", "strength": 0 },
+    { "position": "DF", "name": "Cristiano", "strength": 0 },
+    { "position": "MF", "name": "Jhemerson", "strength": 0 },
+    { "position": "MF", "name": "Reis", "strength": 0 },
+    { "position": "MF", "name": "Ítalo", "strength": 0 },
+    { "position": "MF", "name": "Welliton", "strength": 0 },
+    { "position": "MF", "name": "Neto Baiano", "strength": 0 },
+    { "position": "MF", "name": "Gabriel Poveda", "strength": 0 },
+    { "position": "FW", "name": "Nick", "strength": 0 },
+    { "position": "FW", "name": "Talyson", "strength": 0 },
+    { "position": "FW", "name": "Isaque", "strength": 0 },
+    { "position": "FW", "name": "Miguel", "strength": 0 },
+    { "position": "FW", "name": "Klebinho", "strength": 0 },
+    { "position": "FW", "name": "Yan", "strength": 0 },
+    { "position": "FW", "name": "Patric", "strength": 0 },
+    { "position": "FW", "name": "Willian Formiga", "strength": 0 },
+    { "position": "FW", "name": "Lucas Siqueira", "strength": 0 }
+  ]
+}

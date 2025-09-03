@@ -1,0 +1,39 @@
+{
+  "name": "Tombense Futebol Clube",
+  "shortName": "Tombense",
+  "abbreviation": "TOM",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#006600",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 50,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Felipe Garcia", "strength": 0 },
+    { "position": "GK", "name": "João Carlos", "strength": 0 },
+    { "position": "DF", "name": "Roger Carvalho", "strength": 0 },
+    { "position": "DF", "name": "Admilton", "strength": 0 },
+    { "position": "DF", "name": "Alex Sandro", "strength": 0 },
+    { "position": "DF", "name": "Reniê", "strength": 0 },
+    { "position": "DF", "name": "Jadson", "strength": 0 },
+    { "position": "DF", "name": "Marcondes", "strength": 0 },
+    { "position": "MF", "name": "Zé Ricardo", "strength": 0 },
+    { "position": "MF", "name": "Kleiton", "strength": 0 },
+    { "position": "MF", "name": "Rodrigo", "strength": 0 },
+    { "position": "MF", "name": "Igor Henrique", "strength": 0 },
+    { "position": "MF", "name": "Everton Galdino", "strength": 0 },
+    { "position": "MF", "name": "Pierre", "strength": 0 },
+    { "position": "FW", "name": "Keké", "strength": 0 },
+    { "position": "FW", "name": "Ciel", "strength": 0 },
+    { "position": "FW", "name": "Daniel Amorim", "strength": 0 },
+    { "position": "FW", "name": "Rafinha", "strength": 0 },
+    { "position": "FW", "name": "Matheus Frizzo", "strength": 0 },
+    { "position": "FW", "name": "João Paulo", "strength": 0 },
+    { "position": "FW", "name": "Welinton", "strength": 0 },
+    { "position": "FW", "name": "Jhemerson", "strength": 0 },
+    { "position": "FW", "name": "Robson", "strength": 0 }
+  ]
+}

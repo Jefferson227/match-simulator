@@ -1,0 +1,39 @@
+{
+  "name": "Guarani Futebol Clube",
+  "shortName": "Guarani",
+  "abbreviation": "GUA",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#006600",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 50,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Vladimir", "strength": 0 },
+    { "position": "GK", "name": "Pegorari", "strength": 0 },
+    { "position": "DF", "name": "Douglas Bacelar", "strength": 0 },
+    { "position": "DF", "name": "Matheus Salustiano", "strength": 0 },
+    { "position": "DF", "name": "Léo Santos", "strength": 0 },
+    { "position": "DF", "name": "Jefferson", "strength": 0 },
+    { "position": "DF", "name": "Pacheco", "strength": 0 },
+    { "position": "DF", "name": "Heitor", "strength": 0 },
+    { "position": "MF", "name": "Matheus Bueno", "strength": 0 },
+    { "position": "MF", "name": "Gabriel Bispo", "strength": 0 },
+    { "position": "MF", "name": "Pierre", "strength": 0 },
+    { "position": "MF", "name": "Luan Dias", "strength": 0 },
+    { "position": "MF", "name": "Airton", "strength": 0 },
+    { "position": "MF", "name": "João Victor", "strength": 0 },
+    { "position": "FW", "name": "Caio Dantas", "strength": 0 },
+    { "position": "FW", "name": "Derek", "strength": 0 },
+    { "position": "FW", "name": "João Marcelo", "strength": 0 },
+    { "position": "FW", "name": "Marcelinho", "strength": 0 },
+    { "position": "FW", "name": "Bruno Mendes", "strength": 0 },
+    { "position": "FW", "name": "Yuji", "strength": 0 },
+    { "position": "FW", "name": "Anderson Leite", "strength": 0 },
+    { "position": "FW", "name": "Reinaldo", "strength": 0 },
+    { "position": "FW", "name": "Lohan do Santos", "strength": 0 }
+  ]
+}

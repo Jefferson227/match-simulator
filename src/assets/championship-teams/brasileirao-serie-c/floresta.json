@@ -1,0 +1,39 @@
+{
+  "name": "Floresta Esporte Clube",
+  "shortName": "Floresta",
+  "abbreviation": "FLO",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#006600",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 50,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Douglas", "strength": 0 },
+    { "position": "GK", "name": "Luiz Daniel", "strength": 0 },
+    { "position": "DF", "name": "Ednei", "strength": 0 },
+    { "position": "DF", "name": "Ricardo Silva", "strength": 0 },
+    { "position": "DF", "name": "Wesley", "strength": 0 },
+    { "position": "DF", "name": "João Lucas", "strength": 0 },
+    { "position": "DF", "name": "Romarinho", "strength": 0 },
+    { "position": "DF", "name": "Esquerdinha", "strength": 0 },
+    { "position": "MF", "name": "Marcelo", "strength": 0 },
+    { "position": "MF", "name": "Alisson", "strength": 0 },
+    { "position": "MF", "name": "Pará", "strength": 0 },
+    { "position": "MF", "name": "Lucas Santos", "strength": 0 },
+    { "position": "MF", "name": "Andrew", "strength": 0 },
+    { "position": "MF", "name": "João Vitor", "strength": 0 },
+    { "position": "FW", "name": "Lohan", "strength": 0 },
+    { "position": "FW", "name": "Allanzinho", "strength": 0 },
+    { "position": "FW", "name": "Robson", "strength": 0 },
+    { "position": "FW", "name": "Iago Dias", "strength": 0 },
+    { "position": "FW", "name": "Lucas Davi", "strength": 0 },
+    { "position": "FW", "name": "Charles", "strength": 0 },
+    { "position": "FW", "name": "Felipe Vizeu", "strength": 0 },
+    { "position": "FW", "name": "Bruninho", "strength": 0 },
+    { "position": "FW", "name": "Tiago", "strength": 0 }
+  ]
+}

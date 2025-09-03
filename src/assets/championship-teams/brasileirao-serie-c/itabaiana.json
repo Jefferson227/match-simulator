@@ -1,0 +1,39 @@
+{
+  "name": "Associação Olímpica de Itabaiana",
+  "shortName": "Itabaiana",
+  "abbreviation": "ITA",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#ff6600",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 50,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Léo", "strength": 0 },
+    { "position": "GK", "name": "Gustavo", "strength": 0 },
+    { "position": "DF", "name": "Bruno Melo", "strength": 0 },
+    { "position": "DF", "name": "José Aldo", "strength": 0 },
+    { "position": "DF", "name": "Lucas Siqueira", "strength": 0 },
+    { "position": "DF", "name": "Roberto", "strength": 0 },
+    { "position": "DF", "name": "Yago", "strength": 0 },
+    { "position": "DF", "name": "Marllon", "strength": 0 },
+    { "position": "MF", "name": "Everton Sena", "strength": 0 },
+    { "position": "MF", "name": "Fábio Jr", "strength": 0 },
+    { "position": "MF", "name": "Kanu", "strength": 0 },
+    { "position": "MF", "name": "Miqueias", "strength": 0 },
+    { "position": "MF", "name": "Léo Ceará", "strength": 0 },
+    { "position": "MF", "name": "Netinho", "strength": 0 },
+    { "position": "FW", "name": "Neto Baiano", "strength": 0 },
+    { "position": "FW", "name": "Catatau", "strength": 0 },
+    { "position": "FW", "name": "Zé Carlos", "strength": 0 },
+    { "position": "FW", "name": "Marcel", "strength": 0 },
+    { "position": "FW", "name": "Thiago Ennes", "strength": 0 },
+    { "position": "FW", "name": "Cleitinho", "strength": 0 },
+    { "position": "FW", "name": "Diego Ceará", "strength": 0 },
+    { "position": "FW", "name": "Santiago", "strength": 0 },
+    { "position": "FW", "name": "Vágner Love", "strength": 0 }
+  ]
+}

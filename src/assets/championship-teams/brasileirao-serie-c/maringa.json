@@ -1,0 +1,39 @@
+{
+  "name": "Maringá Futebol Clube",
+  "shortName": "Maringá",
+  "abbreviation": "MAR",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#0066cc",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 50,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Bruno", "strength": 0 },
+    { "position": "GK", "name": "Saulo", "strength": 0 },
+    { "position": "DF", "name": "Rodrigo Sam", "strength": 0 },
+    { "position": "DF", "name": "Elicarlos", "strength": 0 },
+    { "position": "DF", "name": "Lucas Hulk", "strength": 0 },
+    { "position": "DF", "name": "Wellington", "strength": 0 },
+    { "position": "DF", "name": "Sanchez", "strength": 0 },
+    { "position": "DF", "name": "Paulinho", "strength": 0 },
+    { "position": "MF", "name": "Danilo Belão", "strength": 0 },
+    { "position": "MF", "name": "Ronald", "strength": 0 },
+    { "position": "MF", "name": "Gustavo França", "strength": 0 },
+    { "position": "MF", "name": "Jean Carlos", "strength": 0 },
+    { "position": "MF", "name": "Higor Meritão", "strength": 0 },
+    { "position": "MF", "name": "Emerson Catarina", "strength": 0 },
+    { "position": "FW", "name": "Cléo Silva", "strength": 0 },
+    { "position": "FW", "name": "Marquinhos", "strength": 0 },
+    { "position": "FW", "name": "Wanderson", "strength": 0 },
+    { "position": "FW", "name": "Gabriel Taliari", "strength": 0 },
+    { "position": "FW", "name": "Bruninho", "strength": 0 },
+    { "position": "FW", "name": "Gui Mendes", "strength": 0 },
+    { "position": "FW", "name": "Pablo", "strength": 0 },
+    { "position": "FW", "name": "Michel Douglas", "strength": 0 },
+    { "position": "FW", "name": "João Pedro", "strength": 0 }
+  ]
+}

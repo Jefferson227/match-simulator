@@ -1,0 +1,39 @@
+{
+  "name": "Brusque Futebol Clube",
+  "shortName": "Brusque",
+  "abbreviation": "BRU",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#ff0000",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 50,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Matheus Nogueira", "strength": 0 },
+    { "position": "GK", "name": "Jordan", "strength": 0 },
+    { "position": "DF", "name": "Ianson", "strength": 0 },
+    { "position": "DF", "name": "Wallace", "strength": 0 },
+    { "position": "DF", "name": "Marcelo", "strength": 0 },
+    { "position": "DF", "name": "Luiz Henrique", "strength": 0 },
+    { "position": "DF", "name": "Diego Mathias", "strength": 0 },
+    { "position": "DF", "name": "Alex Ruan", "strength": 0 },
+    { "position": "MF", "name": "Rodolfo Potiguar", "strength": 0 },
+    { "position": "MF", "name": "Dionísio", "strength": 0 },
+    { "position": "MF", "name": "Serrato", "strength": 0 },
+    { "position": "MF", "name": "Madison", "strength": 0 },
+    { "position": "MF", "name": "Paulinho Moccelin", "strength": 0 },
+    { "position": "MF", "name": "Wellissol", "strength": 0 },
+    { "position": "FW", "name": "Diego Tavares", "strength": 0 },
+    { "position": "FW", "name": "Keké", "strength": 0 },
+    { "position": "FW", "name": "Osman Junior", "strength": 0 },
+    { "position": "FW", "name": "Mateus Peixoto", "strength": 0 },
+    { "position": "FW", "name": "Dentinho", "strength": 0 },
+    { "position": "FW", "name": "Guilherme Queiróz", "strength": 0 },
+    { "position": "FW", "name": "Ocimar", "strength": 0 },
+    { "position": "FW", "name": "Agustín González", "strength": 0 },
+    { "position": "FW", "name": "Tato González", "strength": 0 }
+  ]
+}
