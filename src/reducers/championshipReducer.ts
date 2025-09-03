@@ -73,6 +73,11 @@ export const championshipReducer = (
         ...state,
         tableStandings: [],
       };
+    case 'RESET_TOP_SCORERS':
+      return {
+        ...state,
+        topScorers: [],
+      };
     case 'GET_TABLE_STANDINGS':
       return state;
     case 'RESET':

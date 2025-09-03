@@ -23,6 +23,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
     setCurrentRound,
     incrementCurrentRound,
     resetTableStandings,
+    resetTopScorers,
     updateChampionshipState,
     updateTopScorers,
   } = useChampionshipContext();
@@ -100,6 +101,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
     if (isSeasonComplete) {
       handlePromotionRelegationLogic(updateChampionshipState, championshipState);
       resetTableStandings();
+      resetTopScorers();
       incrementYear();
     }
 

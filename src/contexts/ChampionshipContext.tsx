@@ -43,6 +43,10 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({ chil
     dispatch({ type: 'RESET_TABLE_STANDINGS' });
   };
 
+  const resetTopScorers = () => {
+    dispatch({ type: 'RESET_TOP_SCORERS' });
+  };
+
   const getTableStandings = () => {
     return state.tableStandings;
   };
@@ -102,6 +106,7 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({ chil
     incrementCurrentRound,
     updateTableStandings,
     resetTableStandings,
+    resetTopScorers,
     getTableStandings,
     loadState,
     setYear,
