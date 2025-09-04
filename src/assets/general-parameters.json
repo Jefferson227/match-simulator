@@ -94,36 +94,6 @@
         "tombense",
         "ypiranga"
       ]
-    },
-    {
-      "id": "d4e5f6g7-h8i9-0123-defg-456789012345",
-      "name": "BRASILEIRÃO SÉRIE D",
-      "internalName": "brasileirao-serie-d"
-    },
-    {
-      "id": "e5f6g7h8-i9j0-1234-efgh-567890123456",
-      "name": "PREMIER LEAGUE",
-      "internalName": "premier-league"
-    },
-    {
-      "id": "f6g7h8i9-j0k1-2345-fghi-678901234567",
-      "name": "BUNDESLIGA",
-      "internalName": "bundesliga"
-    },
-    {
-      "id": "g7h8i9j0-k1l2-3456-ghij-789012345678",
-      "name": "LA LIGA",
-      "internalName": "la-liga"
-    },
-    {
-      "id": "h8i9j0k1-l2m3-4567-hijk-890123456789",
-      "name": "SERIE A",
-      "internalName": "serie-a"
-    },
-    {
-      "id": "i9j0k1l2-m3n4-5678-ijkl-901234567890",
-      "name": "LIGUE 1",
-      "internalName": "ligue-1"
     }
   ]
 }
