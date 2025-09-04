@@ -98,7 +98,7 @@ const TeamSelector: React.FC = () => {
           // Set all the automatically controlled teams for other championships at once
           setOtherChampionships(updatedOtherChampionships);
 
-          // Generate and set the season match calendar
+          // TODO: Create a different calendar for série C
           const seasonCalendar = generateSeasonMatchCalendar(baseTeam, automaticTeams);
           setSeasonMatchCalendar(seasonCalendar);
 
