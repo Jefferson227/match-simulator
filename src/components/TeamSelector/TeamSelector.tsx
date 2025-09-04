@@ -2,9 +2,9 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import { useChampionshipContext } from '../../contexts/ChampionshipContext';
+import { TeamSelectorTeam } from '../../services/types';
 import {
   loadTeamsForChampionship,
-  TeamSelectorTeam,
   loadSpecificTeam,
   loadAllTeamsExceptOne,
   generateSeasonMatchCalendar,
