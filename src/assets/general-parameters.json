@@ -7,6 +7,7 @@
       "numberOfTeams": 20,
       "relegationTeams": 4,
       "relegationChampionship": "brasileirao-serie-b",
+      "format": "double-round-robin",
       "teams": [
         "atletico-mg",
         "bahia",
@@ -39,6 +40,7 @@
       "relegationTeams": 4,
       "promotionChampionship": "brasileirao-serie-a",
       "relegationChampionship": "brasileirao-serie-c",
+      "format": "double-round-robin",
       "teams": [
         "amazonas",
         "america-mg",
@@ -69,6 +71,7 @@
       "numberOfTeams": 20,
       "promotionTeams": 4,
       "promotionChampionship": "brasileirao-serie-b",
+      "format": "single-round-robin;quadrangular",
       "teams": [
         "abc",
         "anapolis",

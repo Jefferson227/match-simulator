@@ -23,6 +23,7 @@ export interface ChampionshipState {
   year: number;
   otherChampionships: ChampionshipConfig[];
   topScorers: TopScorer[];
+  format: 'double-round-robin' | 'single-round-robin;quadrangular';
 }
 
 export interface ChampionshipUpdate {
