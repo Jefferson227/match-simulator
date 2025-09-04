@@ -34,9 +34,7 @@ const TeamSelector: React.FC = () => {
         setLoading(true);
         const selectedChampionship =
           championshipState.selectedChampionship || 'brasileirao-serie-a';
-        const loadedTeams = await loadTeamsForChampionship(
-          selectedChampionship
-        );
+        const loadedTeams = await loadTeamsForChampionship(selectedChampionship);
         setTeams(loadedTeams);
         setError(null);
       } catch (err) {
@@ -71,49 +69,37 @@ const TeamSelector: React.FC = () => {
           championshipState.selectedChampionship || 'brasileirao-serie-a';
 
         // Load the specific team data
-        const baseTeam = await loadSpecificTeam(
-          selectedChampionship,
-          teamFileName
-        );
+        const baseTeam = await loadSpecificTeam(selectedChampionship, teamFileName);
 
         if (baseTeam) {
           // Set the loaded team as the human player's base team
           setHumanPlayerBaseTeam(baseTeam);
 
           // Load all other teams in the championship for automatic control
-          const automaticTeams = await loadAllTeamsExceptOne(
-            selectedChampionship,
-            teamFileName
-          );
+          const automaticTeams = await loadAllTeamsExceptOne(selectedChampionship, teamFileName);
 
           // Set the automatically controlled teams
           setTeamsControlledAutomatically(automaticTeams);
 
           // Get all other championships that weren't selected
           const updatedOtherChampionships = await Promise.all(
-            championshipState.otherChampionships.map(
-              async (otherChampionship) => {
-                const automaticTeamsForOtherChampionship = await loadAllTeams(
-                  otherChampionship.internalName
-                );
+            championshipState.otherChampionships.map(async (otherChampionship) => {
+              const automaticTeamsForOtherChampionship = await loadAllTeams(
+                otherChampionship.internalName
+              );
 
-                return {
-                  ...otherChampionship,
-                  teamsControlledAutomatically:
-                    automaticTeamsForOtherChampionship,
-                };
-              }
-            )
+              return {
+                ...otherChampionship,
+                teamsControlledAutomatically: automaticTeamsForOtherChampionship,
+              };
+            })
           );
 
           // Set all the automatically controlled teams for other championships at once
           setOtherChampionships(updatedOtherChampionships);
 
           // Generate and set the season match calendar
-          const seasonCalendar = generateSeasonMatchCalendar(
-            baseTeam,
-            automaticTeams
-          );
+          const seasonCalendar = generateSeasonMatchCalendar(baseTeam, automaticTeams);
           setSeasonMatchCalendar(seasonCalendar);
 
           setScreenDisplayed('TeamManager');
