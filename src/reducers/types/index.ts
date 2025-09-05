@@ -7,6 +7,8 @@ import {
   MatchTeam,
 } from '../../types';
 
+export type ChampionshipFormat = 'double-round-robin' | 'single-round-robin;quadrangular';
+
 export interface ChampionshipState {
   championshipConfigId: string | null;
   name: string | null;
@@ -23,7 +25,7 @@ export interface ChampionshipState {
   year: number;
   otherChampionships: ChampionshipConfig[];
   topScorers: TopScorer[];
-  format: 'double-round-robin' | 'single-round-robin;quadrangular';
+  format: ChampionshipFormat;
 }
 
 export interface ChampionshipUpdate {

@@ -99,7 +99,11 @@ const TeamSelector: React.FC = () => {
           setOtherChampionships(updatedOtherChampionships);
 
           // TODO: Create a different calendar for série C
-          const seasonCalendar = generateSeasonMatchCalendar(baseTeam, automaticTeams);
+          const seasonCalendar = generateSeasonMatchCalendar(
+            baseTeam,
+            automaticTeams,
+            championshipState.format
+          );
           setSeasonMatchCalendar(seasonCalendar);
 
           setScreenDisplayed('TeamManager');

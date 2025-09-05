@@ -4,6 +4,7 @@ import { TeamSelectorTeam, SeasonMatch, SeasonRound } from './types';
 import matchService from './matchService';
 import generalParameters from '../assets/general-parameters.json';
 import utils from '../utils/utils';
+import { ChampionshipFormat } from '../reducers/types';
 
 function getPlayersByPosition(players: Player[], position: string): Player[] {
   return players
@@ -99,6 +100,24 @@ function getMatchTeam(
 
   const mappedTeam = teamMap.get(seasonMatchTeam.id) || seasonMatchTeam;
   return getAutomaticMatchTeam(mappedTeam, isHomeTeam);
+}
+
+function getChampionshipFormatCoeff(format: ChampionshipFormat) {
+  let result = 2;
+
+  switch (format) {
+    case 'double-round-robin':
+      result = 2;
+      break;
+    case 'single-round-robin;quadrangular':
+      result = 1;
+      break;
+    default:
+      result = 2;
+      break;
+  }
+
+  return result;
 }
 
 export const loadTeamsForChampionship = async (
@@ -362,7 +381,8 @@ export const loadAllTeamsFromContextExceptOne = async (
 
 export const generateSeasonMatchCalendar = (
   humanPlayerTeam: BaseTeam,
-  teamsControlledAutomatically: BaseTeam[]
+  teamsControlledAutomatically: BaseTeam[],
+  championshipFormat: ChampionshipFormat
 ): SeasonRound[] => {
   // Combine all teams
   const allTeams = [humanPlayerTeam, ...teamsControlledAutomatically];
@@ -375,9 +395,10 @@ export const generateSeasonMatchCalendar = (
   }
 
   const totalTeams = shuffledTeams.length;
+  const coeff = getChampionshipFormatCoeff(championshipFormat);
 
-  // Calculate number of rounds: (totalTeams * 2) - 2
-  const totalRounds = totalTeams * 2 - 2;
+  // Calculate number of rounds: (totalTeams * coeff) - coeff
+  const totalRounds = totalTeams * coeff - coeff;
 
   // Calculate matches per round: totalTeams / 2
   const matchesPerRound = totalTeams / 2;
