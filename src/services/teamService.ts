@@ -120,6 +120,16 @@ function getChampionshipFormatCoeff(format: ChampionshipFormat) {
   return result;
 }
 
+function getShuffledTeams(teams: BaseTeam[]) {
+  const shuffledTeams = [...teams];
+  for (let i = shuffledTeams.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledTeams[i], shuffledTeams[j]] = [shuffledTeams[j], shuffledTeams[i]];
+  }
+
+  return shuffledTeams;
+}
+
 export const loadTeamsForChampionship = async (
   championshipInternalName: string
 ): Promise<TeamSelectorTeam[]> => {
@@ -384,15 +394,8 @@ export const generateSeasonMatchCalendar = (
   teamsControlledAutomatically: BaseTeam[],
   championshipFormat: ChampionshipFormat
 ): SeasonRound[] => {
-  // Combine all teams
   const allTeams = [humanPlayerTeam, ...teamsControlledAutomatically];
-
-  // Shuffle the teams to ensure random match distribution
-  const shuffledTeams = [...allTeams];
-  for (let i = shuffledTeams.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffledTeams[i], shuffledTeams[j]] = [shuffledTeams[j], shuffledTeams[i]];
-  }
+  const shuffledTeams = getShuffledTeams(allTeams);
 
   const totalTeams = shuffledTeams.length;
   const coeff = getChampionshipFormatCoeff(championshipFormat);
