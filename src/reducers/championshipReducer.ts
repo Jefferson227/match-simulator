@@ -19,6 +19,7 @@ export const initialChampionshipState: ChampionshipState = {
   year: 0,
   otherChampionships: [],
   topScorers: [],
+  format: 'double-round-robin',
 };
 
 // Championship reducer
