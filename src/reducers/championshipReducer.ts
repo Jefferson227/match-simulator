@@ -38,6 +38,7 @@ export const championshipReducer = (
         relegationChampionship: action.payload.relegationChampionship,
         promotionTeams: action.payload.promotionTeams,
         relegationTeams: action.payload.relegationTeams,
+        format: action.payload.format,
       };
     case 'SET_HUMAN_PLAYER_BASE_TEAM':
       return {

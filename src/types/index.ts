@@ -1,3 +1,5 @@
+import { ChampionshipFormat } from '../reducers/types';
+
 export interface Player {
   id: string;
   position: string;
@@ -168,4 +170,5 @@ export interface ChampionshipConfig {
   relegationChampionship?: string;
   teams?: ChampionshipTeam[]; // or string[] if not yet migrated
   teamsControlledAutomatically?: BaseTeam[];
+  format: ChampionshipFormat;
 }
