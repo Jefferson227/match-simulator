@@ -130,6 +130,80 @@ function getShuffledTeams(teams: BaseTeam[]) {
   return shuffledTeams;
 }
 
+function generateRoundMatches(
+  matchesPerRound: number,
+  totalTeams: number,
+  round: number,
+  shuffledTeams: BaseTeam[]
+) {
+  const roundMatches: SeasonMatch[] = [];
+
+  // For each round, create matches between teams
+  // This is a simplified round-robin algorithm
+  for (let i = 0; i < matchesPerRound; i++) {
+    const homeTeamIndex = i;
+    const awayTeamIndex = totalTeams - 1 - i;
+
+    // Skip if we're trying to match a team with itself
+    if (homeTeamIndex !== awayTeamIndex) {
+      const homeTeam = shuffledTeams[homeTeamIndex];
+      const awayTeam = shuffledTeams[awayTeamIndex];
+
+      const match: SeasonMatch = {
+        id: crypto.randomUUID(),
+        round: round,
+        homeTeam: homeTeam,
+        awayTeam: awayTeam,
+        isPlayed: false,
+      };
+
+      roundMatches.push(match);
+    }
+  }
+
+  return roundMatches;
+}
+
+function generateSeasonRound(
+  round: number,
+  totalRounds: number,
+  shuffledTeams: BaseTeam[],
+  roundMatches: SeasonMatch[]
+) {
+  // Rotate teams for the next round (except the first team)
+  if (round < totalRounds) {
+    const teamsToRotate = shuffledTeams.slice(1);
+    const lastTeam = teamsToRotate.pop();
+    if (lastTeam) {
+      teamsToRotate.unshift(lastTeam);
+    }
+    shuffledTeams.splice(1, shuffledTeams.length - 1, ...teamsToRotate);
+  }
+
+  return {
+    roundNumber: round,
+    matches: roundMatches,
+  };
+}
+
+function generateSeasonRounds(
+  totalRounds: number,
+  matchesPerRound: number,
+  totalTeams: number,
+  shuffledTeams: BaseTeam[]
+) {
+  const seasonRounds: SeasonRound[] = [];
+
+  for (let round = 1; round <= totalRounds; round++) {
+    const roundMatches = generateRoundMatches(matchesPerRound, totalTeams, round, shuffledTeams);
+    const seasonRound = generateSeasonRound(round, totalRounds, shuffledTeams, roundMatches);
+
+    seasonRounds.push(seasonRound);
+  }
+
+  return seasonRounds;
+}
+
 export const loadTeamsForChampionship = async (
   championshipInternalName: string
 ): Promise<TeamSelectorTeam[]> => {
@@ -399,59 +473,10 @@ export const generateSeasonMatchCalendar = (
 
   const totalTeams = shuffledTeams.length;
   const coeff = getChampionshipFormatCoeff(championshipFormat);
-
-  // Calculate number of rounds: (totalTeams * coeff) - coeff
   const totalRounds = totalTeams * coeff - coeff;
-
-  // Calculate matches per round: totalTeams / 2
   const matchesPerRound = totalTeams / 2;
 
-  const seasonRounds: SeasonRound[] = [];
-
-  // Generate rounds
-  for (let round = 1; round <= totalRounds; round++) {
-    const roundMatches: SeasonMatch[] = [];
-
-    // For each round, create matches between teams
-    // This is a simplified round-robin algorithm
-    for (let i = 0; i < matchesPerRound; i++) {
-      const homeTeamIndex = i;
-      const awayTeamIndex = totalTeams - 1 - i;
-
-      // Skip if we're trying to match a team with itself
-      if (homeTeamIndex !== awayTeamIndex) {
-        const homeTeam = shuffledTeams[homeTeamIndex];
-        const awayTeam = shuffledTeams[awayTeamIndex];
-
-        const match: SeasonMatch = {
-          id: crypto.randomUUID(),
-          round: round,
-          homeTeam: homeTeam,
-          awayTeam: awayTeam,
-          isPlayed: false,
-        };
-
-        roundMatches.push(match);
-      }
-    }
-
-    // Rotate teams for the next round (except the first team)
-    if (round < totalRounds) {
-      const teamsToRotate = shuffledTeams.slice(1);
-      const lastTeam = teamsToRotate.pop();
-      if (lastTeam) {
-        teamsToRotate.unshift(lastTeam);
-      }
-      shuffledTeams.splice(1, shuffledTeams.length - 1, ...teamsToRotate);
-    }
-
-    seasonRounds.push({
-      roundNumber: round,
-      matches: roundMatches,
-    });
-  }
-
-  return seasonRounds;
+  return generateSeasonRounds(totalRounds, matchesPerRound, totalTeams, shuffledTeams);
 };
 
 export const getCurrentRoundMatches = (
