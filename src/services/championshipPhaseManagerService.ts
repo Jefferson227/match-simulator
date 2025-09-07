@@ -1,10 +1,8 @@
 import { ChampionshipPhase, ChampionshipState } from '../reducers/types';
-import { GroupTableStandings, SeasonRound } from '../types';
+import { GroupTableStandings, SeasonRound, TableStanding } from '../types';
 
-export const mountGroupsForNextPhase = (
-  championshipState: ChampionshipState
-): GroupTableStandings[] => {
-  const sortedStandings = [...championshipState.tableStandings].sort((a, b) => {
+function getSortedStandings(tableStandings: TableStanding[]) {
+  const sortedStandings = [...tableStandings].sort((a, b) => {
     if (b.points !== a.points) return b.points - a.points;
     if (b.goalDifference !== a.goalDifference) return b.goalDifference - a.goalDifference;
     return b.goalsFor - a.goalsFor;
@@ -13,6 +11,14 @@ export const mountGroupsForNextPhase = (
   if (sortedStandings.length < 8) {
     return [];
   }
+
+  return sortedStandings;
+}
+
+export const mountGroupsForNextPhase = (
+  championshipState: ChampionshipState
+): GroupTableStandings[] => {
+  const sortedStandings = getSortedStandings(championshipState.tableStandings);
 
   const groupA: GroupTableStandings = {
     groupId: 'A',
