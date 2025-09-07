@@ -1,4 +1,4 @@
-import { ChampionshipAction, ChampionshipState, ChampionshipUpdate } from '../../reducers/types';
+import { ChampionshipAction, ChampionshipState, ChampionshipUpdate, ChampionshipPhaseUpdate } from '../../reducers/types';
 import { BaseTeam, SeasonRound, Match, TableStanding, ChampionshipConfig } from '../../types';
 import { ReactNode } from 'react';
 
@@ -24,6 +24,7 @@ export interface ChampionshipContextType {
   updateTopScorers: (matches: Match[]) => void;
   resetTopScorers: () => void;
   updateChampionshipState: (championshipUpdateObject: ChampionshipUpdate) => void;
+  updateChampionshipPhase: (championshipPhaseUpdateObject: ChampionshipPhaseUpdate) => void;
 }
 
 // Championship provider props

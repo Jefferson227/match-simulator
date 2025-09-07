@@ -46,6 +46,12 @@ export interface ChampionshipUpdate {
   seasonCalendar: SeasonRound[];
 }
 
+export interface ChampionshipPhaseUpdate {
+  groupStandings: GroupTableStandings[];
+  seasonCalendar: SeasonRound[];
+  nextPhase: ChampionshipPhase;
+}
+
 export interface TopScorer {
   teamId: string;
   playerId: string;
@@ -76,7 +82,8 @@ export type ChampionshipAction =
   | { type: 'UPDATE_TEAM_MORALE'; payload: Match[] }
   | { type: 'UPDATE_TOP_SCORERS'; payload: Match[] }
   | { type: 'RESET_TOP_SCORERS' }
-  | { type: 'UPDATE_CHAMPIONSHIP_STATE'; payload: ChampionshipUpdate };
+  | { type: 'UPDATE_CHAMPIONSHIP_STATE'; payload: ChampionshipUpdate }
+  | { type: 'UPDATE_CHAMPIONSHIP_PHASE'; payload: ChampionshipPhaseUpdate };
 
 export interface GeneralState {
   currentPage: number;

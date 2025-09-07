@@ -225,6 +225,13 @@ export const championshipReducer = (
         seasonMatchCalendar: action.payload.seasonCalendar,
         teamsControlledAutomatically: action.payload.updatedTeamsControlledAutomatically,
       };
+    case 'UPDATE_CHAMPIONSHIP_PHASE':
+      return {
+        ...state,
+        groupStandings: action.payload.groupStandings,
+        seasonMatchCalendar: action.payload.seasonCalendar,
+        phase: action.payload.nextPhase,
+      };
     default:
       return state;
   }

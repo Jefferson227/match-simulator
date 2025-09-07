@@ -31,6 +31,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
     resetTopScorers,
     updateChampionshipState,
     updateTopScorers,
+    updateChampionshipPhase,
   } = useChampionshipContext();
   const { matches } = useContext(MatchContext);
   const RESULTS_PER_PAGE = 12;
@@ -128,7 +129,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
         const seasonCalendar = setSeasonCalendarForNextPhase(groupStandings);
         const nextPhase = moveToNextPhase(championshipState);
 
-        // Call the championshipReducer to update the attributes above in the championshipState
+        updateChampionshipPhase({ groupStandings, seasonCalendar, nextPhase });
         return;
       }
 
