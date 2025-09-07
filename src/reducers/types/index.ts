@@ -71,6 +71,7 @@ export type ChampionshipAction =
     }
   | { type: 'UPDATE_TEAM_MORALE'; payload: Match[] }
   | { type: 'UPDATE_TOP_SCORERS'; payload: Match[] }
+  | { type: 'RESET_TOP_SCORERS' }
   | { type: 'UPDATE_CHAMPIONSHIP_STATE'; payload: ChampionshipUpdate };
 
 export interface GeneralState {
