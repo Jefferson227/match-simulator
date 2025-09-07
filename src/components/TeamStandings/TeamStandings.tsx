@@ -8,6 +8,10 @@ import utils from '../../utils/utils';
 import { handlePromotionRelegationLogic } from '../../services/promotionRelegationService';
 import { TeamStanding, TeamStandingsProps } from './types';
 import { BaseTeam } from '../../types';
+import {
+  mountGroupsForNextPhase,
+  moveToNextPhase,
+} from '../../services/championshipPhaseManagerService';
 
 const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings }) => {
   const {
@@ -119,7 +123,8 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
        */
 
       if (championshipState.format === 'single-round-robin;quadrangular') {
-        mountGroupsForNextPhase();
+        mountGroupsForNextPhase(championshipState);
+        // setSeasonCalendarForNextPhase(championshipState);
         moveToNextPhase();
         return;
       }
