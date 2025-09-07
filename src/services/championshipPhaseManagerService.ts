@@ -1,5 +1,5 @@
 import { ChampionshipState } from '../reducers/types';
-import { GroupTableStandings } from '../types';
+import { GroupTableStandings, SeasonRound } from '../types';
 
 export const mountGroupsForNextPhase = (
   championshipState: ChampionshipState
@@ -8,6 +8,14 @@ export const mountGroupsForNextPhase = (
   // Take the 2nd, 3rd, 6th, and 7th teams as the group B
   // Mount groups
   // Return groups
+  return [];
+};
+
+export const setSeasonCalendarForNextPhase = (
+  groupStandings: GroupTableStandings[]
+): SeasonRound[] => {
+  // Set the season calendar for both groups from the parameter
+  // Return the new calendar
   return [];
 };
 

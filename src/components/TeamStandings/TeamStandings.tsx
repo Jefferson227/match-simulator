@@ -11,6 +11,7 @@ import { BaseTeam } from '../../types';
 import {
   mountGroupsForNextPhase,
   moveToNextPhase,
+  setSeasonCalendarForNextPhase,
 } from '../../services/championshipPhaseManagerService';
 
 const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings }) => {
@@ -124,7 +125,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
 
       if (championshipState.format === 'single-round-robin;quadrangular') {
         const groupStandings = mountGroupsForNextPhase(championshipState);
-        // setSeasonCalendarForNextPhase(groupStandings);
+        const seasonCalendar = setSeasonCalendarForNextPhase(groupStandings);
         moveToNextPhase();
         return;
       }
