@@ -1,4 +1,4 @@
-import { ChampionshipState } from '../reducers/types';
+import { ChampionshipFormat, ChampionshipPhase, ChampionshipState } from '../reducers/types';
 import { GroupTableStandings, SeasonRound } from '../types';
 
 export const mountGroupsForNextPhase = (
@@ -19,4 +19,11 @@ export const setSeasonCalendarForNextPhase = (
   return [];
 };
 
-export const moveToNextPhase = (): void => {};
+export const moveToNextPhase = (championshipState: ChampionshipState): ChampionshipPhase => {
+  // Get the championship format
+  // Get the current phase
+  // If championshipFormat doesn't have a ";" return the championshipPhase
+  // If championshipFormat has a ";" identify the current phase based on the championshipFormat
+  // Return the next phase
+  return 'quadrangular';
+};
