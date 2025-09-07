@@ -99,6 +99,25 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
 
   const handleContinue = () => {
     if (isSeasonComplete) {
+      /**
+       * TODO: Check the logic for different divisions
+       * - If it's série A and B:
+       *  - Handle promotion/relegation logic
+       *  - Reset table standings
+       *  - Reset top scorers
+       *  - Increment year
+       * - If it's série C:
+       *  - If the first phase is ended:
+       *    - Handle logic to relegate the teams to série D
+       *    - Mount the groups for the second phase
+       *    - Update the current phase to the second
+       *  - If the second phase is ended:
+       *    - Handle promotion/relegation logic
+       *    - Update the current phase to the first
+       *    - Reset table standings
+       *    - Reset top scorers
+       *    - Increment year
+       */
       handlePromotionRelegationLogic(updateChampionshipState, championshipState);
       resetTableStandings();
       resetTopScorers();
