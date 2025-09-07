@@ -22,6 +22,7 @@ export interface ChampionshipContextType {
   addOrUpdateOtherChampionship: (championship: ChampionshipConfig) => void;
   updateTeamMorale: (matches: Match[]) => void;
   updateTopScorers: (matches: Match[]) => void;
+  resetTopScorers: () => void;
   updateChampionshipState: (championshipUpdateObject: ChampionshipUpdate) => void;
 }
 
