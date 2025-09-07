@@ -5,6 +5,7 @@ import {
   SeasonRound,
   TableStanding,
   MatchTeam,
+  GroupTableStandings,
 } from '../../types';
 
 export type ChampionshipFormat = 'double-round-robin' | 'single-round-robin;quadrangular';
@@ -22,6 +23,7 @@ export interface ChampionshipState {
   seasonMatchCalendar: SeasonRound[];
   currentRound: number;
   tableStandings: TableStanding[];
+  groupStandings: GroupTableStandings[];
   year: number;
   otherChampionships: ChampionshipConfig[];
   topScorers: TopScorer[];

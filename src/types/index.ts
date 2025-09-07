@@ -154,6 +154,12 @@ export interface TableStanding {
   points: number;
 }
 
+export interface GroupTableStandings {
+  groupId: string;
+  groupName: string;
+  tableStandings: TableStanding[];
+}
+
 export interface ChampionshipTeam {
   fileName: string;
   abbreviation: string;

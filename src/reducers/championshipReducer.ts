@@ -16,6 +16,7 @@ export const initialChampionshipState: ChampionshipState = {
   seasonMatchCalendar: [],
   currentRound: 1,
   tableStandings: [],
+  groupStandings: [],
   year: 0,
   otherChampionships: [],
   topScorers: [],
