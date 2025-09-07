@@ -117,6 +117,13 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
        *    - Reset top scorers
        *    - Increment year
        */
+
+      if (championshipState.format === 'single-round-robin;quadrangular') {
+        mountGroupsForNextPhase();
+        moveToNextPhase();
+        return;
+      }
+
       handlePromotionRelegationLogic(updateChampionshipState, championshipState);
       resetTableStandings();
       resetTopScorers();
