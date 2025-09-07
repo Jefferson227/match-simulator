@@ -9,6 +9,7 @@ import {
 } from '../../types';
 
 export type ChampionshipFormat = 'double-round-robin' | 'single-round-robin;quadrangular';
+export type ChampionshipPhase = 'double-round-robin' | 'single-round-robin' | 'quadrangular';
 
 export interface ChampionshipState {
   championshipConfigId: string | null;
@@ -24,6 +25,7 @@ export interface ChampionshipState {
   currentRound: number;
   tableStandings: TableStanding[];
   groupStandings: GroupTableStandings[];
+  phase: ChampionshipPhase;
   year: number;
   otherChampionships: ChampionshipConfig[];
   topScorers: TopScorer[];

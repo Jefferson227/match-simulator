@@ -3,8 +3,9 @@ import {
   calculateUpdatedStandings,
   updateTeamMoraleAndStrength,
 } from './helpers/championshipReducerHelper';
-import { ChampionshipAction, ChampionshipState, TopScorer } from './types';
+import { ChampionshipAction, ChampionshipPhase, ChampionshipState, TopScorer } from './types';
 import { BaseTeam } from '../types';
+import utils from '../utils/utils';
 
 // Initial state
 export const initialChampionshipState: ChampionshipState = {
@@ -21,6 +22,7 @@ export const initialChampionshipState: ChampionshipState = {
   otherChampionships: [],
   topScorers: [],
   format: 'double-round-robin',
+  phase: 'double-round-robin',
 };
 
 // Championship reducer
@@ -40,6 +42,10 @@ export const championshipReducer = (
         promotionTeams: action.payload.promotionTeams,
         relegationTeams: action.payload.relegationTeams,
         format: action.payload.format,
+        phase:
+          action.payload.format === 'double-round-robin'
+            ? 'double-round-robin'
+            : (utils.getArrayFromString(action.payload.format, ';')[0] as ChampionshipPhase),
       };
     case 'SET_HUMAN_PLAYER_BASE_TEAM':
       return {

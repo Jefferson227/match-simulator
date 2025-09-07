@@ -108,7 +108,6 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
        *  - Increment year
        * - If it's série C:
        *  - If the first phase is ended:
-       *    - Handle logic to relegate the teams to série D
        *    - Mount the groups for the second phase
        *    - Update the current phase to the second
        *  - If the second phase is ended:

@@ -248,6 +248,10 @@ function getRandomNumberIntoRange(from: number, to: number, minimum?: number) {
   return minimum ? Math.min(minimum, randomNumber) : randomNumber;
 }
 
+function getArrayFromString(input: string, separator: string): string[] {
+  return input.split(separator);
+}
+
 const utils = {
   addPlayerAttributes,
   getRandomNumber,
@@ -264,6 +268,7 @@ const utils = {
   shortenPlayerName,
   isNullOrWhitespace,
   getRandomNumberIntoRange,
+  getArrayFromString,
 };
 
 export default utils;
