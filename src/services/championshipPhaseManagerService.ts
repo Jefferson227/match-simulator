@@ -15,104 +15,50 @@ function getSortedStandings(tableStandings: TableStanding[]) {
   return sortedStandings;
 }
 
+function resetStandings(standings: TableStanding[]) {
+  return standings.map((standing) => {
+    return {
+      ...standing,
+      wins: 0,
+      draws: 0,
+      losses: 0,
+      goalsFor: 0,
+      goalsAgainst: 0,
+      goalDifference: 0,
+      points: 0,
+    };
+  });
+}
+
+function mountGroup(groupName: string, teamStandings: TableStanding[]) {
+  const newStandings = resetStandings(teamStandings);
+  return {
+    groupId: crypto.randomUUID(),
+    groupName,
+    tableStandings: [...newStandings],
+  };
+}
+
 export const mountGroupsForNextPhase = (
   championshipState: ChampionshipState
 ): GroupTableStandings[] => {
   const sortedStandings = getSortedStandings(championshipState.tableStandings);
 
-  const groupA: GroupTableStandings = {
-    groupId: 'A',
-    groupName: 'Group A',
-    tableStandings: [
-      {
-        ...sortedStandings[0],
-        wins: 0,
-        draws: 0,
-        losses: 0,
-        goalsFor: 0,
-        goalsAgainst: 0,
-        goalDifference: 0,
-        points: 0,
-      },
-      {
-        ...sortedStandings[3],
-        wins: 0,
-        draws: 0,
-        losses: 0,
-        goalsFor: 0,
-        goalsAgainst: 0,
-        goalDifference: 0,
-        points: 0,
-      },
-      {
-        ...sortedStandings[4],
-        wins: 0,
-        draws: 0,
-        losses: 0,
-        goalsFor: 0,
-        goalsAgainst: 0,
-        goalDifference: 0,
-        points: 0,
-      },
-      {
-        ...sortedStandings[7],
-        wins: 0,
-        draws: 0,
-        losses: 0,
-        goalsFor: 0,
-        goalsAgainst: 0,
-        goalDifference: 0,
-        points: 0,
-      },
-    ],
-  };
+  const groupATeams = [
+    sortedStandings[0],
+    sortedStandings[3],
+    sortedStandings[4],
+    sortedStandings[7],
+  ];
+  const groupA = mountGroup('Group A', groupATeams);
 
-  const groupB: GroupTableStandings = {
-    groupId: 'B',
-    groupName: 'Group B',
-    tableStandings: [
-      {
-        ...sortedStandings[1],
-        wins: 0,
-        draws: 0,
-        losses: 0,
-        goalsFor: 0,
-        goalsAgainst: 0,
-        goalDifference: 0,
-        points: 0,
-      },
-      {
-        ...sortedStandings[2],
-        wins: 0,
-        draws: 0,
-        losses: 0,
-        goalsFor: 0,
-        goalsAgainst: 0,
-        goalDifference: 0,
-        points: 0,
-      },
-      {
-        ...sortedStandings[5],
-        wins: 0,
-        draws: 0,
-        losses: 0,
-        goalsFor: 0,
-        goalsAgainst: 0,
-        goalDifference: 0,
-        points: 0,
-      },
-      {
-        ...sortedStandings[6],
-        wins: 0,
-        draws: 0,
-        losses: 0,
-        goalsFor: 0,
-        goalsAgainst: 0,
-        goalDifference: 0,
-        points: 0,
-      },
-    ],
-  };
+  const groupBTeams = [
+    sortedStandings[1],
+    sortedStandings[2],
+    sortedStandings[5],
+    sortedStandings[6],
+  ];
+  const groupB = mountGroup('Group B', groupBTeams);
 
   return [groupA, groupB];
 };
