@@ -230,7 +230,7 @@ export const championshipReducer = (
       return {
         ...state,
         groupStandings: action.payload.groupStandings,
-        seasonMatchCalendar: action.payload.seasonCalendar,
+        seasonMatchCalendarGroups: action.payload.seasonCalendarGroups,
         phase: action.payload.nextPhase,
       };
     default:

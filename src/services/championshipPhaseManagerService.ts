@@ -1,5 +1,5 @@
 import { ChampionshipPhase, ChampionshipState } from '../reducers/types';
-import { GroupTableStandings, SeasonRound, TableStanding } from '../types';
+import { GroupTableStandings, SeasonGroupRound, SeasonRound, TableStanding } from '../types';
 
 function getSortedStandings(tableStandings: TableStanding[]) {
   const sortedStandings = [...tableStandings].sort((a, b) => {
@@ -65,73 +65,11 @@ export const mountGroupsForNextPhase = (
 
 export const setSeasonCalendarForNextPhase = (
   groupStandings: GroupTableStandings[]
-): SeasonRound[] => {
-  const seasonRounds: SeasonRound[] = [];
-  let roundNumber = 1;
-
-  groupStandings.forEach((group) => {
-    const teams = group.tableStandings.map((standing) => ({
-      id: standing.teamId,
-      name: standing.teamName,
-      shortName: standing.teamName,
-      abbreviation: standing.teamAbbreviation,
-      colors: { outline: '#000', background: '#fff', name: '#000' },
-      players: [],
-      morale: 50,
-      formation: '4-4-2',
-      overallMood: 100,
-      initialOverallStrength: 80,
-    }));
-
-    const teamsCount = teams.length;
-    const matchesPerRound = teamsCount / 2;
-    const totalRounds = (teamsCount - 1) * 2;
-
-    for (let round = 1; round <= totalRounds; round++) {
-      const existingRound = seasonRounds.find((r) => r.roundNumber === roundNumber);
-      const roundMatches = existingRound ? [...existingRound.matches] : [];
-
-      for (let i = 0; i < matchesPerRound; i++) {
-        const homeTeamIndex = i;
-        const awayTeamIndex = teamsCount - 1 - i;
-
-        if (homeTeamIndex !== awayTeamIndex) {
-          const homeTeam = teams[homeTeamIndex];
-          const awayTeam = teams[awayTeamIndex];
-
-          roundMatches.push({
-            id: crypto.randomUUID(),
-            round: roundNumber,
-            homeTeam,
-            awayTeam,
-            isPlayed: false,
-          });
-        }
-      }
-
-      if (existingRound) {
-        existingRound.matches = roundMatches;
-      } else {
-        seasonRounds.push({
-          roundNumber,
-          matches: roundMatches,
-        });
-      }
-
-      if (round < totalRounds) {
-        const teamsToRotate = teams.slice(1);
-        const lastTeam = teamsToRotate.pop();
-        if (lastTeam) {
-          teamsToRotate.unshift(lastTeam);
-        }
-        teams.splice(1, teams.length - 1, ...teamsToRotate);
-      }
-
-      roundNumber++;
-    }
-  });
-
-  return seasonRounds.sort((a, b) => a.roundNumber - b.roundNumber);
+): SeasonGroupRound[] => {
+  // Based on the group standings, create one calendar per group with the double-round-robin logic
+  // Add the calendars for all groups into a single array
+  // Return the array with all calendars
+  return [];
 };
 
 export const moveToNextPhase = (championshipState: ChampionshipState): ChampionshipPhase => {

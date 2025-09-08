@@ -50,7 +50,7 @@ export interface ChampionshipUpdate {
 
 export interface ChampionshipPhaseUpdate {
   groupStandings: GroupTableStandings[];
-  seasonCalendar: SeasonRound[];
+  seasonCalendarGroups: SeasonGroupRound[];
   nextPhase: ChampionshipPhase;
 }
 
