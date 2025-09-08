@@ -141,6 +141,11 @@ export interface SeasonRound {
   matches: SeasonMatch[];
 }
 
+export interface SeasonGroupRound {
+  group: GroupTableStandings;
+  rounds: SeasonRound[];
+}
+
 export interface TableStanding {
   teamId: string;
   teamName: string;

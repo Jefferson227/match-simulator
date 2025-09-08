@@ -42,6 +42,11 @@ export const sessionService = {
         return null;
       }
 
+      // Migration: ensure seasonMatchCalendarGroups exists for backward compatibility
+      if (!parsedSession.championship.seasonMatchCalendarGroups) {
+        parsedSession.championship.seasonMatchCalendarGroups = [];
+      }
+
       return parsedSession;
     } catch (error) {
       console.error('Failed to load session:', error);

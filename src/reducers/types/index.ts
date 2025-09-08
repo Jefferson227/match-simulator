@@ -3,6 +3,7 @@ import {
   ChampionshipConfig,
   Match,
   SeasonRound,
+  SeasonGroupRound,
   TableStanding,
   MatchTeam,
   GroupTableStandings,
@@ -22,6 +23,7 @@ export interface ChampionshipState {
   humanPlayerBaseTeam: BaseTeam;
   teamsControlledAutomatically: BaseTeam[];
   seasonMatchCalendar: SeasonRound[];
+  seasonMatchCalendarGroups: SeasonGroupRound[];
   currentRound: number;
   tableStandings: TableStanding[];
   groupStandings: GroupTableStandings[];
