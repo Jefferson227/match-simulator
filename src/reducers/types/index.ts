@@ -60,6 +60,11 @@ export interface TopScorer {
   goals: number;
 }
 
+export interface MatchTeams {
+  homeTeam: MatchTeam;
+  visitorTeam: MatchTeam;
+}
+
 // Championship action types
 export type ChampionshipAction =
   | { type: 'SET_CHAMPIONSHIP'; payload: ChampionshipConfig }
