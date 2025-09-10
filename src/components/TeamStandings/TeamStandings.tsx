@@ -126,7 +126,10 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
 
       if (championshipState.format === 'single-round-robin;quadrangular') {
         const groupStandings = mountGroupsForNextPhase(championshipState);
-        const seasonCalendarGroups = setSeasonCalendarForNextPhase(groupStandings);
+        const seasonCalendarGroups = setSeasonCalendarForNextPhase(
+          groupStandings,
+          championshipState
+        );
         const nextPhase = moveToNextPhase(championshipState);
 
         updateChampionshipPhase({ groupStandings, seasonCalendarGroups, nextPhase });

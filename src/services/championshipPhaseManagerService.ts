@@ -1,5 +1,12 @@
 import { ChampionshipPhase, ChampionshipState } from '../reducers/types';
-import { GroupTableStandings, SeasonGroupRound, SeasonRound, TableStanding, SeasonMatch, BaseTeam } from '../types';
+import {
+  GroupTableStandings,
+  SeasonGroupRound,
+  SeasonRound,
+  TableStanding,
+  SeasonMatch,
+  BaseTeam,
+} from '../types';
 
 function getSortedStandings(tableStandings: TableStanding[]) {
   const sortedStandings = [...tableStandings].sort((a, b) => {
@@ -64,26 +71,23 @@ export const mountGroupsForNextPhase = (
 };
 
 export const setSeasonCalendarForNextPhase = (
-  groupStandings: GroupTableStandings[]
+  groupStandings: GroupTableStandings[],
+  championshipState: ChampionshipState
 ): SeasonGroupRound[] => {
   // Based on the group standings, create one calendar per group with the double-round-robin logic
   // Add the calendars for all groups into a single array
   // Return the array with all calendars
-  
-  return groupStandings.map(group => {
-    // Convert TableStandings to BaseTeam for calendar generation
-    const teams: BaseTeam[] = group.tableStandings.map(standing => ({
-      id: standing.teamId,
-      name: standing.teamName,
-      shortName: standing.teamName,
-      abbreviation: standing.teamAbbreviation,
-      colors: { outline: '', background: '', name: '' }, // Placeholder colors
-      players: [], // Empty players array for calendar generation
-      morale: 50,
-      formation: '4-4-2',
-      overallMood: 100,
-      initialOverallStrength: 80,
-    }));
+
+  return groupStandings.map((group) => {
+    // Get teams from championshipState instead of creating from tableStandings
+    const allTeams = [
+      ...championshipState.teamsControlledAutomatically,
+      championshipState.humanPlayerBaseTeam,
+    ];
+
+    const teams: BaseTeam[] = group.tableStandings
+      .map((standing) => allTeams.find((team) => team.id === standing.teamId))
+      .filter((team): team is BaseTeam => team !== undefined);
 
     // Shuffle teams for balanced scheduling
     const shuffledTeams = [...teams];
