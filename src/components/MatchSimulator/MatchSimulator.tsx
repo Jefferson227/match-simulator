@@ -9,6 +9,7 @@ import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import { getCurrentRoundMatches } from '../../services/teamService';
 import MatchDetails from '../MatchDetails';
 import utils from '../../utils/utils';
+import { setUpMatches } from './helpers/matchSimulatorHelper';
 
 const MATCHES_PER_PAGE = 6;
 
@@ -61,58 +62,7 @@ const MatchSimulator: FC = () => {
   };
 
   useEffect(() => {
-    // Only set matches if not already set for this round
-    const hasMatchCalendarData = usingGroups 
-      ? championshipState.seasonMatchCalendarGroups.length > 0 
-      : championshipState.seasonMatchCalendar.length > 0;
-
-    if (
-      hasMatchCalendarData &&
-      championshipState.humanPlayerBaseTeam &&
-      (matches.length === 0 || matches[0]?.round !== championshipState.currentRound)
-    ) {
-      let currentRoundMatches;
-      
-      if (usingGroups) {
-        // For groups, we need to get matches from all groups for the current round
-        const allGroupMatches = championshipState.seasonMatchCalendarGroups.flatMap(groupRound => 
-          getCurrentRoundMatches(
-            championshipState.teamsControlledAutomatically,
-            groupRound.rounds,
-            championshipState.currentRound,
-            championshipState.humanPlayerBaseTeam,
-            state.matchTeam || undefined
-          )
-        );
-        currentRoundMatches = allGroupMatches;
-      } else {
-        currentRoundMatches = getCurrentRoundMatches(
-          championshipState.teamsControlledAutomatically,
-          championshipState.seasonMatchCalendar,
-          championshipState.currentRound,
-          championshipState.humanPlayerBaseTeam,
-          state.matchTeam || undefined
-        );
-      }
-
-      // Transform to the format expected by MatchSimulator
-      const transformedMatches = currentRoundMatches.map((match) => ({
-        id: crypto.randomUUID(),
-        homeTeam: match.homeTeam,
-        visitorTeam: match.visitorTeam,
-        lastScorer: null,
-        ballPossession: {
-          isHomeTeam: true,
-          position: 'midfield' as const,
-        },
-        shotAttempts: 0,
-        scorers: [],
-        round: championshipState.currentRound, // Add round info
-      }));
-
-      setMatches(transformedMatches);
-    }
-    // eslint-disable-next-line
+    setUpMatches(championshipState, state, matches, getCurrentRoundMatches, setMatches);
   }, [
     championshipState.seasonMatchCalendar,
     championshipState.seasonMatchCalendarGroups,
