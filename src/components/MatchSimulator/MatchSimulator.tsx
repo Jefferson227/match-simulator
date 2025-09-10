@@ -29,7 +29,6 @@ const MatchSimulator: FC = () => {
 
   // Determine if we're using group-based matches
   const usingGroups = championshipState.seasonMatchCalendarGroups.length > 0;
-  const currentGroupRounds = usingGroups ? championshipState.seasonMatchCalendarGroups : null;
 
   // Reset timer and detailsMatchId when leaving MatchSimulator
   useEffect(() => {
