@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext, FC } from 'react';
 import Score from '../Score';
 import TeamComponent from '../TeamComponent';
-import Functions from '../../functions/MatchSimulatorFunctions';
 import TeamPlayers from '../TeamPlayers/TeamPlayers';
 import { MatchContext } from '../../contexts/MatchContext';
 import { GeneralContext } from '../../contexts/GeneralContext';
@@ -9,7 +8,8 @@ import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import { getCurrentRoundMatches } from '../../services/teamService';
 import MatchDetails from '../MatchDetails';
 import utils from '../../utils/utils';
-import { setUpMatches } from './helpers/matchSimulatorHelper';
+import { runMatchLogic, setUpMatches } from './helpers/matchSimulatorHelper';
+import { RunMatchLogicParams } from './types';
 
 const MATCHES_PER_PAGE = 6;
 
@@ -73,39 +73,26 @@ const MatchSimulator: FC = () => {
   ]);
 
   useEffect(() => {
-    let timer: number | undefined;
+    const runMatchLogicParams = {
+      detailsMatchId,
+      teamSquadView,
+      time,
+      setTime,
+      state,
+      matches,
+      setScorer,
+      increaseScore,
+      standingsUpdated,
+      standingsTimeoutSet,
+      updateTableStandings,
+      setStandingsUpdated,
+      setStandingsTimeoutSet,
+      updateTeamMorale,
+      setIsRoundOver,
+      setScreenDisplayed,
+    } as RunMatchLogicParams;
 
-    if (!detailsMatchId && !teamSquadView && time < 90) {
-      timer = window.setInterval(() => {
-        setTime((prevTime) => prevTime + 1);
-      }, state.clockSpeed);
-    }
-
-    if (matches.length > 0 && time < 90) {
-      Functions.tickClock(time, matches, setScorer, increaseScore);
-    }
-
-    if (time >= 90 || teamSquadView || detailsMatchId) {
-      if (timer) clearInterval(timer);
-    }
-
-    // After match ends, update standings and show standings after 5 seconds
-    if (
-      time >= 90 &&
-      !teamSquadView &&
-      !detailsMatchId &&
-      !standingsUpdated &&
-      !standingsTimeoutSet
-    ) {
-      updateTableStandings(matches);
-      setStandingsUpdated(true);
-      setStandingsTimeoutSet(true);
-      window.setTimeout(() => {
-        updateTeamMorale(matches);
-        setIsRoundOver(true);
-        setScreenDisplayed('TeamStandings');
-      }, 5000);
-    }
+    const timer = runMatchLogic(runMatchLogicParams);
 
     return () => {
       if (timer) clearInterval(timer);
