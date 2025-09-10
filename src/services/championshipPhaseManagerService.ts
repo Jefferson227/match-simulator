@@ -1,5 +1,5 @@
 import { ChampionshipPhase, ChampionshipState } from '../reducers/types';
-import { GroupTableStandings, SeasonGroupRound, SeasonRound, TableStanding } from '../types';
+import { GroupTableStandings, SeasonGroupRound, SeasonRound, TableStanding, SeasonMatch, BaseTeam } from '../types';
 
 function getSortedStandings(tableStandings: TableStanding[]) {
   const sortedStandings = [...tableStandings].sort((a, b) => {
@@ -69,7 +69,81 @@ export const setSeasonCalendarForNextPhase = (
   // Based on the group standings, create one calendar per group with the double-round-robin logic
   // Add the calendars for all groups into a single array
   // Return the array with all calendars
-  return [];
+  
+  return groupStandings.map(group => {
+    // Convert TableStandings to BaseTeam for calendar generation
+    const teams: BaseTeam[] = group.tableStandings.map(standing => ({
+      id: standing.teamId,
+      name: standing.teamName,
+      shortName: standing.teamName,
+      abbreviation: standing.teamAbbreviation,
+      colors: { outline: '', background: '', name: '' }, // Placeholder colors
+      players: [], // Empty players array for calendar generation
+      morale: 50,
+      formation: '4-4-2',
+      overallMood: 100,
+      initialOverallStrength: 80,
+    }));
+
+    // Shuffle teams for balanced scheduling
+    const shuffledTeams = [...teams];
+    for (let i = shuffledTeams.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledTeams[i], shuffledTeams[j]] = [shuffledTeams[j], shuffledTeams[i]];
+    }
+
+    const totalTeams = teams.length;
+    const coeff = 2; // Double round-robin
+    const totalRounds = totalTeams * coeff - coeff;
+    const matchesPerRound = totalTeams / 2;
+
+    const rounds: SeasonRound[] = [];
+
+    for (let round = 1; round <= totalRounds; round++) {
+      const roundMatches: SeasonMatch[] = [];
+
+      // Generate matches for this round using round-robin algorithm
+      for (let i = 0; i < matchesPerRound; i++) {
+        const homeTeamIndex = i;
+        const awayTeamIndex = totalTeams - 1 - i;
+
+        if (homeTeamIndex !== awayTeamIndex) {
+          const homeTeam = shuffledTeams[homeTeamIndex];
+          const awayTeam = shuffledTeams[awayTeamIndex];
+
+          const match: SeasonMatch = {
+            id: crypto.randomUUID(),
+            round: round,
+            homeTeam: homeTeam,
+            awayTeam: awayTeam,
+            isPlayed: false,
+          };
+
+          roundMatches.push(match);
+        }
+      }
+
+      rounds.push({
+        roundNumber: round,
+        matches: roundMatches,
+      });
+
+      // Rotate teams for the next round (except the first team)
+      if (round < totalRounds) {
+        const teamsToRotate = shuffledTeams.slice(1);
+        const lastTeam = teamsToRotate.pop();
+        if (lastTeam) {
+          teamsToRotate.unshift(lastTeam);
+        }
+        shuffledTeams.splice(1, shuffledTeams.length - 1, ...teamsToRotate);
+      }
+    }
+
+    return {
+      group: group,
+      rounds: rounds,
+    };
+  });
 };
 
 export const moveToNextPhase = (championshipState: ChampionshipState): ChampionshipPhase => {
