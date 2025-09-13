@@ -133,8 +133,6 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
         const nextPhase = moveToNextPhase(championshipState);
 
         updateChampionshipPhase({ groupStandings, seasonCalendarGroups, nextPhase });
-        // TODO: Change how MatchSimulator will run the matches
-        return;
       }
 
       handlePromotionRelegationLogic(updateChampionshipState, championshipState);
