@@ -123,22 +123,25 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
        *    - Reset top scorers
        *    - Increment year
        */
+      switch (championshipState.format) {
+        case 'single-round-robin;quadrangular':
+          const groupStandings = mountGroupsForNextPhase(championshipState);
+          const seasonCalendarGroups = setSeasonCalendarForNextPhase(
+            groupStandings,
+            championshipState
+          );
+          const nextPhase = moveToNextPhase(championshipState);
 
-      if (championshipState.format === 'single-round-robin;quadrangular') {
-        const groupStandings = mountGroupsForNextPhase(championshipState);
-        const seasonCalendarGroups = setSeasonCalendarForNextPhase(
-          groupStandings,
-          championshipState
-        );
-        const nextPhase = moveToNextPhase(championshipState);
+          updateChampionshipPhase({ groupStandings, seasonCalendarGroups, nextPhase });
+          break;
 
-        updateChampionshipPhase({ groupStandings, seasonCalendarGroups, nextPhase });
+        default:
+          handlePromotionRelegationLogic(updateChampionshipState, championshipState);
+          resetTableStandings();
+          resetTopScorers();
+          incrementYear();
+          break;
       }
-
-      handlePromotionRelegationLogic(updateChampionshipState, championshipState);
-      resetTableStandings();
-      resetTopScorers();
-      incrementYear();
     }
 
     const totalRounds = championshipState.seasonMatchCalendar.length;
