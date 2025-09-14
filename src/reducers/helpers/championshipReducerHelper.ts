@@ -1,6 +1,6 @@
 import { BaseTeam, Match, TableStanding, ChampionshipConfig, Player } from '../../types';
 import utils from '../../utils/utils';
-import { PlayerStrengthUpdate, MoraleType, TeamMatchResult } from '../types';
+import { PlayerStrengthUpdate, MoraleType, TeamMatchResult, ChampionshipState } from '../types';
 
 function getTeamMoraleType(morale: number): MoraleType {
   if (morale <= 35) return 'bad';
@@ -174,6 +174,25 @@ function getTeamResults(matches: Match[]): Map<string, TeamMatchResult> {
   return teamResults;
 }
 
+function updateGroupStandings(state: ChampionshipState, matches: Match[]) {
+  const updatedGroupStandings = state.groupStandings.map((group) => {
+    const groupTeamIds = new Set(group.tableStandings.map((standing) => standing.teamId));
+    const groupMatches = matches.filter(
+      (match) => groupTeamIds.has(match.homeTeam.id) || groupTeamIds.has(match.visitorTeam.id)
+    );
+
+    return {
+      ...group,
+      tableStandings: calculateUpdatedStandings(group.tableStandings, groupMatches),
+    };
+  });
+
+  return {
+    ...state,
+    groupStandings: updatedGroupStandings,
+  };
+}
+
 export function calculateUpdatedStandings(
   prevStandings: TableStanding[] = [],
   matches: Match[]
@@ -273,4 +292,15 @@ export function addOrUpdateOtherChampionship(
   }
 
   return [...otherChampionships, updatedChampionship];
+}
+
+export function updateTableStandings(state: ChampionshipState, matches: Match[]) {
+  if (state.groupStandings.length > 0) {
+    return updateGroupStandings(state, matches);
+  }
+
+  return {
+    ...state,
+    tableStandings: calculateUpdatedStandings(state.tableStandings, matches),
+  };
 }

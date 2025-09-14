@@ -1,6 +1,7 @@
 import {
   addOrUpdateOtherChampionship,
   calculateUpdatedStandings,
+  updateTableStandings,
   updateTeamMoraleAndStrength,
 } from './helpers/championshipReducerHelper';
 import { ChampionshipAction, ChampionshipPhase, ChampionshipState, TopScorer } from './types';
@@ -74,32 +75,7 @@ export const championshipReducer = (
         currentRound: state.currentRound + 1,
       };
     case 'UPDATE_TABLE_STANDINGS':
-      // If we have group standings, update them instead of regular table standings
-      if (state.groupStandings.length > 0) {
-        const updatedGroupStandings = state.groupStandings.map((group) => {
-          // Filter matches that belong to this group
-          const groupTeamIds = new Set(group.tableStandings.map((standing) => standing.teamId));
-          const groupMatches = action.payload.filter(
-            (match) => groupTeamIds.has(match.homeTeam.id) || groupTeamIds.has(match.visitorTeam.id)
-          );
-
-          return {
-            ...group,
-            tableStandings: calculateUpdatedStandings(group.tableStandings, groupMatches),
-          };
-        });
-
-        return {
-          ...state,
-          groupStandings: updatedGroupStandings,
-        };
-      }
-
-      // Regular table standings update
-      return {
-        ...state,
-        tableStandings: calculateUpdatedStandings(state.tableStandings, action.payload),
-      };
+      return updateTableStandings(state, action.payload);
     case 'RESET_TABLE_STANDINGS':
       return {
         ...state,
