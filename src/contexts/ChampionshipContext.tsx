@@ -95,11 +95,23 @@ export const ChampionshipProvider: React.FC<ChampionshipProviderProps> = ({ chil
     });
   };
 
-  const updateChampionshipPhase = (updateChampionshipPhaseObject: ChampionshipPhaseUpdate) => {
+  const updateChampionshipPhase = (
+    updateChampionshipPhaseObject: ChampionshipPhaseUpdate,
+    callback?: (updatedState: ChampionshipState) => void
+  ) => {
+    const updateState = {
+      ...state,
+      groupStandings: updateChampionshipPhaseObject.groupStandings,
+      seasonMatchCalendarGroups: updateChampionshipPhaseObject.seasonCalendarGroups,
+      phase: updateChampionshipPhaseObject.nextPhase,
+    };
+
     dispatch({
       type: 'UPDATE_CHAMPIONSHIP_PHASE',
       payload: updateChampionshipPhaseObject,
     });
+
+    if (callback) callback(updateState);
   };
 
   const value: ChampionshipContextType = {

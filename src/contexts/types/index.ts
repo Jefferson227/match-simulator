@@ -39,7 +39,10 @@ export interface ChampionshipContextType {
   updateTopScorers: (matches: Match[]) => void;
   resetTopScorers: () => void;
   updateChampionshipState: (championshipUpdateObject: ChampionshipUpdate) => void;
-  updateChampionshipPhase: (championshipPhaseUpdateObject: ChampionshipPhaseUpdate) => void;
+  updateChampionshipPhase: (
+    championshipPhaseUpdateObject: ChampionshipPhaseUpdate,
+    callback?: (updatedState: ChampionshipState) => void
+  ) => void;
 }
 
 // Championship provider props

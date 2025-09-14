@@ -104,6 +104,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
   };
 
   const handleContinue = () => {
+    let updatedChampionshipState = championshipState;
     if (isSeasonComplete) {
       /**
        * TODO: Check the logic for different divisions
@@ -132,7 +133,12 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
           );
           const nextPhase = moveToNextPhase(championshipState);
 
-          updateChampionshipPhase({ groupStandings, seasonCalendarGroups, nextPhase });
+          updateChampionshipPhase(
+            { groupStandings, seasonCalendarGroups, nextPhase },
+            (updateState) => {
+              updatedChampionshipState = updateState;
+            }
+          );
           break;
 
         default:
@@ -144,7 +150,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
       }
     }
 
-    const totalRounds = championshipState.seasonMatchCalendar.length;
+    const totalRounds = updatedChampionshipState.seasonMatchCalendar.length;
     if (championshipState.currentRound >= totalRounds) {
       setCurrentRound(1);
     } else {
