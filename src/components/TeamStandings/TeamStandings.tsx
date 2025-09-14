@@ -46,47 +46,90 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
     });
   }, [generalState, championshipState, matches]);
 
-  // Use prop standings if provided (for tests), otherwise use real standings from context
-  const tableStandings = propStandings
-    ? propStandings.map((s) => ({
-        teamId: s.teamId,
-        teamAbbreviation: s.teamAbbreviation,
-        wins: s.wins,
-        draws: s.draws,
-        losses: s.losses,
-        goalDifference: s.goalDifference,
-        points: s.points,
-      }))
-    : getTableStandings();
+  // Determine if we're using group-based standings
+  const usingGroups = championshipState.seasonMatchCalendarGroups.length > 0;
 
-  const standings: TeamStanding[] =
-    tableStandings.length > 0
-      ? tableStandings.map((s) => ({
-          teamId: s.teamId,
-          teamAbbreviation: s.teamAbbreviation,
-          wins: s.wins,
-          draws: s.draws,
-          losses: s.losses,
-          goalDifference: s.goalDifference,
-          points: s.points,
-        }))
-      : [...championshipState.teamsControlledAutomatically, championshipState.humanPlayerBaseTeam]
-          .map((s) => ({
-            teamId: s.id,
-            teamAbbreviation: s.abbreviation,
-            wins: 0,
-            draws: 0,
-            losses: 0,
-            goalDifference: 0,
-            points: 0,
+  // Group-based standings logic
+  const getDisplayInfo = () => {
+    if (!usingGroups) {
+      // Use prop standings if provided (for tests), otherwise use real standings from context
+      const tableStandings = propStandings
+        ? propStandings.map((s) => ({
+            teamId: s.teamId,
+            teamAbbreviation: s.teamAbbreviation,
+            wins: s.wins,
+            draws: s.draws,
+            losses: s.losses,
+            goalDifference: s.goalDifference,
+            points: s.points,
           }))
-          .sort((a, b) => (a.teamAbbreviation > b.teamAbbreviation ? 1 : -1));
+        : getTableStandings();
 
-  const totalPages = Math.ceil(standings.length / RESULTS_PER_PAGE);
-  const paginatedStandings = standings.slice(
-    page * RESULTS_PER_PAGE,
-    (page + 1) * RESULTS_PER_PAGE
-  );
+      const standings: TeamStanding[] =
+        tableStandings.length > 0
+          ? tableStandings.map((s) => ({
+              teamId: s.teamId,
+              teamAbbreviation: s.teamAbbreviation,
+              wins: s.wins,
+              draws: s.draws,
+              losses: s.losses,
+              goalDifference: s.goalDifference,
+              points: s.points,
+            }))
+          : [...championshipState.teamsControlledAutomatically, championshipState.humanPlayerBaseTeam]
+              .map((s) => ({
+                teamId: s.id,
+                teamAbbreviation: s.abbreviation,
+                wins: 0,
+                draws: 0,
+                losses: 0,
+                goalDifference: 0,
+                points: 0,
+              }))
+              .sort((a, b) => (a.teamAbbreviation > b.teamAbbreviation ? 1 : -1));
+
+      const totalPages = Math.ceil(standings.length / RESULTS_PER_PAGE);
+      const paginatedStandings = standings.slice(
+        page * RESULTS_PER_PAGE,
+        (page + 1) * RESULTS_PER_PAGE
+      );
+
+      return {
+        standings: paginatedStandings,
+        totalPages,
+        currentGroupName: null,
+      };
+    }
+
+    // Group-based standings - each page shows one group's standings
+    if (championshipState.groupStandings.length === 0) {
+      return { standings: [], totalPages: 0, currentGroupName: null };
+    }
+
+    const currentGroupIndex = Math.min(
+      page,
+      championshipState.groupStandings.length - 1
+    );
+    const currentGroup = championshipState.groupStandings[currentGroupIndex];
+
+    const groupStandings: TeamStanding[] = currentGroup.tableStandings.map((s) => ({
+      teamId: s.teamId,
+      teamAbbreviation: s.teamAbbreviation,
+      wins: s.wins,
+      draws: s.draws,
+      losses: s.losses,
+      goalDifference: s.goalDifference,
+      points: s.points,
+    }));
+
+    return {
+      standings: groupStandings,
+      totalPages: championshipState.groupStandings.length,
+      currentGroupName: currentGroup.groupName,
+    };
+  };
+
+  const { standings: paginatedStandings, totalPages, currentGroupName } = getDisplayInfo();
 
   const handlePrevPage = () => {
     if (page > 0) setPage(page - 1);
@@ -213,11 +256,16 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
       <div className="text-center text-[14px] text-white mb-2 uppercase">
         {!isSeasonComplete && (
           <>
-            {championshipState.year} - Round {championshipState.currentRound} of {totalRounds}
+            {usingGroups
+              ? `${championshipState.year} - Round ${championshipState.currentRound}`
+              : `${championshipState.year} - Round ${championshipState.currentRound} of ${totalRounds}`}
           </>
         )}
         {isSeasonComplete && (
           <span className="block text-[12px] text-yellow-300">SEASON COMPLETE!</span>
+        )}
+        {usingGroups && currentGroupName && (
+          <div className="mt-1 text-xs">{currentGroupName}</div>
         )}
       </div>
       <div
@@ -241,7 +289,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
                 <React.Fragment key={row.teamId}>
                   <tr className="text-[18px] text-white" onClick={() => handleViewTeam(row.teamId)}>
                     <td className="w-[56px] text-center py-2">
-                      {page * RESULTS_PER_PAGE + idx + 1}
+                      {usingGroups ? idx + 1 : page * RESULTS_PER_PAGE + idx + 1}
                     </td>
                     <td className="w-[56px] text-center">{row.teamAbbreviation}</td>
                     <td className="w-[56px] text-center">{row.wins}</td>
@@ -268,55 +316,70 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
           </table>
         </div>
       </div>
-      <div className="flex justify-between w-[350px] mt-4 mx-auto">
-        <button
-          className={`border-4 w-[80px] h-[56px] flex items-center justify-center text-[18px] bg-transparent transition ${
-            page === 0
-              ? 'border-[#b0b0b0] text-[#b0b0b0] cursor-not-allowed'
-              : 'border-white text-white hover:bg-white hover:text-[#397a33] cursor-pointer'
-          }`}
-          onClick={handlePrevPage}
-          disabled={page === 0}
-          aria-label="Previous"
-        >
-          {'<'}
-        </button>
-        <button
-          className="border-4 border-white w-[180px] h-[56px] flex items-center justify-center text-[18px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition mx-2 cursor-pointer"
-          style={{
-            display:
-              generalState.previousScreenDisplayed !== 'MatchSimulator' && !generalState.isRoundOver
-                ? 'block'
-                : 'none',
-          }}
-          onClick={handleBack}
-        >
-          BACK
-        </button>
-        <button
-          className="border-4 border-white w-[180px] h-[56px] flex items-center justify-center text-[18px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition mx-2 cursor-pointer"
-          style={{
-            display:
-              generalState.previousScreenDisplayed === 'MatchSimulator' || generalState.isRoundOver
-                ? 'block'
-                : 'none',
-          }}
-          onClick={handleContinue}
-        >
-          {isSeasonComplete ? 'NEW SEASON' : 'CONTINUE'}
-        </button>
-        <button
-          className={`border-4 w-[80px] h-[56px] flex items-center justify-center text-[18px] bg-transparent transition ${
-            page >= totalPages - 1 || totalPages <= 1
-              ? 'border-[#b0b0b0] text-[#b0b0b0] cursor-not-allowed'
-              : 'border-white text-white hover:bg-white hover:text-[#397a33] cursor-pointer'
-          }`}
-          onClick={handleNextPage}
-          disabled={page >= totalPages - 1 || totalPages <= 1}
-          aria-label="Next"
-        >
-          {'>'}
-        </button>
+      <div className="w-[350px] mt-4 mx-auto">
+        <div className="flex justify-between">
+          <button
+            className={`border-4 w-[80px] h-[56px] flex items-center justify-center text-[18px] bg-transparent transition ${
+              page === 0
+                ? 'border-[#b0b0b0] text-[#b0b0b0] cursor-not-allowed'
+                : 'border-white text-white hover:bg-white hover:text-[#397a33] cursor-pointer'
+            }`}
+            onClick={handlePrevPage}
+            disabled={page === 0}
+            aria-label={usingGroups ? 'Previous Group' : 'Previous'}
+            title={usingGroups ? 'Previous Group' : 'Previous Page'}
+          >
+            {'<'}
+          </button>
+          <button
+            className="border-4 border-white w-[180px] h-[56px] flex items-center justify-center text-[18px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition mx-2 cursor-pointer"
+            style={{
+              display:
+                generalState.previousScreenDisplayed !== 'MatchSimulator' && !generalState.isRoundOver
+                  ? 'block'
+                  : 'none',
+            }}
+            onClick={handleBack}
+          >
+            BACK
+          </button>
+          <button
+            className="border-4 border-white w-[180px] h-[56px] flex items-center justify-center text-[18px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition mx-2 cursor-pointer"
+            style={{
+              display:
+                generalState.previousScreenDisplayed === 'MatchSimulator' || generalState.isRoundOver
+                  ? 'block'
+                  : 'none',
+            }}
+            onClick={handleContinue}
+          >
+            {isSeasonComplete ? 'NEW SEASON' : 'CONTINUE'}
+          </button>
+          <button
+            className={`border-4 w-[80px] h-[56px] flex items-center justify-center text-[18px] bg-transparent transition ${
+              page >= totalPages - 1 || totalPages <= 1
+                ? 'border-[#b0b0b0] text-[#b0b0b0] cursor-not-allowed'
+                : 'border-white text-white hover:bg-white hover:text-[#397a33] cursor-pointer'
+            }`}
+            onClick={handleNextPage}
+            disabled={page >= totalPages - 1 || totalPages <= 1}
+            aria-label={usingGroups ? 'Next Group' : 'Next'}
+            title={usingGroups ? 'Next Group' : 'Next Page'}
+          >
+            {'>'}
+          </button>
+        </div>
+        {totalPages > 1 && usingGroups && (
+          <div className="flex justify-center mt-2">
+            <div className="text-white text-xs text-center">
+              <span>{usingGroups ? 'Group' : 'Page'}</span>
+              <br />
+              <span>
+                {page + 1} of {totalPages}
+              </span>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
