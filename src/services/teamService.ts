@@ -1,4 +1,4 @@
-import { Player, BaseTeam, MatchTeam } from '../types';
+import { Player, BaseTeam, MatchTeam, SeasonGroupRound } from '../types';
 import { ChampionshipConfig } from '../types';
 import { TeamSelectorTeam, SeasonMatch, SeasonRound } from './types';
 import matchService from './matchService';
@@ -486,6 +486,48 @@ export const getCurrentRoundMatches = (
   humanPlayerTeam: BaseTeam,
   humanPlayerMatchTeam?: MatchTeam
 ): { homeTeam: MatchTeam; visitorTeam: MatchTeam }[] => {
+  const currentRoundData = seasonCalendar.find((round) => round.roundNumber === currentRound);
+  if (!currentRoundData) {
+    return [];
+  }
+
+  const teamMap = new Map<string, BaseTeam>();
+  teamsControlledAutomatically.forEach((team) => {
+    teamMap.set(team.id, team);
+  });
+
+  return currentRoundData.matches.map((seasonMatch) => {
+    return {
+      homeTeam: getMatchTeam(
+        'home',
+        seasonMatch.homeTeam,
+        teamMap,
+        humanPlayerTeam,
+        humanPlayerMatchTeam
+      ),
+      visitorTeam: getMatchTeam(
+        'away',
+        seasonMatch.awayTeam,
+        teamMap,
+        humanPlayerTeam,
+        humanPlayerMatchTeam
+      ),
+    };
+  });
+};
+
+export const getCurrentRoundMatchesFromGroups = (
+  teamsControlledAutomatically: BaseTeam[],
+  seasonCalendarGroups: SeasonGroupRound[],
+  currentRound: number,
+  humanPlayerTeam: BaseTeam,
+  humanPlayerMatchTeam?: MatchTeam
+): { homeTeam: MatchTeam; visitorTeam: MatchTeam }[] => {
+  let seasonCalendar = [] as SeasonRound[];
+  seasonCalendarGroups.forEach((group) => {
+    seasonCalendar = [...seasonCalendar, ...group.rounds];
+  });
+
   const currentRoundData = seasonCalendar.find((round) => round.roundNumber === currentRound);
   if (!currentRoundData) {
     return [];

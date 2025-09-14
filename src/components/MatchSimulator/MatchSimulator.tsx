@@ -5,10 +5,13 @@ import TeamPlayers from '../TeamPlayers/TeamPlayers';
 import { MatchContext } from '../../contexts/MatchContext';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import { useChampionshipContext } from '../../contexts/ChampionshipContext';
-import { getCurrentRoundMatches } from '../../services/teamService';
+import {
+  getCurrentRoundMatches,
+  getCurrentRoundMatchesFromGroups,
+} from '../../services/teamService';
 import MatchDetails from '../MatchDetails';
 import utils from '../../utils/utils';
-import { runMatchLogic, setUpMatches } from './helpers/matchSimulatorHelper';
+import { runMatchLogic, setUpMatches, setUpMatchesForGroups } from './helpers/matchSimulatorHelper';
 import { RunMatchLogicParams } from './types';
 
 const MATCHES_PER_PAGE = 6;
@@ -61,6 +64,17 @@ const MatchSimulator: FC = () => {
   };
 
   useEffect(() => {
+    if (usingGroups) {
+      setUpMatchesForGroups(
+        championshipState,
+        state,
+        matches,
+        getCurrentRoundMatchesFromGroups,
+        setMatches
+      );
+      return;
+    }
+
     setUpMatches(championshipState, state, matches, getCurrentRoundMatches, setMatches);
   }, [
     championshipState.seasonMatchCalendar,
