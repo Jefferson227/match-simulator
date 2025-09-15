@@ -204,6 +204,30 @@ function generateSeasonRounds(
   return seasonRounds;
 }
 
+function getMatchTeams(
+  seasonMatch: SeasonMatch,
+  teamMap: Map<string, BaseTeam>,
+  humanPlayerTeam: BaseTeam,
+  humanPlayerMatchTeam: MatchTeam
+) {
+  return {
+    homeTeam: getMatchTeam(
+      'home',
+      seasonMatch.homeTeam,
+      teamMap,
+      humanPlayerTeam,
+      humanPlayerMatchTeam
+    ),
+    visitorTeam: getMatchTeam(
+      'away',
+      seasonMatch.awayTeam,
+      teamMap,
+      humanPlayerTeam,
+      humanPlayerMatchTeam
+    ),
+  };
+}
+
 export const loadTeamsForChampionship = async (
   championshipInternalName: string
 ): Promise<TeamSelectorTeam[]> => {
@@ -496,24 +520,9 @@ export const getCurrentRoundMatches = (
     teamMap.set(team.id, team);
   });
 
-  return currentRoundData.matches.map((seasonMatch) => {
-    return {
-      homeTeam: getMatchTeam(
-        'home',
-        seasonMatch.homeTeam,
-        teamMap,
-        humanPlayerTeam,
-        humanPlayerMatchTeam
-      ),
-      visitorTeam: getMatchTeam(
-        'away',
-        seasonMatch.awayTeam,
-        teamMap,
-        humanPlayerTeam,
-        humanPlayerMatchTeam
-      ),
-    };
-  });
+  return currentRoundData.matches.map((seasonMatch) =>
+    getMatchTeams(seasonMatch, teamMap, humanPlayerTeam, humanPlayerMatchTeam!)
+  );
 };
 
 export const getCurrentRoundMatchesFromGroups = (
@@ -540,24 +549,9 @@ export const getCurrentRoundMatchesFromGroups = (
 
   let matches = [] as { homeTeam: MatchTeam; visitorTeam: MatchTeam }[];
   currentRoundData.forEach((roundData) => {
-    const transformedMatches = roundData.matches.map((seasonMatch) => {
-      return {
-        homeTeam: getMatchTeam(
-          'home',
-          seasonMatch.homeTeam,
-          teamMap,
-          humanPlayerTeam,
-          humanPlayerMatchTeam
-        ),
-        visitorTeam: getMatchTeam(
-          'away',
-          seasonMatch.awayTeam,
-          teamMap,
-          humanPlayerTeam,
-          humanPlayerMatchTeam
-        ),
-      };
-    });
+    const transformedMatches = roundData.matches.map((seasonMatch) =>
+      getMatchTeams(seasonMatch, teamMap, humanPlayerTeam, humanPlayerMatchTeam!)
+    );
 
     matches = [...matches, ...transformedMatches];
   });
