@@ -528,7 +528,7 @@ export const getCurrentRoundMatchesFromGroups = (
     seasonCalendar = [...seasonCalendar, ...group.rounds];
   });
 
-  const currentRoundData = seasonCalendar.find((round) => round.roundNumber === currentRound);
+  const currentRoundData = seasonCalendar.filter((round) => round.roundNumber === currentRound);
   if (!currentRoundData) {
     return [];
   }
@@ -538,24 +538,31 @@ export const getCurrentRoundMatchesFromGroups = (
     teamMap.set(team.id, team);
   });
 
-  return currentRoundData.matches.map((seasonMatch) => {
-    return {
-      homeTeam: getMatchTeam(
-        'home',
-        seasonMatch.homeTeam,
-        teamMap,
-        humanPlayerTeam,
-        humanPlayerMatchTeam
-      ),
-      visitorTeam: getMatchTeam(
-        'away',
-        seasonMatch.awayTeam,
-        teamMap,
-        humanPlayerTeam,
-        humanPlayerMatchTeam
-      ),
-    };
+  let matches = [] as { homeTeam: MatchTeam; visitorTeam: MatchTeam }[];
+  currentRoundData.forEach((roundData) => {
+    const transformedMatches = roundData.matches.map((seasonMatch) => {
+      return {
+        homeTeam: getMatchTeam(
+          'home',
+          seasonMatch.homeTeam,
+          teamMap,
+          humanPlayerTeam,
+          humanPlayerMatchTeam
+        ),
+        visitorTeam: getMatchTeam(
+          'away',
+          seasonMatch.awayTeam,
+          teamMap,
+          humanPlayerTeam,
+          humanPlayerMatchTeam
+        ),
+      };
+    });
+
+    matches = [...matches, ...transformedMatches];
   });
+
+  return matches;
 };
 
 const teamService = {
