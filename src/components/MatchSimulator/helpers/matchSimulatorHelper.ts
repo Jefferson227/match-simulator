@@ -3,6 +3,7 @@ import { BaseTeam, Match, MatchTeam, SeasonGroupRound, SeasonRound } from '../..
 import Functions from '../../../functions/MatchSimulatorFunctions';
 import { RunMatchLogicParams } from '../types';
 
+// TODO: Unify the logic with setUpMatchesForGroups
 export const setUpMatches = (
   championshipState: ChampionshipState,
   state: GeneralState,
@@ -50,6 +51,7 @@ export const setUpMatches = (
   // eslint-disable-next-line
 };
 
+// TODO: Unify the logic with setUpMatches
 export const setUpMatchesForGroups = (
   championshipState: ChampionshipState,
   state: GeneralState,
