@@ -94,6 +94,11 @@ export interface Match {
   round?: number;
 }
 
+export interface MatchTeamPair {
+  homeTeam: MatchTeam;
+  visitorTeam: MatchTeam;
+}
+
 export interface TeamSquadView {
   team: MatchTeam;
   matchId: string;

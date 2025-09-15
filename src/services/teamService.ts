@@ -1,4 +1,4 @@
-import { Player, BaseTeam, MatchTeam, SeasonGroupRound } from '../types';
+import { Player, BaseTeam, MatchTeam, SeasonGroupRound, MatchTeamPair } from '../types';
 import { ChampionshipConfig } from '../types';
 import { TeamSelectorTeam, SeasonMatch, SeasonRound } from './types';
 import matchService from './matchService';
@@ -509,7 +509,7 @@ export const getCurrentRoundMatches = (
   currentRound: number,
   humanPlayerTeam: BaseTeam,
   humanPlayerMatchTeam?: MatchTeam
-): { homeTeam: MatchTeam; visitorTeam: MatchTeam }[] => {
+): MatchTeamPair[] => {
   const currentRoundData = seasonCalendar.find((round) => round.roundNumber === currentRound);
   if (!currentRoundData) {
     return [];
@@ -547,7 +547,7 @@ export const getCurrentRoundMatchesFromGroups = (
     teamMap.set(team.id, team);
   });
 
-  let matches = [] as { homeTeam: MatchTeam; visitorTeam: MatchTeam }[];
+  let matches = [] as MatchTeamPair[];
   currentRoundData.forEach((roundData) => {
     const transformedMatches = roundData.matches.map((seasonMatch) =>
       getMatchTeams(seasonMatch, teamMap, humanPlayerTeam, humanPlayerMatchTeam!)
