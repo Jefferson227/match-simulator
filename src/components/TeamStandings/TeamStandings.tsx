@@ -76,7 +76,10 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
               goalDifference: s.goalDifference,
               points: s.points,
             }))
-          : [...championshipState.teamsControlledAutomatically, championshipState.humanPlayerBaseTeam]
+          : [
+              ...championshipState.teamsControlledAutomatically,
+              championshipState.humanPlayerBaseTeam,
+            ]
               .map((s) => ({
                 teamId: s.id,
                 teamAbbreviation: s.abbreviation,
@@ -106,10 +109,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
       return { standings: [], totalPages: 0, currentGroupName: null };
     }
 
-    const currentGroupIndex = Math.min(
-      page,
-      championshipState.groupStandings.length - 1
-    );
+    const currentGroupIndex = Math.min(page, championshipState.groupStandings.length - 1);
     const currentGroup = championshipState.groupStandings[currentGroupIndex];
 
     const groupStandings: TeamStanding[] = currentGroup.tableStandings.map((s) => ({
@@ -264,9 +264,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
         {isSeasonComplete && (
           <span className="block text-[12px] text-yellow-300">SEASON COMPLETE!</span>
         )}
-        {usingGroups && currentGroupName && (
-          <div className="mt-1 text-xs">{currentGroupName}</div>
-        )}
+        {usingGroups && currentGroupName && <div className="mt-1 text-xs">{currentGroupName}</div>}
       </div>
       <div
         className="w-[350px] h-[610px] mx-auto mt-0 mb-0 flex flex-col items-center"
@@ -335,7 +333,8 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
             className="border-4 border-white w-[180px] h-[56px] flex items-center justify-center text-[18px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition mx-2 cursor-pointer"
             style={{
               display:
-                generalState.previousScreenDisplayed !== 'MatchSimulator' && !generalState.isRoundOver
+                generalState.previousScreenDisplayed !== 'MatchSimulator' &&
+                !generalState.isRoundOver
                   ? 'block'
                   : 'none',
             }}
@@ -347,7 +346,8 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
             className="border-4 border-white w-[180px] h-[56px] flex items-center justify-center text-[18px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition mx-2 cursor-pointer"
             style={{
               display:
-                generalState.previousScreenDisplayed === 'MatchSimulator' || generalState.isRoundOver
+                generalState.previousScreenDisplayed === 'MatchSimulator' ||
+                generalState.isRoundOver
                   ? 'block'
                   : 'none',
             }}
