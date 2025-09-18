@@ -3,7 +3,25 @@ import { BaseTeam, Match, MatchTeam, SeasonGroupRound, SeasonRound } from '../..
 import Functions from '../../../functions/MatchSimulatorFunctions';
 import { RunMatchLogicParams } from '../types';
 
-// TODO: Unify the logic with setUpMatchesForGroups
+function getTransformedMatches(
+  currentRoundMatches: MatchTeams[],
+  championshipState: ChampionshipState
+) {
+  return currentRoundMatches.map((match) => ({
+    id: crypto.randomUUID(),
+    homeTeam: match.homeTeam,
+    visitorTeam: match.visitorTeam,
+    lastScorer: null,
+    ballPossession: {
+      isHomeTeam: true,
+      position: 'midfield' as const,
+    },
+    shotAttempts: 0,
+    scorers: [],
+    round: championshipState.currentRound,
+  }));
+}
+
 export const setUpMatches = (
   championshipState: ChampionshipState,
   state: GeneralState,
@@ -31,27 +49,12 @@ export const setUpMatches = (
       state.matchTeam || undefined
     );
 
-    // Transform to the format expected by MatchSimulator
-    const transformedMatches = currentRoundMatches.map((match) => ({
-      id: crypto.randomUUID(),
-      homeTeam: match.homeTeam,
-      visitorTeam: match.visitorTeam,
-      lastScorer: null,
-      ballPossession: {
-        isHomeTeam: true,
-        position: 'midfield' as const,
-      },
-      shotAttempts: 0,
-      scorers: [],
-      round: championshipState.currentRound, // Add round info
-    }));
-
+    const transformedMatches = getTransformedMatches(currentRoundMatches, championshipState);
     setMatches(transformedMatches);
   }
   // eslint-disable-next-line
 };
 
-// TODO: Unify the logic with setUpMatches
 export const setUpMatchesForGroups = (
   championshipState: ChampionshipState,
   state: GeneralState,
@@ -79,21 +82,7 @@ export const setUpMatchesForGroups = (
       state.matchTeam || undefined
     );
 
-    // Transform to the format expected by MatchSimulator
-    const transformedMatches = currentRoundMatches.map((match) => ({
-      id: crypto.randomUUID(),
-      homeTeam: match.homeTeam,
-      visitorTeam: match.visitorTeam,
-      lastScorer: null,
-      ballPossession: {
-        isHomeTeam: true,
-        position: 'midfield' as const,
-      },
-      shotAttempts: 0,
-      scorers: [],
-      round: championshipState.currentRound, // Add round info
-    }));
-
+    const transformedMatches = getTransformedMatches(currentRoundMatches, championshipState);
     setMatches(transformedMatches);
   }
   // eslint-disable-next-line
