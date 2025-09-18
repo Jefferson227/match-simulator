@@ -168,6 +168,19 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
        *    - Increment year
        */
       switch (championshipState.format) {
+        /**
+         * - Phase 1: single-round-robin
+         *  - 1. If the human player is among the top 8, move to the next phase (quadrangular)
+         *  - 2. If the human player is among the last 4, run the promotion/relegation logic including the human player team, and start the new season in the relegation championship
+         *  - 3. If the human player is not among the top 8 and nor the last 4, run the promotion/relegation logic not including the human player team, and start the new season in the same championship
+         * - Phase 2: quadrangular
+         *  - 1. If the human player is the first of their group, move to the next phase (final-double-round-robin)
+         *  - 2. If the human player is the second of their group, run the promotion/relegation logic including the human player team, and start the new season in the promotion championship
+         *  - 3. If the human player is among the last 2 of their group, run the promotion/relegation logic without the human player team, and start the new season in the same championship
+         * - Phase 3: final-double-round-robin
+         *  - 1. Run the promotion/relegation logic including the human player team
+         *  - 2. Start the new season in the promoted championship
+         */
         case 'single-round-robin;quadrangular':
           const groupStandings = mountGroupsForNextPhase(championshipState);
           const seasonCalendarGroups = setSeasonCalendarForNextPhase(
