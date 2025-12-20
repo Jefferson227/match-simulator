@@ -213,51 +213,53 @@ const TeamAdditionalInfo: React.FC = () => {
   );
 
   return (
-    <div className="w-[350px] h-[626.5px] mt-[26px] bg-[#3c7a33] text-white font-press-start p-5 border-4 border-white mx-auto">
-      <div
-        className="p-2 text-center mb-5 border-4"
-        style={{
-          backgroundColor: teamColors.background,
-          borderColor: teamColors.outline,
-          color: teamColors.name,
-        }}
-      >
-        <h2 className="m-0 text-[17px] uppercase tracking-wider">
-          {championshipState.humanPlayerBaseTeam?.name || 'TEAM NAME'}
-        </h2>
-      </div>
+    <div className="w-[100dvw] h-[100dvh] bg-[#3c7a33] text-white font-press-start flex flex-col justify-center items-center">
+      <div className="p-5 flex flex-col justify-center md:max-w-[350px]">
+        <div
+          className="p-2 text-center mb-5 border-4"
+          style={{
+            backgroundColor: teamColors.background,
+            borderColor: teamColors.outline,
+            color: teamColors.name,
+          }}
+        >
+          <h2 className="m-0 text-[17px] uppercase tracking-wider">
+            {championshipState.humanPlayerBaseTeam?.name || 'TEAM NAME'}
+          </h2>
+        </div>
 
-      {currentPage === 1 ? renderFirstPage() : renderSecondPage()}
+        {currentPage === 1 ? renderFirstPage() : renderSecondPage()}
 
-      <div className="flex justify-between mt-5">
-        <button
-          className={`h-[70px] w-1/3 bg-transparent border-4 border-white text-white px-4 py-2 me-2 font-press-start text-[16px] transition-all ${
-            currentPage === 1
-              ? 'opacity-50 cursor-not-allowed'
-              : 'hover:bg-white/20 active:translate-y-px'
-          }`}
-          onClick={handlePrevious}
-          disabled={currentPage === 1}
-        >
-          &lt;
-        </button>
-        <button
-          className="h-[70px] w-1/3 bg-transparent border-4 border-white text-white px-4 py-2 mx-2 font-press-start text-[16px] transition-all hover:bg-white/20 active:translate-y-px"
-          onClick={handleBack}
-        >
-          BACK
-        </button>
-        <button
-          className={`h-[70px] w-1/3 bg-transparent border-4 border-white text-white px-4 py-2 ms-2 font-press-start text-[16px] transition-all ${
-            currentPage === 2
-              ? 'opacity-50 cursor-not-allowed'
-              : 'hover:bg-white/20 active:translate-y-px'
-          }`}
-          onClick={handleNext}
-          disabled={currentPage === 2}
-        >
-          &gt;
-        </button>
+        <div className="flex justify-between mt-5">
+          <button
+            className={`h-[70px] w-1/3 bg-transparent border-4 border-white text-white px-4 py-2 me-2 font-press-start text-[16px] transition-all ${
+              currentPage === 1
+                ? 'opacity-50 cursor-not-allowed'
+                : 'hover:bg-white/20 active:translate-y-px'
+            }`}
+            onClick={handlePrevious}
+            disabled={currentPage === 1}
+          >
+            &lt;
+          </button>
+          <button
+            className="h-[70px] w-1/3 bg-transparent border-4 border-white text-white px-4 py-2 mx-2 font-press-start text-[16px] transition-all hover:bg-white/20 active:translate-y-px"
+            onClick={handleBack}
+          >
+            BACK
+          </button>
+          <button
+            className={`h-[70px] w-1/3 bg-transparent border-4 border-white text-white px-4 py-2 ms-2 font-press-start text-[16px] transition-all ${
+              currentPage === 2
+                ? 'opacity-50 cursor-not-allowed'
+                : 'hover:bg-white/20 active:translate-y-px'
+            }`}
+            onClick={handleNext}
+            disabled={currentPage === 2}
+          >
+            &gt;
+          </button>
+        </div>
       </div>
     </div>
   );
