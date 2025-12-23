@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import generalService from '../../services/generalService';
+import MainLayout from '../MainLayout/MainLayout';
 
 const TeamAdditionalInfo: React.FC = () => {
   const { setScreenDisplayed, setViewingTeam } = useContext(GeneralContext);
@@ -213,7 +214,7 @@ const TeamAdditionalInfo: React.FC = () => {
   );
 
   return (
-    <div className="w-[350px] h-[626.5px] mt-[26px] bg-[#3c7a33] text-white font-press-start p-5 border-4 border-white mx-auto">
+    <MainLayout>
       <div
         className="p-2 text-center mb-5 border-4"
         style={{
@@ -259,7 +260,7 @@ const TeamAdditionalInfo: React.FC = () => {
           &gt;
         </button>
       </div>
-    </div>
+    </MainLayout>
   );
 };
 

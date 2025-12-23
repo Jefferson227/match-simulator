@@ -4,6 +4,7 @@ import { GeneralContext } from '../../contexts/GeneralContext';
 import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import utils from '../../utils/utils';
 import { MatchTeam, Player } from '../../types';
+import MainLayout from '../MainLayout/MainLayout';
 
 export const FORMATIONS = ['5-3-2', '3-5-2', '4-4-2', '4-3-3', '4-2-4', '5-4-1', '3-4-3', '3-3-4'];
 
@@ -301,9 +302,9 @@ const TeamManager: React.FC = () => {
   const nameColor = teamColors.name || '#e2e2e2';
 
   return (
-    <div className="font-press-start min-h-screen" style={{ backgroundColor: '#3d7a33' }}>
+    <MainLayout>
       <div
-        className="w-[350px] mx-auto mt-[26px] mb-[15px]"
+        className="w-[350px] mx-auto"
         style={{ backgroundColor, border: `4px solid ${outlineColor}` }}
       >
         <div
@@ -523,7 +524,7 @@ const TeamManager: React.FC = () => {
           )}
         </>
       )}
-    </div>
+    </MainLayout>
   );
 };
 
