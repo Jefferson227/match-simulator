@@ -448,82 +448,85 @@ const TeamManager: React.FC = () => {
           </div>
         )}
       </div>
+
       {/* Navigation and Start Match Buttons, or Go Back button */}
-      {showFormationGrid ? (
-        <div className="flex flex-col items-center gap-2">
-          <button
-            className="w-[350px] border-4 py-4 text-[16px]"
-            style={{
-              borderColor: '#e2e2e2',
-              backgroundColor: '#3c7a33',
-              color: '#e2e2e2',
-            }}
-            onClick={() => setShowFormationGrid(false)}
-          >
-            {t('teamManager.goBack')}
-          </button>
-        </div>
-      ) : (
-        <>
-          <div className="flex w-[350px] justify-between gap-2 mx-auto">
+      <div className="mt-[10px]">
+        {showFormationGrid ? (
+          <div className="flex flex-col items-center gap-2">
             <button
-              className="w-1/3 h-[70px] border-4 py-2 px-3 leading-[19px] text-[16px]"
-              style={{
-                borderColor: '#e2e2e2',
-                backgroundColor: '#3c7a33',
-                color: '#e2e2e2',
-                opacity: currentPage === 0 ? 0.5 : 1,
-                cursor: currentPage === 0 ? 'not-allowed' : 'pointer',
-              }}
-              onClick={handlePrevPage}
-              disabled={currentPage === 0}
-            >
-              {'<'}
-            </button>
-            <button
-              className="w-1/3 h-[70px] border-4 py-2 px-3 leading-[19px] text-[16px]"
+              className="w-[350px] border-4 py-4 text-[16px]"
               style={{
                 borderColor: '#e2e2e2',
                 backgroundColor: '#3c7a33',
                 color: '#e2e2e2',
               }}
-              onClick={() => setScreenDisplayed('TeamAdditionalInfo')}
+              onClick={() => setShowFormationGrid(false)}
             >
-              {t('teamManager.moreInfo')}
-            </button>
-            <button
-              className="w-1/3 h-[70px] border-4 py-2 px-3 leading-[19px] text-[16px]"
-              style={{
-                borderColor: '#e2e2e2',
-                backgroundColor: '#3c7a33',
-                color: '#e2e2e2',
-                opacity: currentPage === totalPages - 1 || totalPages === 0 ? 0.5 : 1,
-                cursor:
-                  currentPage === totalPages - 1 || totalPages === 0 ? 'not-allowed' : 'pointer',
-              }}
-              onClick={handleNextPage}
-              disabled={currentPage === totalPages - 1 || totalPages === 0}
-            >
-              {'>'}
+              {t('teamManager.goBack')}
             </button>
           </div>
-          {selectedCount === 11 && (
-            <div className="w-[350px] mx-auto mt-2">
+        ) : (
+          <>
+            <div className="flex w-[350px] justify-between gap-2 mx-auto">
               <button
-                className="w-full border-4 py-4 text-[16px]"
+                className="w-1/3 h-[70px] border-4 py-2 px-3 leading-[19px] text-[16px]"
+                style={{
+                  borderColor: '#e2e2e2',
+                  backgroundColor: '#3c7a33',
+                  color: '#e2e2e2',
+                  opacity: currentPage === 0 ? 0.5 : 1,
+                  cursor: currentPage === 0 ? 'not-allowed' : 'pointer',
+                }}
+                onClick={handlePrevPage}
+                disabled={currentPage === 0}
+              >
+                {'<'}
+              </button>
+              <button
+                className="w-1/3 h-[70px] border-4 py-2 px-3 leading-[19px] text-[16px]"
                 style={{
                   borderColor: '#e2e2e2',
                   backgroundColor: '#3c7a33',
                   color: '#e2e2e2',
                 }}
-                onClick={handleStartMatch}
+                onClick={() => setScreenDisplayed('TeamAdditionalInfo')}
               >
-                {t('teamManager.startMatch')}
+                {t('teamManager.moreInfo')}
+              </button>
+              <button
+                className="w-1/3 h-[70px] border-4 py-2 px-3 leading-[19px] text-[16px]"
+                style={{
+                  borderColor: '#e2e2e2',
+                  backgroundColor: '#3c7a33',
+                  color: '#e2e2e2',
+                  opacity: currentPage === totalPages - 1 || totalPages === 0 ? 0.5 : 1,
+                  cursor:
+                    currentPage === totalPages - 1 || totalPages === 0 ? 'not-allowed' : 'pointer',
+                }}
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages - 1 || totalPages === 0}
+              >
+                {'>'}
               </button>
             </div>
-          )}
-        </>
-      )}
+            {selectedCount === 11 && (
+              <div className="w-[350px] mx-auto mt-2">
+                <button
+                  className="w-full border-4 py-4 text-[16px]"
+                  style={{
+                    borderColor: '#e2e2e2',
+                    backgroundColor: '#3c7a33',
+                    color: '#e2e2e2',
+                  }}
+                  onClick={handleStartMatch}
+                >
+                  {t('teamManager.startMatch')}
+                </button>
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </MainLayout>
   );
 };
