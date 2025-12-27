@@ -4,6 +4,7 @@ import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import { MatchContext } from '../../contexts/MatchContext';
 import sessionService from '../../services/sessionService';
 import buildVersionData from '../../assets/build-version.json';
+import MainLayout from '../MainLayout/MainLayout';
 
 const InitialScreen: React.FC = () => {
   const { setScreenDisplayed, loadState: loadGeneralState } = useContext(GeneralContext);
@@ -128,35 +129,30 @@ const InitialScreen: React.FC = () => {
   };
 
   return (
-    <div
-      className="font-press-start min-h-screen flex flex-col justify-between items-center py-16"
-      style={{ backgroundColor: '#3d7a33', color: 'white' }}
-    >
-      <div className="flex-grow flex items-center justify-center">
-        <div
-          className="flex flex-wrap justify-center items-center gap-2 max-w-4xl"
-          data-testid="logo-container"
-        >
-          {/* WINNING */}
-          <div className="flex items-end" data-testid="winning-container">
-            <PixelLetter letter="W" />
-            <PixelLetter letter="I" />
-            <PixelLetter letter="N" />
-            <PixelLetter letter="N" />
-            <PixelLetter letter="I" />
-            <PixelLetter letter="N" />
-            <PixelLetter letter="G" />
-          </div>
+    <MainLayout>
+      <div
+        className="flex flex-wrap justify-center items-center gap-2 max-w-4xl mb-[200px]"
+        data-testid="logo-container"
+      >
+        {/* WINNING */}
+        <div className="flex items-end" data-testid="winning-container">
+          <PixelLetter letter="W" />
+          <PixelLetter letter="I" />
+          <PixelLetter letter="N" />
+          <PixelLetter letter="N" />
+          <PixelLetter letter="I" />
+          <PixelLetter letter="N" />
+          <PixelLetter letter="G" />
+        </div>
 
-          {/* PIXELS */}
-          <div className="flex items-end" data-testid="pixels-container">
-            <PixelLetter letter="P" />
-            <PixelLetter letter="I" />
-            <PixelLetter letter="X" />
-            <PixelLetter letter="E" />
-            <PixelLetter letter="L" />
-            <PixelLetter letter="S" />
-          </div>
+        {/* PIXELS */}
+        <div className="flex items-end" data-testid="pixels-container">
+          <PixelLetter letter="P" />
+          <PixelLetter letter="I" />
+          <PixelLetter letter="X" />
+          <PixelLetter letter="E" />
+          <PixelLetter letter="L" />
+          <PixelLetter letter="S" />
         </div>
       </div>
 
@@ -184,7 +180,7 @@ const InitialScreen: React.FC = () => {
         <p>BUILD VERSION</p>
         <p>{buildVersion}</p>
       </div>
-    </div>
+    </MainLayout>
   );
 };
 
