@@ -1,3 +1,3 @@
-type ErrorCode = 'EXECUTION_FAILED';
+type ErrorCode = 'no-error';
 
 export default ErrorCode;
