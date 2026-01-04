@@ -16,12 +16,12 @@
 - numberOfRelegatedTeams (to be used separately by composition)
 - relegationChampionship (to be used separately by composition)
 - startingTeams
-- ranking
+- standings
 - matches
 - type (double-round-robin, single-round-robin, mixed)
 - hasTeamControlledByHuman
 
-### Ranking
+### Standings
 
 - team
 - position
