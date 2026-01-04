@@ -1,6 +1,6 @@
 import { Team } from './Team';
 
-type Ranking = {
+type Standing = {
   team: Team;
   position: number;
   wins: number;
@@ -11,4 +11,4 @@ type Ranking = {
   points: number;
 };
 
-export default Ranking;
+export default Standing;
