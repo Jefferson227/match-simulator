@@ -1,3 +1,3 @@
-type ErrorCode = 'no-error';
+type ErrorCode = 'no-error' | 'implementation-missing';
 
 export default ErrorCode;
