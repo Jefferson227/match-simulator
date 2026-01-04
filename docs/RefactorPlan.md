@@ -18,8 +18,20 @@
 - relegationChampionship (to be used separately by composition)
 - startingTeams
 - ranking
-- games
+- matches
 - type (double-round-robin, single-round-robin, mixed)
+- hasTeamControlledByHuman
+
+### Ranking
+
+- team
+- position
+- wins
+- draws
+- losses
+- goalsFor
+- goalsAgainst
+- points
 
 ### Team
 
@@ -34,13 +46,17 @@
 - subs (to be used separately by composition)
 - isControlledByHuman
 
-### Match
+### MatchContainer
 
-- id
 - timer
 - currentSeason (year)
 - currentRound
 - totalRounds
+- matches
+
+### Match
+
+- id
 - homeTeam
 - awayTeam
 - scorers
@@ -57,19 +73,20 @@
 ### GeneralConfig
 
 - timerSpeed
-- currentChampionship
-- currentHumanTeamPlayerId
+- playableChampionship
+- humanTeamPlayerId
 
 ## Identify use cases entities for each entity
 
 ### ChampionshipUseCases
 
-- initChampionship(internalName)
+- initChampionships(internalName)
 - setHumanPlayerTeam(team, championship)
-- createGameList(championship)
+- setMatches(championship)
 - startMatches(championship)
 - updateRanking(championship)
 - getRanking(championship)
+- promoteRelegateTeams(championship)
 
 ### TeamUseCases
 
@@ -81,6 +98,16 @@
 
 ### MatchUseCases
 
+- resetTimer(matchContainer)
+- runMatchActions(matchContainer)
+
 ### PlayerUseCases
 
+- N/A (for now)
+
 ### GeneralConfigUseCases
+
+- toggleTimerSpeed(generalConfig)
+- setPlayableChampionship(championshipInternalName)
+- setHumanTeamPlayerId(teamId)
+- saveGame(championships, generalConfig)
