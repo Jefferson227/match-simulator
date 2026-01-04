@@ -1,7 +1,7 @@
 import TeamColors from './TeamColors';
 import Player from './Player';
 
-type BaseTeam = {
+export type Team = {
   id: number;
   fullName: string;
   shortName: string;
@@ -17,5 +17,4 @@ type MatchTeamFields = {
   subs: Player[];
 };
 
-export type MatchTeam = BaseTeam & MatchTeamFields;
-export type Team = BaseTeam;
+export type MatchTeam = Team & MatchTeamFields;

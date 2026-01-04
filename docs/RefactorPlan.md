@@ -60,6 +60,12 @@
 - awayTeam
 - scorers
 
+### Scorers
+
+- player
+- scorerTeam (home or away)
+- time
+
 ### Player
 
 - id

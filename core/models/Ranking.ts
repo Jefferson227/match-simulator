@@ -1,5 +1,7 @@
+import { Team } from './Team';
+
 type Ranking = {
-  team: string; // TODO: Change it to Team when implemented
+  team: Team;
   position: number;
   wins: number;
   draws: number;

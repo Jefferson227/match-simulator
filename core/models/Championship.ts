@@ -1,13 +1,15 @@
 import Ranking from './Ranking';
 import ChampionshipType from '../enums/ChampionshipType';
+import { Team } from './Team';
+import Match from './Match';
 
 type BaseChampionship = {
   name: string;
   internalName: string;
   numberOfTeams: number;
-  startingTeams: string; // TODO: Change it to Team[] when implemented
+  startingTeams: Team;
   ranking: Ranking;
-  matches: string; // TODO: Change it to Match[] when implemented
+  matches: Match;
   type: ChampionshipType;
   hasTeamControlledByHuman: boolean;
 };
