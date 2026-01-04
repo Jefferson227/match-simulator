@@ -18,7 +18,8 @@
 - relegationChampionship (to be used separately by composition)
 - startingTeams
 - ranking
-- matchCalendar
+- games
+- type (double-round-robin, single-round-robin, mixed)
 
 ### Team
 
@@ -27,10 +28,11 @@
 - shortName
 - abbreviation
 - colors (outline, background, text)
-- list of players
+- players
 - morale
 - starters (to be used separately by composition)
 - subs (to be used separately by composition)
+- isControlledByHuman
 
 ### Match
 
@@ -49,25 +51,36 @@
 - position
 - name
 - strength
+- isStarter (can be used instead of the 'starters' array in the Team)
+- isSub (can be used instead of the 'subs' array in the Team)
 
-### GameConfig
+### GeneralConfig
 
 - timerSpeed
+- currentChampionship
+- currentHumanTeamPlayerId
 
 ## Identify use cases entities for each entity
 
 ### ChampionshipUseCases
 
+- initChampionship(internalName)
+- setHumanPlayerTeam(team, championship)
+- createGameList(championship)
 - startMatches(championship)
-- createMatchCalendar(championship)
-- selectHumanPlayerTeam(team, championship)
 - updateRanking(championship)
 - getRanking(championship)
 
 ### TeamUseCases
 
+- setStarter(player, team)
+- removeStarter(playerId, team)
+- setSub(player, team)
+- removeSub(playerId, team)
+- setFormation(formation, team)
+
 ### MatchUseCases
 
 ### PlayerUseCases
 
-### GameConfigUseCases
+### GeneralConfigUseCases
