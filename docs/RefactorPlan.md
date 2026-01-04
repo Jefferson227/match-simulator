@@ -116,3 +116,4 @@
 - setPlayableChampionship(championshipInternalName)
 - setHumanTeamPlayerId(teamId)
 - saveGame(championships, generalConfig)
+- loadGame()
