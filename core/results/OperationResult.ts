@@ -31,6 +31,10 @@ class OperationResult<TResult> extends OperationResultBase {
     operation.error = err;
     return operation;
   }
+
+  getResult(): TResult {
+    return this.result;
+  }
 }
 
 export default OperationResult;
