@@ -1,3 +1,3 @@
-type ChampionshipType = 'relegation' | 'promotion' | 'relegation-and-promotion';
+type ChampionshipType = 'double-round-robin';
 
 export default ChampionshipType;
