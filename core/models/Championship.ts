@@ -1,7 +1,7 @@
 import Standing from './Standing';
 import ChampionshipType from '../enums/ChampionshipType';
 import { Team } from './Team';
-import Match from './Match';
+import MatchContainer from './Match';
 
 type BaseChampionship = {
   name: string;
@@ -9,7 +9,7 @@ type BaseChampionship = {
   numberOfTeams: number;
   startingTeams: Team;
   standings: Standing[];
-  matches: Match;
+  matches: MatchContainer;
   type: ChampionshipType;
   hasTeamControlledByHuman: boolean;
 };
