@@ -8,7 +8,6 @@
 
 ### Championship
 
-- id
 - name
 - internalName
 - numberOfTeams
