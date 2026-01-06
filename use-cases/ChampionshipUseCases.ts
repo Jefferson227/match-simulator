@@ -1,16 +1,8 @@
-import OperationResult from '../core/results/OperationResult';
-import { Championship } from '../core/models/Championship';
+import ChampionshipDTO from '../core/data-transfer-objects/ChampionshipDTO';
 
-function initChampionships(internalName: string): OperationResult<Championship> {
-  // TODO: Create ChampionshipDTO
-
-  const operationResult = new OperationResult({} as Championship).setError({} as Championship, {
-    errorCode: 'implementation-missing',
-    message: 'Function not implemented yet.',
-    details: '',
-  });
-
-  return operationResult;
+function initChampionships(internalName: string): ChampionshipDTO {
+  // TODO: Create the Championship object
+  return {} as ChampionshipDTO;
 }
 
 export { initChampionships };
