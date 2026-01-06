@@ -1,7 +1,7 @@
 import Standing from './Standing';
 import ChampionshipType from '../enums/ChampionshipType';
 import { Team } from './Team';
-import MatchContainer from './Match';
+import MatchContainer from './MatchContainer';
 
 type BaseChampionship = {
   name: string;
