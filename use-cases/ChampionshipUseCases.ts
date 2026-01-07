@@ -1,8 +1,8 @@
-import ChampionshipDTO from '../core/data-transfer-objects/ChampionshipDTO';
+import ChampionshipContainer from '../core/models/ChampionshipContainer';
 
-function initChampionships(internalName: string): ChampionshipDTO {
+function initChampionships(internalName: string): ChampionshipContainer {
   // TODO: Create the Championship object
-  return {} as ChampionshipDTO;
+  return {} as ChampionshipContainer;
 }
 
-export { initChampionships };
+export default { initChampionships };
