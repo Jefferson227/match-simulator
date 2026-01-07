@@ -4,10 +4,11 @@ import { Team } from './Team';
 import MatchContainer from './MatchContainer';
 
 type BaseChampionship = {
+  id: string;
   name: string;
   internalName: string;
   numberOfTeams: number;
-  startingTeams: Team;
+  startingTeams: Team[];
   standings: Standing[];
   matches: MatchContainer;
   type: ChampionshipType;
@@ -16,14 +17,12 @@ type BaseChampionship = {
 
 type Promotable = {
   numberOfPromotedTeams: number;
-  promotionChampionship: string;
+  promotionChampionshipInternalName: string;
 };
 
 type Relegatable = {
   numberOfRelegatedTeams: number;
-  relegationChampionship: string;
+  relegationChampionshipInternalName: string;
 };
 
-export type PromotableChampionship = BaseChampionship & Promotable;
-export type RelegatableChampionship = BaseChampionship & Relegatable;
-export type Championship = BaseChampionship & Promotable & Relegatable;
+export type Championship = BaseChampionship & Partial<Promotable> & Partial<Relegatable>;
