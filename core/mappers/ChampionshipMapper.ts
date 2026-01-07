@@ -13,3 +13,5 @@ function toChampionshipDTO(championship: Championship): ChampionshipDTO {
     hasTeamControlledByHuman: championship.hasTeamControlledByHuman,
   } as ChampionshipDTO;
 }
+
+export default { toChampionshipDTO };
