@@ -8,18 +8,25 @@
 
 ### Championship
 
+- id
 - name
 - internalName
 - numberOfTeams
 - numberOfPromotedTeams (to be used separately by composition)
-- promotionChampionship (to be used separately by composition)
+- promotionChampionshipInternalName (to be used separately by composition)
 - numberOfRelegatedTeams (to be used separately by composition)
-- relegationChampionship (to be used separately by composition)
+- relegationChampionshipInternalName (to be used separately by composition)
 - startingTeams
 - standings
 - matches
 - type (double-round-robin, single-round-robin, mixed)
 - hasTeamControlledByHuman
+
+### ChampionshipContainer
+
+- playableChampionship
+- promotionChampionship (optional)
+- relegationChampionship (optional)
 
 ### Standings
 
