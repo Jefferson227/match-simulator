@@ -21,6 +21,6 @@
     "allowJs": true,
     "types": ["@testing-library/jest-dom", "jest"]
   },
-  "include": ["src"],
+  "include": ["src", "tests"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
