@@ -4,6 +4,8 @@ import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import { MatchContext } from '../../contexts/MatchContext';
 import sessionService from '../../services/sessionService';
 import buildVersionData from '../../assets/build-version.json';
+import { useGameEngine } from '../../contexts/GameEngineContext';
+import { useGameState } from '../../services/useGameState';
 
 const InitialScreen: React.FC = () => {
   const { setScreenDisplayed, loadState: loadGeneralState } = useContext(GeneralContext);
@@ -11,6 +13,10 @@ const InitialScreen: React.FC = () => {
   const { loadState: loadMatchState } = useContext(MatchContext);
   const [hasSession, setHasSession] = useState(false);
   const [buildVersion, setBuildVersion] = useState('');
+
+  // Game engine
+  const engine = useGameEngine();
+  const state = useGameState(engine);
 
   // Check for existing session and load build version on component mount
   useEffect(() => {
@@ -167,7 +173,7 @@ const InitialScreen: React.FC = () => {
         >
           New Game
         </button>
-        <button
+        {/* <button
           onClick={handleLoadGame}
           className={`w-full max-w-xs border-4 py-4 text-lg uppercase transition ${
             hasSession
@@ -177,6 +183,12 @@ const InitialScreen: React.FC = () => {
           disabled={!hasSession}
         >
           Load Game
+        </button> */}
+        <button
+          onClick={() => engine.dispatch({ type: 'PING' })}
+          className={`w-full max-w-xs border-4 py-4 text-lg uppercase transition border-white hover:bg-white hover:text-[#3d7a33]`}
+        >
+          Test Game Engine
         </button>
       </div>
 

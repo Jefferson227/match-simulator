@@ -4,4 +4,6 @@ export type GameState = {
   championshipContainer: ChampionshipContainer;
 };
 
-export type GameAction = { type: 'INIT_CHAMPIONSHIPS'; championshipInternalName: string };
+export type GameAction =
+  | { type: 'INIT_CHAMPIONSHIPS'; championshipInternalName: string }
+  | { type: 'PING' };

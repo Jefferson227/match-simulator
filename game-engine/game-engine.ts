@@ -36,6 +36,9 @@ export class GameEngine {
           ...state,
           championshipContainer: ChampionshipUseCases.initChampionships('brasileirao-serie-b'),
         };
+      case 'PING':
+        console.log('pong');
+        return state;
 
       default:
         return state;
