@@ -1,7 +1,8 @@
 import ChampionshipContainer from '../models/ChampionshipContainer';
 import OperationResult from '../results/OperationResult';
+import { Championship } from '../models/Championship';
 
-function initChampionships(
+export function initChampionships(
   championshipInternalName: string
 ): OperationResult<ChampionshipContainer> {
   /**
@@ -17,7 +18,11 @@ function initChampionships(
    * 4. Return a new ChampionshipContainer object containing all Championship
    *    objects created.
    */
+
   return new OperationResult({} as ChampionshipContainer);
 }
 
-export default { initChampionships };
+function mapFromJSON(championshipInternalName: string): Championship {
+  // TODO: To be implemented
+  return {} as Championship;
+}
