@@ -18,6 +18,15 @@ export function initChampionships(
    * 4. Return a new ChampionshipContainer object containing all Championship
    *    objects created.
    */
+  const playableChampionship = mapFromJSON(championshipInternalName);
+  if (!playableChampionship) {
+    const result = new OperationResult({} as ChampionshipContainer);
+    result.setError({
+      errorCode: 'object-null-or-undefined',
+      message: 'Championship could not be found',
+    });
+    return result;
+  }
 
   return new OperationResult({} as ChampionshipContainer);
 }
