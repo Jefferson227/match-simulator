@@ -19,18 +19,13 @@ class OperationResult<TResult> extends OperationResultBase {
     super();
   }
 
-  // TODO: Change this to set the operation.succeeded
-  setSuccess<TResult>(result: TResult): OperationResult<TResult> {
-    const operation = new OperationResult(result);
-    operation.succeeded = true;
-    return operation;
+  setSuccess(): void {
+    this.succeeded = true;
   }
 
-  setError<TResult>(result: TResult, err: ErrorResult): OperationResult<TResult> {
-    const operation = new OperationResult(result);
-    operation.succeeded = false;
-    operation.error = err;
-    return operation;
+  setError(err: ErrorResult): void {
+    this.succeeded = false;
+    this.error = err;
   }
 
   getResult(): TResult {
