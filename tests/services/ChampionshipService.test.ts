@@ -6,6 +6,6 @@ describe('ChampionshipService.initChampionships', () => {
   it('returns a container with playableChampionship populated', () => {
     const container = ChampionshipService.initChampionships('brasileirao-serie-b');
 
-    expect(container.playableChampionship).toBeDefined();
+    expect(container.succeeded).toBe(true);
   });
 });

@@ -1,6 +1,9 @@
 import ChampionshipContainer from '../models/ChampionshipContainer';
+import OperationResult from '../results/OperationResult';
 
-function initChampionships(championshipInternalName: string): ChampionshipContainer {
+function initChampionships(
+  championshipInternalName: string
+): OperationResult<ChampionshipContainer> {
   /**
    * 1. Take the `championshipInternalName` and get the corresponding championship
    *    from the JSON in `src/assets/championships.json` (file to be renamed), and
@@ -14,7 +17,7 @@ function initChampionships(championshipInternalName: string): ChampionshipContai
    * 4. Return a new ChampionshipContainer object containing all Championship
    *    objects created.
    */
-  return {} as ChampionshipContainer;
+  return new OperationResult({} as ChampionshipContainer);
 }
 
 export default { initChampionships };
