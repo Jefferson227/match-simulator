@@ -18,6 +18,7 @@ export function initChampionships(
    * 4. Return a new ChampionshipContainer object containing all Championship
    *    objects created.
    */
+  let championshipContainer = {} as ChampionshipContainer;
   const playableChampionship = mapFromJSON(championshipInternalName);
   if (!playableChampionship) {
     const result = new OperationResult({} as ChampionshipContainer);
@@ -28,7 +29,11 @@ export function initChampionships(
     return result;
   }
 
-  return new OperationResult({} as ChampionshipContainer);
+  if (playableChampionship?.promotionChampionshipInternalName) {
+    // TODO: Get the promotion championship
+  }
+
+  return new OperationResult(championshipContainer);
 }
 
 function mapFromJSON(championshipInternalName: string): Championship {
