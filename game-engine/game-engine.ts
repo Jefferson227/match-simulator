@@ -1,5 +1,5 @@
 import { GameAction, GameState } from './game-state';
-import ChampionshipUseCases from '../use-cases/ChampionshipUseCases';
+import { initChampionships } from '../use-cases/ChampionshipUseCases';
 
 type Listener = () => void;
 
@@ -34,7 +34,7 @@ export class GameEngine {
       case 'INIT_CHAMPIONSHIPS':
         return {
           ...state,
-          championshipContainer: ChampionshipUseCases.initChampionships('brasileirao-serie-b'),
+          championshipContainer: initChampionships('brasileirao-serie-b'),
         };
       case 'PING':
         console.log('pong');
