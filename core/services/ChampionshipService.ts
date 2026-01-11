@@ -29,7 +29,7 @@ export function initChampionships(
     return result;
   }
 
-  if (playableChampionship?.promotionChampionshipInternalName) {
+  if (playableChampionship.isPromotable) {
     // TODO: Get the promotion championship
   }
 

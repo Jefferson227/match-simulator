@@ -16,19 +16,13 @@ type BaseChampionship = {
 };
 
 type Promotable = {
-  isPromotable: boolean;
   numberOfPromotedTeams: number;
   promotionChampionshipInternalName: string;
 };
 
 type Relegatable = {
-  isRelegatable: boolean;
   numberOfRelegatedTeams: number;
   relegationChampionshipInternalName: string;
 };
 
-type PromotableFields = { isPromotable: false } | ({ isPromotable: true } & Promotable);
-
-type RelegatableFields = { isRelegatable: false } | ({ isRelegatable: true } & Relegatable);
-
-export type Championship = BaseChampionship & PromotableFields & RelegatableFields;
+export type ChampionshipOld = BaseChampionship & Partial<Promotable> & Partial<Relegatable>;

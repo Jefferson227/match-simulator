@@ -1,5 +1,5 @@
-import { Championship } from '../core/models/Championship';
 import type { GameState } from './game-state';
+import { Championship } from '../core/models/Championship';
 
 export function createInitialGameState(): GameState {
   return {
