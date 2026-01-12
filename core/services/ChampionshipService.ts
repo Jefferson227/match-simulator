@@ -24,7 +24,7 @@ export function initChampionships(
     const result = new OperationResult({} as ChampionshipContainer);
     result.setError({
       errorCode: 'object-null-or-undefined',
-      message: 'Championship could not be found',
+      message: 'Playable championship could not be found',
     });
     return result;
   }
