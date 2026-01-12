@@ -29,8 +29,38 @@ export function initChampionships(
     return result;
   }
 
+  championshipContainer.playableChampionship = playableChampionship;
+
   if (playableChampionship.isPromotable) {
-    // TODO: Get the promotion championship
+    const promotionChampionship = mapFromJSON(
+      playableChampionship.promotionChampionshipInternalName
+    );
+
+    if (!promotionChampionship) {
+      const result = new OperationResult({} as ChampionshipContainer);
+      result.setError({
+        errorCode: 'object-null-or-undefined',
+        message: 'Promotion championship could not be found',
+      });
+    }
+
+    championshipContainer.promotionChampionship = promotionChampionship;
+  }
+
+  if (playableChampionship.isRelegatable) {
+    const relegationChampionship = mapFromJSON(
+      playableChampionship.relegationChampionshipInternalName
+    );
+
+    if (!relegationChampionship) {
+      const result = new OperationResult({} as ChampionshipContainer);
+      result.setError({
+        errorCode: 'object-null-or-undefined',
+        message: 'Relegation championship could not be found',
+      });
+    }
+
+    championshipContainer.relegationChampionship = relegationChampionship;
   }
 
   return new OperationResult(championshipContainer);
