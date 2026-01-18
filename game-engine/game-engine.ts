@@ -24,6 +24,9 @@ export class GameEngine {
     for (const l of this.listeners) l();
   }
 
+  // This approach can cause unnecessary re-renders on React, since it will notify
+  // React right after every change in the state.
+  // In the future, consider using a library for that like Zustand or any other.
   dispatch(action: GameAction) {
     this.state = this.reduce(this.state, action);
     this.emit();
