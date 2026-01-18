@@ -42,6 +42,7 @@ export function initChampionships(
         errorCode: 'object-null-or-undefined',
         message: 'Promotion championship could not be found',
       });
+      return result;
     }
 
     championshipContainer.promotionChampionship = promotionChampionship;
@@ -58,6 +59,7 @@ export function initChampionships(
         errorCode: 'object-null-or-undefined',
         message: 'Relegation championship could not be found',
       });
+      return result;
     }
 
     championshipContainer.relegationChampionship = relegationChampionship;
