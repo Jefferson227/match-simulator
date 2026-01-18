@@ -4,6 +4,8 @@ import { GeneralContext } from '../../contexts/GeneralContext';
 import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import generalService from '../../services/generalService';
 import { ChampionshipConfig } from '../../types';
+import { useGameEngine } from '../../contexts/GameEngineContext';
+import { useGameState } from '../../services/useGameState';
 
 const CHAMPIONSHIPS_PER_PAGE = 6;
 
@@ -15,6 +17,10 @@ const ChampionshipSelector: React.FC = () => {
 
   const championships = generalService.getAllChampionships();
   const totalPages = Math.ceil(championships.length / CHAMPIONSHIPS_PER_PAGE);
+
+  // Game engine
+  const engine = useGameEngine();
+  const state = useGameState(engine);
 
   const handleNextPage = () => {
     if (currentPage < totalPages - 1) {
@@ -59,7 +65,7 @@ const ChampionshipSelector: React.FC = () => {
         {selectedChampionships.map((champ) => (
           <button
             key={champ.id}
-            onClick={() => handleChampionshipClick(champ)}
+            onClick={() => engine.dispatch({ type: 'PING' })}
             disabled={
               champ.internalName !== 'brasileirao-serie-a' &&
               champ.internalName !== 'brasileirao-serie-b'
