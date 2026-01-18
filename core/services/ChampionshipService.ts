@@ -70,5 +70,12 @@ export function initChampionships(
 
 function mapFromJSON(championshipInternalName: string): Championship {
   // TODO: To be implemented
+
+  // 1. Create a new assets folder outside the React folder
+  // 2. Create a new JSON file called "championships.json"
+  // 3. Move the `championships` object from the `src/assets/general-parameters.json` to `assets/championships.json`
+  // 4. Create a new "DTO" for the current format of the `championships` object from the JSON file
+  // 5. Implement this function to map the championship from the JSON based on the internal name passed
+  // 6. If the championship is found, return the mapped "DTO" object, if not, return undefined
   return {} as Championship;
 }
