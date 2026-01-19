@@ -1,0 +1,70 @@
+[
+  {
+    "name": "BRASILEIRÃO SÉRIE A",
+    "internalName": "brasileirao-serie-a",
+    "numberOfTeams": 20,
+    "relegationTeams": 4,
+    "relegationChampionship": "brasileirao-serie-b",
+    "teams": [
+      "atletico-mg",
+      "bahia",
+      "botafogo",
+      "ceara",
+      "corinthians",
+      "cruzeiro",
+      "flamengo",
+      "fluminense",
+      "fortaleza",
+      "gremio",
+      "internacional",
+      "juventude",
+      "mirassol",
+      "palmeiras",
+      "rb-bragantino",
+      "santos",
+      "sao-paulo",
+      "sport-recife",
+      "vasco",
+      "vitoria"
+    ]
+  },
+  {
+    "name": "BRASILEIRÃO SÉRIE B",
+    "internalName": "brasileirao-serie-b",
+    "numberOfTeams": 20,
+    "promotionTeams": 4,
+    "relegationTeams": 4,
+    "promotionChampionship": "brasileirao-serie-a",
+    "relegationChampionship": "brasileirao-serie-c",
+    "teams": [
+      "amazonas",
+      "america-mg",
+      "athletic",
+      "athletico-paranaense",
+      "atletico-go",
+      "avai",
+      "botafogo-sp",
+      "chapecoense",
+      "coritiba",
+      "crb",
+      "criciuma",
+      "cuiaba",
+      "ferroviaria",
+      "goias",
+      "novorizontino",
+      "operario-pr",
+      "paysandu",
+      "remo",
+      "vila-nova",
+      "volta-redonda"
+    ]
+  },
+  {
+    "name": "BRASILEIRÃO SÉRIE C",
+    "internalName": "brasileirao-serie-c",
+    "numberOfTeams": 20,
+    "promotionTeams": 4,
+    "promotionChampionship": "brasileirao-serie-b",
+    "teams": ["caxias", "ponte-preta", "ypiranga", "londrina"]
+  }
+]
