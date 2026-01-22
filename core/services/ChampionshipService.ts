@@ -102,6 +102,7 @@ function mapFromJSON(
     hasTeamControlledByHuman,
   };
 
+  // TODO: Adjust this part to use the conditional assignment for promotable or relegatable championships
   const isPromotable =
     typeof championship.promotionTeams === 'number' && !!championship.promotionChampionship;
   const isRelegatable =
