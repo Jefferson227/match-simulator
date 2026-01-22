@@ -1,8 +1,10 @@
+import ChampionshipType from '../enums/ChampionshipType';
+
 type ChampionshipJSONDTO = {
   id: string;
   name: string;
   internalName: string;
-  numberOfTeams?: number;
+  numberOfTeams: number;
   promotionTeams?: number;
   relegationTeams?: number;
   promotionChampionship?: string;

@@ -1,6 +1,8 @@
 import ChampionshipContainer from '../models/ChampionshipContainer';
 import OperationResult from '../results/OperationResult';
 import { Championship } from '../models/Championship';
+import championshipsJSON from '../../assets/championships.json';
+import ChampionshipJSONDTO from '../data-transfer-objects/ChampionshipJSONDTO';
 
 export function initChampionships(
   championshipInternalName: string
@@ -19,7 +21,7 @@ export function initChampionships(
    *    objects created.
    */
   let championshipContainer = {} as ChampionshipContainer;
-  const playableChampionship = mapFromJSON(championshipInternalName);
+  const playableChampionship = mapFromJSON(championshipInternalName, true);
   if (!playableChampionship) {
     const result = new OperationResult({} as ChampionshipContainer);
     result.setError({
@@ -33,7 +35,8 @@ export function initChampionships(
 
   if (playableChampionship.isPromotable) {
     const promotionChampionship = mapFromJSON(
-      playableChampionship.promotionChampionshipInternalName
+      playableChampionship.promotionChampionshipInternalName,
+      false
     );
 
     if (!promotionChampionship) {
@@ -50,7 +53,8 @@ export function initChampionships(
 
   if (playableChampionship.isRelegatable) {
     const relegationChampionship = mapFromJSON(
-      playableChampionship.relegationChampionshipInternalName
+      playableChampionship.relegationChampionshipInternalName,
+      false
     );
 
     if (!relegationChampionship) {
@@ -68,14 +72,76 @@ export function initChampionships(
   return new OperationResult(championshipContainer);
 }
 
-function mapFromJSON(championshipInternalName: string): Championship {
-  // TODO: To be implemented
+function mapFromJSON(
+  championshipInternalName: string,
+  hasTeamControlledByHuman: boolean
+): Championship | undefined {
+  // TODO: Finish the implementation and move this to the repository layer
+  const championships = championshipsJSON as ChampionshipJSONDTO[];
+  const championship = championships.find(
+    (champ) => champ.internalName === championshipInternalName
+  );
 
-  // 1. Create a new assets folder outside the React folder
-  // 2. Create a new JSON file called "championships.json"
-  // 3. Move the `championships` object from the `src/assets/general-parameters.json` to `assets/championships.json`
-  // 4. Create a new "DTO" for the current format of the `championships` object from the JSON file
-  // 5. Implement this function to map the championship from the JSON based on the internal name passed
-  // 6. If the championship is found, return the mapped "DTO" object, if not, return undefined
-  return {} as Championship;
+  if (!championship) return undefined;
+
+  const baseChampionship = {
+    id: championship.id,
+    name: championship.name,
+    internalName: championship.internalName,
+    numberOfTeams: championship.numberOfTeams,
+    startingTeams: [],
+    standings: [],
+    matches: {
+      timer: 0,
+      currentSeason: 0,
+      currentRound: 0,
+      totalRounds: 0,
+      matches: [],
+    },
+    type: championship.type,
+    hasTeamControlledByHuman,
+  };
+
+  const isPromotable =
+    typeof championship.promotionTeams === 'number' && !!championship.promotionChampionship;
+  const isRelegatable =
+    typeof championship.relegationTeams === 'number' && !!championship.relegationChampionship;
+
+  if (isPromotable && isRelegatable) {
+    return {
+      ...baseChampionship,
+      isPromotable: true,
+      numberOfPromotedTeams: championship.promotionTeams!,
+      promotionChampionshipInternalName: championship.promotionChampionship!,
+      isRelegatable: true,
+      numberOfRelegatedTeams: championship.relegationTeams!,
+      relegationChampionshipInternalName: championship.relegationChampionship!,
+    };
+  }
+
+  if (isPromotable) {
+    return {
+      ...baseChampionship,
+      isPromotable: true,
+      numberOfPromotedTeams: championship.promotionTeams!,
+      promotionChampionshipInternalName: championship.promotionChampionship!,
+      isRelegatable: false,
+    };
+  }
+
+  if (isRelegatable) {
+    return {
+      ...baseChampionship,
+      isPromotable: false,
+      isRelegatable: true,
+      numberOfRelegatedTeams: championship.relegationTeams!,
+      relegationChampionshipInternalName: championship.relegationChampionship!,
+    };
+  }
+
+  return {
+    ...baseChampionship,
+    isPromotable: false,
+    isRelegatable: false,
+  };
 }
