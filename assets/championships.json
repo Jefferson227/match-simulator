@@ -5,6 +5,7 @@
     "numberOfTeams": 20,
     "relegationTeams": 4,
     "relegationChampionship": "brasileirao-serie-b",
+    "type": "double-round-robin",
     "teams": [
       "atletico-mg",
       "bahia",

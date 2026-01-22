@@ -7,6 +7,7 @@ type ChampionshipJSONDTO = {
   relegationTeams?: number;
   promotionChampionship?: string;
   relegationChampionship?: string;
+  type: ChampionshipType;
   teams?: string[];
 };
 
