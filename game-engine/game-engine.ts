@@ -35,9 +35,15 @@ export class GameEngine {
   private reduce(state: GameState, action: GameAction): GameState {
     switch (action.type) {
       case 'INIT_CHAMPIONSHIPS':
+        const result = initChampionships(action.championshipInternalName);
+        if (!result.succeeded) {
+          // TODO: Show error screen
+          return state;
+        }
+
         return {
           ...state,
-          championshipContainer: initChampionships('brasileirao-serie-b'),
+          championshipContainer: result.getResult(),
         };
       case 'PING':
         console.log('pong');
