@@ -1,34 +1,15 @@
 import ChampionshipType from '../enums/ChampionshipType';
 
-type DTO = {
-  id: string;
+type ChampionshipJSONDTO = {
   name: string;
   internalName: string;
   numberOfTeams: number;
-  promotionTeams?: number;
-  relegationTeams?: number;
-  promotionChampionship?: string;
-  relegationChampionship?: string;
   type: ChampionshipType;
-  teams?: string[];
-};
-
-type Promotable = {
-  isPromotable: boolean;
-  numberOfPromotedTeams: number;
+  teamNames: string[];
+  numberOfPromotableTeams: number;
   promotionChampionshipInternalName: string;
-};
-
-type Relegatable = {
-  isRelegatable: boolean;
-  numberOfRelegatedTeams: number;
+  numberOfRelegatableTeams: number;
   relegationChampionshipInternalName: string;
 };
-
-type PromotableFields = { isPromotable: false } | ({ isPromotable: true } & Promotable);
-
-type RelegatableFields = { isRelegatable: false } | ({ isRelegatable: true } & Relegatable);
-
-type ChampionshipJSONDTO = DTO & PromotableFields & RelegatableFields;
 
 export default ChampionshipJSONDTO;

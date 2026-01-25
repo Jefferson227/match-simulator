@@ -17,13 +17,13 @@ type BaseChampionship = {
 
 type Promotable = {
   isPromotable: boolean;
-  numberOfPromotedTeams: number;
+  numberOfPromotableTeams: number;
   promotionChampionshipInternalName: string;
 };
 
 type Relegatable = {
   isRelegatable: boolean;
-  numberOfRelegatedTeams: number;
+  numberOfRelegatableTeams: number;
   relegationChampionshipInternalName: string;
 };
 

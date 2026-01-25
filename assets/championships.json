@@ -3,10 +3,10 @@
     "name": "BRASILEIRÃO SÉRIE A",
     "internalName": "brasileirao-serie-a",
     "numberOfTeams": 20,
-    "relegationTeams": 4,
-    "relegationChampionship": "brasileirao-serie-b",
+    "numberOfRelegatableTeams": 4,
+    "relegationChampionshipInternalName": "brasileirao-serie-b",
     "type": "double-round-robin",
-    "teams": [
+    "teamNames": [
       "atletico-mg",
       "bahia",
       "botafogo",
@@ -33,11 +33,12 @@
     "name": "BRASILEIRÃO SÉRIE B",
     "internalName": "brasileirao-serie-b",
     "numberOfTeams": 20,
-    "promotionTeams": 4,
-    "relegationTeams": 4,
-    "promotionChampionship": "brasileirao-serie-a",
-    "relegationChampionship": "brasileirao-serie-c",
-    "teams": [
+    "numberOfPromotableTeams": 4,
+    "numberOfRelegatableTeams": 4,
+    "promotionChampionshipInternalName": "brasileirao-serie-a",
+    "relegationChampionshipInternalName": "brasileirao-serie-c",
+    "type": "double-round-robin",
+    "teamNames": [
       "amazonas",
       "america-mg",
       "athletic",
@@ -64,7 +65,7 @@
     "name": "BRASILEIRÃO SÉRIE C",
     "internalName": "brasileirao-serie-c",
     "numberOfTeams": 20,
-    "promotionTeams": 4,
+    "numberOfPromotionTeams": 4,
     "promotionChampionship": "brasileirao-serie-b",
     "teams": ["caxias", "ponte-preta", "ypiranga", "londrina"]
   }
