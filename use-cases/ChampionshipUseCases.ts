@@ -1,6 +1,9 @@
 import ChampionshipContainer from '../core/models/ChampionshipContainer';
+import OperationResult from '../core/results/OperationResult';
+import ChampionshipService from '../core/services/ChampionshipService';
 
-export function initChampionships(championshipInternalName: string): ChampionshipContainer {
-  // TODO: Create the Championship object
-  return {} as ChampionshipContainer;
+export function initChampionships(
+  championshipInternalName: string
+): OperationResult<ChampionshipContainer> {
+  return ChampionshipService.initChampionships(championshipInternalName);
 }
