@@ -1,0 +1,33 @@
+{
+  "name": "Grêmio Foot-Ball Porto Alegrense",
+  "shortName": "Grêmio",
+  "abbreviation": "GRE",
+  "colors": {
+    "outline": "#211c19",
+    "background": "#1581bf",
+    "name": "#FAFAFC"
+  },
+  "initialOverallStrength": 78,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Gabriel Grando", "strength": 0 },
+    { "position": "GK", "name": "Adriel", "strength": 0 },
+    { "position": "DF", "name": "Kannemann", "strength": 0 },
+    { "position": "DF", "name": "Pedro Geromel", "strength": 0 },
+    { "position": "DF", "name": "Reinaldo", "strength": 0 },
+    { "position": "DF", "name": "Bruno Alves", "strength": 0 },
+    { "position": "DF", "name": "Fábio", "strength": 0 },
+    { "position": "DF", "name": "Diogo Barbosa", "strength": 0 },
+    { "position": "MF", "name": "Carballo", "strength": 0 },
+    { "position": "MF", "name": "Pepê", "strength": 0 },
+    { "position": "MF", "name": "Villasanti", "strength": 0 },
+    { "position": "MF", "name": "Cristaldo", "strength": 0 },
+    { "position": "MF", "name": "Nathan", "strength": 0 },
+    { "position": "FW", "name": "Luis Suárez", "strength": 0 },
+    { "position": "FW", "name": "Ferreira", "strength": 0 },
+    { "position": "FW", "name": "Galdino", "strength": 0 },
+    { "position": "FW", "name": "André Henrique", "strength": 0 }
+  ]
+}

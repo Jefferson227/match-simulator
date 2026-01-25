@@ -1,0 +1,39 @@
+{
+  "name": "Caxias Futebol Clube",
+  "shortName": "Caxias",
+  "abbreviation": "CAX",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#1e3a8a",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 50,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Rafael Santos", "strength": 0 },
+    { "position": "GK", "name": "Thiago Silva", "strength": 0 },
+    { "position": "DF", "name": "Marcelo Costa", "strength": 0 },
+    { "position": "DF", "name": "João Pedro", "strength": 0 },
+    { "position": "DF", "name": "Lucas Mendes", "strength": 0 },
+    { "position": "DF", "name": "Gabriel Santos", "strength": 0 },
+    { "position": "DF", "name": "Rafael Lima", "strength": 0 },
+    { "position": "DF", "name": "Carlos Eduardo", "strength": 0 },
+    { "position": "MF", "name": "Bruno Oliveira", "strength": 0 },
+    { "position": "MF", "name": "Felipe Costa", "strength": 0 },
+    { "position": "MF", "name": "Matheus Silva", "strength": 0 },
+    { "position": "MF", "name": "Pedro Santos", "strength": 0 },
+    { "position": "MF", "name": "Lucas Ferreira", "strength": 0 },
+    { "position": "MF", "name": "Rafael Alves", "strength": 0 },
+    { "position": "FW", "name": "Gabriel Costa", "strength": 0 },
+    { "position": "FW", "name": "João Silva", "strength": 0 },
+    { "position": "FW", "name": "Matheus Santos", "strength": 0 },
+    { "position": "FW", "name": "Pedro Costa", "strength": 0 },
+    { "position": "FW", "name": "Lucas Silva", "strength": 0 },
+    { "position": "FW", "name": "Rafael Costa", "strength": 0 },
+    { "position": "FW", "name": "Gabriel Silva", "strength": 0 },
+    { "position": "FW", "name": "João Costa", "strength": 0 },
+    { "position": "FW", "name": "Matheus Costa", "strength": 0 }
+  ]
+}

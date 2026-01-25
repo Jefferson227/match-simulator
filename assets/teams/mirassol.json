@@ -1,0 +1,33 @@
+{
+  "name": "Mirassol Futebol Clube",
+  "shortName": "Mirassol",
+  "abbreviation": "MIR",
+  "colors": {
+    "outline": "#056931",
+    "background": "#F6E917",
+    "name": "#056931"
+  },
+  "initialOverallStrength": 68,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Matheus", "strength": 0 },
+    { "position": "GK", "name": "Lucas Perri", "strength": 0 },
+    { "position": "DF", "name": "Léo Duarte", "strength": 0 },
+    { "position": "DF", "name": "Lucas Mendes", "strength": 0 },
+    { "position": "DF", "name": "Rafael Donato", "strength": 0 },
+    { "position": "DF", "name": "Lucas Ramon", "strength": 0 },
+    { "position": "DF", "name": "Lucas Beraldo", "strength": 0 },
+    { "position": "DF", "name": "Lucas Piton", "strength": 0 },
+    { "position": "MF", "name": "Lucas Evangelista", "strength": 0 },
+    { "position": "MF", "name": "Lucas Silva", "strength": 0 },
+    { "position": "MF", "name": "Lucas Lima", "strength": 0 },
+    { "position": "MF", "name": "Lucas Moura", "strength": 0 },
+    { "position": "MF", "name": "Lucas Paquetá", "strength": 0 },
+    { "position": "FW", "name": "Lucas Braga", "strength": 0 },
+    { "position": "FW", "name": "Lucas Perri", "strength": 0 },
+    { "position": "FW", "name": "Lucas Santos", "strength": 0 },
+    { "position": "FW", "name": "Lucas Oliveira", "strength": 0 }
+  ]
+}

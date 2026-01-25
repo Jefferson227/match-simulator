@@ -1,0 +1,33 @@
+{
+  "name": "Ceará Sporting Club",
+  "shortName": "Ceará",
+  "abbreviation": "CEA",
+  "colors": {
+    "outline": "#FAFAFC",
+    "background": "#242021",
+    "name": "#FAFAFC"
+  },
+  "initialOverallStrength": 82,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    { "position": "GK", "name": "Richard", "strength": 0 },
+    { "position": "GK", "name": "João Ricardo", "strength": 0 },
+    { "position": "DF", "name": "Messias", "strength": 0 },
+    { "position": "DF", "name": "Gabriel Lacerda", "strength": 0 },
+    { "position": "DF", "name": "Victor Luís", "strength": 0 },
+    { "position": "DF", "name": "Nino Paraíba", "strength": 0 },
+    { "position": "DF", "name": "Bruno Pacheco", "strength": 0 },
+    { "position": "DF", "name": "Luiz Otávio", "strength": 0 },
+    { "position": "MF", "name": "Richardson", "strength": 0 },
+    { "position": "MF", "name": "Fernando Sobral", "strength": 0 },
+    { "position": "MF", "name": "Vina", "strength": 0 },
+    { "position": "MF", "name": "Lima", "strength": 0 },
+    { "position": "MF", "name": "Marlon", "strength": 0 },
+    { "position": "FW", "name": "Cléber", "strength": 0 },
+    { "position": "FW", "name": "Mendoza", "strength": 0 },
+    { "position": "FW", "name": "Erick", "strength": 0 },
+    { "position": "FW", "name": "Zé Roberto", "strength": 0 }
+  ]
+}
