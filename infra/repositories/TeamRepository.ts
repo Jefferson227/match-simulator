@@ -1,6 +1,9 @@
+import TeamJSONDTO from '../../core/data-transfer-objects/TeamJSONDTO';
+import { Team } from '../../core/models/Team';
+
 const filePath = '../../assets/teams/';
 
-async function getTeam(internalName: string) {
+async function getTeam(internalName: string): Promise<Team | undefined> {
   try {
     const path = `${filePath}${internalName}.json`;
     const response = await fetch(path);
@@ -9,18 +12,14 @@ async function getTeam(internalName: string) {
       return undefined;
     }
 
-    // Parse the JSON data
-    const data = await response.json();
+    const teamJSONDTO = (await response.json()) as TeamJSONDTO;
+    // TODO: Map teamJSONDTO into Team
+    const mappedTeam = {} as Team;
 
-    return data;
+    return mappedTeam;
   } catch {
     return undefined;
   }
 }
 
-// Usage example:
-// importDynamicJson('userData').then((data) => {
-//   if (data) {
-//     console.log('Loaded data:', data);
-//   }
-// });
+export default { getTeam };
