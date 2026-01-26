@@ -1,7 +1,7 @@
 import PlayerPosition from '../enums/PlayerPosition';
 
 type Player = {
-  id: number;
+  id: `${string}-${string}-${string}-${string}-${string}`;
   position: PlayerPosition;
   name: string;
   strength: number;

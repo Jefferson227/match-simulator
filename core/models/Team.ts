@@ -2,7 +2,7 @@ import TeamColors from './TeamColors';
 import Player from './Player';
 
 export type Team = {
-  id: number;
+  id: `${string}-${string}-${string}-${string}-${string}`;
   fullName: string;
   shortName: string;
   abbreviation: string;
