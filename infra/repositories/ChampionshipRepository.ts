@@ -1,6 +1,7 @@
 import ChampionshipJSONDTO from '../../core/data-transfer-objects/ChampionshipJSONDTO';
 import championshipsJSON from '../../assets/championships.json';
 import { Championship } from '../../core/models/Championship';
+import TeamRepository from './TeamRepository';
 
 export function getChampionship(
   championshipInternalName: string,
@@ -78,7 +79,7 @@ export function getChampionship(
       promotionChampionshipInternalName: championshipJSONDTO.promotionChampionshipInternalName,
     };
   }
-  // TODO: Get the startingTeams
+  // TODO: Get the startingTeams from TeamRepository.getTeam and championshipJSONDTO.teamNames
 
   // TODO: Init standings
 
