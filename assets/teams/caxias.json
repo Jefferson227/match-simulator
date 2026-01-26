@@ -9,32 +9,98 @@
     "name": "#ffffff"
   },
   "initialOverallStrength": 50,
-  "formation": "",
-  "morale": 0,
-  "overallMood": 0,
   "players": [
-    { "position": "GK", "name": "Rafael Santos", "strength": 0 },
-    { "position": "GK", "name": "Thiago Silva", "strength": 0 },
-    { "position": "DF", "name": "Marcelo Costa", "strength": 0 },
-    { "position": "DF", "name": "João Pedro", "strength": 0 },
-    { "position": "DF", "name": "Lucas Mendes", "strength": 0 },
-    { "position": "DF", "name": "Gabriel Santos", "strength": 0 },
-    { "position": "DF", "name": "Rafael Lima", "strength": 0 },
-    { "position": "DF", "name": "Carlos Eduardo", "strength": 0 },
-    { "position": "MF", "name": "Bruno Oliveira", "strength": 0 },
-    { "position": "MF", "name": "Felipe Costa", "strength": 0 },
-    { "position": "MF", "name": "Matheus Silva", "strength": 0 },
-    { "position": "MF", "name": "Pedro Santos", "strength": 0 },
-    { "position": "MF", "name": "Lucas Ferreira", "strength": 0 },
-    { "position": "MF", "name": "Rafael Alves", "strength": 0 },
-    { "position": "FW", "name": "Gabriel Costa", "strength": 0 },
-    { "position": "FW", "name": "João Silva", "strength": 0 },
-    { "position": "FW", "name": "Matheus Santos", "strength": 0 },
-    { "position": "FW", "name": "Pedro Costa", "strength": 0 },
-    { "position": "FW", "name": "Lucas Silva", "strength": 0 },
-    { "position": "FW", "name": "Rafael Costa", "strength": 0 },
-    { "position": "FW", "name": "Gabriel Silva", "strength": 0 },
-    { "position": "FW", "name": "João Costa", "strength": 0 },
-    { "position": "FW", "name": "Matheus Costa", "strength": 0 }
+    {
+      "position": "GK",
+      "name": "Rafael Santos"
+    },
+    {
+      "position": "GK",
+      "name": "Thiago Silva"
+    },
+    {
+      "position": "DF",
+      "name": "Marcelo Costa"
+    },
+    {
+      "position": "DF",
+      "name": "João Pedro"
+    },
+    {
+      "position": "DF",
+      "name": "Lucas Mendes"
+    },
+    {
+      "position": "DF",
+      "name": "Gabriel Santos"
+    },
+    {
+      "position": "DF",
+      "name": "Rafael Lima"
+    },
+    {
+      "position": "DF",
+      "name": "Carlos Eduardo"
+    },
+    {
+      "position": "MF",
+      "name": "Bruno Oliveira"
+    },
+    {
+      "position": "MF",
+      "name": "Felipe Costa"
+    },
+    {
+      "position": "MF",
+      "name": "Matheus Silva"
+    },
+    {
+      "position": "MF",
+      "name": "Pedro Santos"
+    },
+    {
+      "position": "MF",
+      "name": "Lucas Ferreira"
+    },
+    {
+      "position": "MF",
+      "name": "Rafael Alves"
+    },
+    {
+      "position": "FW",
+      "name": "Gabriel Costa"
+    },
+    {
+      "position": "FW",
+      "name": "João Silva"
+    },
+    {
+      "position": "FW",
+      "name": "Matheus Santos"
+    },
+    {
+      "position": "FW",
+      "name": "Pedro Costa"
+    },
+    {
+      "position": "FW",
+      "name": "Lucas Silva"
+    },
+    {
+      "position": "FW",
+      "name": "Rafael Costa"
+    },
+    {
+      "position": "FW",
+      "name": "Gabriel Silva"
+    },
+    {
+      "position": "FW",
+      "name": "João Costa"
+    },
+    {
+      "position": "FW",
+      "name": "Matheus Costa"
+    }
   ]
 }

@@ -9,109 +9,86 @@
     "name": "#FAFAFC"
   },
   "initialOverallStrength": 99,
-  "formation": "",
-  "morale": 0,
-  "overallMood": 0,
   "players": [
     {
       "position": "GK",
-      "name": "Gatito Fernández",
-      "strength": 0
+      "name": "Gatito Fernández"
     },
     {
       "position": "GK",
-      "name": "Lucas Perri",
-      "strength": 0
+      "name": "Lucas Perri"
     },
     {
       "position": "DF",
-      "name": "Adryelson",
-      "strength": 0
+      "name": "Adryelson"
     },
     {
       "position": "DF",
-      "name": "Victor Cuesta",
-      "strength": 0
+      "name": "Victor Cuesta"
     },
     {
       "position": "DF",
-      "name": "Hugo",
-      "strength": 0
+      "name": "Hugo"
     },
     {
       "position": "DF",
-      "name": "Rafael",
-      "strength": 0
+      "name": "Rafael"
     },
     {
       "position": "DF",
-      "name": "Marçal",
-      "strength": 0
+      "name": "Marçal"
     },
     {
       "position": "DF",
-      "name": "Sander",
-      "strength": 0
+      "name": "Sander"
     },
     {
       "position": "MF",
-      "name": "Tchê Tchê",
-      "strength": 0
+      "name": "Tchê Tchê"
     },
     {
       "position": "MF",
-      "name": "Danilo Barbosa",
-      "strength": 0
+      "name": "Danilo Barbosa"
     },
     {
       "position": "MF",
-      "name": "Eduardo",
-      "strength": 0
+      "name": "Eduardo"
     },
     {
       "position": "MF",
-      "name": "Carlos Eduardo",
-      "strength": 0
+      "name": "Carlos Eduardo"
     },
     {
       "position": "MF",
-      "name": "Júnior Santos",
-      "strength": 0
+      "name": "Júnior Santos"
     },
     {
       "position": "MF",
-      "name": "Luis Henrique",
-      "strength": 0
+      "name": "Luis Henrique"
     },
     {
       "position": "FW",
-      "name": "Tiquinho Soares",
-      "strength": 0
+      "name": "Tiquinho Soares"
     },
     {
       "position": "FW",
-      "name": "Matheus Nascimento",
-      "strength": 0
+      "name": "Matheus Nascimento"
     },
     {
       "position": "FW",
-      "name": "Jeffinho",
-      "strength": 0
+      "name": "Jeffinho"
     },
     {
       "position": "FW",
-      "name": "Victor Sá",
-      "strength": 0
+      "name": "Victor Sá"
     },
     {
       "position": "FW",
-      "name": "Kauê",
-      "strength": 0
+      "name": "Kauê"
     },
     {
       "position": "FW",
-      "name": "Diego Hernández",
-      "strength": 0
+      "name": "Diego Hernández"
     }
   ]
 }

@@ -9,109 +9,86 @@
     "name": "#FAFAFC"
   },
   "initialOverallStrength": 100,
-  "formation": "",
-  "morale": 0,
-  "overallMood": 0,
   "players": [
     {
       "position": "GK",
-      "name": "Weverton",
-      "strength": 0
+      "name": "Weverton"
     },
     {
       "position": "GK",
-      "name": "Murilo",
-      "strength": 0
+      "name": "Murilo"
     },
     {
       "position": "DF",
-      "name": "Murilo",
-      "strength": 0
+      "name": "Murilo"
     },
     {
       "position": "DF",
-      "name": "Gustavo Gómez",
-      "strength": 0
+      "name": "Gustavo Gómez"
     },
     {
       "position": "DF",
-      "name": "Endrick",
-      "strength": 0
+      "name": "Endrick"
     },
     {
       "position": "DF",
-      "name": "Luan",
-      "strength": 0
+      "name": "Luan"
     },
     {
       "position": "DF",
-      "name": "Vanderlan",
-      "strength": 0
+      "name": "Vanderlan"
     },
     {
       "position": "DF",
-      "name": "Piquerez",
-      "strength": 0
+      "name": "Piquerez"
     },
     {
       "position": "MF",
-      "name": "Zé Rafael",
-      "strength": 0
+      "name": "Zé Rafael"
     },
     {
       "position": "MF",
-      "name": "Gabriel Menino",
-      "strength": 0
+      "name": "Gabriel Menino"
     },
     {
       "position": "MF",
-      "name": "Raphael Veiga",
-      "strength": 0
+      "name": "Raphael Veiga"
     },
     {
       "position": "MF",
-      "name": "Richard Ríos",
-      "strength": 0
+      "name": "Richard Ríos"
     },
     {
       "position": "MF",
-      "name": "Aníbal Moreno",
-      "strength": 0
+      "name": "Aníbal Moreno"
     },
     {
       "position": "FW",
-      "name": "Endrick",
-      "strength": 0
+      "name": "Endrick"
     },
     {
       "position": "FW",
-      "name": "Rony",
-      "strength": 0
+      "name": "Rony"
     },
     {
       "position": "FW",
-      "name": "Dudu",
-      "strength": 0
+      "name": "Dudu"
     },
     {
       "position": "FW",
-      "name": "Breno Lopes",
-      "strength": 0
+      "name": "Breno Lopes"
     },
     {
       "position": "FW",
-      "name": "Flaco López",
-      "strength": 0
+      "name": "Flaco López"
     },
     {
       "position": "FW",
-      "name": "Estevão",
-      "strength": 0
+      "name": "Estevão"
     },
     {
       "position": "FW",
-      "name": "Kevin",
-      "strength": 0
+      "name": "Kevin"
     }
   ]
 }

@@ -9,109 +9,86 @@
     "name": "#FAFAFC"
   },
   "initialOverallStrength": 92,
-  "formation": "",
-  "morale": 0,
-  "overallMood": 0,
   "players": [
     {
       "position": "GK",
-      "name": "Rafael Cabral",
-      "strength": 0
+      "name": "Rafael Cabral"
     },
     {
       "position": "GK",
-      "name": "Anderson",
-      "strength": 0
+      "name": "Anderson"
     },
     {
       "position": "DF",
-      "name": "Zé Ivaldo",
-      "strength": 0
+      "name": "Zé Ivaldo"
     },
     {
       "position": "DF",
-      "name": "Lucas Oliveira",
-      "strength": 0
+      "name": "Lucas Oliveira"
     },
     {
       "position": "DF",
-      "name": "William",
-      "strength": 0
+      "name": "William"
     },
     {
       "position": "DF",
-      "name": "Neris",
-      "strength": 0
+      "name": "Neris"
     },
     {
       "position": "DF",
-      "name": "Marllon",
-      "strength": 0
+      "name": "Marllon"
     },
     {
       "position": "DF",
-      "name": "Kaiki",
-      "strength": 0
+      "name": "Kaiki"
     },
     {
       "position": "MF",
-      "name": "Lucas Silva",
-      "strength": 0
+      "name": "Lucas Silva"
     },
     {
       "position": "MF",
-      "name": "Ramiro",
-      "strength": 0
+      "name": "Ramiro"
     },
     {
       "position": "MF",
-      "name": "Mateus Vital",
-      "strength": 0
+      "name": "Mateus Vital"
     },
     {
       "position": "MF",
-      "name": "Bruno Rodrigues",
-      "strength": 0
+      "name": "Bruno Rodrigues"
     },
     {
       "position": "MF",
-      "name": "Jajá",
-      "strength": 0
+      "name": "Jajá"
     },
     {
       "position": "MF",
-      "name": "Fernando",
-      "strength": 0
+      "name": "Fernando"
     },
     {
       "position": "FW",
-      "name": "Gilberto",
-      "strength": 0
+      "name": "Gilberto"
     },
     {
       "position": "FW",
-      "name": "Arthur Gomes",
-      "strength": 0
+      "name": "Arthur Gomes"
     },
     {
       "position": "FW",
-      "name": "Wesley",
-      "strength": 0
+      "name": "Wesley"
     },
     {
       "position": "FW",
-      "name": "Henrique Dourado",
-      "strength": 0
+      "name": "Henrique Dourado"
     },
     {
       "position": "FW",
-      "name": "Rafael Elias",
-      "strength": 0
+      "name": "Rafael Elias"
     },
     {
       "position": "FW",
-      "name": "Pedro",
-      "strength": 0
+      "name": "Pedro"
     }
   ]
 }

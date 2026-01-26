@@ -9,26 +9,74 @@
     "name": "#FAFAFC"
   },
   "initialOverallStrength": 62,
-  "formation": "",
-  "morale": 0,
-  "overallMood": 0,
   "players": [
-    { "position": "GK", "name": "Gabriel", "strength": 0 },
-    { "position": "GK", "name": "Marcelinho", "strength": 0 },
-    { "position": "DF", "name": "Danilo Boza", "strength": 0 },
-    { "position": "DF", "name": "João Lucas", "strength": 0 },
-    { "position": "DF", "name": "Lucas Barbosa", "strength": 0 },
-    { "position": "DF", "name": "Rafael Forster", "strength": 0 },
-    { "position": "DF", "name": "Lucas Kal", "strength": 0 },
-    { "position": "DF", "name": "João Pedro", "strength": 0 },
-    { "position": "MF", "name": "Lucas Silva", "strength": 0 },
-    { "position": "MF", "name": "Lucas Barbosa", "strength": 0 },
-    { "position": "MF", "name": "Lucas Evangelista", "strength": 0 },
-    { "position": "MF", "name": "Lucas Lima", "strength": 0 },
-    { "position": "MF", "name": "Lucas Moura", "strength": 0 },
-    { "position": "FW", "name": "Lucas Braga", "strength": 0 },
-    { "position": "FW", "name": "Lucas Perri", "strength": 0 },
-    { "position": "FW", "name": "Lucas Santos", "strength": 0 },
-    { "position": "FW", "name": "Lucas Oliveira", "strength": 0 }
+    {
+      "position": "GK",
+      "name": "Gabriel"
+    },
+    {
+      "position": "GK",
+      "name": "Marcelinho"
+    },
+    {
+      "position": "DF",
+      "name": "Danilo Boza"
+    },
+    {
+      "position": "DF",
+      "name": "João Lucas"
+    },
+    {
+      "position": "DF",
+      "name": "Lucas Barbosa"
+    },
+    {
+      "position": "DF",
+      "name": "Rafael Forster"
+    },
+    {
+      "position": "DF",
+      "name": "Lucas Kal"
+    },
+    {
+      "position": "DF",
+      "name": "João Pedro"
+    },
+    {
+      "position": "MF",
+      "name": "Lucas Silva"
+    },
+    {
+      "position": "MF",
+      "name": "Lucas Barbosa"
+    },
+    {
+      "position": "MF",
+      "name": "Lucas Evangelista"
+    },
+    {
+      "position": "MF",
+      "name": "Lucas Lima"
+    },
+    {
+      "position": "MF",
+      "name": "Lucas Moura"
+    },
+    {
+      "position": "FW",
+      "name": "Lucas Braga"
+    },
+    {
+      "position": "FW",
+      "name": "Lucas Perri"
+    },
+    {
+      "position": "FW",
+      "name": "Lucas Santos"
+    },
+    {
+      "position": "FW",
+      "name": "Lucas Oliveira"
+    }
   ]
 }

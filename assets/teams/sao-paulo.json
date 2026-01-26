@@ -9,26 +9,74 @@
     "name": "#242021"
   },
   "initialOverallStrength": 76,
-  "formation": "",
-  "morale": 0,
-  "overallMood": 0,
   "players": [
-    { "position": "GK", "name": "Rafael", "strength": 0 },
-    { "position": "GK", "name": "Jandrei", "strength": 0 },
-    { "position": "DF", "name": "Arboleda", "strength": 0 },
-    { "position": "DF", "name": "Diego Costa", "strength": 0 },
-    { "position": "DF", "name": "Rafinha", "strength": 0 },
-    { "position": "DF", "name": "Caio Paulista", "strength": 0 },
-    { "position": "DF", "name": "Welington", "strength": 0 },
-    { "position": "DF", "name": "Alan Franco", "strength": 0 },
-    { "position": "MF", "name": "Pablo Maia", "strength": 0 },
-    { "position": "MF", "name": "Alisson", "strength": 0 },
-    { "position": "MF", "name": "Rodrigo Nestor", "strength": 0 },
-    { "position": "MF", "name": "Michel Araújo", "strength": 0 },
-    { "position": "MF", "name": "Luciano", "strength": 0 },
-    { "position": "FW", "name": "Calleri", "strength": 0 },
-    { "position": "FW", "name": "David", "strength": 0 },
-    { "position": "FW", "name": "Erison", "strength": 0 },
-    { "position": "FW", "name": "Juan", "strength": 0 }
+    {
+      "position": "GK",
+      "name": "Rafael"
+    },
+    {
+      "position": "GK",
+      "name": "Jandrei"
+    },
+    {
+      "position": "DF",
+      "name": "Arboleda"
+    },
+    {
+      "position": "DF",
+      "name": "Diego Costa"
+    },
+    {
+      "position": "DF",
+      "name": "Rafinha"
+    },
+    {
+      "position": "DF",
+      "name": "Caio Paulista"
+    },
+    {
+      "position": "DF",
+      "name": "Welington"
+    },
+    {
+      "position": "DF",
+      "name": "Alan Franco"
+    },
+    {
+      "position": "MF",
+      "name": "Pablo Maia"
+    },
+    {
+      "position": "MF",
+      "name": "Alisson"
+    },
+    {
+      "position": "MF",
+      "name": "Rodrigo Nestor"
+    },
+    {
+      "position": "MF",
+      "name": "Michel Araújo"
+    },
+    {
+      "position": "MF",
+      "name": "Luciano"
+    },
+    {
+      "position": "FW",
+      "name": "Calleri"
+    },
+    {
+      "position": "FW",
+      "name": "David"
+    },
+    {
+      "position": "FW",
+      "name": "Erison"
+    },
+    {
+      "position": "FW",
+      "name": "Juan"
+    }
   ]
 }

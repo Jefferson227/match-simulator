@@ -9,31 +9,94 @@
     "name": "#fafafc"
   },
   "initialOverallStrength": 63,
-  "formation": "",
-  "morale": 0,
-  "overallMood": 0,
   "players": [
-    { "position": "GK", "name": "Rafael Santos", "strength": 0 },
-    { "position": "GK", "name": "Matheus Nogueira", "strength": 0 },
-    { "position": "DF", "name": "Rafael Donato", "strength": 0 },
-    { "position": "DF", "name": "Bruno Silva", "strength": 0 },
-    { "position": "DF", "name": "Lucas Rocha", "strength": 0 },
-    { "position": "DF", "name": "João Paulo", "strength": 0 },
-    { "position": "DF", "name": "Lucas Mendes", "strength": 0 },
-    { "position": "DF", "name": "Rafael Vaz", "strength": 0 },
-    { "position": "MF", "name": "Rafael Longuine", "strength": 0 },
-    { "position": "MF", "name": "Lucas Crispim", "strength": 0 },
-    { "position": "MF", "name": "Alan Mineiro", "strength": 0 },
-    { "position": "MF", "name": "Rafael Costa", "strength": 0 },
-    { "position": "MF", "name": "Lucas Kal", "strength": 0 },
-    { "position": "MF", "name": "Rafael Silva", "strength": 0 },
-    { "position": "FW", "name": "Rafael Moura", "strength": 0 },
-    { "position": "FW", "name": "Lucas Oliveira", "strength": 0 },
-    { "position": "FW", "name": "Rafael Costa", "strength": 0 },
-    { "position": "FW", "name": "Lucas Santos", "strength": 0 },
-    { "position": "FW", "name": "Rafael Lima", "strength": 0 },
-    { "position": "FW", "name": "Lucas Pereira", "strength": 0 },
-    { "position": "FW", "name": "Rafael Alves", "strength": 0 },
-    { "position": "FW", "name": "Lucas Martins", "strength": 0 }
+    {
+      "position": "GK",
+      "name": "Rafael Santos"
+    },
+    {
+      "position": "GK",
+      "name": "Matheus Nogueira"
+    },
+    {
+      "position": "DF",
+      "name": "Rafael Donato"
+    },
+    {
+      "position": "DF",
+      "name": "Bruno Silva"
+    },
+    {
+      "position": "DF",
+      "name": "Lucas Rocha"
+    },
+    {
+      "position": "DF",
+      "name": "João Paulo"
+    },
+    {
+      "position": "DF",
+      "name": "Lucas Mendes"
+    },
+    {
+      "position": "DF",
+      "name": "Rafael Vaz"
+    },
+    {
+      "position": "MF",
+      "name": "Rafael Longuine"
+    },
+    {
+      "position": "MF",
+      "name": "Lucas Crispim"
+    },
+    {
+      "position": "MF",
+      "name": "Alan Mineiro"
+    },
+    {
+      "position": "MF",
+      "name": "Rafael Costa"
+    },
+    {
+      "position": "MF",
+      "name": "Lucas Kal"
+    },
+    {
+      "position": "MF",
+      "name": "Rafael Silva"
+    },
+    {
+      "position": "FW",
+      "name": "Rafael Moura"
+    },
+    {
+      "position": "FW",
+      "name": "Lucas Oliveira"
+    },
+    {
+      "position": "FW",
+      "name": "Rafael Costa"
+    },
+    {
+      "position": "FW",
+      "name": "Lucas Santos"
+    },
+    {
+      "position": "FW",
+      "name": "Rafael Lima"
+    },
+    {
+      "position": "FW",
+      "name": "Lucas Pereira"
+    },
+    {
+      "position": "FW",
+      "name": "Rafael Alves"
+    },
+    {
+      "position": "FW",
+      "name": "Lucas Martins"
+    }
   ]
 }

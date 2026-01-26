@@ -9,31 +9,94 @@
     "name": "#f3f5f4"
   },
   "initialOverallStrength": 66,
-  "formation": "",
-  "morale": 0,
-  "overallMood": 0,
   "players": [
-    { "position": "GK", "name": "Matheus Cavichioli", "strength": 0 },
-    { "position": "GK", "name": "João Ricardo", "strength": 0 },
-    { "position": "DF", "name": "Eder", "strength": 0 },
-    { "position": "DF", "name": "Iago Maidana", "strength": 0 },
-    { "position": "DF", "name": "Danilo Avelar", "strength": 0 },
-    { "position": "DF", "name": "Ricardo Silva", "strength": 0 },
-    { "position": "DF", "name": "Marlon", "strength": 0 },
-    { "position": "DF", "name": "Juninho", "strength": 0 },
-    { "position": "MF", "name": "Juninho", "strength": 0 },
-    { "position": "MF", "name": "Alerrandro", "strength": 0 },
-    { "position": "MF", "name": "Felipe Azevedo", "strength": 0 },
-    { "position": "MF", "name": "Rodriguinho", "strength": 0 },
-    { "position": "MF", "name": "Ademir", "strength": 0 },
-    { "position": "MF", "name": "Everaldo", "strength": 0 },
-    { "position": "FW", "name": "Henrique Almeida", "strength": 0 },
-    { "position": "FW", "name": "Wellington Paulista", "strength": 0 },
-    { "position": "FW", "name": "Felipe Azevedo", "strength": 0 },
-    { "position": "FW", "name": "Rodriguinho", "strength": 0 },
-    { "position": "FW", "name": "Ademir", "strength": 0 },
-    { "position": "FW", "name": "Everaldo", "strength": 0 },
-    { "position": "FW", "name": "Henrique Almeida", "strength": 0 },
-    { "position": "FW", "name": "Wellington Paulista", "strength": 0 }
+    {
+      "position": "GK",
+      "name": "Matheus Cavichioli"
+    },
+    {
+      "position": "GK",
+      "name": "João Ricardo"
+    },
+    {
+      "position": "DF",
+      "name": "Eder"
+    },
+    {
+      "position": "DF",
+      "name": "Iago Maidana"
+    },
+    {
+      "position": "DF",
+      "name": "Danilo Avelar"
+    },
+    {
+      "position": "DF",
+      "name": "Ricardo Silva"
+    },
+    {
+      "position": "DF",
+      "name": "Marlon"
+    },
+    {
+      "position": "DF",
+      "name": "Juninho"
+    },
+    {
+      "position": "MF",
+      "name": "Juninho"
+    },
+    {
+      "position": "MF",
+      "name": "Alerrandro"
+    },
+    {
+      "position": "MF",
+      "name": "Felipe Azevedo"
+    },
+    {
+      "position": "MF",
+      "name": "Rodriguinho"
+    },
+    {
+      "position": "MF",
+      "name": "Ademir"
+    },
+    {
+      "position": "MF",
+      "name": "Everaldo"
+    },
+    {
+      "position": "FW",
+      "name": "Henrique Almeida"
+    },
+    {
+      "position": "FW",
+      "name": "Wellington Paulista"
+    },
+    {
+      "position": "FW",
+      "name": "Felipe Azevedo"
+    },
+    {
+      "position": "FW",
+      "name": "Rodriguinho"
+    },
+    {
+      "position": "FW",
+      "name": "Ademir"
+    },
+    {
+      "position": "FW",
+      "name": "Everaldo"
+    },
+    {
+      "position": "FW",
+      "name": "Henrique Almeida"
+    },
+    {
+      "position": "FW",
+      "name": "Wellington Paulista"
+    }
   ]
 }

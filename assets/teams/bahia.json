@@ -9,109 +9,86 @@
     "name": "#FAFAFC"
   },
   "initialOverallStrength": 83,
-  "formation": "",
-  "morale": 0,
-  "overallMood": 0,
   "players": [
     {
       "position": "GK",
-      "name": "Marcos Felipe",
-      "strength": 0
+      "name": "Marcos Felipe"
     },
     {
       "position": "GK",
-      "name": "Danilo Fernandes",
-      "strength": 0
+      "name": "Danilo Fernandes"
     },
     {
       "position": "DF",
-      "name": "Vitor Hugo",
-      "strength": 0
+      "name": "Vitor Hugo"
     },
     {
       "position": "DF",
-      "name": "Kanu",
-      "strength": 0
+      "name": "Kanu"
     },
     {
       "position": "DF",
-      "name": "Raul Gustavo",
-      "strength": 0
+      "name": "Raul Gustavo"
     },
     {
       "position": "DF",
-      "name": "Nino Paraíba",
-      "strength": 0
+      "name": "Nino Paraíba"
     },
     {
       "position": "DF",
-      "name": "Lucas Fonseca",
-      "strength": 0
+      "name": "Lucas Fonseca"
     },
     {
       "position": "DF",
-      "name": "Matheus Bahia",
-      "strength": 0
+      "name": "Matheus Bahia"
     },
     {
       "position": "MF",
-      "name": "Rezende",
-      "strength": 0
+      "name": "Rezende"
     },
     {
       "position": "MF",
-      "name": "Cauly",
-      "strength": 0
+      "name": "Cauly"
     },
     {
       "position": "MF",
-      "name": "Thaciano",
-      "strength": 0
+      "name": "Thaciano"
     },
     {
       "position": "MF",
-      "name": "Everaldo",
-      "strength": 0
+      "name": "Everaldo"
     },
     {
       "position": "MF",
-      "name": "Acevedo",
-      "strength": 0
+      "name": "Acevedo"
     },
     {
       "position": "MF",
-      "name": "Jean Lucas",
-      "strength": 0
+      "name": "Jean Lucas"
     },
     {
       "position": "FW",
-      "name": "Biel",
-      "strength": 0
+      "name": "Biel"
     },
     {
       "position": "FW",
-      "name": "Ademir",
-      "strength": 0
+      "name": "Ademir"
     },
     {
       "position": "FW",
-      "name": "Gabriel Teixeira",
-      "strength": 0
+      "name": "Gabriel Teixeira"
     },
     {
       "position": "FW",
-      "name": "Luciano Juba",
-      "strength": 0
+      "name": "Luciano Juba"
     },
     {
       "position": "FW",
-      "name": "Rafael Ratão",
-      "strength": 0
+      "name": "Rafael Ratão"
     },
     {
       "position": "FW",
-      "name": "Vitor Jacaré",
-      "strength": 0
+      "name": "Vitor Jacaré"
     }
   ]
 }

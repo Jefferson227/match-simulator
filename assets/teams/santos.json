@@ -9,26 +9,74 @@
     "name": "#242021"
   },
   "initialOverallStrength": 65,
-  "formation": "",
-  "morale": 0,
-  "overallMood": 0,
   "players": [
-    { "position": "GK", "name": "João Paulo", "strength": 0 },
-    { "position": "GK", "name": "Vladimir", "strength": 0 },
-    { "position": "DF", "name": "João Basso", "strength": 0 },
-    { "position": "DF", "name": "Messias", "strength": 0 },
-    { "position": "DF", "name": "Lucas Pires", "strength": 0 },
-    { "position": "DF", "name": "Felipe Jonatan", "strength": 0 },
-    { "position": "DF", "name": "João Lucas", "strength": 0 },
-    { "position": "DF", "name": "Nathan", "strength": 0 },
-    { "position": "MF", "name": "Dodi", "strength": 0 },
-    { "position": "MF", "name": "Lucas Lima", "strength": 0 },
-    { "position": "MF", "name": "Soteldo", "strength": 0 },
-    { "position": "MF", "name": "Angelo", "strength": 0 },
-    { "position": "MF", "name": "Lucas Braga", "strength": 0 },
-    { "position": "FW", "name": "Marcos Leonardo", "strength": 0 },
-    { "position": "FW", "name": "Deivid", "strength": 0 },
-    { "position": "FW", "name": "Rwan Seco", "strength": 0 },
-    { "position": "FW", "name": "Furch", "strength": 0 }
+    {
+      "position": "GK",
+      "name": "João Paulo"
+    },
+    {
+      "position": "GK",
+      "name": "Vladimir"
+    },
+    {
+      "position": "DF",
+      "name": "João Basso"
+    },
+    {
+      "position": "DF",
+      "name": "Messias"
+    },
+    {
+      "position": "DF",
+      "name": "Lucas Pires"
+    },
+    {
+      "position": "DF",
+      "name": "Felipe Jonatan"
+    },
+    {
+      "position": "DF",
+      "name": "João Lucas"
+    },
+    {
+      "position": "DF",
+      "name": "Nathan"
+    },
+    {
+      "position": "MF",
+      "name": "Dodi"
+    },
+    {
+      "position": "MF",
+      "name": "Lucas Lima"
+    },
+    {
+      "position": "MF",
+      "name": "Soteldo"
+    },
+    {
+      "position": "MF",
+      "name": "Angelo"
+    },
+    {
+      "position": "MF",
+      "name": "Lucas Braga"
+    },
+    {
+      "position": "FW",
+      "name": "Marcos Leonardo"
+    },
+    {
+      "position": "FW",
+      "name": "Deivid"
+    },
+    {
+      "position": "FW",
+      "name": "Rwan Seco"
+    },
+    {
+      "position": "FW",
+      "name": "Furch"
+    }
   ]
 }

@@ -9,109 +9,86 @@
     "name": "#FAFAFC"
   },
   "initialOverallStrength": 100,
-  "formation": "",
-  "morale": 0,
-  "overallMood": 0,
   "players": [
     {
       "position": "GK",
-      "name": "Rossi",
-      "strength": 0
+      "name": "Rossi"
     },
     {
       "position": "GK",
-      "name": "Santos",
-      "strength": 0
+      "name": "Santos"
     },
     {
       "position": "DF",
-      "name": "Fabricio Bruno",
-      "strength": 0
+      "name": "Fabricio Bruno"
     },
     {
       "position": "DF",
-      "name": "Léo Pereira",
-      "strength": 0
+      "name": "Léo Pereira"
     },
     {
       "position": "DF",
-      "name": "David Luiz",
-      "strength": 0
+      "name": "David Luiz"
     },
     {
       "position": "DF",
-      "name": "Varela",
-      "strength": 0
+      "name": "Varela"
     },
     {
       "position": "DF",
-      "name": "Ayrton Lucas",
-      "strength": 0
+      "name": "Ayrton Lucas"
     },
     {
       "position": "DF",
-      "name": "Wesley",
-      "strength": 0
+      "name": "Wesley"
     },
     {
       "position": "MF",
-      "name": "Allan",
-      "strength": 0
+      "name": "Allan"
     },
     {
       "position": "MF",
-      "name": "Thiago Maia",
-      "strength": 0
+      "name": "Thiago Maia"
     },
     {
       "position": "MF",
-      "name": "Gerson",
-      "strength": 0
+      "name": "Gerson"
     },
     {
       "position": "MF",
-      "name": "Arrascaeta",
-      "strength": 0
+      "name": "Arrascaeta"
     },
     {
       "position": "MF",
-      "name": "De la Cruz",
-      "strength": 0
+      "name": "De la Cruz"
     },
     {
       "position": "MF",
-      "name": "Victor Hugo",
-      "strength": 0
+      "name": "Victor Hugo"
     },
     {
       "position": "FW",
-      "name": "Pedro",
-      "strength": 0
+      "name": "Pedro"
     },
     {
       "position": "FW",
-      "name": "Gabigol",
-      "strength": 0
+      "name": "Gabigol"
     },
     {
       "position": "FW",
-      "name": "Bruno Henrique",
-      "strength": 0
+      "name": "Bruno Henrique"
     },
     {
       "position": "FW",
-      "name": "Luiz Araújo",
-      "strength": 0
+      "name": "Luiz Araújo"
     },
     {
       "position": "FW",
-      "name": "Everton Cebolinha",
-      "strength": 0
+      "name": "Everton Cebolinha"
     },
     {
       "position": "FW",
-      "name": "Matheus Gonçalves",
-      "strength": 0
+      "name": "Matheus Gonçalves"
     }
   ]
 }

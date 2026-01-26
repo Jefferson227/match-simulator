@@ -9,30 +9,90 @@
     "name": "#FFFFFF"
   },
   "initialOverallStrength": 62,
-  "formation": "",
-  "morale": 0,
-  "overallMood": 0,
   "players": [
-    { "position": "GK", "name": "Ronaldo", "strength": 0 },
-    { "position": "GK", "name": "Luan Polli", "strength": 0 },
-    { "position": "DF", "name": "Dudu", "strength": 0 },
-    { "position": "DF", "name": "Lucas Gazal", "strength": 0 },
-    { "position": "DF", "name": "Alix Vinícius", "strength": 0 },
-    { "position": "DF", "name": "Heron", "strength": 0 },
-    { "position": "DF", "name": "Bruno Tubarão", "strength": 0 },
-    { "position": "DF", "name": "Maguinho", "strength": 0 },
-    { "position": "MF", "name": "Baralhas", "strength": 0 },
-    { "position": "MF", "name": "Rhaldney", "strength": 0 },
-    { "position": "MF", "name": "Shaylon", "strength": 0 },
-    { "position": "MF", "name": "Matheus Peixoto", "strength": 0 },
-    { "position": "MF", "name": "Gabriel Baralhas", "strength": 0 },
-    { "position": "MF", "name": "Bruno Mezenga", "strength": 0 },
-    { "position": "FW", "name": "Luiz Fernando", "strength": 0 },
-    { "position": "FW", "name": "Airton", "strength": 0 },
-    { "position": "FW", "name": "Felipe Vizeu", "strength": 0 },
-    { "position": "FW", "name": "Jorginho", "strength": 0 },
-    { "position": "FW", "name": "Gustavo Coutinho", "strength": 0 },
-    { "position": "FW", "name": "Everton Felipe", "strength": 0 },
-    { "position": "FW", "name": "Yuri Lima", "strength": 0 }
+    {
+      "position": "GK",
+      "name": "Ronaldo"
+    },
+    {
+      "position": "GK",
+      "name": "Luan Polli"
+    },
+    {
+      "position": "DF",
+      "name": "Dudu"
+    },
+    {
+      "position": "DF",
+      "name": "Lucas Gazal"
+    },
+    {
+      "position": "DF",
+      "name": "Alix Vinícius"
+    },
+    {
+      "position": "DF",
+      "name": "Heron"
+    },
+    {
+      "position": "DF",
+      "name": "Bruno Tubarão"
+    },
+    {
+      "position": "DF",
+      "name": "Maguinho"
+    },
+    {
+      "position": "MF",
+      "name": "Baralhas"
+    },
+    {
+      "position": "MF",
+      "name": "Rhaldney"
+    },
+    {
+      "position": "MF",
+      "name": "Shaylon"
+    },
+    {
+      "position": "MF",
+      "name": "Matheus Peixoto"
+    },
+    {
+      "position": "MF",
+      "name": "Gabriel Baralhas"
+    },
+    {
+      "position": "MF",
+      "name": "Bruno Mezenga"
+    },
+    {
+      "position": "FW",
+      "name": "Luiz Fernando"
+    },
+    {
+      "position": "FW",
+      "name": "Airton"
+    },
+    {
+      "position": "FW",
+      "name": "Felipe Vizeu"
+    },
+    {
+      "position": "FW",
+      "name": "Jorginho"
+    },
+    {
+      "position": "FW",
+      "name": "Gustavo Coutinho"
+    },
+    {
+      "position": "FW",
+      "name": "Everton Felipe"
+    },
+    {
+      "position": "FW",
+      "name": "Yuri Lima"
+    }
   ]
 }

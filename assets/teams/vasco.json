@@ -9,26 +9,74 @@
     "name": "#242021"
   },
   "initialOverallStrength": 74,
-  "formation": "",
-  "morale": 0,
-  "overallMood": 0,
   "players": [
-    { "position": "GK", "name": "Léo Jardim", "strength": 0 },
-    { "position": "GK", "name": "Halls", "strength": 0 },
-    { "position": "DF", "name": "Léo", "strength": 0 },
-    { "position": "DF", "name": "Capasso", "strength": 0 },
-    { "position": "DF", "name": "Pumita Rodríguez", "strength": 0 },
-    { "position": "DF", "name": "Lucas Piton", "strength": 0 },
-    { "position": "DF", "name": "Robson", "strength": 0 },
-    { "position": "DF", "name": "Miranda", "strength": 0 },
-    { "position": "MF", "name": "Zé Gabriel", "strength": 0 },
-    { "position": "MF", "name": "Andrey Santos", "strength": 0 },
-    { "position": "MF", "name": "Paulinho", "strength": 0 },
-    { "position": "MF", "name": "Marlon Gomes", "strength": 0 },
-    { "position": "MF", "name": "Galdames", "strength": 0 },
-    { "position": "FW", "name": "Pedro Raul", "strength": 0 },
-    { "position": "FW", "name": "Alex Teixeira", "strength": 0 },
-    { "position": "FW", "name": "Figueiredo", "strength": 0 },
-    { "position": "FW", "name": "Erick Marcus", "strength": 0 }
+    {
+      "position": "GK",
+      "name": "Léo Jardim"
+    },
+    {
+      "position": "GK",
+      "name": "Halls"
+    },
+    {
+      "position": "DF",
+      "name": "Léo"
+    },
+    {
+      "position": "DF",
+      "name": "Capasso"
+    },
+    {
+      "position": "DF",
+      "name": "Pumita Rodríguez"
+    },
+    {
+      "position": "DF",
+      "name": "Lucas Piton"
+    },
+    {
+      "position": "DF",
+      "name": "Robson"
+    },
+    {
+      "position": "DF",
+      "name": "Miranda"
+    },
+    {
+      "position": "MF",
+      "name": "Zé Gabriel"
+    },
+    {
+      "position": "MF",
+      "name": "Andrey Santos"
+    },
+    {
+      "position": "MF",
+      "name": "Paulinho"
+    },
+    {
+      "position": "MF",
+      "name": "Marlon Gomes"
+    },
+    {
+      "position": "MF",
+      "name": "Galdames"
+    },
+    {
+      "position": "FW",
+      "name": "Pedro Raul"
+    },
+    {
+      "position": "FW",
+      "name": "Alex Teixeira"
+    },
+    {
+      "position": "FW",
+      "name": "Figueiredo"
+    },
+    {
+      "position": "FW",
+      "name": "Erick Marcus"
+    }
   ]
 }

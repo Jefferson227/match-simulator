@@ -9,26 +9,74 @@
     "name": "#a82123"
   },
   "initialOverallStrength": 55,
-  "formation": "",
-  "morale": 0,
-  "overallMood": 0,
   "players": [
-    { "position": "GK", "name": "Mailson", "strength": 0 },
-    { "position": "GK", "name": "Renan", "strength": 0 },
-    { "position": "DF", "name": "Rafael Thyere", "strength": 0 },
-    { "position": "DF", "name": "Sabino", "strength": 0 },
-    { "position": "DF", "name": "Lucas Siqueira", "strength": 0 },
-    { "position": "DF", "name": "Lucas Mendes", "strength": 0 },
-    { "position": "DF", "name": "Lucas Ramon", "strength": 0 },
-    { "position": "DF", "name": "Lucas Beraldo", "strength": 0 },
-    { "position": "MF", "name": "Lucas Evangelista", "strength": 0 },
-    { "position": "MF", "name": "Lucas Silva", "strength": 0 },
-    { "position": "MF", "name": "Lucas Lima", "strength": 0 },
-    { "position": "MF", "name": "Lucas Moura", "strength": 0 },
-    { "position": "MF", "name": "Lucas Paquetá", "strength": 0 },
-    { "position": "FW", "name": "Lucas Braga", "strength": 0 },
-    { "position": "FW", "name": "Lucas Perri", "strength": 0 },
-    { "position": "FW", "name": "Lucas Santos", "strength": 0 },
-    { "position": "FW", "name": "Lucas Oliveira", "strength": 0 }
+    {
+      "position": "GK",
+      "name": "Mailson"
+    },
+    {
+      "position": "GK",
+      "name": "Renan"
+    },
+    {
+      "position": "DF",
+      "name": "Rafael Thyere"
+    },
+    {
+      "position": "DF",
+      "name": "Sabino"
+    },
+    {
+      "position": "DF",
+      "name": "Lucas Siqueira"
+    },
+    {
+      "position": "DF",
+      "name": "Lucas Mendes"
+    },
+    {
+      "position": "DF",
+      "name": "Lucas Ramon"
+    },
+    {
+      "position": "DF",
+      "name": "Lucas Beraldo"
+    },
+    {
+      "position": "MF",
+      "name": "Lucas Evangelista"
+    },
+    {
+      "position": "MF",
+      "name": "Lucas Silva"
+    },
+    {
+      "position": "MF",
+      "name": "Lucas Lima"
+    },
+    {
+      "position": "MF",
+      "name": "Lucas Moura"
+    },
+    {
+      "position": "MF",
+      "name": "Lucas Paquetá"
+    },
+    {
+      "position": "FW",
+      "name": "Lucas Braga"
+    },
+    {
+      "position": "FW",
+      "name": "Lucas Perri"
+    },
+    {
+      "position": "FW",
+      "name": "Lucas Santos"
+    },
+    {
+      "position": "FW",
+      "name": "Lucas Oliveira"
+    }
   ]
 }

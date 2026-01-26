@@ -9,109 +9,86 @@
     "name": "#FAFAFC"
   },
   "initialOverallStrength": 86,
-  "formation": "",
-  "morale": 0,
-  "overallMood": 0,
   "players": [
     {
       "position": "GK",
-      "name": "Everson",
-      "strength": 0
+      "name": "Everson"
     },
     {
       "position": "GK",
-      "name": "Matheus Mendes",
-      "strength": 0
+      "name": "Matheus Mendes"
     },
     {
       "position": "DF",
-      "name": "Rever",
-      "strength": 0
+      "name": "Rever"
     },
     {
       "position": "DF",
-      "name": "Jemerson",
-      "strength": 0
+      "name": "Jemerson"
     },
     {
       "position": "DF",
-      "name": "Bruno Fuchs",
-      "strength": 0
+      "name": "Bruno Fuchs"
     },
     {
       "position": "DF",
-      "name": "Guga",
-      "strength": 0
+      "name": "Guga"
     },
     {
       "position": "DF",
-      "name": "Rubens",
-      "strength": 0
+      "name": "Rubens"
     },
     {
       "position": "DF",
-      "name": "Dodô",
-      "strength": 0
+      "name": "Dodô"
     },
     {
       "position": "MF",
-      "name": "Otávio",
-      "strength": 0
+      "name": "Otávio"
     },
     {
       "position": "MF",
-      "name": "Allan",
-      "strength": 0
+      "name": "Allan"
     },
     {
       "position": "MF",
-      "name": "Gustavo Scarpa",
-      "strength": 0
+      "name": "Gustavo Scarpa"
     },
     {
       "position": "MF",
-      "name": "Hulk",
-      "strength": 0
+      "name": "Hulk"
     },
     {
       "position": "MF",
-      "name": "Pavón",
-      "strength": 0
+      "name": "Pavón"
     },
     {
       "position": "MF",
-      "name": "Igor Gomes",
-      "strength": 0
+      "name": "Igor Gomes"
     },
     {
       "position": "FW",
-      "name": "Paulinho",
-      "strength": 0
+      "name": "Paulinho"
     },
     {
       "position": "FW",
-      "name": "Eduardo Vargas",
-      "strength": 0
+      "name": "Eduardo Vargas"
     },
     {
       "position": "FW",
-      "name": "Ademir",
-      "strength": 0
+      "name": "Ademir"
     },
     {
       "position": "FW",
-      "name": "Cadu",
-      "strength": 0
+      "name": "Cadu"
     },
     {
       "position": "FW",
-      "name": "Alisson",
-      "strength": 0
+      "name": "Alisson"
     },
     {
       "position": "FW",
-      "name": "Matheus Cunha",
-      "strength": 0
+      "name": "Matheus Cunha"
     }
   ]
 }

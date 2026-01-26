@@ -9,32 +9,98 @@
     "name": "#fafafc"
   },
   "initialOverallStrength": 67,
-  "formation": "",
-  "morale": 0,
-  "overallMood": 0,
   "players": [
-    { "position": "GK", "name": "Walter", "strength": 0 },
-    { "position": "GK", "name": "João Carlos", "strength": 0 },
-    { "position": "DF", "name": "Alan Empereur", "strength": 0 },
-    { "position": "DF", "name": "Marlon", "strength": 0 },
-    { "position": "DF", "name": "Uendel", "strength": 0 },
-    { "position": "DF", "name": "Paulão", "strength": 0 },
-    { "position": "DF", "name": "Lucas Mineiro", "strength": 0 },
-    { "position": "DF", "name": "Ramon", "strength": 0 },
-    { "position": "DF", "name": "Matheus Alexandre", "strength": 0 },
-    { "position": "MF", "name": "Denilson", "strength": 0 },
-    { "position": "MF", "name": "Pepê", "strength": 0 },
-    { "position": "MF", "name": "Lucas Fernandes", "strength": 0 },
-    { "position": "MF", "name": "Fernando Sobral", "strength": 0 },
-    { "position": "MF", "name": "André Luis", "strength": 0 },
-    { "position": "MF", "name": "Ronald", "strength": 0 },
-    { "position": "MF", "name": "Clayson", "strength": 0 },
-    { "position": "FW", "name": "Deyverson", "strength": 0 },
-    { "position": "FW", "name": "Isidro Pitta", "strength": 0 },
-    { "position": "FW", "name": "Jonathan Cafú", "strength": 0 },
-    { "position": "FW", "name": "Elton", "strength": 0 },
-    { "position": "FW", "name": "Felipe Marques", "strength": 0 },
-    { "position": "FW", "name": "André", "strength": 0 },
-    { "position": "FW", "name": "Alesson", "strength": 0 }
+    {
+      "position": "GK",
+      "name": "Walter"
+    },
+    {
+      "position": "GK",
+      "name": "João Carlos"
+    },
+    {
+      "position": "DF",
+      "name": "Alan Empereur"
+    },
+    {
+      "position": "DF",
+      "name": "Marlon"
+    },
+    {
+      "position": "DF",
+      "name": "Uendel"
+    },
+    {
+      "position": "DF",
+      "name": "Paulão"
+    },
+    {
+      "position": "DF",
+      "name": "Lucas Mineiro"
+    },
+    {
+      "position": "DF",
+      "name": "Ramon"
+    },
+    {
+      "position": "DF",
+      "name": "Matheus Alexandre"
+    },
+    {
+      "position": "MF",
+      "name": "Denilson"
+    },
+    {
+      "position": "MF",
+      "name": "Pepê"
+    },
+    {
+      "position": "MF",
+      "name": "Lucas Fernandes"
+    },
+    {
+      "position": "MF",
+      "name": "Fernando Sobral"
+    },
+    {
+      "position": "MF",
+      "name": "André Luis"
+    },
+    {
+      "position": "MF",
+      "name": "Ronald"
+    },
+    {
+      "position": "MF",
+      "name": "Clayson"
+    },
+    {
+      "position": "FW",
+      "name": "Deyverson"
+    },
+    {
+      "position": "FW",
+      "name": "Isidro Pitta"
+    },
+    {
+      "position": "FW",
+      "name": "Jonathan Cafú"
+    },
+    {
+      "position": "FW",
+      "name": "Elton"
+    },
+    {
+      "position": "FW",
+      "name": "Felipe Marques"
+    },
+    {
+      "position": "FW",
+      "name": "André"
+    },
+    {
+      "position": "FW",
+      "name": "Alesson"
+    }
   ]
 }

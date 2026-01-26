@@ -9,31 +9,94 @@
     "name": "#fafafc"
   },
   "initialOverallStrength": 75,
-  "formation": "",
-  "morale": 0,
-  "overallMood": 0,
   "players": [
-    { "position": "GK", "name": "Tadeu", "strength": 0 },
-    { "position": "GK", "name": "Matheus Alves", "strength": 0 },
-    { "position": "DF", "name": "Sidimar", "strength": 0 },
-    { "position": "DF", "name": "David Duarte", "strength": 0 },
-    { "position": "DF", "name": "Sander", "strength": 0 },
-    { "position": "DF", "name": "Edu", "strength": 0 },
-    { "position": "DF", "name": "Yan Souto", "strength": 0 },
-    { "position": "DF", "name": "Diego", "strength": 0 },
-    { "position": "MF", "name": "Auremir", "strength": 0 },
-    { "position": "MF", "name": "Diego Gonçalves", "strength": 0 },
-    { "position": "MF", "name": "Matheus Sales", "strength": 0 },
-    { "position": "MF", "name": "Morelli", "strength": 0 },
-    { "position": "MF", "name": "Palacios", "strength": 0 },
-    { "position": "MF", "name": "Vinícius", "strength": 0 },
-    { "position": "MF", "name": "Higor Meritão", "strength": 0 },
-    { "position": "FW", "name": "Nicolas", "strength": 0 },
-    { "position": "FW", "name": "Vinícius Lopes", "strength": 0 },
-    { "position": "FW", "name": "Welliton", "strength": 0 },
-    { "position": "FW", "name": "Anderson Oliveira", "strength": 0 },
-    { "position": "FW", "name": "Apodi", "strength": 0 },
-    { "position": "FW", "name": "Guilherme", "strength": 0 },
-    { "position": "FW", "name": "Pedro Raul", "strength": 0 }
+    {
+      "position": "GK",
+      "name": "Tadeu"
+    },
+    {
+      "position": "GK",
+      "name": "Matheus Alves"
+    },
+    {
+      "position": "DF",
+      "name": "Sidimar"
+    },
+    {
+      "position": "DF",
+      "name": "David Duarte"
+    },
+    {
+      "position": "DF",
+      "name": "Sander"
+    },
+    {
+      "position": "DF",
+      "name": "Edu"
+    },
+    {
+      "position": "DF",
+      "name": "Yan Souto"
+    },
+    {
+      "position": "DF",
+      "name": "Diego"
+    },
+    {
+      "position": "MF",
+      "name": "Auremir"
+    },
+    {
+      "position": "MF",
+      "name": "Diego Gonçalves"
+    },
+    {
+      "position": "MF",
+      "name": "Matheus Sales"
+    },
+    {
+      "position": "MF",
+      "name": "Morelli"
+    },
+    {
+      "position": "MF",
+      "name": "Palacios"
+    },
+    {
+      "position": "MF",
+      "name": "Vinícius"
+    },
+    {
+      "position": "MF",
+      "name": "Higor Meritão"
+    },
+    {
+      "position": "FW",
+      "name": "Nicolas"
+    },
+    {
+      "position": "FW",
+      "name": "Vinícius Lopes"
+    },
+    {
+      "position": "FW",
+      "name": "Welliton"
+    },
+    {
+      "position": "FW",
+      "name": "Anderson Oliveira"
+    },
+    {
+      "position": "FW",
+      "name": "Apodi"
+    },
+    {
+      "position": "FW",
+      "name": "Guilherme"
+    },
+    {
+      "position": "FW",
+      "name": "Pedro Raul"
+    }
   ]
 }

@@ -9,109 +9,86 @@
     "name": "#D71D3F"
   },
   "initialOverallStrength": 90,
-  "formation": "",
-  "morale": 0,
-  "overallMood": 0,
   "players": [
     {
       "position": "GK",
-      "name": "Cleiton",
-      "strength": 0
+      "name": "Cleiton"
     },
     {
       "position": "GK",
-      "name": "Jadson",
-      "strength": 0
+      "name": "Jadson"
     },
     {
       "position": "DF",
-      "name": "Léo Ortiz",
-      "strength": 0
+      "name": "Léo Ortiz"
     },
     {
       "position": "DF",
-      "name": "Natan",
-      "strength": 0
+      "name": "Natan"
     },
     {
       "position": "DF",
-      "name": "Luan Cândido",
-      "strength": 0
+      "name": "Luan Cândido"
     },
     {
       "position": "DF",
-      "name": "Juninho Capixaba",
-      "strength": 0
+      "name": "Juninho Capixaba"
     },
     {
       "position": "DF",
-      "name": "Aderlan",
-      "strength": 0
+      "name": "Aderlan"
     },
     {
       "position": "DF",
-      "name": "Pedro Henrique",
-      "strength": 0
+      "name": "Pedro Henrique"
     },
     {
       "position": "MF",
-      "name": "Lucas Evangelista",
-      "strength": 0
+      "name": "Lucas Evangelista"
     },
     {
       "position": "MF",
-      "name": "Eric Ramires",
-      "strength": 0
+      "name": "Eric Ramires"
     },
     {
       "position": "MF",
-      "name": "Hurtado",
-      "strength": 0
+      "name": "Hurtado"
     },
     {
       "position": "MF",
-      "name": "Sorriso",
-      "strength": 0
+      "name": "Sorriso"
     },
     {
       "position": "MF",
-      "name": "Matheus Fernandes",
-      "strength": 0
+      "name": "Matheus Fernandes"
     },
     {
       "position": "MF",
-      "name": "Gustavinho",
-      "strength": 0
+      "name": "Gustavinho"
     },
     {
       "position": "FW",
-      "name": "Eduardo Sasha",
-      "strength": 0
+      "name": "Eduardo Sasha"
     },
     {
       "position": "FW",
-      "name": "Thiago Borbas",
-      "strength": 0
+      "name": "Thiago Borbas"
     },
     {
       "position": "FW",
-      "name": "Helinho",
-      "strength": 0
+      "name": "Helinho"
     },
     {
       "position": "FW",
-      "name": "Vitinho",
-      "strength": 0
+      "name": "Vitinho"
     },
     {
       "position": "FW",
-      "name": "Nathan",
-      "strength": 0
+      "name": "Nathan"
     },
     {
       "position": "FW",
-      "name": "Luan",
-      "strength": 0
+      "name": "Luan"
     }
   ]
 }
