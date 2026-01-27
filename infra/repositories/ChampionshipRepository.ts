@@ -88,12 +88,22 @@ export function getChampionship(
     return undefined;
   }
 
+  const standings = startingTeams.map((team, index) => ({
+    team,
+    position: index + 1,
+    wins: 0,
+    draws: 0,
+    losses: 0,
+    goalsFor: 0,
+    goalsAgainst: 0,
+    points: 0,
+  }));
+
   mappedChampionship = {
     ...mappedChampionship,
     startingTeams,
+    standings,
   };
-
-  // TODO: Init standings
 
   // TODO: Init matches
 
