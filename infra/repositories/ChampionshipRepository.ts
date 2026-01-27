@@ -79,7 +79,19 @@ export function getChampionship(
       promotionChampionshipInternalName: championshipJSONDTO.promotionChampionshipInternalName,
     };
   }
-  // TODO: Get the startingTeams from TeamRepository.getTeam and championshipJSONDTO.teamNames
+
+  const startingTeams = championshipJSONDTO.teamNames
+    .map((teamName) => TeamRepository.getTeam(teamName))
+    .filter((team): team is NonNullable<typeof team> => Boolean(team));
+
+  if (startingTeams.length !== championshipJSONDTO.teamNames.length) {
+    return undefined;
+  }
+
+  mappedChampionship = {
+    ...mappedChampionship,
+    startingTeams,
+  };
 
   // TODO: Init standings
 
