@@ -65,10 +65,11 @@ const ChampionshipSelector: React.FC = () => {
         {selectedChampionships.map((champ) => (
           <button
             key={champ.id}
-            onClick={() => engine.dispatch({ type: 'PING' })}
-            disabled={
-              champ.internalName !== 'brasileirao-serie-a' &&
-              champ.internalName !== 'brasileirao-serie-b'
+            onClick={() =>
+              engine.dispatch({
+                type: 'INIT_CHAMPIONSHIPS',
+                championshipInternalName: champ.internalName,
+              })
             }
             className="w-[342px] h-[80px] px-4 border-4 border-white text-lg uppercase transition hover:bg-white hover:text-[#3d7a33] disabled:opacity-50 disabled:cursor-not-allowed mx-auto"
           >
