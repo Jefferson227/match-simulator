@@ -67,7 +67,9 @@ const initChampionships = (
     championshipContainer.relegationChampionship = relegationChampionship;
   }
 
-  return new OperationResult(championshipContainer);
+  const result = new OperationResult(championshipContainer);
+  result.setSuccess();
+  return result;
 };
 
 export default {
