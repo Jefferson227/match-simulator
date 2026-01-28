@@ -3,6 +3,7 @@ import PlayerPosition from '../../core/enums/PlayerPosition';
 import { Team } from '../../core/models/Team';
 import { getRandomPlayerStrength } from '../../core/utils/Utils';
 
+// TODO: Refactor this part to get all teams from a single JSON file
 const teamModules = import.meta.glob('../../assets/teams/*.json', { eager: true });
 const teamsByInternalName = Object.entries(teamModules).reduce(
   (acc, [modulePath, moduleValue]) => {
