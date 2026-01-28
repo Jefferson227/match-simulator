@@ -2,15 +2,23 @@ import TeamJSONDTO from '../../core/data-transfer-objects/TeamJSONDTO';
 import PlayerPosition from '../../core/enums/PlayerPosition';
 import { Team } from '../../core/models/Team';
 import { getRandomPlayerStrength } from '../../core/utils/Utils';
-import { readFileSync } from 'fs';
-import path from 'path';
 
-const filePath = '../../assets/teams/';
+const teamModules = import.meta.glob('../../assets/teams/*.json', { eager: true });
+const teamsByInternalName = Object.entries(teamModules).reduce(
+  (acc, [modulePath, moduleValue]) => {
+    const match = /\/([^/]+)\.json$/.exec(modulePath);
+    if (!match) return acc;
+
+    acc[match[1]] = (moduleValue as { default: TeamJSONDTO }).default;
+    return acc;
+  },
+  {} as Record<string, TeamJSONDTO>
+);
 
 function getTeam(internalName: string): Team | undefined {
-  const resolvedPath = path.resolve(__dirname, filePath, `${internalName}.json`);
-  const fileContents = readFileSync(resolvedPath, 'utf-8');
-  const teamJSONDTO = JSON.parse(fileContents) as TeamJSONDTO;
+  const teamJSONDTO = teamsByInternalName[internalName];
+  if (!teamJSONDTO) return undefined;
+
   const mappedTeam: Team = {
     id: crypto.randomUUID(),
     fullName: teamJSONDTO.name,
