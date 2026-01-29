@@ -7,13 +7,13 @@ import type Match from '../../core/models/Match';
 export function getChampionship(
   championshipInternalName: string,
   hasTeamControlledByHuman: boolean
-): Championship | undefined {
+): Championship {
   const championshipsJSONDTO = championshipsJSON as ChampionshipJSONDTO[];
   const championshipJSONDTO = championshipsJSONDTO.find(
     (champ) => champ.internalName === championshipInternalName
   );
 
-  if (!championshipJSONDTO) return undefined;
+  if (!championshipJSONDTO) throw new Error('Championship not found.');
 
   let mappedChampionship = {
     id: '0',
@@ -43,11 +43,15 @@ export function getChampionship(
       championshipJSONDTO.numberOfRelegatableTeams < 1 ||
       championshipJSONDTO.numberOfRelegatableTeams > championshipJSONDTO.numberOfTeams
     ) {
-      return undefined;
+      throw new Error(
+        `Number of relegatable teams is not correct: ${championshipJSONDTO.numberOfRelegatableTeams}.`
+      );
     }
 
     if (!championshipJSONDTO.relegationChampionshipInternalName) {
-      return undefined;
+      throw new Error(
+        `Relegation championship internal name not found: ${championshipJSONDTO.relegationChampionshipInternalName}.`
+      );
     }
 
     mappedChampionship = {
@@ -66,11 +70,15 @@ export function getChampionship(
       championshipJSONDTO.numberOfPromotableTeams < 1 ||
       championshipJSONDTO.numberOfPromotableTeams > championshipJSONDTO.numberOfTeams
     ) {
-      return undefined;
+      throw new Error(
+        `Number of promotable teams is not correct: ${championshipJSONDTO.numberOfPromotableTeams}.`
+      );
     }
 
     if (!championshipJSONDTO.promotionChampionshipInternalName) {
-      return undefined;
+      throw new Error(
+        `Promotion championship internal name not found: ${championshipJSONDTO.relegationChampionshipInternalName}.`
+      );
     }
 
     mappedChampionship = {
@@ -86,7 +94,9 @@ export function getChampionship(
     .filter((team): team is NonNullable<typeof team> => Boolean(team));
 
   if (startingTeams.length !== championshipJSONDTO.teamNames.length) {
-    return undefined;
+    throw new Error(
+      `Number of starting teams found is not the same as expected. Found: ${startingTeams.length}; Expected: ${championshipJSONDTO.teamNames.length}.`
+    );
   }
 
   const standings = startingTeams.map((team, index) => ({

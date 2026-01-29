@@ -15,11 +15,11 @@ function initTeams(): void {
   teamsByInternalName = nextTeamsByInternalName;
 }
 
-function getTeam(internalName: string): Team | undefined {
+function getTeam(internalName: string): Team {
   if (Object.keys(teamsByInternalName).length === 0) initTeams();
 
   const teamJSONDTO = teamsByInternalName[internalName];
-  if (!teamJSONDTO) return undefined;
+  if (!teamJSONDTO) throw new Error(`Team not found: ${internalName}.`);
 
   const mappedTeam: Team = {
     id: crypto.randomUUID(),
