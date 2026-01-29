@@ -34,9 +34,7 @@
     "internalName": "brasileirao-serie-b",
     "numberOfTeams": 20,
     "numberOfPromotableTeams": 4,
-    "numberOfRelegatableTeams": 4,
     "promotionChampionshipInternalName": "brasileirao-serie-a",
-    "relegationChampionshipInternalName": "brasileirao-serie-c",
     "type": "double-round-robin",
     "teamNames": [
       "amazonas",
@@ -60,13 +58,5 @@
       "vila-nova",
       "volta-redonda"
     ]
-  },
-  {
-    "name": "BRASILEIRÃO SÉRIE C",
-    "internalName": "brasileirao-serie-c",
-    "numberOfTeams": 20,
-    "numberOfPromotionTeams": 4,
-    "promotionChampionship": "brasileirao-serie-b",
-    "teams": ["caxias", "ponte-preta", "ypiranga", "londrina"]
   }
 ]
