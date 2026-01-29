@@ -2,19 +2,12 @@ import TeamJSONDTO from '../../core/data-transfer-objects/TeamJSONDTO';
 import PlayerPosition from '../../core/enums/PlayerPosition';
 import { Team } from '../../core/models/Team';
 import { getRandomPlayerStrength } from '../../core/utils/Utils';
+import teamsData from '../../assets/teams.json';
 
-// TODO: Refactor this part to get all teams from a single JSON file
-const teamModules = import.meta.glob('../../assets/teams/*.json', { eager: true });
-const teamsByInternalName = Object.entries(teamModules).reduce(
-  (acc, [modulePath, moduleValue]) => {
-    const match = /\/([^/]+)\.json$/.exec(modulePath);
-    if (!match) return acc;
-
-    acc[match[1]] = (moduleValue as { default: TeamJSONDTO }).default;
-    return acc;
-  },
-  {} as Record<string, TeamJSONDTO>
-);
+const teamsByInternalName: Record<string, TeamJSONDTO> = {};
+for (const team of teamsData as TeamJSONDTO[]) {
+  teamsByInternalName[team.internalName] = team;
+}
 
 function getTeam(internalName: string): Team | undefined {
   const teamJSONDTO = teamsByInternalName[internalName];
