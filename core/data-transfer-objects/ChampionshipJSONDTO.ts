@@ -6,10 +6,10 @@ type ChampionshipJSONDTO = {
   numberOfTeams: number;
   type: ChampionshipType;
   teamNames: string[];
-  numberOfPromotableTeams: number;
-  promotionChampionshipInternalName: string;
-  numberOfRelegatableTeams: number;
-  relegationChampionshipInternalName: string;
+  numberOfPromotableTeams?: number;
+  promotionChampionshipInternalName?: string;
+  numberOfRelegatableTeams?: number;
+  relegationChampionshipInternalName?: string;
 };
 
 export default ChampionshipJSONDTO;
