@@ -4,12 +4,20 @@ import { Team } from '../../core/models/Team';
 import { getRandomPlayerStrength } from '../../core/utils/Utils';
 import teamsData from '../../assets/teams.json';
 
-const teamsByInternalName: Record<string, TeamJSONDTO> = {};
-for (const team of teamsData as TeamJSONDTO[]) {
-  teamsByInternalName[team.internalName] = team;
+let teamsByInternalName: Record<string, TeamJSONDTO> = {};
+
+function initTeams(): void {
+  const nextTeamsByInternalName: Record<string, TeamJSONDTO> = {};
+  for (const team of teamsData as TeamJSONDTO[]) {
+    nextTeamsByInternalName[team.internalName] = team;
+  }
+
+  teamsByInternalName = nextTeamsByInternalName;
 }
 
 function getTeam(internalName: string): Team | undefined {
+  if (Object.keys(teamsByInternalName).length === 0) initTeams();
+
   const teamJSONDTO = teamsByInternalName[internalName];
   if (!teamJSONDTO) return undefined;
 
