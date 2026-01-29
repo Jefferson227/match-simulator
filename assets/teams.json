@@ -1,0 +1,4290 @@
+[
+  {
+    "name": "Amazonas Futebol Clube",
+    "internalName": "amazonas",
+    "shortName": "Amazonas",
+    "abbreviation": "AMA",
+    "colors": {
+      "outline": "#fbab2c",
+      "background": "#05030e",
+      "name": "#fbab2c"
+    },
+    "initialOverallStrength": 56,
+    "players": [
+      {
+        "position": "GK",
+        "name": "João Carlos"
+      },
+      {
+        "position": "GK",
+        "name": "Matheus Nogueira"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Donato"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Silva"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Rocha"
+      },
+      {
+        "position": "DF",
+        "name": "João Paulo"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Vaz"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Lima"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Henrique"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Moura"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Santos"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Martins"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Pereira"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Lima"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Mendes"
+      }
+    ]
+  },
+  {
+    "name": "América Futebol Clube",
+    "internalName": "america-mg",
+    "shortName": "América-MG",
+    "abbreviation": "AME",
+    "colors": {
+      "outline": "#f3f5f4",
+      "background": "#016538",
+      "name": "#f3f5f4"
+    },
+    "initialOverallStrength": 66,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Matheus Cavichioli"
+      },
+      {
+        "position": "GK",
+        "name": "João Ricardo"
+      },
+      {
+        "position": "DF",
+        "name": "Eder"
+      },
+      {
+        "position": "DF",
+        "name": "Iago Maidana"
+      },
+      {
+        "position": "DF",
+        "name": "Danilo Avelar"
+      },
+      {
+        "position": "DF",
+        "name": "Ricardo Silva"
+      },
+      {
+        "position": "DF",
+        "name": "Marlon"
+      },
+      {
+        "position": "DF",
+        "name": "Juninho"
+      },
+      {
+        "position": "MF",
+        "name": "Juninho"
+      },
+      {
+        "position": "MF",
+        "name": "Alerrandro"
+      },
+      {
+        "position": "MF",
+        "name": "Felipe Azevedo"
+      },
+      {
+        "position": "MF",
+        "name": "Rodriguinho"
+      },
+      {
+        "position": "MF",
+        "name": "Ademir"
+      },
+      {
+        "position": "MF",
+        "name": "Everaldo"
+      },
+      {
+        "position": "FW",
+        "name": "Henrique Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Wellington Paulista"
+      },
+      {
+        "position": "FW",
+        "name": "Felipe Azevedo"
+      },
+      {
+        "position": "FW",
+        "name": "Rodriguinho"
+      },
+      {
+        "position": "FW",
+        "name": "Ademir"
+      },
+      {
+        "position": "FW",
+        "name": "Everaldo"
+      },
+      {
+        "position": "FW",
+        "name": "Henrique Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Wellington Paulista"
+      }
+    ]
+  },
+  {
+    "name": "Athletic Club",
+    "internalName": "athletic",
+    "shortName": "Athletic",
+    "abbreviation": "ATH",
+    "colors": {
+      "outline": "#000000",
+      "background": "#fafafc",
+      "name": "#000000"
+    },
+    "initialOverallStrength": 54,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Matheus Nogueira"
+      },
+      {
+        "position": "GK",
+        "name": "Lucas Perri"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Halter"
+      },
+      {
+        "position": "DF",
+        "name": "Matheus Mendes"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Kal"
+      },
+      {
+        "position": "DF",
+        "name": "Matheus Alexandre"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Pires"
+      },
+      {
+        "position": "DF",
+        "name": "Matheus França"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Matheus Pereira"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Lima"
+      },
+      {
+        "position": "MF",
+        "name": "Matheus Cunha"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Evangelista"
+      },
+      {
+        "position": "MF",
+        "name": "Matheus Henrique"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Paquetá"
+      },
+      {
+        "position": "FW",
+        "name": "Matheus Martins"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Moura"
+      },
+      {
+        "position": "FW",
+        "name": "Matheus Nascimento"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Matheus Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Alves"
+      },
+      {
+        "position": "FW",
+        "name": "Matheus Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Rocha"
+      }
+    ]
+  },
+  {
+    "name": "Club Athletico Paranaense",
+    "internalName": "athletico-paranaense",
+    "shortName": "Athletico-PR",
+    "abbreviation": "CAP",
+    "colors": {
+      "outline": "#E30613",
+      "background": "#000000",
+      "name": "#FFFFFF"
+    },
+    "initialOverallStrength": 65,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Bento"
+      },
+      {
+        "position": "GK",
+        "name": "Léo Linck"
+      },
+      {
+        "position": "DF",
+        "name": "Thiago Heleno"
+      },
+      {
+        "position": "DF",
+        "name": "Pedro Henrique"
+      },
+      {
+        "position": "DF",
+        "name": "Khellven"
+      },
+      {
+        "position": "DF",
+        "name": "Matheus Felipe"
+      },
+      {
+        "position": "DF",
+        "name": "Esquivel"
+      },
+      {
+        "position": "DF",
+        "name": "Cacá"
+      },
+      {
+        "position": "MF",
+        "name": "Fernandinho"
+      },
+      {
+        "position": "MF",
+        "name": "Erick"
+      },
+      {
+        "position": "MF",
+        "name": "Christian"
+      },
+      {
+        "position": "MF",
+        "name": "Vitor Bueno"
+      },
+      {
+        "position": "MF",
+        "name": "Hugo Moura"
+      },
+      {
+        "position": "MF",
+        "name": "Alex Santana"
+      },
+      {
+        "position": "FW",
+        "name": "Pablo"
+      },
+      {
+        "position": "FW",
+        "name": "Canobbio"
+      },
+      {
+        "position": "FW",
+        "name": "Cuello"
+      },
+      {
+        "position": "FW",
+        "name": "Willian Bigode"
+      },
+      {
+        "position": "FW",
+        "name": "Julimar"
+      },
+      {
+        "position": "FW",
+        "name": "Rômulo"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Zapelli"
+      }
+    ]
+  },
+  {
+    "name": "Atlético Clube Goianiense",
+    "internalName": "atletico-go",
+    "shortName": "Atlético-GO",
+    "abbreviation": "ACG",
+    "colors": {
+      "outline": "#E30613",
+      "background": "#000000",
+      "name": "#FFFFFF"
+    },
+    "initialOverallStrength": 62,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Ronaldo"
+      },
+      {
+        "position": "GK",
+        "name": "Luan Polli"
+      },
+      {
+        "position": "DF",
+        "name": "Dudu"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Gazal"
+      },
+      {
+        "position": "DF",
+        "name": "Alix Vinícius"
+      },
+      {
+        "position": "DF",
+        "name": "Heron"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Tubarão"
+      },
+      {
+        "position": "DF",
+        "name": "Maguinho"
+      },
+      {
+        "position": "MF",
+        "name": "Baralhas"
+      },
+      {
+        "position": "MF",
+        "name": "Rhaldney"
+      },
+      {
+        "position": "MF",
+        "name": "Shaylon"
+      },
+      {
+        "position": "MF",
+        "name": "Matheus Peixoto"
+      },
+      {
+        "position": "MF",
+        "name": "Gabriel Baralhas"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Mezenga"
+      },
+      {
+        "position": "FW",
+        "name": "Luiz Fernando"
+      },
+      {
+        "position": "FW",
+        "name": "Airton"
+      },
+      {
+        "position": "FW",
+        "name": "Felipe Vizeu"
+      },
+      {
+        "position": "FW",
+        "name": "Jorginho"
+      },
+      {
+        "position": "FW",
+        "name": "Gustavo Coutinho"
+      },
+      {
+        "position": "FW",
+        "name": "Everton Felipe"
+      },
+      {
+        "position": "FW",
+        "name": "Yuri Lima"
+      }
+    ]
+  },
+  {
+    "name": "Clube Atlético Mineiro",
+    "internalName": "atletico-mg",
+    "shortName": "Atlético-MG",
+    "abbreviation": "CAM",
+    "colors": {
+      "outline": "#FAFAFC",
+      "background": "#242021",
+      "name": "#FAFAFC"
+    },
+    "initialOverallStrength": 86,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Everson"
+      },
+      {
+        "position": "GK",
+        "name": "Matheus Mendes"
+      },
+      {
+        "position": "DF",
+        "name": "Rever"
+      },
+      {
+        "position": "DF",
+        "name": "Jemerson"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Fuchs"
+      },
+      {
+        "position": "DF",
+        "name": "Guga"
+      },
+      {
+        "position": "DF",
+        "name": "Rubens"
+      },
+      {
+        "position": "DF",
+        "name": "Dodô"
+      },
+      {
+        "position": "MF",
+        "name": "Otávio"
+      },
+      {
+        "position": "MF",
+        "name": "Allan"
+      },
+      {
+        "position": "MF",
+        "name": "Gustavo Scarpa"
+      },
+      {
+        "position": "MF",
+        "name": "Hulk"
+      },
+      {
+        "position": "MF",
+        "name": "Pavón"
+      },
+      {
+        "position": "MF",
+        "name": "Igor Gomes"
+      },
+      {
+        "position": "FW",
+        "name": "Paulinho"
+      },
+      {
+        "position": "FW",
+        "name": "Eduardo Vargas"
+      },
+      {
+        "position": "FW",
+        "name": "Ademir"
+      },
+      {
+        "position": "FW",
+        "name": "Cadu"
+      },
+      {
+        "position": "FW",
+        "name": "Alisson"
+      },
+      {
+        "position": "FW",
+        "name": "Matheus Cunha"
+      }
+    ]
+  },
+  {
+    "name": "Avaí Futebol Clube",
+    "internalName": "avai",
+    "shortName": "Avaí",
+    "abbreviation": "AVA",
+    "colors": {
+      "outline": "#03689a",
+      "background": "#fafafc",
+      "name": "#03689a"
+    },
+    "initialOverallStrength": 70,
+    "players": [
+      {
+        "position": "GK",
+        "name": "João Paulo"
+      },
+      {
+        "position": "GK",
+        "name": "Matheus Nogueira"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Donato"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Silva"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Rocha"
+      },
+      {
+        "position": "DF",
+        "name": "João Paulo"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Vaz"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Lima"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Henrique"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Moura"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Santos"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Martins"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Pereira"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Lima"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Mendes"
+      }
+    ]
+  },
+  {
+    "name": "Esporte Clube Bahia",
+    "internalName": "bahia",
+    "shortName": "Bahia",
+    "abbreviation": "BAH",
+    "colors": {
+      "outline": "#DC3726",
+      "background": "#055191",
+      "name": "#FAFAFC"
+    },
+    "initialOverallStrength": 83,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Marcos Felipe"
+      },
+      {
+        "position": "GK",
+        "name": "Danilo Fernandes"
+      },
+      {
+        "position": "DF",
+        "name": "Vitor Hugo"
+      },
+      {
+        "position": "DF",
+        "name": "Kanu"
+      },
+      {
+        "position": "DF",
+        "name": "Raul Gustavo"
+      },
+      {
+        "position": "DF",
+        "name": "Nino Paraíba"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Fonseca"
+      },
+      {
+        "position": "DF",
+        "name": "Matheus Bahia"
+      },
+      {
+        "position": "MF",
+        "name": "Rezende"
+      },
+      {
+        "position": "MF",
+        "name": "Cauly"
+      },
+      {
+        "position": "MF",
+        "name": "Thaciano"
+      },
+      {
+        "position": "MF",
+        "name": "Everaldo"
+      },
+      {
+        "position": "MF",
+        "name": "Acevedo"
+      },
+      {
+        "position": "MF",
+        "name": "Jean Lucas"
+      },
+      {
+        "position": "FW",
+        "name": "Biel"
+      },
+      {
+        "position": "FW",
+        "name": "Ademir"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriel Teixeira"
+      },
+      {
+        "position": "FW",
+        "name": "Luciano Juba"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Ratão"
+      },
+      {
+        "position": "FW",
+        "name": "Vitor Jacaré"
+      }
+    ]
+  },
+  {
+    "name": "Botafogo Futebol Clube",
+    "internalName": "botafogo-sp",
+    "shortName": "Botafogo-SP",
+    "abbreviation": "BSP",
+    "colors": {
+      "outline": "#ed2f26",
+      "background": "#fafafc",
+      "name": "#1f1f1f"
+    },
+    "initialOverallStrength": 58,
+    "players": [
+      {
+        "position": "GK",
+        "name": "João Paulo"
+      },
+      {
+        "position": "GK",
+        "name": "Matheus Nogueira"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Donato"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Silva"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Rocha"
+      },
+      {
+        "position": "DF",
+        "name": "João Paulo"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Vaz"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Lima"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Henrique"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Moura"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Santos"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Martins"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Pereira"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Lima"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Mendes"
+      }
+    ]
+  },
+  {
+    "name": "Botafogo de Futebol e Reg.",
+    "internalName": "botafogo",
+    "shortName": "Botafogo",
+    "abbreviation": "BOT",
+    "colors": {
+      "outline": "#FAFAFC",
+      "background": "#242021",
+      "name": "#FAFAFC"
+    },
+    "initialOverallStrength": 99,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Gatito Fernández"
+      },
+      {
+        "position": "GK",
+        "name": "Lucas Perri"
+      },
+      {
+        "position": "DF",
+        "name": "Adryelson"
+      },
+      {
+        "position": "DF",
+        "name": "Victor Cuesta"
+      },
+      {
+        "position": "DF",
+        "name": "Hugo"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael"
+      },
+      {
+        "position": "DF",
+        "name": "Marçal"
+      },
+      {
+        "position": "DF",
+        "name": "Sander"
+      },
+      {
+        "position": "MF",
+        "name": "Tchê Tchê"
+      },
+      {
+        "position": "MF",
+        "name": "Danilo Barbosa"
+      },
+      {
+        "position": "MF",
+        "name": "Eduardo"
+      },
+      {
+        "position": "MF",
+        "name": "Carlos Eduardo"
+      },
+      {
+        "position": "MF",
+        "name": "Júnior Santos"
+      },
+      {
+        "position": "MF",
+        "name": "Luis Henrique"
+      },
+      {
+        "position": "FW",
+        "name": "Tiquinho Soares"
+      },
+      {
+        "position": "FW",
+        "name": "Matheus Nascimento"
+      },
+      {
+        "position": "FW",
+        "name": "Jeffinho"
+      },
+      {
+        "position": "FW",
+        "name": "Victor Sá"
+      },
+      {
+        "position": "FW",
+        "name": "Kauê"
+      },
+      {
+        "position": "FW",
+        "name": "Diego Hernández"
+      }
+    ]
+  },
+  {
+    "name": "Caxias Futebol Clube",
+    "internalName": "caxias",
+    "shortName": "Caxias",
+    "abbreviation": "CAX",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#1e3a8a",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 50,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Rafael Santos"
+      },
+      {
+        "position": "GK",
+        "name": "Thiago Silva"
+      },
+      {
+        "position": "DF",
+        "name": "Marcelo Costa"
+      },
+      {
+        "position": "DF",
+        "name": "João Pedro"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Mendes"
+      },
+      {
+        "position": "DF",
+        "name": "Gabriel Santos"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Lima"
+      },
+      {
+        "position": "DF",
+        "name": "Carlos Eduardo"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Oliveira"
+      },
+      {
+        "position": "MF",
+        "name": "Felipe Costa"
+      },
+      {
+        "position": "MF",
+        "name": "Matheus Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Pedro Santos"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Ferreira"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Alves"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriel Costa"
+      },
+      {
+        "position": "FW",
+        "name": "João Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Matheus Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Pedro Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriel Silva"
+      },
+      {
+        "position": "FW",
+        "name": "João Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Matheus Costa"
+      }
+    ]
+  },
+  {
+    "name": "Ceará Sporting Club",
+    "internalName": "ceara",
+    "shortName": "Ceará",
+    "abbreviation": "CEA",
+    "colors": {
+      "outline": "#FAFAFC",
+      "background": "#242021",
+      "name": "#FAFAFC"
+    },
+    "initialOverallStrength": 82,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Richard"
+      },
+      {
+        "position": "GK",
+        "name": "João Ricardo"
+      },
+      {
+        "position": "DF",
+        "name": "Messias"
+      },
+      {
+        "position": "DF",
+        "name": "Gabriel Lacerda"
+      },
+      {
+        "position": "DF",
+        "name": "Victor Luís"
+      },
+      {
+        "position": "DF",
+        "name": "Nino Paraíba"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Pacheco"
+      },
+      {
+        "position": "DF",
+        "name": "Luiz Otávio"
+      },
+      {
+        "position": "MF",
+        "name": "Richardson"
+      },
+      {
+        "position": "MF",
+        "name": "Fernando Sobral"
+      },
+      {
+        "position": "MF",
+        "name": "Vina"
+      },
+      {
+        "position": "MF",
+        "name": "Lima"
+      },
+      {
+        "position": "MF",
+        "name": "Marlon"
+      },
+      {
+        "position": "FW",
+        "name": "Cléber"
+      },
+      {
+        "position": "FW",
+        "name": "Mendoza"
+      },
+      {
+        "position": "FW",
+        "name": "Erick"
+      },
+      {
+        "position": "FW",
+        "name": "Zé Roberto"
+      }
+    ]
+  },
+  {
+    "name": "Associação Chapecoense de Futebol",
+    "internalName": "chapecoense",
+    "shortName": "Chapecoense",
+    "abbreviation": "CHA",
+    "colors": {
+      "outline": "#fafafc",
+      "background": "#0c8e3a",
+      "name": "#fafafc"
+    },
+    "initialOverallStrength": 64,
+    "players": [
+      {
+        "position": "GK",
+        "name": "João Paulo"
+      },
+      {
+        "position": "GK",
+        "name": "Matheus Nogueira"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Donato"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Silva"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Rocha"
+      },
+      {
+        "position": "DF",
+        "name": "João Paulo"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Vaz"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Lima"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Henrique"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Moura"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Santos"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Martins"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Pereira"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Lima"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Mendes"
+      }
+    ]
+  },
+  {
+    "name": "SC Corinthians Paulista",
+    "internalName": "corinthians",
+    "shortName": "Corinthians",
+    "abbreviation": "COR",
+    "colors": {
+      "outline": "#242021",
+      "background": "#FAFAFC",
+      "name": "#242021"
+    },
+    "initialOverallStrength": 80,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Cássio"
+      },
+      {
+        "position": "GK",
+        "name": "Carlos Miguel"
+      },
+      {
+        "position": "DF",
+        "name": "Fagner"
+      },
+      {
+        "position": "DF",
+        "name": "Fábio Santos"
+      },
+      {
+        "position": "DF",
+        "name": "Gil"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Méndez"
+      },
+      {
+        "position": "DF",
+        "name": "Murillo"
+      },
+      {
+        "position": "DF",
+        "name": "Raul Gustavo"
+      },
+      {
+        "position": "MF",
+        "name": "Maycon"
+      },
+      {
+        "position": "MF",
+        "name": "Fausto Vera"
+      },
+      {
+        "position": "MF",
+        "name": "Renato Augusto"
+      },
+      {
+        "position": "MF",
+        "name": "Paulinho"
+      },
+      {
+        "position": "MF",
+        "name": "Giuliano"
+      },
+      {
+        "position": "FW",
+        "name": "Yuri Alberto"
+      },
+      {
+        "position": "FW",
+        "name": "Roger Guedes"
+      },
+      {
+        "position": "FW",
+        "name": "Adson"
+      },
+      {
+        "position": "FW",
+        "name": "Róger Guedes"
+      }
+    ]
+  },
+  {
+    "name": "Coritiba Foot Ball Club",
+    "internalName": "coritiba",
+    "shortName": "Coritiba",
+    "abbreviation": "CFC",
+    "colors": {
+      "outline": "#fafafc",
+      "background": "#09554f",
+      "name": "#fafafc"
+    },
+    "initialOverallStrength": 75,
+    "players": [
+      {
+        "position": "GK",
+        "name": "João Paulo"
+      },
+      {
+        "position": "GK",
+        "name": "Matheus Nogueira"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Donato"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Silva"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Rocha"
+      },
+      {
+        "position": "DF",
+        "name": "João Paulo"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Vaz"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Lima"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Henrique"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Moura"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Santos"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Martins"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Pereira"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Lima"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Mendes"
+      }
+    ]
+  },
+  {
+    "name": "Clube de Regatas Brasil",
+    "internalName": "crb",
+    "shortName": "CRB",
+    "abbreviation": "CRB",
+    "colors": {
+      "outline": "#cd2f33",
+      "background": "#fafafc",
+      "name": "#cd2f33"
+    },
+    "initialOverallStrength": 68,
+    "players": [
+      {
+        "position": "GK",
+        "name": "João Paulo"
+      },
+      {
+        "position": "GK",
+        "name": "Matheus Nogueira"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Donato"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Silva"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Rocha"
+      },
+      {
+        "position": "DF",
+        "name": "João Paulo"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Vaz"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Lima"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Henrique"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Moura"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Santos"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Martins"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Pereira"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Lima"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Mendes"
+      }
+    ]
+  },
+  {
+    "name": "Criciúma Esporte Clube",
+    "internalName": "criciuma",
+    "shortName": "Criciúma",
+    "abbreviation": "CRI",
+    "colors": {
+      "outline": "#1f1f1f",
+      "background": "#fcd116",
+      "name": "#1f1f1f"
+    },
+    "initialOverallStrength": 59,
+    "players": [
+      {
+        "position": "GK",
+        "name": "João Paulo"
+      },
+      {
+        "position": "GK",
+        "name": "Matheus Nogueira"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Donato"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Silva"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Rocha"
+      },
+      {
+        "position": "DF",
+        "name": "João Paulo"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Vaz"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Lima"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Henrique"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Moura"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Santos"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Martins"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Pereira"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Lima"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Mendes"
+      }
+    ]
+  },
+  {
+    "name": "Cruzeiro Esporte Clube",
+    "internalName": "cruzeiro",
+    "shortName": "Cruzeiro",
+    "abbreviation": "CRU",
+    "colors": {
+      "outline": "#FAFAFC",
+      "background": "#183D8F",
+      "name": "#FAFAFC"
+    },
+    "initialOverallStrength": 92,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Rafael Cabral"
+      },
+      {
+        "position": "GK",
+        "name": "Anderson"
+      },
+      {
+        "position": "DF",
+        "name": "Zé Ivaldo"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Oliveira"
+      },
+      {
+        "position": "DF",
+        "name": "William"
+      },
+      {
+        "position": "DF",
+        "name": "Neris"
+      },
+      {
+        "position": "DF",
+        "name": "Marllon"
+      },
+      {
+        "position": "DF",
+        "name": "Kaiki"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Ramiro"
+      },
+      {
+        "position": "MF",
+        "name": "Mateus Vital"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Rodrigues"
+      },
+      {
+        "position": "MF",
+        "name": "Jajá"
+      },
+      {
+        "position": "MF",
+        "name": "Fernando"
+      },
+      {
+        "position": "FW",
+        "name": "Gilberto"
+      },
+      {
+        "position": "FW",
+        "name": "Arthur Gomes"
+      },
+      {
+        "position": "FW",
+        "name": "Wesley"
+      },
+      {
+        "position": "FW",
+        "name": "Henrique Dourado"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Elias"
+      },
+      {
+        "position": "FW",
+        "name": "Pedro"
+      }
+    ]
+  },
+  {
+    "name": "Cuiabá Esporte Clube",
+    "internalName": "cuiaba",
+    "shortName": "Cuiabá",
+    "abbreviation": "CUI",
+    "colors": {
+      "outline": "#faab19",
+      "background": "#0e743b",
+      "name": "#fafafc"
+    },
+    "initialOverallStrength": 67,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Walter"
+      },
+      {
+        "position": "GK",
+        "name": "João Carlos"
+      },
+      {
+        "position": "DF",
+        "name": "Alan Empereur"
+      },
+      {
+        "position": "DF",
+        "name": "Marlon"
+      },
+      {
+        "position": "DF",
+        "name": "Uendel"
+      },
+      {
+        "position": "DF",
+        "name": "Paulão"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Mineiro"
+      },
+      {
+        "position": "DF",
+        "name": "Ramon"
+      },
+      {
+        "position": "DF",
+        "name": "Matheus Alexandre"
+      },
+      {
+        "position": "MF",
+        "name": "Denilson"
+      },
+      {
+        "position": "MF",
+        "name": "Pepê"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Fernandes"
+      },
+      {
+        "position": "MF",
+        "name": "Fernando Sobral"
+      },
+      {
+        "position": "MF",
+        "name": "André Luis"
+      },
+      {
+        "position": "MF",
+        "name": "Ronald"
+      },
+      {
+        "position": "MF",
+        "name": "Clayson"
+      },
+      {
+        "position": "FW",
+        "name": "Deyverson"
+      },
+      {
+        "position": "FW",
+        "name": "Isidro Pitta"
+      },
+      {
+        "position": "FW",
+        "name": "Jonathan Cafú"
+      },
+      {
+        "position": "FW",
+        "name": "Elton"
+      },
+      {
+        "position": "FW",
+        "name": "Felipe Marques"
+      },
+      {
+        "position": "FW",
+        "name": "André"
+      },
+      {
+        "position": "FW",
+        "name": "Alesson"
+      }
+    ]
+  },
+  {
+    "name": "Associação Ferroviária de Esportes",
+    "internalName": "ferroviaria",
+    "shortName": "Ferroviária",
+    "abbreviation": "AFE",
+    "colors": {
+      "outline": "#fafafc",
+      "background": "#a44045",
+      "name": "#fafafc"
+    },
+    "initialOverallStrength": 61,
+    "players": [
+      {
+        "position": "GK",
+        "name": "João Paulo"
+      },
+      {
+        "position": "GK",
+        "name": "Rafael Santos"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Silva"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Mendes"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Vaz"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Alves"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Rocha"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Costa"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Henrique"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Lima"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno César"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Moura"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Martins"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Pereira"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Lima"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Silva"
+      }
+    ]
+  },
+  {
+    "name": "Clube de Regatas do Flamengo",
+    "internalName": "flamengo",
+    "shortName": "Flamengo",
+    "abbreviation": "FLA",
+    "colors": {
+      "outline": "#EC2125",
+      "background": "#030101",
+      "name": "#FAFAFC"
+    },
+    "initialOverallStrength": 100,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Rossi"
+      },
+      {
+        "position": "GK",
+        "name": "Santos"
+      },
+      {
+        "position": "DF",
+        "name": "Fabricio Bruno"
+      },
+      {
+        "position": "DF",
+        "name": "Léo Pereira"
+      },
+      {
+        "position": "DF",
+        "name": "David Luiz"
+      },
+      {
+        "position": "DF",
+        "name": "Varela"
+      },
+      {
+        "position": "DF",
+        "name": "Ayrton Lucas"
+      },
+      {
+        "position": "DF",
+        "name": "Wesley"
+      },
+      {
+        "position": "MF",
+        "name": "Allan"
+      },
+      {
+        "position": "MF",
+        "name": "Thiago Maia"
+      },
+      {
+        "position": "MF",
+        "name": "Gerson"
+      },
+      {
+        "position": "MF",
+        "name": "Arrascaeta"
+      },
+      {
+        "position": "MF",
+        "name": "De la Cruz"
+      },
+      {
+        "position": "MF",
+        "name": "Victor Hugo"
+      },
+      {
+        "position": "FW",
+        "name": "Pedro"
+      },
+      {
+        "position": "FW",
+        "name": "Gabigol"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Henrique"
+      },
+      {
+        "position": "FW",
+        "name": "Luiz Araújo"
+      },
+      {
+        "position": "FW",
+        "name": "Everton Cebolinha"
+      },
+      {
+        "position": "FW",
+        "name": "Matheus Gonçalves"
+      }
+    ]
+  },
+  {
+    "name": "Fluminense Football Club",
+    "internalName": "fluminense",
+    "shortName": "Fluminense",
+    "abbreviation": "FLU",
+    "colors": {
+      "outline": "#962B3C",
+      "background": "#06714D",
+      "name": "#FAFAFC"
+    },
+    "initialOverallStrength": 88,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Fábio"
+      },
+      {
+        "position": "GK",
+        "name": "Vitor Eudes"
+      },
+      {
+        "position": "DF",
+        "name": "Nino"
+      },
+      {
+        "position": "DF",
+        "name": "Felipe Melo"
+      },
+      {
+        "position": "DF",
+        "name": "Samuel Xavier"
+      },
+      {
+        "position": "DF",
+        "name": "Marcelo"
+      },
+      {
+        "position": "DF",
+        "name": "Diogo Barbosa"
+      },
+      {
+        "position": "DF",
+        "name": "Guga"
+      },
+      {
+        "position": "MF",
+        "name": "André"
+      },
+      {
+        "position": "MF",
+        "name": "Martinelli"
+      },
+      {
+        "position": "MF",
+        "name": "Ganso"
+      },
+      {
+        "position": "MF",
+        "name": "Arias"
+      },
+      {
+        "position": "MF",
+        "name": "Lima"
+      },
+      {
+        "position": "MF",
+        "name": "Keno"
+      },
+      {
+        "position": "FW",
+        "name": "Germán Cano"
+      },
+      {
+        "position": "FW",
+        "name": "John Kennedy"
+      },
+      {
+        "position": "FW",
+        "name": "Lelê"
+      },
+      {
+        "position": "FW",
+        "name": "Isaac"
+      },
+      {
+        "position": "FW",
+        "name": "Arthur"
+      },
+      {
+        "position": "FW",
+        "name": "Matheus Martins"
+      }
+    ]
+  },
+  {
+    "name": "Fortaleza Esporte Clube",
+    "internalName": "fortaleza",
+    "shortName": "Fortaleza",
+    "abbreviation": "FOR",
+    "colors": {
+      "outline": "#f42b08",
+      "background": "#0161aa",
+      "name": "#FAFAFC"
+    },
+    "initialOverallStrength": 70,
+    "players": [
+      {
+        "position": "GK",
+        "name": "João Ricardo"
+      },
+      {
+        "position": "GK",
+        "name": "Fernando Miguel"
+      },
+      {
+        "position": "DF",
+        "name": "Titi"
+      },
+      {
+        "position": "DF",
+        "name": "Briseño"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Pacheco"
+      },
+      {
+        "position": "DF",
+        "name": "Dodô"
+      },
+      {
+        "position": "DF",
+        "name": "Brayan Ceballos"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Sasha"
+      },
+      {
+        "position": "MF",
+        "name": "Caio Alexandre"
+      },
+      {
+        "position": "MF",
+        "name": "Hércules"
+      },
+      {
+        "position": "MF",
+        "name": "Calebe"
+      },
+      {
+        "position": "MF",
+        "name": "Romarinho"
+      },
+      {
+        "position": "MF",
+        "name": "Moisés"
+      },
+      {
+        "position": "FW",
+        "name": "Thiago Galhardo"
+      },
+      {
+        "position": "FW",
+        "name": "Silvio Romero"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Lima"
+      },
+      {
+        "position": "FW",
+        "name": "Marinho"
+      }
+    ]
+  },
+  {
+    "name": "Goiás Esporte Clube",
+    "internalName": "goias",
+    "shortName": "Goiás",
+    "abbreviation": "GOI",
+    "colors": {
+      "outline": "#fafafc",
+      "background": "#00685b",
+      "name": "#fafafc"
+    },
+    "initialOverallStrength": 75,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Tadeu"
+      },
+      {
+        "position": "GK",
+        "name": "Matheus Alves"
+      },
+      {
+        "position": "DF",
+        "name": "Sidimar"
+      },
+      {
+        "position": "DF",
+        "name": "David Duarte"
+      },
+      {
+        "position": "DF",
+        "name": "Sander"
+      },
+      {
+        "position": "DF",
+        "name": "Edu"
+      },
+      {
+        "position": "DF",
+        "name": "Yan Souto"
+      },
+      {
+        "position": "DF",
+        "name": "Diego"
+      },
+      {
+        "position": "MF",
+        "name": "Auremir"
+      },
+      {
+        "position": "MF",
+        "name": "Diego Gonçalves"
+      },
+      {
+        "position": "MF",
+        "name": "Matheus Sales"
+      },
+      {
+        "position": "MF",
+        "name": "Morelli"
+      },
+      {
+        "position": "MF",
+        "name": "Palacios"
+      },
+      {
+        "position": "MF",
+        "name": "Vinícius"
+      },
+      {
+        "position": "MF",
+        "name": "Higor Meritão"
+      },
+      {
+        "position": "FW",
+        "name": "Nicolas"
+      },
+      {
+        "position": "FW",
+        "name": "Vinícius Lopes"
+      },
+      {
+        "position": "FW",
+        "name": "Welliton"
+      },
+      {
+        "position": "FW",
+        "name": "Anderson Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Apodi"
+      },
+      {
+        "position": "FW",
+        "name": "Guilherme"
+      },
+      {
+        "position": "FW",
+        "name": "Pedro Raul"
+      }
+    ]
+  },
+  {
+    "name": "Grêmio Foot-Ball Porto Alegrense",
+    "internalName": "gremio",
+    "shortName": "Grêmio",
+    "abbreviation": "GRE",
+    "colors": {
+      "outline": "#211c19",
+      "background": "#1581bf",
+      "name": "#FAFAFC"
+    },
+    "initialOverallStrength": 78,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Gabriel Grando"
+      },
+      {
+        "position": "GK",
+        "name": "Adriel"
+      },
+      {
+        "position": "DF",
+        "name": "Kannemann"
+      },
+      {
+        "position": "DF",
+        "name": "Pedro Geromel"
+      },
+      {
+        "position": "DF",
+        "name": "Reinaldo"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Alves"
+      },
+      {
+        "position": "DF",
+        "name": "Fábio"
+      },
+      {
+        "position": "DF",
+        "name": "Diogo Barbosa"
+      },
+      {
+        "position": "MF",
+        "name": "Carballo"
+      },
+      {
+        "position": "MF",
+        "name": "Pepê"
+      },
+      {
+        "position": "MF",
+        "name": "Villasanti"
+      },
+      {
+        "position": "MF",
+        "name": "Cristaldo"
+      },
+      {
+        "position": "MF",
+        "name": "Nathan"
+      },
+      {
+        "position": "FW",
+        "name": "Luis Suárez"
+      },
+      {
+        "position": "FW",
+        "name": "Ferreira"
+      },
+      {
+        "position": "FW",
+        "name": "Galdino"
+      },
+      {
+        "position": "FW",
+        "name": "André Henrique"
+      }
+    ]
+  },
+  {
+    "name": "Sport Club Internacional",
+    "internalName": "internacional",
+    "shortName": "Internacional",
+    "abbreviation": "INT",
+    "colors": {
+      "outline": "#FAFAFC",
+      "background": "#e52329",
+      "name": "#FAFAFC"
+    },
+    "initialOverallStrength": 98,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Rochet"
+      },
+      {
+        "position": "GK",
+        "name": "Keiller"
+      },
+      {
+        "position": "DF",
+        "name": "Vitão"
+      },
+      {
+        "position": "DF",
+        "name": "Mercado"
+      },
+      {
+        "position": "DF",
+        "name": "Robert Renan"
+      },
+      {
+        "position": "DF",
+        "name": "Bustos"
+      },
+      {
+        "position": "DF",
+        "name": "Renê"
+      },
+      {
+        "position": "DF",
+        "name": "Thauan Lara"
+      },
+      {
+        "position": "MF",
+        "name": "Aránguiz"
+      },
+      {
+        "position": "MF",
+        "name": "Maurício"
+      },
+      {
+        "position": "MF",
+        "name": "Alan Patrick"
+      },
+      {
+        "position": "MF",
+        "name": "Wanderson"
+      },
+      {
+        "position": "MF",
+        "name": "De Pena"
+      },
+      {
+        "position": "MF",
+        "name": "Estevão"
+      },
+      {
+        "position": "FW",
+        "name": "Enner Valencia"
+      },
+      {
+        "position": "FW",
+        "name": "Lucca"
+      },
+      {
+        "position": "FW",
+        "name": "Rômulo"
+      },
+      {
+        "position": "FW",
+        "name": "Pedro Henrique"
+      },
+      {
+        "position": "FW",
+        "name": "Johnny"
+      },
+      {
+        "position": "FW",
+        "name": "Carlos de Pena"
+      }
+    ]
+  },
+  {
+    "name": "Juventude Esp. Clube",
+    "internalName": "juventude",
+    "shortName": "Juventude",
+    "abbreviation": "JUV",
+    "colors": {
+      "outline": "#FAFAFC",
+      "background": "#079247",
+      "name": "#FAFAFC"
+    },
+    "initialOverallStrength": 62,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Gabriel"
+      },
+      {
+        "position": "GK",
+        "name": "Marcelinho"
+      },
+      {
+        "position": "DF",
+        "name": "Danilo Boza"
+      },
+      {
+        "position": "DF",
+        "name": "João Lucas"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Barbosa"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Forster"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Kal"
+      },
+      {
+        "position": "DF",
+        "name": "João Pedro"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Barbosa"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Evangelista"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Lima"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Moura"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Braga"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Perri"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Oliveira"
+      }
+    ]
+  },
+  {
+    "name": "Londrina Esporte Clube",
+    "internalName": "londrina",
+    "shortName": "Londrina",
+    "abbreviation": "LEC",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#059669",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 42,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Carlos Eduardo"
+      },
+      {
+        "position": "GK",
+        "name": "Rafael Martins"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Santos"
+      },
+      {
+        "position": "DF",
+        "name": "Marcelo Costa"
+      },
+      {
+        "position": "DF",
+        "name": "Thiago Silva"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Lima"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Mendes"
+      },
+      {
+        "position": "DF",
+        "name": "Gabriel Santos"
+      },
+      {
+        "position": "MF",
+        "name": "João Pedro"
+      },
+      {
+        "position": "MF",
+        "name": "Matheus Oliveira"
+      },
+      {
+        "position": "MF",
+        "name": "Felipe Costa"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Santos"
+      },
+      {
+        "position": "MF",
+        "name": "Gabriel Costa"
+      },
+      {
+        "position": "FW",
+        "name": "João Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Matheus Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Felipe Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriel Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "João Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Matheus Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Felipe Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriel Santos"
+      }
+    ]
+  },
+  {
+    "name": "Mirassol Futebol Clube",
+    "internalName": "mirassol",
+    "shortName": "Mirassol",
+    "abbreviation": "MIR",
+    "colors": {
+      "outline": "#056931",
+      "background": "#F6E917",
+      "name": "#056931"
+    },
+    "initialOverallStrength": 68,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Matheus"
+      },
+      {
+        "position": "GK",
+        "name": "Lucas Perri"
+      },
+      {
+        "position": "DF",
+        "name": "Léo Duarte"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Mendes"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Donato"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Ramon"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Beraldo"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Piton"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Evangelista"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Lima"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Moura"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Paquetá"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Braga"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Perri"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Oliveira"
+      }
+    ]
+  },
+  {
+    "name": "Grêmio Novorizontino",
+    "internalName": "novorizontino",
+    "shortName": "Novorizontino",
+    "abbreviation": "NOV",
+    "colors": {
+      "outline": "#fcf206",
+      "background": "#1f1f1f",
+      "name": "#fafafc"
+    },
+    "initialOverallStrength": 72,
+    "players": [
+      {
+        "position": "GK",
+        "name": "João Paulo"
+      },
+      {
+        "position": "GK",
+        "name": "Matheus Nogueira"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Donato"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Silva"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Rocha"
+      },
+      {
+        "position": "DF",
+        "name": "João Paulo"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Vaz"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Lima"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Henrique"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Moura"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Santos"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Martins"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Pereira"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Lima"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Mendes"
+      }
+    ]
+  },
+  {
+    "name": "Operário Ferroviário Esporte Clube",
+    "internalName": "operario-pr",
+    "shortName": "Operário-PR",
+    "abbreviation": "OPE",
+    "colors": {
+      "outline": "#1f1f1f",
+      "background": "#fafafc",
+      "name": "#1f1f1f"
+    },
+    "initialOverallStrength": 60,
+    "players": [
+      {
+        "position": "GK",
+        "name": "João Paulo"
+      },
+      {
+        "position": "GK",
+        "name": "Matheus Nogueira"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Donato"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Silva"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Rocha"
+      },
+      {
+        "position": "DF",
+        "name": "João Paulo"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Vaz"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Lima"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Henrique"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Moura"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Santos"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Martins"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Pereira"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Lima"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Mendes"
+      }
+    ]
+  },
+  {
+    "name": "Sociedade Esp. Palmeiras",
+    "internalName": "palmeiras",
+    "shortName": "Palmeiras",
+    "abbreviation": "PAL",
+    "colors": {
+      "outline": "#FAFAFC",
+      "background": "#076638",
+      "name": "#FAFAFC"
+    },
+    "initialOverallStrength": 100,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Weverton"
+      },
+      {
+        "position": "GK",
+        "name": "Murilo"
+      },
+      {
+        "position": "DF",
+        "name": "Murilo"
+      },
+      {
+        "position": "DF",
+        "name": "Gustavo Gómez"
+      },
+      {
+        "position": "DF",
+        "name": "Endrick"
+      },
+      {
+        "position": "DF",
+        "name": "Luan"
+      },
+      {
+        "position": "DF",
+        "name": "Vanderlan"
+      },
+      {
+        "position": "DF",
+        "name": "Piquerez"
+      },
+      {
+        "position": "MF",
+        "name": "Zé Rafael"
+      },
+      {
+        "position": "MF",
+        "name": "Gabriel Menino"
+      },
+      {
+        "position": "MF",
+        "name": "Raphael Veiga"
+      },
+      {
+        "position": "MF",
+        "name": "Richard Ríos"
+      },
+      {
+        "position": "MF",
+        "name": "Aníbal Moreno"
+      },
+      {
+        "position": "FW",
+        "name": "Endrick"
+      },
+      {
+        "position": "FW",
+        "name": "Rony"
+      },
+      {
+        "position": "FW",
+        "name": "Dudu"
+      },
+      {
+        "position": "FW",
+        "name": "Breno Lopes"
+      },
+      {
+        "position": "FW",
+        "name": "Flaco López"
+      },
+      {
+        "position": "FW",
+        "name": "Estevão"
+      },
+      {
+        "position": "FW",
+        "name": "Kevin"
+      }
+    ]
+  },
+  {
+    "name": "Paysandu Sport Club",
+    "internalName": "paysandu",
+    "shortName": "Paysandu",
+    "abbreviation": "PAY",
+    "colors": {
+      "outline": "#fafafc",
+      "background": "#3885c6",
+      "name": "#fafafc"
+    },
+    "initialOverallStrength": 55,
+    "players": [
+      {
+        "position": "GK",
+        "name": "João Paulo"
+      },
+      {
+        "position": "GK",
+        "name": "Matheus Nogueira"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Donato"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Silva"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Rocha"
+      },
+      {
+        "position": "DF",
+        "name": "João Paulo"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Vaz"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Lima"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Henrique"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Moura"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Santos"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Martins"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Pereira"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Lima"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Mendes"
+      }
+    ]
+  },
+  {
+    "name": "Associação Atlética Ponte Preta",
+    "internalName": "ponte-preta",
+    "shortName": "Ponte Preta",
+    "abbreviation": "PON",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#000000",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 43,
+    "players": [
+      {
+        "position": "GK",
+        "name": "João Paulo"
+      },
+      {
+        "position": "GK",
+        "name": "Matheus Cardoso"
+      },
+      {
+        "position": "DF",
+        "name": "Luan"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Vaz"
+      },
+      {
+        "position": "DF",
+        "name": "Fábio Ferreira"
+      },
+      {
+        "position": "DF",
+        "name": "João Victor"
+      },
+      {
+        "position": "DF",
+        "name": "Matheus Jesus"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Barcelos"
+      },
+      {
+        "position": "MF",
+        "name": "Felipe Amaral"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Longuine"
+      },
+      {
+        "position": "MF",
+        "name": "João Pedro"
+      },
+      {
+        "position": "MF",
+        "name": "Matheus Oliveira"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Fernandes"
+      },
+      {
+        "position": "MF",
+        "name": "Felipe Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "FW",
+        "name": "João Lucas"
+      },
+      {
+        "position": "FW",
+        "name": "Matheus Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Felipe Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Costa"
+      },
+      {
+        "position": "FW",
+        "name": "João Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Matheus Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Felipe Santos"
+      }
+    ]
+  },
+  {
+    "name": "Red Bull Bragantino",
+    "internalName": "rb-bragantino",
+    "shortName": "Bragantino",
+    "abbreviation": "RBB",
+    "colors": {
+      "outline": "#212156",
+      "background": "#FAFAFC",
+      "name": "#D71D3F"
+    },
+    "initialOverallStrength": 90,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Cleiton"
+      },
+      {
+        "position": "GK",
+        "name": "Jadson"
+      },
+      {
+        "position": "DF",
+        "name": "Léo Ortiz"
+      },
+      {
+        "position": "DF",
+        "name": "Natan"
+      },
+      {
+        "position": "DF",
+        "name": "Luan Cândido"
+      },
+      {
+        "position": "DF",
+        "name": "Juninho Capixaba"
+      },
+      {
+        "position": "DF",
+        "name": "Aderlan"
+      },
+      {
+        "position": "DF",
+        "name": "Pedro Henrique"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Evangelista"
+      },
+      {
+        "position": "MF",
+        "name": "Eric Ramires"
+      },
+      {
+        "position": "MF",
+        "name": "Hurtado"
+      },
+      {
+        "position": "MF",
+        "name": "Sorriso"
+      },
+      {
+        "position": "MF",
+        "name": "Matheus Fernandes"
+      },
+      {
+        "position": "MF",
+        "name": "Gustavinho"
+      },
+      {
+        "position": "FW",
+        "name": "Eduardo Sasha"
+      },
+      {
+        "position": "FW",
+        "name": "Thiago Borbas"
+      },
+      {
+        "position": "FW",
+        "name": "Helinho"
+      },
+      {
+        "position": "FW",
+        "name": "Vitinho"
+      },
+      {
+        "position": "FW",
+        "name": "Nathan"
+      },
+      {
+        "position": "FW",
+        "name": "Luan"
+      }
+    ]
+  },
+  {
+    "name": "Clube do Remo",
+    "internalName": "remo",
+    "shortName": "Remo",
+    "abbreviation": "REM",
+    "colors": {
+      "outline": "#fafafc",
+      "background": "#273649",
+      "name": "#fafafc"
+    },
+    "initialOverallStrength": 70,
+    "players": [
+      {
+        "position": "GK",
+        "name": "João Carlos"
+      },
+      {
+        "position": "GK",
+        "name": "Matheus Nogueira"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Donato"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Silva"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Rocha"
+      },
+      {
+        "position": "DF",
+        "name": "João Paulo"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Vaz"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Lima"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Henrique"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Moura"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Santos"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Martins"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Pereira"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Lima"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Mendes"
+      }
+    ]
+  },
+  {
+    "name": "Santos Futebol Clube",
+    "internalName": "santos",
+    "shortName": "Santos",
+    "abbreviation": "SAN",
+    "colors": {
+      "outline": "#242021",
+      "background": "#FAFAFC",
+      "name": "#242021"
+    },
+    "initialOverallStrength": 65,
+    "players": [
+      {
+        "position": "GK",
+        "name": "João Paulo"
+      },
+      {
+        "position": "GK",
+        "name": "Vladimir"
+      },
+      {
+        "position": "DF",
+        "name": "João Basso"
+      },
+      {
+        "position": "DF",
+        "name": "Messias"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Pires"
+      },
+      {
+        "position": "DF",
+        "name": "Felipe Jonatan"
+      },
+      {
+        "position": "DF",
+        "name": "João Lucas"
+      },
+      {
+        "position": "DF",
+        "name": "Nathan"
+      },
+      {
+        "position": "MF",
+        "name": "Dodi"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Lima"
+      },
+      {
+        "position": "MF",
+        "name": "Soteldo"
+      },
+      {
+        "position": "MF",
+        "name": "Angelo"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Braga"
+      },
+      {
+        "position": "FW",
+        "name": "Marcos Leonardo"
+      },
+      {
+        "position": "FW",
+        "name": "Deivid"
+      },
+      {
+        "position": "FW",
+        "name": "Rwan Seco"
+      },
+      {
+        "position": "FW",
+        "name": "Furch"
+      }
+    ]
+  },
+  {
+    "name": "São Paulo Fut. Clube",
+    "internalName": "sao-paulo",
+    "shortName": "São Paulo",
+    "abbreviation": "SAO",
+    "colors": {
+      "outline": "#ed2024",
+      "background": "#FAFAFC",
+      "name": "#242021"
+    },
+    "initialOverallStrength": 76,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Rafael"
+      },
+      {
+        "position": "GK",
+        "name": "Jandrei"
+      },
+      {
+        "position": "DF",
+        "name": "Arboleda"
+      },
+      {
+        "position": "DF",
+        "name": "Diego Costa"
+      },
+      {
+        "position": "DF",
+        "name": "Rafinha"
+      },
+      {
+        "position": "DF",
+        "name": "Caio Paulista"
+      },
+      {
+        "position": "DF",
+        "name": "Welington"
+      },
+      {
+        "position": "DF",
+        "name": "Alan Franco"
+      },
+      {
+        "position": "MF",
+        "name": "Pablo Maia"
+      },
+      {
+        "position": "MF",
+        "name": "Alisson"
+      },
+      {
+        "position": "MF",
+        "name": "Rodrigo Nestor"
+      },
+      {
+        "position": "MF",
+        "name": "Michel Araújo"
+      },
+      {
+        "position": "MF",
+        "name": "Luciano"
+      },
+      {
+        "position": "FW",
+        "name": "Calleri"
+      },
+      {
+        "position": "FW",
+        "name": "David"
+      },
+      {
+        "position": "FW",
+        "name": "Erison"
+      },
+      {
+        "position": "FW",
+        "name": "Juan"
+      }
+    ]
+  },
+  {
+    "name": "Sport Club do Recife",
+    "internalName": "sport-recife",
+    "shortName": "Sport",
+    "abbreviation": "SPT",
+    "colors": {
+      "outline": "#b6881f",
+      "background": "#242021",
+      "name": "#a82123"
+    },
+    "initialOverallStrength": 55,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Mailson"
+      },
+      {
+        "position": "GK",
+        "name": "Renan"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Thyere"
+      },
+      {
+        "position": "DF",
+        "name": "Sabino"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Siqueira"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Mendes"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Ramon"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Beraldo"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Evangelista"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Lima"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Moura"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Paquetá"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Braga"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Perri"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Oliveira"
+      }
+    ]
+  },
+  {
+    "name": "Clube de Regatas Vasco da Gama",
+    "internalName": "vasco",
+    "shortName": "Vasco",
+    "abbreviation": "VAS",
+    "colors": {
+      "outline": "#242021",
+      "background": "#FAFAFC",
+      "name": "#242021"
+    },
+    "initialOverallStrength": 74,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Léo Jardim"
+      },
+      {
+        "position": "GK",
+        "name": "Halls"
+      },
+      {
+        "position": "DF",
+        "name": "Léo"
+      },
+      {
+        "position": "DF",
+        "name": "Capasso"
+      },
+      {
+        "position": "DF",
+        "name": "Pumita Rodríguez"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Piton"
+      },
+      {
+        "position": "DF",
+        "name": "Robson"
+      },
+      {
+        "position": "DF",
+        "name": "Miranda"
+      },
+      {
+        "position": "MF",
+        "name": "Zé Gabriel"
+      },
+      {
+        "position": "MF",
+        "name": "Andrey Santos"
+      },
+      {
+        "position": "MF",
+        "name": "Paulinho"
+      },
+      {
+        "position": "MF",
+        "name": "Marlon Gomes"
+      },
+      {
+        "position": "MF",
+        "name": "Galdames"
+      },
+      {
+        "position": "FW",
+        "name": "Pedro Raul"
+      },
+      {
+        "position": "FW",
+        "name": "Alex Teixeira"
+      },
+      {
+        "position": "FW",
+        "name": "Figueiredo"
+      },
+      {
+        "position": "FW",
+        "name": "Erick Marcus"
+      }
+    ]
+  },
+  {
+    "name": "Vila Nova Futebol Clube",
+    "internalName": "vila-nova",
+    "shortName": "Vila Nova",
+    "abbreviation": "VNO",
+    "colors": {
+      "outline": "#fafafc",
+      "background": "#e22028",
+      "name": "#fafafc"
+    },
+    "initialOverallStrength": 63,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Rafael Santos"
+      },
+      {
+        "position": "GK",
+        "name": "Matheus Nogueira"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Donato"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Silva"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Rocha"
+      },
+      {
+        "position": "DF",
+        "name": "João Paulo"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Mendes"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Vaz"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Longuine"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Crispim"
+      },
+      {
+        "position": "MF",
+        "name": "Alan Mineiro"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Costa"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Kal"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Moura"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Lima"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Pereira"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Alves"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Martins"
+      }
+    ]
+  },
+  {
+    "name": "Esporte Clube Vitória",
+    "internalName": "vitoria",
+    "shortName": "Vitória",
+    "abbreviation": "VIT",
+    "colors": {
+      "outline": "#a82123",
+      "background": "#242021",
+      "name": "#a82123"
+    },
+    "initialOverallStrength": 72,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Lucas Arcanjo"
+      },
+      {
+        "position": "GK",
+        "name": "João Gabriel"
+      },
+      {
+        "position": "DF",
+        "name": "Zé Ivaldo"
+      },
+      {
+        "position": "DF",
+        "name": "Wagner Leonardo"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Esteves"
+      },
+      {
+        "position": "DF",
+        "name": "Matheusinho"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Fonseca"
+      },
+      {
+        "position": "DF",
+        "name": "João Victor"
+      },
+      {
+        "position": "MF",
+        "name": "Willian Oliveira"
+      },
+      {
+        "position": "MF",
+        "name": "Rodrigo Andrade"
+      },
+      {
+        "position": "MF",
+        "name": "Matheus Trindade"
+      },
+      {
+        "position": "MF",
+        "name": "Osvaldo"
+      },
+      {
+        "position": "MF",
+        "name": "Iago Maidana"
+      },
+      {
+        "position": "FW",
+        "name": "Alê"
+      },
+      {
+        "position": "FW",
+        "name": "Matheusinho"
+      },
+      {
+        "position": "FW",
+        "name": "Everaldo"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriel"
+      }
+    ]
+  },
+  {
+    "name": "Volta Redonda Futebol Clube",
+    "internalName": "volta-redonda",
+    "shortName": "Volta Redonda",
+    "abbreviation": "VRE",
+    "colors": {
+      "outline": "#fafafc",
+      "background": "#1f1f1f",
+      "name": "#f8de05"
+    },
+    "initialOverallStrength": 57,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Matheus Nogueira"
+      },
+      {
+        "position": "GK",
+        "name": "João Carlos"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Donato"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Silva"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Rocha"
+      },
+      {
+        "position": "DF",
+        "name": "João Paulo"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Vaz"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Lima"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Henrique"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Moura"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Bruno Santos"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Martins"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Pereira"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Lima"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Bruno Mendes"
+      }
+    ]
+  },
+  {
+    "name": "Ypiranga Futebol Clube",
+    "internalName": "ypiranga",
+    "shortName": "Ypiranga",
+    "abbreviation": "YPI",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#dc2626",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 41,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Diego Alves"
+      },
+      {
+        "position": "GK",
+        "name": "Bruno Santos"
+      },
+      {
+        "position": "DF",
+        "name": "Marcelo Alves"
+      },
+      {
+        "position": "DF",
+        "name": "Thiago Santos"
+      },
+      {
+        "position": "DF",
+        "name": "Rafael Costa"
+      },
+      {
+        "position": "DF",
+        "name": "Lucas Silva"
+      },
+      {
+        "position": "DF",
+        "name": "Gabriel Oliveira"
+      },
+      {
+        "position": "DF",
+        "name": "João Pedro"
+      },
+      {
+        "position": "MF",
+        "name": "Matheus Costa"
+      },
+      {
+        "position": "MF",
+        "name": "Felipe Santos"
+      },
+      {
+        "position": "MF",
+        "name": "Rafael Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Lucas Costa"
+      },
+      {
+        "position": "MF",
+        "name": "Gabriel Santos"
+      },
+      {
+        "position": "MF",
+        "name": "João Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Matheus Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Felipe Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriel Costa"
+      },
+      {
+        "position": "FW",
+        "name": "João Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Matheus Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Felipe Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Rafael Costa"
+      },
+      {
+        "position": "FW",
+        "name": "Lucas Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriel Silva"
+      }
+    ]
+  }
+]
