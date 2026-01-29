@@ -35,57 +35,37 @@ export function getChampionship(
     isRelegatable: false,
   } as Championship;
 
-  if (
-    'numberOfRelegatableTeams' in championshipJSONDTO &&
+  const numberOfRelegatableTeams =
+    'numberOfRelegatableTeams' in championshipJSONDTO
+      ? Number(championshipJSONDTO.numberOfRelegatableTeams)
+      : 0;
+  const relegationChampionshipInternalName =
     'relegationChampionshipInternalName' in championshipJSONDTO
-  ) {
-    if (
-      championshipJSONDTO.numberOfRelegatableTeams < 1 ||
-      championshipJSONDTO.numberOfRelegatableTeams > championshipJSONDTO.numberOfTeams
-    ) {
-      throw new Error(
-        `Number of relegatable teams is not correct: ${championshipJSONDTO.numberOfRelegatableTeams}.`
-      );
-    }
-
-    if (!championshipJSONDTO.relegationChampionshipInternalName) {
-      throw new Error(
-        `Relegation championship internal name not found: ${championshipJSONDTO.relegationChampionshipInternalName}.`
-      );
-    }
-
+      ? String(championshipJSONDTO.relegationChampionshipInternalName)
+      : '';
+  if (numberOfRelegatableTeams > 0 && relegationChampionshipInternalName.length > 0) {
     mappedChampionship = {
       ...mappedChampionship,
       isRelegatable: true,
-      numberOfRelegatableTeams: championshipJSONDTO.numberOfRelegatableTeams,
-      relegationChampionshipInternalName: championshipJSONDTO.relegationChampionshipInternalName,
+      numberOfRelegatableTeams,
+      relegationChampionshipInternalName,
     };
   }
 
-  if (
-    'numberOfPromotableTeams' in championshipJSONDTO &&
+  const numberOfPromotableTeams =
+    'numberOfPromotableTeams' in championshipJSONDTO
+      ? Number(championshipJSONDTO.numberOfPromotableTeams)
+      : 0;
+  const promotionChampionshipInternalName =
     'promotionChampionshipInternalName' in championshipJSONDTO
-  ) {
-    if (
-      championshipJSONDTO.numberOfPromotableTeams < 1 ||
-      championshipJSONDTO.numberOfPromotableTeams > championshipJSONDTO.numberOfTeams
-    ) {
-      throw new Error(
-        `Number of promotable teams is not correct: ${championshipJSONDTO.numberOfPromotableTeams}.`
-      );
-    }
-
-    if (!championshipJSONDTO.promotionChampionshipInternalName) {
-      throw new Error(
-        `Promotion championship internal name not found: ${championshipJSONDTO.relegationChampionshipInternalName}.`
-      );
-    }
-
+      ? String(championshipJSONDTO.promotionChampionshipInternalName)
+      : '';
+  if (numberOfPromotableTeams > 0 && promotionChampionshipInternalName.length > 0) {
     mappedChampionship = {
       ...mappedChampionship,
       isPromotable: true,
-      numberOfPromotableTeams: championshipJSONDTO.numberOfPromotableTeams,
-      promotionChampionshipInternalName: championshipJSONDTO.promotionChampionshipInternalName,
+      numberOfPromotableTeams,
+      promotionChampionshipInternalName,
     };
   }
 
