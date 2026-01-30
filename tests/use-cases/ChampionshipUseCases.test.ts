@@ -3,9 +3,14 @@ import { describe, expect, it } from '@jest/globals';
 import { initChampionships } from '../../use-cases/ChampionshipUseCases';
 
 describe('initChampionships', () => {
-  it('returns a container with playableChampionship populated', () => {
-    const container = initChampionships('brasileirao-serie-b');
+  it('returns a successful result from ChampionshipService', () => {
+    const result = initChampionships('brasileirao-serie-b');
+    expect(result.succeeded).toBeTruthy();
+  });
 
-    expect(container.playableChampionship).toBeDefined();
+  it('returns a container with playableChampionship populated', () => {
+    const brasileiraoSerieB = 'brasileirao-serie-b';
+    const result = initChampionships(brasileiraoSerieB);
+    expect(result.getResult().playableChampionship.internalName).toBe(brasileiraoSerieB);
   });
 });
