@@ -11,6 +11,17 @@ declare global {
   }
 }
 
+// Test function crypto.randomUUID
+const globalCrypto = globalThis.crypto as Crypto | undefined;
+if (!globalCrypto?.randomUUID) {
+  Object.defineProperty(globalThis, 'crypto', {
+    value: {
+      ...(globalCrypto ?? {}),
+      randomUUID: jest.fn(() => 'mocked-uuid'),
+    } as Crypto,
+  });
+}
+
 // Add Jest globals to the global scope
 declare global {
   const describe: typeof import('@jest/globals').describe;
