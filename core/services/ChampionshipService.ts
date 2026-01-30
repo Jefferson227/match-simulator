@@ -78,6 +78,8 @@ const initChampionships = (
       errorCode: 'exception',
       message,
     });
+
+    return result;
   }
 };
 
