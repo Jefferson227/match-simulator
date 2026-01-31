@@ -96,50 +96,5 @@ export function getChampionship(
     standings,
   };
 
-  // TODO: Group this logic in a separate function
-  const teams = [...startingTeams];
-  const roundsPerLeg = teams.length - 1;
-  const matchesPerRound = teams.length / 2;
-  const totalRounds = roundsPerLeg * 2;
-  const matches: Match[] = [];
-  let matchId = 1;
-
-  for (let round = 0; round < roundsPerLeg; round++) {
-    for (let i = 0; i < matchesPerRound; i++) {
-      const homeTeam = teams[i];
-      const awayTeam = teams[teams.length - 1 - i];
-      matches.push({
-        id: matchId++,
-        homeTeam,
-        awayTeam,
-        scorers: [],
-      });
-    }
-
-    const lastTeam = teams.pop()!;
-    teams.splice(1, 0, lastTeam);
-  }
-
-  const firstLegMatchesCount = matches.length;
-  for (let i = 0; i < firstLegMatchesCount; i++) {
-    const match = matches[i];
-    matches.push({
-      id: matchId++,
-      homeTeam: match.awayTeam,
-      awayTeam: match.homeTeam,
-      scorers: [],
-    });
-  }
-
-  mappedChampionship = {
-    ...mappedChampionship,
-    matches: {
-      ...mappedChampionship.matches,
-      currentRound: 1,
-      totalRounds,
-      matches,
-    },
-  };
-
   return mappedChampionship;
 }
