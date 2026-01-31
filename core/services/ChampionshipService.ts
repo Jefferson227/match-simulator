@@ -54,16 +54,8 @@ const initChampionships = (
 ): OperationResult<ChampionshipContainer> => {
   try {
     let championshipContainer = {} as ChampionshipContainer;
-    let playableChampionship = getChampionship(championshipInternalName, true);
-    if (!playableChampionship) {
-      const result = new OperationResult({} as ChampionshipContainer);
-      result.setError({
-        errorCode: 'object-null-or-undefined',
-        message: 'Playable championship could not be found',
-      });
-      return result;
-    }
 
+    let playableChampionship = getChampionship(championshipInternalName, true);
     playableChampionship = {
       ...playableChampionship,
       matches: createMatches(playableChampionship.startingTeams),
@@ -79,15 +71,6 @@ const initChampionships = (
         playableChampionship.promotionChampionshipInternalName,
         false
       );
-
-      if (!promotionChampionship) {
-        const result = new OperationResult({} as ChampionshipContainer);
-        result.setError({
-          errorCode: 'object-null-or-undefined',
-          message: 'Promotion championship could not be found',
-        });
-        return result;
-      }
 
       promotionChampionship = {
         ...promotionChampionship,
@@ -105,15 +88,6 @@ const initChampionships = (
         playableChampionship.relegationChampionshipInternalName,
         false
       );
-
-      if (!relegationChampionship) {
-        const result = new OperationResult({} as ChampionshipContainer);
-        result.setError({
-          errorCode: 'object-null-or-undefined',
-          message: 'Relegation championship could not be found',
-        });
-        return result;
-      }
 
       relegationChampionship = {
         ...relegationChampionship,
