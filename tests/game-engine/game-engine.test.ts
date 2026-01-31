@@ -2,15 +2,13 @@
 
 import { GameEngine } from '../../game-engine/game-engine';
 import { GameState } from '../../game-engine/game-state';
-import ChampionshipUseCases from '../../use-cases/ChampionshipUseCases';
+import { initChampionships } from '../../use-cases/ChampionshipUseCases';
 import ChampionshipContainer from '../../core/models/ChampionshipContainer';
 import { Championship } from '../../core/models/Championship';
 
 jest.mock('../../use-cases/ChampionshipUseCases', () => ({
   __esModule: true,
-  default: {
-    initChampionships: jest.fn(),
-  },
+  initChampionships: jest.fn(),
 }));
 
 describe('GameEngine', () => {
@@ -57,10 +55,17 @@ describe('GameEngine', () => {
       playableChampionship: {} as Championship,
     } as ChampionshipContainer;
 
-    const initChampionshipsMock = ChampionshipUseCases.initChampionships as jest.Mock;
-    initChampionshipsMock.mockReturnValue(mockContainer);
+    const initChampionshipsMock = initChampionships as jest.Mock;
+    initChampionshipsMock.mockReturnValue({
+      succeeded: true,
+      error: { errorCode: 'no-error', message: '', details: '' },
+      getResult: () => mockContainer,
+    });
 
-    engine.dispatch({ type: 'INIT_CHAMPIONSHIPS', championshipInternalName: 'ignored' });
+    engine.dispatch({
+      type: 'INIT_CHAMPIONSHIPS',
+      championshipInternalName: 'brasileirao-serie-b',
+    });
 
     expect(initChampionshipsMock).toHaveBeenCalledWith('brasileirao-serie-b');
     expect(engine.getState().championshipContainer).toBe(mockContainer);
