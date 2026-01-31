@@ -6,7 +6,6 @@ import Match from '../models/Match';
 import MatchContainer from '../models/MatchContainer';
 
 function createMatches(startingTeams: Team[]): MatchContainer {
-  // TODO: In a championship with 20 teams, this function is creating 380 matches instead of 38, need to fix that
   const teams = [...startingTeams];
   const roundsPerLeg = teams.length - 1;
   const matchesPerRound = teams.length / 2;
