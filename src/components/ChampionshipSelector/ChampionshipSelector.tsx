@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import { useChampionshipContext } from '../../contexts/ChampionshipContext';
@@ -21,6 +21,10 @@ const ChampionshipSelector: React.FC = () => {
   // Game engine
   const engine = useGameEngine();
   const state = useGameState(engine);
+
+  useEffect(() => {
+    if (state.hasError) setScreenDisplayed('ErrorScreen');
+  }, [state]);
 
   const handleNextPage = () => {
     if (currentPage < totalPages - 1) {
