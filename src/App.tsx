@@ -12,6 +12,7 @@ import ChampionshipSelector from './components/ChampionshipSelector/Championship
 import TeamAdditionalInfo from './components/TeamAdditionalInfo/TeamAdditionalInfo';
 import ChampionshipDetails from './components/ChampionshipDetails/ChampionshipDetails';
 import TeamViewer from './components/TeamViewer/TeamViewer';
+import ErrorScreen from './components/ErrorScreen/ErrorScreen';
 
 const AppContent: FC = () => {
   const { state } = useContext(GeneralContext);
@@ -46,6 +47,9 @@ const AppContent: FC = () => {
   }
   if (state.screenDisplayed === 'TeamViewer') {
     return <TeamViewer />;
+  }
+  if (state.screenDisplayed === 'ErrorScreen') {
+    return <ErrorScreen />;
   }
 
   return null;
