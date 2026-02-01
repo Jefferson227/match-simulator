@@ -15,7 +15,7 @@ const ErrorScreen: React.FC = () => {
       <p className="mt-8">Error message: {state.errorMessage}</p>
 
       <button
-        onClick={() => engine.dispatch({ type: 'PING' })}
+        onClick={() => window.location.reload()}
         className={`w-full max-w-xs mt-8 border-4 py-4 text-lg uppercase transition border-white hover:bg-white hover:text-[#3d7a33]`}
       >
         Reset Game
