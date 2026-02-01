@@ -12,7 +12,7 @@ const ErrorScreen: React.FC = () => {
     <MainLayout>
       <p>Sorry, but an error has occurred and the game need to be reset.</p>
 
-      <p className="mt-8">Error message: error_message_here</p>
+      <p className="mt-8">Error message: {state.errorMessage}</p>
 
       <button
         onClick={() => engine.dispatch({ type: 'PING' })}
