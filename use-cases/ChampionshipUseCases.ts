@@ -7,3 +7,10 @@ export function initChampionships(
 ): OperationResult<ChampionshipContainer> {
   return ChampionshipService.initChampionships(championshipInternalName);
 }
+
+export function getChampionshipInternalNames(): OperationResult<string> {
+  // TODO: Implement this function
+  const result = new OperationResult('');
+  result.setError({ errorCode: 'implementation-missing', message: 'Implementation missing.' });
+  return result;
+}

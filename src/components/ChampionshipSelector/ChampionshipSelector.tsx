@@ -15,6 +15,7 @@ const ChampionshipSelector: React.FC = () => {
   const { setChampionship, setYear, setOtherChampionships } = useChampionshipContext();
   const [currentPage, setCurrentPage] = useState(0);
 
+  // TODO: Get championship names from ChampionshipUseCases.getChampionshipInternalNames()
   const championships = generalService.getAllChampionships();
   const totalPages = Math.ceil(championships.length / CHAMPIONSHIPS_PER_PAGE);
 
