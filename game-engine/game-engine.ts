@@ -37,8 +37,11 @@ export class GameEngine {
       case 'INIT_CHAMPIONSHIPS':
         const result = initChampionships(action.championshipInternalName);
         if (!result.succeeded) {
-          // TODO: Show error screen
-          return state;
+          return {
+            ...state,
+            hasError: true,
+            errorMessage: result.error.message,
+          };
         }
 
         return {
