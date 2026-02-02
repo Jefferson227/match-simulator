@@ -16,6 +16,7 @@ const ChampionshipSelector: React.FC = () => {
   const engine = useGameEngine();
   const state = useGameState(engine);
 
+  // TODO: Get the internal name and the name to be displayed
   const result = getChampionshipInternalNames();
   if (!result.succeeded)
     engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage: result.error.message });
