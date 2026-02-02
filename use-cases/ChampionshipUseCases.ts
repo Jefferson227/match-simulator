@@ -8,9 +8,6 @@ export function initChampionships(
   return ChampionshipService.initChampionships(championshipInternalName);
 }
 
-export function getChampionshipInternalNames(): OperationResult<string> {
-  // TODO: Implement this function
-  const result = new OperationResult('');
-  result.setError({ errorCode: 'implementation-missing', message: 'Implementation missing.' });
-  return result;
+export function getChampionshipInternalNames(): OperationResult<string[]> {
+  return ChampionshipService.getChampionshipInternalNames();
 }
