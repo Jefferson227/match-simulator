@@ -8,4 +8,5 @@ export type GameState = {
 
 export type GameAction =
   | { type: 'INIT_CHAMPIONSHIPS'; championshipInternalName: string }
+  | { type: 'SET_ERROR_MESSAGE'; errorMessage: string }
   | { type: 'PING' };

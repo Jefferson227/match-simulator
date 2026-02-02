@@ -48,6 +48,12 @@ export class GameEngine {
           ...state,
           championshipContainer: result.getResult(),
         };
+      case 'SET_ERROR_MESSAGE':
+        return {
+          ...state,
+          hasError: true,
+          errorMessage: action.errorMessage,
+        };
       case 'PING':
         console.log('pong');
         return state;
