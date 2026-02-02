@@ -2,7 +2,6 @@ import ChampionshipJSONDTO from '../../core/data-transfer-objects/ChampionshipJS
 import championshipsJSON from '../../assets/championships.json';
 import { Championship } from '../../core/models/Championship';
 import TeamRepository from './TeamRepository';
-import type Match from '../../core/models/Match';
 
 export function getChampionship(
   championshipInternalName: string,
