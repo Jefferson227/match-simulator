@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
+import { getChampionshipInternalNames } from '../../../use-cases/ChampionshipUseCases';
 
 const CHAMPIONSHIPS_PER_PAGE = 6;
 
@@ -11,13 +12,16 @@ const ChampionshipSelector: React.FC = () => {
   const { setScreenDisplayed } = useContext(GeneralContext);
   const [currentPage, setCurrentPage] = useState(0);
 
-  // TODO: Get championship names from ChampionshipUseCases.getChampionshipInternalNames()
-  const championships = generalService.getAllChampionships();
-  const totalPages = Math.ceil(championships.length / CHAMPIONSHIPS_PER_PAGE);
-
   // Game engine
   const engine = useGameEngine();
   const state = useGameState(engine);
+
+  const result = getChampionshipInternalNames();
+  if (!result.succeeded)
+    engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage: result.error.message });
+
+  const championships = result.getResult();
+  const totalPages = Math.ceil(championships.length / CHAMPIONSHIPS_PER_PAGE);
 
   useEffect(() => {
     if (state.hasError) setScreenDisplayed('ErrorScreen');
@@ -49,18 +53,18 @@ const ChampionshipSelector: React.FC = () => {
       <h1 className="text-lg mb-8 text-center">{t('championshipSelector.selectChampionship')}</h1>
 
       <div className="flex flex-col gap-4 w-full h-[560px] max-w-md px-6">
-        {selectedChampionships.map((champ) => (
+        {selectedChampionships.map((championshipInternalName, index) => (
           <button
-            key={champ.id}
+            key={index}
             onClick={() =>
               engine.dispatch({
                 type: 'INIT_CHAMPIONSHIPS',
-                championshipInternalName: champ.internalName,
+                championshipInternalName,
               })
             }
             className="w-[342px] h-[80px] px-4 border-4 border-white text-lg uppercase transition hover:bg-white hover:text-[#3d7a33] disabled:opacity-50 disabled:cursor-not-allowed mx-auto"
           >
-            {champ.name}
+            {championshipInternalName}
           </button>
         ))}
       </div>
