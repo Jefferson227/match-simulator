@@ -1,6 +1,6 @@
 import ChampionshipContainer from '../models/ChampionshipContainer';
 import OperationResult from '../results/OperationResult';
-import { getChampionship } from '../../infra/repositories/ChampionshipRepository';
+import { getChampionship, getInternalNames } from '../../infra/repositories/ChampionshipRepository';
 import { Team } from '../models/Team';
 import Match from '../models/Match';
 import MatchContainer from '../models/MatchContainer';
@@ -115,6 +115,25 @@ const initChampionships = (
   }
 };
 
+const getChampionshipInternalNames = (): OperationResult<string[]> => {
+  try {
+    const result = new OperationResult(getInternalNames());
+    result.setSuccess();
+
+    return result;
+  } catch (error) {
+    const result = new OperationResult([]);
+    const message = error instanceof Error ? error.message : String(error);
+    result.setError({
+      errorCode: 'exception',
+      message,
+    });
+
+    return result;
+  }
+};
+
 export default {
   initChampionships,
+  getChampionshipInternalNames,
 };
