@@ -1,9 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GeneralContext } from '../../contexts/GeneralContext';
-import { useChampionshipContext } from '../../contexts/ChampionshipContext';
-import generalService from '../../services/generalService';
-import { ChampionshipConfig } from '../../types';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
 
@@ -12,7 +9,6 @@ const CHAMPIONSHIPS_PER_PAGE = 6;
 const ChampionshipSelector: React.FC = () => {
   const { t } = useTranslation();
   const { setScreenDisplayed } = useContext(GeneralContext);
-  const { setChampionship, setYear, setOtherChampionships } = useChampionshipContext();
   const [currentPage, setCurrentPage] = useState(0);
 
   // TODO: Get championship names from ChampionshipUseCases.getChampionshipInternalNames()
@@ -36,20 +32,6 @@ const ChampionshipSelector: React.FC = () => {
   const handlePrevPage = () => {
     if (currentPage > 0) {
       setCurrentPage((prev) => prev - 1);
-    }
-  };
-
-  const handleChampionshipClick = (championship: ChampionshipConfig) => {
-    if (
-      championship.internalName === 'brasileirao-serie-a' ||
-      championship.internalName === 'brasileirao-serie-b'
-    ) {
-      setChampionship(championship);
-      setYear(new Date().getFullYear()); // Set initial year to current year
-
-      const otherChamps = championships.filter((c) => c.internalName !== championship.internalName);
-      setOtherChampionships(otherChamps);
-      setScreenDisplayed('TeamSelector');
     }
   };
 
