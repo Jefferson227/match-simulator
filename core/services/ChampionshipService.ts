@@ -1,6 +1,6 @@
 import ChampionshipContainer from '../models/ChampionshipContainer';
 import OperationResult from '../results/OperationResult';
-import { getChampionship, getInternalNames } from '../../infra/repositories/ChampionshipRepository';
+import * as ChampionshipRepository from '../../infra/repositories/ChampionshipRepository';
 import { Team } from '../models/Team';
 import Match from '../models/Match';
 import MatchContainer from '../models/MatchContainer';
@@ -55,7 +55,10 @@ const initChampionships = (
   try {
     let championshipContainer = {} as ChampionshipContainer;
 
-    let playableChampionship = getChampionship(championshipInternalName, true);
+    let playableChampionship = ChampionshipRepository.getChampionship(
+      championshipInternalName,
+      true
+    );
     playableChampionship = {
       ...playableChampionship,
       matches: createMatches(playableChampionship.startingTeams),
@@ -67,7 +70,7 @@ const initChampionships = (
     };
 
     if (playableChampionship.isPromotable) {
-      let promotionChampionship = getChampionship(
+      let promotionChampionship = ChampionshipRepository.getChampionship(
         playableChampionship.promotionChampionshipInternalName,
         false
       );
@@ -84,7 +87,7 @@ const initChampionships = (
     }
 
     if (playableChampionship.isRelegatable) {
-      let relegationChampionship = getChampionship(
+      let relegationChampionship = ChampionshipRepository.getChampionship(
         playableChampionship.relegationChampionshipInternalName,
         false
       );
