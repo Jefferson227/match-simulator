@@ -98,9 +98,14 @@ export function getChampionship(
   return mappedChampionship;
 }
 
-export function getInternalNames(): string[] {
+export function getChampionships(): Championship[] {
   const championshipsJSONDTO = championshipsJSON as ChampionshipJSONDTO[];
-  const internalNames = championshipsJSONDTO.map((json) => json.internalName);
+  const internalNames = championshipsJSONDTO.map((json) => {
+    return {
+      internalName: json.internalName,
+      name: json.name,
+    } as Championship;
+  });
 
   if (!internalNames.length) throw new Error('No championship internal names have been found.');
 
