@@ -4,6 +4,7 @@ import * as ChampionshipRepository from '../../infra/repositories/ChampionshipRe
 import { Team } from '../models/Team';
 import Match from '../models/Match';
 import MatchContainer from '../models/MatchContainer';
+import { Championship } from '../models/Championship';
 
 function createMatches(startingTeams: Team[]): MatchContainer {
   const teams = [...startingTeams];
@@ -118,9 +119,9 @@ const initChampionships = (
   }
 };
 
-const getChampionshipInternalNames = (): OperationResult<string[]> => {
+const getChampionships = (): OperationResult<Championship[]> => {
   try {
-    const result = new OperationResult(getInternalNames());
+    const result = new OperationResult(ChampionshipRepository.getChampionships());
     result.setSuccess();
 
     return result;
@@ -138,5 +139,5 @@ const getChampionshipInternalNames = (): OperationResult<string[]> => {
 
 export default {
   initChampionships,
-  getChampionshipInternalNames,
+  getChampionships,
 };

@@ -1,3 +1,4 @@
+import { Championship } from '../core/models/Championship';
 import ChampionshipContainer from '../core/models/ChampionshipContainer';
 import OperationResult from '../core/results/OperationResult';
 import ChampionshipService from '../core/services/ChampionshipService';
@@ -8,6 +9,6 @@ export function initChampionships(
   return ChampionshipService.initChampionships(championshipInternalName);
 }
 
-export function getChampionshipInternalNames(): OperationResult<string[]> {
-  return ChampionshipService.getChampionshipInternalNames();
+export function getChampionships(): OperationResult<Championship[]> {
+  return ChampionshipService.getChampionships();
 }
