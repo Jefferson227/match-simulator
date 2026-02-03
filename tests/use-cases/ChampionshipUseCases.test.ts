@@ -1,9 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 
-import {
-  initChampionships,
-  getChampionshipInternalNames,
-} from '../../use-cases/ChampionshipUseCases';
+import { initChampionships, getChampionships } from '../../use-cases/ChampionshipUseCases';
 
 describe('initChampionships', () => {
   it('returns a successful result from ChampionshipService', () => {
@@ -18,14 +15,14 @@ describe('initChampionships', () => {
   });
 });
 
-describe('getChampionshipInternalNames', () => {
-  it('returns a successful result from getChampionshipInternalNames', () => {
-    const result = getChampionshipInternalNames();
+describe('getChampionships', () => {
+  it('returns a successful result from getChampionships', () => {
+    const result = getChampionships();
     expect(result.succeeded).toBeTruthy();
   });
 
-  it('returns a list of championship internal names', () => {
-    const result = getChampionshipInternalNames();
+  it('returns a list of championships', () => {
+    const result = getChampionships();
     expect(result.getResult().length > 0).toBeTruthy();
   });
 });
