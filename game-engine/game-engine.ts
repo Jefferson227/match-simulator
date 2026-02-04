@@ -54,6 +54,11 @@ export class GameEngine {
           hasError: true,
           errorMessage: action.errorMessage,
         };
+      case 'SET_CURRENT_SCREEN':
+        return {
+          ...state,
+          currentScreen: action.screenName,
+        };
       case 'PING':
         console.log('pong');
         return state;
