@@ -2,39 +2,20 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ChampionshipSelector from './ChampionshipSelector';
+import { useGameEngine } from '../../contexts/GameEngineContext';
+import { useGameState } from '../../services/useGameState';
+import { getChampionships } from '../../../use-cases/ChampionshipUseCases';
 
-// Mock the generalService
-jest.mock('../../services/generalService', () => ({
-  __esModule: true,
-  default: {
-    getAllChampionships: () => [
-      {
-        id: '1',
-        name: 'BRASILEIRÃO SÉRIE A',
-        internalName: 'brasileirao-serie-a',
-      },
-      {
-        id: '2',
-        name: 'BRASILEIRÃO SÉRIE B',
-        internalName: 'brasileirao-serie-b',
-      },
-      {
-        id: '3',
-        name: 'BRASILEIRÃO SÉRIE C',
-        internalName: 'brasileirao-serie-c',
-      },
-      {
-        id: '4',
-        name: 'BRASILEIRÃO SÉRIE D',
-        internalName: 'brasileirao-serie-d',
-      },
-      { id: '5', name: 'PREMIER LEAGUE', internalName: 'premier-league' },
-      { id: '6', name: 'BUNDESLIGA', internalName: 'bundesliga' },
-      { id: '7', name: 'LA LIGA', internalName: 'la-liga' },
-      { id: '8', name: 'SERIE A', internalName: 'serie-a' },
-      { id: '9', name: 'LIGUE 1', internalName: 'ligue-1' },
-    ],
-  },
+jest.mock('../../contexts/GameEngineContext', () => ({
+  useGameEngine: jest.fn(),
+}));
+
+jest.mock('../../services/useGameState', () => ({
+  useGameState: jest.fn(),
+}));
+
+jest.mock('../../../use-cases/ChampionshipUseCases', () => ({
+  getChampionships: jest.fn(),
 }));
 
 jest.mock('react-i18next', () => ({
@@ -48,42 +29,44 @@ jest.mock('react-i18next', () => ({
   }),
 }));
 
-// Mock the ChampionshipContext
-const mockSetChampionship = jest.fn();
-const mockSetYear = jest.fn();
+const mockDispatch = jest.fn();
+const mockEngine = { dispatch: mockDispatch };
+const mockGameState = {
+  championshipContainer: {},
+  hasError: false,
+  errorMessage: '',
+  currentScreen: 'ChampionshipSelector',
+};
 
-jest.mock('../../contexts/ChampionshipContext', () => ({
-  useChampionshipContext: () => ({
-    setChampionship: mockSetChampionship,
-    setYear: mockSetYear,
-  }),
-}));
+const championshipsFixture = [
+  { id: '1', name: 'BRASILEIRÃO SÉRIE A', internalName: 'brasileirao-serie-a' },
+  { id: '2', name: 'BRASILEIRÃO SÉRIE B', internalName: 'brasileirao-serie-b' },
+  { id: '3', name: 'BRASILEIRÃO SÉRIE C', internalName: 'brasileirao-serie-c' },
+  { id: '4', name: 'BRASILEIRÃO SÉRIE D', internalName: 'brasileirao-serie-d' },
+  { id: '5', name: 'PREMIER LEAGUE', internalName: 'premier-league' },
+  { id: '6', name: 'BUNDESLIGA', internalName: 'bundesliga' },
+  { id: '7', name: 'LA LIGA', internalName: 'la-liga' },
+  { id: '8', name: 'SERIE A', internalName: 'serie-a' },
+  { id: '9', name: 'LIGUE 1', internalName: 'ligue-1' },
+];
 
-// Mock the GeneralContext
-const mockSetScreenDisplayed = jest.fn();
+const mockSuccessfulResult = {
+  succeeded: true,
+  getResult: () => championshipsFixture,
+};
 
-jest.mock('../../contexts/GeneralContext', () => ({
-  GeneralContext: {
-    Consumer: ({ children }: { children: any }) =>
-      children({
-        setScreenDisplayed: mockSetScreenDisplayed,
-      }),
-  },
-}));
-
-// Mock React's useContext to return our mock context
-jest.mock('react', () => ({
-  ...jest.requireActual('react'),
-  useContext: jest.fn(() => ({
-    setScreenDisplayed: mockSetScreenDisplayed,
-  })),
-}));
+const mockErrorResult = {
+  succeeded: false,
+  error: { message: 'load failed' },
+  getResult: () => [],
+};
 
 describe('ChampionshipSelector', () => {
   beforeEach(() => {
-    mockSetScreenDisplayed.mockClear();
-    mockSetChampionship.mockClear();
-    mockSetYear.mockClear();
+    jest.clearAllMocks();
+    (useGameEngine as jest.Mock).mockReturnValue(mockEngine);
+    (useGameState as jest.Mock).mockReturnValue(mockGameState);
+    (getChampionships as jest.Mock).mockReturnValue(mockSuccessfulResult);
   });
 
   test('renders the component and initial championships', () => {
@@ -94,18 +77,6 @@ describe('ChampionshipSelector', () => {
     expect(screen.getByText('BRASILEIRÃO SÉRIE A')).toBeInTheDocument();
     expect(screen.getByText('BUNDESLIGA')).toBeInTheDocument();
     expect(screen.queryByText('LA LIGA')).not.toBeInTheDocument();
-  });
-
-  test('only the "BRASILEIRÃO SÉRIE A" and "BRASILEIRÃO SÉRIE B" buttons are enabled', () => {
-    render(<ChampionshipSelector />);
-
-    const serieAButton = screen.getByText('BRASILEIRÃO SÉRIE A');
-    const serieBButton = screen.getByText('BRASILEIRÃO SÉRIE B');
-    const bundesligaButton = screen.getByText('BUNDESLIGA');
-
-    expect(serieAButton).not.toBeDisabled();
-    expect(serieBButton).not.toBeDisabled();
-    expect(bundesligaButton).toBeDisabled();
   });
 
   test('previous button is disabled on the first page', () => {
@@ -153,30 +124,40 @@ describe('ChampionshipSelector', () => {
     expect(screen.queryByText('LA LIGA')).not.toBeInTheDocument();
   });
 
-  test('calls setChampionship and setScreenDisplayed when clicking on BRASILEIRÃO SÉRIE A or SÉRIE B', () => {
+  test('dispatches INIT_CHAMPIONSHIPS when a championship button is clicked', () => {
     render(<ChampionshipSelector />);
 
     const serieAButton = screen.getByText('BRASILEIRÃO SÉRIE A');
     fireEvent.click(serieAButton);
-    expect(mockSetChampionship).toHaveBeenCalledWith('brasileirao-serie-a');
-    expect(mockSetScreenDisplayed).toHaveBeenCalledWith('TeamSelector');
-
-    mockSetChampionship.mockClear();
-    mockSetScreenDisplayed.mockClear();
-
-    const serieBButton = screen.getByText('BRASILEIRÃO SÉRIE B');
-    fireEvent.click(serieBButton);
-    expect(mockSetChampionship).toHaveBeenCalledWith('brasileirao-serie-b');
-    expect(mockSetScreenDisplayed).toHaveBeenCalledWith('TeamSelector');
+    expect(mockDispatch).toHaveBeenCalledWith({
+      type: 'INIT_CHAMPIONSHIPS',
+      championshipInternalName: 'brasileirao-serie-a',
+    });
   });
 
-  test('does not call setScreenDisplayed when clicking on disabled championships', () => {
+  test('dispatches SET_ERROR_MESSAGE when getChampionships fails', () => {
+    (getChampionships as jest.Mock).mockReturnValue(mockErrorResult);
+
     render(<ChampionshipSelector />);
 
-    const bundesligaButton = screen.getByText('BUNDESLIGA');
-    fireEvent.click(bundesligaButton);
+    expect(mockDispatch).toHaveBeenCalledWith({
+      type: 'SET_ERROR_MESSAGE',
+      errorMessage: 'load failed',
+    });
+  });
 
-    expect(mockSetChampionship).not.toHaveBeenCalled();
-    expect(mockSetScreenDisplayed).not.toHaveBeenCalled();
+  test('dispatches SET_ERROR_MESSAGE when state has an error', () => {
+    (useGameState as jest.Mock).mockReturnValue({
+      ...mockGameState,
+      hasError: true,
+      errorMessage: 'state error',
+    });
+
+    render(<ChampionshipSelector />);
+
+    expect(mockDispatch).toHaveBeenCalledWith({
+      type: 'SET_ERROR_MESSAGE',
+      errorMessage: 'state error',
+    });
   });
 });
