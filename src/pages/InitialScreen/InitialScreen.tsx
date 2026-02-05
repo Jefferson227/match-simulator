@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import buildVersionData from '../../assets/build-version.json';
 import { useGameEngine } from '../../contexts/GameEngineContext';
-import { useGameState } from '../../services/useGameState';
 import MainLayout from '../../components/MainLayout/MainLayout';
 import PixelLetter from '../../components/PixelLetter';
 
 const InitialScreen: React.FC = () => {
   const [buildVersion, setBuildVersion] = useState('');
-
-  // Game engine
   const engine = useGameEngine();
-  const state = useGameState(engine);
 
   useEffect(() => {
     if (buildVersionData && buildVersionData.buildVersion) {
