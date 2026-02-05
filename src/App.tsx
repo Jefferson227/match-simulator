@@ -1,58 +1,57 @@
 import AppProviders from './providers/AppProviders';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
-import TeamManager from './components/TeamManager/TeamManager';
-import { GeneralContext } from './contexts/GeneralContext';
-import { FC, useContext } from 'react';
-import MatchSimulator from './components/MatchSimulator/MatchSimulator';
-import TeamStandings from './components/TeamStandings/TeamStandings';
-import TeamSelector from './components/TeamSelector/TeamSelector';
+import { FC } from 'react';
 import InitialScreen from './components/InitialScreen/InitialScreen';
 import ChampionshipSelector from './components/ChampionshipSelector/ChampionshipSelector';
-import TeamAdditionalInfo from './components/TeamAdditionalInfo/TeamAdditionalInfo';
-import ChampionshipDetails from './components/ChampionshipDetails/ChampionshipDetails';
-import TeamViewer from './components/TeamViewer/TeamViewer';
-import ErrorScreen from './components/ErrorScreen/ErrorScreen';
+import { useGameEngine } from './contexts/GameEngineContext';
+import { useGameState } from './services/useGameState';
 
 const AppContent: FC = () => {
-  const { state } = useContext(GeneralContext);
+  // Game engine
+  const engine = useGameEngine();
+  const state = useGameState(engine);
 
-  if (!state.baseTeam) {
-    return null;
-  }
-
-  if (state.screenDisplayed === 'InitialScreen') {
-    return <InitialScreen />;
-  }
-  if (state.screenDisplayed === 'ChampionshipSelector') {
-    return <ChampionshipSelector />;
-  }
-  if (state.screenDisplayed === 'TeamManager') {
-    return <TeamManager />;
-  }
-  if (state.screenDisplayed === 'MatchSimulator') {
-    return <MatchSimulator />;
-  }
-  if (state.screenDisplayed === 'TeamAdditionalInfo') {
-    return <TeamAdditionalInfo />;
-  }
-  if (state.screenDisplayed === 'ChampionshipDetails') {
-    return <ChampionshipDetails />;
-  }
-  if (state.screenDisplayed === 'TeamStandings') {
-    return <TeamStandings />;
-  }
-  if (state.screenDisplayed === 'TeamSelector') {
-    return <TeamSelector />;
-  }
-  if (state.screenDisplayed === 'TeamViewer') {
-    return <TeamViewer />;
-  }
-  if (state.screenDisplayed === 'ErrorScreen') {
-    return <ErrorScreen />;
+  switch (state.currentScreen) {
+    case '':
+    case 'InitialScreen':
+      return <InitialScreen />;
+    case 'ChampionshipSelector':
+      return <ChampionshipSelector />;
+    default:
+      return <InitialScreen />;
   }
 
-  return null;
+  // if (state.screenDisplayed === 'InitialScreen') {
+  //   return <InitialScreen />;
+  // }
+  // if (state.screenDisplayed === 'ChampionshipSelector') {
+  //   return <ChampionshipSelector />;
+  // }
+  // if (state.screenDisplayed === 'TeamManager') {
+  //   return <TeamManager />;
+  // }
+  // if (state.screenDisplayed === 'MatchSimulator') {
+  //   return <MatchSimulator />;
+  // }
+  // if (state.screenDisplayed === 'TeamAdditionalInfo') {
+  //   return <TeamAdditionalInfo />;
+  // }
+  // if (state.screenDisplayed === 'ChampionshipDetails') {
+  //   return <ChampionshipDetails />;
+  // }
+  // if (state.screenDisplayed === 'TeamStandings') {
+  //   return <TeamStandings />;
+  // }
+  // if (state.screenDisplayed === 'TeamSelector') {
+  //   return <TeamSelector />;
+  // }
+  // if (state.screenDisplayed === 'TeamViewer') {
+  //   return <TeamViewer />;
+  // }
+  // if (state.screenDisplayed === 'ErrorScreen') {
+  //   return <ErrorScreen />;
+  // }
 };
 
 const App: FC = () => (
