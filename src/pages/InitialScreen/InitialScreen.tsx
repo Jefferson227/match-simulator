@@ -1,55 +1,23 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { GeneralContext } from '../../contexts/GeneralContext';
-import { useChampionshipContext } from '../../contexts/ChampionshipContext';
-import { MatchContext } from '../../contexts/MatchContext';
-import sessionService from '../../services/sessionService';
+import React, { useEffect, useState } from 'react';
 import buildVersionData from '../../assets/build-version.json';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
-import MainLayout from '../MainLayout/MainLayout';
+import MainLayout from '../../components/MainLayout/MainLayout';
 
 const InitialScreen: React.FC = () => {
-  const { setScreenDisplayed, loadState: loadGeneralState } = useContext(GeneralContext);
-  const { loadState: loadChampionshipState } = useChampionshipContext();
-  const { loadState: loadMatchState } = useContext(MatchContext);
-  const [hasSession, setHasSession] = useState(false);
   const [buildVersion, setBuildVersion] = useState('');
 
   // Game engine
   const engine = useGameEngine();
   const state = useGameState(engine);
 
-  // Check for existing session and load build version on component mount
   useEffect(() => {
-    const sessionExists = sessionService.hasSession();
-    setHasSession(sessionExists);
-
-    // Set build version from the imported JSON
     if (buildVersionData && buildVersionData.buildVersion) {
       setBuildVersion(buildVersionData.buildVersion);
     } else {
       setBuildVersion('DEV');
     }
   }, []);
-
-  const handleNewGame = () => {
-    // Clear any existing session when starting a new game
-    sessionService.clearSession();
-    setScreenDisplayed('ChampionshipSelector');
-  };
-
-  const handleLoadGame = () => {
-    const session = sessionService.loadSession();
-    if (session) {
-      // Load all states from session
-      loadGeneralState(session.general);
-      loadChampionshipState(session.championship);
-      loadMatchState(session.matches, null); // teamSquadView is not critical for resuming
-
-      // Go directly to TeamManager screen
-      setScreenDisplayed('TeamManager');
-    }
-  };
 
   // Pixel art data for "WINNING PIXELS"
   const pixelData = {
@@ -170,22 +138,14 @@ const InitialScreen: React.FC = () => {
 
         <div className="w-full flex flex-col items-center gap-4 px-8">
           <button
-            onClick={handleNewGame}
+            onClick={() =>
+              engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'ChampionshipSelector' })
+            }
             className="w-full max-w-xs border-4 border-white py-4 text-lg uppercase transition hover:bg-white hover:text-[#3d7a33]"
           >
             New Game
           </button>
-          {/* <button
-          onClick={handleLoadGame}
-          className={`w-full max-w-xs border-4 py-4 text-lg uppercase transition ${
-            hasSession
-              ? 'border-white hover:bg-white hover:text-[#3d7a33]'
-              : 'border-white opacity-50 cursor-not-allowed'
-          }`}
-          disabled={!hasSession}
-        >
-          Load Game
-        </button> */}
+
           <button
             onClick={() => engine.dispatch({ type: 'PING' })}
             className={`w-full max-w-xs border-4 py-4 text-lg uppercase transition border-white hover:bg-white hover:text-[#3d7a33]`}
