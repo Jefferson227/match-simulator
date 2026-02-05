@@ -2,75 +2,54 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import InitialScreen from './InitialScreen';
-import { GeneralContext } from '../../contexts/GeneralContext';
-import { ChampionshipProvider } from '../../contexts/ChampionshipContext';
-import { MatchProvider } from '../../contexts/MatchContext';
+import { useGameEngine } from '../../contexts/GameEngineContext';
+import { useGameState } from '../../services/useGameState';
 
-// Mock the session service
-jest.mock('../../services/sessionService', () => ({
-  hasSession: jest.fn(() => false),
-  loadSession: jest.fn(() => null),
-  clearSession: jest.fn(),
-  saveSession: jest.fn(),
+jest.mock('../../contexts/GameEngineContext', () => ({
+  useGameEngine: jest.fn(),
 }));
 
-const mockSetScreenDisplayed = jest.fn();
-const mockLoadGeneralState = jest.fn();
-const mockLoadChampionshipState = jest.fn();
-const mockLoadMatchState = jest.fn();
+jest.mock('../../services/useGameState', () => ({
+  useGameState: jest.fn(),
+}));
 
-const mockGeneralContextValue = {
-  setScreenDisplayed: mockSetScreenDisplayed,
-  loadState: mockLoadGeneralState,
-  state: {
-    currentPage: 1,
-    baseTeam: {},
-    matchTeam: null,
-    matchOtherTeams: [],
-    screenDisplayed: 'InitialScreen',
-  },
-  setCurrentPage: jest.fn(),
-  getBaseTeam: jest.fn(),
-  setMatchTeam: jest.fn(),
-  setMatchOtherTeams: jest.fn(),
-};
+jest.mock('../../assets/build-version.json', () => ({
+  buildVersion: 'TEST_BUILD',
+}));
 
-const renderWithContext = (component: React.ReactElement) => {
-  return render(
-    <GeneralContext.Provider value={mockGeneralContextValue as any}>
-      <ChampionshipProvider>
-        <MatchProvider>{component}</MatchProvider>
-      </ChampionshipProvider>
-    </GeneralContext.Provider>
-  );
+const mockDispatch = jest.fn();
+const mockEngine = { dispatch: mockDispatch };
+const mockGameState = {
+  championshipContainer: {},
+  hasError: false,
+  errorMessage: '',
+  currentScreen: 'InitialScreen',
 };
 
 describe('InitialScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    (useGameEngine as jest.Mock).mockReturnValue(mockEngine);
+    (useGameState as jest.Mock).mockReturnValue(mockGameState);
   });
 
-  test('renders all main elements', () => {
-    renderWithContext(<InitialScreen />);
+  test('renders all main elements', async () => {
+    render(<InitialScreen />);
 
     // Test that the pixelated logo containers are rendered
     expect(screen.getByTestId('logo-container')).toBeInTheDocument();
 
     // Test that the buttons are rendered
-    expect(
-      screen.getByRole('button', { name: /new game/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /load game/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /new game/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /test game engine/i })).toBeInTheDocument();
 
-    // Test that the developer info is rendered
-    expect(screen.getByText(/developed by/i)).toBeInTheDocument();
-    expect(screen.getByText(/jefferson227/i)).toBeInTheDocument();
+    // Test that the build info is rendered
+    expect(screen.getByText(/build version/i)).toBeInTheDocument();
+    expect(await screen.findByText('TEST_BUILD')).toBeInTheDocument();
   });
 
   test('renders pixelated logo with correct structure', () => {
-    renderWithContext(<InitialScreen />);
+    render(<InitialScreen />);
 
     // Check that the main logo container exists
     const logoContainer = screen.getByTestId('logo-container');
@@ -83,20 +62,24 @@ describe('InitialScreen', () => {
     expect(pixelsContainer).toBeInTheDocument();
   });
 
-  test('calls setScreenDisplayed with "ChampionshipSelector" when New Game button is clicked', () => {
-    renderWithContext(<InitialScreen />);
+  test('dispatches "SET_CURRENT_SCREEN" when New Game button is clicked', () => {
+    render(<InitialScreen />);
 
     const newGameButton = screen.getByRole('button', { name: /new game/i });
     fireEvent.click(newGameButton);
 
-    expect(mockSetScreenDisplayed).toHaveBeenCalledWith('ChampionshipSelector');
-    expect(mockSetScreenDisplayed).toHaveBeenCalledTimes(1);
+    expect(mockDispatch).toHaveBeenCalledWith({
+      type: 'SET_CURRENT_SCREEN',
+      screenName: 'ChampionshipSelector',
+    });
   });
 
-  test('Load Game button is present', () => {
-    renderWithContext(<InitialScreen />);
+  test('dispatches "PING" when Test Game Engine button is clicked', () => {
+    render(<InitialScreen />);
 
-    const loadGameButton = screen.getByRole('button', { name: /load game/i });
-    expect(loadGameButton).toBeInTheDocument();
+    const testGameEngineButton = screen.getByRole('button', { name: /test game engine/i });
+    fireEvent.click(testGameEngineButton);
+
+    expect(mockDispatch).toHaveBeenCalledWith({ type: 'PING' });
   });
 });
