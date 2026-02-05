@@ -1,16 +1,14 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { GeneralContext } from '../../contexts/GeneralContext';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
 import { getChampionships } from '../../../use-cases/ChampionshipUseCases';
-import MainLayout from '../MainLayout/MainLayout';
+import MainLayout from '../../components/MainLayout/MainLayout';
 
 const CHAMPIONSHIPS_PER_PAGE = 6;
 
 const ChampionshipSelector: React.FC = () => {
   const { t } = useTranslation();
-  const { setScreenDisplayed } = useContext(GeneralContext);
   const [currentPage, setCurrentPage] = useState(0);
 
   // Game engine
@@ -25,7 +23,8 @@ const ChampionshipSelector: React.FC = () => {
   const totalPages = Math.ceil(championships.length / CHAMPIONSHIPS_PER_PAGE);
 
   useEffect(() => {
-    if (state.hasError) setScreenDisplayed('ErrorScreen');
+    if (state.hasError)
+      engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage: state.errorMessage });
   }, [state]);
 
   const handleNextPage = () => {

@@ -3,7 +3,7 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 import { FC } from 'react';
 import InitialScreen from './pages/InitialScreen/InitialScreen';
-import ChampionshipSelector from './components/ChampionshipSelector/ChampionshipSelector';
+import ChampionshipSelector from './pages/ChampionshipSelector/ChampionshipSelector';
 import { useGameEngine } from './contexts/GameEngineContext';
 import { useGameState } from './services/useGameState';
 
