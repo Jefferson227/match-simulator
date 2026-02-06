@@ -1,17 +1,10 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { GeneralContext } from '../../contexts/GeneralContext';
-import { useChampionshipContext } from '../../contexts/ChampionshipContext';
-import {
-  loadTeamsForChampionship,
-  TeamSelectorTeam,
-  loadSpecificTeam,
-  loadAllTeamsExceptOne,
-  generateSeasonMatchCalendar,
-  loadAllTeams,
-} from '../../services/teamService';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
+import { Team } from '../../../core/models/Team';
+import * as TeamUseCase from '../../../use-cases/TeamUseCases';
+import MainLayout from '../../components/MainLayout/MainLayout';
 
 const TEAMS_PER_PAGE = 9;
 
@@ -22,38 +15,17 @@ const TeamSelector: React.FC = () => {
   const engine = useGameEngine();
   const state = useGameState(engine);
 
-  const { setScreenDisplayed } = useContext(GeneralContext);
-  const {
-    state: championshipState,
-    setHumanPlayerBaseTeam,
-    setTeamsControlledAutomatically,
-    setSeasonMatchCalendar,
-    setOtherChampionships,
-  } = useChampionshipContext();
   const [currentPage, setCurrentPage] = useState(0);
-  const [teams, setTeams] = useState<TeamSelectorTeam[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [teams, setTeams] = useState<Team[]>([]);
 
-  useEffect(() => {
-    const loadTeams = async () => {
-      try {
-        setLoading(true);
-        const selectedChampionship =
-          championshipState.selectedChampionship || 'brasileirao-serie-a';
-        const loadedTeams = await loadTeamsForChampionship(selectedChampionship);
-        setTeams(loadedTeams);
-        setError(null);
-      } catch (err) {
-        console.error('Failed to load teams:', err);
-        setError('Failed to load teams');
-      } finally {
-        setLoading(false);
-      }
-    };
+  const teamsResult = TeamUseCase.getTeamsToSelect(
+    state.championshipContainer.playableChampionship
+  );
 
-    loadTeams();
-  }, [championshipState.selectedChampionship]);
+  if (!teamsResult.succeeded)
+    engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage: teamsResult.error.message });
+
+  setTeams(teamsResult.getResult());
 
   const totalPages = Math.ceil(teams.length / TEAMS_PER_PAGE);
 
@@ -69,108 +41,26 @@ const TeamSelector: React.FC = () => {
     }
   };
 
-  const handleTeamClick = async (teamFileName: string) => {
-    try {
-      if (teamFileName) {
-        const selectedChampionship =
-          championshipState.selectedChampionship || 'brasileirao-serie-a';
-
-        // Load the specific team data
-        const baseTeam = await loadSpecificTeam(selectedChampionship, teamFileName);
-
-        if (baseTeam) {
-          // Set the loaded team as the human player's base team
-          setHumanPlayerBaseTeam(baseTeam);
-
-          // Load all other teams in the championship for automatic control
-          const automaticTeams = await loadAllTeamsExceptOne(selectedChampionship, teamFileName);
-
-          // Set the automatically controlled teams
-          setTeamsControlledAutomatically(automaticTeams);
-
-          // Get all other championships that weren't selected
-          const updatedOtherChampionships = await Promise.all(
-            championshipState.otherChampionships.map(async (otherChampionship) => {
-              const automaticTeamsForOtherChampionship = await loadAllTeams(
-                otherChampionship.internalName
-              );
-
-              return {
-                ...otherChampionship,
-                teamsControlledAutomatically: automaticTeamsForOtherChampionship,
-              };
-            })
-          );
-
-          // Set all the automatically controlled teams for other championships at once
-          setOtherChampionships(updatedOtherChampionships);
-
-          // Generate and set the season match calendar
-          const seasonCalendar = generateSeasonMatchCalendar(baseTeam, automaticTeams);
-          setSeasonMatchCalendar(seasonCalendar);
-
-          setScreenDisplayed('TeamManager');
-        } else {
-          console.error('Failed to load team data');
-          setError('Failed to load team data');
-        }
-      } else {
-        console.error(`No file name mapping found for team: ${teamFileName}`);
-        setError('Team not found');
-      }
-    } catch (err) {
-      console.error('Failed to load team:', err);
-      setError('Failed to load team');
-    }
-  };
-
   const startIndex = currentPage * TEAMS_PER_PAGE;
   const selectedTeams = teams.slice(startIndex, startIndex + TEAMS_PER_PAGE);
 
-  if (loading) {
-    return (
-      <div
-        className="font-press-start flex flex-col items-center justify-center py-8"
-        style={{ backgroundColor: '#3d7a33', color: 'white' }}
-      >
-        <h1 className="text-lg mb-8">{t('teamSelector.selectATeam')}</h1>
-        <div className="text-center">Loading teams...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div
-        className="font-press-start flex flex-col items-center justify-center py-8"
-        style={{ backgroundColor: '#3d7a33', color: 'white' }}
-      >
-        <h1 className="text-lg mb-8">{t('teamSelector.selectATeam')}</h1>
-        <div className="text-center text-red-300">{error}</div>
-      </div>
-    );
-  }
-
   return (
-    <div
-      className="font-press-start flex flex-col items-center justify-center py-8"
-      style={{ backgroundColor: '#3d7a33', color: 'white' }}
-    >
+    <MainLayout>
       <h1 className="text-lg mb-8">{t('teamSelector.selectATeam')}</h1>
 
       <div className="flex flex-col gap-4 w-full h-[560px] max-w-md px-6">
         {selectedTeams.map((team) => (
           <button
-            key={team.fileName}
-            onClick={() => handleTeamClick(team.fileName)}
+            key={team.id}
+            onClick={() => engine.dispatch({ type: 'PING' })}
             style={{
-              backgroundColor: team.colors.bg,
-              borderColor: team.colors.border,
+              backgroundColor: team.colors.background,
+              borderColor: team.colors.outline,
               color: team.colors.text,
             }}
             className="w-[342px] h-[48px] px-4 border-4 text-lg uppercase mx-auto"
           >
-            {team.name}
+            {team.shortName}
           </button>
         ))}
       </div>
@@ -191,7 +81,7 @@ const TeamSelector: React.FC = () => {
           &gt;
         </button>
       </div>
-    </div>
+    </MainLayout>
   );
 };
 
