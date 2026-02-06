@@ -4,6 +4,7 @@ import i18n from './i18n';
 import { FC } from 'react';
 import InitialScreen from './pages/InitialScreen/InitialScreen';
 import ChampionshipSelector from './pages/ChampionshipSelector/ChampionshipSelector';
+import TeamSelector from './pages/TeamSelector/TeamSelector';
 import { useGameEngine } from './contexts/GameEngineContext';
 import { useGameState } from './services/useGameState';
 
@@ -18,6 +19,8 @@ const AppContent: FC = () => {
       return <InitialScreen />;
     case 'ChampionshipSelector':
       return <ChampionshipSelector />;
+    case 'TeamSelector':
+      return <TeamSelector />;
     default:
       return <InitialScreen />;
   }
