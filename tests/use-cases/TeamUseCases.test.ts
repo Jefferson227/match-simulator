@@ -60,7 +60,7 @@ describe('getTeamsToSelect', () => {
         isRelegatable: false,
       },
     };
-    const result = TeamUseCases.getTeamsToSelect(mockedChampionshipContainer);
+    const result = TeamUseCases.getTeamsToSelect(mockedChampionshipContainer.playableChampionship);
 
     expect(result.succeeded).toBeTruthy();
     expect(
