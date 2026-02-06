@@ -1,5 +1,6 @@
 import { GameAction, GameState } from './game-state';
 import { initChampionships } from '../use-cases/ChampionshipUseCases';
+import * as TeamUseCases from '../use-cases/TeamUseCases';
 
 type Listener = () => void;
 
@@ -58,6 +59,28 @@ export class GameEngine {
         return {
           ...state,
           currentScreen: action.screenName,
+        };
+      case 'SELECT_TEAM':
+        // TODO: Change selecting team by id instead of the internal name, because it doesn't exist in the type Team
+        const selectTeamResult = TeamUseCases.selectTeam(
+          state.championshipContainer.playableChampionship,
+          action.selectedTeamInternalName
+        );
+
+        if (!selectTeamResult.succeeded) {
+          return {
+            ...state,
+            hasError: true,
+            errorMessage: selectTeamResult.error.message,
+          };
+        }
+
+        return {
+          ...state,
+          championshipContainer: {
+            ...state.championshipContainer,
+            playableChampionship: selectTeamResult.getResult(),
+          },
         };
       case 'PING':
         console.log('pong');
