@@ -10,11 +10,18 @@ import {
   generateSeasonMatchCalendar,
   loadAllTeams,
 } from '../../services/teamService';
+import { useGameEngine } from '../../contexts/GameEngineContext';
+import { useGameState } from '../../services/useGameState';
 
 const TEAMS_PER_PAGE = 9;
 
 const TeamSelector: React.FC = () => {
   const { t } = useTranslation();
+
+  // Game engine
+  const engine = useGameEngine();
+  const state = useGameState(engine);
+
   const { setScreenDisplayed } = useContext(GeneralContext);
   const {
     state: championshipState,
