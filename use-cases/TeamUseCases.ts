@@ -6,3 +6,10 @@ import TeamService from '../core/services/TeamService';
 export function getTeamsToSelect(championship: Championship): OperationResult<Team[]> {
   return TeamService.getTeamsToSelect(championship);
 }
+
+export function selectTeam(
+  championship: Championship,
+  selectedTeamInternalName: string
+): OperationResult<Championship> {
+  return TeamService.selectTeam(championship, selectedTeamInternalName);
+}
