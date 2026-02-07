@@ -61,10 +61,9 @@ export class GameEngine {
           currentScreen: action.screenName,
         };
       case 'SELECT_TEAM':
-        // TODO: Change selecting team by id instead of the internal name, because it doesn't exist in the type Team
         const selectTeamResult = TeamUseCases.selectTeam(
           state.championshipContainer.playableChampionship,
-          action.selectedTeamInternalName
+          action.teamId
         );
 
         if (!selectTeamResult.succeeded) {

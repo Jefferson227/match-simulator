@@ -11,5 +11,5 @@ export type GameAction =
   | { type: 'INIT_CHAMPIONSHIPS'; championshipInternalName: string }
   | { type: 'SET_ERROR_MESSAGE'; errorMessage: string }
   | { type: 'SET_CURRENT_SCREEN'; screenName: string }
-  | { type: 'SELECT_TEAM'; selectedTeamInternalName: string }
+  | { type: 'SELECT_TEAM'; teamId: string }
   | { type: 'PING' };

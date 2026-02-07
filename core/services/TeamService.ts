@@ -16,13 +16,10 @@ function getTeamsToSelect(championship: Championship): OperationResult<Team[]> {
   }
 }
 
-function selectTeam(
-  championship: Championship,
-  selectedTeamInternalName: string
-): OperationResult<Championship> {
+function selectTeam(championship: Championship, teamId: string): OperationResult<Championship> {
   try {
     const updatedStartingTeams = championship.startingTeams.map((team: Team) => {
-      if (team.shortName === selectedTeamInternalName) {
+      if (team.id === teamId) {
         return {
           ...team,
           isControlledByHuman: true,

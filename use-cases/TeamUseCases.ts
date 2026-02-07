@@ -9,7 +9,7 @@ export function getTeamsToSelect(championship: Championship): OperationResult<Te
 
 export function selectTeam(
   championship: Championship,
-  selectedTeamInternalName: string
+  teamId: string
 ): OperationResult<Championship> {
-  return TeamService.selectTeam(championship, selectedTeamInternalName);
+  return TeamService.selectTeam(championship, teamId);
 }
