@@ -22,10 +22,14 @@ const TeamSelector: React.FC = () => {
     state.championshipContainer.playableChampionship
   );
 
-  if (!teamsResult.succeeded)
-    engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage: teamsResult.error.message });
+  useEffect(() => {
+    if (!teamsResult.succeeded) {
+      engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage: teamsResult.error.message });
+      return;
+    }
 
-  setTeams(teamsResult.getResult());
+    setTeams(teamsResult.getResult());
+  }, [engine, teamsResult]);
 
   useEffect(() => {
     if (state.hasError)
