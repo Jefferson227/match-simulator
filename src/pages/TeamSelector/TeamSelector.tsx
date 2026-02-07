@@ -49,6 +49,11 @@ const TeamSelector: React.FC = () => {
   const startIndex = currentPage * TEAMS_PER_PAGE;
   const selectedTeams = teams.slice(startIndex, startIndex + TEAMS_PER_PAGE);
 
+  const selectTeam = (teamId: string) => {
+    engine.dispatch({ type: 'SELECT_TEAM', teamId });
+    // engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: '' });
+  };
+
   return (
     <MainLayout>
       <h1 className="text-lg mb-8">{t('teamSelector.selectATeam')}</h1>
@@ -57,7 +62,7 @@ const TeamSelector: React.FC = () => {
         {selectedTeams.map((team) => (
           <button
             key={team.id}
-            onClick={() => engine.dispatch({ type: 'PING' })}
+            onClick={() => selectTeam(team.id)}
             style={{
               backgroundColor: team.colors.background,
               borderColor: team.colors.outline,
