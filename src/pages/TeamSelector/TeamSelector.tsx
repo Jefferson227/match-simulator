@@ -60,7 +60,7 @@ const TeamSelector: React.FC = () => {
 
   return (
     <MainLayout>
-      <h1 className="text-lg mb-8">{t('teamSelector.selectATeam')}</h1>
+      <h1 className="text-lg text-center mb-8">{t('teamSelector.selectATeam')}</h1>
 
       <div className="flex flex-col gap-4 w-full h-[560px] max-w-md px-6">
         {selectedTeams.map((team) => (
