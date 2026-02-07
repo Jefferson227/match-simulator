@@ -2,163 +2,9 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import TeamSelector from './TeamSelector';
-import { GeneralContext } from '../../contexts/GeneralContext';
-
-// Mock the team service
-jest.mock('../../services/teamService', () => ({
-  loadTeamsForChampionship: jest.fn(),
-  loadSpecificTeam: jest.fn(),
-  loadAllTeamsExceptOne: jest.fn(),
-  generateSeasonMatchCalendar: jest.fn(),
-}));
-
-const mockLoadTeamsForChampionship =
-  require('../../services/teamService').loadTeamsForChampionship;
-const mockLoadSpecificTeam =
-  require('../../services/teamService').loadSpecificTeam;
-const mockLoadAllTeamsExceptOne =
-  require('../../services/teamService').loadAllTeamsExceptOne;
-const mockGenerateSeasonMatchCalendar =
-  require('../../services/teamService').generateSeasonMatchCalendar;
-
-const mockTeams = [
-  {
-    name: 'FLAMENGO',
-    fileName: 'flamengo',
-    colors: { bg: '#000000', border: '#ff0000', text: '#ffffff' },
-  },
-  {
-    name: 'CRUZEIRO',
-    fileName: 'cruzeiro',
-    colors: { bg: '#00008B', border: '#ffffff', text: '#ffffff' },
-  },
-  {
-    name: 'BRAGANTINO',
-    fileName: 'rb-bragantino',
-    colors: { bg: '#ffffff', border: '#00008B', text: '#ff0000' },
-  },
-  {
-    name: 'PALMEIRAS',
-    fileName: 'palmeiras',
-    colors: { bg: '#006400', border: '#ffffff', text: '#ffffff' },
-  },
-  {
-    name: 'BAHIA',
-    fileName: 'bahia',
-    colors: { bg: '#0000CD', border: '#ff0000', text: '#ffffff' },
-  },
-  {
-    name: 'FLUMINENSE',
-    fileName: 'fluminense',
-    colors: { bg: '#006400', border: '#800000', text: '#ffffff' },
-  },
-  {
-    name: 'A. MINEIRO',
-    fileName: 'atletico-mg',
-    colors: { bg: '#000000', border: '#ffffff', text: '#ffffff' },
-  },
-  {
-    name: 'BOTAFOGO',
-    fileName: 'botafogo',
-    colors: { bg: '#000000', border: '#ffffff', text: '#ffffff' },
-  },
-  {
-    name: 'MIRASSOL',
-    fileName: 'mirassol',
-    colors: { bg: '#ffff00', border: '#006400', text: '#006400' },
-  },
-  {
-    name: 'CORINTHIANS',
-    fileName: 'corinthians',
-    colors: { bg: '#000000', border: '#ffffff', text: '#ffffff' },
-  },
-  {
-    name: 'SÃO PAULO',
-    fileName: 'sao-paulo',
-    colors: { bg: '#ffffff', border: '#ff0000', text: '#000000' },
-  },
-];
-
-const mockBaseTeam = {
-  id: 'test-id',
-  name: 'Clube de Regatas do Flamengo',
-  shortName: 'Flamengo',
-  abbreviation: 'FLA',
-  colors: {
-    outline: '#EC2125',
-    background: '#030101',
-    name: '#FAFAFC',
-  },
-  players: [
-    { id: '1', position: 'GK', name: 'Rossi', strength: 85, mood: 100 },
-    {
-      id: '2',
-      position: 'DF',
-      name: 'Fabricio Bruno',
-      strength: 82,
-      mood: 100,
-    },
-  ],
-  morale: 100,
-  formation: '4-4-2',
-  overallMood: 100,
-  initialOverallStrength: 100,
-};
-
-// Mock the ChampionshipContext
-const mockSetHumanPlayerBaseTeam = jest.fn();
-const mockSetTeamsControlledAutomatically = jest.fn();
-const mockSetSeasonMatchCalendar = jest.fn();
-
-jest.mock('../../contexts/ChampionshipContext', () => ({
-  useChampionshipContext: () => ({
-    state: {
-      selectedChampionship: 'brasileirao-serie-a',
-      humanPlayerBaseTeam: null,
-      teamsControlledAutomatically: [],
-      seasonMatchCalendar: [],
-      currentRound: 0,
-      tableStandings: [],
-    },
-    setHumanPlayerBaseTeam: mockSetHumanPlayerBaseTeam,
-    setTeamsControlledAutomatically: mockSetTeamsControlledAutomatically,
-    setSeasonMatchCalendar: mockSetSeasonMatchCalendar,
-    setChampionship: jest.fn(),
-    setCurrentRound: jest.fn(),
-    incrementCurrentRound: jest.fn(),
-    updateTableStandings: jest.fn(),
-    getTableStandings: jest.fn(() => []),
-    loadState: jest.fn(),
-    dispatch: jest.fn(),
-  }),
-}));
-
-// Mock the GeneralContext
-const mockSetScreenDisplayed = jest.fn();
-
-const mockGeneralContextValue = {
-  setScreenDisplayed: mockSetScreenDisplayed,
-  state: {
-    currentPage: 1,
-    baseTeam: {},
-    matchTeam: null,
-    matchOtherTeams: [],
-    screenDisplayed: 'TeamSelector',
-  },
-  setCurrentPage: jest.fn(),
-  getBaseTeam: jest.fn(),
-  setBaseTeam: jest.fn(),
-  setMatchTeam: jest.fn(),
-  setMatchOtherTeams: jest.fn(),
-};
-
-const renderWithContext = (component: React.ReactElement) => {
-  return render(
-    <GeneralContext.Provider value={mockGeneralContextValue as any}>
-      {component}
-    </GeneralContext.Provider>
-  );
-};
+import { useGameEngine } from '../../contexts/GameEngineContext';
+import { useGameState } from '../../services/useGameState';
+import * as TeamUseCase from '../../../use-cases/TeamUseCases';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -171,212 +17,211 @@ jest.mock('react-i18next', () => ({
   }),
 }));
 
-const mockSeasonCalendar = [
+jest.mock('../../contexts/GameEngineContext', () => ({
+  useGameEngine: jest.fn(),
+}));
+
+jest.mock('../../services/useGameState', () => ({
+  useGameState: jest.fn(),
+}));
+
+jest.mock('../../../use-cases/TeamUseCases', () => ({
+  getTeamsToSelect: jest.fn(),
+}));
+
+const mockDispatch = jest.fn();
+const mockEngine = { dispatch: mockDispatch };
+const mockGameState = {
+  championshipContainer: {
+    playableChampionship: {
+      id: 'championship-id',
+    },
+  },
+  hasError: false,
+  errorMessage: '',
+  currentScreen: 'TeamSelector',
+};
+
+const teamsFixture = [
   {
-    roundNumber: 1,
-    matches: [
-      {
-        id: 'match-1',
-        round: 1,
-        homeTeam: mockBaseTeam,
-        awayTeam: mockBaseTeam,
-        isPlayed: false,
-      },
-    ],
+    id: 'team-1',
+    fullName: 'Team One',
+    shortName: 'TEAM ONE',
+    abbreviation: 'TO',
+    colors: { outline: '#000000', background: '#ffffff', text: '#000000' },
+    players: [],
+    morale: 50,
+    isControlledByHuman: false,
+  },
+  {
+    id: 'team-2',
+    fullName: 'Team Two',
+    shortName: 'TEAM TWO',
+    abbreviation: 'TT',
+    colors: { outline: '#000000', background: '#ffffff', text: '#000000' },
+    players: [],
+    morale: 50,
+    isControlledByHuman: false,
+  },
+  {
+    id: 'team-3',
+    fullName: 'Team Three',
+    shortName: 'TEAM THREE',
+    abbreviation: 'T3',
+    colors: { outline: '#000000', background: '#ffffff', text: '#000000' },
+    players: [],
+    morale: 50,
+    isControlledByHuman: false,
+  },
+  {
+    id: 'team-4',
+    fullName: 'Team Four',
+    shortName: 'TEAM FOUR',
+    abbreviation: 'T4',
+    colors: { outline: '#000000', background: '#ffffff', text: '#000000' },
+    players: [],
+    morale: 50,
+    isControlledByHuman: false,
+  },
+  {
+    id: 'team-5',
+    fullName: 'Team Five',
+    shortName: 'TEAM FIVE',
+    abbreviation: 'T5',
+    colors: { outline: '#000000', background: '#ffffff', text: '#000000' },
+    players: [],
+    morale: 50,
+    isControlledByHuman: false,
+  },
+  {
+    id: 'team-6',
+    fullName: 'Team Six',
+    shortName: 'TEAM SIX',
+    abbreviation: 'T6',
+    colors: { outline: '#000000', background: '#ffffff', text: '#000000' },
+    players: [],
+    morale: 50,
+    isControlledByHuman: false,
+  },
+  {
+    id: 'team-7',
+    fullName: 'Team Seven',
+    shortName: 'TEAM SEVEN',
+    abbreviation: 'T7',
+    colors: { outline: '#000000', background: '#ffffff', text: '#000000' },
+    players: [],
+    morale: 50,
+    isControlledByHuman: false,
+  },
+  {
+    id: 'team-8',
+    fullName: 'Team Eight',
+    shortName: 'TEAM EIGHT',
+    abbreviation: 'T8',
+    colors: { outline: '#000000', background: '#ffffff', text: '#000000' },
+    players: [],
+    morale: 50,
+    isControlledByHuman: false,
+  },
+  {
+    id: 'team-9',
+    fullName: 'Team Nine',
+    shortName: 'TEAM NINE',
+    abbreviation: 'T9',
+    colors: { outline: '#000000', background: '#ffffff', text: '#000000' },
+    players: [],
+    morale: 50,
+    isControlledByHuman: false,
+  },
+  {
+    id: 'team-10',
+    fullName: 'Team Ten',
+    shortName: 'TEAM TEN',
+    abbreviation: 'T10',
+    colors: { outline: '#000000', background: '#ffffff', text: '#000000' },
+    players: [],
+    morale: 50,
+    isControlledByHuman: false,
   },
 ];
+
+const mockSuccessResult = {
+  succeeded: true,
+  getResult: () => teamsFixture,
+};
+
+const mockErrorResult = {
+  succeeded: false,
+  error: { message: 'Failed to load teams' },
+  getResult: () => [],
+};
 
 describe('TeamSelector', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockLoadTeamsForChampionship.mockResolvedValue(mockTeams);
-    mockLoadSpecificTeam.mockResolvedValue(mockBaseTeam);
-    mockLoadAllTeamsExceptOne.mockResolvedValue([mockBaseTeam]);
-    mockGenerateSeasonMatchCalendar.mockReturnValue(mockSeasonCalendar);
-    mockSetHumanPlayerBaseTeam.mockClear();
-    mockSetTeamsControlledAutomatically.mockClear();
-    mockSetSeasonMatchCalendar.mockClear();
+    (useGameEngine as jest.Mock).mockReturnValue(mockEngine);
+    (useGameState as jest.Mock).mockReturnValue(mockGameState);
+    (TeamUseCase.getTeamsToSelect as jest.Mock).mockReturnValue(mockSuccessResult);
   });
 
   test('renders the component and initial teams', async () => {
-    renderWithContext(<TeamSelector />);
+    render(<TeamSelector />);
 
     expect(screen.getByText('SELECT A TEAM')).toBeInTheDocument();
-    expect(screen.getByText('Loading teams...')).toBeInTheDocument();
-
-    await waitFor(() => {
-      expect(screen.getByText('FLAMENGO')).toBeInTheDocument();
-    });
-
-    expect(screen.getByText('MIRASSOL')).toBeInTheDocument();
-    expect(screen.queryByText('CORINTHIANS')).not.toBeInTheDocument();
+    expect(await screen.findByText('TEAM ONE')).toBeInTheDocument();
+    expect(screen.getByText('TEAM NINE')).toBeInTheDocument();
+    expect(screen.queryByText('TEAM TEN')).not.toBeInTheDocument();
   });
 
   test('paginates to the next page of teams', async () => {
-    renderWithContext(<TeamSelector />);
+    render(<TeamSelector />);
 
-    await waitFor(() => {
-      expect(screen.getByText('FLAMENGO')).toBeInTheDocument();
-    });
+    await screen.findByText('TEAM ONE');
 
     const nextButton = screen.getByText('>');
     fireEvent.click(nextButton);
 
-    expect(screen.queryByText('FLAMENGO')).not.toBeInTheDocument();
-    expect(screen.getByText('CORINTHIANS')).toBeInTheDocument();
+    expect(screen.queryByText('TEAM ONE')).not.toBeInTheDocument();
+    expect(screen.getByText('TEAM TEN')).toBeInTheDocument();
   });
 
-  test('loads team data and navigates to TeamManager when a team is clicked', async () => {
-    renderWithContext(<TeamSelector />);
+  test('dispatches SELECT_TEAM when a team is clicked', async () => {
+    render(<TeamSelector />);
+
+    await screen.findByText('TEAM ONE');
+
+    fireEvent.click(screen.getByText('TEAM ONE'));
+
+    expect(mockDispatch).toHaveBeenCalledWith({ type: 'SELECT_TEAM', teamId: 'team-1' });
+  });
+
+  test('dispatches SET_ERROR_MESSAGE when team loading fails', async () => {
+    (TeamUseCase.getTeamsToSelect as jest.Mock).mockReturnValue(mockErrorResult);
+
+    render(<TeamSelector />);
 
     await waitFor(() => {
-      expect(screen.getByText('FLAMENGO')).toBeInTheDocument();
-    });
-
-    const flamengoButton = screen.getByText('FLAMENGO');
-    fireEvent.click(flamengoButton);
-
-    await waitFor(() => {
-      expect(mockLoadSpecificTeam).toHaveBeenCalledWith(
-        'brasileirao-serie-a',
-        'flamengo'
-      );
-      expect(mockLoadAllTeamsExceptOne).toHaveBeenCalledWith(
-        'brasileirao-serie-a',
-        'flamengo'
-      );
-      expect(mockGenerateSeasonMatchCalendar).toHaveBeenCalledWith(
-        mockBaseTeam,
-        [mockBaseTeam]
-      );
-      expect(mockSetHumanPlayerBaseTeam).toHaveBeenCalledWith(mockBaseTeam);
-      expect(mockSetTeamsControlledAutomatically).toHaveBeenCalledWith([
-        mockBaseTeam,
-      ]);
-      expect(mockSetSeasonMatchCalendar).toHaveBeenCalledWith(
-        mockSeasonCalendar
-      );
-      expect(mockSetScreenDisplayed).toHaveBeenCalledWith('TeamManager');
+      expect(mockDispatch).toHaveBeenCalledWith({
+        type: 'SET_ERROR_MESSAGE',
+        errorMessage: 'Failed to load teams',
+      });
     });
   });
 
-  test('loads team data and navigates to TeamManager when any team is clicked', async () => {
-    renderWithContext(<TeamSelector />);
-
-    await waitFor(() => {
-      expect(screen.getByText('CRUZEIRO')).toBeInTheDocument();
+  test('dispatches SET_ERROR_MESSAGE when state has an error', async () => {
+    (useGameState as jest.Mock).mockReturnValue({
+      ...mockGameState,
+      hasError: true,
+      errorMessage: 'state error',
     });
 
-    const cruzeiroButton = screen.getByText('CRUZEIRO');
-    fireEvent.click(cruzeiroButton);
+    render(<TeamSelector />);
 
     await waitFor(() => {
-      expect(mockLoadSpecificTeam).toHaveBeenCalledWith(
-        'brasileirao-serie-a',
-        'cruzeiro'
-      );
-      expect(mockLoadAllTeamsExceptOne).toHaveBeenCalledWith(
-        'brasileirao-serie-a',
-        'cruzeiro'
-      );
-      expect(mockGenerateSeasonMatchCalendar).toHaveBeenCalledWith(
-        mockBaseTeam,
-        [mockBaseTeam]
-      );
-      expect(mockSetHumanPlayerBaseTeam).toHaveBeenCalledWith(mockBaseTeam);
-      expect(mockSetTeamsControlledAutomatically).toHaveBeenCalledWith([
-        mockBaseTeam,
-      ]);
-      expect(mockSetSeasonMatchCalendar).toHaveBeenCalledWith(
-        mockSeasonCalendar
-      );
-      expect(mockSetScreenDisplayed).toHaveBeenCalledWith('TeamManager');
-    });
-  });
-
-  test('previous button is disabled on the first page', async () => {
-    renderWithContext(<TeamSelector />);
-
-    await waitFor(() => {
-      expect(screen.getByText('FLAMENGO')).toBeInTheDocument();
-    });
-
-    const prevButton = screen.getByText('<');
-    expect(prevButton).toBeDisabled();
-  });
-
-  test('next button is enabled on the first page', async () => {
-    renderWithContext(<TeamSelector />);
-
-    await waitFor(() => {
-      expect(screen.getByText('FLAMENGO')).toBeInTheDocument();
-    });
-
-    const nextButton = screen.getByText('>');
-    expect(nextButton).not.toBeDisabled();
-  });
-
-  test('next button is disabled on the last page', async () => {
-    renderWithContext(<TeamSelector />);
-
-    await waitFor(() => {
-      expect(screen.getByText('FLAMENGO')).toBeInTheDocument();
-    });
-
-    const nextButton = screen.getByText('>');
-    fireEvent.click(nextButton); // Click to go to the last page
-
-    expect(nextButton).toBeDisabled();
-  });
-
-  test('paginates to the previous page of teams', async () => {
-    renderWithContext(<TeamSelector />);
-
-    await waitFor(() => {
-      expect(screen.getByText('FLAMENGO')).toBeInTheDocument();
-    });
-
-    const nextButton = screen.getByText('>');
-    fireEvent.click(nextButton); // Go to next page
-
-    const prevButton = screen.getByText('<');
-    fireEvent.click(prevButton); // Go back to previous page
-
-    expect(screen.getByText('FLAMENGO')).toBeInTheDocument();
-    expect(screen.queryByText('CORINTHIANS')).not.toBeInTheDocument();
-  });
-
-  test('shows loading state initially', () => {
-    renderWithContext(<TeamSelector />);
-
-    expect(screen.getByText('SELECT A TEAM')).toBeInTheDocument();
-    expect(screen.getByText('Loading teams...')).toBeInTheDocument();
-  });
-
-  test('shows error state when team loading fails', async () => {
-    mockLoadTeamsForChampionship.mockRejectedValue(new Error('Failed to load'));
-
-    renderWithContext(<TeamSelector />);
-
-    await waitFor(() => {
-      expect(screen.getByText('Failed to load teams')).toBeInTheDocument();
-    });
-  });
-
-  test('shows error when team data loading fails', async () => {
-    mockLoadSpecificTeam.mockResolvedValue(null);
-
-    renderWithContext(<TeamSelector />);
-
-    await waitFor(() => {
-      expect(screen.getByText('FLAMENGO')).toBeInTheDocument();
-    });
-
-    const flamengoButton = screen.getByText('FLAMENGO');
-    fireEvent.click(flamengoButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('Failed to load team data')).toBeInTheDocument();
+      expect(mockDispatch).toHaveBeenCalledWith({
+        type: 'SET_ERROR_MESSAGE',
+        errorMessage: 'state error',
+      });
     });
   });
 });

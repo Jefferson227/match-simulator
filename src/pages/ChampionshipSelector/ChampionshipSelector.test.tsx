@@ -133,6 +133,11 @@ describe('ChampionshipSelector', () => {
       type: 'INIT_CHAMPIONSHIPS',
       championshipInternalName: 'brasileirao-serie-a',
     });
+    expect(mockDispatch).toHaveBeenCalledWith({
+      type: 'SET_CURRENT_SCREEN',
+      screenName: 'TeamSelector',
+    });
+    expect(mockDispatch).toHaveBeenCalledTimes(2);
   });
 
   test('dispatches SET_ERROR_MESSAGE when getChampionships fails', () => {
