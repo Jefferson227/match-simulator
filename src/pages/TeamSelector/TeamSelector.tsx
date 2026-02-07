@@ -55,7 +55,7 @@ const TeamSelector: React.FC = () => {
 
   const selectTeam = (teamId: string) => {
     engine.dispatch({ type: 'SELECT_TEAM', teamId });
-    // engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: '' });
+    engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: '' });
   };
 
   return (
