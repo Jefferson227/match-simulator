@@ -45,6 +45,17 @@ const ChampionshipSelector: React.FC = () => {
     startIndex + CHAMPIONSHIPS_PER_PAGE
   );
 
+  const selectChampionship = (championshipInternalName: string) => {
+    engine.dispatch({
+      type: 'INIT_CHAMPIONSHIPS',
+      championshipInternalName,
+    });
+    engine.dispatch({
+      type: 'SET_CURRENT_SCREEN',
+      screenName: 'TeamSelector',
+    });
+  };
+
   return (
     <MainLayout>
       <div
@@ -57,12 +68,7 @@ const ChampionshipSelector: React.FC = () => {
           {selectedChampionships.map((championship, index) => (
             <button
               key={index}
-              onClick={() =>
-                engine.dispatch({
-                  type: 'INIT_CHAMPIONSHIPS',
-                  championshipInternalName: championship.internalName,
-                })
-              }
+              onClick={() => selectChampionship(championship.internalName)}
               className="w-[342px] h-[80px] px-4 border-4 border-white text-lg uppercase transition hover:bg-white hover:text-[#3d7a33] disabled:opacity-50 disabled:cursor-not-allowed mx-auto"
             >
               {championship.name}
