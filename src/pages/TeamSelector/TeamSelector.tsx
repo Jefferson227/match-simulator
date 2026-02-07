@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
@@ -26,6 +26,11 @@ const TeamSelector: React.FC = () => {
     engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage: teamsResult.error.message });
 
   setTeams(teamsResult.getResult());
+
+  useEffect(() => {
+    if (state.hasError)
+      engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage: state.errorMessage });
+  }, [state]);
 
   const totalPages = Math.ceil(teams.length / TEAMS_PER_PAGE);
 
