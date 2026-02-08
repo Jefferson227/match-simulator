@@ -8,7 +8,7 @@ type BaseChampionship = {
   name: string;
   internalName: string;
   numberOfTeams: number;
-  startingTeams: Team[];
+  teams: Team[];
   standings: Standing[];
   matches: MatchContainer;
   type: ChampionshipType;

@@ -19,7 +19,7 @@ export function getChampionship(
     name: championshipJSONDTO.name,
     internalName: championshipJSONDTO.internalName,
     numberOfTeams: championshipJSONDTO.numberOfTeams,
-    startingTeams: [],
+    teams: [],
     standings: [],
     matches: {
       timer: 0,
@@ -68,17 +68,17 @@ export function getChampionship(
     };
   }
 
-  const startingTeams = championshipJSONDTO.teamNames
+  const teams = championshipJSONDTO.teamNames
     .map((teamName) => TeamRepository.getTeam(teamName))
     .filter((team): team is NonNullable<typeof team> => Boolean(team));
 
-  if (startingTeams.length !== championshipJSONDTO.teamNames.length) {
+  if (teams.length !== championshipJSONDTO.teamNames.length) {
     throw new Error(
-      `Number of starting teams found is not the same as expected. Found: ${startingTeams.length}; Expected: ${championshipJSONDTO.teamNames.length}.`
+      `Number of teams found is not the same as expected. Found: ${teams.length}; Expected: ${championshipJSONDTO.teamNames.length}.`
     );
   }
 
-  const standings = startingTeams.map((team, index) => ({
+  const standings = teams.map((team, index) => ({
     team,
     position: index + 1,
     wins: 0,
@@ -91,7 +91,7 @@ export function getChampionship(
 
   mappedChampionship = {
     ...mappedChampionship,
-    startingTeams,
+    teams,
     standings,
   };
 

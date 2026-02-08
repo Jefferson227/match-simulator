@@ -8,7 +8,7 @@ function buildMockChampionship(): Championship {
     name: 'Mock Championship',
     internalName: 'mock-championship',
     numberOfTeams: 2,
-    startingTeams: [
+    teams: [
       {
         id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
         fullName: 'Mock Team A',
@@ -72,14 +72,12 @@ describe('getTeamsToSelect', () => {
 describe('selectTeam', () => {
   it('marks the selected team as controlled by human', () => {
     const mockedChampionship = buildMockChampionship();
-    const teamToSelectId = mockedChampionship.startingTeams[1].id;
+    const teamToSelectId = mockedChampionship.teams[1].id;
     const result = TeamUseCases.selectTeam(mockedChampionship, teamToSelectId);
     expect(result.succeeded).toBeTruthy();
 
     const updatedChampionship = result.getResult();
-    const selectedTeam = updatedChampionship.startingTeams.find(
-      (team) => team.id === teamToSelectId
-    );
+    const selectedTeam = updatedChampionship.teams.find((team) => team.id === teamToSelectId);
     expect(selectedTeam).toBeDefined();
     expect(selectedTeam?.isControlledByHuman).toBeTruthy();
   });

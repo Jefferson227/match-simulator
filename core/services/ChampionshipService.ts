@@ -62,7 +62,7 @@ const initChampionships = (
     );
     playableChampionship = {
       ...playableChampionship,
-      matches: createMatches(playableChampionship.startingTeams),
+      matches: createMatches(playableChampionship.teams),
     };
 
     championshipContainer = {
@@ -78,7 +78,7 @@ const initChampionships = (
 
       promotionChampionship = {
         ...promotionChampionship,
-        matches: createMatches(promotionChampionship.startingTeams),
+        matches: createMatches(promotionChampionship.teams),
       };
 
       championshipContainer = {
@@ -95,7 +95,7 @@ const initChampionships = (
 
       relegationChampionship = {
         ...relegationChampionship,
-        matches: createMatches(relegationChampionship.startingTeams),
+        matches: createMatches(relegationChampionship.teams),
       };
 
       championshipContainer = {

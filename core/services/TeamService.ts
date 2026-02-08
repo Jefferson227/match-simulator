@@ -4,7 +4,7 @@ import OperationResult from '../results/OperationResult';
 
 function getTeamsToSelect(championship: Championship): OperationResult<Team[]> {
   try {
-    const result = new OperationResult(championship.startingTeams);
+    const result = new OperationResult(championship.teams);
     result.setSuccess();
 
     return result;
@@ -18,7 +18,7 @@ function getTeamsToSelect(championship: Championship): OperationResult<Team[]> {
 
 function selectTeam(championship: Championship, teamId: string): OperationResult<Championship> {
   try {
-    const updatedStartingTeams = championship.startingTeams.map((team: Team) => {
+    const updatedStartingTeams = championship.teams.map((team: Team) => {
       if (team.id === teamId) {
         return {
           ...team,
@@ -31,7 +31,7 @@ function selectTeam(championship: Championship, teamId: string): OperationResult
 
     const updatedChampionship = {
       ...championship,
-      startingTeams: updatedStartingTeams,
+      teams: updatedStartingTeams,
     };
 
     const result = new OperationResult(updatedChampionship);
