@@ -7,6 +7,7 @@ import ChampionshipSelector from './pages/ChampionshipSelector/ChampionshipSelec
 import TeamSelector from './pages/TeamSelector/TeamSelector';
 import { useGameEngine } from './contexts/GameEngineContext';
 import { useGameState } from './services/useGameState';
+import TeamManager from './pages/TeamManager/TeamManager';
 
 const AppContent: FC = () => {
   // Game engine
@@ -21,6 +22,8 @@ const AppContent: FC = () => {
       return <ChampionshipSelector />;
     case 'TeamSelector':
       return <TeamSelector />;
+    case 'TeamManager':
+      return <TeamManager />;
     default:
       return <InitialScreen />;
   }

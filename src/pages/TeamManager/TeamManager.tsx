@@ -4,7 +4,9 @@ import { GeneralContext } from '../../contexts/GeneralContext';
 import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import utils from '../../utils/utils';
 import { MatchTeam, Player } from '../../types';
-import MainLayout from '../MainLayout/MainLayout';
+import MainLayout from '../../components/MainLayout/MainLayout';
+import { useGameEngine } from '../../contexts/GameEngineContext';
+import { useGameState } from '../../services/useGameState';
 
 export const FORMATIONS = ['5-3-2', '3-5-2', '4-4-2', '4-3-3', '4-2-4', '5-4-1', '3-4-3', '3-3-4'];
 
@@ -17,6 +19,11 @@ enum PlayerSelectionState {
 
 const TeamManager: React.FC = () => {
   const { t } = useTranslation();
+
+  // Game engine
+  const engine = useGameEngine();
+  const state = useGameState(engine);
+
   const { setMatchTeam, setScreenDisplayed } = useContext(GeneralContext);
   const { state: championshipState } = useChampionshipContext();
   const [showFormationGrid, setShowFormationGrid] = useState(false);
@@ -328,8 +335,8 @@ const TeamManager: React.FC = () => {
           {showFormationGrid
             ? t('teamManager.chooseFormation')
             : selectedCount < 11
-            ? t('teamManager.selectedCount', { count: selectedCount })
-            : calculateFormation()}
+              ? t('teamManager.selectedCount', { count: selectedCount })
+              : calculateFormation()}
         </div>
         {/* Player List or Formation Grid */}
         {showFormationGrid ? (
