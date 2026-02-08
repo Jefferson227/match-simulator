@@ -16,9 +16,9 @@
 - promotionChampionshipInternalName (to be used separately by composition)
 - numberOfRelegatedTeams (to be used separately by composition)
 - relegationChampionshipInternalName (to be used separately by composition)
-- startingTeams
+- teams
 - standings
-- matches
+- matchContainer
 - type (double-round-robin, single-round-robin, mixed)
 - hasTeamControlledByHuman
 
