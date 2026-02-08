@@ -7,7 +7,9 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "jest"
+    "test": "jest",
+    "test-front": "jest src/pages",
+    "test-back": "jest tests"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.6",
