@@ -137,7 +137,28 @@ const getChampionships = (): OperationResult<Championship[]> => {
   }
 };
 
+const getTeamControlledByHuman = (championship: Championship): OperationResult<Team> => {
+  try {
+    const team = championship.teams.find((t) => t.isControlledByHuman);
+    if (!team) throw new Error('CHampionship has no team controlled by human.');
+
+    const result = new OperationResult<Team>(team);
+    result.setSuccess();
+    return result;
+  } catch (error) {
+    const result = new OperationResult<Team>({} as Team);
+    const message = error instanceof Error ? error.message : String(error);
+    result.setError({
+      errorCode: 'exception',
+      message,
+    });
+
+    return result;
+  }
+};
+
 export default {
   initChampionships,
   getChampionships,
+  getTeamControlledByHuman,
 };
