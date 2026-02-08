@@ -3,10 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import utils from '../../utils/utils';
-import { MatchTeam, Player } from '../../types';
+import { MatchTeam } from '../../types';
 import MainLayout from '../../components/MainLayout/MainLayout';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
+import * as ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
+import Player from '../../../core/models/Player';
 
 export const FORMATIONS = ['5-3-2', '3-5-2', '4-4-2', '4-3-3', '4-2-4', '5-4-1', '3-4-3', '3-3-4'];
 
@@ -33,12 +35,25 @@ const TeamManager: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0); // 0-based page index
   const PLAYERS_PER_PAGE = 11;
 
-  // Get the human player's base team from championship context
-  const baseTeam = championshipState.humanPlayerBaseTeam;
+  const teamResult = ChampionshipUseCases.getTeamControlledByHuman(
+    state.championshipContainer.playableChampionship
+  );
+
+  useEffect(() => {
+    if (!teamResult.succeeded)
+      engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage: teamResult.error.message });
+  }, [teamResult]);
+
+  useEffect(() => {
+    if (state.hasError)
+      engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage: state.errorMessage });
+  }, [state.hasError]);
+
+  const team = teamResult.getResult();
 
   const handlePlayerClick = (id: string) => {
     setPlayerStates((prev) => {
-      const player = baseTeam?.players.find((p: Player) => p.id === id);
+      const player = team.players.find((p: Player) => p.id === id);
       if (!player) return prev;
       const currentState = prev[id] ?? PlayerSelectionState.Unselected;
 
@@ -51,7 +66,7 @@ const TeamManager: React.FC = () => {
       ).length;
 
       // Check if there's a GK selected
-      const hasGKSelected = baseTeam?.players.some(
+      const hasGKSelected = team.players.some(
         (p: Player) =>
           p.position === 'GK' &&
           (prev[p.id] ?? PlayerSelectionState.Unselected) === PlayerSelectionState.Selected
@@ -59,7 +74,7 @@ const TeamManager: React.FC = () => {
 
       // If this is a GK and trying to select, check if another GK is already selected
       if (player.position === 'GK' && (currentState + 1) % 3 === PlayerSelectionState.Selected) {
-        const anotherGKSelected = baseTeam?.players.some(
+        const anotherGKSelected = team.players.some(
           (p: Player) =>
             p.position === 'GK' &&
             p.id !== id &&
@@ -90,7 +105,7 @@ const TeamManager: React.FC = () => {
           if (selectedCount === 10) {
             // Check if a GK is already selected (including this one if it's a GK)
             const willBeGK = player.position === 'GK';
-            const gkAlreadySelected = baseTeam?.players.some(
+            const gkAlreadySelected = team.players.some(
               (p: Player) =>
                 p.position === 'GK' &&
                 (p.id === id && !willBeGK
@@ -134,7 +149,7 @@ const TeamManager: React.FC = () => {
   };
 
   // Pagination logic
-  const players = baseTeam?.players || [];
+  const players = team.players;
   const totalPages = Math.ceil(players.length / PLAYERS_PER_PAGE);
   const paginatedPlayers = players.slice(
     currentPage * PLAYERS_PER_PAGE,
@@ -151,7 +166,7 @@ const TeamManager: React.FC = () => {
   useEffect(() => {
     // Reset to first page if team changes or player count changes
     setCurrentPage(0);
-  }, [baseTeam?.id, players.length]);
+  }, [team.id, players.length]);
 
   // Count selected players
   const selectedCount = Object.values(playerStates).filter(
@@ -163,9 +178,8 @@ const TeamManager: React.FC = () => {
     if (selectedCount !== 11) return null;
 
     const selectedPlayers =
-      baseTeam?.players.filter(
-        (player) => playerStates[player.id] === PlayerSelectionState.Selected
-      ) || [];
+      team.players.filter((player) => playerStates[player.id] === PlayerSelectionState.Selected) ||
+      [];
 
     const dfCount = selectedPlayers.filter((p) => p.position === 'DF').length;
     const mfCount = selectedPlayers.filter((p) => p.position === 'MF').length;
@@ -177,7 +191,7 @@ const TeamManager: React.FC = () => {
   // Function to check if a formation is available based on team's players
   const isFormationAvailable = (formation: string) => {
     const [df, mf, fw] = formation.split('-').map(Number);
-    const players = baseTeam?.players || [];
+    const players = team.players || [];
 
     const dfCount = players.filter((p) => p.position === 'DF').length;
     const mfCount = players.filter((p) => p.position === 'MF').length;
@@ -190,7 +204,7 @@ const TeamManager: React.FC = () => {
   // Function to select best players for a formation
   const selectBestPlayersForFormation = (formation: string) => {
     const [df, mf, fw] = formation.split('-').map(Number);
-    const players = baseTeam?.players || [];
+    const players = team.players || [];
 
     // Reset all selections
     const newPlayerStates: { [id: string]: PlayerSelectionState } = {};
@@ -271,23 +285,18 @@ const TeamManager: React.FC = () => {
     setShowFormationGrid(false);
   };
 
+  // TODO: This logic needs to be reviewed according to the new game engine approach
   const createMatchTeam = (): MatchTeam | null => {
-    if (!baseTeam || selectedCount !== 11) return null;
+    if (selectedCount !== 11) return null;
 
-    const starters = baseTeam.players.filter(
+    const starters = team.players.filter(
       (player) => playerStates[player.id] === PlayerSelectionState.Selected
     );
-    const substitutes = baseTeam.players.filter(
+    const substitutes = team.players.filter(
       (player) => playerStates[player.id] === PlayerSelectionState.Substitute
     );
 
-    return {
-      ...baseTeam,
-      starters,
-      substitutes,
-      score: 0,
-      isHomeTeam: true,
-    };
+    return null;
   };
 
   const handleStartMatch = () => {
@@ -298,15 +307,9 @@ const TeamManager: React.FC = () => {
     }
   };
 
-  // Extract team colors with fallbacks
-  const teamColors = baseTeam?.colors || {
-    background: '#1e1e1e',
-    outline: '#e2e2e2',
-    name: '#e2e2e2',
-  };
-  const backgroundColor = teamColors.background || '#1e1e1e';
-  const outlineColor = teamColors.outline || '#e2e2e2';
-  const nameColor = teamColors.name || '#e2e2e2';
+  const backgroundColor = team.colors.background;
+  const outlineColor = team.colors.outline;
+  const nameColor = team.colors.text;
 
   return (
     <MainLayout>
@@ -322,7 +325,7 @@ const TeamManager: React.FC = () => {
             borderBottom: `4px solid ${outlineColor}`,
           }}
         >
-          {baseTeam?.name}
+          {team.fullName}
         </div>
         <div
           className="text-center text-[18px] py-2"
