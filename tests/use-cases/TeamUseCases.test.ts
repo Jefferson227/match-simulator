@@ -45,7 +45,7 @@ function buildMockChampionship(): Championship {
       },
     ],
     standings: [],
-    matches: {
+    matchContainer: {
       timer: 0,
       currentSeason: 2024,
       currentRound: 1,

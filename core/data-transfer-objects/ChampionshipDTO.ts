@@ -9,7 +9,7 @@ type ChampionshipDTO = {
   numberOfTeams: number;
   startingTeams: Team;
   standings: Standing[];
-  matches: MatchContainer;
+  matchContainer: MatchContainer;
   type: ChampionshipType;
   hasTeamControlledByHuman: boolean;
 };

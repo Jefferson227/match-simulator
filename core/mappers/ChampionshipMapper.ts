@@ -8,7 +8,7 @@ function toChampionshipDTO(championship: Championship): ChampionshipDTO {
     numberOfTeams: championship.numberOfTeams,
     startingTeams: championship.startingTeams,
     standings: championship.standings,
-    matches: championship.matches,
+    matchContainer: championship.matchContainer,
     type: championship.type,
     hasTeamControlledByHuman: championship.hasTeamControlledByHuman,
   } as ChampionshipDTO;

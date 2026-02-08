@@ -21,7 +21,7 @@ export function getChampionship(
     numberOfTeams: championshipJSONDTO.numberOfTeams,
     teams: [],
     standings: [],
-    matches: {
+    matchContainer: {
       timer: 0,
       currentSeason: 0,
       currentRound: 0,

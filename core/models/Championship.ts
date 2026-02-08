@@ -10,7 +10,7 @@ type BaseChampionship = {
   numberOfTeams: number;
   teams: Team[];
   standings: Standing[];
-  matches: MatchContainer;
+  matchContainer: MatchContainer;
   type: ChampionshipType;
   hasTeamControlledByHuman: boolean;
 };
