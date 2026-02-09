@@ -1,9 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { GeneralContext } from '../../contexts/GeneralContext';
-import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import utils from '../../utils/utils';
-import { MatchTeam } from '../../types';
 import MainLayout from '../../components/MainLayout/MainLayout';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
@@ -26,8 +23,6 @@ const TeamManager: React.FC = () => {
   const engine = useGameEngine();
   const state = useGameState(engine);
 
-  const { setMatchTeam, setScreenDisplayed } = useContext(GeneralContext);
-  const { state: championshipState } = useChampionshipContext();
   const [showFormationGrid, setShowFormationGrid] = useState(false);
   const [playerStates, setPlayerStates] = useState<{
     [id: string]: PlayerSelectionState;
@@ -285,26 +280,20 @@ const TeamManager: React.FC = () => {
     setShowFormationGrid(false);
   };
 
-  // TODO: This logic needs to be reviewed according to the new game engine approach
-  const createMatchTeam = (): MatchTeam | null => {
-    if (selectedCount !== 11) return null;
-
+  const setStartersAndSubs = () => {
     const starters = team.players.filter(
       (player) => playerStates[player.id] === PlayerSelectionState.Selected
     );
-    const substitutes = team.players.filter(
+    const subs = team.players.filter(
       (player) => playerStates[player.id] === PlayerSelectionState.Substitute
     );
 
-    return null;
+    // engine.dispatch({ type: 'SET_STARTERS_AND_SUBS', team, starters, subs });
   };
 
   const handleStartMatch = () => {
-    const matchTeam = createMatchTeam();
-    if (matchTeam) {
-      setMatchTeam(matchTeam);
-      setScreenDisplayed('MatchSimulator');
-    }
+    setStartersAndSubs();
+    // engine.dispatch({ type: 'START_MATCHES' });
   };
 
   const backgroundColor = team.colors.background;
@@ -499,7 +488,9 @@ const TeamManager: React.FC = () => {
                   backgroundColor: '#3c7a33',
                   color: '#e2e2e2',
                 }}
-                onClick={() => setScreenDisplayed('TeamAdditionalInfo')}
+                onClick={() =>
+                  engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'TeamAdditionalInfo' })
+                }
               >
                 {t('teamManager.moreInfo')}
               </button>
