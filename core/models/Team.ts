@@ -11,10 +11,3 @@ export type Team = {
   morale: number;
   isControlledByHuman: boolean;
 };
-
-type MatchTeamFields = {
-  starters: Player[];
-  subs: Player[];
-};
-
-export type MatchTeam = Team & MatchTeamFields;
