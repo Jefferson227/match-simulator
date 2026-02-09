@@ -1,4 +1,6 @@
 import ChampionshipContainer from '../core/models/ChampionshipContainer';
+import Player from '../core/models/Player';
+import { Team } from '../core/models/Team';
 
 export type GameState = {
   championshipContainer: ChampionshipContainer;
@@ -12,4 +14,6 @@ export type GameAction =
   | { type: 'SET_ERROR_MESSAGE'; errorMessage: string }
   | { type: 'SET_CURRENT_SCREEN'; screenName: string }
   | { type: 'SELECT_TEAM'; teamId: string }
+  | { type: 'SET_STARTERS_AND_SUBS'; team: Team; starters: Player[]; subs: Player[] }
+  | { type: 'START_MATCHES' }
   | { type: 'PING' };

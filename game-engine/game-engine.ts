@@ -81,6 +81,45 @@ export class GameEngine {
             playableChampionship: selectTeamResult.getResult(),
           },
         };
+      case 'SET_STARTERS_AND_SUBS':
+        const starterIds = action.starters.map((starter) => starter.id);
+        const subIds = action.starters.map((sub) => sub.id);
+        const team = state.championshipContainer.playableChampionship.teams.find(
+          (team) => team.id === action.team.id
+        );
+        if (!team) {
+          return {
+            ...state,
+            hasError: true,
+            errorMessage: 'Team not found while setting starters and subs.',
+          };
+        }
+
+        const updatedPlayers = team.players.map((player) => {
+          if (starterIds.includes(player.id))
+            return {
+              ...player,
+              isStarter: true,
+            };
+
+          if (subIds.includes(player.id))
+            return {
+              ...player,
+              isSub: true,
+            };
+
+          return player;
+        });
+        const updatedTeam = {
+          ...team,
+          players: updatedPlayers,
+        };
+
+        // TODO: Update the team into the state.championshipContainer.playableChampionship
+        return state;
+      case 'START_MATCHES':
+        console.log('pong');
+        return state;
       case 'PING':
         console.log('pong');
         return state;
