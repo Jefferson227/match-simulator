@@ -83,7 +83,7 @@ export class GameEngine {
         };
       case 'SET_STARTERS_AND_SUBS':
         const starterIds = action.starters.map((starter) => starter.id);
-        const subIds = action.starters.map((sub) => sub.id);
+        const subIds = action.subs.map((sub) => sub.id);
         const teams = state.championshipContainer.playableChampionship.teams;
 
         let teamIndex = -1;
