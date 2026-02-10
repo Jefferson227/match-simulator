@@ -516,21 +516,21 @@ const TeamManager: React.FC = () => {
                 {'>'}
               </button>
             </div>
-            {selectedCount === 11 && (
-              <div className="w-[350px] mx-auto mt-2">
-                <button
-                  className="w-full border-4 py-4 text-[16px]"
-                  style={{
-                    borderColor: '#e2e2e2',
-                    backgroundColor: '#3c7a33',
-                    color: '#e2e2e2',
-                  }}
-                  onClick={handleStartMatch}
-                >
-                  {t('teamManager.startMatch')}
-                </button>
-              </div>
-            )}
+            <div
+              className={`w-[350px] mx-auto mt-2 ${selectedCount === 11 ? 'visible' : 'invisible'}`}
+            >
+              <button
+                className="w-full border-4 py-4 text-[16px]"
+                style={{
+                  borderColor: '#e2e2e2',
+                  backgroundColor: '#3c7a33',
+                  color: '#e2e2e2',
+                }}
+                onClick={handleStartMatch}
+              >
+                {t('teamManager.startMatch')}
+              </button>
+            </div>
           </>
         )}
       </div>
