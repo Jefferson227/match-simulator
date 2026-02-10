@@ -6,6 +6,7 @@ import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
 import * as ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
 import Player from '../../../core/models/Player';
+import { Team } from '../../../core/models/Team';
 
 export const FORMATIONS = ['5-3-2', '3-5-2', '4-4-2', '4-3-3', '4-2-4', '5-4-1', '3-4-3', '3-3-4'];
 
@@ -43,6 +44,10 @@ const TeamManager: React.FC = () => {
     if (state.hasError)
       engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage: state.errorMessage });
   }, [state.hasError]);
+
+  useEffect(() => {
+    setStartersAndSubs();
+  }, [playerStates]);
 
   const team = teamResult.getResult();
 
@@ -163,10 +168,11 @@ const TeamManager: React.FC = () => {
     setCurrentPage(0);
   }, [team.id, players.length]);
 
-  // Count selected players
-  const selectedCount = Object.values(playerStates).filter(
-    (state) => state === PlayerSelectionState.Selected
-  ).length;
+  const selectedTeam =
+    state.championshipContainer.playableChampionship.teams.find(
+      (team) => team.isControlledByHuman
+    ) || ({} as Team);
+  const selectedCount = selectedTeam.players.filter((player) => player.isStarter).length;
 
   // Calculate formation based on selected players
   const calculateFormation = () => {
@@ -288,7 +294,7 @@ const TeamManager: React.FC = () => {
       (player) => playerStates[player.id] === PlayerSelectionState.Substitute
     );
 
-    // engine.dispatch({ type: 'SET_STARTERS_AND_SUBS', team, starters, subs });
+    engine.dispatch({ type: 'SET_STARTERS_AND_SUBS', team, starters, subs });
   };
 
   const handleStartMatch = () => {
