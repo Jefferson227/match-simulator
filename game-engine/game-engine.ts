@@ -107,15 +107,21 @@ export class GameEngine {
             return {
               ...player,
               isStarter: true,
+              isSub: false,
             };
 
           if (subIds.includes(player.id))
             return {
               ...player,
+              isStarter: false,
               isSub: true,
             };
 
-          return player;
+          return {
+            ...player,
+            isStarter: false,
+            isSub: false,
+          };
         });
         const updatedTeam = {
           ...team,
