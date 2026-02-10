@@ -84,10 +84,16 @@ export class GameEngine {
       case 'SET_STARTERS_AND_SUBS':
         const starterIds = action.starters.map((starter) => starter.id);
         const subIds = action.starters.map((sub) => sub.id);
-        const team = state.championshipContainer.playableChampionship.teams.find(
-          (team) => team.id === action.team.id
-        );
-        if (!team) {
+        const teams = state.championshipContainer.playableChampionship.teams;
+
+        let teamIndex = -1;
+        for (let i = 0; i < teams.length; i++) {
+          if (teams[i].id === action.team.id) {
+            teamIndex = i;
+            break;
+          }
+        }
+        if (teamIndex === -1) {
           return {
             ...state,
             hasError: true,
@@ -95,6 +101,7 @@ export class GameEngine {
           };
         }
 
+        const team = teams[teamIndex];
         const updatedPlayers = team.players.map((player) => {
           if (starterIds.includes(player.id))
             return {
@@ -115,8 +122,19 @@ export class GameEngine {
           players: updatedPlayers,
         };
 
-        // TODO: Update the team into the state.championshipContainer.playableChampionship
-        return state;
+        const updatedTeams = teams.slice();
+        updatedTeams[teamIndex] = updatedTeam;
+
+        return {
+          ...state,
+          championshipContainer: {
+            ...state.championshipContainer,
+            playableChampionship: {
+              ...state.championshipContainer.playableChampionship,
+              teams: updatedTeams,
+            },
+          },
+        };
       case 'START_MATCHES':
         console.log('pong');
         return state;
