@@ -142,7 +142,7 @@ export class GameEngine {
           },
         };
       case 'START_MATCHES':
-        console.log('pong');
+        console.log('Starting matches!');
         return state;
       case 'PING':
         console.log('pong');

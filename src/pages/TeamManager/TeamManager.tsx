@@ -298,8 +298,8 @@ const TeamManager: React.FC = () => {
   };
 
   const handleStartMatch = () => {
-    setStartersAndSubs();
-    // engine.dispatch({ type: 'START_MATCHES' });
+    engine.dispatch({ type: 'START_MATCHES' });
+    // engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'InitialScreen' });
   };
 
   const backgroundColor = team.colors.background;
