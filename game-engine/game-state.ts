@@ -1,12 +1,14 @@
 import ChampionshipContainer from '../core/models/ChampionshipContainer';
 import Player from '../core/models/Player';
 import { Team } from '../core/models/Team';
+import GameConfig from '../core/models/GameConfig';
 
 export type GameState = {
   championshipContainer: ChampionshipContainer;
   hasError: boolean;
   errorMessage: string;
   currentScreen: string;
+  gameConfig: GameConfig;
 };
 
 export type GameAction =
