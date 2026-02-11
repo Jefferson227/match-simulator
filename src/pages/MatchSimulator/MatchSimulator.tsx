@@ -35,12 +35,12 @@ const MatchSimulator: FC = () => {
 
   // Reset timer and detailsMatchId when leaving MatchSimulator
   useEffect(() => {
-    if (state.screenDisplayed !== 'MatchSimulator') {
+    if (state.currentScreen !== 'MatchSimulator') {
       setTime(0);
       setDetailsMatchId(null);
       setCurrentPage(0);
     }
-  }, [state.screenDisplayed]);
+  }, [state.currentScreen]);
 
   // Reset standingsUpdated and standingsTimeoutSet when a new round starts (time resets to 0)
   useEffect(() => {
@@ -54,9 +54,9 @@ const MatchSimulator: FC = () => {
 
   // Handle clock speed changes
   const handleClockClick = () => {
-    if (state.clockSpeed === 1000) {
+    if (state.gameConfig.clockSpeed === 1000) {
       setClockSpeed(500); // 0.5 seconds
-    } else if (state.clockSpeed === 500) {
+    } else if (state.gameConfig.clockSpeed === 500) {
       setClockSpeed(250); // 0.25 seconds
     } else {
       setClockSpeed(1000); // Back to 1 second
@@ -109,7 +109,7 @@ const MatchSimulator: FC = () => {
     if (!detailsMatchId && !teamSquadView && time < 90) {
       timer = window.setInterval(() => {
         setTime((prevTime) => prevTime + 1);
-      }, state.clockSpeed);
+      }, state.gameConfig.clockSpeed);
     }
 
     if (matches.length > 0 && time < 90) {
@@ -152,7 +152,7 @@ const MatchSimulator: FC = () => {
     updateTableStandings,
     standingsUpdated,
     standingsTimeoutSet,
-    state.clockSpeed,
+    state.gameConfig.clockSpeed,
   ]);
 
   const totalPages = Math.ceil(matches.length / MATCHES_PER_PAGE);
