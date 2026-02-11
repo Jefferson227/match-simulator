@@ -10,17 +10,23 @@ import { getCurrentRoundMatches } from '../../services/teamService';
 import MatchDetails from '../../components/MatchDetails';
 import utils from '../../utils/utils';
 import MainLayout from '../../components/MainLayout/MainLayout';
+import { useGameEngine } from '../../contexts/GameEngineContext';
+import { useGameState } from '../../services/useGameState';
 
 const MATCHES_PER_PAGE = 6;
 
 const MatchSimulator: FC = () => {
+  // Game engine
+  const engine = useGameEngine();
+  const state = useGameState(engine);
+
   const [time, setTime] = useState<number>(0);
   const [detailsMatchId, setDetailsMatchId] = useState<string | null>(null);
   const [standingsUpdated, setStandingsUpdated] = useState(false);
   const [standingsTimeoutSet, setStandingsTimeoutSet] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const { matches, teamSquadView, setMatches, increaseScore, setScorer } = useContext(MatchContext);
-  const { state, setScreenDisplayed, setIsRoundOver, setClockSpeed } = useContext(GeneralContext);
+  const { setScreenDisplayed, setIsRoundOver, setClockSpeed } = useContext(GeneralContext);
   const {
     state: championshipState,
     updateTableStandings,
