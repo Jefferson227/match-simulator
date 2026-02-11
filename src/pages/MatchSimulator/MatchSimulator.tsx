@@ -9,6 +9,7 @@ import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import { getCurrentRoundMatches } from '../../services/teamService';
 import MatchDetails from '../../components/MatchDetails';
 import utils from '../../utils/utils';
+import MainLayout from '../../components/MainLayout/MainLayout';
 
 const MATCHES_PER_PAGE = 6;
 
@@ -166,89 +167,91 @@ const MatchSimulator: FC = () => {
   const selectedMatches = matches.slice(startIndex, startIndex + MATCHES_PER_PAGE);
 
   return (
-    <div className="font-press-start relative min-h-screen">
-      <div
-        className="h-[33px] bg-[#fbff21] mb-[18px] cursor-pointer transition-all duration-200 hover:bg-[#e6e600]"
-        style={{ width: `${(time * 100) / 90}%` }}
-        onClick={handleClockClick}
-        title={`Clock Speed: ${
-          state.clockSpeed === 1000 ? '1x' : state.clockSpeed === 500 ? '2x' : '4x'
-        }`}
-      >
-        <p className="m-0 pt-1 text-right pr-2 text-[20px] text-[#1e1e1e]">{`${time}'`}</p>
-      </div>
-      <div className="mb-[18px] text-center text-white text-sm uppercase">
-        {championshipState.currentRound &&
-          championshipState.seasonMatchCalendar.length > 0 &&
-          !teamSquadView && (
-            <span>
-              {`${championshipState.year} - Round ${championshipState.currentRound} of ${championshipState.seasonMatchCalendar.length}`}
-            </span>
-          )}
-      </div>
-
-      {!teamSquadView && !detailsMatchId ? (
-        <div className="flex flex-col items-center">
-          <div className="h-[579px]">
-            {selectedMatches.map((match, index) => (
-              <div
-                className="w-[320px] flex justify-between items-center mb-[48px] relative"
-                key={index}
-              >
-                <TeamComponent team={match.homeTeam} matchId={match.id} />
-                <Score
-                  homeScore={match.homeTeam.score || 0}
-                  guestScore={match.visitorTeam.score || 0}
-                  onClick={() => setDetailsMatchId(match.id)}
-                />
-                <TeamComponent team={match.visitorTeam} matchId={match.id} />
-                <div className="absolute -bottom-7 left-0 text-[14px] text-[#e2e2e2] uppercase">
-                  {match?.lastScorer
-                    ? `${utils.shortenPlayerName(match.lastScorer.playerName)} ${
-                        match.lastScorer.time
-                      }'`
-                    : null}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {matches.length > MATCHES_PER_PAGE && !teamSquadView && !detailsMatchId && (
-            <div className="w-[320px] flex justify-between items-center mb-[48px] relative">
-              <button
-                onClick={handlePrevPage}
-                disabled={currentPage === 0}
-                className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                &lt;
-              </button>
-              <button
-                onClick={handleNextPage}
-                disabled={currentPage >= totalPages - 1}
-                className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                &gt;
-              </button>
-            </div>
-          )}
+    <MainLayout>
+      <div className="font-press-start relative min-h-screen">
+        <div
+          className="h-[33px] bg-[#fbff21] mb-[18px] cursor-pointer transition-all duration-200 hover:bg-[#e6e600]"
+          style={{ width: `${(time * 100) / 90}%` }}
+          onClick={handleClockClick}
+          title={`Clock Speed: ${
+            state.clockSpeed === 1000 ? '1x' : state.clockSpeed === 500 ? '2x' : '4x'
+          }`}
+        >
+          <p className="m-0 pt-1 text-right pr-2 text-[20px] text-[#1e1e1e]">{`${time}'`}</p>
         </div>
-      ) : null}
+        <div className="mb-[18px] text-center text-white text-sm uppercase">
+          {championshipState.currentRound &&
+            championshipState.seasonMatchCalendar.length > 0 &&
+            !teamSquadView && (
+              <span>
+                {`${championshipState.year} - Round ${championshipState.currentRound} of ${championshipState.seasonMatchCalendar.length}`}
+              </span>
+            )}
+        </div>
 
-      {detailsMatchId &&
-        (() => {
-          const match = matches.find((m) => m.id === detailsMatchId);
-          if (!match) return null;
-          return (
-            <MatchDetails
-              match={match}
-              scorers={match.scorers || []}
-              onBack={() => setDetailsMatchId(null)}
-            />
-          );
-        })()}
+        {!teamSquadView && !detailsMatchId ? (
+          <div className="flex flex-col items-center">
+            <div className="h-[579px]">
+              {selectedMatches.map((match, index) => (
+                <div
+                  className="w-[320px] flex justify-between items-center mb-[48px] relative"
+                  key={index}
+                >
+                  <TeamComponent team={match.homeTeam} matchId={match.id} />
+                  <Score
+                    homeScore={match.homeTeam.score || 0}
+                    guestScore={match.visitorTeam.score || 0}
+                    onClick={() => setDetailsMatchId(match.id)}
+                  />
+                  <TeamComponent team={match.visitorTeam} matchId={match.id} />
+                  <div className="absolute -bottom-7 left-0 text-[14px] text-[#e2e2e2] uppercase">
+                    {match?.lastScorer
+                      ? `${utils.shortenPlayerName(match.lastScorer.playerName)} ${
+                          match.lastScorer.time
+                        }'`
+                      : null}
+                  </div>
+                </div>
+              ))}
+            </div>
 
-      {teamSquadView ? <TeamPlayers teamSquadView={teamSquadView} /> : null}
-    </div>
+            {matches.length > MATCHES_PER_PAGE && !teamSquadView && !detailsMatchId && (
+              <div className="w-[320px] flex justify-between items-center mb-[48px] relative">
+                <button
+                  onClick={handlePrevPage}
+                  disabled={currentPage === 0}
+                  className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  &lt;
+                </button>
+                <button
+                  onClick={handleNextPage}
+                  disabled={currentPage >= totalPages - 1}
+                  className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  &gt;
+                </button>
+              </div>
+            )}
+          </div>
+        ) : null}
+
+        {detailsMatchId &&
+          (() => {
+            const match = matches.find((m) => m.id === detailsMatchId);
+            if (!match) return null;
+            return (
+              <MatchDetails
+                match={match}
+                scorers={match.scorers || []}
+                onBack={() => setDetailsMatchId(null)}
+              />
+            );
+          })()}
+
+        {teamSquadView ? <TeamPlayers teamSquadView={teamSquadView} /> : null}
+      </div>
+    </MainLayout>
   );
 };
 
