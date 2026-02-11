@@ -12,6 +12,7 @@ import utils from '../../utils/utils';
 import MainLayout from '../../components/MainLayout/MainLayout';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
+import Clock from '../../components/Clock';
 
 const MATCHES_PER_PAGE = 6;
 
@@ -175,16 +176,11 @@ const MatchSimulator: FC = () => {
   return (
     <MainLayout>
       <div className="font-press-start relative min-h-screen">
-        <div
-          className="h-[33px] bg-[#fbff21] mb-[18px] cursor-pointer transition-all duration-200 hover:bg-[#e6e600]"
-          style={{ width: `${(time * 100) / 90}%` }}
-          onClick={handleClockClick}
-          title={`Clock Speed: ${
-            state.clockSpeed === 1000 ? '1x' : state.clockSpeed === 500 ? '2x' : '4x'
-          }`}
-        >
-          <p className="m-0 pt-1 text-right pr-2 text-[20px] text-[#1e1e1e]">{`${time}'`}</p>
-        </div>
+        <Clock
+          time={time}
+          handleClockClick={handleClockClick}
+          clockSpeed={state.gameConfig.clockSpeed}
+        />
         <div className="mb-[18px] text-center text-white text-sm uppercase">
           {championshipState.currentRound &&
             championshipState.seasonMatchCalendar.length > 0 &&
