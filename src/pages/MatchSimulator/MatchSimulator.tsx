@@ -1,13 +1,13 @@
 import { useState, useEffect, useContext, FC } from 'react';
-import Score from '../Score';
-import TeamComponent from '../TeamComponent';
+import Score from '../../components/Score';
+import TeamComponent from '../../components/TeamComponent';
 import Functions from '../../functions/MatchSimulatorFunctions';
-import TeamPlayers from '../TeamPlayers/TeamPlayers';
+import TeamPlayers from '../../components/TeamPlayers/TeamPlayers';
 import { MatchContext } from '../../contexts/MatchContext';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import { getCurrentRoundMatches } from '../../services/teamService';
-import MatchDetails from '../MatchDetails';
+import MatchDetails from '../../components/MatchDetails';
 import utils from '../../utils/utils';
 
 const MATCHES_PER_PAGE = 6;
