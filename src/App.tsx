@@ -8,6 +8,7 @@ import TeamSelector from './pages/TeamSelector/TeamSelector';
 import { useGameEngine } from './contexts/GameEngineContext';
 import { useGameState } from './services/useGameState';
 import TeamManager from './pages/TeamManager/TeamManager';
+import MatchSimulator from './pages/MatchSimulator/MatchSimulator';
 
 const AppContent: FC = () => {
   // Game engine
@@ -24,6 +25,8 @@ const AppContent: FC = () => {
       return <TeamSelector />;
     case 'TeamManager':
       return <TeamManager />;
+    case 'MatchSimulator':
+      return <MatchSimulator />;
     default:
       return <InitialScreen />;
   }
