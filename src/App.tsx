@@ -30,37 +30,6 @@ const AppContent: FC = () => {
     default:
       return <InitialScreen />;
   }
-
-  // if (state.screenDisplayed === 'InitialScreen') {
-  //   return <InitialScreen />;
-  // }
-  // if (state.screenDisplayed === 'ChampionshipSelector') {
-  //   return <ChampionshipSelector />;
-  // }
-  // if (state.screenDisplayed === 'TeamManager') {
-  //   return <TeamManager />;
-  // }
-  // if (state.screenDisplayed === 'MatchSimulator') {
-  //   return <MatchSimulator />;
-  // }
-  // if (state.screenDisplayed === 'TeamAdditionalInfo') {
-  //   return <TeamAdditionalInfo />;
-  // }
-  // if (state.screenDisplayed === 'ChampionshipDetails') {
-  //   return <ChampionshipDetails />;
-  // }
-  // if (state.screenDisplayed === 'TeamStandings') {
-  //   return <TeamStandings />;
-  // }
-  // if (state.screenDisplayed === 'TeamSelector') {
-  //   return <TeamSelector />;
-  // }
-  // if (state.screenDisplayed === 'TeamViewer') {
-  //   return <TeamViewer />;
-  // }
-  // if (state.screenDisplayed === 'ErrorScreen') {
-  //   return <ErrorScreen />;
-  // }
 };
 
 const App: FC = () => (
