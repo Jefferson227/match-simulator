@@ -47,6 +47,9 @@ export class GameEngine {
 
         return {
           ...state,
+          gameConfig: {
+            clockSpeed: 250,
+          },
           championshipContainer: result.getResult(),
         };
       case 'SET_ERROR_MESSAGE':
