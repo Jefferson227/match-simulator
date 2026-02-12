@@ -7,6 +7,7 @@ import MatchContainer from '../models/MatchContainer';
 import { Championship } from '../models/Championship';
 
 function createMatches(startingTeams: Team[]): MatchContainer {
+  // TODO: Refactor this function considering that the type MatchContainer doesn't have an array of matches anymore, and instead, it has an array of rounds (of the type Round)
   const teams = [...startingTeams];
   const roundsPerLeg = teams.length - 1;
   const matchesPerRound = teams.length / 2;
