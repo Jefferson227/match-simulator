@@ -1,12 +1,8 @@
-import { useState, useEffect, useContext, FC } from 'react';
+import { useState, useEffect, FC } from 'react';
 import Score from '../../components/Score';
 import TeamComponent from '../../components/TeamComponent';
 import Functions from '../../functions/MatchSimulatorFunctions';
 import TeamPlayers from '../../components/TeamPlayers/TeamPlayers';
-import { MatchContext } from '../../contexts/MatchContext';
-import { GeneralContext } from '../../contexts/GeneralContext';
-import { useChampionshipContext } from '../../contexts/ChampionshipContext';
-import { getCurrentRoundMatches } from '../../services/teamService';
 import MatchDetails from '../../components/MatchDetails';
 import utils from '../../utils/utils';
 import MainLayout from '../../components/MainLayout/MainLayout';
@@ -23,16 +19,7 @@ const MatchSimulator: FC = () => {
 
   const [time, setTime] = useState<number>(0);
   const [detailsMatchId, setDetailsMatchId] = useState<string | null>(null);
-  const [standingsUpdated, setStandingsUpdated] = useState(false);
-  const [standingsTimeoutSet, setStandingsTimeoutSet] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
-  const { matches, teamSquadView, setMatches, increaseScore, setScorer } = useContext(MatchContext);
-  const { setScreenDisplayed, setIsRoundOver, setClockSpeed } = useContext(GeneralContext);
-  const {
-    state: championshipState,
-    updateTableStandings,
-    updateTeamMorale,
-  } = useChampionshipContext();
 
   // Reset timer and detailsMatchId when leaving MatchSimulator
   useEffect(() => {
@@ -42,16 +29,6 @@ const MatchSimulator: FC = () => {
       setCurrentPage(0);
     }
   }, [state.currentScreen]);
-
-  // Reset standingsUpdated and standingsTimeoutSet when a new round starts (time resets to 0)
-  useEffect(() => {
-    if (time === 0) {
-      setStandingsUpdated(false);
-      setStandingsTimeoutSet(false);
-      setCurrentPage(0);
-      // Removed setClockSpeed(1000) to avoid infinite loop and preserve user preference
-    }
-  }, [time]);
 
   // Handle clock speed changes
   const handleClockClick = () => {
@@ -63,46 +40,6 @@ const MatchSimulator: FC = () => {
       setClockSpeed(1000); // Back to 1 second
     }
   };
-
-  useEffect(() => {
-    // Only set matches if not already set for this round
-    if (
-      championshipState.seasonMatchCalendar.length > 0 &&
-      championshipState.humanPlayerBaseTeam &&
-      (matches.length === 0 || matches[0]?.round !== championshipState.currentRound)
-    ) {
-      const currentRoundMatches = getCurrentRoundMatches(
-        championshipState.teamsControlledAutomatically,
-        championshipState.seasonMatchCalendar,
-        championshipState.currentRound,
-        championshipState.humanPlayerBaseTeam,
-        state.matchTeam || undefined
-      );
-
-      // Transform to the format expected by MatchSimulator
-      const transformedMatches = currentRoundMatches.map((match) => ({
-        id: crypto.randomUUID(),
-        homeTeam: match.homeTeam,
-        visitorTeam: match.visitorTeam,
-        lastScorer: null,
-        ballPossession: {
-          isHomeTeam: true,
-          position: 'midfield' as const,
-        },
-        shotAttempts: 0,
-        scorers: [],
-        round: championshipState.currentRound, // Add round info
-      }));
-
-      setMatches(transformedMatches);
-    }
-    // eslint-disable-next-line
-  }, [
-    championshipState.seasonMatchCalendar,
-    championshipState.currentRound,
-    championshipState.humanPlayerBaseTeam,
-    state.matchTeam,
-  ]);
 
   useEffect(() => {
     let timer: number | undefined;
@@ -129,32 +66,16 @@ const MatchSimulator: FC = () => {
       !standingsUpdated &&
       !standingsTimeoutSet
     ) {
-      updateTableStandings(matches);
-      setStandingsUpdated(true);
-      setStandingsTimeoutSet(true);
       window.setTimeout(() => {
-        updateTeamMorale(matches);
-        setIsRoundOver(true);
-        setScreenDisplayed('TeamStandings');
+        // engine.dispatch({ type: 'END_MATCHES' });
+        // engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'TeamStandings' });
       }, 5000);
     }
 
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [
-    time,
-    matches,
-    teamSquadView,
-    detailsMatchId,
-    setScorer,
-    increaseScore,
-    setScreenDisplayed,
-    updateTableStandings,
-    standingsUpdated,
-    standingsTimeoutSet,
-    state.gameConfig.clockSpeed,
-  ]);
+  }, [time, detailsMatchId, state.gameConfig.clockSpeed]);
 
   const totalPages = Math.ceil(matches.length / MATCHES_PER_PAGE);
 
