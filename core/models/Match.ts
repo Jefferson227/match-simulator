@@ -2,7 +2,7 @@ import { Team } from './Team';
 import Scorer from './Scorer';
 
 type Match = {
-  id: number;
+  id: string;
   homeTeam: Team;
   awayTeam: Team;
   scorers: Scorer[];
