@@ -18,8 +18,14 @@ const MatchSimulator: FC = () => {
   const state = useGameState(engine);
 
   const [time, setTime] = useState<number>(0);
+  const [clockSpeed, setClockSpeed] = useState<number>(0);
   const [detailsMatchId, setDetailsMatchId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
+
+  useEffect(() => {
+    // TODO: clockSpeed is retrieved in the beginning, and it needs to be reassigned to the state after the match ends
+    setClockSpeed(state.gameConfig.clockSpeed);
+  }, []);
 
   // Reset timer and detailsMatchId when leaving MatchSimulator
   useEffect(() => {
@@ -97,11 +103,7 @@ const MatchSimulator: FC = () => {
   return (
     <MainLayout>
       <div className="font-press-start relative min-h-screen">
-        <Clock
-          time={time}
-          handleClockClick={handleClockClick}
-          clockSpeed={state.gameConfig.clockSpeed}
-        />
+        <Clock time={time} handleClockClick={handleClockClick} clockSpeed={clockSpeed} />
         <div className="mb-[18px] text-center text-white text-sm uppercase">
           {championshipState.currentRound &&
             championshipState.seasonMatchCalendar.length > 0 &&
