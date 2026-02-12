@@ -58,6 +58,12 @@
 - currentSeason (year)
 - currentRound
 - totalRounds
+- rounds
+
+### Round
+
+- id
+- number
 - matches
 
 ### Match
