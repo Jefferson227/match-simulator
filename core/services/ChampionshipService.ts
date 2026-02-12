@@ -4,42 +4,59 @@ import * as ChampionshipRepository from '../../infra/repositories/ChampionshipRe
 import { Team } from '../models/Team';
 import Match from '../models/Match';
 import MatchContainer from '../models/MatchContainer';
+import Round from '../models/Round';
 import { Championship } from '../models/Championship';
 
 function createMatches(startingTeams: Team[]): MatchContainer {
-  // TODO: Refactor this function considering that the type MatchContainer doesn't have an array of matches anymore, and instead, it has an array of rounds (of the type Round)
   const teams = [...startingTeams];
   const roundsPerLeg = teams.length - 1;
   const matchesPerRound = teams.length / 2;
   const totalRounds = roundsPerLeg * 2;
-  const matches: Match[] = [];
-  let matchId = 1;
+  const rounds: Round[] = [];
+  let roundNumber = 1;
 
   for (let round = 0; round < roundsPerLeg; round++) {
+    const matches: Match[] = [];
     for (let i = 0; i < matchesPerRound; i++) {
       const homeTeam = teams[i];
       const awayTeam = teams[teams.length - 1 - i];
       matches.push({
-        id: matchId++,
+        id: crypto.randomUUID(),
         homeTeam,
         awayTeam,
         scorers: [],
       });
     }
+    rounds.push({
+      id: crypto.randomUUID(),
+      number: roundNumber,
+      matches,
+    });
+    roundNumber += 1;
 
     const lastTeam = teams.pop()!;
     teams.splice(1, 0, lastTeam);
   }
 
-  const firstLegMatchesCount = matches.length;
-  for (let i = 0; i < firstLegMatchesCount; i++) {
-    const match = matches[i];
-    matches.push({
-      id: matchId++,
-      homeTeam: match.awayTeam,
-      awayTeam: match.homeTeam,
-      scorers: [],
+  const firstLegRoundsCount = rounds.length;
+  for (let i = 0; i < firstLegRoundsCount; i++) {
+    const matches: Match[] = [];
+    const round = rounds[i];
+    for (let j = 0; j < round.matches.length; j++) {
+      const match = round.matches[j];
+      matches.push({
+        id: crypto.randomUUID(),
+        homeTeam: match.awayTeam,
+        awayTeam: match.homeTeam,
+        scorers: [],
+      });
+    }
+    rounds.push({
+      id: crypto.randomUUID(),
+      number: roundNumber,
+      matches,
     });
+    roundNumber += 1;
   }
 
   return {
@@ -47,7 +64,7 @@ function createMatches(startingTeams: Team[]): MatchContainer {
     currentSeason: new Date().getFullYear(),
     currentRound: 1,
     totalRounds,
-    matches,
+    rounds,
   };
 }
 
