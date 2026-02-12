@@ -26,7 +26,7 @@ export function getChampionship(
       currentSeason: 0,
       currentRound: 0,
       totalRounds: 0,
-      matches: [],
+      rounds: [],
     },
     type: championshipJSONDTO.type,
     hasTeamControlledByHuman,
