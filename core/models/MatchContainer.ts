@@ -1,11 +1,11 @@
-import Match from './Match';
+import Round from './Round';
 
 type MatchContainer = {
   timer: number;
   currentSeason: number;
   currentRound: number;
   totalRounds: number;
-  matches: Match[];
+  rounds: Round[];
 };
 
 export default MatchContainer;
