@@ -72,7 +72,7 @@ const MatchSimulator: FC = () => {
 
     // Represents one clock tick
     if (matches.length > 0 && time < 90) {
-      Functions.tickClock(time, matches, setScorer, increaseScore);
+      // engine.dispatch({ type: 'RUN_MATCH_ACTIONS' });
     }
 
     // When the matches ends, stop the clock
