@@ -15,7 +15,7 @@ export function getChampionship(
   if (!championshipJSONDTO) throw new Error('Championship not found.');
 
   let mappedChampionship = {
-    id: '0',
+    id: crypto.randomUUID(),
     name: championshipJSONDTO.name,
     internalName: championshipJSONDTO.internalName,
     numberOfTeams: championshipJSONDTO.numberOfTeams,
