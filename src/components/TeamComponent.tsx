@@ -1,9 +1,9 @@
 import { FC, useContext } from 'react';
 import { MatchContext } from '../contexts/MatchContext';
-import { MatchTeam } from '../types';
+import { Team } from '../../core/models/Team';
 
 interface TeamComponentProps {
-  team: MatchTeam;
+  team: Team;
   matchId: string;
 }
 
@@ -20,10 +20,7 @@ const TeamComponent: FC<TeamComponentProps> = ({ team, matchId }) => {
         className="w-full h-full flex items-center justify-center"
         style={{ backgroundColor: team.colors.background }}
       >
-        <h2
-          className="font-press-start text-[22px]"
-          style={{ color: team.colors.name }}
-        >
+        <h2 className="font-press-start text-[22px]" style={{ color: team.colors.text }}>
           {team.abbreviation}
         </h2>
       </div>
