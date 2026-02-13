@@ -50,7 +50,56 @@ function buildMockChampionship(): Championship {
       currentSeason: 2024,
       currentRound: 1,
       totalRounds: 2,
-      matches: [],
+      rounds: [
+        {
+          id: 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee',
+          number: 1,
+          matches: [
+            {
+              id: 'ffffffff-ffff-ffff-ffff-ffffffffffff',
+              homeTeam: {
+                id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+                fullName: 'Mock Team A',
+                shortName: 'Team A',
+                abbreviation: 'MTA',
+                colors: { outline: '#000000', background: '#ffffff', text: '#000000' },
+                players: [
+                  {
+                    id: 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
+                    position: 'GK',
+                    name: 'Goalkeeper A',
+                    strength: 50,
+                    isStarter: true,
+                    isSub: false,
+                  },
+                ],
+                morale: 50,
+                isControlledByHuman: false,
+              },
+              awayTeam: {
+                id: 'cccccccc-cccc-cccc-cccc-cccccccccccc',
+                fullName: 'Mock Team B',
+                shortName: 'Team B',
+                abbreviation: 'MTB',
+                colors: { outline: '#000000', background: '#ffffff', text: '#000000' },
+                players: [
+                  {
+                    id: 'dddddddd-dddd-dddd-dddd-dddddddddddd',
+                    position: 'GK',
+                    name: 'Goalkeeper B',
+                    strength: 50,
+                    isStarter: true,
+                    isSub: false,
+                  },
+                ],
+                morale: 50,
+                isControlledByHuman: false,
+              },
+              scorers: [],
+            },
+          ],
+        },
+      ],
     },
     type: 'double-round-robin',
     hasTeamControlledByHuman: false,
@@ -80,5 +129,10 @@ describe('selectTeam', () => {
     const selectedTeam = updatedChampionship.teams.find((team) => team.id === teamToSelectId);
     expect(selectedTeam).toBeDefined();
     expect(selectedTeam?.isControlledByHuman).toBeTruthy();
+
+    const updatedMatch = updatedChampionship.matchContainer.rounds[0].matches[0];
+    expect(updatedMatch.awayTeam.id).toBe(teamToSelectId);
+    expect(updatedMatch.awayTeam.isControlledByHuman).toBeTruthy();
+    expect(updatedMatch.homeTeam.isControlledByHuman).toBeFalsy();
   });
 });
