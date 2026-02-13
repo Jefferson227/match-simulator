@@ -1,7 +1,6 @@
 import { useState, useEffect, FC } from 'react';
 import Score from '../../components/Score';
 import TeamComponent from '../../components/TeamComponent';
-import Functions from '../../functions/MatchSimulatorFunctions';
 import TeamPlayers from '../../components/TeamPlayers/TeamPlayers';
 import MatchDetails from '../../components/MatchDetails';
 import utils from '../../utils/utils';
