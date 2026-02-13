@@ -175,8 +175,36 @@ const getTeamControlledByHuman = (championship: Championship): OperationResult<T
   }
 };
 
+const getMatchesForCurrentRound = (championship: Championship): OperationResult<Match[]> => {
+  try {
+    const currentRoundNumber = championship.matchContainer.currentRound;
+    const currentRound = championship.matchContainer.rounds.filter(
+      (round) => round.number === currentRoundNumber
+    );
+
+    if (!currentRound) throw new Error('Current round not found.');
+
+    if (currentRound.length > 1)
+      throw new Error(`Multiple rounds are set as round number ${currentRoundNumber}`);
+
+    const result = new OperationResult<Match[]>(currentRound[0].matches);
+    result.setSuccess();
+    return result;
+  } catch (error) {
+    const result = new OperationResult<Match[]>([]);
+    const message = error instanceof Error ? error.message : String(error);
+    result.setError({
+      errorCode: 'exception',
+      message,
+    });
+
+    return result;
+  }
+};
+
 export default {
   initChampionships,
   getChampionships,
   getTeamControlledByHuman,
+  getMatchesForCurrentRound,
 };

@@ -1,6 +1,10 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { initChampionships, getChampionships } from '../../use-cases/ChampionshipUseCases';
+import {
+  getChampionships,
+  getMatchesForCurrentRound,
+  initChampionships,
+} from '../../use-cases/ChampionshipUseCases';
 
 describe('initChampionships', () => {
   it('returns a successful result from ChampionshipService', () => {
@@ -24,5 +28,17 @@ describe('getChampionships', () => {
   it('returns a list of championships', () => {
     const result = getChampionships();
     expect(result.getResult().length > 0).toBeTruthy();
+  });
+});
+
+describe('getMatchesForCurrentRound', () => {
+  it('returns matches for the current round', () => {
+    const initResult = initChampionships('brasileirao-serie-b');
+    const championship = initResult.getResult().playableChampionship;
+
+    const result = getMatchesForCurrentRound(championship);
+
+    expect(result.succeeded).toBeTruthy();
+    expect(result.getResult()).toEqual(championship.matchContainer.rounds[0].matches);
   });
 });
