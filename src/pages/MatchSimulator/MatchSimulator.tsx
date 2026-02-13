@@ -63,7 +63,7 @@ const MatchSimulator: FC = () => {
   useEffect(() => {
     let timer: number | undefined;
 
-    // If the MatchDetails screen or TeamSquadView screen are visible, the round is paused
+    // If no other in-match screen is visible, the clock timer is increased by 1
     if (!detailsMatchId && !teamSquadView && time < 90) {
       timer = window.setInterval(() => {
         setTime((prevTime) => prevTime + 1);
