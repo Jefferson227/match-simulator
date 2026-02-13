@@ -29,6 +29,8 @@ function selectTeam(championship: Championship, teamId: string): OperationResult
       return team;
     });
 
+    // TODO: Set isControlledByHuman as true for the selected team in championship.matchContainer.rounds[...].matches
+
     const updatedChampionship = {
       ...championship,
       teams: updatedStartingTeams,
