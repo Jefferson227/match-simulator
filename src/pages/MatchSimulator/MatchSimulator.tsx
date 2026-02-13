@@ -143,11 +143,11 @@ const MatchSimulator: FC = () => {
                     guestScore={match.awayTeamScore}
                     onClick={() => setDetailsMatchId(match.id)}
                   />
-                  <TeamComponent team={match.visitorTeam} matchId={match.id} />
+                  <TeamComponent team={match.awayTeam} matchId={match.id} />
                   <div className="absolute -bottom-7 left-0 text-[14px] text-[#e2e2e2] uppercase">
-                    {match?.lastScorer
-                      ? `${utils.shortenPlayerName(match.lastScorer.playerName)} ${
-                          match.lastScorer.time
+                    {match.scorers.length > 0
+                      ? `${utils.shortenPlayerName(match.scorers[match.scorers.length - 1].player.name)} ${
+                          match.scorers[match.scorers.length - 1].time
                         }'`
                       : null}
                   </div>
