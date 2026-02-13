@@ -23,6 +23,8 @@ function createMatches(startingTeams: Team[]): MatchContainer {
       matches.push({
         id: crypto.randomUUID(),
         homeTeam,
+        homeTeamScore: 0,
+        awayTeamScore: 0,
         awayTeam,
         scorers: [],
       });
@@ -47,6 +49,8 @@ function createMatches(startingTeams: Team[]): MatchContainer {
       matches.push({
         id: crypto.randomUUID(),
         homeTeam: match.awayTeam,
+        homeTeamScore: 0,
+        awayTeamScore: 0,
         awayTeam: match.homeTeam,
         scorers: [],
       });

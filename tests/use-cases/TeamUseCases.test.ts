@@ -76,6 +76,8 @@ function buildMockChampionship(): Championship {
                 morale: 50,
                 isControlledByHuman: false,
               },
+              homeTeamScore: 0,
+              awayTeamScore: 0,
               awayTeam: {
                 id: 'cccccccc-cccc-cccc-cccc-cccccccccccc',
                 fullName: 'Mock Team B',

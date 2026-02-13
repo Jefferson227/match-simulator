@@ -140,8 +140,8 @@ const MatchSimulator: FC = () => {
                 >
                   <TeamComponent team={match.homeTeam} matchId={match.id} />
                   <Score
-                    homeScore={match.homeTeam.score || 0}
-                    guestScore={match.visitorTeam.score || 0}
+                    homeScore={match.homeTeamScore}
+                    guestScore={match.awayTeamScore}
                     onClick={() => setDetailsMatchId(match.id)}
                   />
                   <TeamComponent team={match.visitorTeam} matchId={match.id} />
