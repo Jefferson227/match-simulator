@@ -121,11 +121,11 @@ const MatchSimulator: FC = () => {
       <div className="font-press-start relative min-h-screen">
         <Clock time={time} handleClockClick={handleClockClick} clockSpeed={clockSpeed} />
         <div className="mb-[18px] text-center text-white text-sm uppercase">
-          {championshipState.currentRound &&
-            championshipState.seasonMatchCalendar.length > 0 &&
+          {state.championshipContainer.playableChampionship.matchContainer.currentRound &&
+            matches.length > 0 &&
             !teamSquadView && (
               <span>
-                {`${championshipState.year} - Round ${championshipState.currentRound} of ${championshipState.seasonMatchCalendar.length}`}
+                {`${state.championshipContainer.playableChampionship.matchContainer.currentSeason} - Round ${state.championshipContainer.playableChampionship.matchContainer.currentRound} of ${state.championshipContainer.playableChampionship.matchContainer.totalRounds}`}
               </span>
             )}
         </div>
