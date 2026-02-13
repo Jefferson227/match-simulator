@@ -9,6 +9,8 @@ import MainLayout from '../../components/MainLayout/MainLayout';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
 import Clock from '../../components/Clock';
+import Match from '../../../core/models/Match';
+import { getMatchesForCurrentRound } from '../../../use-cases/ChampionshipUseCases';
 
 const MATCHES_PER_PAGE = 6;
 
@@ -21,10 +23,20 @@ const MatchSimulator: FC = () => {
   const [clockSpeed, setClockSpeed] = useState<number>(0);
   const [detailsMatchId, setDetailsMatchId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [matches, setMatches] = useState<Match[]>([]);
 
   useEffect(() => {
     // TODO: clockSpeed is retrieved in the beginning, and it needs to be reassigned to the state after the match ends
     setClockSpeed(state.gameConfig.clockSpeed);
+
+    const matchesResult = getMatchesForCurrentRound(
+      state.championshipContainer.playableChampionship
+    );
+
+    if (!matchesResult.succeeded)
+      engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage: matchesResult.error.message });
+
+    setMatches(matchesResult.getResult());
   }, []);
 
   // Reset timer and detailsMatchId when leaving MatchSimulator
