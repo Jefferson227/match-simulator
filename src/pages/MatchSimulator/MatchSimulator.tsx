@@ -47,24 +47,28 @@ const MatchSimulator: FC = () => {
     }
   };
 
+  // useEffect responsible for ticking the clock and calling the actions to run the matches
   useEffect(() => {
     let timer: number | undefined;
 
+    // If the MatchDetails screen or TeamSquadView screen are visible, the round is paused
     if (!detailsMatchId && !teamSquadView && time < 90) {
       timer = window.setInterval(() => {
         setTime((prevTime) => prevTime + 1);
       }, state.gameConfig.clockSpeed);
     }
 
+    // Represents one clock tick
     if (matches.length > 0 && time < 90) {
       Functions.tickClock(time, matches, setScorer, increaseScore);
     }
 
+    // When the matches ends, stop the clock
     if (time >= 90 || teamSquadView || detailsMatchId) {
       if (timer) clearInterval(timer);
     }
 
-    // After match ends, update standings and show standings after 5 seconds
+    // After match ends, run the actions necessary to update the standings
     if (
       time >= 90 &&
       !teamSquadView &&
