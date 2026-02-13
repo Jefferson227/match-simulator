@@ -1,11 +1,12 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Match, Scorer } from '../types';
 import utils from '../utils/utils';
+import Match from '../../core/models/Match';
+import Scorer from '../../core/models/Scorer';
 
 interface MatchDetailsProps {
   match: Match;
-  scorers: (Scorer & { isHomeTeam: boolean })[];
+  scorers: Scorer[];
   onBack: () => void;
 }
 
@@ -19,7 +20,7 @@ const MatchDetails: FC<MatchDetailsProps> = ({ match, scorers, onBack }) => {
             className="w-[95px] h-[58px] border-[4px] box-content flex items-center justify-center text-[22px] mr-4"
             style={{
               backgroundColor: match.homeTeam.colors.background,
-              color: match.homeTeam.colors.name,
+              color: match.homeTeam.colors.text,
               borderColor: match.homeTeam.colors.outline,
             }}
           >
@@ -28,40 +29,36 @@ const MatchDetails: FC<MatchDetailsProps> = ({ match, scorers, onBack }) => {
         </div>
 
         <div className="flex items-center text-[22px] text-white">
-          <div>{match.homeTeam.score}</div>
+          <div>{match.homeTeamScore}</div>
           <div className="mx-[2px]">x</div>
-          <div>{match.visitorTeam.score}</div>
+          <div>{match.awayTeamScore}</div>
         </div>
 
         <div className="flex items-center">
           <div
             className="w-[95px] h-[58px] border-[4px] box-content flex items-center justify-center text-[22px] ml-4"
             style={{
-              backgroundColor: match.visitorTeam.colors.background,
-              color: match.visitorTeam.colors.name,
-              borderColor: match.visitorTeam.colors.outline,
+              backgroundColor: match.awayTeam.colors.background,
+              color: match.awayTeam.colors.text,
+              borderColor: match.awayTeam.colors.outline,
             }}
           >
-            {match.visitorTeam.abbreviation}
+            {match.awayTeam.abbreviation}
           </div>
         </div>
       </div>
 
       <div className="flex flex-col gap-2 min-h-[374px] mb-8">
         {scorers.length === 0 ? (
-          <div className="text-center text-white text-[16px]">
-            {t('matchDetails.noGoals')}
-          </div>
+          <div className="text-center text-white text-[16px]">{t('matchDetails.noGoals')}</div>
         ) : (
           scorers.map((scorer, idx) => (
             <div
               key={idx}
-              className={`w-full flex ${
-                scorer.isHomeTeam ? 'justify-start' : 'justify-end'
-              }`}
+              className={`w-full flex ${scorer.scorerTeam === 'home' ? 'justify-start' : 'justify-end'}`}
             >
               <span className="text-white text-[16px] uppercase">
-                {utils.shortenPlayerName(scorer.playerName)} {scorer.time}'
+                {utils.shortenPlayerName(scorer.player.name)} {scorer.time}'
               </span>
             </div>
           ))
