@@ -1,27 +1,27 @@
-import { FC, useContext, useState, useEffect } from 'react';
-import { MatchContext } from '../../contexts/MatchContext';
+import { FC, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TeamSquadView, Player } from '../../types';
 import utils from '../../utils/utils';
+import { Team } from '../../../core/models/Team';
+import Player from '../../../core/models/Player';
+import Match from '../../../core/models/Match';
+import { GameEngine } from '../../../game-engine/game-engine';
 
 interface TeamPlayersProps {
-  teamSquadView: TeamSquadView;
+  team: Team;
+  matches: Match[];
+  engine: GameEngine;
 }
 
-const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
+const TeamPlayers: FC<TeamPlayersProps> = ({ team, matches }) => {
   const { t } = useTranslation();
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
-  const [selectedSubstitute, setSelectedSubstitute] = useState<Player | null>(
-    null
-  );
+  const [selectedSubstitute, setSelectedSubstitute] = useState<Player | null>(null);
   const [showSubstitutes, setShowSubstitutes] = useState<boolean>(false);
-  const { matches, setTeamSquadView, confirmSubstitution } =
-    useContext(MatchContext);
 
   useEffect(() => {
     // When matches or teamSquadView changes, update the teamSquadView with the latest team
     const updatedMatch = matches.find((m) => m.id === teamSquadView.matchId);
-    const updatedTeam = teamSquadView.team.isHomeTeam
+    const updatedTeam = team.
       ? updatedMatch?.homeTeam
       : updatedMatch?.visitorTeam;
 
@@ -40,95 +40,89 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
       <div
         className="w-[350px] h-[596px] mx-auto relative outline outline-4"
         style={{
-          backgroundColor: teamSquadView.team.colors.background,
-          outlineColor: teamSquadView.team.colors.outline,
+          backgroundColor: team.colors.background,
+          outlineColor: team.colors.outline,
         }}
       >
         <div
           className="max-h-[80px] border-b-3 text-[17px] py-[10px] px-[22px] text-center uppercase"
           style={{
-            color: teamSquadView.team.colors.name,
-            borderColor: teamSquadView.team.colors.outline,
+            color: team.colors.text,
+            borderColor: team.colors.outline,
           }}
         >
-          {teamSquadView.team.name}
+          {team.fullName}
         </div>
         <div
           className="max-h-[60px] border-b-3 text-[16px] py-[10px] px-[22px] text-[#e2e2e2] text-center"
           style={{
-            color: teamSquadView.team.colors.name,
-            borderColor: teamSquadView.team.colors.outline,
+            color: team.colors.text,
+            borderColor: team.colors.outline,
           }}
         >
-          {utils.getTeamFormation(teamSquadView.team.starters)}
+          {utils.getTeamFormation(team)}
         </div>
         <div className={showSubstitutes ? 'hidden' : 'block mt-[10px]'}>
-          {teamSquadView.team.starters.map((starter) => (
-            <div
-              className="text-[14px] flex justify-between py-0.5 px-6 uppercase cursor-pointer"
-              key={starter.id}
-              style={{
-                color:
-                  starter.id === selectedPlayer?.id
-                    ? teamSquadView.team.colors.background
-                    : teamSquadView.team.colors.name,
-                backgroundColor:
-                  starter.id === selectedPlayer?.id
-                    ? teamSquadView.team.colors.name
-                    : teamSquadView.team.colors.background,
-              }}
-              onClick={() =>
-                starter.id !== selectedPlayer?.id
-                  ? setSelectedPlayer(starter)
-                  : setSelectedPlayer(null)
-              }
-            >
-              <div className="w-8">
-                {t(`teamPlayers.positions.${starter.position}`)}
+          {team.players
+            .filter((player) => player.isStarter)
+            .map((starter) => (
+              <div
+                className="text-[14px] flex justify-between py-0.5 px-6 uppercase cursor-pointer"
+                key={starter.id}
+                style={{
+                  color:
+                    starter.id === selectedPlayer?.id ? team.colors.background : team.colors.text,
+                  backgroundColor:
+                    starter.id === selectedPlayer?.id ? team.colors.text : team.colors.background,
+                }}
+                onClick={() =>
+                  starter.id !== selectedPlayer?.id
+                    ? setSelectedPlayer(starter)
+                    : setSelectedPlayer(null)
+                }
+              >
+                <div className="w-8">{t(`teamPlayers.positions.${starter.position}`)}</div>
+                <div className="w-[200px] text-left">{utils.shortenPlayerName(starter.name)}</div>
+                <div className="w-8">{starter.strength}</div>
               </div>
-              <div className="w-[200px] text-left">
-                {utils.shortenPlayerName(starter.name)}
-              </div>
-              <div className="w-8">{starter.strength}</div>
-            </div>
-          ))}
+            ))}
         </div>
         <div
           className={
-            showSubstitutes && teamSquadView.team.substitutes
+            showSubstitutes && team.players.filter((player) => player.isSub)
               ? 'block mt-[10px]'
               : 'hidden'
           }
         >
-          {teamSquadView.team.substitutes.map((substitute) => (
-            <div
-              className="text-[14px] flex justify-between py-0.5 px-6 uppercase cursor-pointer"
-              key={substitute.id}
-              style={{
-                color:
-                  substitute.id === selectedSubstitute?.id
-                    ? teamSquadView.team.colors.background
-                    : teamSquadView.team.colors.name,
-                backgroundColor:
-                  substitute.id === selectedSubstitute?.id
-                    ? teamSquadView.team.colors.name
-                    : teamSquadView.team.colors.background,
-              }}
-              onClick={() =>
-                substitute.id !== selectedSubstitute?.id
-                  ? setSelectedSubstitute(substitute)
-                  : setSelectedSubstitute(null)
-              }
-            >
-              <div className="w-8">
-                {t(`teamPlayers.positions.${substitute.position}`)}
+          {team.players
+            .filter((player) => player.isSub)
+            .map((substitute) => (
+              <div
+                className="text-[14px] flex justify-between py-0.5 px-6 uppercase cursor-pointer"
+                key={substitute.id}
+                style={{
+                  color:
+                    substitute.id === selectedSubstitute?.id
+                      ? team.colors.background
+                      : team.colors.text,
+                  backgroundColor:
+                    substitute.id === selectedSubstitute?.id
+                      ? team.colors.text
+                      : team.colors.background,
+                }}
+                onClick={() =>
+                  substitute.id !== selectedSubstitute?.id
+                    ? setSelectedSubstitute(substitute)
+                    : setSelectedSubstitute(null)
+                }
+              >
+                <div className="w-8">{t(`teamPlayers.positions.${substitute.position}`)}</div>
+                <div className="w-[200px] text-left">
+                  {utils.shortenPlayerName(substitute.name)}
+                </div>
+                <div className="w-8">{substitute.strength}</div>
               </div>
-              <div className="w-[200px] text-left">
-                {utils.shortenPlayerName(substitute.name)}
-              </div>
-              <div className="w-8">{substitute.strength}</div>
-            </div>
-          ))}
+            ))}
         </div>
         <div
           className={`absolute bottom-0 left-0 w-full mb-[15px] ${
@@ -139,9 +133,9 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
             <button
               className="w-[322px] h-[58px] text-[16px] border-0 outline outline-4 mx-auto block"
               style={{
-                backgroundColor: teamSquadView.team.colors.background,
-                outlineColor: teamSquadView.team.colors.outline,
-                color: teamSquadView.team.colors.name,
+                backgroundColor: team.colors.background,
+                outlineColor: team.colors.outline,
+                color: team.colors.text,
               }}
               onClick={() => setShowSubstitutes(true)}
             >
@@ -161,18 +155,20 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ teamSquadView }) => {
             <button
               className="w-[322px] h-[58px] text-[16px] border-0 outline outline-4 mx-auto block"
               style={{
-                backgroundColor: teamSquadView.team.colors.background,
-                outlineColor: teamSquadView.team.colors.outline,
-                color: teamSquadView.team.colors.name,
+                backgroundColor: team.colors.background,
+                outlineColor: team.colors.outline,
+                color: team.colors.text,
               }}
               onClick={() => {
                 if (selectedPlayer && selectedSubstitute) {
-                  confirmSubstitution({
-                    matchId: teamSquadView.matchId,
-                    team: teamSquadView.team,
-                    selectedPlayer,
-                    selectedSubstitute,
-                  });
+                  // confirmSubstitution({
+                  //   matchId: matchId,
+                  //   team: team,
+                  //   selectedPlayer,
+                  //   selectedSubstitute,
+                  // });
+
+                  // engine.dispatch({ type: 'SUBSTITUTE_PLAYER', matchId, player, sub });
                   setSelectedPlayer(null);
                   setSelectedSubstitute(null);
                   setShowSubstitutes(false);
