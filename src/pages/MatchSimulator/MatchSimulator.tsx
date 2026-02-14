@@ -80,13 +80,7 @@ const MatchSimulator: FC = () => {
     }
 
     // After match ends, run the actions necessary to update the standings
-    if (
-      time >= 90 &&
-      !teamSquadView &&
-      !detailsMatchId &&
-      !standingsUpdated &&
-      !standingsTimeoutSet
-    ) {
+    if (time >= 90 && !teamSquadView && !detailsMatchId) {
       window.setTimeout(() => {
         // engine.dispatch({ type: 'END_MATCHES' });
         // engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'TeamStandings' });
