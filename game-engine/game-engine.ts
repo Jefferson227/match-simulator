@@ -1,6 +1,8 @@
 import { GameAction, GameState } from './game-state';
 import { initChampionships } from '../use-cases/ChampionshipUseCases';
 import * as TeamUseCases from '../use-cases/TeamUseCases';
+import * as Utils from './Utils';
+import { Team } from '../core/models/Team';
 
 type Listener = () => void;
 
@@ -146,6 +148,51 @@ export class GameEngine {
         };
       case 'START_MATCHES':
         console.log('Starting matches!');
+        return state;
+      case 'SUBSTITUTE_PLAYER':
+        const matches = Utils.getMatchesFromCurrentRound(state);
+        if (!matches) {
+          return {
+            ...state,
+            hasError: true,
+            errorMessage: 'Match could not be found to confirm substitution.',
+          };
+        }
+
+        const match = matches.find((match) => match.id === action.matchId);
+        if (!match) {
+          return {
+            ...state,
+            hasError: true,
+            errorMessage: 'Match could not be found to confirm substitution.',
+          };
+        }
+
+        let teamToUpdate: Team | undefined;
+        if (match.homeTeam.id === action.team.id) teamToUpdate = match.homeTeam;
+        if (match.awayTeam.id === action.team.id) teamToUpdate = match.awayTeam;
+
+        if (!teamToUpdate) {
+          return {
+            ...state,
+            hasError: true,
+            errorMessage: 'Team could not be found to confirm substitution.',
+          };
+        }
+
+        teamToUpdate.players = teamToUpdate.players.map((player) => {
+          if (player.id === action.player.id) {
+            return { ...player, isStarter: false, isSub: false };
+          }
+
+          if (player.id === action.sub.id) {
+            return { ...player, isStarter: true, isSub: false };
+          }
+
+          return player;
+        });
+
+        // TODO: Update the teamToUpdate within the round and match in the state
         return state;
       case 'PING':
         console.log('pong');
