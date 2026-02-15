@@ -144,14 +144,13 @@ const TeamMatchDetails: FC<TeamPlayersProps> = ({ team, matchId, engine, runFunc
               }}
               onClick={() => {
                 if (selectedPlayer && selectedSubstitute) {
-                  // confirmSubstitution({
-                  //   matchId: matchId,
-                  //   team: team,
-                  //   selectedPlayer,
-                  //   selectedSubstitute,
-                  // });
-
-                  // engine.dispatch({ type: 'SUBSTITUTE_PLAYER', matchId, player, sub });
+                  engine.dispatch({
+                    type: 'SUBSTITUTE_PLAYER',
+                    team,
+                    matchId,
+                    player: selectedPlayer,
+                    sub: selectedSubstitute,
+                  });
                   setSelectedPlayer(null);
                   setSelectedSubstitute(null);
                   setShowSubstitutes(false);
