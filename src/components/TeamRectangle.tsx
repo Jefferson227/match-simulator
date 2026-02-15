@@ -1,20 +1,17 @@
-import { FC, useContext } from 'react';
-import { MatchContext } from '../contexts/MatchContext';
+import { FC } from 'react';
 import { Team } from '../../core/models/Team';
 
 interface TeamRectangleProps {
   team: Team;
-  matchId: string;
+  runFunction: () => void;
 }
 
-const TeamRectangle: FC<TeamRectangleProps> = ({ team, matchId }) => {
-  const { setTeamSquadView } = useContext(MatchContext);
-
+const TeamRectangle: FC<TeamRectangleProps> = ({ team, runFunction }) => {
   return (
     <div
       className="w-[95px] h-[39px] border-[4px] box-content cursor-pointer"
       style={{ borderColor: team.colors.outline }}
-      onClick={() => setTeamSquadView({ team, matchId })}
+      onClick={runFunction}
     >
       <div
         className="w-full h-full flex items-center justify-center"

@@ -3,37 +3,20 @@ import { useTranslation } from 'react-i18next';
 import utils from '../../utils/utils';
 import { Team } from '../../../core/models/Team';
 import Player from '../../../core/models/Player';
-import Match from '../../../core/models/Match';
 import { GameEngine } from '../../../game-engine/game-engine';
 
 interface TeamPlayersProps {
   team: Team;
-  matches: Match[];
+  matchId: string;
   engine: GameEngine;
+  runFunction: () => void;
 }
 
-const TeamMatchDetails: FC<TeamPlayersProps> = ({ team, matches }) => {
+const TeamMatchDetails: FC<TeamPlayersProps> = ({ team, matchId, engine, runFunction }) => {
   const { t } = useTranslation();
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [selectedSubstitute, setSelectedSubstitute] = useState<Player | null>(null);
   const [showSubstitutes, setShowSubstitutes] = useState<boolean>(false);
-
-  useEffect(() => {
-    // When matches or teamSquadView changes, update the teamSquadView with the latest team
-    const updatedMatch = matches.find((m) => m.id === teamSquadView.matchId);
-    const updatedTeam = team.
-      ? updatedMatch?.homeTeam
-      : updatedMatch?.visitorTeam;
-
-    if (updatedTeam) {
-      setTeamSquadView({
-        ...teamSquadView,
-        team: updatedTeam,
-      });
-    }
-    // Only run this effect after a substitution (e.g., when showSubstitutes is false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [matches]);
 
   return (
     <div className="font-press-start">
@@ -60,7 +43,7 @@ const TeamMatchDetails: FC<TeamPlayersProps> = ({ team, matches }) => {
             borderColor: team.colors.outline,
           }}
         >
-          {utils.getTeamFormation(team)}
+          {utils.getTeamFormation(team.players)}
         </div>
         <div className={showSubstitutes ? 'hidden' : 'block mt-[10px]'}>
           {team.players
@@ -194,7 +177,7 @@ const TeamMatchDetails: FC<TeamPlayersProps> = ({ team, matches }) => {
           className={`${
             showSubstitutes ? 'w-[159px]' : 'w-full'
           } h-[58px] outline outline-4 outline-[#e2e2e2] border-0 text-[#e2e2e2] bg-[#3d7a33] text-[16px] mt-4`}
-          onClick={() => setTeamSquadView(null)}
+          onClick={runFunction}
         >
           {t('teamPlayers.backToMatch')}
         </button>
