@@ -2,12 +2,12 @@ import { FC, useContext } from 'react';
 import { MatchContext } from '../contexts/MatchContext';
 import { Team } from '../../core/models/Team';
 
-interface TeamComponentProps {
+interface TeamRectangleProps {
   team: Team;
   matchId: string;
 }
 
-const TeamComponent: FC<TeamComponentProps> = ({ team, matchId }) => {
+const TeamRectangle: FC<TeamRectangleProps> = ({ team, matchId }) => {
   const { setTeamSquadView } = useContext(MatchContext);
 
   return (
@@ -28,4 +28,4 @@ const TeamComponent: FC<TeamComponentProps> = ({ team, matchId }) => {
   );
 };
 
-export default TeamComponent;
+export default TeamRectangle;
