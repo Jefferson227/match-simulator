@@ -18,4 +18,11 @@ export type GameAction =
   | { type: 'SELECT_TEAM'; teamId: string }
   | { type: 'SET_STARTERS_AND_SUBS'; team: Team; starters: Player[]; subs: Player[] }
   | { type: 'START_MATCHES' }
+  | {
+      type: 'SUBSTITUTE_PLAYER';
+      team: Team;
+      matchId: string;
+      player: Player;
+      sub: Player;
+    }
   | { type: 'PING' };
