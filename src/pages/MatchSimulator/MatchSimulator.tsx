@@ -1,7 +1,5 @@
 import { useState, useEffect, FC } from 'react';
 import Score from '../../components/Score';
-import TeamComponent from '../../components/TeamComponent';
-import TeamPlayers from '../../components/TeamPlayers/TeamPlayers';
 import MatchDetails from '../../components/MatchDetails';
 import utils from '../../utils/utils';
 import MainLayout from '../../components/MainLayout/MainLayout';
@@ -10,6 +8,8 @@ import { useGameState } from '../../services/useGameState';
 import Clock from '../../components/Clock';
 import Match from '../../../core/models/Match';
 import { getMatchesForCurrentRound } from '../../../use-cases/ChampionshipUseCases';
+import TeamMatchDetails from '../../components/TeamMatchDetails/TeamMatchDetails';
+import TeamRectangle from '../../components/TeamRectangle';
 
 const MATCHES_PER_PAGE = 6;
 
@@ -131,13 +131,13 @@ const MatchSimulator: FC = () => {
                   className="w-[320px] flex justify-between items-center mb-[48px] relative"
                   key={index}
                 >
-                  <TeamComponent team={match.homeTeam} matchId={match.id} />
+                  <TeamRectangle team={match.homeTeam} matchId={match.id} />
                   <Score
                     homeScore={match.homeTeamScore}
                     guestScore={match.awayTeamScore}
                     onClick={() => setDetailsMatchId(match.id)}
                   />
-                  <TeamComponent team={match.awayTeam} matchId={match.id} />
+                  <TeamRectangle team={match.awayTeam} matchId={match.id} />
                   <div className="absolute -bottom-7 left-0 text-[14px] text-[#e2e2e2] uppercase">
                     {match.scorers.length > 0
                       ? `${utils.shortenPlayerName(match.scorers[match.scorers.length - 1].player.name)} ${
@@ -183,7 +183,7 @@ const MatchSimulator: FC = () => {
             );
           })()}
 
-        {teamSquadView ? <TeamPlayers teamSquadView={teamSquadView} /> : null}
+        {teamSquadView ? <TeamMatchDetails teamSquadView={teamSquadView} /> : null}
       </div>
     </MainLayout>
   );
