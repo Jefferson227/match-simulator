@@ -10,6 +10,7 @@ import Match from '../../../core/models/Match';
 import { getMatchesForCurrentRound } from '../../../use-cases/ChampionshipUseCases';
 import TeamMatchDetails from '../../components/TeamMatchDetails/TeamMatchDetails';
 import TeamRectangle from '../../components/TeamRectangle';
+import { Team } from '../../../core/models/Team';
 
 const MATCHES_PER_PAGE = 6;
 
@@ -23,6 +24,22 @@ const MatchSimulator: FC = () => {
   const [detailsMatchId, setDetailsMatchId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [matches, setMatches] = useState<Match[]>([]);
+
+  const [matchId, setMatchId] = useState<string>('');
+  const [team, setTeam] = useState<Team>({} as Team);
+  const [showTeamMatchDetails, setShowTeamMatchDetails] = useState<boolean>(false);
+
+  const setParamsForTeamMatchDetails = (teamToBeSet: Team, matchIdToBeSet: string) => {
+    setTeam(teamToBeSet);
+    setMatchId(matchIdToBeSet);
+    setShowTeamMatchDetails(true);
+  };
+
+  const clearParamsForTeamMatchDetails = () => {
+    setTeam({} as Team);
+    setMatchId('');
+    setShowTeamMatchDetails(false);
+  };
 
   useEffect(() => {
     // TODO: clockSpeed is retrieved in the beginning, and it needs to be reassigned to the state after the match ends
@@ -63,7 +80,7 @@ const MatchSimulator: FC = () => {
     let timer: number | undefined;
 
     // If no other in-match screen is visible, the clock timer is increased by 1
-    if (!detailsMatchId && !teamSquadView && time < 90) {
+    if (!detailsMatchId && !showTeamMatchDetails && time < 90) {
       timer = window.setInterval(() => {
         setTime((prevTime) => prevTime + 1);
       }, state.gameConfig.clockSpeed);
@@ -75,12 +92,12 @@ const MatchSimulator: FC = () => {
     }
 
     // When the matches ends, stop the clock
-    if (time >= 90 || teamSquadView || detailsMatchId) {
+    if (time >= 90 || showTeamMatchDetails || detailsMatchId) {
       if (timer) clearInterval(timer);
     }
 
     // After match ends, run the actions necessary to update the standings
-    if (time >= 90 && !teamSquadView && !detailsMatchId) {
+    if (time >= 90 && !showTeamMatchDetails && !detailsMatchId) {
       window.setTimeout(() => {
         // engine.dispatch({ type: 'END_MATCHES' });
         // engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'TeamStandings' });
@@ -116,14 +133,14 @@ const MatchSimulator: FC = () => {
         <div className="mb-[18px] text-center text-white text-sm uppercase">
           {state.championshipContainer.playableChampionship.matchContainer.currentRound &&
             matches.length > 0 &&
-            !teamSquadView && (
+            !showTeamMatchDetails && (
               <span>
                 {`${state.championshipContainer.playableChampionship.matchContainer.currentSeason} - Round ${state.championshipContainer.playableChampionship.matchContainer.currentRound} of ${state.championshipContainer.playableChampionship.matchContainer.totalRounds}`}
               </span>
             )}
         </div>
 
-        {!teamSquadView && !detailsMatchId ? (
+        {!showTeamMatchDetails && !detailsMatchId ? (
           <div className="flex flex-col items-center">
             <div className="h-[579px]">
               {selectedMatches.map((match, index) => (
@@ -131,13 +148,19 @@ const MatchSimulator: FC = () => {
                   className="w-[320px] flex justify-between items-center mb-[48px] relative"
                   key={index}
                 >
-                  <TeamRectangle team={match.homeTeam} matchId={match.id} />
+                  <TeamRectangle
+                    team={match.homeTeam}
+                    runFunction={() => setParamsForTeamMatchDetails(match.homeTeam, match.id)}
+                  />
                   <Score
                     homeScore={match.homeTeamScore}
                     guestScore={match.awayTeamScore}
                     onClick={() => setDetailsMatchId(match.id)}
                   />
-                  <TeamRectangle team={match.awayTeam} matchId={match.id} />
+                  <TeamRectangle
+                    team={match.awayTeam}
+                    runFunction={() => setParamsForTeamMatchDetails(match.awayTeam, match.id)}
+                  />
                   <div className="absolute -bottom-7 left-0 text-[14px] text-[#e2e2e2] uppercase">
                     {match.scorers.length > 0
                       ? `${utils.shortenPlayerName(match.scorers[match.scorers.length - 1].player.name)} ${
@@ -149,7 +172,7 @@ const MatchSimulator: FC = () => {
               ))}
             </div>
 
-            {matches.length > MATCHES_PER_PAGE && !teamSquadView && !detailsMatchId && (
+            {matches.length > MATCHES_PER_PAGE && !showTeamMatchDetails && !detailsMatchId && (
               <div className="w-[320px] flex justify-between items-center mb-[48px] relative">
                 <button
                   onClick={handlePrevPage}
@@ -183,7 +206,14 @@ const MatchSimulator: FC = () => {
             );
           })()}
 
-        {teamSquadView ? <TeamMatchDetails teamSquadView={teamSquadView} /> : null}
+        {showTeamMatchDetails ? (
+          <TeamMatchDetails
+            team={team}
+            matchId={matchId}
+            engine={engine}
+            runFunction={clearParamsForTeamMatchDetails}
+          />
+        ) : null}
       </div>
     </MainLayout>
   );
