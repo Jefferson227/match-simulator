@@ -12,7 +12,7 @@ interface TeamPlayersProps {
   engine: GameEngine;
 }
 
-const TeamPlayers: FC<TeamPlayersProps> = ({ team, matches }) => {
+const TeamMatchDetails: FC<TeamPlayersProps> = ({ team, matches }) => {
   const { t } = useTranslation();
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [selectedSubstitute, setSelectedSubstitute] = useState<Player | null>(null);
@@ -203,4 +203,4 @@ const TeamPlayers: FC<TeamPlayersProps> = ({ team, matches }) => {
   );
 };
 
-export default TeamPlayers;
+export default TeamMatchDetails;
