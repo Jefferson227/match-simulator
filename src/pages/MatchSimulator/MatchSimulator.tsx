@@ -88,6 +88,7 @@ const MatchSimulator: FC = () => {
 
     // Represents one clock tick
     if (matches.length > 0 && time < 90) {
+      // TODO: Implement this new action
       // engine.dispatch({ type: 'RUN_MATCH_ACTIONS' });
     }
 
@@ -99,6 +100,7 @@ const MatchSimulator: FC = () => {
     // After match ends, run the actions necessary to update the standings
     if (time >= 90 && !showTeamMatchDetails && !detailsMatchId) {
       window.setTimeout(() => {
+        // TODO: Implement this new action
         // engine.dispatch({ type: 'END_MATCHES' });
         // engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'TeamStandings' });
       }, 5000);
