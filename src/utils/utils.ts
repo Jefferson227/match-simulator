@@ -12,24 +12,24 @@ function getRandomNumber(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function addPlayerAttributes(players: Player[]): Player[] {
-  return players
-    .map((player) => {
-      const updatedPlayer = { ...player };
-      updatedPlayer.order = getPlayerOrder(player.position);
-      updatedPlayer.mood = getRandomNumber(0, 100);
-      return updatedPlayer;
-    })
-    .sort((a, b) => {
-      if ((a.order ?? 0) < (b.order ?? 0)) {
-        return -1; // a comes before b
-      }
-      if ((a.order ?? 0) > (b.order ?? 0)) {
-        return 1; // a comes after b
-      }
-      return 0; // a and b are equal
-    });
-}
+// function addPlayerAttributes(players: Player[]): Player[] {
+//   return players
+//     .map((player) => {
+//       const updatedPlayer = { ...player };
+//       updatedPlayer.order = getPlayerOrder(player.position);
+//       updatedPlayer.mood = getRandomNumber(0, 100);
+//       return updatedPlayer;
+//     })
+//     .sort((a, b) => {
+//       if ((a.order ?? 0) < (b.order ?? 0)) {
+//         return -1; // a comes before b
+//       }
+//       if ((a.order ?? 0) > (b.order ?? 0)) {
+//         return 1; // a comes after b
+//       }
+//       return 0; // a and b are equal
+//     });
+// }
 
 function getPlayerOrder(position: string): number {
   switch (position) {
@@ -249,7 +249,7 @@ function getRandomNumberIntoRange(from: number, to: number, minimum?: number) {
 }
 
 const utils = {
-  addPlayerAttributes,
+  // addPlayerAttributes,
   getRandomNumber,
   getAverage,
   getSum,
