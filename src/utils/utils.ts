@@ -1,4 +1,4 @@
-import { Player } from '../types';
+import Player from '../../core/models/Player';
 
 function getSum(numbers: number[]): number {
   return numbers.reduce((acc, curr) => acc + curr, 0);
@@ -125,7 +125,8 @@ function getPreviousFieldArea(
   }
 }
 
-function getTeamFormation(starters: { position: string }[]): string {
+function getTeamFormation(players: Player[]): string {
+  const starters = players.filter((player) => player.isStarter);
   if (!starters) return '';
 
   const defenders = starters.filter((p) => p.position === 'DF').length;
