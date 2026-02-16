@@ -181,20 +181,79 @@ export class GameEngine {
           };
         }
 
-        teamToUpdate.players = teamToUpdate.players.map((player) => {
-          if (player.id === action.player.id) {
-            return { ...player, isStarter: false, isSub: false };
+        const updatedTeamForSubstitution = {
+          ...teamToUpdate,
+          players: teamToUpdate.players.map((player) => {
+            if (player.id === action.player.id) {
+              return { ...player, isStarter: false, isSub: false };
+            }
+
+            if (player.id === action.sub.id) {
+              return { ...player, isStarter: true, isSub: false };
+            }
+
+            return player;
+          }),
+        };
+
+        const updatedMatch =
+          match.homeTeam.id === updatedTeamForSubstitution.id
+            ? { ...match, homeTeam: updatedTeamForSubstitution }
+            : { ...match, awayTeam: updatedTeamForSubstitution };
+
+        const playableChampionship = state.championshipContainer.playableChampionship;
+        const matchContainer = playableChampionship.matchContainer;
+
+        let roundIndex = -1;
+        for (let i = 0; i < matchContainer.rounds.length; i++) {
+          if (matchContainer.rounds[i].number === matchContainer.currentRound) {
+            roundIndex = i;
+            break;
           }
+        }
 
-          if (player.id === action.sub.id) {
-            return { ...player, isStarter: true, isSub: false };
-          }
+        if (roundIndex === -1) {
+          return {
+            ...state,
+            hasError: true,
+            errorMessage: 'Round could not be found to confirm substitution.',
+          };
+        }
 
-          return player;
-        });
+        const round = matchContainer.rounds[roundIndex];
+        const matchIndex = round.matches.findIndex(
+          (currentMatch) => currentMatch.id === action.matchId
+        );
+        if (matchIndex === -1) {
+          return {
+            ...state,
+            hasError: true,
+            errorMessage: 'Match could not be found to confirm substitution.',
+          };
+        }
 
-        // TODO: Update the teamToUpdate within the round and match in the state
-        return state;
+        const updatedMatches = round.matches.slice();
+        updatedMatches[matchIndex] = updatedMatch;
+
+        const updatedRounds = matchContainer.rounds.slice();
+        updatedRounds[roundIndex] = {
+          ...round,
+          matches: updatedMatches,
+        };
+
+        return {
+          ...state,
+          championshipContainer: {
+            ...state.championshipContainer,
+            playableChampionship: {
+              ...playableChampionship,
+              matchContainer: {
+                ...matchContainer,
+                rounds: updatedRounds,
+              },
+            },
+          },
+        };
       case 'PING':
         console.log('pong');
         return state;
