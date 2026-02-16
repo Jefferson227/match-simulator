@@ -146,21 +146,23 @@ export class GameEngine {
             },
           },
         };
-      case 'START_ROUND':
-        // TODO: Implement logic to start the matches
-        // - Get the current round
-        // - Get the matches from current round
-        // - Check if the current round status is 'not-started', if not set it as such
-        // - Make sure the homeTeamScore and awayTeamScore are zero for all matches
-        // - Make sure the list of scorers is empty for all matches
-        // - Set the current round status as 'in-progress'
+      case 'START_ROUND_FOR_ALL_CHAMPIONSHIPS':
+        // TODO: Implement logic to start the rounds for all championships (playableChampionship, relegationChampionship, promotionChampionship)
+        // - For each championship:
+        //  - Get the current round
+        //  - Get the matches from current round
+        //  - Check if the current round status is 'not-started', if not set it as such
+        //  - Make sure the homeTeamScore and awayTeamScore are zero for all matches
+        //  - Make sure the list of scorers is empty for all matches
+        //  - Set the current round status as 'in-progress'
         console.log('Round started.');
         return state;
-      case 'END_ROUND':
-        // TODO: Implement logic to start the matches
-        // - Get the current round
-        // - Set the current round status as 'finished'
-        // - Increase the number of the round by +1
+      case 'END_ROUND_FOR_ALL_CHAMPIONSHIPS':
+        // TODO: Implement logic to end the rounds for all championships (playableChampionship, relegationChampionship, promotionChampionship)
+        // - For each championship:
+        //  - Get the current round
+        //  - Set the current round status as 'finished'
+        //  - Increase the number of the round by +1
         console.log('Round ended.');
         return state;
       case 'SUBSTITUTE_PLAYER':
