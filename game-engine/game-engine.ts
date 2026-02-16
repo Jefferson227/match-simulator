@@ -156,6 +156,13 @@ export class GameEngine {
         // - Set the current round status as 'in-progress'
         console.log('Round started.');
         return state;
+      case 'END_ROUND':
+        // TODO: Implement logic to start the matches
+        // - Get the current round
+        // - Set the current round status as 'finished'
+        // - Increase the number of the round by +1
+        console.log('Round ended.');
+        return state;
       case 'SUBSTITUTE_PLAYER':
         const matches = Utils.getMatchesFromCurrentRound(state);
         if (!matches) {

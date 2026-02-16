@@ -26,4 +26,5 @@ export type GameAction =
       sub: Player;
     }
   | { type: 'START_ROUND' }
+  | { type: 'END_ROUND' }
   | { type: 'PING' };
