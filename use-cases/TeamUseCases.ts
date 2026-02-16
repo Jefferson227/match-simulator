@@ -1,15 +1,220 @@
 import { Championship } from '../core/models/Championship';
+import Match from '../core/models/Match';
+import Player from '../core/models/Player';
 import { Team } from '../core/models/Team';
 import OperationResult from '../core/results/OperationResult';
 import TeamService from '../core/services/TeamService';
+import { GameState } from '../game-engine/game-state';
 
 export function getTeamsToSelect(championship: Championship): OperationResult<Team[]> {
   return TeamService.getTeamsToSelect(championship);
 }
 
-export function selectTeam(
-  championship: Championship,
-  teamId: string
-): OperationResult<Championship> {
-  return TeamService.selectTeam(championship, teamId);
+export default class TeamUseCases {
+  private state = {} as GameState;
+
+  constructor(state: GameState) {
+    this.state = state;
+  }
+
+  private getMatchesFromCurrentRound(state: GameState): Match[] {
+    const currentRound =
+      state.championshipContainer.playableChampionship.matchContainer.currentRound;
+    const round = state.championshipContainer.playableChampionship.matchContainer.rounds.find(
+      (round) => round.number === currentRound
+    );
+
+    if (!round) return [];
+
+    return round.matches;
+  }
+
+  selectTeam(teamId: string): GameState {
+    const selectTeamResult = TeamService.selectTeam(
+      this.state.championshipContainer.playableChampionship,
+      teamId
+    );
+
+    if (!selectTeamResult.succeeded) {
+      return {
+        ...this.state,
+        hasError: true,
+        errorMessage: selectTeamResult.error.message,
+      };
+    }
+
+    return {
+      ...this.state,
+      championshipContainer: {
+        ...this.state.championshipContainer,
+        playableChampionship: selectTeamResult.getResult(),
+      },
+    };
+  }
+
+  setStartersAndSubs(teamId: string, starters: Player[], subs: Player[]): GameState {
+    const starterIds = starters.map((starter) => starter.id);
+    const subIds = subs.map((sub) => sub.id);
+    const teams = this.state.championshipContainer.playableChampionship.teams;
+
+    let teamIndex = -1;
+    for (let i = 0; i < teams.length; i++) {
+      if (teams[i].id === teamId) {
+        teamIndex = i;
+        break;
+      }
+    }
+    if (teamIndex === -1) {
+      return {
+        ...this.state,
+        hasError: true,
+        errorMessage: 'Team not found while setting starters and subs.',
+      };
+    }
+
+    const team = teams[teamIndex];
+    const updatedPlayers = team.players.map((player) => {
+      if (starterIds.includes(player.id))
+        return {
+          ...player,
+          isStarter: true,
+          isSub: false,
+        };
+
+      if (subIds.includes(player.id))
+        return {
+          ...player,
+          isStarter: false,
+          isSub: true,
+        };
+
+      return {
+        ...player,
+        isStarter: false,
+        isSub: false,
+      };
+    });
+    const updatedTeam = {
+      ...team,
+      players: updatedPlayers,
+    };
+
+    const updatedTeams = teams.slice();
+    updatedTeams[teamIndex] = updatedTeam;
+
+    return {
+      ...this.state,
+      championshipContainer: {
+        ...this.state.championshipContainer,
+        playableChampionship: {
+          ...this.state.championshipContainer.playableChampionship,
+          teams: updatedTeams,
+        },
+      },
+    };
+  }
+
+  substitutePlayer(matchId: string, teamId: string, playerId: string, subId: string): GameState {
+    const matches = this.getMatchesFromCurrentRound(this.state);
+    if (!matches) {
+      return {
+        ...this.state,
+        hasError: true,
+        errorMessage: 'Match could not be found to confirm substitution.',
+      };
+    }
+
+    const match = matches.find((match) => match.id === matchId);
+    if (!match) {
+      return {
+        ...this.state,
+        hasError: true,
+        errorMessage: 'Match could not be found to confirm substitution.',
+      };
+    }
+
+    let teamToUpdate: Team | undefined;
+    if (match.homeTeam.id === teamId) teamToUpdate = match.homeTeam;
+    if (match.awayTeam.id === teamId) teamToUpdate = match.awayTeam;
+
+    if (!teamToUpdate) {
+      return {
+        ...this.state,
+        hasError: true,
+        errorMessage: 'Team could not be found to confirm substitution.',
+      };
+    }
+
+    const updatedTeamForSubstitution = {
+      ...teamToUpdate,
+      players: teamToUpdate.players.map((player) => {
+        if (player.id === playerId) {
+          return { ...player, isStarter: false, isSub: false };
+        }
+
+        if (player.id === subId) {
+          return { ...player, isStarter: true, isSub: false };
+        }
+
+        return player;
+      }),
+    };
+
+    const updatedMatch =
+      match.homeTeam.id === updatedTeamForSubstitution.id
+        ? { ...match, homeTeam: updatedTeamForSubstitution }
+        : { ...match, awayTeam: updatedTeamForSubstitution };
+
+    const playableChampionship = this.state.championshipContainer.playableChampionship;
+    const matchContainer = playableChampionship.matchContainer;
+
+    let roundIndex = -1;
+    for (let i = 0; i < matchContainer.rounds.length; i++) {
+      if (matchContainer.rounds[i].number === matchContainer.currentRound) {
+        roundIndex = i;
+        break;
+      }
+    }
+
+    if (roundIndex === -1) {
+      return {
+        ...this.state,
+        hasError: true,
+        errorMessage: 'Round could not be found to confirm substitution.',
+      };
+    }
+
+    const round = matchContainer.rounds[roundIndex];
+    const matchIndex = round.matches.findIndex((currentMatch) => currentMatch.id === matchId);
+    if (matchIndex === -1) {
+      return {
+        ...this.state,
+        hasError: true,
+        errorMessage: 'Match could not be found to confirm substitution.',
+      };
+    }
+
+    const updatedMatches = round.matches.slice();
+    updatedMatches[matchIndex] = updatedMatch;
+
+    const updatedRounds = matchContainer.rounds.slice();
+    updatedRounds[roundIndex] = {
+      ...round,
+      matches: updatedMatches,
+    };
+
+    return {
+      ...this.state,
+      championshipContainer: {
+        ...this.state.championshipContainer,
+        playableChampionship: {
+          ...playableChampionship,
+          matchContainer: {
+            ...matchContainer,
+            rounds: updatedRounds,
+          },
+        },
+      },
+    };
+  }
 }
