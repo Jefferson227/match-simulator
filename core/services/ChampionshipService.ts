@@ -74,6 +74,62 @@ function createMatches(startingTeams: Team[]): MatchContainer {
   };
 }
 
+function startRound(championship: Championship): Championship {
+  if (!championship?.matchContainer?.rounds) {
+    throw new Error("Championship couldn't be found.");
+  }
+
+  const matchContainer = championship.matchContainer;
+  const rounds = matchContainer.rounds;
+
+  let roundIndex = -1;
+  for (let i = 0; i < rounds.length; i++) {
+    if (rounds[i].number === matchContainer.currentRound) {
+      roundIndex = i;
+      break;
+    }
+  }
+
+  if (roundIndex === -1) {
+    throw new Error("Championship couldn't be found.");
+  }
+
+  const round = rounds[roundIndex];
+  const currentMatches = round.matches;
+  const updatedMatches = currentMatches.slice();
+  let hasMatchChanges = false;
+
+  for (let i = 0; i < currentMatches.length; i++) {
+    const match = currentMatches[i];
+    if (match.homeTeamScore !== 0 || match.awayTeamScore !== 0 || match.scorers.length > 0) {
+      updatedMatches[i] = {
+        ...match,
+        homeTeamScore: 0,
+        awayTeamScore: 0,
+        scorers: [],
+      };
+      hasMatchChanges = true;
+    }
+  }
+
+  if (!hasMatchChanges && round.status === 'in-progress') return championship;
+
+  const updatedRounds = rounds.slice();
+  updatedRounds[roundIndex] = {
+    ...round,
+    matches: hasMatchChanges ? updatedMatches : currentMatches,
+    status: 'in-progress',
+  };
+
+  return {
+    ...championship,
+    matchContainer: {
+      ...matchContainer,
+      rounds: updatedRounds,
+    },
+  };
+}
+
 const initChampionships = (
   championshipInternalName: string
 ): OperationResult<ChampionshipContainer> => {
@@ -208,9 +264,53 @@ const getMatchesForCurrentRound = (championship: Championship): OperationResult<
   }
 };
 
+const startRoundForAllChampionships = (
+  championshipContainer: ChampionshipContainer
+): OperationResult<ChampionshipContainer> => {
+  try {
+    let updatedChampionshipContainer = { ...championshipContainer };
+
+    const updatedPlayableChampionship = startRound(championshipContainer.playableChampionship);
+    updatedChampionshipContainer = {
+      ...updatedChampionshipContainer,
+      playableChampionship: updatedPlayableChampionship,
+    };
+
+    let updatedPromotionChampionship: Championship | undefined;
+    if (championshipContainer.playableChampionship.isPromotable) {
+      updatedPromotionChampionship = startRound(championshipContainer.promotionChampionship!);
+
+      updatedChampionshipContainer = {
+        ...updatedChampionshipContainer,
+        promotionChampionship: updatedPromotionChampionship,
+      };
+    }
+
+    let updatedRelegationChampionship: Championship | undefined;
+    if (championshipContainer.playableChampionship.isRelegatable) {
+      updatedRelegationChampionship = startRound(championshipContainer.promotionChampionship!);
+
+      updatedChampionshipContainer = {
+        ...updatedChampionshipContainer,
+        relegationChampionship: updatedRelegationChampionship,
+      };
+    }
+
+    const result = new OperationResult<ChampionshipContainer>(updatedChampionshipContainer);
+    result.setSuccess();
+    return result;
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const result = new OperationResult<ChampionshipContainer>({} as ChampionshipContainer);
+    result.setError({ errorCode: 'exception', message: errorMessage });
+    return result;
+  }
+};
+
 export default {
   initChampionships,
   getChampionships,
   getTeamControlledByHuman,
   getMatchesForCurrentRound,
+  startRoundForAllChampionships,
 };
