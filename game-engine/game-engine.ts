@@ -148,7 +148,13 @@ export class GameEngine {
         };
       case 'START_ROUND':
         // TODO: Implement logic to start the matches
-        console.log('Starting matches!');
+        // - Get the current round
+        // - Get the matches from current round
+        // - Check if the current round status is 'not-started', if not set it as such
+        // - Make sure the homeTeamScore and awayTeamScore are zero for all matches
+        // - Make sure the list of scorers is empty for all matches
+        // - Set the current round status as 'in-progress'
+        console.log('Round started.');
         return state;
       case 'SUBSTITUTE_PLAYER':
         const matches = Utils.getMatchesFromCurrentRound(state);
