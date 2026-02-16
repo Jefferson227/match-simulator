@@ -146,7 +146,7 @@ export class GameEngine {
             },
           },
         };
-      case 'START_MATCHES':
+      case 'START_ROUND':
         // TODO: Implement logic to start the matches
         console.log('Starting matches!');
         return state;
