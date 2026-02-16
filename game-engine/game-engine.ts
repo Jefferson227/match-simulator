@@ -3,6 +3,7 @@ import { initChampionships } from '../use-cases/ChampionshipUseCases';
 import * as TeamUseCases from '../use-cases/TeamUseCases';
 import * as Utils from './Utils';
 import { Team } from '../core/models/Team';
+import { Championship } from '../core/models/Championship';
 
 type Listener = () => void;
 
@@ -147,16 +148,53 @@ export class GameEngine {
           },
         };
       case 'START_ROUND_FOR_ALL_CHAMPIONSHIPS':
-        // TODO: Implement logic to start the rounds for all championships (playableChampionship, relegationChampionship, promotionChampionship)
-        // - For each championship:
-        //  - Get the current round
-        //  - Get the matches from current round
-        //  - Check if the current round status is 'not-started', if not set it as such
-        //  - Make sure the homeTeamScore and awayTeamScore are zero for all matches
-        //  - Make sure the list of scorers is empty for all matches
-        //  - Set the current round status as 'in-progress'
-        console.log('Round started.');
-        return state;
+        try {
+          let updatedChampionshipContainer = { ...state.championshipContainer };
+
+          const updatedPlayableChampionship = Utils.startRound(
+            state.championshipContainer.playableChampionship
+          );
+          updatedChampionshipContainer = {
+            ...updatedChampionshipContainer,
+            playableChampionship: updatedPlayableChampionship,
+          };
+
+          let updatedPromotionChampionship: Championship | undefined;
+          if (state.championshipContainer.playableChampionship.isPromotable) {
+            updatedPromotionChampionship = Utils.startRound(
+              state.championshipContainer.promotionChampionship!
+            );
+
+            updatedChampionshipContainer = {
+              ...updatedChampionshipContainer,
+              promotionChampionship: updatedPromotionChampionship,
+            };
+          }
+
+          let updatedRelegationChampionship: Championship | undefined;
+          if (state.championshipContainer.playableChampionship.isRelegatable) {
+            updatedRelegationChampionship = Utils.startRound(
+              state.championshipContainer.promotionChampionship!
+            );
+
+            updatedChampionshipContainer = {
+              ...updatedChampionshipContainer,
+              relegationChampionship: updatedRelegationChampionship,
+            };
+          }
+
+          return {
+            ...state,
+            championshipContainer: updatedChampionshipContainer,
+          };
+        } catch (error) {
+          const errorMessage = error instanceof Error ? error.message : String(error);
+          return {
+            ...state,
+            hasError: true,
+            errorMessage,
+          };
+        }
       case 'END_ROUND_FOR_ALL_CHAMPIONSHIPS':
         // TODO: Implement logic to end the rounds for all championships (playableChampionship, relegationChampionship, promotionChampionship)
         // - For each championship:
