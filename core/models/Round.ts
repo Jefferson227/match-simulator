@@ -1,10 +1,11 @@
 import Match from './Match';
+import RoundStatus from '../enums/RoundStatus';
 
 type Round = {
   id: string;
   number: number;
   matches: Match[];
-  // status: RoundStatus; // It should be an enum with the possible values 'not-started', 'in-progress' and 'finished'
+  status: RoundStatus;
 };
 
 export default Round;
