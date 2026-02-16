@@ -25,6 +25,6 @@ export type GameAction =
       player: Player;
       sub: Player;
     }
-  | { type: 'START_ROUND' }
-  | { type: 'END_ROUND' }
+  | { type: 'START_ROUND_FOR_ALL_CHAMPIONSHIPS' }
+  | { type: 'END_ROUND_FOR_ALL_CHAMPIONSHIPS' }
   | { type: 'PING' };
