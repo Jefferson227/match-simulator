@@ -54,6 +54,7 @@ function buildMockChampionship(): Championship {
         {
           id: 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee',
           number: 1,
+          status: 'not-started',
           matches: [
             {
               id: 'ffffffff-ffff-ffff-ffff-ffffffffffff',

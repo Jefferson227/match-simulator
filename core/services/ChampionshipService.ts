@@ -33,6 +33,7 @@ function createMatches(startingTeams: Team[]): MatchContainer {
       id: crypto.randomUUID(),
       number: roundNumber,
       matches,
+      status: 'not-started',
     });
     roundNumber += 1;
 
@@ -59,6 +60,7 @@ function createMatches(startingTeams: Team[]): MatchContainer {
       id: crypto.randomUUID(),
       number: roundNumber,
       matches,
+      status: 'not-started',
     });
     roundNumber += 1;
   }
