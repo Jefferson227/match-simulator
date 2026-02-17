@@ -1,6 +1,7 @@
 import { GameAction, GameState } from './game-state';
 import ChampionshipUseCases from '../use-cases/ChampionshipUseCases';
 import TeamUseCases from '../use-cases/TeamUseCases';
+import GameUseCases from '../use-cases/GameUseCases';
 
 type Listener = () => void;
 
@@ -9,11 +10,13 @@ export class GameEngine {
   private listeners = new Set<Listener>();
   private teamUseCases: TeamUseCases;
   private championshipUseCases: ChampionshipUseCases;
+  private gameUseCases: GameUseCases;
 
   constructor(initialState: GameState) {
     this.state = initialState;
     this.teamUseCases = new TeamUseCases({} as GameState);
     this.championshipUseCases = new ChampionshipUseCases({} as GameState);
+    this.gameUseCases = new GameUseCases({} as GameState);
   }
 
   getState(): GameState {
@@ -43,16 +46,11 @@ export class GameEngine {
         this.championshipUseCases = new ChampionshipUseCases(state);
         return this.championshipUseCases.initChampionships(action.championshipInternalName);
       case 'SET_ERROR_MESSAGE':
-        return {
-          ...state,
-          hasError: true,
-          errorMessage: action.errorMessage,
-        };
+        this.gameUseCases = new GameUseCases(state);
+        return this.gameUseCases.setErrorMessage(action.errorMessage);
       case 'SET_CURRENT_SCREEN':
-        return {
-          ...state,
-          currentScreen: action.screenName,
-        };
+        this.gameUseCases = new GameUseCases(state);
+        return this.gameUseCases.setCurrentScreen(action.screenName);
       case 'SELECT_TEAM':
         this.teamUseCases = new TeamUseCases(state);
         return this.teamUseCases.selectTeam(action.teamId);
