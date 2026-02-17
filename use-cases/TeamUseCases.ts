@@ -6,10 +6,6 @@ import OperationResult from '../core/results/OperationResult';
 import TeamService from '../core/services/TeamService';
 import { GameState } from '../game-engine/game-state';
 
-export function getTeamsToSelect(championship: Championship): OperationResult<Team[]> {
-  return TeamService.getTeamsToSelect(championship);
-}
-
 export default class TeamUseCases {
   private state = {} as GameState;
 
@@ -181,5 +177,14 @@ export default class TeamUseCases {
         },
       },
     };
+  }
+
+  getTeamsToSelect(championship: Championship): Team[] {
+    const result = TeamService.getTeamsToSelect(championship);
+    if (!result.succeeded) {
+      throw new Error('List of teams could not be found from championship.');
+    }
+
+    return result.getResult();
   }
 }
