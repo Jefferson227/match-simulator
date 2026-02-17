@@ -17,7 +17,10 @@ function getTeamsToSelect(championship: Championship): OperationResult<Team[]> {
   }
 }
 
-function markTeamAsSelectedInAllRounds(rounds: Round[], teamId: string): { rounds: Round[]; hasRoundsChanged: boolean } {
+function markTeamAsSelectedInAllRounds(
+  rounds: Round[],
+  teamId: string
+): { rounds: Round[]; hasRoundsChanged: boolean } {
   let hasRoundsChanged = false;
   const updatedRounds = rounds.map((round) => {
     let hasMatchesChanged = false;
@@ -74,7 +77,7 @@ function selectTeam(championship: Championship, teamId: string): OperationResult
 
     const { rounds: updatedRounds, hasRoundsChanged } = markTeamAsSelectedInAllRounds(
       championship.matchContainer.rounds,
-      teamId,
+      teamId
     );
 
     const updatedMatchContainer = hasRoundsChanged
