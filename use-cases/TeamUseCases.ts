@@ -53,54 +53,16 @@ export default class TeamUseCases {
   }
 
   setStartersAndSubs(teamId: string, starters: Player[], subs: Player[]): GameState {
-    const starterIds = starters.map((starter) => starter.id);
-    const subIds = subs.map((sub) => sub.id);
     const teams = this.state.championshipContainer.playableChampionship.teams;
+    const result = TeamService.setStartersAndSubs(teamId, starters, subs, teams);
 
-    let teamIndex = -1;
-    for (let i = 0; i < teams.length; i++) {
-      if (teams[i].id === teamId) {
-        teamIndex = i;
-        break;
-      }
-    }
-    if (teamIndex === -1) {
+    if (!result.succeeded) {
       return {
         ...this.state,
         hasError: true,
-        errorMessage: 'Team not found while setting starters and subs.',
+        errorMessage: result.error.message,
       };
     }
-
-    const team = teams[teamIndex];
-    const updatedPlayers = team.players.map((player) => {
-      if (starterIds.includes(player.id))
-        return {
-          ...player,
-          isStarter: true,
-          isSub: false,
-        };
-
-      if (subIds.includes(player.id))
-        return {
-          ...player,
-          isStarter: false,
-          isSub: true,
-        };
-
-      return {
-        ...player,
-        isStarter: false,
-        isSub: false,
-      };
-    });
-    const updatedTeam = {
-      ...team,
-      players: updatedPlayers,
-    };
-
-    const updatedTeams = teams.slice();
-    updatedTeams[teamIndex] = updatedTeam;
 
     return {
       ...this.state,
@@ -108,7 +70,10 @@ export default class TeamUseCases {
         ...this.state.championshipContainer,
         playableChampionship: {
           ...this.state.championshipContainer.playableChampionship,
-          teams: updatedTeams,
+          teams: [
+            ...this.state.championshipContainer.playableChampionship.teams,
+            result.getResult(),
+          ],
         },
       },
     };

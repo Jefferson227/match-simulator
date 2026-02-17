@@ -1,4 +1,5 @@
 import { Championship } from '../models/Championship';
+import Player from '../models/Player';
 import Round from '../models/Round';
 import { Team } from '../models/Team';
 import OperationResult from '../results/OperationResult';
@@ -101,7 +102,69 @@ function selectTeam(championship: Championship, teamId: string): OperationResult
   }
 }
 
+function setStartersAndSubs(
+  teamId: string,
+  starters: Player[],
+  subs: Player[],
+  teams: Team[]
+): OperationResult<Team> {
+  try {
+    const starterIds = starters.map((starter) => starter.id);
+    const subIds = subs.map((sub) => sub.id);
+
+    let teamIndex = -1;
+    for (let i = 0; i < teams.length; i++) {
+      if (teams[i].id === teamId) {
+        teamIndex = i;
+        break;
+      }
+    }
+
+    if (teamIndex === -1) {
+      throw new Error('Team not found while setting starters and subs.');
+    }
+
+    const team = teams[teamIndex];
+    const updatedPlayers = team.players.map((player) => {
+      if (starterIds.includes(player.id))
+        return {
+          ...player,
+          isStarter: true,
+          isSub: false,
+        };
+
+      if (subIds.includes(player.id))
+        return {
+          ...player,
+          isStarter: false,
+          isSub: true,
+        };
+
+      return {
+        ...player,
+        isStarter: false,
+        isSub: false,
+      };
+    });
+
+    const updatedTeam = {
+      ...team,
+      players: updatedPlayers,
+    };
+
+    const result = new OperationResult<Team>(updatedTeam);
+    result.setSuccess();
+    return result;
+  } catch (error) {
+    const result = new OperationResult({} as Team);
+    const message = error instanceof Error ? error.message : String(error);
+    result.setError({ errorCode: 'exception', message });
+    return result;
+  }
+}
+
 export default {
   getTeamsToSelect,
   selectTeam,
+  setStartersAndSubs,
 };
