@@ -18,6 +18,7 @@ const TeamSelector: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [teams, setTeams] = useState<Team[]>([]);
 
+  // TODO: Think about how to handle exceptions in this case
   const teamsResult = TeamUseCase.getTeamsToSelect(
     state.championshipContainer.playableChampionship
   );
