@@ -66,10 +66,15 @@ export default class ChampionshipUseCases {
       championshipContainer: result.getResult(),
     };
   }
-}
 
-export function getChampionships(): OperationResult<Championship[]> {
-  return ChampionshipService.getChampionships();
+  getChampionships(): Championship[] {
+    const result = ChampionshipService.getChampionships();
+    if (!result.succeeded) {
+      throw new Error('List of championships could not be found.');
+    }
+
+    return result.getResult();
+  }
 }
 
 export function getTeamControlledByHuman(championship: Championship): OperationResult<Team> {
