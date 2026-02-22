@@ -35,6 +35,7 @@ const TeamManager: React.FC = () => {
 
   const championshipUseCases = new ChampionshipUseCases(state);
 
+  // Get team controlled by human
   useEffect(() => {
     let teamToBeSet = {} as Team;
     try {
