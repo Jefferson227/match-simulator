@@ -305,8 +305,7 @@ const TeamManager: React.FC = () => {
   };
 
   const handleStartMatch = () => {
-    engine.dispatch({ type: 'START_MATCHES' });
-    // engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'InitialScreen' });
+    engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'MatchSimulator' });
   };
 
   const backgroundColor = team.colors.background;
