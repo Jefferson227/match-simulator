@@ -1,4 +1,5 @@
 import { Championship } from '../core/models/Championship';
+import ChampionshipContainer from '../core/models/ChampionshipContainer';
 import Match from '../core/models/Match';
 import { Team } from '../core/models/Team';
 import ChampionshipService from '../core/services/ChampionshipService';
@@ -91,5 +92,21 @@ export default class ChampionshipUseCases {
     }
 
     return result.getResult();
+  }
+
+  runMatchActions(): GameState {
+    const result = ChampionshipService.runMatchActions(this.state.championshipContainer);
+    if (!result.succeeded) {
+      return {
+        ...this.state,
+        hasError: true,
+        errorMessage: result.error.message,
+      };
+    }
+
+    return {
+      ...this.state,
+      championshipContainer: result.getResult(),
+    };
   }
 }

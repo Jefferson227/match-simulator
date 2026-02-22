@@ -93,8 +93,7 @@ const MatchSimulator: FC = () => {
 
     // Represents one clock tick
     if (matches.length > 0 && time < 90) {
-      // TODO: Implement this new action
-      // engine.dispatch({ type: 'RUN_MATCH_ACTIONS' });
+      engine.dispatch({ type: 'RUN_MATCH_ACTIONS' });
     }
 
     // Prepare matches to start
