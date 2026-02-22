@@ -130,6 +130,44 @@ function startRound(championship: Championship): Championship {
   };
 }
 
+function endRound(championship: Championship): Championship {
+  if (!championship?.matchContainer?.rounds) {
+    throw new Error("Championship couldn't be found.");
+  }
+
+  const matchContainer = championship.matchContainer;
+  const rounds = matchContainer.rounds;
+
+  let roundIndex = -1;
+  for (let i = 0; i < rounds.length; i++) {
+    if (rounds[i].number === matchContainer.currentRound) {
+      roundIndex = i;
+      break;
+    }
+  }
+
+  if (roundIndex === -1) {
+    throw new Error("Championship couldn't be found.");
+  }
+
+  const round = rounds[roundIndex];
+  const updatedRounds = rounds.slice();
+  updatedRounds[roundIndex] = {
+    ...round,
+    status: 'ended',
+  };
+
+  const incrementedRoundNumber = championship.matchContainer.currentRound++;
+  return {
+    ...championship,
+    matchContainer: {
+      ...matchContainer,
+      rounds: updatedRounds,
+      currentRound: incrementedRoundNumber,
+    },
+  };
+}
+
 const initChampionships = (
   championshipInternalName: string
 ): OperationResult<ChampionshipContainer> => {
@@ -307,10 +345,54 @@ const startRoundForAllChampionships = (
   }
 };
 
+const endRoundForAllChampionships = (
+  championshipContainer: ChampionshipContainer
+): OperationResult<ChampionshipContainer> => {
+  try {
+    let updatedChampionshipContainer = { ...championshipContainer };
+
+    const updatedPlayableChampionship = endRound(championshipContainer.playableChampionship);
+    updatedChampionshipContainer = {
+      ...updatedChampionshipContainer,
+      playableChampionship: updatedPlayableChampionship,
+    };
+
+    let updatedPromotionChampionship: Championship | undefined;
+    if (championshipContainer.playableChampionship.isPromotable) {
+      updatedPromotionChampionship = endRound(championshipContainer.promotionChampionship!);
+
+      updatedChampionshipContainer = {
+        ...updatedChampionshipContainer,
+        promotionChampionship: updatedPromotionChampionship,
+      };
+    }
+
+    let updatedRelegationChampionship: Championship | undefined;
+    if (championshipContainer.playableChampionship.isRelegatable) {
+      updatedRelegationChampionship = endRound(championshipContainer.promotionChampionship!);
+
+      updatedChampionshipContainer = {
+        ...updatedChampionshipContainer,
+        relegationChampionship: updatedRelegationChampionship,
+      };
+    }
+
+    const result = new OperationResult<ChampionshipContainer>(updatedChampionshipContainer);
+    result.setSuccess();
+    return result;
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const result = new OperationResult<ChampionshipContainer>({} as ChampionshipContainer);
+    result.setError({ errorCode: 'exception', message: errorMessage });
+    return result;
+  }
+};
+
 export default {
   initChampionships,
   getChampionships,
   getTeamControlledByHuman,
   getMatchesForCurrentRound,
   startRoundForAllChampionships,
+  endRoundForAllChampionships,
 };

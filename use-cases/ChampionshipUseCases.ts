@@ -48,6 +48,24 @@ export default class ChampionshipUseCases {
       championshipContainer: result.getResult(),
     };
   }
+
+  endRoundForAllChampionships() {
+    const result = ChampionshipService.endRoundForAllChampionships(
+      this.state.championshipContainer
+    );
+    if (!result.succeeded) {
+      return {
+        ...this.state,
+        hasError: true,
+        errorMessage: result.error.message,
+      };
+    }
+
+    return {
+      ...this.state,
+      championshipContainer: result.getResult(),
+    };
+  }
 }
 
 export function getChampionships(): OperationResult<Championship[]> {
