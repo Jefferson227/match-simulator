@@ -74,6 +74,9 @@ export class GameEngine {
       case 'RUN_MATCH_ACTIONS':
         console.log('Running match actions.');
         return state;
+      case 'UPDATE_GAME_CONFIG':
+        this.gameUseCases = new GameUseCases(state);
+        return this.gameUseCases.updateClockSpeed(action.newClockSpeed);
       case 'PING':
         console.log('pong');
         return state;
