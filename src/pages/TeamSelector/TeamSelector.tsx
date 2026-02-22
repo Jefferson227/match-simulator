@@ -3,8 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
 import { Team } from '../../../core/models/Team';
-import * as TeamUseCase from '../../../use-cases/TeamUseCases';
+import TeamUseCases from '../../../use-cases/TeamUseCases';
 import MainLayout from '../../components/MainLayout/MainLayout';
+import { GameState } from '../../../game-engine/game-state';
 
 const TEAMS_PER_PAGE = 9;
 
@@ -18,19 +19,21 @@ const TeamSelector: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [teams, setTeams] = useState<Team[]>([]);
 
-  // TODO: Think about how to handle exceptions in this case
-  const teamsResult = TeamUseCase.getTeamsToSelect(
-    state.championshipContainer.playableChampionship
-  );
+  const teamUseCases = new TeamUseCases({} as GameState);
 
   useEffect(() => {
-    if (!teamsResult.succeeded) {
-      engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage: teamsResult.error.message });
-      return;
+    let teamsToBeListed = [] as Team[];
+    try {
+      teamsToBeListed = teamUseCases.getTeamsToSelect(
+        state.championshipContainer.playableChampionship
+      );
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage });
     }
 
-    setTeams(teamsResult.getResult());
-  }, [engine, teamsResult]);
+    setTeams(teamsToBeListed);
+  }, []);
 
   useEffect(() => {
     if (state.hasError)
