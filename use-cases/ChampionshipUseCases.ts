@@ -84,8 +84,13 @@ export default class ChampionshipUseCases {
 
     return result.getResult();
   }
-}
 
-export function getMatchesForCurrentRound(championship: Championship): OperationResult<Match[]> {
-  return ChampionshipService.getMatchesForCurrentRound(championship);
+  getMatchesForCurrentRound(championship: Championship): Match[] {
+    const result = ChampionshipService.getMatchesForCurrentRound(championship);
+    if (!result.succeeded) {
+      throw new Error('Team controlled by human player could not be found.');
+    }
+
+    return result.getResult();
+  }
 }
