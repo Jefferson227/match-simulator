@@ -1,7 +1,6 @@
 import { Championship } from '../core/models/Championship';
 import Match from '../core/models/Match';
 import { Team } from '../core/models/Team';
-import OperationResult from '../core/results/OperationResult';
 import ChampionshipService from '../core/services/ChampionshipService';
 import { GameState } from '../game-engine/game-state';
 
