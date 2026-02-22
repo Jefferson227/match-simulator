@@ -44,7 +44,6 @@ const MatchSimulator: FC = () => {
   const championshipUseCases = new ChampionshipUseCases(state);
 
   useEffect(() => {
-    // TODO: clockSpeed is retrieved in the beginning, and it needs to be reassigned to the state after the match ends
     setClockSpeed(state.gameConfig.clockSpeed);
 
     // Get matches for current round
@@ -112,6 +111,7 @@ const MatchSimulator: FC = () => {
     if (time >= 90 && !showTeamMatchDetails && !detailsMatchId) {
       window.setTimeout(() => {
         engine.dispatch({ type: 'END_ROUND_FOR_ALL_CHAMPIONSHIPS' });
+        engine.dispatch({ type: 'UPDATE_GAME_CONFIG', newClockSpeed: clockSpeed });
 
         // TODO: Fix TeamStandings screen before showing it
         // engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'TeamStandings' });
