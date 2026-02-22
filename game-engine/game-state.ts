@@ -27,4 +27,5 @@ export type GameAction =
   | { type: 'START_ROUND_FOR_ALL_CHAMPIONSHIPS' }
   | { type: 'END_ROUND_FOR_ALL_CHAMPIONSHIPS' }
   | { type: 'RUN_MATCH_ACTIONS' }
+  | { type: 'UPDATE_GAME_CONFIG'; newClockSpeed: number }
   | { type: 'PING' };
