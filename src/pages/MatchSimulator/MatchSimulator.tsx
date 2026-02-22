@@ -7,10 +7,10 @@ import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
 import Clock from '../../components/Clock';
 import Match from '../../../core/models/Match';
-import { getMatchesForCurrentRound } from '../../../use-cases/ChampionshipUseCases';
 import TeamMatchDetails from '../../components/TeamMatchDetails/TeamMatchDetails';
 import TeamRectangle from '../../components/TeamRectangle';
 import { Team } from '../../../core/models/Team';
+import ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
 
 const MATCHES_PER_PAGE = 6;
 
@@ -41,18 +41,24 @@ const MatchSimulator: FC = () => {
     setShowTeamMatchDetails(false);
   };
 
+  const championshipUseCases = new ChampionshipUseCases(state);
+
   useEffect(() => {
     // TODO: clockSpeed is retrieved in the beginning, and it needs to be reassigned to the state after the match ends
     setClockSpeed(state.gameConfig.clockSpeed);
 
-    const matchesResult = getMatchesForCurrentRound(
-      state.championshipContainer.playableChampionship
-    );
+    // Get matches for current round
+    let matchesToBeSet = [] as Match[];
+    try {
+      matchesToBeSet = championshipUseCases.getMatchesForCurrentRound(
+        state.championshipContainer.playableChampionship
+      );
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage });
+    }
 
-    if (!matchesResult.succeeded)
-      engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage: matchesResult.error.message });
-
-    setMatches(matchesResult.getResult());
+    setMatches(matchesToBeSet);
   }, []);
 
   // Reset timer and detailsMatchId when leaving MatchSimulator
