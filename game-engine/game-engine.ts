@@ -61,13 +61,8 @@ export class GameEngine {
         this.championshipUseCases = new ChampionshipUseCases(state);
         return this.championshipUseCases.startRoundForAllChampionships();
       case 'END_ROUND_FOR_ALL_CHAMPIONSHIPS':
-        // TODO: Implement logic to end the rounds for all championships (playableChampionship, relegationChampionship, promotionChampionship)
-        // - For each championship:
-        //  - Get the current round
-        //  - Set the current round status as 'finished'
-        //  - Increase the number of the round by +1
-        console.log('Round ended.');
-        return state;
+        this.championshipUseCases = new ChampionshipUseCases(state);
+        return this.championshipUseCases.endRoundForAllChampionships();
       case 'SUBSTITUTE_PLAYER':
         this.teamUseCases = new TeamUseCases(state);
         return this.teamUseCases.substitutePlayer(
