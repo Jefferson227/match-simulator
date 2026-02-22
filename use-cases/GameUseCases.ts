@@ -21,4 +21,14 @@ export default class GameUseCases {
       currentScreen: screenName,
     };
   }
+
+  updateClockSpeed(speed: number): GameState {
+    return {
+      ...this.state,
+      gameConfig: {
+        ...this.state.gameConfig,
+        clockSpeed: speed,
+      },
+    };
+  }
 }
