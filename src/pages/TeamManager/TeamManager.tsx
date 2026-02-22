@@ -4,7 +4,7 @@ import utils from '../../utils/utils';
 import MainLayout from '../../components/MainLayout/MainLayout';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
-import * as ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
+import ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
 import Player from '../../../core/models/Player';
 import { Team } from '../../../core/models/Team';
 
@@ -24,21 +24,30 @@ const TeamManager: React.FC = () => {
   const engine = useGameEngine();
   const state = useGameState(engine);
 
+  const PLAYERS_PER_PAGE = 11;
+
   const [showFormationGrid, setShowFormationGrid] = useState(false);
   const [playerStates, setPlayerStates] = useState<{
     [id: string]: PlayerSelectionState;
   }>({});
   const [currentPage, setCurrentPage] = useState(0); // 0-based page index
-  const PLAYERS_PER_PAGE = 11;
+  const [team, setTeam] = useState<Team>({} as Team);
 
-  const teamResult = ChampionshipUseCases.getTeamControlledByHuman(
-    state.championshipContainer.playableChampionship
-  );
+  const championshipUseCases = new ChampionshipUseCases(state);
 
   useEffect(() => {
-    if (!teamResult.succeeded)
-      engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage: teamResult.error.message });
-  }, [teamResult]);
+    let teamToBeSet = {} as Team;
+    try {
+      teamToBeSet = championshipUseCases.getTeamControlledByHuman(
+        state.championshipContainer.playableChampionship
+      );
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage });
+    }
+
+    setTeam(teamToBeSet);
+  }, []);
 
   useEffect(() => {
     if (state.hasError)
@@ -48,8 +57,6 @@ const TeamManager: React.FC = () => {
   useEffect(() => {
     setStartersAndSubs();
   }, [playerStates]);
-
-  const team = teamResult.getResult();
 
   const handlePlayerClick = (id: string) => {
     setPlayerStates((prev) => {
