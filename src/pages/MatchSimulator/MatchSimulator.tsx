@@ -94,8 +94,7 @@ const MatchSimulator: FC = () => {
 
     // Prepare matches to start
     if (matches.length > 0 && time === 0) {
-      // TODO: Implement this new action
-      // engine.dispatch({ type: 'START_ROUND_FOR_ALL_CHAMPIONSHIPS' });
+      engine.dispatch({ type: 'START_ROUND_FOR_ALL_CHAMPIONSHIPS' });
     }
 
     // When the matches ends, stop the clock
