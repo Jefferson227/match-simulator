@@ -31,7 +31,7 @@ export default class ChampionshipUseCases {
     };
   }
 
-  startRoundForAllChampionships() {
+  startRoundForAllChampionships(): GameState {
     const result = ChampionshipService.startRoundForAllChampionships(
       this.state.championshipContainer
     );
@@ -49,7 +49,7 @@ export default class ChampionshipUseCases {
     };
   }
 
-  endRoundForAllChampionships() {
+  endRoundForAllChampionships(): GameState {
     const result = ChampionshipService.endRoundForAllChampionships(
       this.state.championshipContainer
     );
