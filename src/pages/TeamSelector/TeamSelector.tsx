@@ -21,6 +21,7 @@ const TeamSelector: React.FC = () => {
 
   const teamUseCases = new TeamUseCases({} as GameState);
 
+  // Load teams
   useEffect(() => {
     let teamsToBeListed = [] as Team[];
     try {
