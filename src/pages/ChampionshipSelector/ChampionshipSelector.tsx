@@ -2,25 +2,37 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
-import { getChampionships } from '../../../use-cases/ChampionshipUseCases';
+import ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
 import MainLayout from '../../components/MainLayout/MainLayout';
+import { Championship } from '../../../core/models/Championship';
 
 const CHAMPIONSHIPS_PER_PAGE = 6;
 
 const ChampionshipSelector: React.FC = () => {
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(0);
+  const [championships, setChampionships] = useState<Championship[]>([]);
 
   // Game engine
   const engine = useGameEngine();
   const state = useGameState(engine);
 
-  const result = getChampionships();
-  if (!result.succeeded)
-    engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage: result.error.message });
+  const championshipUseCases = new ChampionshipUseCases(state);
 
-  const championships = result.getResult();
   const totalPages = Math.ceil(championships.length / CHAMPIONSHIPS_PER_PAGE);
+
+  // Load championships
+  useEffect(() => {
+    let championshipsToBeSet = [] as Championship[];
+    try {
+      championshipsToBeSet = championshipUseCases.getChampionships();
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage });
+    }
+
+    setChampionships(championshipsToBeSet);
+  }, []);
 
   useEffect(() => {
     if (state.hasError)
