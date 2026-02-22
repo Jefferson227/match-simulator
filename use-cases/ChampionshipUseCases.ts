@@ -75,10 +75,15 @@ export default class ChampionshipUseCases {
 
     return result.getResult();
   }
-}
 
-export function getTeamControlledByHuman(championship: Championship): OperationResult<Team> {
-  return ChampionshipService.getTeamControlledByHuman(championship);
+  getTeamControlledByHuman(championship: Championship): Team {
+    const result = ChampionshipService.getTeamControlledByHuman(championship);
+    if (!result.succeeded) {
+      throw new Error('Team controlled by human player could not be found.');
+    }
+
+    return result.getResult();
+  }
 }
 
 export function getMatchesForCurrentRound(championship: Championship): OperationResult<Match[]> {
