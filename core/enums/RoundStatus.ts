@@ -1,3 +1,3 @@
-type RoundStatus = 'not-started' | 'in-progress' | 'finished';
+type RoundStatus = 'not-started' | 'in-progress' | 'ended';
 
 export default RoundStatus;
