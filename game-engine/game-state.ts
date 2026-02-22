@@ -17,7 +17,6 @@ export type GameAction =
   | { type: 'SET_CURRENT_SCREEN'; screenName: string }
   | { type: 'SELECT_TEAM'; teamId: string }
   | { type: 'SET_STARTERS_AND_SUBS'; team: Team; starters: Player[]; subs: Player[] }
-  | { type: 'START_MATCHES' }
   | {
       type: 'SUBSTITUTE_PLAYER';
       team: Team;
@@ -27,4 +26,5 @@ export type GameAction =
     }
   | { type: 'START_ROUND_FOR_ALL_CHAMPIONSHIPS' }
   | { type: 'END_ROUND_FOR_ALL_CHAMPIONSHIPS' }
+  | { type: 'RUN_MATCH_ACTIONS' }
   | { type: 'PING' };

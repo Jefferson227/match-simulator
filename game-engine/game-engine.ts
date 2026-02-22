@@ -76,6 +76,9 @@ export class GameEngine {
           action.player.id,
           action.sub.id
         );
+      case 'RUN_MATCH_ACTIONS':
+        console.log('Running match actions.');
+        return state;
       case 'PING':
         console.log('pong');
         return state;
