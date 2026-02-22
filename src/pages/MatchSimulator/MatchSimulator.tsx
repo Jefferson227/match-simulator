@@ -92,6 +92,12 @@ const MatchSimulator: FC = () => {
       // engine.dispatch({ type: 'RUN_MATCH_ACTIONS' });
     }
 
+    // Prepare matches to start
+    if (matches.length > 0 && time === 0) {
+      // TODO: Implement this new action
+      // engine.dispatch({ type: 'START_ROUND_FOR_ALL_CHAMPIONSHIPS' });
+    }
+
     // When the matches ends, stop the clock
     if (time >= 90 || showTeamMatchDetails || detailsMatchId) {
       if (timer) clearInterval(timer);
@@ -101,7 +107,7 @@ const MatchSimulator: FC = () => {
     if (time >= 90 && !showTeamMatchDetails && !detailsMatchId) {
       window.setTimeout(() => {
         // TODO: Implement this new action
-        // engine.dispatch({ type: 'END_MATCHES' });
+        // engine.dispatch({ type: 'END_ROUND_FOR_ALL_CHAMPIONSHIPS' });
         // engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'TeamStandings' });
       }, 5000);
     }
