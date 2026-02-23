@@ -10,6 +10,21 @@ import { Team } from '../../../core/models/Team';
 
 export const FORMATIONS = ['5-3-2', '3-5-2', '4-4-2', '4-3-3', '4-2-4', '5-4-1', '3-4-3', '3-3-4'];
 
+const EMPTY_TEAM: Team = {
+  id: '00000000-0000-0000-0000-000000000000',
+  fullName: '',
+  shortName: '',
+  abbreviation: '',
+  colors: {
+    outline: '#e2e2e2',
+    background: '#3c7a33',
+    text: '#e2e2e2',
+  },
+  players: [],
+  morale: 50,
+  isControlledByHuman: false,
+};
+
 // Enum for player selection state
 enum PlayerSelectionState {
   Unselected = 0,
@@ -31,13 +46,13 @@ const TeamManager: React.FC = () => {
     [id: string]: PlayerSelectionState;
   }>({});
   const [currentPage, setCurrentPage] = useState(0); // 0-based page index
-  const [team, setTeam] = useState<Team>({} as Team);
+  const [team, setTeam] = useState<Team>(EMPTY_TEAM);
 
   const championshipUseCases = new ChampionshipUseCases(state);
 
   // Get team controlled by human
   useEffect(() => {
-    let teamToBeSet = {} as Team;
+    let teamToBeSet = EMPTY_TEAM;
     try {
       teamToBeSet = championshipUseCases.getTeamControlledByHuman(
         state.championshipContainer.playableChampionship
@@ -157,7 +172,7 @@ const TeamManager: React.FC = () => {
   };
 
   // Pagination logic
-  const players = team.players;
+  const players = team.players ?? [];
   const totalPages = Math.ceil(players.length / PLAYERS_PER_PAGE);
   const paginatedPlayers = players.slice(
     currentPage * PLAYERS_PER_PAGE,
@@ -179,8 +194,8 @@ const TeamManager: React.FC = () => {
   const selectedTeam =
     state.championshipContainer.playableChampionship.teams.find(
       (team) => team.isControlledByHuman
-    ) || ({} as Team);
-  const selectedCount = selectedTeam.players.filter((player) => player.isStarter).length;
+    ) || EMPTY_TEAM;
+  const selectedCount = (selectedTeam.players ?? []).filter((player) => player.isStarter).length;
 
   // Calculate formation based on selected players
   const calculateFormation = () => {
@@ -295,10 +310,10 @@ const TeamManager: React.FC = () => {
   };
 
   const setStartersAndSubs = () => {
-    const starters = team.players.filter(
+    const starters = players.filter(
       (player) => playerStates[player.id] === PlayerSelectionState.Selected
     );
-    const subs = team.players.filter(
+    const subs = players.filter(
       (player) => playerStates[player.id] === PlayerSelectionState.Substitute
     );
 
@@ -525,6 +540,8 @@ const TeamManager: React.FC = () => {
                 {'>'}
               </button>
             </div>
+
+            {/* TODO: Button is not visible after selecting 11 players */}
             <div
               className={`w-[350px] mx-auto mt-2 ${selectedCount === 11 ? 'visible' : 'invisible'}`}
             >
