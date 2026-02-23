@@ -2,6 +2,7 @@ import { GameAction, GameState } from './game-state';
 import ChampionshipUseCases from '../use-cases/ChampionshipUseCases';
 import TeamUseCases from '../use-cases/TeamUseCases';
 import GameUseCases from '../use-cases/GameUseCases';
+import MatchUseCases from '../use-cases/MatchUseCases';
 
 type Listener = () => void;
 
@@ -11,12 +12,14 @@ export class GameEngine {
   private teamUseCases: TeamUseCases;
   private championshipUseCases: ChampionshipUseCases;
   private gameUseCases: GameUseCases;
+  private matchUseCases: MatchUseCases;
 
   constructor(initialState: GameState) {
     this.state = initialState;
     this.teamUseCases = new TeamUseCases({} as GameState);
     this.championshipUseCases = new ChampionshipUseCases({} as GameState);
     this.gameUseCases = new GameUseCases({} as GameState);
+    this.matchUseCases = new MatchUseCases({} as GameState);
   }
 
   getState(): GameState {
@@ -72,8 +75,8 @@ export class GameEngine {
           action.sub.id
         );
       case 'RUN_MATCH_ACTIONS':
-        console.log('Running match actions.');
-        return state;
+        this.matchUseCases = new MatchUseCases(state);
+        return this.matchUseCases.runMatchActions();
       case 'UPDATE_GAME_CONFIG':
         this.gameUseCases = new GameUseCases(state);
         return this.gameUseCases.updateClockSpeed(action.newClockSpeed);
