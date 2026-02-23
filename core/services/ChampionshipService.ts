@@ -388,14 +388,6 @@ const endRoundForAllChampionships = (
   }
 };
 
-const runMatchActions = (
-  championshipContainer: ChampionshipContainer
-): OperationResult<ChampionshipContainer> => {
-  const result = new OperationResult({} as ChampionshipContainer);
-  result.setError({ errorCode: 'implementation-missing', message: 'Implementation is missing.' });
-  return result;
-};
-
 export default {
   initChampionships,
   getChampionships,
@@ -403,5 +395,4 @@ export default {
   getMatchesForCurrentRound,
   startRoundForAllChampionships,
   endRoundForAllChampionships,
-  runMatchActions,
 };

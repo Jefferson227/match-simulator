@@ -92,20 +92,4 @@ export default class ChampionshipUseCases {
 
     return result.getResult();
   }
-
-  runMatchActions(): GameState {
-    const result = ChampionshipService.runMatchActions(this.state.championshipContainer);
-    if (!result.succeeded) {
-      return {
-        ...this.state,
-        hasError: true,
-        errorMessage: result.error.message,
-      };
-    }
-
-    return {
-      ...this.state,
-      championshipContainer: result.getResult(),
-    };
-  }
 }
