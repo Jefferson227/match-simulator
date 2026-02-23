@@ -1,5 +1,4 @@
 import { Championship } from '../core/models/Championship';
-import ChampionshipContainer from '../core/models/ChampionshipContainer';
 import Match from '../core/models/Match';
 import { Team } from '../core/models/Team';
 import ChampionshipService from '../core/services/ChampionshipService';
