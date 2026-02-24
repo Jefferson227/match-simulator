@@ -46,6 +46,8 @@ const MatchSimulator: FC = () => {
   useEffect(() => {
     setClockSpeed(state.gameConfig.clockSpeed);
 
+    engine.dispatch({ type: 'START_ROUND_FOR_ALL_CHAMPIONSHIPS' });
+
     // Get matches for current round
     let matchesToBeSet = [] as Match[];
     try {
@@ -57,7 +59,6 @@ const MatchSimulator: FC = () => {
       engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage });
     }
 
-    engine.dispatch({ type: 'START_ROUND_FOR_ALL_CHAMPIONSHIPS' });
     setMatches(matchesToBeSet);
   }, []);
 
