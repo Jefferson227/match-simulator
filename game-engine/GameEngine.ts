@@ -1,4 +1,4 @@
-import { GameAction, GameState } from './game-state';
+import { GameAction, GameState } from './GameState';
 import ChampionshipUseCases from '../use-cases/ChampionshipUseCases';
 import TeamUseCases from '../use-cases/TeamUseCases';
 import GameUseCases from '../use-cases/GameUseCases';

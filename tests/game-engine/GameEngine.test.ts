@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
-import { GameEngine } from '../../game-engine/game-engine';
-import { GameState } from '../../game-engine/game-state';
+import { GameEngine } from '../../game-engine/GameEngine';
+import { GameState } from '../../game-engine/GameState';
 import ChampionshipUseCases from '../../use-cases/ChampionshipUseCases';
 import { Championship } from '../../core/models/Championship';
 import ChampionshipContainer from '../../core/models/ChampionshipContainer';
