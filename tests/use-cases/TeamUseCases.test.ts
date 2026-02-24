@@ -204,7 +204,7 @@ describe('TeamUseCases', () => {
   });
 
   describe('setStartersAndSubs', () => {
-    it('adds updated team to playableChampionship teams when service succeeds', () => {
+    it('replaces updated team in playableChampionship teams when service succeeds', () => {
       const state = buildState();
       const useCases = new TeamUseCases(state);
       const players = buildPlayers();
@@ -226,8 +226,8 @@ describe('TeamUseCases', () => {
       );
 
       expect(nextState.hasError).toBe(false);
-      expect(nextState.championshipContainer.playableChampionship.teams).toHaveLength(3);
-      expect(nextState.championshipContainer.playableChampionship.teams[2]).toEqual(updatedTeam);
+      expect(nextState.championshipContainer.playableChampionship.teams).toHaveLength(2);
+      expect(nextState.championshipContainer.playableChampionship.teams[0]).toEqual(updatedTeam);
     });
 
     it('returns error state when service fails', () => {

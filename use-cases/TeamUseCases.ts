@@ -65,10 +65,9 @@ export default class TeamUseCases {
         ...this.state.championshipContainer,
         playableChampionship: {
           ...this.state.championshipContainer.playableChampionship,
-          teams: [
-            ...this.state.championshipContainer.playableChampionship.teams,
-            result.getResult(),
-          ],
+          teams: this.state.championshipContainer.playableChampionship.teams.map((team) =>
+            team.id === result.getResult().id ? result.getResult() : team
+          ),
         },
       },
     };
