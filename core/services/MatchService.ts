@@ -1,8 +1,8 @@
 import ChampionshipContainer from '../models/ChampionshipContainer';
 import OperationResult from '../results/OperationResult';
 import { Championship } from '../models/Championship';
-import { runMatchTick } from './match-simulation/MatchSimulationEngine';
-import { RandomProvider } from './match-simulation/types';
+import { runMatchTick } from '../features/match-simulation/MatchSimulationEngine';
+import { RandomProvider } from '../features/match-simulation/types';
 import { getRandomNumber } from '../utils/Utils';
 
 type MatchServiceDependencies = {

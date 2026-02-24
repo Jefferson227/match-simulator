@@ -3,7 +3,7 @@ import MatchService from '../../../core/services/MatchService';
 import ChampionshipContainer from '../../../core/models/ChampionshipContainer';
 import { Championship } from '../../../core/models/Championship';
 import { Team } from '../../../core/models/Team';
-import { RandomProvider } from '../../../core/services/match-simulation/types';
+import { RandomProvider } from '../../../core/features/match-simulation/types';
 
 function buildTeam(params: {
   id: `${string}-${string}-${string}-${string}-${string}`;
