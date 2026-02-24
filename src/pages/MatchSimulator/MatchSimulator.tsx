@@ -113,6 +113,13 @@ const MatchSimulator: FC = () => {
       }, 5000);
     }
 
+    // Update matches in the page
+    setMatches(
+      championshipUseCases.getMatchesForCurrentRound(
+        state.championshipContainer.playableChampionship
+      )
+    );
+
     return () => {
       if (timer) clearInterval(timer);
     };
