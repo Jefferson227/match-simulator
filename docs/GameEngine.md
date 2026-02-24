@@ -4,7 +4,7 @@ The game engine is the mechanism responsible for managing the game state instead
 
 ## How To Use It In Pages Or Components
 
-In `src/context` there is a context called `GameEngineContext`. This context communicates with `game-engine.ts` and `game-state.ts` and both hold and manage the game state. That context is a wrapper and it's already being set as a provider along with the other context providers in the `src/providers/AppProviders.tsx`.
+In `src/context` there is a context called `GameEngineContext`. This context communicates with `GameEngine.ts` and `GameState.ts` and both hold and manage the game state. That context is a wrapper and it's already being set as a provider along with the other context providers in the `src/providers/AppProviders.tsx`.
 
 To use the game state, do as the example below:
 
@@ -26,7 +26,7 @@ function Dashboard() {
 
 ## Adding New Actions
 
-1. In the `game-state.ts` file, add the new action in the `GameAction` type.
+1. In the `GameState.ts` file, add the new action in the `GameAction` type.
 2. Check if any change will needed to be made in the `GameState` type.
-3. Then, in the `game-engine.ts` file, implement the new action in the `reduce` private method.
+3. Then, in the `GameEngine.ts` file, implement the new action in the `reduce` private method.
 4. You're done! Your action is available to be called in any React component.

@@ -7,7 +7,7 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from '../../i18n';
 import { describe, it, expect, jest, beforeEach } from '@jest/globals';
 import { GameEngineProvider } from '../../contexts/GameEngineContext';
-import type { GameState } from '../../../game-engine/game-state';
+import type { GameState } from '../../../game-engine/GameState';
 import type { Championship } from '../../../core/models/Championship';
 import type { Team } from '../../../core/models/Team';
 import type Player from '../../../core/models/Player';

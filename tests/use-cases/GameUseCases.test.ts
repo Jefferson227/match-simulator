@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import GameUseCases from '../../use-cases/GameUseCases';
-import { GameState } from '../../game-engine/game-state';
+import { GameState } from '../../game-engine/GameState';
 import { Championship } from '../../core/models/Championship';
 
 function buildState(): GameState {

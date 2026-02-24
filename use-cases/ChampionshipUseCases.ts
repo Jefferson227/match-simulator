@@ -2,7 +2,7 @@ import { Championship } from '../core/models/Championship';
 import Match from '../core/models/Match';
 import { Team } from '../core/models/Team';
 import ChampionshipService from '../core/services/ChampionshipService';
-import { GameState } from '../game-engine/game-state';
+import { GameState } from '../game-engine/GameState';
 
 export default class ChampionshipUseCases {
   private state = {} as GameState;

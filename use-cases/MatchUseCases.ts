@@ -1,4 +1,4 @@
-import { GameState } from '../game-engine/game-state';
+import { GameState } from '../game-engine/GameState';
 import MatchService from '../core/services/MatchService';
 
 export default class MatchUseCases {

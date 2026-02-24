@@ -1,4 +1,4 @@
-import { GameState } from '../game-engine/game-state';
+import { GameState } from '../game-engine/GameState';
 
 export default class GameUseCases {
   private state: GameState;

@@ -5,7 +5,7 @@ import { useGameState } from '../../services/useGameState';
 import { Team } from '../../../core/models/Team';
 import TeamUseCases from '../../../use-cases/TeamUseCases';
 import MainLayout from '../../components/MainLayout/MainLayout';
-import { GameState } from '../../../game-engine/game-state';
+import { GameState } from '../../../game-engine/GameState';
 
 const TEAMS_PER_PAGE = 9;
 

@@ -3,7 +3,7 @@ import Match from '../core/models/Match';
 import Player from '../core/models/Player';
 import { Team } from '../core/models/Team';
 import TeamService from '../core/services/TeamService';
-import { GameState } from '../game-engine/game-state';
+import { GameState } from '../game-engine/GameState';
 
 export default class TeamUseCases {
   private state = {} as GameState;
