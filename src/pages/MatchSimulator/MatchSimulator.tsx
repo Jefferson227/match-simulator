@@ -57,6 +57,7 @@ const MatchSimulator: FC = () => {
       engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage });
     }
 
+    engine.dispatch({ type: 'START_ROUND_FOR_ALL_CHAMPIONSHIPS' });
     setMatches(matchesToBeSet);
   }, []);
 
@@ -94,11 +95,6 @@ const MatchSimulator: FC = () => {
     // Represents one clock tick
     if (matches.length > 0 && time < 90) {
       engine.dispatch({ type: 'RUN_MATCH_ACTIONS' });
-    }
-
-    // Prepare matches to start
-    if (matches.length > 0 && time === 0) {
-      engine.dispatch({ type: 'START_ROUND_FOR_ALL_CHAMPIONSHIPS' });
     }
 
     // When the matches ends, stop the clock
