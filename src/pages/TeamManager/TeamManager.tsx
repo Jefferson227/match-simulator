@@ -71,8 +71,9 @@ const TeamManager: React.FC = () => {
   }, [state.hasError]);
 
   useEffect(() => {
+    if (!team.players?.length) return;
     setStartersAndSubs();
-  }, [playerStates]);
+  }, [playerStates, team.players]);
 
   const handlePlayerClick = (id: string) => {
     setPlayerStates((prev) => {
@@ -310,12 +311,20 @@ const TeamManager: React.FC = () => {
   };
 
   const setStartersAndSubs = () => {
-    const starters = players.filter(
-      (player) => playerStates[player.id] === PlayerSelectionState.Selected
-    );
-    const subs = players.filter(
-      (player) => playerStates[player.id] === PlayerSelectionState.Substitute
-    );
+    const starters = players
+      .filter((player) => playerStates[player.id] === PlayerSelectionState.Selected)
+      .map((player) => ({
+        ...player,
+        isStarter: true,
+        isSub: false,
+      }));
+    const subs = players
+      .filter((player) => playerStates[player.id] === PlayerSelectionState.Substitute)
+      .map((player) => ({
+        ...player,
+        isStarter: false,
+        isSub: true,
+      }));
 
     engine.dispatch({ type: 'SET_STARTERS_AND_SUBS', team, starters, subs });
   };
