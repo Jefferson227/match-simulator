@@ -1,4 +1,5 @@
 import { Championship } from '../models/Championship';
+import ChampionshipContainer from '../models/ChampionshipContainer';
 import Player from '../models/Player';
 import Round from '../models/Round';
 import { Team } from '../models/Team';
@@ -161,6 +162,15 @@ function setStartersAndSubs(
     result.setError({ errorCode: 'exception', message });
     return result;
   }
+}
+
+function prepareTeamsBeforeMatch(
+  championshipContainer: ChampionshipContainer
+): OperationResult<ChampionshipContainer> {
+  // TODO: Get teams from each championship (not considering those controlled by human players) for current round, and assign a random formation by setting the players as starters or subs respecting the quantity of 11 players (1 GK and 10 in other positions), and a max of 6 subs
+  const result = new OperationResult<ChampionshipContainer>({} as ChampionshipContainer);
+  result.setError({ errorCode: 'implementation-missing', message: 'Implementation missing.' });
+  return result;
 }
 
 export default {
