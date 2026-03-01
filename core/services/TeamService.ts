@@ -167,14 +167,156 @@ function setStartersAndSubs(
 function prepareTeamsBeforeMatch(
   championshipContainer: ChampionshipContainer
 ): OperationResult<ChampionshipContainer> {
-  // TODO: Get teams from each championship (not considering those controlled by human players) for current round, and assign a random formation by setting the players as starters or subs respecting the quantity of 11 players (1 GK and 10 in other positions), and a max of 6 subs
-  const result = new OperationResult<ChampionshipContainer>({} as ChampionshipContainer);
-  result.setError({ errorCode: 'implementation-missing', message: 'Implementation missing.' });
-  return result;
+  try {
+    const pickRandomPlayers = (players: Player[], count: number): Player[] => {
+      if (count <= 0 || players.length === 0) return [];
+
+      const pickedCount = Math.min(count, players.length);
+      const cloned = players.slice();
+
+      for (let i = 0; i < pickedCount; i++) {
+        const randomIndex = i + Math.floor(Math.random() * (cloned.length - i));
+        const temp = cloned[i];
+        cloned[i] = cloned[randomIndex];
+        cloned[randomIndex] = temp;
+      }
+
+      return cloned.slice(0, pickedCount);
+    };
+
+    const buildRandomLineup = (team: Team): Team => {
+      const goalkeepers: Player[] = [];
+      const otherPlayers: Player[] = [];
+
+      for (let i = 0; i < team.players.length; i++) {
+        const player = team.players[i];
+        if (player.position === 'GK') {
+          goalkeepers.push(player);
+        } else {
+          otherPlayers.push(player);
+        }
+      }
+
+      const gkStarter = pickRandomPlayers(goalkeepers, 1);
+      const gkStarterIds = new Set(gkStarter.map((player) => player.id));
+
+      const availableOutfieldPlayers = otherPlayers.filter(
+        (player) => !gkStarterIds.has(player.id)
+      );
+      const outfieldStarters = pickRandomPlayers(availableOutfieldPlayers, 10);
+
+      const starterIds = new Set<string>([
+        ...gkStarter.map((player) => player.id),
+        ...outfieldStarters.map((player) => player.id),
+      ]);
+
+      const availableSubs = team.players.filter((player) => !starterIds.has(player.id));
+      const subs = pickRandomPlayers(availableSubs, 6);
+      const subIds = new Set(subs.map((player) => player.id));
+
+      return {
+        ...team,
+        players: team.players.map((player) => ({
+          ...player,
+          isStarter: starterIds.has(player.id),
+          isSub: subIds.has(player.id),
+        })),
+      };
+    };
+
+    const prepareChampionship = (championship?: Championship): Championship | undefined => {
+      if (!championship) return championship;
+
+      const currentRoundNumber = championship.matchContainer.currentRound;
+      const currentRoundIndex = championship.matchContainer.rounds.findIndex(
+        (round) => round.number === currentRoundNumber
+      );
+
+      if (currentRoundIndex === -1) return undefined;
+
+      const currentRound = championship.matchContainer.rounds[currentRoundIndex];
+      const updatedTeamsById = new Map<string, Team>();
+
+      for (let i = 0; i < currentRound.matches.length; i++) {
+        const match = currentRound.matches[i];
+
+        if (!match.homeTeam.isControlledByHuman && !updatedTeamsById.has(match.homeTeam.id)) {
+          updatedTeamsById.set(match.homeTeam.id, buildRandomLineup(match.homeTeam));
+        }
+
+        if (!match.awayTeam.isControlledByHuman && !updatedTeamsById.has(match.awayTeam.id)) {
+          updatedTeamsById.set(match.awayTeam.id, buildRandomLineup(match.awayTeam));
+        }
+      }
+
+      if (!updatedTeamsById.size) return championship;
+
+      const updatedTeams = championship.teams.map((team) => updatedTeamsById.get(team.id) ?? team);
+
+      const updatedMatches = currentRound.matches.map((match) => ({
+        ...match,
+        homeTeam: updatedTeamsById.get(match.homeTeam.id) ?? match.homeTeam,
+        awayTeam: updatedTeamsById.get(match.awayTeam.id) ?? match.awayTeam,
+      }));
+
+      const updatedRounds = championship.matchContainer.rounds.slice();
+      updatedRounds[currentRoundIndex] = {
+        ...currentRound,
+        matches: updatedMatches,
+      };
+
+      return {
+        ...championship,
+        teams: updatedTeams,
+        matchContainer: {
+          ...championship.matchContainer,
+          rounds: updatedRounds,
+        },
+      };
+    };
+
+    const updatedPlayableChampionship = prepareChampionship(
+      championshipContainer.playableChampionship
+    );
+    if (!updatedPlayableChampionship) {
+      throw new Error('Playable championship is missing.');
+    }
+
+    const updatedPromotionChampionship = prepareChampionship(
+      championshipContainer.promotionChampionship
+    );
+    if (!updatedPromotionChampionship) {
+      throw new Error('Promotion championship is missing.');
+    }
+
+    const updatedRelegationChampionship = prepareChampionship(
+      championshipContainer.relegationChampionship
+    );
+    if (!updatedPromotionChampionship) {
+      throw new Error('Relegation championship is missing.');
+    }
+
+    const updatedContainer: ChampionshipContainer = {
+      ...championshipContainer,
+      playableChampionship: updatedPlayableChampionship,
+      promotionChampionship: updatedPromotionChampionship,
+      relegationChampionship: updatedRelegationChampionship,
+    };
+
+    const result = new OperationResult(updatedContainer);
+    result.setSuccess();
+    return result;
+  } catch (error) {
+    const result = new OperationResult<ChampionshipContainer>({} as ChampionshipContainer);
+    const message = error instanceof Error ? error.message : String(error);
+    result.setError({ errorCode: 'exception', message });
+    return result;
+  }
 }
 
 export default {
   getTeamsToSelect,
   selectTeam,
   setStartersAndSubs,
+  prepareTeamsBeforeMatch,
 };
