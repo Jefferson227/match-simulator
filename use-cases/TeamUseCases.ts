@@ -185,4 +185,16 @@ export default class TeamUseCases {
 
     return result.getResult();
   }
+
+  prepareTeamsBeforeMatch(): GameState {
+    const result = TeamService.prepareTeamsBeforeMatch(this.state.championshipContainer);
+    if (!result.succeeded) {
+      throw new Error(result.error.message);
+    }
+
+    return {
+      ...this.state,
+      championshipContainer: result.getResult(),
+    };
+  }
 }
