@@ -7,8 +7,7 @@ import { useGameState } from '../../services/useGameState';
 import ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
 import Player from '../../../core/models/Player';
 import { Team } from '../../../core/models/Team';
-
-export const FORMATIONS = ['5-3-2', '3-5-2', '4-4-2', '4-3-3', '4-2-4', '5-4-1', '3-4-3', '3-3-4'];
+import Formations, { FORMATIONS } from '../../../core/enums/Formations';
 
 const EMPTY_TEAM: Team = {
   id: '00000000-0000-0000-0000-000000000000',
@@ -214,7 +213,7 @@ const TeamManager: React.FC = () => {
   };
 
   // Function to check if a formation is available based on team's players
-  const isFormationAvailable = (formation: string) => {
+  const isFormationAvailable = (formation: Formations) => {
     const [df, mf, fw] = formation.split('-').map(Number);
     const players = team.players || [];
 
@@ -227,7 +226,7 @@ const TeamManager: React.FC = () => {
   };
 
   // Function to select best players for a formation
-  const selectBestPlayersForFormation = (formation: string) => {
+  const selectBestPlayersForFormation = (formation: Formations) => {
     const [df, mf, fw] = formation.split('-').map(Number);
     const players = team.players || [];
 
