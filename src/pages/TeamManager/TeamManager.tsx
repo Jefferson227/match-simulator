@@ -330,6 +330,7 @@ const TeamManager: React.FC = () => {
   };
 
   const handleStartMatch = () => {
+    engine.dispatch({ type: 'PREPARE_TEAMS_BEFORE_MATCH' });
     engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'MatchSimulator' });
   };
 

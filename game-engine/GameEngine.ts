@@ -80,6 +80,9 @@ export class GameEngine {
       case 'UPDATE_GAME_CONFIG':
         this.gameUseCases = new GameUseCases(state);
         return this.gameUseCases.updateClockSpeed(action.newClockSpeed);
+      case 'PREPARE_TEAMS_BEFORE_MATCH':
+        this.teamUseCases = new TeamUseCases(state);
+        return this.teamUseCases.prepareTeamsBeforeMatch();
       case 'PING':
         console.log('pong');
         return state;

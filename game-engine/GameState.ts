@@ -28,4 +28,5 @@ export type GameAction =
   | { type: 'END_ROUND_FOR_ALL_CHAMPIONSHIPS' }
   | { type: 'RUN_MATCH_ACTIONS' }
   | { type: 'UPDATE_GAME_CONFIG'; newClockSpeed: number }
+  | { type: 'PREPARE_TEAMS_BEFORE_MATCH' }
   | { type: 'PING' };
