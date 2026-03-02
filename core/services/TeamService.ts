@@ -1,3 +1,4 @@
+import { FORMATIONS } from '../enums/Formations';
 import { Championship } from '../models/Championship';
 import ChampionshipContainer from '../models/ChampionshipContainer';
 import Player from '../models/Player';
@@ -168,6 +169,11 @@ function prepareTeamsBeforeMatch(
   championshipContainer: ChampionshipContainer
 ): OperationResult<ChampionshipContainer> {
   try {
+    const formationRequirements = FORMATIONS.map((formation) => {
+      const [defenders, midfielders, forwards] = formation.split('-').map(Number);
+      return { formation, defenders, midfielders, forwards };
+    });
+
     const pickRandomPlayers = (players: Player[], count: number): Player[] => {
       if (count <= 0 || players.length === 0) return [];
 
@@ -186,29 +192,63 @@ function prepareTeamsBeforeMatch(
 
     const buildRandomLineup = (team: Team): Team => {
       const goalkeepers: Player[] = [];
-      const otherPlayers: Player[] = [];
+      const defenders: Player[] = [];
+      const midfielders: Player[] = [];
+      const forwards: Player[] = [];
 
       for (let i = 0; i < team.players.length; i++) {
         const player = team.players[i];
         if (player.position === 'GK') {
           goalkeepers.push(player);
-        } else {
-          otherPlayers.push(player);
+        } else if (player.position === 'DF') {
+          defenders.push(player);
+        } else if (player.position === 'MF') {
+          midfielders.push(player);
+        } else if (player.position === 'FW') {
+          forwards.push(player);
         }
       }
 
-      const gkStarter = pickRandomPlayers(goalkeepers, 1);
-      const gkStarterIds = new Set(gkStarter.map((player) => player.id));
-
-      const availableOutfieldPlayers = otherPlayers.filter(
-        (player) => !gkStarterIds.has(player.id)
+      const availableFormations = formationRequirements.filter(
+        (formation) =>
+          goalkeepers.length >= 1 &&
+          defenders.length >= formation.defenders &&
+          midfielders.length >= formation.midfielders &&
+          forwards.length >= formation.forwards
       );
-      const outfieldStarters = pickRandomPlayers(availableOutfieldPlayers, 10);
 
-      const starterIds = new Set<string>([
-        ...gkStarter.map((player) => player.id),
-        ...outfieldStarters.map((player) => player.id),
-      ]);
+      const starterIds = new Set<string>();
+      if (availableFormations.length > 0) {
+        const selectedFormation =
+          availableFormations[Math.floor(Math.random() * availableFormations.length)];
+
+        pickRandomPlayers(goalkeepers, 1).forEach((player) => starterIds.add(player.id));
+        pickRandomPlayers(defenders, selectedFormation.defenders).forEach((player) =>
+          starterIds.add(player.id)
+        );
+        pickRandomPlayers(midfielders, selectedFormation.midfielders).forEach((player) =>
+          starterIds.add(player.id)
+        );
+        pickRandomPlayers(forwards, selectedFormation.forwards).forEach((player) =>
+          starterIds.add(player.id)
+        );
+      } else {
+        const gkStarter = pickRandomPlayers(goalkeepers, 1);
+        const gkStarterIds = new Set(gkStarter.map((player) => player.id));
+
+        const availableOutfieldPlayers = team.players.filter(
+          (player) => player.position !== 'GK' && !gkStarterIds.has(player.id)
+        );
+        const outfieldStarters = pickRandomPlayers(availableOutfieldPlayers, 10);
+
+        gkStarter.forEach((player) => starterIds.add(player.id));
+        outfieldStarters.forEach((player) => starterIds.add(player.id));
+      }
+
+      if (starterIds.size === 0) {
+        const fallbackStarters = pickRandomPlayers(team.players, 11);
+        fallbackStarters.forEach((player) => starterIds.add(player.id));
+      }
 
       const availableSubs = team.players.filter((player) => !starterIds.has(player.id));
       const subs = pickRandomPlayers(availableSubs, 6);
