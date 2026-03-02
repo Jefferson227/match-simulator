@@ -322,25 +322,11 @@ function prepareTeamsBeforeMatch(
       throw new Error('Playable championship is missing.');
     }
 
-    const updatedPromotionChampionship = prepareChampionship(
-      championshipContainer.promotionChampionship
-    );
-    if (!updatedPromotionChampionship) {
-      throw new Error('Promotion championship is missing.');
-    }
-
-    const updatedRelegationChampionship = prepareChampionship(
-      championshipContainer.relegationChampionship
-    );
-    if (!updatedPromotionChampionship) {
-      throw new Error('Relegation championship is missing.');
-    }
-
     const updatedContainer: ChampionshipContainer = {
       ...championshipContainer,
       playableChampionship: updatedPlayableChampionship,
-      promotionChampionship: updatedPromotionChampionship,
-      relegationChampionship: updatedRelegationChampionship,
+      promotionChampionship: prepareChampionship(championshipContainer.promotionChampionship),
+      relegationChampionship: prepareChampionship(championshipContainer.relegationChampionship),
     };
 
     const result = new OperationResult(updatedContainer);
