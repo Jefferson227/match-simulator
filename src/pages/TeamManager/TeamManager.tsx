@@ -329,7 +329,7 @@ const TeamManager: React.FC = () => {
   };
 
   const handleStartMatch = () => {
-    // TODO: Subs and starters are being selected at championship level, but not for the match
+    setStartersAndSubs();
     engine.dispatch({ type: 'PREPARE_TEAMS_BEFORE_MATCH' });
     engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'MatchSimulator' });
   };
