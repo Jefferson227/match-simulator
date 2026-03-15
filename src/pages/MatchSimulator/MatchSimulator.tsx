@@ -148,7 +148,7 @@ const MatchSimulator: FC = () => {
       <Clock time={time} handleClockClick={handleClockClick} clockSpeed={clockSpeed} />
 
       <MainLayout>
-        <div className="font-press-start relative min-h-screen">
+        <div className="font-press-start relative min-h-screen mt-[8rem]">
           <div className="mb-[18px] text-center text-white text-sm uppercase">
             {state.championshipContainer.playableChampionship.matchContainer.currentRound &&
               matches.length > 0 &&
