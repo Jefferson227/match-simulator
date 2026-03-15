@@ -267,6 +267,9 @@ function prepareTeamsBeforeMatch(
     const prepareChampionship = (championship?: Championship): Championship | undefined => {
       if (!championship) return championship;
 
+      const humanControlledTeam = championshipContainer.playableChampionship.teams.find(
+        (team) => team.isControlledByHuman
+      );
       const currentRoundNumber = championship.matchContainer.currentRound;
       const currentRoundIndex = championship.matchContainer.rounds.findIndex(
         (round) => round.number === currentRoundNumber
@@ -276,20 +279,27 @@ function prepareTeamsBeforeMatch(
 
       const currentRound = championship.matchContainer.rounds[currentRoundIndex];
       const updatedTeamsById = new Map<string, Team>();
-
       for (let i = 0; i < currentRound.matches.length; i++) {
         const match = currentRound.matches[i];
 
-        if (!match.homeTeam.isControlledByHuman && !updatedTeamsById.has(match.homeTeam.id)) {
-          updatedTeamsById.set(match.homeTeam.id, buildRandomLineup(match.homeTeam));
+        if (!updatedTeamsById.has(match.homeTeam.id)) {
+          updatedTeamsById.set(
+            match.homeTeam.id,
+            match.homeTeam.isControlledByHuman && humanControlledTeam
+              ? humanControlledTeam
+              : buildRandomLineup(match.homeTeam)
+          );
         }
 
-        if (!match.awayTeam.isControlledByHuman && !updatedTeamsById.has(match.awayTeam.id)) {
-          updatedTeamsById.set(match.awayTeam.id, buildRandomLineup(match.awayTeam));
+        if (!updatedTeamsById.has(match.awayTeam.id)) {
+          updatedTeamsById.set(
+            match.awayTeam.id,
+            match.awayTeam.isControlledByHuman && humanControlledTeam
+              ? humanControlledTeam
+              : buildRandomLineup(match.awayTeam)
+          );
         }
       }
-
-      if (!updatedTeamsById.size) return championship;
 
       const updatedTeams = championship.teams.map((team) => updatedTeamsById.get(team.id) ?? team);
 
