@@ -144,95 +144,98 @@ const MatchSimulator: FC = () => {
   const selectedMatches = matches.slice(startIndex, startIndex + MATCHES_PER_PAGE);
 
   return (
-    <MainLayout>
-      <div className="font-press-start relative min-h-screen">
-        <Clock time={time} handleClockClick={handleClockClick} clockSpeed={clockSpeed} />
-        <div className="mb-[18px] text-center text-white text-sm uppercase">
-          {state.championshipContainer.playableChampionship.matchContainer.currentRound &&
-            matches.length > 0 &&
-            !showTeamMatchDetails && (
-              <span>
-                {`${state.championshipContainer.playableChampionship.matchContainer.currentSeason} - Round ${state.championshipContainer.playableChampionship.matchContainer.currentRound} of ${state.championshipContainer.playableChampionship.matchContainer.totalRounds}`}
-              </span>
-            )}
-        </div>
+    <>
+      <Clock time={time} handleClockClick={handleClockClick} clockSpeed={clockSpeed} />
 
-        {!showTeamMatchDetails && !detailsMatchId ? (
-          <div className="flex flex-col items-center">
-            <div className="h-[579px]">
-              {selectedMatches.map((match, index) => (
-                <div
-                  className="w-[320px] flex justify-between items-center mb-[48px] relative"
-                  key={index}
-                >
-                  <TeamRectangle
-                    team={match.homeTeam}
-                    runFunction={() => setParamsForTeamMatchDetails(match.homeTeam, match.id)}
-                  />
-                  <Score
-                    homeScore={match.homeTeamScore}
-                    guestScore={match.awayTeamScore}
-                    onClick={() => setDetailsMatchId(match.id)}
-                  />
-                  <TeamRectangle
-                    team={match.awayTeam}
-                    runFunction={() => setParamsForTeamMatchDetails(match.awayTeam, match.id)}
-                  />
-                  <div className="absolute -bottom-7 left-0 text-[14px] text-[#e2e2e2] uppercase">
-                    {match.scorers.length > 0
-                      ? `${utils.shortenPlayerName(match.scorers[match.scorers.length - 1].player.name)} ${
-                          match.scorers[match.scorers.length - 1].time
-                        }'`
-                      : null}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {matches.length > MATCHES_PER_PAGE && !showTeamMatchDetails && !detailsMatchId && (
-              <div className="w-[320px] flex justify-between items-center mb-[48px] relative">
-                <button
-                  onClick={handlePrevPage}
-                  disabled={currentPage === 0}
-                  className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  &lt;
-                </button>
-                <button
-                  onClick={handleNextPage}
-                  disabled={currentPage >= totalPages - 1}
-                  className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  &gt;
-                </button>
-              </div>
-            )}
+      <MainLayout>
+        <div className="font-press-start relative min-h-screen">
+          <div className="mb-[18px] text-center text-white text-sm uppercase">
+            {state.championshipContainer.playableChampionship.matchContainer.currentRound &&
+              matches.length > 0 &&
+              !showTeamMatchDetails && (
+                <span>
+                  {`${state.championshipContainer.playableChampionship.matchContainer.currentSeason} - Round ${state.championshipContainer.playableChampionship.matchContainer.currentRound} of ${state.championshipContainer.playableChampionship.matchContainer.totalRounds}`}
+                </span>
+              )}
           </div>
-        ) : null}
 
-        {detailsMatchId &&
-          (() => {
-            const match = matches.find((m) => m.id === detailsMatchId);
-            if (!match) return null;
-            return (
-              <MatchDetails
-                match={match}
-                scorers={match.scorers || []}
-                onBack={() => setDetailsMatchId(null)}
-              />
-            );
-          })()}
+          {!showTeamMatchDetails && !detailsMatchId ? (
+            <div className="flex flex-col items-center">
+              <div className="h-[579px]">
+                {selectedMatches.map((match, index) => (
+                  <div
+                    className="w-[320px] flex justify-between items-center mb-[48px] relative"
+                    key={index}
+                  >
+                    <TeamRectangle
+                      team={match.homeTeam}
+                      runFunction={() => setParamsForTeamMatchDetails(match.homeTeam, match.id)}
+                    />
+                    <Score
+                      homeScore={match.homeTeamScore}
+                      guestScore={match.awayTeamScore}
+                      onClick={() => setDetailsMatchId(match.id)}
+                    />
+                    <TeamRectangle
+                      team={match.awayTeam}
+                      runFunction={() => setParamsForTeamMatchDetails(match.awayTeam, match.id)}
+                    />
+                    <div className="absolute -bottom-7 left-0 text-[14px] text-[#e2e2e2] uppercase">
+                      {match.scorers.length > 0
+                        ? `${utils.shortenPlayerName(match.scorers[match.scorers.length - 1].player.name)} ${
+                            match.scorers[match.scorers.length - 1].time
+                          }'`
+                        : null}
+                    </div>
+                  </div>
+                ))}
+              </div>
 
-        {showTeamMatchDetails ? (
-          <TeamMatchDetails
-            team={team}
-            matchId={matchId}
-            engine={engine}
-            runFunction={clearParamsForTeamMatchDetails}
-          />
-        ) : null}
-      </div>
-    </MainLayout>
+              {matches.length > MATCHES_PER_PAGE && !showTeamMatchDetails && !detailsMatchId && (
+                <div className="w-[320px] flex justify-between items-center mb-[48px] relative">
+                  <button
+                    onClick={handlePrevPage}
+                    disabled={currentPage === 0}
+                    className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    &lt;
+                  </button>
+                  <button
+                    onClick={handleNextPage}
+                    disabled={currentPage >= totalPages - 1}
+                    className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    &gt;
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : null}
+
+          {detailsMatchId &&
+            (() => {
+              const match = matches.find((m) => m.id === detailsMatchId);
+              if (!match) return null;
+              return (
+                <MatchDetails
+                  match={match}
+                  scorers={match.scorers || []}
+                  onBack={() => setDetailsMatchId(null)}
+                />
+              );
+            })()}
+
+          {showTeamMatchDetails ? (
+            <TeamMatchDetails
+              team={team}
+              matchId={matchId}
+              engine={engine}
+              runFunction={clearParamsForTeamMatchDetails}
+            />
+          ) : null}
+        </div>
+      </MainLayout>
+    </>
   );
 };
 
