@@ -124,7 +124,7 @@ const MatchSimulator: FC = () => {
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [time, detailsMatchId, state.gameConfig.clockSpeed]);
+  }, [time, showTeamMatchDetails, detailsMatchId, state.gameConfig.clockSpeed]);
 
   const totalPages = Math.ceil(matches.length / MATCHES_PER_PAGE);
 
