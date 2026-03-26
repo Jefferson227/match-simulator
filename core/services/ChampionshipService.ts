@@ -326,7 +326,7 @@ const startRoundForAllChampionships = (
 
     let updatedRelegationChampionship: Championship | undefined;
     if (championshipContainer.playableChampionship.isRelegatable) {
-      updatedRelegationChampionship = startRound(championshipContainer.promotionChampionship!);
+      updatedRelegationChampionship = startRound(championshipContainer.relegationChampionship!);
 
       updatedChampionshipContainer = {
         ...updatedChampionshipContainer,
@@ -369,7 +369,7 @@ const endRoundForAllChampionships = (
 
     let updatedRelegationChampionship: Championship | undefined;
     if (championshipContainer.playableChampionship.isRelegatable) {
-      updatedRelegationChampionship = endRound(championshipContainer.promotionChampionship!);
+      updatedRelegationChampionship = endRound(championshipContainer.relegationChampionship!);
 
       updatedChampionshipContainer = {
         ...updatedChampionshipContainer,
