@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from 'react';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import { useChampionshipContext } from '../../contexts/ChampionshipContext';
 import { MatchContext } from '../../contexts/MatchContext';
-import { TopScorer } from '../TeamStandings/types';
 import sessionService from '../../services/sessionService';
 import generalService from '../../services/generalService';
 import utils from '../../utils/utils';
