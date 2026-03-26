@@ -144,11 +144,16 @@ const MatchSimulator: FC = () => {
   const selectedMatches = matches.slice(startIndex, startIndex + MATCHES_PER_PAGE);
 
   return (
-    <>
-      <Clock time={time} handleClockClick={handleClockClick} clockSpeed={clockSpeed} />
+    <MainLayout>
+      <div
+        className="font-press-start relative min-h-screen w-full"
+        style={{ paddingTop: 'max(env(safe-area-inset-top, 0px), 12px)' }}
+      >
+        <div className="-mx-5">
+          <Clock time={time} handleClockClick={handleClockClick} clockSpeed={clockSpeed} />
+        </div>
 
-      <MainLayout>
-        <div className="font-press-start relative min-h-screen mt-[8rem]">
+        <div className="relative">
           <div className="mb-[18px] text-center text-white text-sm uppercase">
             {state.championshipContainer.playableChampionship.matchContainer.currentRound &&
               matches.length > 0 &&
@@ -234,8 +239,8 @@ const MatchSimulator: FC = () => {
             />
           ) : null}
         </div>
-      </MainLayout>
-    </>
+      </div>
+    </MainLayout>
   );
 };
 
