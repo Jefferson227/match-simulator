@@ -9,6 +9,7 @@ import { useGameEngine } from './contexts/GameEngineContext';
 import { useGameState } from './services/useGameState';
 import TeamManager from './pages/TeamManager/TeamManager';
 import MatchSimulator from './pages/MatchSimulator/MatchSimulator';
+import TeamStandings from './components/TeamStandings/TeamStandings';
 
 const AppContent: FC = () => {
   // Game engine
@@ -27,6 +28,8 @@ const AppContent: FC = () => {
       return <TeamManager />;
     case 'MatchSimulator':
       return <MatchSimulator />;
+    case 'TeamStandings':
+      return <TeamStandings />;
     default:
       return <InitialScreen />;
   }

@@ -108,9 +108,7 @@ const MatchSimulator: FC = () => {
       window.setTimeout(() => {
         engine.dispatch({ type: 'END_ROUND_FOR_ALL_CHAMPIONSHIPS' });
         engine.dispatch({ type: 'UPDATE_GAME_CONFIG', newClockSpeed: clockSpeed });
-
-        // TODO: Fix TeamStandings screen before showing it
-        // engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'TeamStandings' });
+        engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'TeamStandings' });
       }, 5000);
     }
 
