@@ -9,7 +9,7 @@ import { useGameEngine } from './contexts/GameEngineContext';
 import { useGameState } from './services/useGameState';
 import TeamManager from './pages/TeamManager/TeamManager';
 import MatchSimulator from './pages/MatchSimulator/MatchSimulator';
-import TeamStandings from './components/TeamStandings/TeamStandings';
+import TeamStandings from './pages/TeamStandings/TeamStandings';
 
 const AppContent: FC = () => {
   // Game engine
