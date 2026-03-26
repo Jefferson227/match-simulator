@@ -6,6 +6,7 @@ import Match from '../models/Match';
 import MatchContainer from '../models/MatchContainer';
 import Round from '../models/Round';
 import { Championship } from '../models/Championship';
+import Standing from '../models/Standing';
 
 function createMatches(startingTeams: Team[]): MatchContainer {
   const teams = [...startingTeams];
@@ -151,21 +152,88 @@ function endRound(championship: Championship): Championship {
   }
 
   const round = rounds[roundIndex];
+  if (round.status === 'ended') return championship;
+
+  const updatedStandings = updateStandings(championship.standings, round.matches);
   const updatedRounds = rounds.slice();
   updatedRounds[roundIndex] = {
     ...round,
     status: 'ended',
   };
 
-  const incrementedRoundNumber = championship.matchContainer.currentRound++;
+  const nextRoundNumber =
+    matchContainer.currentRound < matchContainer.totalRounds
+      ? matchContainer.currentRound + 1
+      : matchContainer.totalRounds + 1;
+
   return {
     ...championship,
+    standings: updatedStandings,
     matchContainer: {
       ...matchContainer,
       rounds: updatedRounds,
-      currentRound: incrementedRoundNumber,
+      currentRound: nextRoundNumber,
+      timer: 0,
     },
   };
+}
+
+function updateStandings(currentStandings: Standing[], matches: Match[]): Standing[] {
+  const standingsMap = new Map<string, Standing>();
+
+  for (const standing of currentStandings) {
+    standingsMap.set(standing.team.id, {
+      ...standing,
+      team: { ...standing.team },
+    });
+  }
+
+  for (const match of matches) {
+    const homeStanding = standingsMap.get(match.homeTeam.id);
+    const awayStanding = standingsMap.get(match.awayTeam.id);
+
+    if (!homeStanding || !awayStanding) continue;
+
+    homeStanding.goalsFor += match.homeTeamScore;
+    homeStanding.goalsAgainst += match.awayTeamScore;
+    awayStanding.goalsFor += match.awayTeamScore;
+    awayStanding.goalsAgainst += match.homeTeamScore;
+
+    if (match.homeTeamScore > match.awayTeamScore) {
+      homeStanding.wins += 1;
+      homeStanding.points += 3;
+      awayStanding.losses += 1;
+    } else if (match.homeTeamScore < match.awayTeamScore) {
+      awayStanding.wins += 1;
+      awayStanding.points += 3;
+      homeStanding.losses += 1;
+    } else {
+      homeStanding.draws += 1;
+      awayStanding.draws += 1;
+      homeStanding.points += 1;
+      awayStanding.points += 1;
+    }
+  }
+
+  return Array.from(standingsMap.values())
+    .sort((a, b) => {
+      const pointsDifference = b.points - a.points;
+      if (pointsDifference !== 0) return pointsDifference;
+
+      const goalDifferenceA = a.goalsFor - a.goalsAgainst;
+      const goalDifferenceB = b.goalsFor - b.goalsAgainst;
+      const goalDifference = goalDifferenceB - goalDifferenceA;
+      if (goalDifference !== 0) return goalDifference;
+
+      const goalsForDifference = b.goalsFor - a.goalsFor;
+      if (goalsForDifference !== 0) return goalsForDifference;
+
+      return a.team.abbreviation.localeCompare(b.team.abbreviation);
+    })
+    .map((standing, index) => ({
+      ...standing,
+      position: index + 1,
+    }));
 }
 
 const initChampionships = (
