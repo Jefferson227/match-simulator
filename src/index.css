@@ -6,6 +6,12 @@
 }
 
 @layer base {
+  html,
+  body,
+  #root {
+    touch-action: manipulation;
+  }
+
   body {
     @apply m-0 font-sans antialiased bg-[#3d7a33];
   }
