@@ -87,7 +87,18 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
                       <td className="w-[56px] text-center py-2">
                         {page * RESULTS_PER_PAGE + idx + 1}
                       </td>
-                      <td className="w-[56px] text-center">{row.team.abbreviation}</td>
+                      <td className="w-[56px] text-center py-2">
+                        <div
+                          className="inline-flex min-w-[72px] justify-center border-[4px] px-2 py-1"
+                          style={{
+                            borderColor: row.team.colors.outline,
+                            backgroundColor: row.team.colors.background,
+                            color: row.team.colors.text,
+                          }}
+                        >
+                          {row.team.abbreviation}
+                        </div>
+                      </td>
                       <td className="w-[56px] text-center">{row.wins}</td>
                       <td className="w-[56px] text-center">{row.draws}</td>
                       <td className="w-[56px] text-center">{row.losses}</td>
