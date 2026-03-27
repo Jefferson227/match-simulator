@@ -68,7 +68,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
           className="w-[350px] h-[610px] mx-auto mt-0 mb-0 flex flex-col items-center"
           style={{ backgroundColor: '#397a33', border: '4px solid #e2e2e2' }}
         >
-          <div className="w-full mt-[14px]" style={{ maxHeight: 587, overflowY: 'auto' }}>
+          <div className="w-full h-[587px] mt-[14px] overflow-hidden">
             <table className="w-full border-separate border-spacing-0">
               <thead>
                 <tr className="text-[18px] text-white">
