@@ -236,6 +236,107 @@ function updateStandings(currentStandings: Standing[], matches: Match[]): Standi
     }));
 }
 
+function buildStandings(teams: Team[]): Standing[] {
+  return teams.map((team, index) => ({
+    team,
+    position: index + 1,
+    wins: 0,
+    draws: 0,
+    losses: 0,
+    goalsFor: 0,
+    goalsAgainst: 0,
+    points: 0,
+  }));
+}
+
+function getPromotedTeams(championship: Championship, amount: number): Team[] {
+  return championship.standings.slice(0, amount).map((standing) => standing.team);
+}
+
+function getRelegatedTeams(championship: Championship, amount: number): Team[] {
+  if (amount <= 0) return [];
+  return championship.standings.slice(-amount).map((standing) => standing.team);
+}
+
+function removeTeams(sourceTeams: Team[], teamsToRemove: Team[]): Team[] {
+  const teamsToRemoveIds = new Set(teamsToRemove.map((team) => team.id));
+  return sourceTeams.filter((team) => !teamsToRemoveIds.has(team.id));
+}
+
+function resetChampionshipForNewSeason(championship: Championship, teams: Team[]): Championship {
+  const nextSeasonMatchContainer = createMatches(teams);
+  const currentSeason =
+    championship.matchContainer.currentSeason || nextSeasonMatchContainer.currentSeason;
+
+  return {
+    ...championship,
+    teams,
+    standings: buildStandings(teams),
+    matchContainer: {
+      ...nextSeasonMatchContainer,
+      currentSeason: currentSeason + 1,
+    },
+  };
+}
+
+function isChampionshipOver(championship: Championship): boolean {
+  return championship.matchContainer.currentRound >= championship.matchContainer.totalRounds;
+}
+
+function runEndOfChampionshipActionsForAllChampionships(
+  championshipContainer: ChampionshipContainer
+): ChampionshipContainer {
+  const { playableChampionship, promotionChampionship, relegationChampionship } =
+    championshipContainer;
+
+  if (!isChampionshipOver(playableChampionship)) return championshipContainer;
+
+  const promotedTeams =
+    playableChampionship.isPromotable && promotionChampionship
+      ? getPromotedTeams(playableChampionship, playableChampionship.numberOfPromotableTeams)
+      : [];
+  const relegatedFromPromotion =
+    playableChampionship.isPromotable && promotionChampionship
+      ? getRelegatedTeams(promotionChampionship, playableChampionship.numberOfPromotableTeams)
+      : [];
+
+  const relegatedTeams =
+    playableChampionship.isRelegatable && relegationChampionship
+      ? getRelegatedTeams(playableChampionship, playableChampionship.numberOfRelegatableTeams)
+      : [];
+  const promotedFromRelegation =
+    playableChampionship.isRelegatable && relegationChampionship
+      ? getPromotedTeams(relegationChampionship, playableChampionship.numberOfRelegatableTeams)
+      : [];
+
+  const nextPlayableTeams = [
+    ...removeTeams(playableChampionship.teams, [...promotedTeams, ...relegatedTeams]),
+    ...relegatedFromPromotion,
+    ...promotedFromRelegation,
+  ];
+
+  const updatedContainer: ChampionshipContainer = {
+    ...championshipContainer,
+    playableChampionship: resetChampionshipForNewSeason(playableChampionship, nextPlayableTeams),
+  };
+
+  if (promotionChampionship && playableChampionship.isPromotable) {
+    updatedContainer.promotionChampionship = resetChampionshipForNewSeason(promotionChampionship, [
+      ...removeTeams(promotionChampionship.teams, relegatedFromPromotion),
+      ...promotedTeams,
+    ]);
+  }
+
+  if (relegationChampionship && playableChampionship.isRelegatable) {
+    updatedContainer.relegationChampionship = resetChampionshipForNewSeason(
+      relegationChampionship,
+      [...removeTeams(relegationChampionship.teams, promotedFromRelegation), ...relegatedTeams]
+    );
+  }
+
+  return updatedContainer;
+}
+
 const initChampionships = (
   championshipInternalName: string
 ): OperationResult<ChampionshipContainer> => {
@@ -456,6 +557,24 @@ const endRoundForAllChampionships = (
   }
 };
 
+const runEndOfChampionshipActions = (
+  championshipContainer: ChampionshipContainer
+): OperationResult<ChampionshipContainer> => {
+  try {
+    const updatedChampionshipContainer =
+      runEndOfChampionshipActionsForAllChampionships(championshipContainer);
+
+    const result = new OperationResult<ChampionshipContainer>(updatedChampionshipContainer);
+    result.setSuccess();
+    return result;
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const result = new OperationResult<ChampionshipContainer>({} as ChampionshipContainer);
+    result.setError({ errorCode: 'exception', message: errorMessage });
+    return result;
+  }
+};
+
 export default {
   initChampionships,
   getChampionships,
@@ -463,4 +582,5 @@ export default {
   getMatchesForCurrentRound,
   startRoundForAllChampionships,
   endRoundForAllChampionships,
+  runEndOfChampionshipActions,
 };

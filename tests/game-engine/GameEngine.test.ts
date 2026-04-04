@@ -114,4 +114,30 @@ describe('GameEngine', () => {
     expect(initChampionshipsMock).toHaveBeenCalledWith('brasileirao-serie-b');
     expect(engine.getState().championshipContainer).toBe(mockContainer);
   });
+
+  it('runs end-of-championship actions through ChampionshipUseCases', () => {
+    const engine = new GameEngine(initialState);
+    const updatedState: GameState = {
+      ...initialState,
+      championshipContainer: {
+        playableChampionship: {
+          ...initialState.championshipContainer.playableChampionship,
+          name: 'Updated Championship',
+        },
+      } as ChampionshipContainer,
+    };
+    const runEndOfChampionshipActionsMock = jest.fn().mockReturnValue(updatedState);
+
+    MockedChampionshipUseCases.mockImplementation(
+      () =>
+        ({
+          runEndOfChampionshipActions: runEndOfChampionshipActionsMock,
+        }) as ChampionshipUseCases
+    );
+
+    engine.dispatch({ type: 'RUN_END_OF_CHAMPIONSHIP_ACTIONS' });
+
+    expect(runEndOfChampionshipActionsMock).toHaveBeenCalled();
+    expect(engine.getState().championshipContainer).toEqual(updatedState.championshipContainer);
+  });
 });

@@ -14,6 +14,7 @@ jest.mock('../../core/services/ChampionshipService', () => ({
     initChampionships: jest.fn(),
     startRoundForAllChampionships: jest.fn(),
     endRoundForAllChampionships: jest.fn(),
+    runEndOfChampionshipActions: jest.fn(),
     getChampionships: jest.fn(),
     getTeamControlledByHuman: jest.fn(),
     getMatchesForCurrentRound: jest.fn(),
@@ -192,6 +193,47 @@ describe('ChampionshipUseCases', () => {
 
       expect(nextState.hasError).toBe(true);
       expect(nextState.errorMessage).toBe('End round failed');
+      expect(nextState.championshipContainer).toBe(initialState.championshipContainer);
+    });
+  });
+
+  describe('runEndOfChampionshipActions', () => {
+    it('returns updated championshipContainer when service succeeds', () => {
+      const initialState = buildState();
+      const useCases = new ChampionshipUseCases(initialState);
+      const updatedContainer: ChampionshipContainer = {
+        playableChampionship: {
+          ...buildMockChampionship(),
+          matchContainer: {
+            ...buildMockChampionship().matchContainer,
+            currentRound: 1,
+            totalRounds: 2,
+          },
+        },
+      };
+
+      mockedChampionshipService.runEndOfChampionshipActions.mockReturnValue(
+        successResult(updatedContainer)
+      );
+
+      const nextState = useCases.runEndOfChampionshipActions();
+
+      expect(nextState.championshipContainer).toEqual(updatedContainer);
+      expect(nextState.hasError).toBe(false);
+    });
+
+    it('returns error state when service fails', () => {
+      const initialState = buildState();
+      const useCases = new ChampionshipUseCases(initialState);
+
+      mockedChampionshipService.runEndOfChampionshipActions.mockReturnValue(
+        failureResult({} as ChampionshipContainer, 'End of championship actions failed')
+      );
+
+      const nextState = useCases.runEndOfChampionshipActions();
+
+      expect(nextState.hasError).toBe(true);
+      expect(nextState.errorMessage).toBe('End of championship actions failed');
       expect(nextState.championshipContainer).toBe(initialState.championshipContainer);
     });
   });

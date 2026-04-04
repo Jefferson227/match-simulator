@@ -26,6 +26,7 @@ export type GameAction =
     }
   | { type: 'START_ROUND_FOR_ALL_CHAMPIONSHIPS' }
   | { type: 'END_ROUND_FOR_ALL_CHAMPIONSHIPS' }
+  | { type: 'RUN_END_OF_CHAMPIONSHIP_ACTIONS' }
   | { type: 'RUN_MATCH_ACTIONS' }
   | { type: 'UPDATE_GAME_CONFIG'; newClockSpeed: number }
   | { type: 'PREPARE_TEAMS_BEFORE_MATCH' }

@@ -66,6 +66,24 @@ export default class ChampionshipUseCases {
     };
   }
 
+  runEndOfChampionshipActions(): GameState {
+    const result = ChampionshipService.runEndOfChampionshipActions(
+      this.state.championshipContainer
+    );
+    if (!result.succeeded) {
+      return {
+        ...this.state,
+        hasError: true,
+        errorMessage: result.error.message,
+      };
+    }
+
+    return {
+      ...this.state,
+      championshipContainer: result.getResult(),
+    };
+  }
+
   getChampionships(): Championship[] {
     const result = ChampionshipService.getChampionships();
     if (!result.succeeded) {
