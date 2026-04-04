@@ -218,6 +218,14 @@ describe('ChampionshipUseCases', () => {
 
       const nextState = useCases.runEndOfChampionshipActions();
 
+      /**
+       * TODO: This test is comparing the updatedContainer with the championshipContainer from the nextState
+       * Could it be possible to validate if the promotion and relegation logic are working?
+       * For example, create a mocked playableChampionship with a promotion and relegation championships.
+       * Then, simulate the teams are promoted and relegated for all those championships.
+       * Finally, validate if the teams that are supposed to be promoted and relegated were, in fact,
+       * promoted and relegated.
+       */
       expect(nextState.championshipContainer).toEqual(updatedContainer);
       expect(nextState.hasError).toBe(false);
     });
