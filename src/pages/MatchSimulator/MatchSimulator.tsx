@@ -107,7 +107,6 @@ const MatchSimulator: FC = () => {
     if (time >= 90 && !showTeamMatchDetails && !detailsMatchId) {
       window.setTimeout(() => {
         engine.dispatch({ type: 'END_ROUND_FOR_ALL_CHAMPIONSHIPS' });
-        engine.dispatch({ type: 'RUN_END_OF_CHAMPIONSHIP_ACTIONS' });
         engine.dispatch({ type: 'UPDATE_GAME_CONFIG', newClockSpeed: clockSpeed });
         engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'TeamStandings' });
       }, 5000);

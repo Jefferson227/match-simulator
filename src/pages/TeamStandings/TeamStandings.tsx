@@ -44,6 +44,10 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
   };
 
   const handleContinue = () => {
+    if (isSeasonComplete) {
+      engine.dispatch({ type: 'RUN_END_OF_CHAMPIONSHIP_ACTIONS' });
+    }
+
     engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'TeamManager' });
   };
 
