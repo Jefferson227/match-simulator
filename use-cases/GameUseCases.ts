@@ -1,4 +1,5 @@
 import { GameState } from '../game-engine/GameState';
+import GameService from '../core/services/GameService';
 
 export default class GameUseCases {
   private state: GameState;
@@ -30,5 +31,31 @@ export default class GameUseCases {
         clockSpeed: speed,
       },
     };
+  }
+
+  saveGame(): GameState {
+    const result = GameService.saveGame(this.state);
+    if (!result.succeeded) {
+      return {
+        ...this.state,
+        hasError: true,
+        errorMessage: result.error.message,
+      };
+    }
+
+    return this.state;
+  }
+
+  loadGame(): GameState {
+    const result = GameService.loadGame();
+    if (!result.succeeded) {
+      return {
+        ...this.state,
+        hasError: true,
+        errorMessage: result.error.message,
+      };
+    }
+
+    return result.getResult();
   }
 }

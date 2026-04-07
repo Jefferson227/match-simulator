@@ -3,9 +3,11 @@ import buildVersionData from '../../assets/build-version.json';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import MainLayout from '../../components/MainLayout/MainLayout';
 import PixelLetter from '../../components/PixelLetter';
+import GameService from '../../../core/services/GameService';
 
 const InitialScreen: React.FC = () => {
   const [buildVersion, setBuildVersion] = useState('');
+  const [hasSavedGame, setHasSavedGame] = useState(false);
   const engine = useGameEngine();
 
   useEffect(() => {
@@ -14,6 +16,8 @@ const InitialScreen: React.FC = () => {
     } else {
       setBuildVersion('DEV');
     }
+
+    setHasSavedGame(GameService.loadGame().succeeded);
   }, []);
 
   return (
@@ -60,12 +64,14 @@ const InitialScreen: React.FC = () => {
             New Game
           </button>
 
-          <button
-            onClick={() => engine.dispatch({ type: 'PING' })}
-            className={`w-full max-w-xs border-4 py-4 text-lg uppercase transition border-white hover:bg-white hover:text-[#3d7a33]`}
-          >
-            Test Game Engine
-          </button>
+          {hasSavedGame ? (
+            <button
+              onClick={() => engine.dispatch({ type: 'LOAD_GAME' })}
+              className="w-full max-w-xs border-4 py-4 text-lg uppercase transition border-white hover:bg-white hover:text-[#3d7a33]"
+            >
+              Load Game
+            </button>
+          ) : null}
         </div>
 
         <div className="mt-16 text-center">

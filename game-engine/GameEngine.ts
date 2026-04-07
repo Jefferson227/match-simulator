@@ -54,6 +54,12 @@ export class GameEngine {
       case 'SET_CURRENT_SCREEN':
         this.gameUseCases = new GameUseCases(state);
         return this.gameUseCases.setCurrentScreen(action.screenName);
+      case 'LOAD_GAME':
+        this.gameUseCases = new GameUseCases(state);
+        return this.gameUseCases.loadGame();
+      case 'SAVE_GAME':
+        this.gameUseCases = new GameUseCases(state);
+        return this.gameUseCases.saveGame();
       case 'SELECT_TEAM':
         this.teamUseCases = new TeamUseCases(state);
         return this.teamUseCases.selectTeam(action.teamId);

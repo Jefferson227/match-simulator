@@ -2,14 +2,17 @@ import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { GameEngine } from '../../game-engine/GameEngine';
 import { GameState } from '../../game-engine/GameState';
 import ChampionshipUseCases from '../../use-cases/ChampionshipUseCases';
+import GameUseCases from '../../use-cases/GameUseCases';
 import { Championship } from '../../core/models/Championship';
 import ChampionshipContainer from '../../core/models/ChampionshipContainer';
 
 jest.mock('../../use-cases/ChampionshipUseCases');
+jest.mock('../../use-cases/GameUseCases');
 
 const MockedChampionshipUseCases = ChampionshipUseCases as jest.MockedClass<
   typeof ChampionshipUseCases
 >;
+const MockedGameUseCases = GameUseCases as jest.MockedClass<typeof GameUseCases>;
 
 function buildState(): GameState {
   return {
@@ -48,6 +51,16 @@ describe('GameEngine', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    MockedGameUseCases.mockImplementation(
+      () =>
+        ({
+          loadGame: jest.fn().mockReturnValue(initialState),
+          saveGame: jest.fn().mockReturnValue(initialState),
+          setErrorMessage: jest.fn().mockReturnValue(initialState),
+          setCurrentScreen: jest.fn().mockReturnValue(initialState),
+          updateClockSpeed: jest.fn().mockReturnValue(initialState),
+        }) as unknown as GameUseCases
+    );
   });
 
   it('returns the initial state', () => {
@@ -139,5 +152,47 @@ describe('GameEngine', () => {
 
     expect(runEndOfChampionshipActionsMock).toHaveBeenCalled();
     expect(engine.getState().championshipContainer).toEqual(updatedState.championshipContainer);
+  });
+
+  it('loads the game through GameUseCases', () => {
+    const engine = new GameEngine(initialState);
+    const loadedState: GameState = {
+      ...initialState,
+      currentScreen: 'TeamManager',
+    };
+    const loadGameMock = jest.fn().mockReturnValue(loadedState);
+
+    MockedChampionshipUseCases.mockImplementation(
+      () => ({}) as ChampionshipUseCases
+    );
+
+    MockedGameUseCases.mockImplementation(
+      () =>
+        ({
+          loadGame: loadGameMock,
+        }) as unknown as GameUseCases
+    );
+
+    engine.dispatch({ type: 'LOAD_GAME' });
+
+    expect(loadGameMock).toHaveBeenCalled();
+    expect(engine.getState()).toEqual(loadedState);
+  });
+
+  it('saves the game through GameUseCases without changing state', () => {
+    const engine = new GameEngine(initialState);
+    const saveGameMock = jest.fn().mockReturnValue(initialState);
+
+    MockedGameUseCases.mockImplementation(
+      () =>
+        ({
+          saveGame: saveGameMock,
+        }) as unknown as GameUseCases
+    );
+
+    engine.dispatch({ type: 'SAVE_GAME' });
+
+    expect(saveGameMock).toHaveBeenCalled();
+    expect(engine.getState()).toEqual(initialState);
   });
 });

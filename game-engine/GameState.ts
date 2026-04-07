@@ -15,6 +15,8 @@ export type GameAction =
   | { type: 'INIT_CHAMPIONSHIPS'; championshipInternalName: string }
   | { type: 'SET_ERROR_MESSAGE'; errorMessage: string }
   | { type: 'SET_CURRENT_SCREEN'; screenName: string }
+  | { type: 'LOAD_GAME' }
+  | { type: 'SAVE_GAME' }
   | { type: 'SELECT_TEAM'; teamId: string }
   | { type: 'SET_STARTERS_AND_SUBS'; team: Team; starters: Player[]; subs: Player[] }
   | {

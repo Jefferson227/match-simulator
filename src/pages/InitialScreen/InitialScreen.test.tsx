@@ -3,14 +3,20 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import InitialScreen from './InitialScreen';
 import { useGameEngine } from '../../contexts/GameEngineContext';
-import { useGameState } from '../../services/useGameState';
+import GameService from '../../../core/services/GameService';
+import OperationResult from '../../../core/results/OperationResult';
+import { GameState } from '../../../game-engine/GameState';
 
 jest.mock('../../contexts/GameEngineContext', () => ({
   useGameEngine: jest.fn(),
 }));
 
-jest.mock('../../services/useGameState', () => ({
-  useGameState: jest.fn(),
+jest.mock('../../../core/services/GameService', () => ({
+  __esModule: true,
+  default: {
+    loadGame: jest.fn(),
+    saveGame: jest.fn(),
+  },
 }));
 
 jest.mock('../../assets/build-version.json', () => ({
@@ -19,54 +25,49 @@ jest.mock('../../assets/build-version.json', () => ({
 
 const mockDispatch = jest.fn();
 const mockEngine = { dispatch: mockDispatch };
-const mockGameState = {
-  championshipContainer: {},
-  hasError: false,
-  errorMessage: '',
-  currentScreen: 'InitialScreen',
-};
+const mockedGameService = GameService as jest.Mocked<typeof GameService>;
+
+function loadSuccessResult(): OperationResult<GameState> {
+  const result = new OperationResult<GameState>({} as GameState);
+  result.setSuccess();
+  return result;
+}
+
+function loadFailureResult(message: string): OperationResult<GameState> {
+  const result = new OperationResult<GameState>({} as GameState);
+  result.setError({ errorCode: 'exception', message });
+  return result;
+}
 
 describe('InitialScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     (useGameEngine as jest.Mock).mockReturnValue(mockEngine);
-    (useGameState as jest.Mock).mockReturnValue(mockGameState);
+    mockedGameService.loadGame.mockReturnValue(loadFailureResult('No saved game'));
   });
 
-  test('renders all main elements', async () => {
+  test('renders main elements and hides load game button when there is no save', async () => {
     render(<InitialScreen />);
 
-    // Test that the pixelated logo containers are rendered
     expect(screen.getByTestId('logo-container')).toBeInTheDocument();
-
-    // Test that the buttons are rendered
     expect(screen.getByRole('button', { name: /new game/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /test game engine/i })).toBeInTheDocument();
-
-    // Test that the build info is rendered
+    expect(screen.queryByRole('button', { name: /load game/i })).not.toBeInTheDocument();
     expect(screen.getByText(/build version/i)).toBeInTheDocument();
     expect(await screen.findByText('TEST_BUILD')).toBeInTheDocument();
   });
 
-  test('renders pixelated logo with correct structure', () => {
+  test('renders load game button when there is a saved game', () => {
+    mockedGameService.loadGame.mockReturnValue(loadSuccessResult());
+
     render(<InitialScreen />);
 
-    // Check that the main logo container exists
-    const logoContainer = screen.getByTestId('logo-container');
-    expect(logoContainer).toBeInTheDocument();
-
-    // Check that both word containers exist
-    const winningContainer = screen.getByTestId('winning-container');
-    const pixelsContainer = screen.getByTestId('pixels-container');
-    expect(winningContainer).toBeInTheDocument();
-    expect(pixelsContainer).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /load game/i })).toBeInTheDocument();
   });
 
-  test('dispatches "SET_CURRENT_SCREEN" when New Game button is clicked', () => {
+  test('dispatches set current screen when new game button is clicked', () => {
     render(<InitialScreen />);
 
-    const newGameButton = screen.getByRole('button', { name: /new game/i });
-    fireEvent.click(newGameButton);
+    fireEvent.click(screen.getByRole('button', { name: /new game/i }));
 
     expect(mockDispatch).toHaveBeenCalledWith({
       type: 'SET_CURRENT_SCREEN',
@@ -74,12 +75,13 @@ describe('InitialScreen', () => {
     });
   });
 
-  test('dispatches "PING" when Test Game Engine button is clicked', () => {
+  test('dispatches load game when load game button is clicked', () => {
+    mockedGameService.loadGame.mockReturnValue(loadSuccessResult());
+
     render(<InitialScreen />);
 
-    const testGameEngineButton = screen.getByRole('button', { name: /test game engine/i });
-    fireEvent.click(testGameEngineButton);
+    fireEvent.click(screen.getByRole('button', { name: /load game/i }));
 
-    expect(mockDispatch).toHaveBeenCalledWith({ type: 'PING' });
+    expect(mockDispatch).toHaveBeenCalledWith({ type: 'LOAD_GAME' });
   });
 });
