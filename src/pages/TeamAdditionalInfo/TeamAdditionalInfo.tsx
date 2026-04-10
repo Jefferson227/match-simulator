@@ -79,8 +79,8 @@ const TeamAdditionalInfo: React.FC = () => {
   };
 
   const renderFirstPage = () => (
-    <>
-      <div className="mb-5 p-3 bg-black/20 border-4 border-white">
+    <div className="h-[31rem] flex flex-col justify-between">
+      <div className="p-3 bg-black/20 border-4 border-white">
         <div className="mb-2 text-[17px]">MORALE</div>
         <div className="w-full h-8 bg-[#316229] border-4 border-white my-2 overflow-hidden">
           <div
@@ -94,18 +94,22 @@ const TeamAdditionalInfo: React.FC = () => {
       </div>
 
       <button
-        className="mb-5 p-3 bg-black/20 border-4 border-white w-full text-left cursor-pointer hover:bg-black/30 transition-colors"
+        className="p-3 bg-black/20 border-4 border-white w-full text-left cursor-pointer hover:bg-black/30 transition-colors"
         onClick={() => engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'TeamStandings' })}
       >
-        <div className="flex flex-col gap-2 text-sm">
-          <div>{championship?.name ?? 'N/A'}</div>
-          <div>SEASON {championship?.matchContainer?.currentSeason ?? 'N/A'}</div>
-          <div>{`ROUND ${currentRound} OF ${totalRounds}`}</div>
-          <div>{positionText}</div>
+        <div className="grid grid-cols-2 gap-3 text-sm">
+          <div>CHAMPIONSHIP</div>
+          <div className="text-right">{championship?.name ?? 'N/A'}</div>
+          <div>SEASON</div>
+          <div className="text-right">{championship?.matchContainer?.currentSeason ?? 'N/A'}</div>
+          <div>ROUND</div>
+          <div className="text-right">{`${currentRound} OF ${totalRounds}`}</div>
+          <div>POSITION</div>
+          <div className="text-right">{positionText}</div>
         </div>
       </button>
 
-      <div className="mb-5 p-3 bg-black/20 border-4 border-white">
+      <div className="p-3 bg-black/20 border-4 border-white">
         <div className="mb-2 text-[17px]">NEXT MATCH</div>
         <div className="flex flex-col items-center">
           <div
@@ -118,18 +122,22 @@ const TeamAdditionalInfo: React.FC = () => {
           >
             {opponentTeam?.shortName || opponentTeam?.abbreviation || 'N/A'}
           </div>
-          <div className="text-xs opacity-80 flex justify-between w-full">
-            <span>{nextMatch ? (nextMatch.homeTeam.id === humanTeam.id ? 'HOME' : 'AWAY') : 'N/A'}</span>
-            <span>{opponentPositionText}</span>
+          <div className="grid grid-cols-2 gap-3 text-xs opacity-80 w-full">
+            <div>LOCATION</div>
+            <div className="text-right">
+              {nextMatch ? (nextMatch.homeTeam.id === humanTeam.id ? 'HOME' : 'AWAY') : 'N/A'}
+            </div>
+            <div>POSITION</div>
+            <div className="text-right">{opponentPositionText}</div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 
   const renderSecondPage = () => (
-    <>
-      <div className="mb-5 p-3 bg-black/20 border-4 border-white">
+    <div className="h-[31rem] flex flex-col justify-between">
+      <div className="p-3 bg-black/20 border-4 border-white">
         <div className="mb-3 text-[17px]">TEAM PERFORMANCE</div>
         <div className="grid grid-cols-2 gap-3 text-sm">
           <div>WINS</div>
@@ -147,7 +155,7 @@ const TeamAdditionalInfo: React.FC = () => {
         </div>
       </div>
 
-      <div className="mb-[12.375rem] p-3 bg-black/20 border-4 border-white">
+      <div className="p-3 bg-black/20 border-4 border-white">
         <div className="mb-3 text-[17px]">NEXT OPPONENT</div>
         <div className="grid grid-cols-2 gap-3 text-sm">
           <div>TEAM</div>
@@ -162,7 +170,7 @@ const TeamAdditionalInfo: React.FC = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 
   return (
