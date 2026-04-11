@@ -5,6 +5,7 @@ type Player = {
   position: PlayerPosition;
   name: string;
   strength: number;
+  xp: number;
   isStarter: boolean;
   isSub: boolean;
 };

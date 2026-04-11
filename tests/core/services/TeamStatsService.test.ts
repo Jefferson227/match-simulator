@@ -2,8 +2,7 @@ import { describe, expect, it } from '@jest/globals';
 import TeamStatsService from '../../../core/services/TeamStatsService';
 import { Team } from '../../../core/models/Team';
 import Round from '../../../core/models/Round';
-
-function buildTeam(id: Team['id'], morale: number): Team {
+function buildTeam(id: Team['id'], morale: number, players: Player[] = []): Team {
   return {
     id,
     fullName: id,
@@ -14,7 +13,7 @@ function buildTeam(id: Team['id'], morale: number): Team {
       background: '#222222',
       text: '#ffffff',
     },
-    players: [],
+    players,
     morale,
     isControlledByHuman: false,
   };
@@ -44,7 +43,11 @@ describe('TeamStatsService.updateTeam', () => {
     const awayTeam = buildTeam('22222222-2222-2222-2222-222222222222', 50);
     const round = buildRound(homeTeam, awayTeam, 2, 1);
 
-    const updatedTeam = TeamStatsService.updateTeam(homeTeam, round);
+    const updatedTeam = TeamStatsService.updateTeam(homeTeam, {
+      latestRound: round,
+      rounds: [round],
+      randomProvider: () => 0.5,
+    });
 
     expect(updatedTeam.morale).toBe(35);
   });
@@ -54,7 +57,11 @@ describe('TeamStatsService.updateTeam', () => {
     const awayTeam = buildTeam('22222222-2222-2222-2222-222222222222', 40);
     const round = buildRound(homeTeam, awayTeam, 1, 1);
 
-    const updatedTeam = TeamStatsService.updateTeam(homeTeam, round);
+    const updatedTeam = TeamStatsService.updateTeam(homeTeam, {
+      latestRound: round,
+      rounds: [round],
+      randomProvider: () => 0.5,
+    });
 
     expect(updatedTeam.morale).toBe(80.5);
   });
@@ -65,7 +72,19 @@ describe('TeamStatsService.updateTeam', () => {
     const lossRound = buildRound(homeTeam, awayTeam, 0, 1);
     const winRound = buildRound(awayTeam, homeTeam, 2, 1);
 
-    expect(TeamStatsService.updateTeam(homeTeam, lossRound).morale).toBe(0);
-    expect(TeamStatsService.updateTeam(awayTeam, winRound).morale).toBe(100);
+    expect(
+      TeamStatsService.updateTeam(homeTeam, {
+        latestRound: lossRound,
+        rounds: [lossRound],
+        randomProvider: () => 0.5,
+      }).morale
+    ).toBe(0);
+    expect(
+      TeamStatsService.updateTeam(awayTeam, {
+        latestRound: winRound,
+        rounds: [winRound],
+        randomProvider: () => 0.5,
+      }).morale
+    ).toBe(100);
   });
 });

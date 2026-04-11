@@ -1,5 +1,12 @@
 import Round from '../models/Round';
 import { Team } from '../models/Team';
+import PlayerProgressionService from './PlayerProgressionService';
+
+type UpdateTeamContext = {
+  latestRound?: Round;
+  rounds?: Round[];
+  randomProvider?: () => number;
+};
 
 function getTeamResult(team: Team, round?: Round): 'win' | 'draw' | 'loss' | null {
   if (!round) return null;
@@ -47,8 +54,19 @@ function updateTeamMorale(team: Team, round?: Round): Team {
   };
 }
 
-function updateTeam(team: Team, round?: Round): Team {
-  return updateTeamMorale(team, round);
+function updateTeam(team: Team, context: UpdateTeamContext = {}): Team {
+  const updatedTeam = updateTeamMorale(team, context.latestRound);
+
+  return {
+    ...updatedTeam,
+    players: PlayerProgressionService.updatePlayers(
+      updatedTeam.players,
+      updatedTeam.morale,
+      team,
+      context.rounds,
+      context.randomProvider
+    ),
+  };
 }
 
 export default {

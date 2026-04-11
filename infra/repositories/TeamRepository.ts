@@ -36,6 +36,7 @@ function getTeam(internalName: string): Team {
       position: player.position as PlayerPosition,
       name: player.name,
       strength: getRandomPlayerStrength(teamJSONDTO.initialOverallStrength),
+      xp: 0,
       isStarter: false,
       isSub: false,
     })),
