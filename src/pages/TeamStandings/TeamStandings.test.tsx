@@ -108,10 +108,13 @@ describe('TeamStandings', () => {
     fireEvent.click(screen.getByRole('button', { name: /continue/i }));
 
     expect(mockDispatch).toHaveBeenNthCalledWith(1, {
+      type: 'UPDATE_TEAM_STATS',
+    });
+    expect(mockDispatch).toHaveBeenNthCalledWith(2, {
       type: 'SET_CURRENT_SCREEN',
       screenName: 'TeamManager',
     });
-    expect(mockDispatch).toHaveBeenNthCalledWith(2, { type: 'SAVE_GAME' });
+    expect(mockDispatch).toHaveBeenNthCalledWith(3, { type: 'SAVE_GAME' });
   });
 
   test('runs end-of-championship actions before saving on new season', () => {
@@ -136,9 +139,12 @@ describe('TeamStandings', () => {
 
     expect(mockDispatch).toHaveBeenNthCalledWith(1, { type: 'RUN_END_OF_CHAMPIONSHIP_ACTIONS' });
     expect(mockDispatch).toHaveBeenNthCalledWith(2, {
+      type: 'UPDATE_TEAM_STATS',
+    });
+    expect(mockDispatch).toHaveBeenNthCalledWith(3, {
       type: 'SET_CURRENT_SCREEN',
       screenName: 'TeamManager',
     });
-    expect(mockDispatch).toHaveBeenNthCalledWith(3, { type: 'SAVE_GAME' });
+    expect(mockDispatch).toHaveBeenNthCalledWith(4, { type: 'SAVE_GAME' });
   });
 });

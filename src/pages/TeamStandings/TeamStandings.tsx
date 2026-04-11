@@ -48,6 +48,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
       engine.dispatch({ type: 'RUN_END_OF_CHAMPIONSHIP_ACTIONS' });
     }
 
+    engine.dispatch({ type: 'UPDATE_TEAM_STATS' });
     engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'TeamManager' });
     engine.dispatch({ type: 'SAVE_GAME' });
   };
