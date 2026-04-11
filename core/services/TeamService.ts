@@ -418,11 +418,14 @@ function updateChampionshipTeamStats(championship?: Championship): Championship 
   const updatedTeamsById = new Map(updatedTeams.map((team) => [team.id, team]));
   const updatedRounds = championship.matchContainer.rounds.map((round) => ({
     ...round,
-    matches: round.matches.map((match) => ({
-      ...match,
-      homeTeam: updatedTeamsById.get(match.homeTeam.id) ?? match.homeTeam,
-      awayTeam: updatedTeamsById.get(match.awayTeam.id) ?? match.awayTeam,
-    })),
+    matches:
+      round.status === 'not-started'
+        ? round.matches.map((match) => ({
+            ...match,
+            homeTeam: updatedTeamsById.get(match.homeTeam.id) ?? match.homeTeam,
+            awayTeam: updatedTeamsById.get(match.awayTeam.id) ?? match.awayTeam,
+          }))
+        : round.matches,
   }));
 
   return {

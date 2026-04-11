@@ -61,6 +61,21 @@ function buildChampionship(teams: Team[], scores: Array<[number, number]>, curre
             },
           ],
         },
+        {
+          id: 'round-2',
+          number: 2,
+          status: 'not-started',
+          matches: [
+            {
+              id: 'match-2',
+              homeTeam,
+              homeTeamScore: 0,
+              awayTeamScore: 0,
+              awayTeam,
+              scorers: [],
+            },
+          ],
+        },
       ],
     },
     type: 'double-round-robin',
@@ -121,7 +136,7 @@ describe('TeamService.updateTeamStats', () => {
     expect(updatedTeams.find((team) => team.id === lowMoraleLoser.id)?.morale).toBe(0);
   });
 
-  it('updates team morale references in standings and match rounds for all championships', () => {
+  it('updates standings and only not-started match snapshots for all championships', () => {
     const playableHome = buildTeam('11111111-1111-1111-1111-111111111111', 'PLA', 33);
     const playableAway = buildTeam('22222222-2222-2222-2222-222222222222', 'PLB', 50);
     const promotionHome = buildTeam('33333333-3333-3333-3333-333333333333', 'PRA', 40);
@@ -145,9 +160,12 @@ describe('TeamService.updateTeamStats', () => {
     ).toBe(35);
     expect(
       updatedContainer.playableChampionship.matchContainer.rounds[0].matches[0].homeTeam.morale
+    ).toBe(33);
+    expect(
+      updatedContainer.playableChampionship.matchContainer.rounds[1].matches[0].homeTeam.morale
     ).toBe(35);
     expect(
-      updatedContainer.playableChampionship.matchContainer.rounds[0].matches[0].awayTeam.morale
+      updatedContainer.playableChampionship.matchContainer.rounds[1].matches[0].awayTeam.morale
     ).toBe(48);
 
     expect(
@@ -156,6 +174,9 @@ describe('TeamService.updateTeamStats', () => {
     ).toBe(41);
     expect(
       updatedContainer.promotionChampionship?.matchContainer.rounds[0].matches[0].awayTeam.morale
+    ).toBe(80);
+    expect(
+      updatedContainer.promotionChampionship?.matchContainer.rounds[1].matches[0].awayTeam.morale
     ).toBe(80.5);
   });
 });
