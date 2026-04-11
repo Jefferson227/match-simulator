@@ -416,6 +416,14 @@ function updateChampionshipTeamStats(championship?: Championship): Championship 
   const lastFinishedRound = getLastFinishedRound(championship);
   const updatedTeams = championship.teams.map((team) => updateTeamMorale(team, lastFinishedRound));
   const updatedTeamsById = new Map(updatedTeams.map((team) => [team.id, team]));
+  const updatedRounds = championship.matchContainer.rounds.map((round) => ({
+    ...round,
+    matches: round.matches.map((match) => ({
+      ...match,
+      homeTeam: updatedTeamsById.get(match.homeTeam.id) ?? match.homeTeam,
+      awayTeam: updatedTeamsById.get(match.awayTeam.id) ?? match.awayTeam,
+    })),
+  }));
 
   return {
     ...championship,
@@ -424,6 +432,10 @@ function updateChampionshipTeamStats(championship?: Championship): Championship 
       ...standing,
       team: updatedTeamsById.get(standing.team.id) ?? standing.team,
     })),
+    matchContainer: {
+      ...championship.matchContainer,
+      rounds: updatedRounds,
+    },
   };
 }
 
