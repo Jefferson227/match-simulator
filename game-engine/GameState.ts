@@ -18,6 +18,7 @@ export type GameAction =
   | { type: 'LOAD_GAME' }
   | { type: 'SAVE_GAME' }
   | { type: 'SELECT_TEAM'; teamId: string }
+  | { type: 'UPDATE_TEAM_STATS' }
   | { type: 'SET_STARTERS_AND_SUBS'; team: Team; starters: Player[]; subs: Player[] }
   | {
       type: 'SUBSTITUTE_PLAYER';

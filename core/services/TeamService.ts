@@ -350,9 +350,59 @@ function prepareTeamsBeforeMatch(
   }
 }
 
+function updateTeamMorale(team: Team): Team {
+  return {
+    ...team,
+    morale: team.morale,
+  };
+}
+
+function updateChampionshipTeamStats(championship?: Championship): Championship | undefined {
+  if (!championship) return championship;
+
+  const updatedTeams = championship.teams.map(updateTeamMorale);
+  const updatedTeamsById = new Map(updatedTeams.map((team) => [team.id, team]));
+
+  return {
+    ...championship,
+    teams: updatedTeams,
+    standings: championship.standings.map((standing) => ({
+      ...standing,
+      team: updatedTeamsById.get(standing.team.id) ?? standing.team,
+    })),
+  };
+}
+
+function updateTeamStats(
+  championshipContainer: ChampionshipContainer
+): OperationResult<ChampionshipContainer> {
+  try {
+    const updatedContainer: ChampionshipContainer = {
+      ...championshipContainer,
+      playableChampionship: updateChampionshipTeamStats(
+        championshipContainer.playableChampionship
+      ) as Championship,
+      promotionChampionship: updateChampionshipTeamStats(championshipContainer.promotionChampionship),
+      relegationChampionship: updateChampionshipTeamStats(
+        championshipContainer.relegationChampionship
+      ),
+    };
+
+    const result = new OperationResult(updatedContainer);
+    result.setSuccess();
+    return result;
+  } catch (error) {
+    const result = new OperationResult<ChampionshipContainer>({} as ChampionshipContainer);
+    const message = error instanceof Error ? error.message : String(error);
+    result.setError({ errorCode: 'exception', message });
+    return result;
+  }
+}
+
 export default {
   getTeamsToSelect,
   selectTeam,
+  updateTeamStats,
   setStartersAndSubs,
   prepareTeamsBeforeMatch,
 };

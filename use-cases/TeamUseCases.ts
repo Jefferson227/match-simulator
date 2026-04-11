@@ -47,6 +47,23 @@ export default class TeamUseCases {
     };
   }
 
+  updateTeamStats(): GameState {
+    const result = TeamService.updateTeamStats(this.state.championshipContainer);
+
+    if (!result.succeeded) {
+      return {
+        ...this.state,
+        hasError: true,
+        errorMessage: result.error.message,
+      };
+    }
+
+    return {
+      ...this.state,
+      championshipContainer: result.getResult(),
+    };
+  }
+
   setStartersAndSubs(teamId: string, starters: Player[], subs: Player[]): GameState {
     const teams = this.state.championshipContainer.playableChampionship.teams;
     const result = TeamService.setStartersAndSubs(teamId, starters, subs, teams);

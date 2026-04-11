@@ -3,16 +3,19 @@ import { GameEngine } from '../../game-engine/GameEngine';
 import { GameState } from '../../game-engine/GameState';
 import ChampionshipUseCases from '../../use-cases/ChampionshipUseCases';
 import GameUseCases from '../../use-cases/GameUseCases';
+import TeamUseCases from '../../use-cases/TeamUseCases';
 import { Championship } from '../../core/models/Championship';
 import ChampionshipContainer from '../../core/models/ChampionshipContainer';
 
 jest.mock('../../use-cases/ChampionshipUseCases');
 jest.mock('../../use-cases/GameUseCases');
+jest.mock('../../use-cases/TeamUseCases');
 
 const MockedChampionshipUseCases = ChampionshipUseCases as jest.MockedClass<
   typeof ChampionshipUseCases
 >;
 const MockedGameUseCases = GameUseCases as jest.MockedClass<typeof GameUseCases>;
+const MockedTeamUseCases = TeamUseCases as jest.MockedClass<typeof TeamUseCases>;
 
 function buildState(): GameState {
   return {
@@ -60,6 +63,16 @@ describe('GameEngine', () => {
           setCurrentScreen: jest.fn().mockReturnValue(initialState),
           updateClockSpeed: jest.fn().mockReturnValue(initialState),
         }) as unknown as GameUseCases
+    );
+    MockedTeamUseCases.mockImplementation(
+      () =>
+        ({
+          selectTeam: jest.fn().mockReturnValue(initialState),
+          updateTeamStats: jest.fn().mockReturnValue(initialState),
+          setStartersAndSubs: jest.fn().mockReturnValue(initialState),
+          substitutePlayer: jest.fn().mockReturnValue(initialState),
+          prepareTeamsBeforeMatch: jest.fn().mockReturnValue(initialState),
+        }) as unknown as TeamUseCases
     );
   });
 
@@ -194,5 +207,31 @@ describe('GameEngine', () => {
 
     expect(saveGameMock).toHaveBeenCalled();
     expect(engine.getState()).toEqual(initialState);
+  });
+
+  it('updates team stats through TeamUseCases', () => {
+    const engine = new GameEngine(initialState);
+    const updatedState: GameState = {
+      ...initialState,
+      championshipContainer: {
+        playableChampionship: {
+          ...initialState.championshipContainer.playableChampionship,
+          teams: [],
+        },
+      } as ChampionshipContainer,
+    };
+    const updateTeamStatsMock = jest.fn().mockReturnValue(updatedState);
+
+    MockedTeamUseCases.mockImplementation(
+      () =>
+        ({
+          updateTeamStats: updateTeamStatsMock,
+        }) as unknown as TeamUseCases
+    );
+
+    engine.dispatch({ type: 'UPDATE_TEAM_STATS' });
+
+    expect(updateTeamStatsMock).toHaveBeenCalled();
+    expect(engine.getState()).toEqual(updatedState);
   });
 });

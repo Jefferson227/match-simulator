@@ -12,6 +12,7 @@ jest.mock('../../core/services/TeamService', () => ({
   default: {
     getTeamsToSelect: jest.fn(),
     selectTeam: jest.fn(),
+    updateTeamStats: jest.fn(),
     setStartersAndSubs: jest.fn(),
   },
 }));
@@ -200,6 +201,44 @@ describe('TeamUseCases', () => {
 
       expect(nextState.hasError).toBe(true);
       expect(nextState.errorMessage).toBe('Unable to select team');
+    });
+  });
+
+  describe('updateTeamStats', () => {
+    it('updates championshipContainer when service succeeds', () => {
+      const state = buildState();
+      const useCases = new TeamUseCases(state);
+      const updatedContainer = {
+        ...state.championshipContainer,
+        playableChampionship: {
+          ...state.championshipContainer.playableChampionship,
+          teams: state.championshipContainer.playableChampionship.teams.map((team, index) => ({
+            ...team,
+            morale: team.morale + index + 1,
+          })),
+        },
+      };
+
+      mockedTeamService.updateTeamStats.mockReturnValue(successResult(updatedContainer));
+
+      const nextState = useCases.updateTeamStats();
+
+      expect(nextState.hasError).toBe(false);
+      expect(nextState.championshipContainer).toEqual(updatedContainer);
+    });
+
+    it('returns error state when service fails', () => {
+      const state = buildState();
+      const useCases = new TeamUseCases(state);
+
+      mockedTeamService.updateTeamStats.mockReturnValue(
+        failureResult(state.championshipContainer, 'Unable to update team stats')
+      );
+
+      const nextState = useCases.updateTeamStats();
+
+      expect(nextState.hasError).toBe(true);
+      expect(nextState.errorMessage).toBe('Unable to update team stats');
     });
   });
 

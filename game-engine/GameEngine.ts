@@ -63,6 +63,9 @@ export class GameEngine {
       case 'SELECT_TEAM':
         this.teamUseCases = new TeamUseCases(state);
         return this.teamUseCases.selectTeam(action.teamId);
+      case 'UPDATE_TEAM_STATS':
+        this.teamUseCases = new TeamUseCases(state);
+        return this.teamUseCases.updateTeamStats();
       case 'SET_STARTERS_AND_SUBS':
         this.teamUseCases = new TeamUseCases(state);
         return this.teamUseCases.setStartersAndSubs(action.team.id, action.starters, action.subs);
