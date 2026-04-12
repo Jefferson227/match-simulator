@@ -1,14 +1,11 @@
+import { MATCH_RESULT } from '../constants/MatchResultConstants';
+import MatchResult from '../enums/MatchResult';
 import Round from '../models/Round';
 import { Team } from '../models/Team';
 import PlayerProgressionService from './PlayerProgressionService';
+import UpdateTeamContext from './types/UpdateTeamContext';
 
-type UpdateTeamContext = {
-  latestRound?: Round;
-  rounds?: Round[];
-  randomProvider?: () => number;
-};
-
-function getTeamResult(team: Team, round?: Round): 'win' | 'draw' | 'loss' | null {
+function getTeamResult(team: Team, round?: Round): MatchResult | null {
   if (!round) return null;
 
   const match = round.matches.find(
@@ -20,9 +17,9 @@ function getTeamResult(team: Team, round?: Round): 'win' | 'draw' | 'loss' | nul
   const teamScore = isHomeTeam ? match.homeTeamScore : match.awayTeamScore;
   const opponentScore = isHomeTeam ? match.awayTeamScore : match.homeTeamScore;
 
-  if (teamScore > opponentScore) return 'win';
-  if (teamScore < opponentScore) return 'loss';
-  return 'draw';
+  if (teamScore > opponentScore) return MATCH_RESULT.WIN;
+  if (teamScore < opponentScore) return MATCH_RESULT.LOSS;
+  return MATCH_RESULT.DRAW;
 }
 
 function clampMorale(morale: number): number {
@@ -36,16 +33,16 @@ function updateTeamMorale(team: Team, round?: Round): Team {
   let moraleChange = 0;
 
   if (team.morale <= 33) {
-    if (result === 'loss') moraleChange = -1;
-    if (result === 'win') moraleChange = 2;
+    if (result === MATCH_RESULT.LOSS) moraleChange = -1;
+    if (result === MATCH_RESULT.WIN) moraleChange = 2;
   } else if (team.morale < 66) {
-    if (result === 'loss') moraleChange = -2;
-    if (result === 'draw') moraleChange = 1;
-    if (result === 'win') moraleChange = 3;
+    if (result === MATCH_RESULT.LOSS) moraleChange = -2;
+    if (result === MATCH_RESULT.DRAW) moraleChange = 1;
+    if (result === MATCH_RESULT.WIN) moraleChange = 3;
   } else {
-    if (result === 'loss') moraleChange = -2;
-    if (result === 'draw') moraleChange = 0.5;
-    if (result === 'win') moraleChange = 1;
+    if (result === MATCH_RESULT.LOSS) moraleChange = -2;
+    if (result === MATCH_RESULT.DRAW) moraleChange = 0.5;
+    if (result === MATCH_RESULT.WIN) moraleChange = 1;
   }
 
   return {

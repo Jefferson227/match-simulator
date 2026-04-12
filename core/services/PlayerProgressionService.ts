@@ -1,7 +1,6 @@
+import { BASE_DOWN_XP, BASE_UP_XP, BASE_XP_SCALE } from '../constants/PlayerProgressConstants';
+import { MATCH_RESULT } from '../constants/MatchResultConstants';
 import {
-  BASE_DOWN_XP,
-  BASE_UP_XP,
-  BASE_XP_SCALE,
   MID_STRENGTH,
   STABILITY_FACTOR,
   XP_PER_STRENGTH,
@@ -23,9 +22,9 @@ function getTeamResult(team: Team, round?: Round): MatchResult | null {
   const teamScore = isHomeTeam ? match.homeTeamScore : match.awayTeamScore;
   const opponentScore = isHomeTeam ? match.awayTeamScore : match.homeTeamScore;
 
-  if (teamScore > opponentScore) return 'win';
-  if (teamScore < opponentScore) return 'loss';
-  return 'draw';
+  if (teamScore > opponentScore) return MATCH_RESULT.WIN;
+  if (teamScore < opponentScore) return MATCH_RESULT.LOSS;
+  return MATCH_RESULT.DRAW;
 }
 
 function getLastFiveResults(team: Team, rounds: Round[] = []): MatchResult[] {
@@ -50,9 +49,9 @@ function getResultValue(lastFiveResults: MatchResult[]): number {
 
   for (let i = 0; i < lastFiveResults.length; i++) {
     const result = lastFiveResults[i];
-    if (result === 'win') total += 1.0;
-    if (result === 'draw') total += 0.2;
-    if (result === 'loss') total -= 0.8;
+    if (result === MATCH_RESULT.WIN) total += 1.0;
+    if (result === MATCH_RESULT.DRAW) total += 0.2;
+    if (result === MATCH_RESULT.LOSS) total -= 0.8;
   }
 
   return total / 5;
@@ -108,10 +107,7 @@ function updatePlayerStrength(
     xp: currentXp + computeXpDelta(lastFiveResults, teamMorale, player.strength, randomProvider),
   };
 
-  while (
-    updatedPlayer.strength < 100 &&
-    updatedPlayer.xp >= xpToLevelUp(updatedPlayer.strength)
-  ) {
+  while (updatedPlayer.strength < 100 && updatedPlayer.xp >= xpToLevelUp(updatedPlayer.strength)) {
     updatedPlayer = {
       ...updatedPlayer,
       xp: updatedPlayer.xp - xpToLevelUp(updatedPlayer.strength),
@@ -119,10 +115,7 @@ function updatePlayerStrength(
     };
   }
 
-  while (
-    updatedPlayer.strength > 1 &&
-    updatedPlayer.xp <= -xpToLevelDown(updatedPlayer.strength)
-  ) {
+  while (updatedPlayer.strength > 1 && updatedPlayer.xp <= -xpToLevelDown(updatedPlayer.strength)) {
     updatedPlayer = {
       ...updatedPlayer,
       xp: updatedPlayer.xp + xpToLevelDown(updatedPlayer.strength),
