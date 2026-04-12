@@ -1,8 +1,15 @@
+import {
+  BASE_DOWN_XP,
+  BASE_UP_XP,
+  BASE_XP_SCALE,
+  MID_STRENGTH,
+  STABILITY_FACTOR,
+  XP_PER_STRENGTH,
+} from '../constants/PlayerProgressConstants';
+import MatchResult from '../enums/MatchResult';
 import Player from '../models/Player';
 import Round from '../models/Round';
 import { Team } from '../models/Team';
-
-type MatchResult = 'win' | 'draw' | 'loss';
 
 function getTeamResult(team: Team, round?: Round): MatchResult | null {
   if (!round) return null;
@@ -73,23 +80,15 @@ function computeXpDelta(
   const moraleMultiplier = getMoraleMultiplier(teamMorale);
   const growthBias = getGrowthBias(strength);
   const randomness = getRandomness(randomProvider);
-  const BASE_XP_SCALE = 6;
 
   return BASE_XP_SCALE * resultValue * moraleMultiplier * growthBias + randomness;
 }
 
 function xpToLevelUp(strength: number): number {
-  const BASE_UP_XP = 40;
-  const XP_PER_STRENGTH = 4;
-
   return BASE_UP_XP + XP_PER_STRENGTH * strength;
 }
 
 function xpToLevelDown(strength: number): number {
-  const BASE_DOWN_XP = 50;
-  const STABILITY_FACTOR = 2;
-  const MID_STRENGTH = 50;
-
   return BASE_DOWN_XP + STABILITY_FACTOR * Math.abs(strength - MID_STRENGTH);
 }
 
