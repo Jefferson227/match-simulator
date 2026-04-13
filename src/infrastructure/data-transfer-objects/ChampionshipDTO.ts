@@ -1,7 +1,7 @@
-import Standing from '../models/Standing';
-import { Team } from '../models/Team';
-import MatchContainer from '../models/MatchContainer';
-import ChampionshipType from '../enums/ChampionshipType';
+import Standing from '../../core/models/Standing';
+import { Team } from '../../core/models/Team';
+import MatchContainer from '../../core/models/MatchContainer';
+import ChampionshipType from '../../core/enums/ChampionshipType';
 
 type ChampionshipDTO = {
   name: string;

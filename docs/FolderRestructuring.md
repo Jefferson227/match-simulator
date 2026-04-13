@@ -160,7 +160,7 @@ To reduce breakage, apply changes gradually in this order:
 
 - [x] Move `infra/repositories` into `src/infrastructure/repositories`
 - [x] Move JSON files into `src/infrastructure/data`
-- [ ] Move DTOs and mappers into `src/infrastructure`
+- [x] Move DTOs and mappers into `src/infrastructure`
 - [ ] Update repository imports
 - [ ] Move `core/*` into `src/domain/*`
 - [ ] Move `use-cases` and `game-engine` into `src/`

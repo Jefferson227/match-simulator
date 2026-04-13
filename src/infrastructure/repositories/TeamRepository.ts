@@ -1,4 +1,4 @@
-import TeamJSONDTO from '../../../core/data-transfer-objects/TeamJSONDTO';
+import TeamJSONDTO from '../data-transfer-objects/TeamJSONDTO';
 import PlayerPosition from '../../../core/enums/PlayerPosition';
 import { Team } from '../../../core/models/Team';
 import { getRandomPlayerStrength } from '../../../core/utils/Utils';
