@@ -1,6 +1,6 @@
-import ChampionshipJSONDTO from '../../core/data-transfer-objects/ChampionshipJSONDTO';
-import championshipsJSON from '../../assets/championships.json';
-import { Championship } from '../../core/models/Championship';
+import ChampionshipJSONDTO from '../../../core/data-transfer-objects/ChampionshipJSONDTO';
+import championshipsJSON from '../../../assets/championships.json';
+import { Championship } from '../../../core/models/Championship';
 import TeamRepository from './TeamRepository';
 
 export function getChampionship(

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from '@jest/globals';
-import GameRepository from '../../../infra/repositories/GameRepository';
+import GameRepository from '../../../src/infrastructure/repositories/GameRepository';
 import { GameState } from '../../../game-engine/GameState';
 import { Championship } from '../../../core/models/Championship';
 

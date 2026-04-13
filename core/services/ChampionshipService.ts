@@ -1,6 +1,6 @@
 import ChampionshipContainer from '../models/ChampionshipContainer';
 import OperationResult from '../results/OperationResult';
-import * as ChampionshipRepository from '../../infra/repositories/ChampionshipRepository';
+import * as ChampionshipRepository from '../../src/infrastructure/repositories/ChampionshipRepository';
 import { Team } from '../models/Team';
 import Match from '../models/Match';
 import MatchContainer from '../models/MatchContainer';

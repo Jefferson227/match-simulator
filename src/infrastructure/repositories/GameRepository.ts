@@ -1,4 +1,4 @@
-import { GameState } from '../../game-engine/GameState';
+import { GameState } from '../../../game-engine/GameState';
 
 const GAME_STORAGE_KEY = 'match-simulator-game-state';
 

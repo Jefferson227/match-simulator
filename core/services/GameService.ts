@@ -1,4 +1,4 @@
-import GameRepository from '../../infra/repositories/GameRepository';
+import GameRepository from '../../src/infrastructure/repositories/GameRepository';
 import { GameState } from '../../game-engine/GameState';
 import OperationResult from '../results/OperationResult';
 

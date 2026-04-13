@@ -158,7 +158,7 @@ They are adapter concerns, not domain concerns.
 
 To reduce breakage, apply changes gradually in this order:
 
-- [ ] Move `infra/repositories` into `src/infrastructure/repositories`
+- [x] Move `infra/repositories` into `src/infrastructure/repositories`
 - [ ] Move JSON files into `src/infrastructure/data`
 - [ ] Move DTOs and mappers into `src/infrastructure`
 - [ ] Update repository imports
