@@ -1,5 +1,5 @@
 import { GameState } from '../game-engine/GameState';
-import MatchService from '../core/services/MatchService';
+import MatchService from '../src/domain/services/MatchService';
 
 export default class MatchUseCases {
   private state = {} as GameState;

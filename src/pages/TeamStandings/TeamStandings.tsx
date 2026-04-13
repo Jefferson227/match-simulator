@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import Standing from '../../../core/models/Standing';
+import Standing from '../../domain/models/Standing';
 import MainLayout from '../../components/MainLayout/MainLayout';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';

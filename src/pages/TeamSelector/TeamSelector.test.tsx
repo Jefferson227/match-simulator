@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import TeamSelector from './TeamSelector';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
-import * as TeamUseCase from '../../../use-cases/TeamUseCases';
+import TeamUseCases from '../../../use-cases/TeamUseCases';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -26,7 +26,8 @@ jest.mock('../../services/useGameState', () => ({
 }));
 
 jest.mock('../../../use-cases/TeamUseCases', () => ({
-  getTeamsToSelect: jest.fn(),
+  __esModule: true,
+  default: jest.fn(),
 }));
 
 const mockDispatch = jest.fn();
@@ -161,7 +162,9 @@ describe('TeamSelector', () => {
     jest.clearAllMocks();
     (useGameEngine as jest.Mock).mockReturnValue(mockEngine);
     (useGameState as jest.Mock).mockReturnValue(mockGameState);
-    (TeamUseCase.getTeamsToSelect as jest.Mock).mockReturnValue(mockSuccessResult);
+    (TeamUseCases as jest.Mock).mockImplementation(() => ({
+      getTeamsToSelect: jest.fn(() => teamsFixture),
+    }));
   });
 
   test('renders the component and initial teams', async () => {
@@ -196,7 +199,11 @@ describe('TeamSelector', () => {
   });
 
   test('dispatches SET_ERROR_MESSAGE when team loading fails', async () => {
-    (TeamUseCase.getTeamsToSelect as jest.Mock).mockReturnValue(mockErrorResult);
+    (TeamUseCases as jest.Mock).mockImplementation(() => ({
+      getTeamsToSelect: jest.fn(() => {
+        throw new Error('Failed to load teams');
+      }),
+    }));
 
     render(<TeamSelector />);
 
@@ -214,6 +221,9 @@ describe('TeamSelector', () => {
       hasError: true,
       errorMessage: 'state error',
     });
+    (TeamUseCases as jest.Mock).mockImplementation(() => ({
+      getTeamsToSelect: jest.fn(() => teamsFixture),
+    }));
 
     render(<TeamSelector />);
 

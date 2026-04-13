@@ -4,8 +4,8 @@ import { GameState } from '../../game-engine/GameState';
 import ChampionshipUseCases from '../../use-cases/ChampionshipUseCases';
 import GameUseCases from '../../use-cases/GameUseCases';
 import TeamUseCases from '../../use-cases/TeamUseCases';
-import { Championship } from '../../core/models/Championship';
-import ChampionshipContainer from '../../core/models/ChampionshipContainer';
+import { Championship } from '../../src/domain/models/Championship';
+import ChampionshipContainer from '../../src/domain/models/ChampionshipContainer';
 
 jest.mock('../../use-cases/ChampionshipUseCases');
 jest.mock('../../use-cases/GameUseCases');

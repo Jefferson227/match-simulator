@@ -1,5 +1,5 @@
 import ChampionshipDTO from '../data-transfer-objects/ChampionshipDTO';
-import { Championship } from '../../core/models/Championship';
+import { Championship } from '../../domain/models/Championship';
 
 function toChampionshipDTO(championship: Championship): ChampionshipDTO {
   return {

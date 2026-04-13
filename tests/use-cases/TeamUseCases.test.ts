@@ -1,13 +1,13 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import TeamUseCases from '../../use-cases/TeamUseCases';
-import TeamService from '../../core/services/TeamService';
+import TeamService from '../../src/domain/services/TeamService';
 import { GameState } from '../../game-engine/GameState';
-import { Championship } from '../../core/models/Championship';
-import Player from '../../core/models/Player';
-import { Team } from '../../core/models/Team';
-import OperationResult from '../../core/results/OperationResult';
+import { Championship } from '../../src/domain/models/Championship';
+import Player from '../../src/domain/models/Player';
+import { Team } from '../../src/domain/models/Team';
+import OperationResult from '../../src/domain/results/OperationResult';
 
-jest.mock('../../core/services/TeamService', () => ({
+jest.mock('../../src/domain/services/TeamService', () => ({
   __esModule: true,
   default: {
     getTeamsToSelect: jest.fn(),

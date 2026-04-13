@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Team } from '../../core/models/Team';
+import { Team } from '../domain/models/Team';
 
 interface TeamRectangleProps {
   team: Team;

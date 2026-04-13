@@ -1,4 +1,4 @@
-import Player from '../../core/models/Player';
+import Player from '../domain/models/Player';
 
 function getSum(numbers: number[]): number {
   return numbers.reduce((acc, curr) => acc + curr, 0);

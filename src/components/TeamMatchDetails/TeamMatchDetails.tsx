@@ -1,8 +1,8 @@
 import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import utils from '../../utils/utils';
-import { Team } from '../../../core/models/Team';
-import Player from '../../../core/models/Player';
+import { Team } from '../../domain/models/Team';
+import Player from '../../domain/models/Player';
 import { GameEngine } from '../../../game-engine/GameEngine';
 
 interface TeamPlayersProps {

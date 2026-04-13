@@ -1,4 +1,4 @@
-import ChampionshipType from '../../core/enums/ChampionshipType';
+import ChampionshipType from '../../domain/enums/ChampionshipType';
 
 type ChampionshipJSONDTO = {
   name: string;

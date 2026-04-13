@@ -3,15 +3,15 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import InitialScreen from './InitialScreen';
 import { useGameEngine } from '../../contexts/GameEngineContext';
-import GameService from '../../../core/services/GameService';
-import OperationResult from '../../../core/results/OperationResult';
+import GameService from '../../domain/services/GameService';
+import OperationResult from '../../domain/results/OperationResult';
 import { GameState } from '../../../game-engine/GameState';
 
 jest.mock('../../contexts/GameEngineContext', () => ({
   useGameEngine: jest.fn(),
 }));
 
-jest.mock('../../../core/services/GameService', () => ({
+jest.mock('../../domain/services/GameService', () => ({
   __esModule: true,
   default: {
     loadGame: jest.fn(),

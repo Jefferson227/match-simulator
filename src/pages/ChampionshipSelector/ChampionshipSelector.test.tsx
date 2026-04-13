@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import ChampionshipSelector from './ChampionshipSelector';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
-import { getChampionships } from '../../../use-cases/ChampionshipUseCases';
+import ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
 
 jest.mock('../../contexts/GameEngineContext', () => ({
   useGameEngine: jest.fn(),
@@ -15,7 +15,8 @@ jest.mock('../../services/useGameState', () => ({
 }));
 
 jest.mock('../../../use-cases/ChampionshipUseCases', () => ({
-  getChampionships: jest.fn(),
+  __esModule: true,
+  default: jest.fn(),
 }));
 
 jest.mock('react-i18next', () => ({
@@ -66,7 +67,9 @@ describe('ChampionshipSelector', () => {
     jest.clearAllMocks();
     (useGameEngine as jest.Mock).mockReturnValue(mockEngine);
     (useGameState as jest.Mock).mockReturnValue(mockGameState);
-    (getChampionships as jest.Mock).mockReturnValue(mockSuccessfulResult);
+    (ChampionshipUseCases as jest.Mock).mockImplementation(() => ({
+      getChampionships: jest.fn(() => championshipsFixture),
+    }));
   });
 
   test('renders the component and initial championships', () => {
@@ -141,7 +144,11 @@ describe('ChampionshipSelector', () => {
   });
 
   test('dispatches SET_ERROR_MESSAGE when getChampionships fails', () => {
-    (getChampionships as jest.Mock).mockReturnValue(mockErrorResult);
+    (ChampionshipUseCases as jest.Mock).mockImplementation(() => ({
+      getChampionships: jest.fn(() => {
+        throw new Error('load failed');
+      }),
+    }));
 
     render(<ChampionshipSelector />);
 
@@ -157,6 +164,9 @@ describe('ChampionshipSelector', () => {
       hasError: true,
       errorMessage: 'state error',
     });
+    (ChampionshipUseCases as jest.Mock).mockImplementation(() => ({
+      getChampionships: jest.fn(() => championshipsFixture),
+    }));
 
     render(<ChampionshipSelector />);
 

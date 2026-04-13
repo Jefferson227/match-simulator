@@ -1,9 +1,9 @@
 import { describe, expect, it } from '@jest/globals';
-import MatchService from '../../../core/services/MatchService';
-import ChampionshipContainer from '../../../core/models/ChampionshipContainer';
-import { Championship } from '../../../core/models/Championship';
-import { Team } from '../../../core/models/Team';
-import { RandomProvider } from '../../../core/features/match-simulation/types';
+import MatchService from '../../../src/domain/services/MatchService';
+import ChampionshipContainer from '../../../src/domain/models/ChampionshipContainer';
+import { Championship } from '../../../src/domain/models/Championship';
+import { Team } from '../../../src/domain/models/Team';
+import { RandomProvider } from '../../../src/domain/features/match-simulation/types';
 
 function buildTeam(params: {
   id: `${string}-${string}-${string}-${string}-${string}`;

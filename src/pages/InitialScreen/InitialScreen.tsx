@@ -3,7 +3,7 @@ import buildVersionData from '../../assets/build-version.json';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import MainLayout from '../../components/MainLayout/MainLayout';
 import PixelLetter from '../../components/PixelLetter';
-import GameService from '../../../core/services/GameService';
+import GameService from '../../domain/services/GameService';
 
 const InitialScreen: React.FC = () => {
   const [buildVersion, setBuildVersion] = useState('');

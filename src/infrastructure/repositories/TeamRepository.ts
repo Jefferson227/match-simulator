@@ -1,7 +1,7 @@
 import TeamJSONDTO from '../data-transfer-objects/TeamJSONDTO';
-import PlayerPosition from '../../../core/enums/PlayerPosition';
-import { Team } from '../../../core/models/Team';
-import { getRandomPlayerStrength } from '../../../core/utils/Utils';
+import PlayerPosition from '../../domain/enums/PlayerPosition';
+import { Team } from '../../domain/models/Team';
+import { getRandomPlayerStrength } from '../../domain/utils/Utils';
 import teamsData from '../data/teams.json';
 
 let teamsByInternalName: Record<string, TeamJSONDTO> = {};

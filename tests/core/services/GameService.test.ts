@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
-import GameService from '../../../core/services/GameService';
+import GameService from '../../../src/domain/services/GameService';
 import GameRepository from '../../../src/infrastructure/repositories/GameRepository';
 import { GameState } from '../../../game-engine/GameState';
-import { Championship } from '../../../core/models/Championship';
+import { Championship } from '../../../src/domain/models/Championship';
 
 jest.mock('../../../src/infrastructure/repositories/GameRepository', () => ({
   __esModule: true,

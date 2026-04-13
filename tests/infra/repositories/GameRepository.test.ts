@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from '@jest/globals';
 import GameRepository from '../../../src/infrastructure/repositories/GameRepository';
 import { GameState } from '../../../game-engine/GameState';
-import { Championship } from '../../../core/models/Championship';
+import { Championship } from '../../../src/domain/models/Championship';
 
 function buildState(): GameState {
   return {

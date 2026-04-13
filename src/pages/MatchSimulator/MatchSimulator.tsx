@@ -6,10 +6,10 @@ import MainLayout from '../../components/MainLayout/MainLayout';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
 import Clock from '../../components/Clock';
-import Match from '../../../core/models/Match';
+import Match from '../../domain/models/Match';
 import TeamMatchDetails from '../../components/TeamMatchDetails/TeamMatchDetails';
 import TeamRectangle from '../../components/TeamRectangle';
-import { Team } from '../../../core/models/Team';
+import { Team } from '../../domain/models/Team';
 import ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
 
 const MATCHES_PER_PAGE = 6;

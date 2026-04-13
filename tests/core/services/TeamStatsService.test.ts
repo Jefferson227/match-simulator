@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
-import TeamStatsService from '../../../core/services/TeamStatsService';
-import { Team } from '../../../core/models/Team';
-import Round from '../../../core/models/Round';
+import TeamStatsService from '../../../src/domain/services/TeamStatsService';
+import { Team } from '../../../src/domain/models/Team';
+import Round from '../../../src/domain/models/Round';
 function buildTeam(id: Team['id'], morale: number, players: Player[] = []): Team {
   return {
     id,

@@ -2,8 +2,8 @@ import React, { useMemo, useState } from 'react';
 import MainLayout from '../../components/MainLayout/MainLayout';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
-import { Team } from '../../../core/models/Team';
-import Match from '../../../core/models/Match';
+import { Team } from '../../domain/models/Team';
+import Match from '../../domain/models/Match';
 
 const EMPTY_TEAM: Team = {
   id: '00000000-0000-0000-0000-000000000000',

@@ -1,5 +1,5 @@
 import { GameState } from '../game-engine/GameState';
-import GameService from '../core/services/GameService';
+import GameService from '../src/domain/services/GameService';
 
 export default class GameUseCases {
   private state: GameState;

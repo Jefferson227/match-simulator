@@ -1,8 +1,8 @@
 import { describe, expect, it } from '@jest/globals';
-import PlayerProgressionService from '../../../core/services/PlayerProgressionService';
-import Player from '../../../core/models/Player';
-import Round from '../../../core/models/Round';
-import { Team } from '../../../core/models/Team';
+import PlayerProgressionService from '../../../src/domain/services/PlayerProgressionService';
+import Player from '../../../src/domain/models/Player';
+import Round from '../../../src/domain/models/Round';
+import { Team } from '../../../src/domain/models/Team';
 
 function buildPlayer(id: Player['id'], strength: number, xp: number): Player {
   return {

@@ -1,7 +1,7 @@
-import { Championship } from '../core/models/Championship';
-import Match from '../core/models/Match';
-import { Team } from '../core/models/Team';
-import ChampionshipService from '../core/services/ChampionshipService';
+import { Championship } from '../src/domain/models/Championship';
+import Match from '../src/domain/models/Match';
+import { Team } from '../src/domain/models/Team';
+import ChampionshipService from '../src/domain/services/ChampionshipService';
 import { GameState } from '../game-engine/GameState';
 
 export default class ChampionshipUseCases {

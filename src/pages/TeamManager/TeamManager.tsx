@@ -5,9 +5,9 @@ import MainLayout from '../../components/MainLayout/MainLayout';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
 import ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
-import Player from '../../../core/models/Player';
-import { Team } from '../../../core/models/Team';
-import Formations, { FORMATIONS } from '../../../core/enums/Formations';
+import Player from '../../domain/models/Player';
+import { Team } from '../../domain/models/Team';
+import Formations, { FORMATIONS } from '../../domain/enums/Formations';
 
 const EMPTY_TEAM: Team = {
   id: '00000000-0000-0000-0000-000000000000',

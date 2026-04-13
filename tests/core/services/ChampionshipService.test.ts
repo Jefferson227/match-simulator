@@ -1,8 +1,8 @@
 import { describe, expect, it } from '@jest/globals';
-import ChampionshipService from '../../../core/services/ChampionshipService';
-import ChampionshipContainer from '../../../core/models/ChampionshipContainer';
-import { Championship } from '../../../core/models/Championship';
-import { Team } from '../../../core/models/Team';
+import ChampionshipService from '../../../src/domain/services/ChampionshipService';
+import ChampionshipContainer from '../../../src/domain/models/ChampionshipContainer';
+import { Championship } from '../../../src/domain/models/Championship';
+import { Team } from '../../../src/domain/models/Team';
 
 function buildTeam(id: string, abbreviation: string, isControlledByHuman = false): Team {
   return {

@@ -5,9 +5,9 @@ import TeamStandings from './TeamStandings';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
 import { GameState } from '../../../game-engine/GameState';
-import { Championship } from '../../../core/models/Championship';
-import Standing from '../../../core/models/Standing';
-import { Team } from '../../../core/models/Team';
+import { Championship } from '../../domain/models/Championship';
+import Standing from '../../domain/models/Standing';
+import { Team } from '../../domain/models/Team';
 
 jest.mock('../../contexts/GameEngineContext', () => ({
   useGameEngine: jest.fn(),

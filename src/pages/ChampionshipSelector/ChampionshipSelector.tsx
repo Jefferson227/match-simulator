@@ -4,7 +4,7 @@ import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
 import ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
 import MainLayout from '../../components/MainLayout/MainLayout';
-import { Championship } from '../../../core/models/Championship';
+import { Championship } from '../../domain/models/Championship';
 
 const CHAMPIONSHIPS_PER_PAGE = 6;
 

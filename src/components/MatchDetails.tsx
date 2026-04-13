@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import utils from '../utils/utils';
-import Match from '../../core/models/Match';
-import Scorer from '../../core/models/Scorer';
+import Match from '../domain/models/Match';
+import Scorer from '../domain/models/Scorer';
 
 interface MatchDetailsProps {
   match: Match;
