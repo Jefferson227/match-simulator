@@ -165,7 +165,7 @@ To reduce breakage, apply changes gradually in this order:
 - [x] Move `core/*` into `src/domain/*`
 - [x] Move `use-cases` and `game-engine` into `src/`
 - [x] Move React UI folders into `src/presentation/*`
-- [ ] Update tests to mirror the new structure
+- [x] Update tests to mirror the new structure
 - [ ] Add path aliases only after the structure is stable
 
 ## Scope Notes

@@ -8,7 +8,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "jest",
-    "test-front": "jest src/pages",
+    "test-front": "jest src/presentation",
     "test-back": "jest tests"
   },
   "dependencies": {
