@@ -163,7 +163,7 @@ To reduce breakage, apply changes gradually in this order:
 - [x] Move DTOs and mappers into `src/infrastructure`
 - [x] Update repository imports
 - [x] Move `core/*` into `src/domain/*`
-- [ ] Move `use-cases` and `game-engine` into `src/`
+- [x] Move `use-cases` and `game-engine` into `src/`
 - [ ] Move React UI folders into `src/presentation/*`
 - [ ] Update tests to mirror the new structure
 - [ ] Add path aliases only after the structure is stable

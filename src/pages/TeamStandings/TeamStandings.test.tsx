@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import TeamStandings from './TeamStandings';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
-import { GameState } from '../../../game-engine/GameState';
+import { GameState } from '../../game-engine/GameState';
 import { Championship } from '../../domain/models/Championship';
 import Standing from '../../domain/models/Standing';
 import { Team } from '../../domain/models/Team';

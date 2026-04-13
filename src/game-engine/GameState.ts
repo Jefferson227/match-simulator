@@ -1,7 +1,7 @@
-import ChampionshipContainer from '../src/domain/models/ChampionshipContainer';
-import Player from '../src/domain/models/Player';
-import { Team } from '../src/domain/models/Team';
-import GameConfig from '../src/domain/models/GameConfig';
+import ChampionshipContainer from '../domain/models/ChampionshipContainer';
+import Player from '../domain/models/Player';
+import { Team } from '../domain/models/Team';
+import GameConfig from '../domain/models/GameConfig';
 
 export type GameState = {
   championshipContainer: ChampionshipContainer;

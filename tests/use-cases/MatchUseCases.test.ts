@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
-import MatchUseCases from '../../use-cases/MatchUseCases';
+import MatchUseCases from '../../src/use-cases/MatchUseCases';
 import MatchService from '../../src/domain/services/MatchService';
-import { GameState } from '../../game-engine/GameState';
+import { GameState } from '../../src/game-engine/GameState';
 import { Championship } from '../../src/domain/models/Championship';
 import ChampionshipContainer from '../../src/domain/models/ChampionshipContainer';
 import OperationResult from '../../src/domain/results/OperationResult';

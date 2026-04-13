@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
 import { Team } from '../../domain/models/Team';
-import TeamUseCases from '../../../use-cases/TeamUseCases';
+import TeamUseCases from '../../use-cases/TeamUseCases';
 import MainLayout from '../../components/MainLayout/MainLayout';
-import { GameState } from '../../../game-engine/GameState';
+import { GameState } from '../../game-engine/GameState';
 
 const TEAMS_PER_PAGE = 9;
 

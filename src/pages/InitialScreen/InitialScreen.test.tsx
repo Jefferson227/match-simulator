@@ -5,7 +5,7 @@ import InitialScreen from './InitialScreen';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import GameService from '../../domain/services/GameService';
 import OperationResult from '../../domain/results/OperationResult';
-import { GameState } from '../../../game-engine/GameState';
+import { GameState } from '../../game-engine/GameState';
 
 jest.mock('../../contexts/GameEngineContext', () => ({
   useGameEngine: jest.fn(),

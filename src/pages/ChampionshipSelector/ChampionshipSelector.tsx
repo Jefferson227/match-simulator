@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
-import ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
+import ChampionshipUseCases from '../../use-cases/ChampionshipUseCases';
 import MainLayout from '../../components/MainLayout/MainLayout';
 import { Championship } from '../../domain/models/Championship';
 

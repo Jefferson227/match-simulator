@@ -1,5 +1,5 @@
 import GameRepository from '../../infrastructure/repositories/GameRepository';
-import { GameState } from '../../../game-engine/GameState';
+import { GameState } from '../../game-engine/GameState';
 import OperationResult from '../results/OperationResult';
 
 const saveGame = (state: GameState): OperationResult<void> => {

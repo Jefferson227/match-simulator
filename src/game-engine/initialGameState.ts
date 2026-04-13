@@ -1,5 +1,5 @@
 import type { GameState } from './GameState';
-import { Championship } from '../src/domain/models/Championship';
+import { Championship } from '../domain/models/Championship';
 
 export function createInitialGameState(): GameState {
   return {

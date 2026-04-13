@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import TeamSelector from './TeamSelector';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
-import TeamUseCases from '../../../use-cases/TeamUseCases';
+import TeamUseCases from '../../use-cases/TeamUseCases';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -25,7 +25,7 @@ jest.mock('../../services/useGameState', () => ({
   useGameState: jest.fn(),
 }));
 
-jest.mock('../../../use-cases/TeamUseCases', () => ({
+jest.mock('../../use-cases/TeamUseCases', () => ({
   __esModule: true,
   default: jest.fn(),
 }));

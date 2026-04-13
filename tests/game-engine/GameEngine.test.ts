@@ -1,15 +1,15 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
-import { GameEngine } from '../../game-engine/GameEngine';
-import { GameState } from '../../game-engine/GameState';
-import ChampionshipUseCases from '../../use-cases/ChampionshipUseCases';
-import GameUseCases from '../../use-cases/GameUseCases';
-import TeamUseCases from '../../use-cases/TeamUseCases';
+import { GameEngine } from '../../src/game-engine/GameEngine';
+import { GameState } from '../../src/game-engine/GameState';
+import ChampionshipUseCases from '../../src/use-cases/ChampionshipUseCases';
+import GameUseCases from '../../src/use-cases/GameUseCases';
+import TeamUseCases from '../../src/use-cases/TeamUseCases';
 import { Championship } from '../../src/domain/models/Championship';
 import ChampionshipContainer from '../../src/domain/models/ChampionshipContainer';
 
-jest.mock('../../use-cases/ChampionshipUseCases');
-jest.mock('../../use-cases/GameUseCases');
-jest.mock('../../use-cases/TeamUseCases');
+jest.mock('../../src/use-cases/ChampionshipUseCases');
+jest.mock('../../src/use-cases/GameUseCases');
+jest.mock('../../src/use-cases/TeamUseCases');
 
 const MockedChampionshipUseCases = ChampionshipUseCases as jest.MockedClass<
   typeof ChampionshipUseCases

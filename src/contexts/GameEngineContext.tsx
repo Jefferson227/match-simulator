@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useMemo } from 'react';
-import { GameEngine } from '../../game-engine/GameEngine';
-import type { GameState } from '../../game-engine/GameState';
+import { GameEngine } from '../game-engine/GameEngine';
+import type { GameState } from '../game-engine/GameState';
 
 const GameEngineContext = createContext<GameEngine | null>(null);
 

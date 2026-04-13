@@ -4,7 +4,7 @@ import utils from '../../utils/utils';
 import MainLayout from '../../components/MainLayout/MainLayout';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
-import ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
+import ChampionshipUseCases from '../../use-cases/ChampionshipUseCases';
 import Player from '../../domain/models/Player';
 import { Team } from '../../domain/models/Team';
 import Formations, { FORMATIONS } from '../../domain/enums/Formations';

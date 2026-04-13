@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import ChampionshipSelector from './ChampionshipSelector';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../services/useGameState';
-import ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
+import ChampionshipUseCases from '../../use-cases/ChampionshipUseCases';
 
 jest.mock('../../contexts/GameEngineContext', () => ({
   useGameEngine: jest.fn(),
@@ -14,7 +14,7 @@ jest.mock('../../services/useGameState', () => ({
   useGameState: jest.fn(),
 }));
 
-jest.mock('../../../use-cases/ChampionshipUseCases', () => ({
+jest.mock('../../use-cases/ChampionshipUseCases', () => ({
   __esModule: true,
   default: jest.fn(),
 }));

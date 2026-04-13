@@ -3,7 +3,7 @@ import { MatchProvider } from '../contexts/MatchContext';
 import { GeneralProvider } from '../contexts/GeneralContext';
 import { ChampionshipProvider } from '../contexts/ChampionshipContext';
 import { GameEngineProvider } from '../contexts/GameEngineContext';
-import { createInitialGameState } from '../../game-engine/initialGameState';
+import { createInitialGameState } from '../game-engine/initialGameState';
 
 interface AppProvidersProps {
   children: ReactNode;

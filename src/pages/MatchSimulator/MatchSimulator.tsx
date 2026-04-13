@@ -10,7 +10,7 @@ import Match from '../../domain/models/Match';
 import TeamMatchDetails from '../../components/TeamMatchDetails/TeamMatchDetails';
 import TeamRectangle from '../../components/TeamRectangle';
 import { Team } from '../../domain/models/Team';
-import ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
+import ChampionshipUseCases from '../../use-cases/ChampionshipUseCases';
 
 const MATCHES_PER_PAGE = 6;
 

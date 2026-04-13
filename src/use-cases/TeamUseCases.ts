@@ -1,8 +1,8 @@
-import { Championship } from '../src/domain/models/Championship';
-import Match from '../src/domain/models/Match';
-import Player from '../src/domain/models/Player';
-import { Team } from '../src/domain/models/Team';
-import TeamService from '../src/domain/services/TeamService';
+import { Championship } from '../domain/models/Championship';
+import Match from '../domain/models/Match';
+import Player from '../domain/models/Player';
+import { Team } from '../domain/models/Team';
+import TeamService from '../domain/services/TeamService';
 import { GameState } from '../game-engine/GameState';
 
 export default class TeamUseCases {
