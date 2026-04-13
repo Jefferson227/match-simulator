@@ -1,16 +1,16 @@
-import AppProviders from './providers/AppProviders';
+import AppProviders from './presentation/providers/AppProviders';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 import { FC } from 'react';
-import InitialScreen from './pages/InitialScreen/InitialScreen';
-import ChampionshipSelector from './pages/ChampionshipSelector/ChampionshipSelector';
-import TeamSelector from './pages/TeamSelector/TeamSelector';
-import { useGameEngine } from './contexts/GameEngineContext';
+import InitialScreen from './presentation/pages/InitialScreen/InitialScreen';
+import ChampionshipSelector from './presentation/pages/ChampionshipSelector/ChampionshipSelector';
+import TeamSelector from './presentation/pages/TeamSelector/TeamSelector';
+import { useGameEngine } from './presentation/contexts/GameEngineContext';
 import { useGameState } from './services/useGameState';
-import TeamManager from './pages/TeamManager/TeamManager';
-import MatchSimulator from './pages/MatchSimulator/MatchSimulator';
-import TeamStandings from './pages/TeamStandings/TeamStandings';
-import TeamAdditionalInfo from './pages/TeamAdditionalInfo/TeamAdditionalInfo';
+import TeamManager from './presentation/pages/TeamManager/TeamManager';
+import MatchSimulator from './presentation/pages/MatchSimulator/MatchSimulator';
+import TeamStandings from './presentation/pages/TeamStandings/TeamStandings';
+import TeamAdditionalInfo from './presentation/pages/TeamAdditionalInfo/TeamAdditionalInfo';
 
 const AppContent: FC = () => {
   // Game engine

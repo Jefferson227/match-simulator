@@ -1,6 +1,6 @@
 import utils from '../utils/utils';
 import { MatchState } from '../types';
-import { MatchAction } from '../contexts/MatchContext';
+import { MatchAction } from '../presentation/contexts/MatchContext';
 
 const { addPlayerAttributes, getAverage } = utils;
 

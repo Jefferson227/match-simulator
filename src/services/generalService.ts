@@ -1,4 +1,4 @@
-import generalParameters from '../assets/general-parameters.json';
+import generalParameters from '../presentation/assets/general-parameters.json';
 import { ChampionshipConfig } from '../types';
 
 function getAllChampionships(): ChampionshipConfig[] {

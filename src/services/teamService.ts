@@ -2,7 +2,7 @@ import { Player, BaseTeam, MatchTeam } from '../types';
 import { ChampionshipConfig } from '../types';
 import { TeamSelectorTeam, SeasonMatch, SeasonRound } from './types';
 import matchService from './matchService';
-import generalParameters from '../assets/general-parameters.json';
+import generalParameters from '../presentation/assets/general-parameters.json';
 import utils from '../utils/utils';
 
 function getPlayersByPosition(players: Player[], position: string): Player[] {
@@ -120,7 +120,7 @@ export const loadTeamsForChampionship = async (
     for (const teamFileName of championship.teams) {
       try {
         const teamData = await import(
-          `../assets/championship-teams/${championshipInternalName}/${teamFileName}.json`
+          `../presentation/assets/championship-teams/${championshipInternalName}/${teamFileName}.json`
         );
         const teamDataObj = teamData.default;
 
@@ -153,7 +153,7 @@ export const loadSpecificTeam = async (
 ): Promise<BaseTeam | null> => {
   try {
     const teamData = await import(
-      `../assets/championship-teams/${championshipInternalName}/${teamFileName}.json`
+      `../presentation/assets/championship-teams/${championshipInternalName}/${teamFileName}.json`
     );
     const teamDataObj = teamData.default;
 
@@ -216,7 +216,7 @@ export const loadAllTeamsExceptOne = async (
 
       try {
         const teamData = await import(
-          `../assets/championship-teams/${championshipInternalName}/${teamFileName}.json`
+          `../presentation/assets/championship-teams/${championshipInternalName}/${teamFileName}.json`
         );
         const teamDataObj = teamData.default;
 
@@ -284,7 +284,7 @@ export const loadAllTeams = async (championshipInternalName: string): Promise<Ba
     for (const teamFileName of championship.teams) {
       try {
         const teamData = await import(
-          `../assets/championship-teams/${championshipInternalName}/${teamFileName}.json`
+          `../presentation/assets/championship-teams/${championshipInternalName}/${teamFileName}.json`
         );
         const teamDataObj = teamData.default;
 
