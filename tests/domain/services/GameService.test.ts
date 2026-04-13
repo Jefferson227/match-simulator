@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
-import GameService from '../../../src/domain/services/GameService';
-import GameRepository from '../../../src/infrastructure/repositories/GameRepository';
-import { GameState } from '../../../src/game-engine/GameState';
-import { Championship } from '../../../src/domain/models/Championship';
+import { Championship } from '~domain/models/Championship';
+import GameService from '~domain/services/GameService';
+import { GameState } from '~game-engine/GameState';
+import GameRepository from '~infrastructure/repositories/GameRepository';
 
-jest.mock('../../../src/infrastructure/repositories/GameRepository', () => ({
+jest.mock('~infrastructure/repositories/GameRepository', () => ({
   __esModule: true,
   default: {
     loadGame: jest.fn(),

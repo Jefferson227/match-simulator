@@ -1,7 +1,7 @@
-import AppProviders from './presentation/providers/AppProviders';
 import { I18nextProvider } from 'react-i18next';
-import i18n from './i18n';
 import { FC } from 'react';
+import i18n from './i18n';
+import AppProviders from './presentation/providers/AppProviders';
 import InitialScreen from './presentation/pages/InitialScreen/InitialScreen';
 import ChampionshipSelector from './presentation/pages/ChampionshipSelector/ChampionshipSelector';
 import TeamSelector from './presentation/pages/TeamSelector/TeamSelector';
