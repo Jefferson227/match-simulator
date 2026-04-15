@@ -3,7 +3,7 @@ import MatchResult from '../enums/MatchResult';
 import Round from '../models/Round';
 import { Team } from '../models/Team';
 import PlayerProgressionService from './PlayerProgressionService';
-import UpdateTeamContext from './types/UpdateTeamContext';
+import type { UpdateTeamContext } from './types';
 
 function getTeamResult(team: Team, round?: Round): MatchResult | null {
   if (!round) return null;
