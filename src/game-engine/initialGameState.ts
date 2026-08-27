@@ -8,5 +8,6 @@ export function createInitialGameState(): GameState {
       promotionChampionship: {} as Championship,
       relegationChampionship: {} as Championship,
     },
+    leagueType: 'mens',
   };
 }

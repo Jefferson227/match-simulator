@@ -54,6 +54,9 @@ export class GameEngine {
       case 'SET_CURRENT_SCREEN':
         this.gameUseCases = new GameUseCases(state);
         return this.gameUseCases.setCurrentScreen(action.screenName);
+      case 'SET_LEAGUE_TYPE':
+        this.championshipUseCases = new ChampionshipUseCases(state);
+        return this.championshipUseCases.setLeagueType(action.leagueType);
       case 'LOAD_GAME':
         this.gameUseCases = new GameUseCases(state);
         return this.gameUseCases.loadGame();

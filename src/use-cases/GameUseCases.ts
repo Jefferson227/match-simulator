@@ -56,6 +56,7 @@ export default class GameUseCases {
       };
     }
 
-    return result.getResult();
+    const loaded = result.getResult();
+    return { ...loaded, leagueType: loaded.leagueType ?? 'mens' };
   }
 }

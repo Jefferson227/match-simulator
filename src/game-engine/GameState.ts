@@ -2,6 +2,7 @@ import ChampionshipContainer from '../domain/models/ChampionshipContainer';
 import Player from '../domain/models/Player';
 import { Team } from '../domain/models/Team';
 import GameConfig from '../domain/models/GameConfig';
+import LeagueType from '../domain/enums/LeagueType';
 
 export type GameState = {
   championshipContainer: ChampionshipContainer;
@@ -9,12 +10,14 @@ export type GameState = {
   errorMessage: string;
   currentScreen: string;
   gameConfig: GameConfig;
+  leagueType: LeagueType;
 };
 
 export type GameAction =
   | { type: 'INIT_CHAMPIONSHIPS'; championshipInternalName: string }
   | { type: 'SET_ERROR_MESSAGE'; errorMessage: string }
   | { type: 'SET_CURRENT_SCREEN'; screenName: string }
+  | { type: 'SET_LEAGUE_TYPE'; leagueType: LeagueType }
   | { type: 'LOAD_GAME' }
   | { type: 'SAVE_GAME' }
   | { type: 'SELECT_TEAM'; teamId: string }

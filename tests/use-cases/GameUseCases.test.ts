@@ -44,6 +44,7 @@ function buildState(): GameState {
     gameConfig: {
       clockSpeed: 750,
     },
+    leagueType: 'mens',
   };
 }
 
