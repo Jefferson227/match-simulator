@@ -7,6 +7,7 @@ import MatchContainer from '../models/MatchContainer';
 import Round from '../models/Round';
 import { Championship } from '../models/Championship';
 import Standing from '../models/Standing';
+import LeagueType from '../enums/LeagueType';
 
 function createMatches(startingTeams: Team[]): MatchContainer {
   const teams = [...startingTeams];
@@ -406,9 +407,9 @@ const initChampionships = (
   }
 };
 
-const getChampionships = (): OperationResult<Championship[]> => {
+const getChampionships = (leagueType?: LeagueType): OperationResult<Championship[]> => {
   try {
-    const result = new OperationResult(ChampionshipRepository.getChampionships());
+    const result = new OperationResult(ChampionshipRepository.getChampionships(leagueType));
     result.setSuccess();
 
     return result;

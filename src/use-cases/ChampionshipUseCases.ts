@@ -3,6 +3,7 @@ import Match from '../domain/models/Match';
 import { Team } from '../domain/models/Team';
 import ChampionshipService from '../domain/services/ChampionshipService';
 import { GameState } from '../game-engine/GameState';
+import LeagueType from '../domain/enums/LeagueType';
 
 export default class ChampionshipUseCases {
   private state = {} as GameState;
@@ -84,13 +85,20 @@ export default class ChampionshipUseCases {
     };
   }
 
-  getChampionships(): Championship[] {
-    const result = ChampionshipService.getChampionships();
+  getChampionships(leagueType?: LeagueType): Championship[] {
+    const result = ChampionshipService.getChampionships(leagueType);
     if (!result.succeeded) {
       throw new Error('List of championships could not be found.');
     }
 
     return result.getResult();
+  }
+
+  setLeagueType(leagueType: LeagueType): GameState {
+    return {
+      ...this.state,
+      leagueType,
+    };
   }
 
   getTeamControlledByHuman(championship: Championship): Team {

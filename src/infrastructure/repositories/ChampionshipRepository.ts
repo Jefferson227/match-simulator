@@ -1,6 +1,7 @@
 import ChampionshipJSONDTO from '../data-transfer-objects/ChampionshipJSONDTO';
 import championshipsJSON from '../data/championships.json';
 import { Championship } from '../../domain/models/Championship';
+import LeagueType from '../../domain/enums/LeagueType';
 import TeamRepository from './TeamRepository';
 
 export function getChampionship(
@@ -29,6 +30,7 @@ export function getChampionship(
       rounds: [],
     },
     type: championshipJSONDTO.type,
+    leagueType: championshipJSONDTO.leagueType,
     hasTeamControlledByHuman,
     isPromotable: false,
     isRelegatable: false,
@@ -98,16 +100,19 @@ export function getChampionship(
   return mappedChampionship;
 }
 
-export function getChampionships(): Championship[] {
+export function getChampionships(leagueType?: LeagueType): Championship[] {
   const championshipsJSONDTO = championshipsJSON as ChampionshipJSONDTO[];
-  const internalNames = championshipsJSONDTO.map((json) => {
-    return {
-      internalName: json.internalName,
-      name: json.name,
-    } as Championship;
-  });
 
-  if (!internalNames.length) throw new Error('No championship internal names have been found.');
+  if (!championshipsJSONDTO.length)
+    throw new Error('No championship internal names have been found.');
 
-  return internalNames;
+  return championshipsJSONDTO
+    .filter((json) => !leagueType || json.leagueType === leagueType)
+    .map((json) => {
+      return {
+        internalName: json.internalName,
+        name: json.name,
+        leagueType: json.leagueType,
+      } as Championship;
+    });
 }
