@@ -1,5 +1,6 @@
 import Standing from './Standing';
 import ChampionshipType from '../enums/ChampionshipType';
+import LeagueType from '../enums/LeagueType';
 import { Team } from './Team';
 import MatchContainer from './MatchContainer';
 
@@ -12,6 +13,7 @@ type BaseChampionship = {
   standings: Standing[];
   matchContainer: MatchContainer;
   type: ChampionshipType;
+  leagueType: LeagueType;
   hasTeamControlledByHuman: boolean;
 };
 

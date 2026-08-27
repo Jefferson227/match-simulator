@@ -6,6 +6,7 @@
     "numberOfRelegatableTeams": 4,
     "relegationChampionshipInternalName": "brasileirao-serie-b",
     "type": "double-round-robin",
+    "leagueType": "mens",
     "teamNames": [
       "atletico-mg",
       "bahia",
@@ -36,6 +37,7 @@
     "numberOfPromotableTeams": 4,
     "promotionChampionshipInternalName": "brasileirao-serie-a",
     "type": "double-round-robin",
+    "leagueType": "mens",
     "teamNames": [
       "amazonas",
       "america-mg",
