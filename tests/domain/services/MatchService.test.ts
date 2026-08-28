@@ -106,6 +106,7 @@ function buildContainer(roundStatus: 'in-progress' | 'not-started' = 'in-progres
       ],
     },
     type: 'double-round-robin',
+    leagueType: 'mens',
     hasTeamControlledByHuman: false,
     isPromotable: false,
     isRelegatable: false,

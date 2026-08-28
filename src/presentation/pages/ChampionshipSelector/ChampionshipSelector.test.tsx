@@ -22,10 +22,12 @@ jest.mock('../../../use-cases/ChampionshipUseCases', () => ({
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string) => {
-      if (key === 'championshipSelector.selectChampionship') {
-        return 'SELECT CHAMPIONSHIP';
-      }
-      return key;
+      const translations: Record<string, string> = {
+        'championshipSelector.selectChampionship': 'SELECT CHAMPIONSHIP',
+        'championshipSelector.goBack': 'GO BACK',
+        'championshipSelector.noChampionshipsAvailable': 'NO CHAMPIONSHIPS AVAILABLE',
+      };
+      return translations[key] ?? key;
     },
   }),
 }));
@@ -34,6 +36,7 @@ const mockDispatch = jest.fn();
 const mockEngine = { dispatch: mockDispatch };
 const mockGameState = {
   championshipContainer: {},
+  leagueType: 'mens',
   hasError: false,
   errorMessage: '',
   currentScreen: 'ChampionshipSelector',
@@ -63,12 +66,15 @@ const mockErrorResult = {
 };
 
 describe('ChampionshipSelector', () => {
+  let getChampionshipsMock: jest.Mock;
+
   beforeEach(() => {
     jest.clearAllMocks();
     (useGameEngine as jest.Mock).mockReturnValue(mockEngine);
     (useGameState as jest.Mock).mockReturnValue(mockGameState);
+    getChampionshipsMock = jest.fn(() => championshipsFixture);
     (ChampionshipUseCases as jest.Mock).mockImplementation(() => ({
-      getChampionships: jest.fn(() => championshipsFixture),
+      getChampionships: getChampionshipsMock,
     }));
   });
 
@@ -173,6 +179,42 @@ describe('ChampionshipSelector', () => {
     expect(mockDispatch).toHaveBeenCalledWith({
       type: 'SET_ERROR_MESSAGE',
       errorMessage: 'state error',
+    });
+  });
+
+  test('loads championships filtered by the league type held in state', () => {
+    render(<ChampionshipSelector />);
+
+    expect(getChampionshipsMock).toHaveBeenCalledWith('mens');
+  });
+
+  test("passes 'womens' through when that is the selected league type", () => {
+    (useGameState as jest.Mock).mockReturnValue({ ...mockGameState, leagueType: 'womens' });
+
+    render(<ChampionshipSelector />);
+
+    expect(getChampionshipsMock).toHaveBeenCalledWith('womens');
+  });
+
+  test('renders the empty state when no championships are available', () => {
+    getChampionshipsMock = jest.fn(() => []);
+    (ChampionshipUseCases as jest.Mock).mockImplementation(() => ({
+      getChampionships: getChampionshipsMock,
+    }));
+
+    render(<ChampionshipSelector />);
+
+    expect(screen.getByText('NO CHAMPIONSHIPS AVAILABLE')).toBeInTheDocument();
+  });
+
+  test('GO BACK dispatches SET_CURRENT_SCREEN to LeagueTypeSelector', () => {
+    render(<ChampionshipSelector />);
+
+    fireEvent.click(screen.getByText('GO BACK'));
+
+    expect(mockDispatch).toHaveBeenCalledWith({
+      type: 'SET_CURRENT_SCREEN',
+      screenName: 'LeagueTypeSelector',
     });
   });
 });

@@ -79,6 +79,7 @@ function buildChampionship(teams: Team[], scores: Array<[number, number]>, curre
       ],
     },
     type: 'double-round-robin',
+    leagueType: 'mens',
     hasTeamControlledByHuman: false,
     isPromotable: false,
     isRelegatable: false,

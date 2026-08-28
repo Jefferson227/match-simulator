@@ -33,6 +33,7 @@ function buildState(): GameState {
           rounds: [],
         },
         type: 'double-round-robin',
+        leagueType: 'mens',
         hasTeamControlledByHuman: false,
         isPromotable: false,
         isRelegatable: false,

@@ -71,7 +71,7 @@ describe('InitialScreen', () => {
 
     expect(mockDispatch).toHaveBeenCalledWith({
       type: 'SET_CURRENT_SCREEN',
-      screenName: 'ChampionshipSelector',
+      screenName: 'LeagueTypeSelector',
     });
   });
 

@@ -51,6 +51,7 @@ function buildMockChampionship(): Championship {
       rounds: [],
     },
     type: 'double-round-robin',
+    leagueType: 'mens',
     hasTeamControlledByHuman: false,
     isPromotable: false,
     isRelegatable: false,
@@ -62,6 +63,7 @@ function buildState(): GameState {
     championshipContainer: {
       playableChampionship: buildMockChampionship(),
     },
+    leagueType: 'mens',
     hasError: false,
     errorMessage: '',
     currentScreen: 'home',
@@ -268,6 +270,48 @@ describe('ChampionshipUseCases', () => {
       expect(() => useCases.getChampionships()).toThrow(
         'List of championships could not be found.'
       );
+    });
+
+    it('forwards the league type to the service', () => {
+      const championships = [buildMockChampionship()];
+      const useCases = new ChampionshipUseCases(buildState());
+
+      mockedChampionshipService.getChampionships.mockReturnValue(successResult(championships));
+
+      useCases.getChampionships('womens');
+
+      expect(mockedChampionshipService.getChampionships).toHaveBeenCalledWith('womens');
+    });
+
+    it('forwards undefined to the service when no league type is given', () => {
+      const championships = [buildMockChampionship()];
+      const useCases = new ChampionshipUseCases(buildState());
+
+      mockedChampionshipService.getChampionships.mockReturnValue(successResult(championships));
+
+      useCases.getChampionships();
+
+      expect(mockedChampionshipService.getChampionships).toHaveBeenCalledWith(undefined);
+    });
+  });
+
+  describe('setLeagueType', () => {
+    it('returns the state with the given league type applied', () => {
+      const initialState = buildState();
+      const useCases = new ChampionshipUseCases(initialState);
+
+      const nextState = useCases.setLeagueType('womens');
+
+      expect(nextState).toEqual({ ...initialState, leagueType: 'womens' });
+    });
+
+    it('does not mutate the original state', () => {
+      const initialState = buildState();
+      const useCases = new ChampionshipUseCases(initialState);
+
+      useCases.setLeagueType('womens');
+
+      expect(initialState.leagueType).toBe('mens');
     });
   });
 

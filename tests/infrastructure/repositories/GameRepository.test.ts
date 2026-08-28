@@ -21,6 +21,7 @@ function buildState(): GameState {
           rounds: [],
         },
         type: 'double-round-robin',
+        leagueType: 'mens',
         hasTeamControlledByHuman: false,
         isPromotable: false,
         isRelegatable: false,
@@ -28,6 +29,7 @@ function buildState(): GameState {
     },
     hasError: false,
     errorMessage: '',
+    leagueType: 'mens',
     currentScreen: 'TeamManager',
     gameConfig: {
       clockSpeed: 1000,

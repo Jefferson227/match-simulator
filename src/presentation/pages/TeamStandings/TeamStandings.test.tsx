@@ -70,6 +70,7 @@ function buildState(overrides?: Partial<GameState>): GameState {
           rounds: [],
         },
         type: 'double-round-robin',
+        leagueType: 'mens',
         hasTeamControlledByHuman: false,
         isPromotable: false,
         isRelegatable: false,
@@ -77,6 +78,7 @@ function buildState(overrides?: Partial<GameState>): GameState {
     },
     hasError: false,
     errorMessage: '',
+    leagueType: 'mens',
     currentScreen: 'TeamStandings',
     gameConfig: {
       clockSpeed: 1000,

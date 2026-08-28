@@ -68,6 +68,7 @@ const createChampionship = (teams: Team[]): Championship => ({
     matches: [],
   },
   type: 'double-round-robin',
+  leagueType: 'mens',
   hasTeamControlledByHuman: true,
   isPromotable: false,
   isRelegatable: false,
@@ -79,7 +80,11 @@ const createState = (teams: Team[]): GameState => ({
   },
   hasError: false,
   errorMessage: '',
+  leagueType: 'mens',
   currentScreen: 'TeamManager',
+  gameConfig: {
+    clockSpeed: 1000,
+  },
 });
 
 const renderTeamManager = (teams: Team[]) =>

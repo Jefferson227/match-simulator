@@ -63,6 +63,7 @@ function buildChampionship(params: {
       rounds: [],
     },
     type: 'double-round-robin',
+    leagueType: 'mens',
     hasTeamControlledByHuman: params.teams.some((team) => team.isControlledByHuman),
     isPromotable: params.isPromotable ?? false,
     numberOfPromotableTeams: params.numberOfPromotableTeams ?? 0,
