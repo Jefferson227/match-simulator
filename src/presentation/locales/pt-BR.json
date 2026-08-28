@@ -23,8 +23,15 @@
     "selectedCount": "{{count}} SELECIONADO(S)",
     "moreInfo": "MAIS INFO."
   },
+  "leagueTypeSelector": {
+    "selectLeagueType": "SELECIONE O TIPO DE LIGA",
+    "womensLeague": "LIGA FEMININA",
+    "mensLeague": "LIGA MASCULINA"
+  },
   "championshipSelector": {
-    "selectChampionship": "SELECIONAR LIGA"
+    "selectChampionship": "SELECIONAR LIGA",
+    "goBack": "VOLTAR",
+    "noChampionshipsAvailable": "NENHUMA LIGA DISPONÍVEL"
   },
   "teamSelector": {
     "selectATeam": "SELECIONE UM TIME"

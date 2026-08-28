@@ -3,6 +3,7 @@ import { FC } from 'react';
 import i18n from './i18n';
 import AppProviders from './presentation/providers/AppProviders';
 import InitialScreen from './presentation/pages/InitialScreen/InitialScreen';
+import LeagueTypeSelector from './presentation/pages/LeagueTypeSelector/LeagueTypeSelector';
 import ChampionshipSelector from './presentation/pages/ChampionshipSelector/ChampionshipSelector';
 import TeamSelector from './presentation/pages/TeamSelector/TeamSelector';
 import { useGameEngine } from './presentation/contexts/GameEngineContext';
@@ -21,6 +22,8 @@ const AppContent: FC = () => {
     case '':
     case 'InitialScreen':
       return <InitialScreen />;
+    case 'LeagueTypeSelector':
+      return <LeagueTypeSelector />;
     case 'ChampionshipSelector':
       return <ChampionshipSelector />;
     case 'TeamSelector':
