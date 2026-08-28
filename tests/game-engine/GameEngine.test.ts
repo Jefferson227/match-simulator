@@ -35,11 +35,13 @@ function buildState(): GameState {
           rounds: [],
         },
         type: 'double-round-robin',
+        leagueType: 'mens',
         hasTeamControlledByHuman: false,
         isPromotable: false,
         isRelegatable: false,
       } as Championship,
     } as ChampionshipContainer,
+    leagueType: 'mens',
     hasError: false,
     errorMessage: '',
     currentScreen: 'home',
@@ -233,5 +235,23 @@ describe('GameEngine', () => {
 
     expect(updateTeamStatsMock).toHaveBeenCalled();
     expect(engine.getState()).toEqual(updatedState);
+  });
+
+  it('sets the league type through ChampionshipUseCases', () => {
+    const engine = new GameEngine(initialState);
+    const updatedState: GameState = { ...initialState, leagueType: 'womens' };
+    const setLeagueTypeMock = jest.fn().mockReturnValue(updatedState);
+
+    MockedChampionshipUseCases.mockImplementation(
+      () =>
+        ({
+          setLeagueType: setLeagueTypeMock,
+        }) as unknown as jest.MockedObject<ChampionshipUseCases>
+    );
+
+    engine.dispatch({ type: 'SET_LEAGUE_TYPE', leagueType: 'womens' });
+
+    expect(setLeagueTypeMock).toHaveBeenCalledWith('womens');
+    expect(engine.getState().leagueType).toBe('womens');
   });
 });
