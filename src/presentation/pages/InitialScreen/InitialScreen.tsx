@@ -57,7 +57,7 @@ const InitialScreen: React.FC = () => {
         <div className="w-full flex flex-col items-center gap-4 px-8">
           <button
             onClick={() =>
-              engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'ChampionshipSelector' })
+              engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'LeagueTypeSelector' })
             }
             className="w-full max-w-xs border-4 border-white py-4 text-lg uppercase transition hover:bg-white hover:text-[#3d7a33]"
           >
