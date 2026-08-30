@@ -139,6 +139,7 @@ function buildState(): GameState {
     hasError: false,
     errorMessage: '',
     leagueType: 'mens',
+    coachName: '',
     currentScreen: 'team-selector',
     gameConfig: {
       clockSpeed: 500,
@@ -295,8 +296,8 @@ describe('TeamUseCases', () => {
       const state = buildState();
       const useCases = new TeamUseCases(state);
       const homeTeam = state.championshipContainer.playableChampionship.teams[0];
-      const matchId = state.championshipContainer.playableChampionship.matchContainer.rounds[0]
-        .matches[0].id;
+      const matchId =
+        state.championshipContainer.playableChampionship.matchContainer.rounds[0].matches[0].id;
 
       const nextState = useCases.substitutePlayer(
         matchId,
@@ -339,8 +340,8 @@ describe('TeamUseCases', () => {
     it('returns error state when team does not exist in match', () => {
       const state = buildState();
       const useCases = new TeamUseCases(state);
-      const matchId = state.championshipContainer.playableChampionship.matchContainer.rounds[0]
-        .matches[0].id;
+      const matchId =
+        state.championshipContainer.playableChampionship.matchContainer.rounds[0].matches[0].id;
 
       const nextState = useCases.substitutePlayer(
         matchId,

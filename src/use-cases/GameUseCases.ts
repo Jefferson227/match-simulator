@@ -23,6 +23,13 @@ export default class GameUseCases {
     };
   }
 
+  setCoachName(coachName: string): GameState {
+    return {
+      ...this.state,
+      coachName,
+    };
+  }
+
   updateClockSpeed(speed: number): GameState {
     return {
       ...this.state,
@@ -57,6 +64,10 @@ export default class GameUseCases {
     }
 
     const loaded = result.getResult();
-    return { ...loaded, leagueType: loaded.leagueType ?? 'mens' };
+    return {
+      ...loaded,
+      leagueType: loaded.leagueType ?? 'mens',
+      coachName: loaded.coachName ?? '',
+    };
   }
 }

@@ -139,12 +139,18 @@ describe('ChampionshipService.runEndOfChampionshipActions', () => {
 
     const updatedContainer = result.getResult();
 
-    expect(updatedContainer.playableChampionship.teams.map((team) => team.abbreviation)).toEqual(
-      ['PLB', 'PLC', 'UPD', 'LWA']
-    );
-    expect(updatedContainer.promotionChampionship?.teams.map((team) => team.abbreviation)).toEqual(
-      ['UPA', 'UPB', 'UPC', 'PLA']
-    );
+    expect(updatedContainer.playableChampionship.teams.map((team) => team.abbreviation)).toEqual([
+      'PLB',
+      'PLC',
+      'UPD',
+      'LWA',
+    ]);
+    expect(updatedContainer.promotionChampionship?.teams.map((team) => team.abbreviation)).toEqual([
+      'UPA',
+      'UPB',
+      'UPC',
+      'PLA',
+    ]);
     expect(updatedContainer.relegationChampionship?.teams.map((team) => team.abbreviation)).toEqual(
       ['LWB', 'LWC', 'LWD', 'PLD']
     );
@@ -152,7 +158,9 @@ describe('ChampionshipService.runEndOfChampionshipActions', () => {
     expect(updatedContainer.playableChampionship.matchContainer.currentRound).toBe(1);
     expect(updatedContainer.playableChampionship.matchContainer.timer).toBe(0);
     expect(updatedContainer.playableChampionship.matchContainer.currentSeason).toBe(2027);
-    expect(updatedContainer.playableChampionship.standings.every((standing) => standing.points === 0)).toBe(true);
+    expect(
+      updatedContainer.playableChampionship.standings.every((standing) => standing.points === 0)
+    ).toBe(true);
   });
 
   it('returns the same championship container when the championship is not over yet', () => {

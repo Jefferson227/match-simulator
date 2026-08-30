@@ -42,6 +42,7 @@ function buildState(): GameState {
       } as Championship,
     } as ChampionshipContainer,
     leagueType: 'mens',
+    coachName: '',
     hasError: false,
     errorMessage: '',
     currentScreen: 'home',
@@ -177,9 +178,7 @@ describe('GameEngine', () => {
     };
     const loadGameMock = jest.fn().mockReturnValue(loadedState);
 
-    MockedChampionshipUseCases.mockImplementation(
-      () => ({}) as ChampionshipUseCases
-    );
+    MockedChampionshipUseCases.mockImplementation(() => ({}) as ChampionshipUseCases);
 
     MockedGameUseCases.mockImplementation(
       () =>

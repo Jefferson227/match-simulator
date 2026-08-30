@@ -32,6 +32,11 @@
     "insertYourName": "DIGITE SEU NOME",
     "startGame": "INICIAR JOGO"
   },
+  "teamAssigner": {
+    "assigningTeam": "SORTEANDO TIME",
+    "yourTeamIs": "{{coachName}}, SEU TIME É:",
+    "startGame": "INICIAR JOGO"
+  },
   "championshipSelector": {
     "selectChampionship": "SELECIONAR LIGA",
     "goBack": "VOLTAR",

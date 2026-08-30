@@ -9,5 +9,6 @@ export function createInitialGameState(): GameState {
       relegationChampionship: {} as Championship,
     },
     leagueType: 'mens',
+    coachName: '',
   };
 }

@@ -64,6 +64,7 @@ function buildState(): GameState {
       playableChampionship: buildMockChampionship(),
     },
     leagueType: 'mens',
+    coachName: '',
     hasError: false,
     errorMessage: '',
     currentScreen: 'home',

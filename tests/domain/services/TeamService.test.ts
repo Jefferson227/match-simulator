@@ -21,7 +21,11 @@ function buildTeam(id: Team['id'], abbreviation: string, morale: number): Team {
   };
 }
 
-function buildChampionship(teams: Team[], scores: Array<[number, number]>, currentRound = 2): Championship {
+function buildChampionship(
+  teams: Team[],
+  scores: Array<[number, number]>,
+  currentRound = 2
+): Championship {
   const [homeTeam, awayTeam] = teams;
 
   return {
@@ -91,10 +95,7 @@ describe('TeamService.updateTeamStats', () => {
     const lowMoraleWinner = buildTeam('11111111-1111-1111-1111-111111111111', 'LOW', 33);
     const mediumMoraleLoser = buildTeam('22222222-2222-2222-2222-222222222222', 'MID', 50);
 
-    const championship = buildChampionship(
-      [lowMoraleWinner, mediumMoraleLoser],
-      [[2, 1]]
-    );
+    const championship = buildChampionship([lowMoraleWinner, mediumMoraleLoser], [[2, 1]]);
 
     const result = TeamService.updateTeamStats({
       playableChampionship: championship,
@@ -153,7 +154,10 @@ describe('TeamService.updateTeamStats', () => {
 
     const updatedContainer = result.getResult();
 
-    expect(updatedContainer.playableChampionship.teams.find((team) => team.id === playableHome.id)?.morale).toBe(35);
+    expect(
+      updatedContainer.playableChampionship.teams.find((team) => team.id === playableHome.id)
+        ?.morale
+    ).toBe(35);
     expect(
       updatedContainer.playableChampionship.standings.find(
         (standing) => standing.team.id === playableHome.id

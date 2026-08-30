@@ -11,6 +11,7 @@ export type GameState = {
   currentScreen: string;
   gameConfig: GameConfig;
   leagueType: LeagueType;
+  coachName: string;
 };
 
 export type GameAction =
@@ -18,6 +19,7 @@ export type GameAction =
   | { type: 'SET_ERROR_MESSAGE'; errorMessage: string }
   | { type: 'SET_CURRENT_SCREEN'; screenName: string }
   | { type: 'SET_LEAGUE_TYPE'; leagueType: LeagueType }
+  | { type: 'SET_COACH_NAME'; coachName: string }
   | { type: 'LOAD_GAME' }
   | { type: 'SAVE_GAME' }
   | { type: 'SELECT_TEAM'; teamId: string }

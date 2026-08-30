@@ -46,6 +46,7 @@ function buildState(): GameState {
       clockSpeed: 750,
     },
     leagueType: 'mens',
+    coachName: '',
   };
 }
 

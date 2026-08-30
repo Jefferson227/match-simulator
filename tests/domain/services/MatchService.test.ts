@@ -135,20 +135,13 @@ function queuedRng(values: number[]): RandomProvider {
 describe('MatchService.runMatchActions', () => {
   it('runs one tick and can score a goal using deterministic RNG', () => {
     const container = buildContainer('in-progress');
-    const rng = queuedRng([
-      0,
-      100,
-      0,
-      90,
-      1,
-    ]);
+    const rng = queuedRng([0, 100, 0, 90, 1]);
 
     const result = MatchService.runMatchActions(container, { rng });
 
     expect(result.succeeded).toBe(true);
     const updatedContainer = result.getResult();
-    const updatedMatch =
-      updatedContainer.playableChampionship.matchContainer.rounds[0].matches[0];
+    const updatedMatch = updatedContainer.playableChampionship.matchContainer.rounds[0].matches[0];
 
     expect(updatedContainer.playableChampionship.matchContainer.timer).toBe(1);
     expect(updatedMatch.homeTeamScore).toBe(1);
@@ -167,8 +160,7 @@ describe('MatchService.runMatchActions', () => {
 
     expect(result.succeeded).toBe(true);
     const updatedContainer = result.getResult();
-    const updatedMatch =
-      updatedContainer.playableChampionship.matchContainer.rounds[0].matches[0];
+    const updatedMatch = updatedContainer.playableChampionship.matchContainer.rounds[0].matches[0];
 
     expect(updatedContainer.playableChampionship.matchContainer.timer).toBe(0);
     expect(updatedMatch.homeTeamScore).toBe(0);

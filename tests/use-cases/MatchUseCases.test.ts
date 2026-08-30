@@ -54,6 +54,7 @@ function buildState(): GameState {
     hasError: false,
     errorMessage: '',
     leagueType: 'mens',
+    coachName: '',
     currentScreen: 'MatchSimulator',
     gameConfig: {
       clockSpeed: 500,

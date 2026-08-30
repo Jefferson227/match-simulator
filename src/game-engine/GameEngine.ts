@@ -57,6 +57,9 @@ export class GameEngine {
       case 'SET_LEAGUE_TYPE':
         this.championshipUseCases = new ChampionshipUseCases(state);
         return this.championshipUseCases.setLeagueType(action.leagueType);
+      case 'SET_COACH_NAME':
+        this.gameUseCases = new GameUseCases(state);
+        return this.gameUseCases.setCoachName(action.coachName);
       case 'LOAD_GAME':
         this.gameUseCases = new GameUseCases(state);
         return this.gameUseCases.loadGame();

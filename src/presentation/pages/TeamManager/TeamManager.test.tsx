@@ -81,6 +81,7 @@ const createState = (teams: Team[]): GameState => ({
   hasError: false,
   errorMessage: '',
   leagueType: 'mens',
+  coachName: '',
   currentScreen: 'TeamManager',
   gameConfig: {
     clockSpeed: 1000,

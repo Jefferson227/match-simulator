@@ -32,6 +32,11 @@
     "insertYourName": "INSERT YOUR NAME",
     "startGame": "START GAME"
   },
+  "teamAssigner": {
+    "assigningTeam": "ASSIGNING TEAM",
+    "yourTeamIs": "{{coachName}}, YOUR TEAM IS:",
+    "startGame": "START GAME"
+  },
   "championshipSelector": {
     "selectChampionship": "SELECT CHAMPIONSHIP",
     "goBack": "GO BACK",

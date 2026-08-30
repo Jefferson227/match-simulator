@@ -17,11 +17,14 @@ const CoachCreator: React.FC = () => {
       engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage: state.errorMessage });
   }, [state]);
 
-  // TODO: persist the coach name in the game state once the data model is remodeled
   const startGame = () => {
     engine.dispatch({
+      type: 'SET_COACH_NAME',
+      coachName: coachName.trim(),
+    });
+    engine.dispatch({
       type: 'SET_CURRENT_SCREEN',
-      screenName: 'ChampionshipSelector',
+      screenName: 'TeamAssigner',
     });
   };
 

@@ -33,7 +33,12 @@ function buildTeam(id: Team['id'], morale: number): Team {
   };
 }
 
-function buildRound(homeTeam: Team, awayTeam: Team, homeTeamScore: number, awayTeamScore: number): Round {
+function buildRound(
+  homeTeam: Team,
+  awayTeam: Team,
+  homeTeamScore: number,
+  awayTeamScore: number
+): Round {
   return {
     id: 'round-1',
     number: 1,

@@ -70,7 +70,7 @@ describe('CoachCreator', () => {
     expect(input).toHaveValue('JEFFERSON');
   });
 
-  test('navigates to ChampionshipSelector when start game is clicked', () => {
+  test('stores the coach name and navigates to TeamAssigner when start game is clicked', () => {
     render(<CoachCreator />);
 
     fireEvent.change(screen.getByRole('textbox', { name: 'INSERT YOUR NAME' }), {
@@ -79,8 +79,12 @@ describe('CoachCreator', () => {
     fireEvent.click(screen.getByRole('button', { name: 'START GAME' }));
 
     expect(mockDispatch).toHaveBeenCalledWith({
+      type: 'SET_COACH_NAME',
+      coachName: 'JEFFERSON',
+    });
+    expect(mockDispatch).toHaveBeenCalledWith({
       type: 'SET_CURRENT_SCREEN',
-      screenName: 'ChampionshipSelector',
+      screenName: 'TeamAssigner',
     });
   });
 
