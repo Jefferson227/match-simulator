@@ -61,7 +61,7 @@ describe('LeagueTypeSelector', () => {
     });
     expect(mockDispatch).toHaveBeenCalledWith({
       type: 'SET_CURRENT_SCREEN',
-      screenName: 'ChampionshipSelector',
+      screenName: 'CoachCreator',
     });
     expect(mockDispatch).toHaveBeenCalledTimes(2);
   });
@@ -77,7 +77,7 @@ describe('LeagueTypeSelector', () => {
     });
     expect(mockDispatch).toHaveBeenCalledWith({
       type: 'SET_CURRENT_SCREEN',
-      screenName: 'ChampionshipSelector',
+      screenName: 'CoachCreator',
     });
     expect(mockDispatch).toHaveBeenCalledTimes(2);
   });

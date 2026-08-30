@@ -28,6 +28,10 @@
     "womensLeague": "LIGA FEMININA",
     "mensLeague": "LIGA MASCULINA"
   },
+  "coachCreator": {
+    "insertYourName": "DIGITE SEU NOME",
+    "startGame": "INICIAR JOGO"
+  },
   "championshipSelector": {
     "selectChampionship": "SELECIONAR LIGA",
     "goBack": "VOLTAR",

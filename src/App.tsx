@@ -4,6 +4,7 @@ import i18n from './i18n';
 import AppProviders from './presentation/providers/AppProviders';
 import InitialScreen from './presentation/pages/InitialScreen/InitialScreen';
 import LeagueTypeSelector from './presentation/pages/LeagueTypeSelector/LeagueTypeSelector';
+import CoachCreator from './presentation/pages/CoachCreator/CoachCreator';
 import ChampionshipSelector from './presentation/pages/ChampionshipSelector/ChampionshipSelector';
 import TeamSelector from './presentation/pages/TeamSelector/TeamSelector';
 import { useGameEngine } from './presentation/contexts/GameEngineContext';
@@ -24,6 +25,8 @@ const AppContent: FC = () => {
       return <InitialScreen />;
     case 'LeagueTypeSelector':
       return <LeagueTypeSelector />;
+    case 'CoachCreator':
+      return <CoachCreator />;
     case 'ChampionshipSelector':
       return <ChampionshipSelector />;
     case 'TeamSelector':
