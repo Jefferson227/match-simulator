@@ -59,8 +59,8 @@ const InitialScreen: React.FC = () => {
             onClick={() =>
               engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'LeagueTypeSelector' })
             }
-            className="w-full max-w-xs border-4 border-white py-4 text-lg uppercase transition hover:bg-white hover:text-[#3d7a33]"
-            style={{ boxShadow: '-6px 6px 0 #2a5624', textShadow: '-3px 3px 0 #2a5624' }}
+            className="w-full max-w-xs border-4 border-white py-4 text-lg uppercase transition hover:bg-white hover:text-[#3d7a33] [text-shadow:-3px_3px_0_#2a5624] hover:[text-shadow:none]"
+            style={{ boxShadow: '-6px 6px 0 #2a5624' }}
           >
             New Game
           </button>
@@ -68,8 +68,8 @@ const InitialScreen: React.FC = () => {
           {hasSavedGame ? (
             <button
               onClick={() => engine.dispatch({ type: 'LOAD_GAME' })}
-              className="w-full max-w-xs border-4 py-4 text-lg uppercase transition border-white hover:bg-white hover:text-[#3d7a33]"
-              style={{ boxShadow: '-6px 6px 0 #2a5624', textShadow: '-3px 3px 0 #2a5624' }}
+              className="w-full max-w-xs border-4 py-4 text-lg uppercase transition border-white hover:bg-white hover:text-[#3d7a33] [text-shadow:-3px_3px_0_#2a5624] hover:[text-shadow:none]"
+              style={{ boxShadow: '-6px 6px 0 #2a5624' }}
             >
               Load Game
             </button>
