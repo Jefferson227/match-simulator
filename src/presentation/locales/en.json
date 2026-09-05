@@ -21,7 +21,18 @@
     "goBack": "GO BACK",
     "bestPlayers": "BEST PLAYERS",
     "selectedCount": "{{count}} SELECTED",
-    "moreInfo": "MORE INFO"
+    "moreInfo": "MORE INFO",
+    "roundOf": "ROUND {{current}} OF {{total}}",
+    "nextMatch": "NEXT MATCH",
+    "morale": "MORALE",
+    "budget": "BUDGET",
+    "stadium": "STADIUM",
+    "market": "MARKET",
+    "stats": "STATS",
+    "contracts": "CONTRACTS",
+    "calendar": "CALENDAR",
+    "campaigns": "CAMPAIGNS",
+    "position": "POSITION"
   },
   "leagueTypeSelector": {
     "selectLeagueType": "SELECT LEAGUE TYPE",

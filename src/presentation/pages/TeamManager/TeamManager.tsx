@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import utils from '../../../utils/utils';
 import MainLayout from '../../components/MainLayout/MainLayout';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../../services/useGameState';
@@ -24,11 +23,25 @@ const EMPTY_TEAM: Team = {
   isControlledByHuman: false,
 };
 
-// Enum for player selection state
-enum PlayerSelectionState {
-  Unselected = 0,
-  Selected = 1,
-  Substitute = 2,
+const MAX_SUBS_PER_POSITION = 2;
+
+// TODO: replace with the real team budget once it exists in the domain model
+const PLACEHOLDER_BUDGET = 'R$ 12.6M';
+
+function getOrdinal(position: number): string {
+  const lastTwoDigits = position % 100;
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 13) return `${position}th`;
+
+  switch (position % 10) {
+    case 1:
+      return `${position}st`;
+    case 2:
+      return `${position}nd`;
+    case 3:
+      return `${position}rd`;
+    default:
+      return `${position}th`;
+  }
 }
 
 const TeamManager: React.FC = () => {
@@ -38,24 +51,16 @@ const TeamManager: React.FC = () => {
   const engine = useGameEngine();
   const state = useGameState(engine);
 
-  const PLAYERS_PER_PAGE = 11;
-
-  const [showFormationGrid, setShowFormationGrid] = useState(false);
-  const [playerStates, setPlayerStates] = useState<{
-    [id: string]: PlayerSelectionState;
-  }>({});
-  const [currentPage, setCurrentPage] = useState(0); // 0-based page index
   const [team, setTeam] = useState<Team>(EMPTY_TEAM);
 
+  const championship = state.championshipContainer.playableChampionship;
   const championshipUseCases = new ChampionshipUseCases(state);
 
   // Get team controlled by human
   useEffect(() => {
     let teamToBeSet = EMPTY_TEAM;
     try {
-      teamToBeSet = championshipUseCases.getTeamControlledByHuman(
-        state.championshipContainer.playableChampionship
-      );
+      teamToBeSet = championshipUseCases.getTeamControlledByHuman(championship);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage });
@@ -69,267 +74,75 @@ const TeamManager: React.FC = () => {
       engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage: state.errorMessage });
   }, [state.hasError]);
 
-  useEffect(() => {
-    if (!team.players?.length) return;
-    setStartersAndSubs();
-  }, [playerStates, team.players]);
+  const getStandingPosition = (teamId: string): number | null =>
+    championship?.standings?.find((standing) => standing.team.id === teamId)?.position ?? null;
 
-  const handlePlayerClick = (id: string) => {
-    setPlayerStates((prev) => {
-      const player = team.players.find((p: Player) => p.id === id);
-      if (!player) return prev;
-      const currentState = prev[id] ?? PlayerSelectionState.Unselected;
+  // Opponent for the current round, if the round is still available
+  const nextOpponent = useMemo<Team | null>(() => {
+    if (!team.id || team.id === EMPTY_TEAM.id) return null;
 
-      // Count current selections
-      const selectedCount = Object.values(prev).filter(
-        (state) => state === PlayerSelectionState.Selected
-      ).length;
-      const substituteCount = Object.values(prev).filter(
-        (state) => state === PlayerSelectionState.Substitute
-      ).length;
+    try {
+      const matches = championshipUseCases.getMatchesForCurrentRound(championship);
+      const match = matches.find((m) => m.homeTeam.id === team.id || m.awayTeam.id === team.id);
+      if (!match) return null;
 
-      // Check if there's a GK selected
-      const hasGKSelected = team.players.some(
-        (p: Player) =>
-          p.position === 'GK' &&
-          (prev[p.id] ?? PlayerSelectionState.Unselected) === PlayerSelectionState.Selected
+      return match.homeTeam.id === team.id ? match.awayTeam : match.homeTeam;
+    } catch {
+      return null;
+    }
+  }, [championship, team.id]);
+
+  // Best available lineup, used until a squad selection screen exists again
+  const buildBestLineup = (): { starters: Player[]; subs: Player[] } => {
+    const players = team.players ?? [];
+    if (!players.length) return { starters: [], subs: [] };
+
+    const isFormationAvailable = (formation: Formations) => {
+      const [df, mf, fw] = formation.split('-').map(Number);
+      return (
+        players.filter((p) => p.position === 'GK').length >= 1 &&
+        players.filter((p) => p.position === 'DF').length >= df &&
+        players.filter((p) => p.position === 'MF').length >= mf &&
+        players.filter((p) => p.position === 'FW').length >= fw
       );
+    };
 
-      // If this is a GK and trying to select, check if another GK is already selected
-      if (player.position === 'GK' && (currentState + 1) % 3 === PlayerSelectionState.Selected) {
-        const anotherGKSelected = team.players.some(
-          (p: Player) =>
-            p.position === 'GK' &&
-            p.id !== id &&
-            (prev[p.id] ?? PlayerSelectionState.Unselected) === PlayerSelectionState.Selected
-        );
-        if (anotherGKSelected) {
-          // Don't allow selecting another GK
-          return prev;
-        }
-      }
+    const formation = FORMATIONS.find(isFormationAvailable);
+    const strongestFirst = (a: Player, b: Player) => b.strength - a.strength;
+    const byPosition = (position: Player['position'], count: number, pool: Player[]) =>
+      pool
+        .filter((p) => p.position === position)
+        .sort(strongestFirst)
+        .slice(0, count);
 
-      // If trying to deselect a GK, check if it's the only GK selected
-      if (
-        player.position === 'GK' &&
-        currentState === PlayerSelectionState.Selected &&
-        selectedCount === 11
-      ) {
-        // Don't allow deselecting the only GK if we have 11 players
-        return prev;
-      }
-
-      // If we haven't reached the player limit yet, use the tri-state cycle
-      if (selectedCount < 11) {
-        const nextState = ((prev[id] ?? PlayerSelectionState.Unselected) + 1) % 3;
-        // If trying to select as starter (not substitute or unselect)
-        if (nextState === PlayerSelectionState.Selected) {
-          // If this would be the 11th selected player
-          if (selectedCount === 10) {
-            // Check if a GK is already selected (including this one if it's a GK)
-            const willBeGK = player.position === 'GK';
-            const gkAlreadySelected = team.players.some(
-              (p: Player) =>
-                p.position === 'GK' &&
-                (p.id === id && !willBeGK
-                  ? false
-                  : (prev[p.id] ?? PlayerSelectionState.Unselected) ===
-                      PlayerSelectionState.Selected ||
-                    (p.id === id && willBeGK))
-            );
-            // If no GK is selected and this is not a GK, block selection
-            if (!gkAlreadySelected && !willBeGK) {
-              return prev;
-            }
-          }
-        }
-        return { ...prev, [id]: nextState };
-      }
-
-      // If we've reached the player limit, only allow cycling between unselected and substitute
-      if (currentState === PlayerSelectionState.Unselected) {
-        // Only allow selecting as substitute if we haven't reached the substitute limit
-        if (substituteCount < 7) {
-          return { ...prev, [id]: PlayerSelectionState.Substitute };
-        }
-      } else if (currentState === PlayerSelectionState.Substitute) {
-        // Always allow deselecting a substitute
-        return { ...prev, [id]: PlayerSelectionState.Unselected };
-      } else if (currentState === PlayerSelectionState.Selected) {
-        // If currently selected, only allow cycling to unselected if it's not the only GK
-        if (player.position === 'GK' && selectedCount === 11) {
-          return prev;
-        }
-        // If we have 11 players and no GK selected, don't allow deselecting
-        if (selectedCount === 11 && !hasGKSelected) {
-          return prev;
-        }
-        return { ...prev, [id]: PlayerSelectionState.Unselected };
-      }
-
-      return prev;
-    });
-  };
-
-  // Pagination logic
-  const players = team.players ?? [];
-  const totalPages = Math.ceil(players.length / PLAYERS_PER_PAGE);
-  const paginatedPlayers = players.slice(
-    currentPage * PLAYERS_PER_PAGE,
-    (currentPage + 1) * PLAYERS_PER_PAGE
-  );
-
-  const handleNextPage = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1));
-  };
-  const handlePrevPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 0));
-  };
-
-  useEffect(() => {
-    // Reset to first page if team changes or player count changes
-    setCurrentPage(0);
-  }, [team.id, players.length]);
-
-  const selectedTeam =
-    state.championshipContainer.playableChampionship.teams.find(
-      (team) => team.isControlledByHuman
-    ) || EMPTY_TEAM;
-  const selectedCount = (selectedTeam.players ?? []).filter((player) => player.isStarter).length;
-
-  // Calculate formation based on selected players
-  const calculateFormation = () => {
-    if (selectedCount !== 11) return null;
-
-    const selectedPlayers =
-      team.players.filter((player) => playerStates[player.id] === PlayerSelectionState.Selected) ||
-      [];
-
-    const dfCount = selectedPlayers.filter((p) => p.position === 'DF').length;
-    const mfCount = selectedPlayers.filter((p) => p.position === 'MF').length;
-    const fwCount = selectedPlayers.filter((p) => p.position === 'FW').length;
-
-    return `${dfCount}-${mfCount}-${fwCount}`;
-  };
-
-  // Function to check if a formation is available based on team's players
-  const isFormationAvailable = (formation: Formations) => {
-    const [df, mf, fw] = formation.split('-').map(Number);
-    const players = team.players || [];
-
-    const dfCount = players.filter((p) => p.position === 'DF').length;
-    const mfCount = players.filter((p) => p.position === 'MF').length;
-    const fwCount = players.filter((p) => p.position === 'FW').length;
-    const gkCount = players.filter((p) => p.position === 'GK').length;
-
-    return dfCount >= df && mfCount >= mf && fwCount >= fw && gkCount >= 1;
-  };
-
-  // Function to select best players for a formation
-  const selectBestPlayersForFormation = (formation: Formations) => {
-    const [df, mf, fw] = formation.split('-').map(Number);
-    const players = team.players || [];
-
-    // Reset all selections
-    const newPlayerStates: { [id: string]: PlayerSelectionState } = {};
-
-    // Select best GK
-    const gks = players.filter((p) => p.position === 'GK').sort((a, b) => b.strength - a.strength);
-    if (gks.length > 0) {
-      newPlayerStates[gks[0].id] = PlayerSelectionState.Selected;
+    let starters: Player[] = [];
+    if (formation) {
+      const [df, mf, fw] = formation.split('-').map(Number);
+      starters = [
+        ...byPosition('GK', 1, players),
+        ...byPosition('DF', df, players),
+        ...byPosition('MF', mf, players),
+        ...byPosition('FW', fw, players),
+      ];
+    } else {
+      starters = [...players].sort(strongestFirst).slice(0, 11);
     }
 
-    // Select best defenders
-    const defenders = players
-      .filter((p) => p.position === 'DF')
-      .sort((a, b) => b.strength - a.strength)
-      .slice(0, df);
-    defenders.forEach((df) => {
-      newPlayerStates[df.id] = PlayerSelectionState.Selected;
-    });
+    const starterIds = new Set(starters.map((player) => player.id));
+    const availablePlayers = players.filter((player) => !starterIds.has(player.id));
+    const subs = [
+      ...byPosition('GK', 1, availablePlayers),
+      ...byPosition('DF', MAX_SUBS_PER_POSITION, availablePlayers),
+      ...byPosition('MF', MAX_SUBS_PER_POSITION, availablePlayers),
+      ...byPosition('FW', MAX_SUBS_PER_POSITION, availablePlayers),
+    ];
 
-    // Select best midfielders
-    const midfielders = players
-      .filter((p) => p.position === 'MF')
-      .sort((a, b) => b.strength - a.strength)
-      .slice(0, mf);
-    midfielders.forEach((mf) => {
-      newPlayerStates[mf.id] = PlayerSelectionState.Selected;
-    });
-
-    // Select best forwards
-    const forwards = players
-      .filter((p) => p.position === 'FW')
-      .sort((a, b) => b.strength - a.strength)
-      .slice(0, fw);
-    forwards.forEach((fw) => {
-      newPlayerStates[fw.id] = PlayerSelectionState.Selected;
-    });
-
-    // Select substitutes
-    // First, get all players that weren't selected as starters
-    const availablePlayers = players.filter((p) => !newPlayerStates[p.id]);
-
-    // Select best GK substitute
-    const gkSubs = availablePlayers
-      .filter((p) => p.position === 'GK')
-      .sort((a, b) => b.strength - a.strength);
-    if (gkSubs.length > 0) {
-      newPlayerStates[gkSubs[0].id] = PlayerSelectionState.Substitute;
-    }
-
-    // Select best DF substitutes (up to 2)
-    const dfSubs = availablePlayers
-      .filter((p) => p.position === 'DF')
-      .sort((a, b) => b.strength - a.strength)
-      .slice(0, 2);
-    dfSubs.forEach((df) => {
-      newPlayerStates[df.id] = PlayerSelectionState.Substitute;
-    });
-
-    // Select best MF substitutes (up to 2)
-    const mfSubs = availablePlayers
-      .filter((p) => p.position === 'MF')
-      .sort((a, b) => b.strength - a.strength)
-      .slice(0, 2);
-    mfSubs.forEach((mf) => {
-      newPlayerStates[mf.id] = PlayerSelectionState.Substitute;
-    });
-
-    // Select best FW substitutes (up to 2)
-    const fwSubs = availablePlayers
-      .filter((p) => p.position === 'FW')
-      .sort((a, b) => b.strength - a.strength)
-      .slice(0, 2);
-    fwSubs.forEach((fw) => {
-      newPlayerStates[fw.id] = PlayerSelectionState.Substitute;
-    });
-
-    setPlayerStates(newPlayerStates);
-    setShowFormationGrid(false);
-  };
-
-  const setStartersAndSubs = () => {
-    const starters = players
-      .filter((player) => playerStates[player.id] === PlayerSelectionState.Selected)
-      .map((player) => ({
-        ...player,
-        isStarter: true,
-        isSub: false,
-      }));
-    const subs = players
-      .filter((player) => playerStates[player.id] === PlayerSelectionState.Substitute)
-      .map((player) => ({
-        ...player,
-        isStarter: false,
-        isSub: true,
-      }));
-
-    engine.dispatch({ type: 'SET_STARTERS_AND_SUBS', team, starters, subs });
+    return { starters, subs };
   };
 
   const handleStartMatch = () => {
-    setStartersAndSubs();
+    const { starters, subs } = buildBestLineup();
+    engine.dispatch({ type: 'SET_STARTERS_AND_SUBS', team, starters, subs });
     engine.dispatch({ type: 'PREPARE_TEAMS_BEFORE_MATCH' });
     engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'MatchSimulator' });
   };
@@ -338,236 +151,108 @@ const TeamManager: React.FC = () => {
   const outlineColor = team.colors.outline;
   const nameColor = team.colors.text;
 
+  const teamPosition = getStandingPosition(team.id);
+  const opponentPosition = nextOpponent ? getStandingPosition(nextOpponent.id) : null;
+  const currentRound = championship?.matchContainer?.currentRound ?? 0;
+  const totalRounds = championship?.matchContainer?.totalRounds ?? 0;
+  const morale = Math.max(0, Math.min(100, team.morale ?? 0));
+
+  const rowStyle = {
+    backgroundColor,
+    color: nameColor,
+    borderBottom: `4px solid ${outlineColor}`,
+  };
+
+  const shortButtonStyle = {
+    borderColor: outlineColor,
+    backgroundColor,
+    color: nameColor,
+  };
+
+  // TODO: wire these up once the corresponding screens exist
+  const secondaryButtons: string[][] = [
+    ['teamManager.stadium', 'teamManager.market'],
+    ['teamManager.stats', 'teamManager.contracts'],
+    ['teamManager.calendar', 'teamManager.campaigns'],
+  ];
+
   return (
     <MainLayout>
       <div
         className="w-[350px] mx-auto"
         style={{ backgroundColor, border: `4px solid ${outlineColor}` }}
       >
-        <div
-          className="text-center text-[20px] py-2 uppercase"
-          style={{
-            backgroundColor,
-            color: nameColor,
-            borderBottom: `4px solid ${outlineColor}`,
-          }}
-        >
+        <div className="text-center text-[20px] py-2 uppercase" style={rowStyle}>
           {team.fullName}
         </div>
-        <div
-          className="text-center text-[18px] py-2"
-          style={{
-            backgroundColor,
-            color: nameColor,
-            borderBottom: `4px solid ${outlineColor}`,
-          }}
-        >
-          {showFormationGrid
-            ? t('teamManager.chooseFormation')
-            : selectedCount < 11
-              ? t('teamManager.selectedCount', { count: selectedCount })
-              : calculateFormation()}
+
+        <div className="text-left text-[10px] px-4 py-3 uppercase leading-[18px]" style={rowStyle}>
+          <div>{championship?.name}</div>
+          <div>
+            {t('teamManager.position')}: {teamPosition ? getOrdinal(teamPosition) : '-'}
+          </div>
+          {totalRounds > 0 && (
+            <div>{t('teamManager.roundOf', { current: currentRound, total: totalRounds })}</div>
+          )}
         </div>
-        {/* Player List or Formation Grid */}
-        {showFormationGrid ? (
+
+        <div className="text-left text-[10px] px-4 py-3 uppercase" style={rowStyle}>
+          {t('teamManager.nextMatch')}:{' '}
+          {nextOpponent
+            ? `${nextOpponent.shortName || nextOpponent.fullName}${
+                opponentPosition ? ` - ${getOrdinal(opponentPosition)}` : ''
+              }`
+            : '-'}
+        </div>
+
+        <div className="px-4 py-3" style={rowStyle}>
+          <div className="flex justify-between text-[12px] uppercase mb-2">
+            <span>{t('teamManager.morale')}</span>
+            <span>{morale}%</span>
+          </div>
           <div
-            className="py-2 mx-2 mb-[50px] grid grid-cols-2 gap-4"
-            style={{ backgroundColor, color: '#fff' }}
+            className="w-full h-[16px] border-4"
+            style={{ borderColor: outlineColor }}
+            role="progressbar"
+            aria-label={t('teamManager.morale')}
+            aria-valuenow={morale}
+            aria-valuemin={0}
+            aria-valuemax={100}
           >
-            {FORMATIONS.map((formation) => {
-              const isAvailable = isFormationAvailable(formation);
-              return (
-                <button
-                  key={formation}
-                  className={`border-4 py-4 text-[18px] font-press-start ${
-                    isAvailable ? '' : 'text-gray-500 cursor-not-allowed'
-                  }`}
-                  style={{
-                    borderColor: outlineColor,
-                    backgroundColor,
-                    color: isAvailable ? nameColor : '#888',
-                    ...(isAvailable && {
-                      transition: 'background 0.2s',
-                    }),
-                  }}
-                  onClick={() => isAvailable && selectBestPlayersForFormation(formation)}
-                  disabled={!isAvailable}
-                >
-                  {formation}
-                </button>
-              );
-            })}
-            <button
-              className="col-span-2 border-4 py-4 text-[18px] font-press-start mt-4"
-              style={{
-                borderColor: outlineColor,
-                backgroundColor,
-                color: nameColor,
-              }}
-              onClick={() => setShowFormationGrid(false)}
-            >
-              {t('teamManager.bestPlayers')}
-            </button>
-          </div>
-        ) : (
-          <div
-            className="py-2 mx-2 mb-[50px] h-[307.5px]"
-            style={{ backgroundColor, color: '#fff' }}
-          >
-            {paginatedPlayers.map((player) => {
-              const selState = playerStates[player.id] ?? PlayerSelectionState.Unselected;
-              return (
-                <div
-                  key={player.id}
-                  className="flex justify-between items-center px-2 text-[15px] cursor-pointer"
-                  onClick={() => handlePlayerClick(player.id)}
-                >
-                  <span
-                    className={
-                      selState === PlayerSelectionState.Selected
-                        ? 'px-2 my-[2px] mr-2 min-w-[36px] text-center'
-                        : 'bg-transparent px-2 my-[2px] mr-2 min-w-[36px] text-center'
-                    }
-                    style={
-                      selState === PlayerSelectionState.Selected
-                        ? {
-                            backgroundColor: outlineColor,
-                            color: backgroundColor,
-                            transition: 'background 0.2s, color 0.2s',
-                          }
-                        : {
-                            color: nameColor,
-                            transition: 'background 0.2s, color 0.2s',
-                          }
-                    }
-                  >
-                    {player.position}
-                  </span>
-                  <span
-                    className={
-                      selState === PlayerSelectionState.Substitute
-                        ? 'flex-1 uppercase text-left underline decoration-2 underline-offset-2'
-                        : 'flex-1 uppercase text-left'
-                    }
-                    style={
-                      selState === PlayerSelectionState.Substitute
-                        ? {
-                            textDecorationColor: outlineColor,
-                            color: nameColor,
-                          }
-                        : { color: nameColor }
-                    }
-                  >
-                    {player.name.length > 14 ? utils.shortenPlayerName(player.name) : player.name}
-                  </span>
-                  <span className="ml-2" style={{ color: nameColor }}>
-                    {player.strength}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        )}
-        {/* Choose Formation Button (only when not showing grid) */}
-        {!showFormationGrid && (
-          <div className="flex flex-col items-center gap-2 py-[17px]">
-            <button
-              className="w-[90%] border-[4px] py-[17px] text-[16px]"
-              style={{
-                borderColor: outlineColor,
-                backgroundColor,
-                color: nameColor,
-              }}
-              onClick={() => setShowFormationGrid(true)}
-            >
-              {t('teamManager.chooseFormation')}
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* Navigation and Start Match Buttons, or Go Back button */}
-      <div className="mt-[10px]">
-        {showFormationGrid ? (
-          <div className="flex flex-col items-center gap-2">
-            <button
-              className="w-[350px] border-4 py-4 text-[16px]"
-              style={{
-                borderColor: '#e2e2e2',
-                backgroundColor: '#3c7a33',
-                color: '#e2e2e2',
-              }}
-              onClick={() => setShowFormationGrid(false)}
-            >
-              {t('teamManager.goBack')}
-            </button>
-          </div>
-        ) : (
-          <>
-            <div className="flex w-[350px] justify-between gap-2 mx-auto">
-              <button
-                className="w-1/3 h-[70px] border-4 py-2 px-3 leading-[19px] text-[16px]"
-                style={{
-                  borderColor: '#e2e2e2',
-                  backgroundColor: '#3c7a33',
-                  color: '#e2e2e2',
-                  opacity: currentPage === 0 ? 0.5 : 1,
-                  cursor: currentPage === 0 ? 'not-allowed' : 'pointer',
-                }}
-                onClick={handlePrevPage}
-                disabled={currentPage === 0}
-              >
-                {'<'}
-              </button>
-
-              <button
-                className="w-1/3 h-[70px] border-4 py-2 px-3 leading-[19px] text-[16px]"
-                style={{
-                  borderColor: '#e2e2e2',
-                  backgroundColor: '#3c7a33',
-                  color: '#e2e2e2',
-                }}
-                onClick={() =>
-                  engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'TeamAdditionalInfo' })
-                }
-              >
-                {t('teamManager.moreInfo')}
-              </button>
-              <button
-                className="w-1/3 h-[70px] border-4 py-2 px-3 leading-[19px] text-[16px]"
-                style={{
-                  borderColor: '#e2e2e2',
-                  backgroundColor: '#3c7a33',
-                  color: '#e2e2e2',
-                  opacity: currentPage === totalPages - 1 || totalPages === 0 ? 0.5 : 1,
-                  cursor:
-                    currentPage === totalPages - 1 || totalPages === 0 ? 'not-allowed' : 'pointer',
-                }}
-                onClick={handleNextPage}
-                disabled={currentPage === totalPages - 1 || totalPages === 0}
-              >
-                {'>'}
-              </button>
-            </div>
-
-            {/* TODO: Button is not visible after selecting 11 players */}
             <div
-              className={`w-[350px] mx-auto mt-2 ${selectedCount === 11 ? 'visible' : 'invisible'}`}
-            >
-              <button
-                className="w-full border-4 py-4 text-[16px]"
-                style={{
-                  borderColor: '#e2e2e2',
-                  backgroundColor: '#3c7a33',
-                  color: '#e2e2e2',
-                }}
-                onClick={handleStartMatch}
-              >
-                {t('teamManager.startMatch')}
-              </button>
+              className="h-full"
+              style={{ width: `${morale}%`, backgroundColor: outlineColor }}
+            />
+          </div>
+        </div>
+
+        <div className="text-left text-[10px] px-4 py-3 uppercase" style={rowStyle}>
+          {t('teamManager.budget')}: {PLACEHOLDER_BUDGET}
+        </div>
+
+        <div className="flex flex-col items-center gap-2 py-[17px]">
+          <button
+            className="w-[90%] border-[4px] py-[17px] text-[16px]"
+            style={shortButtonStyle}
+            onClick={handleStartMatch}
+          >
+            {t('teamManager.startMatch')}
+          </button>
+
+          {secondaryButtons.map((row) => (
+            <div key={row.join('-')} className="w-[90%] flex justify-between gap-2">
+              {row.map((labelKey) => (
+                <button
+                  key={labelKey}
+                  className="w-1/2 border-[4px] py-[17px] text-[10px]"
+                  style={shortButtonStyle}
+                >
+                  {t(labelKey)}
+                </button>
+              ))}
             </div>
-          </>
-        )}
+          ))}
+        </div>
       </div>
     </MainLayout>
   );

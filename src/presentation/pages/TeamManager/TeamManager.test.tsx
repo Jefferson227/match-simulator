@@ -1,16 +1,19 @@
 /// <reference types="@testing-library/jest-dom" />
 import '@testing-library/jest-dom';
 import React from 'react';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import TeamManager from './TeamManager';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../../../i18n';
 import { describe, it, expect, jest, beforeEach } from '@jest/globals';
-import { GameEngineProvider } from '../../contexts/GameEngineContext';
+import { GameEngineProvider, useGameEngine } from '../../contexts/GameEngineContext';
+import { useGameState } from '../../../services/useGameState';
 import type { GameState } from '../../../game-engine/GameState';
 import type { Championship } from '../../../domain/models/Championship';
 import type { Team } from '../../../domain/models/Team';
 import type Player from '../../../domain/models/Player';
+import type Round from '../../../domain/models/Round';
+import type Standing from '../../../domain/models/Standing';
 
 const makePlayer = (id: string, name: string, position: Player['position'], strength: number) => ({
   id: id as Player['id'],
@@ -53,45 +56,68 @@ const createTeam = (players: Player[], overrides: Partial<Team> = {}): Team => (
   ...overrides,
 });
 
-const createChampionship = (teams: Team[]): Championship => ({
-  id: 'championship-1',
-  name: 'Test Championship',
-  internalName: 'test-championship',
-  numberOfTeams: teams.length,
-  teams,
-  standings: [],
-  matchContainer: {
-    timer: 0,
-    currentSeason: 2024,
-    currentRound: 1,
-    totalRounds: 1,
-    matches: [],
-  },
-  type: 'double-round-robin',
-  leagueType: 'mens',
-  hasTeamControlledByHuman: true,
-  isPromotable: false,
-  isRelegatable: false,
-});
+const createOpponent = (): Team =>
+  createTeam([], {
+    id: 'team-2-2-2-2' as Team['id'],
+    fullName: 'Novorizontino FC',
+    shortName: 'Novorizontino',
+    abbreviation: 'NOV',
+    isControlledByHuman: false,
+  });
 
-const createState = (teams: Team[]): GameState => ({
-  championshipContainer: {
-    playableChampionship: createChampionship(teams),
-  },
-  hasError: false,
-  errorMessage: '',
-  leagueType: 'mens',
-  coachName: '',
-  currentScreen: 'TeamManager',
-  gameConfig: {
-    clockSpeed: 1000,
-  },
-});
+const createStandings = (teams: Team[]): Standing[] =>
+  teams.map((team, index) => ({
+    team,
+    position: index + 1,
+    wins: 0,
+    draws: 0,
+    losses: 0,
+    goalsFor: 0,
+    goalsAgainst: 0,
+    points: 0,
+  }));
 
-const renderTeamManager = (teams: Team[]) =>
+const createChampionship = (teams: Team[], rounds: Round[], standings: Standing[]): Championship =>
+  ({
+    id: 'championship-1',
+    name: 'Série B',
+    internalName: 'test-championship',
+    numberOfTeams: teams.length,
+    teams,
+    standings,
+    matchContainer: {
+      timer: 0,
+      currentSeason: 2024,
+      currentRound: 13,
+      totalRounds: 38,
+      rounds,
+    },
+    type: 'double-round-robin',
+    leagueType: 'mens',
+    hasTeamControlledByHuman: true,
+    isPromotable: false,
+    isRelegatable: false,
+  }) as Championship;
+
+const createState = (teams: Team[], rounds: Round[] = [], standings: Standing[] = []): GameState =>
+  ({
+    championshipContainer: {
+      playableChampionship: createChampionship(teams, rounds, standings),
+    },
+    hasError: false,
+    errorMessage: '',
+    leagueType: 'mens',
+    coachName: '',
+    currentScreen: 'TeamManager',
+    gameConfig: {
+      clockSpeed: 1000,
+    },
+  }) as GameState;
+
+const renderTeamManager = (teams: Team[], rounds: Round[] = [], standings: Standing[] = []) =>
   render(
     <I18nextProvider i18n={i18n}>
-      <GameEngineProvider initialState={createState(teams)}>
+      <GameEngineProvider initialState={createState(teams, rounds, standings)}>
         <TeamManager />
       </GameEngineProvider>
     </I18nextProvider>
@@ -103,194 +129,117 @@ describe('TeamManager', () => {
     jest.clearAllMocks();
   });
 
-  it('renders the team information and player list', () => {
+  it('renders the team name in the header', () => {
     const team = createTeam(basePlayers);
     renderTeamManager([team]);
 
     const teamNameElement = screen.getByText(team.fullName);
     expect(teamNameElement).toBeTruthy();
     expect(teamNameElement.className).toContain('uppercase');
-
-    expect(screen.getByText('0 SELECTED')).toBeTruthy();
-
-    const firstPagePlayers = team.players.slice(0, 11);
-    firstPagePlayers.forEach((player) => {
-      const playerElement = screen.getByText(player.name).closest('div');
-      expect(playerElement).toBeTruthy();
-      expect(playerElement?.textContent).toContain(player.position);
-      expect(playerElement?.textContent).toContain(player.strength.toString());
-    });
-
-    const chooseFormationBtn = screen.getByText('CHOOSE FORMATION') as HTMLElement;
-    expect(chooseFormationBtn.style.borderColor).toBe(team.colors.outline);
-    expect(chooseFormationBtn.style.backgroundColor).toBe('rgb(255, 255, 255)');
-    expect(chooseFormationBtn.style.color).toBe('rgb(0, 0, 0)');
   });
 
-  it('shows formation grid and hides player list when Choose Formation is clicked', async () => {
+  it('renders the championship position and the current round', () => {
+    const team = createTeam(basePlayers);
+    const standings = createStandings([team]);
+    renderTeamManager([team], [], standings);
+
+    expect(screen.getByText('Série B')).toBeTruthy();
+    expect(screen.getByText(/POSITION: 1st/)).toBeTruthy();
+    expect(screen.getByText(/ROUND 13 OF 38/)).toBeTruthy();
+  });
+
+  it('renders the next opponent with its position', () => {
+    const team = createTeam(basePlayers);
+    const opponent = createOpponent();
+    const rounds: Round[] = [
+      {
+        id: 'round-13',
+        number: 13,
+        status: 'not-started',
+        matches: [
+          {
+            id: 'match-1',
+            homeTeam: team,
+            homeTeamScore: 0,
+            awayTeam: opponent,
+            awayTeamScore: 0,
+            scorers: [],
+          },
+        ],
+      } as Round,
+    ];
+    const standings = createStandings([team, opponent]);
+
+    renderTeamManager([team, opponent], rounds, standings);
+
+    expect(screen.getByText(/NEXT MATCH: Novorizontino - 2nd/)).toBeTruthy();
+  });
+
+  it('renders the morale progress bar and the budget', () => {
+    const team = createTeam(basePlayers, { morale: 75 });
+    renderTeamManager([team]);
+
+    const progressBar = screen.getByRole('progressbar');
+    expect(progressBar).toHaveAttribute('aria-valuenow', '75');
+    expect(screen.getByText(/BUDGET: R\$ 12.6M/)).toBeTruthy();
+  });
+
+  it('renders the action buttons and no squad list', () => {
     const team = createTeam(basePlayers);
     renderTeamManager([team]);
 
-    fireEvent.click(screen.getByText('CHOOSE FORMATION'));
+    ['START MATCH', 'STADIUM', 'MARKET', 'STATS', 'CONTRACTS', 'CALENDAR', 'CAMPAIGNS'].forEach(
+      (label) => expect(screen.getByText(label)).toBeTruthy()
+    );
 
-    await waitFor(() => {
-      expect(screen.getByText('5-3-2')).toBeTruthy();
-      expect(screen.getByText('3-5-2')).toBeTruthy();
-      expect(screen.getByText('BEST PLAYERS')).toBeTruthy();
-      expect(screen.getByText('GO BACK')).toBeTruthy();
-    });
-
-    expect(screen.queryByText('Player 1')).toBeNull();
+    expect(screen.queryByText('CHOOSE FORMATION')).toBeNull();
+    expect(screen.queryByText('MORE INFO')).toBeNull();
     expect(screen.queryByText('<')).toBeNull();
     expect(screen.queryByText('>')).toBeNull();
+    expect(screen.queryByText('Player 1')).toBeNull();
   });
 
-  it('returns to player list and navigation when Go Back is clicked', async () => {
+  it('picks the best lineup and navigates to the match when Start Match is clicked', () => {
     const team = createTeam(basePlayers);
-    renderTeamManager([team]);
-
-    fireEvent.click(screen.getByText('CHOOSE FORMATION'));
-
-    const goBackBtn = await screen.findByText('GO BACK');
-    fireEvent.click(goBackBtn);
-
-    await waitFor(() => {
-      expect(screen.getByText('Player 1')).toBeTruthy();
-      expect(screen.getByText('<')).toBeTruthy();
-      expect(screen.getByText('>')).toBeTruthy();
-      expect(screen.queryByText('5-3-2')).toBeNull();
-    });
-  });
-
-  it('cycles player selection through unselected, selected, substitute, and back', () => {
-    const team = createTeam(basePlayers);
-    renderTeamManager([team]);
-
-    const playerRow = screen.getByText('Player 1').closest('div');
-    expect(playerRow).toBeTruthy();
-
-    fireEvent.click(playerRow!);
-    const posBox = playerRow!.querySelector('span') as HTMLElement;
-    expect(posBox?.style.backgroundColor).toBe('rgb(0, 0, 0)');
-    expect(posBox?.style.color).toBe('rgb(255, 255, 255)');
-    const nameSpan = screen.getByText('Player 1');
-    expect(nameSpan.className).not.toContain('underline');
-
-    fireEvent.click(playerRow!);
-    const bg2 = window.getComputedStyle(posBox!).backgroundColor;
-    expect(bg2 === '' || bg2 === 'rgba(0, 0, 0, 0)').toBe(true);
-    expect(nameSpan.className).toContain('underline');
-
-    fireEvent.click(playerRow!);
-    const bg3 = window.getComputedStyle(posBox!).backgroundColor;
-    expect(bg3 === '' || bg3 === 'rgba(0, 0, 0, 0)').toBe(true);
-    expect(nameSpan.className).not.toContain('underline');
-  });
-
-  it('allows only one GK to be selected at a time', () => {
-    const gkTeam = createTeam([
-      makePlayer('gk-1-1-1-1', 'Player 1', 'GK', 80),
-      makePlayer('gk-2-2-2-2', 'Player GK2', 'GK', 75),
-    ]);
-
-    renderTeamManager([gkTeam]);
-
-    const gk1 = screen.getByText('Player 1').closest('div');
-    const gk2 = screen.getByText('Player GK2').closest('div');
-    expect(gk1).toBeTruthy();
-    expect(gk2).toBeTruthy();
-
-    fireEvent.click(gk1!);
-    const gk1Span = gk1!.querySelector('span') as HTMLElement;
-    expect(gk1Span.style.backgroundColor).toBe('rgb(0, 0, 0)');
-
-    fireEvent.click(gk2!);
-    const gk2Span = gk2!.querySelector('span') as HTMLElement;
-    expect(gk2Span.style.backgroundColor).toBe('');
-
-    expect(gk1Span.style.backgroundColor).toBe('rgb(0, 0, 0)');
-  });
-
-  it('shows START MATCH button only when exactly 11 players are selected', async () => {
-    const team = createTeam(basePlayers);
-    renderTeamManager([team]);
-
-    const startMatchButton = screen.getByText('START MATCH');
-    expect(startMatchButton.parentElement).toHaveClass('invisible');
-
-    team.players.slice(0, 11).forEach((player) => {
-      fireEvent.click(screen.getByText(player.name));
-    });
-
-    await waitFor(() => {
-      expect(startMatchButton.parentElement).toHaveClass('visible');
-    });
-
-    expect(startMatchButton).toBeTruthy();
-    expect(startMatchButton).toHaveStyle({
-      borderColor: '#e2e2e2',
-      backgroundColor: 'rgb(60, 122, 51)',
-      color: 'rgb(226, 226, 226)',
-    });
-  });
-
-  it('selects a formation and shows the calculated formation', async () => {
-    const team = createTeam(basePlayers);
-    renderTeamManager([team]);
-
-    fireEvent.click(screen.getByText('CHOOSE FORMATION'));
-    fireEvent.click(screen.getByText('4-4-2'));
-
-    await waitFor(() => {
-      const formationText = screen.getByText(/\d-\d-\d/).textContent;
-      expect(formationText).toMatch(/\d-\d-\d/);
-    });
-  });
-
-  it('shows formation availability styling', () => {
-    const team = createTeam(basePlayers);
-    renderTeamManager([team]);
-
-    fireEvent.click(screen.getByText('CHOOSE FORMATION'));
-
-    const availableButton = screen.getByText('4-4-2') as HTMLElement;
-    expect(availableButton.style.color).toBe('rgb(0, 0, 0)');
-
-    const unavailableButton = screen.getByText('5-3-2') as HTMLElement;
-    expect(unavailableButton.style.color).toBe('rgb(136, 136, 136)');
-  });
-});
-
-describe('TeamManager pagination', () => {
-  it('shows only 11 players per page and navigates pages', () => {
-    const manyPlayers = [
-      ...basePlayers,
-      makePlayer('p-13-13-13-13', 'Player 13', 'DF', 78),
-      makePlayer('p-14-14-14-14', 'Player 14', 'MF', 76),
-      makePlayer('p-15-15-15-15', 'Player 15', 'FW', 77),
+    const opponent = createOpponent();
+    const rounds: Round[] = [
+      {
+        id: 'round-13',
+        number: 13,
+        status: 'not-started',
+        matches: [
+          {
+            id: 'match-1',
+            homeTeam: team,
+            homeTeamScore: 0,
+            awayTeam: opponent,
+            awayTeamScore: 0,
+            scorers: [],
+          },
+        ],
+      } as Round,
     ];
-    const team = createTeam(manyPlayers);
 
-    renderTeamManager([team]);
+    const CurrentScreen: React.FC = () => {
+      const engine = useGameEngine();
+      const state = useGameState(engine);
+      return <div data-testid="current-screen">{state.currentScreen}</div>;
+    };
 
-    for (let i = 1; i <= 11; i++) {
-      expect(screen.getByText(`Player ${i}`)).toBeTruthy();
-    }
-    for (let i = 12; i <= 15; i++) {
-      expect(screen.queryByText(`Player ${i}`)).toBeNull();
-    }
+    render(
+      <I18nextProvider i18n={i18n}>
+        <GameEngineProvider initialState={createState([team, opponent], rounds)}>
+          <TeamManager />
+          <CurrentScreen />
+        </GameEngineProvider>
+      </I18nextProvider>
+    );
 
-    fireEvent.click(screen.getByText('>'));
-    for (let i = 12; i <= 15; i++) {
-      expect(screen.getByText(`Player ${i}`)).toBeTruthy();
-    }
-    for (let i = 1; i <= 11; i++) {
-      expect(screen.queryByText(`Player ${i}`)).toBeNull();
-    }
+    fireEvent.click(screen.getByText('START MATCH'));
 
-    const prevBtn = screen.getByText('<') as HTMLElement;
-    const nextBtn = screen.getByText('>') as HTMLElement;
-    expect(prevBtn.style.opacity).toBe('1');
-    expect(nextBtn.style.opacity).toBe('0.5');
+    expect(screen.getByTestId('current-screen').textContent).toBe('MatchSimulator');
+
+    const starters = team.players.filter((player) => player.isStarter);
+    expect(starters.length).toBe(0); // the original array stays untouched
   });
 });

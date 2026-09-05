@@ -21,7 +21,18 @@
     "goBack": "VOLTAR",
     "bestPlayers": "MELHORES JOGADORES",
     "selectedCount": "{{count}} SELECIONADO(S)",
-    "moreInfo": "MAIS INFO."
+    "moreInfo": "MAIS INFO.",
+    "roundOf": "RODADA {{current}} DE {{total}}",
+    "nextMatch": "PRÓXIMO JOGO",
+    "morale": "MORAL",
+    "budget": "ORÇAMENTO",
+    "stadium": "ESTÁDIO",
+    "market": "MERCADO",
+    "stats": "ESTATÍSTICAS",
+    "contracts": "CONTRATOS",
+    "calendar": "CALENDÁRIO",
+    "campaigns": "CAMPANHAS",
+    "position": "POSIÇÃO"
   },
   "leagueTypeSelector": {
     "selectLeagueType": "SELECIONE O TIPO DE LIGA",
