@@ -57,5 +57,47 @@ describe('ChampionshipRepository', () => {
 
       expect(championship.leagueType).toBe('mens');
     });
+
+    test.each([
+      ['brasileirao-feminino-serie-a1', 18],
+      ['brasileirao-feminino-serie-a2', 16],
+      ['brasileirao-feminino-serie-a3', 32],
+    ])("builds %s from the women's seed file", (internalName, numberOfTeams) => {
+      const championship = getChampionship(internalName, false);
+
+      expect(championship.leagueType).toBe('womens');
+      expect(championship.teams).toHaveLength(numberOfTeams);
+      expect(championship.standings).toHaveLength(numberOfTeams);
+      championship.teams.forEach((team) => {
+        expect(team.players).toHaveLength(23);
+        expect(team.players[0].strength).toBeGreaterThan(0);
+      });
+    });
+
+    test('carries the declared phases through', () => {
+      const championship = getChampionship('brasileirao-feminino-serie-a3', false);
+
+      expect(championship.phases?.map((phase) => phase.name)).toEqual([
+        '1ª Fase',
+        'Oitavas de Final',
+        'Quartas de Final',
+        'Semifinal',
+        'Final',
+      ]);
+    });
+
+    test('carries the promotion and relegation rules through', () => {
+      const a2 = getChampionship('brasileirao-feminino-serie-a2', false);
+
+      expect(a2.isPromotable && a2.promotionRule).toBe('semifinalists');
+      expect(a2.isRelegatable && a2.relegationRule).toBe('first-phase-table-position');
+    });
+
+    test("leaves men's entries without phases and on table-position rules", () => {
+      const serieA = getChampionship('brasileirao-serie-a', false);
+
+      expect(serieA.phases).toBeUndefined();
+      expect(serieA.isRelegatable && serieA.relegationRule).toBe('table-position');
+    });
   });
 });
