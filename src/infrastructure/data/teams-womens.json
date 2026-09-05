@@ -1,0 +1,6998 @@
+[
+  {
+    "name": "América Futebol Clube Sociedade Anônima do Futebol",
+    "internalName": "america",
+    "shortName": "América",
+    "abbreviation": "AME",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#00723f",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 76,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Ana Clara"
+      },
+      {
+        "position": "GK",
+        "name": "Ana Clara Lana da Silva"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Julia"
+      },
+      {
+        "position": "DF",
+        "name": "Anna Clara"
+      },
+      {
+        "position": "DF",
+        "name": "Anna Julia"
+      },
+      {
+        "position": "DF",
+        "name": "Dani Ortolan"
+      },
+      {
+        "position": "DF",
+        "name": "Emily"
+      },
+      {
+        "position": "DF",
+        "name": "Gi"
+      },
+      {
+        "position": "MF",
+        "name": "Giselly"
+      },
+      {
+        "position": "MF",
+        "name": "Julia da Cruz"
+      },
+      {
+        "position": "MF",
+        "name": "Karoliny"
+      },
+      {
+        "position": "MF",
+        "name": "Luaninha"
+      },
+      {
+        "position": "MF",
+        "name": "Mai"
+      },
+      {
+        "position": "MF",
+        "name": "Maria Eduarda"
+      },
+      {
+        "position": "MF",
+        "name": "Olivia"
+      },
+      {
+        "position": "FW",
+        "name": "Pamella"
+      },
+      {
+        "position": "FW",
+        "name": "Sandy"
+      },
+      {
+        "position": "FW",
+        "name": "Taina"
+      },
+      {
+        "position": "FW",
+        "name": "Thaini"
+      },
+      {
+        "position": "FW",
+        "name": "Thais Emanuelle"
+      },
+      {
+        "position": "FW",
+        "name": "Mariana Ipiranga"
+      },
+      {
+        "position": "FW",
+        "name": "Yasmin Barbosa"
+      },
+      {
+        "position": "FW",
+        "name": "Camila Pacheco"
+      }
+    ]
+  },
+  {
+    "name": "Atlético Mineiro SAF",
+    "internalName": "atletico-mineiro",
+    "shortName": "Atlético Mineiro",
+    "abbreviation": "ATL",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#000000",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 80,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Alice"
+      },
+      {
+        "position": "GK",
+        "name": "Karol Dias"
+      },
+      {
+        "position": "DF",
+        "name": "Amalia"
+      },
+      {
+        "position": "DF",
+        "name": "Anny Maraba"
+      },
+      {
+        "position": "DF",
+        "name": "Barbara Santos de Melo"
+      },
+      {
+        "position": "DF",
+        "name": "Cindy"
+      },
+      {
+        "position": "DF",
+        "name": "Daiane"
+      },
+      {
+        "position": "DF",
+        "name": "Diovanna"
+      },
+      {
+        "position": "MF",
+        "name": "Giovanna"
+      },
+      {
+        "position": "MF",
+        "name": "Hingredy"
+      },
+      {
+        "position": "MF",
+        "name": "Paixao"
+      },
+      {
+        "position": "MF",
+        "name": "Bell"
+      },
+      {
+        "position": "MF",
+        "name": "Isabel Ortiz"
+      },
+      {
+        "position": "MF",
+        "name": "Isadora"
+      },
+      {
+        "position": "MF",
+        "name": "Ju Pacheco"
+      },
+      {
+        "position": "FW",
+        "name": "Kaiuska"
+      },
+      {
+        "position": "FW",
+        "name": "Karen"
+      },
+      {
+        "position": "FW",
+        "name": "Karen Cristina Costa da Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Kelen"
+      },
+      {
+        "position": "FW",
+        "name": "Lari"
+      },
+      {
+        "position": "FW",
+        "name": "Puella"
+      },
+      {
+        "position": "FW",
+        "name": "Laura"
+      },
+      {
+        "position": "FW",
+        "name": "Ludmila"
+      }
+    ]
+  },
+  {
+    "name": "Esporte Clube Bahia SAF",
+    "internalName": "bahia",
+    "shortName": "Bahia",
+    "abbreviation": "BAH",
+    "colors": {
+      "outline": "#005cb9",
+      "background": "#ffffff",
+      "name": "#005cb9"
+    },
+    "initialOverallStrength": 81,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Aila"
+      },
+      {
+        "position": "GK",
+        "name": "Aline"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Julia"
+      },
+      {
+        "position": "DF",
+        "name": "Kauane"
+      },
+      {
+        "position": "DF",
+        "name": "Angela Noemi"
+      },
+      {
+        "position": "DF",
+        "name": "Mila Santos"
+      },
+      {
+        "position": "DF",
+        "name": "Carol Martins"
+      },
+      {
+        "position": "DF",
+        "name": "Cassia"
+      },
+      {
+        "position": "MF",
+        "name": "Damiana"
+      },
+      {
+        "position": "MF",
+        "name": "Dan"
+      },
+      {
+        "position": "MF",
+        "name": "Eduarda Tosti"
+      },
+      {
+        "position": "MF",
+        "name": "Ellen"
+      },
+      {
+        "position": "MF",
+        "name": "Gica"
+      },
+      {
+        "position": "MF",
+        "name": "Helen"
+      },
+      {
+        "position": "MF",
+        "name": "Isa Fernandes"
+      },
+      {
+        "position": "FW",
+        "name": "Isa Cruz"
+      },
+      {
+        "position": "FW",
+        "name": "Jennifer"
+      },
+      {
+        "position": "FW",
+        "name": "Kerolyn"
+      },
+      {
+        "position": "FW",
+        "name": "Juliana"
+      },
+      {
+        "position": "FW",
+        "name": "Maia"
+      },
+      {
+        "position": "FW",
+        "name": "Heloisa"
+      },
+      {
+        "position": "FW",
+        "name": "Martina"
+      },
+      {
+        "position": "FW",
+        "name": "Maryana"
+      }
+    ]
+  },
+  {
+    "name": "SAF Botafogo",
+    "internalName": "botafogo",
+    "shortName": "Botafogo",
+    "abbreviation": "BOT",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#000000",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 78,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Ana Beatriz"
+      },
+      {
+        "position": "GK",
+        "name": "Ana"
+      },
+      {
+        "position": "DF",
+        "name": "Lara"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Laura"
+      },
+      {
+        "position": "DF",
+        "name": "Rebeca"
+      },
+      {
+        "position": "DF",
+        "name": "Maranhão"
+      },
+      {
+        "position": "DF",
+        "name": "Anna"
+      },
+      {
+        "position": "DF",
+        "name": "Beatrys"
+      },
+      {
+        "position": "MF",
+        "name": "Camila"
+      },
+      {
+        "position": "MF",
+        "name": "Dandara"
+      },
+      {
+        "position": "MF",
+        "name": "Ellen"
+      },
+      {
+        "position": "MF",
+        "name": "Emanuelle"
+      },
+      {
+        "position": "MF",
+        "name": "Tipa"
+      },
+      {
+        "position": "MF",
+        "name": "Franciele"
+      },
+      {
+        "position": "MF",
+        "name": "Isa Ramires"
+      },
+      {
+        "position": "FW",
+        "name": "Jullia"
+      },
+      {
+        "position": "FW",
+        "name": "Kaila"
+      },
+      {
+        "position": "FW",
+        "name": "Kewllen"
+      },
+      {
+        "position": "FW",
+        "name": "Leticia"
+      },
+      {
+        "position": "FW",
+        "name": "Letícia"
+      },
+      {
+        "position": "FW",
+        "name": "Lorena"
+      },
+      {
+        "position": "FW",
+        "name": "Luh"
+      },
+      {
+        "position": "FW",
+        "name": "Maria Camila"
+      }
+    ]
+  },
+  {
+    "name": "Sport Club Corinthians Paulista",
+    "internalName": "corinthians",
+    "shortName": "Corinthians",
+    "abbreviation": "COR",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#000000",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 90,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Agustina"
+      },
+      {
+        "position": "GK",
+        "name": "Carol"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Morganti"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Vitória"
+      },
+      {
+        "position": "DF",
+        "name": "Andressa"
+      },
+      {
+        "position": "DF",
+        "name": "Ariel"
+      },
+      {
+        "position": "DF",
+        "name": "Belen"
+      },
+      {
+        "position": "DF",
+        "name": "Day"
+      },
+      {
+        "position": "MF",
+        "name": "Erika"
+      },
+      {
+        "position": "MF",
+        "name": "Gabi Zanotti"
+      },
+      {
+        "position": "MF",
+        "name": "Fernandes"
+      },
+      {
+        "position": "MF",
+        "name": "Gisela"
+      },
+      {
+        "position": "MF",
+        "name": "Jhonson"
+      },
+      {
+        "position": "MF",
+        "name": "Ivana"
+      },
+      {
+        "position": "MF",
+        "name": "Jaqueline"
+      },
+      {
+        "position": "FW",
+        "name": "Juju"
+      },
+      {
+        "position": "FW",
+        "name": "Leticia"
+      },
+      {
+        "position": "FW",
+        "name": "Leticia Izidoro Lima da Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Duda Mineira"
+      },
+      {
+        "position": "FW",
+        "name": "Duda Sampaio"
+      },
+      {
+        "position": "FW",
+        "name": "Nicole"
+      },
+      {
+        "position": "FW",
+        "name": "Paola"
+      },
+      {
+        "position": "FW",
+        "name": "Rafaela"
+      }
+    ]
+  },
+  {
+    "name": "Cruzeiro Esporte Clube - Sociedade Anônima do Futebol",
+    "internalName": "cruzeiro",
+    "shortName": "Cruzeiro",
+    "abbreviation": "CRU",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#1c3c8c",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 87,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Ana Flavia"
+      },
+      {
+        "position": "GK",
+        "name": "Ana Flavia Rodrigues Silva"
+      },
+      {
+        "position": "DF",
+        "name": "Byanca Brasil"
+      },
+      {
+        "position": "DF",
+        "name": "Camila R."
+      },
+      {
+        "position": "DF",
+        "name": "Carina"
+      },
+      {
+        "position": "DF",
+        "name": "Claudia"
+      },
+      {
+        "position": "DF",
+        "name": "Fernanda"
+      },
+      {
+        "position": "DF",
+        "name": "Gaby"
+      },
+      {
+        "position": "MF",
+        "name": "Gaby Soares"
+      },
+      {
+        "position": "MF",
+        "name": "Gisseli"
+      },
+      {
+        "position": "MF",
+        "name": "Isabela"
+      },
+      {
+        "position": "MF",
+        "name": "Isadora"
+      },
+      {
+        "position": "MF",
+        "name": "Kerolly"
+      },
+      {
+        "position": "MF",
+        "name": "Ketlin"
+      },
+      {
+        "position": "MF",
+        "name": "Leilane"
+      },
+      {
+        "position": "FW",
+        "name": "L. Alves"
+      },
+      {
+        "position": "FW",
+        "name": "Leticia"
+      },
+      {
+        "position": "FW",
+        "name": "Bedoya"
+      },
+      {
+        "position": "FW",
+        "name": "Mariana"
+      },
+      {
+        "position": "FW",
+        "name": "Marilia"
+      },
+      {
+        "position": "FW",
+        "name": "Mel"
+      },
+      {
+        "position": "FW",
+        "name": "Michelle Castillo"
+      },
+      {
+        "position": "FW",
+        "name": "Milca"
+      }
+    ]
+  },
+  {
+    "name": "Ferroviaria SAF",
+    "internalName": "ferroviaria",
+    "shortName": "Ferroviária",
+    "abbreviation": "FER",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#b01c2e",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 83,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Amanda"
+      },
+      {
+        "position": "GK",
+        "name": "Ana"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Luiza Hansen"
+      },
+      {
+        "position": "DF",
+        "name": "Andressa"
+      },
+      {
+        "position": "DF",
+        "name": "Brenda"
+      },
+      {
+        "position": "DF",
+        "name": "Camila"
+      },
+      {
+        "position": "DF",
+        "name": "Diana"
+      },
+      {
+        "position": "DF",
+        "name": "Fernanda"
+      },
+      {
+        "position": "MF",
+        "name": "Fatima"
+      },
+      {
+        "position": "MF",
+        "name": "Fogaça"
+      },
+      {
+        "position": "MF",
+        "name": "Isadora"
+      },
+      {
+        "position": "MF",
+        "name": "Julia"
+      },
+      {
+        "position": "MF",
+        "name": "Katiuscia"
+      },
+      {
+        "position": "MF",
+        "name": "Kedima"
+      },
+      {
+        "position": "MF",
+        "name": "Luana"
+      },
+      {
+        "position": "FW",
+        "name": "Luciana"
+      },
+      {
+        "position": "FW",
+        "name": "Maressa"
+      },
+      {
+        "position": "FW",
+        "name": "Dudinha"
+      },
+      {
+        "position": "FW",
+        "name": "Eduarda"
+      },
+      {
+        "position": "FW",
+        "name": "Mariana"
+      },
+      {
+        "position": "FW",
+        "name": "Mica"
+      },
+      {
+        "position": "FW",
+        "name": "Monique"
+      },
+      {
+        "position": "FW",
+        "name": "Nana"
+      }
+    ]
+  },
+  {
+    "name": "Clube de Regatas do Flamengo",
+    "internalName": "flamengo",
+    "shortName": "Flamengo",
+    "abbreviation": "FLA",
+    "colors": {
+      "outline": "#e00000",
+      "background": "#000000",
+      "name": "#e00000"
+    },
+    "initialOverallStrength": 86,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Bibi"
+      },
+      {
+        "position": "GK",
+        "name": "Alice"
+      },
+      {
+        "position": "DF",
+        "name": "Papel"
+      },
+      {
+        "position": "DF",
+        "name": "Aninha"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Laura"
+      },
+      {
+        "position": "DF",
+        "name": "Anna Luiza"
+      },
+      {
+        "position": "DF",
+        "name": "Brendha"
+      },
+      {
+        "position": "DF",
+        "name": "Bruna"
+      },
+      {
+        "position": "MF",
+        "name": "Cristiane"
+      },
+      {
+        "position": "MF",
+        "name": "Djenifer"
+      },
+      {
+        "position": "MF",
+        "name": "Eduarda"
+      },
+      {
+        "position": "MF",
+        "name": "Emilly"
+      },
+      {
+        "position": "MF",
+        "name": "Fabiana"
+      },
+      {
+        "position": "MF",
+        "name": "Fernandinha"
+      },
+      {
+        "position": "MF",
+        "name": "Flavia"
+      },
+      {
+        "position": "FW",
+        "name": "Isabela"
+      },
+      {
+        "position": "FW",
+        "name": "Isa Condorelli"
+      },
+      {
+        "position": "FW",
+        "name": "Jucinara"
+      },
+      {
+        "position": "FW",
+        "name": "Ju"
+      },
+      {
+        "position": "FW",
+        "name": "Kaylane"
+      },
+      {
+        "position": "FW",
+        "name": "Larissa"
+      },
+      {
+        "position": "FW",
+        "name": "Laysa"
+      },
+      {
+        "position": "FW",
+        "name": "Lay"
+      }
+    ]
+  },
+  {
+    "name": "Fluminense Football Club",
+    "internalName": "fluminense",
+    "shortName": "Fluminense",
+    "abbreviation": "FLU",
+    "colors": {
+      "outline": "#9f022f",
+      "background": "#006437",
+      "name": "#9f022f"
+    },
+    "initialOverallStrength": 79,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Adrielly"
+      },
+      {
+        "position": "GK",
+        "name": "Altamires"
+      },
+      {
+        "position": "DF",
+        "name": "Beatriz"
+      },
+      {
+        "position": "DF",
+        "name": "Bruna"
+      },
+      {
+        "position": "DF",
+        "name": "Pelé"
+      },
+      {
+        "position": "DF",
+        "name": "Camila"
+      },
+      {
+        "position": "DF",
+        "name": "Carina"
+      },
+      {
+        "position": "DF",
+        "name": "Claudinha"
+      },
+      {
+        "position": "MF",
+        "name": "Cris"
+      },
+      {
+        "position": "MF",
+        "name": "Daniela"
+      },
+      {
+        "position": "MF",
+        "name": "Sorriso"
+      },
+      {
+        "position": "MF",
+        "name": "Driely"
+      },
+      {
+        "position": "MF",
+        "name": "Chu"
+      },
+      {
+        "position": "MF",
+        "name": "Gabi"
+      },
+      {
+        "position": "MF",
+        "name": "Gislaine"
+      },
+      {
+        "position": "FW",
+        "name": "Janielly"
+      },
+      {
+        "position": "FW",
+        "name": "Kaline"
+      },
+      {
+        "position": "FW",
+        "name": "Kah"
+      },
+      {
+        "position": "FW",
+        "name": "Kathleen Luane da Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Kemelli"
+      },
+      {
+        "position": "FW",
+        "name": "Leticia Bussatto"
+      },
+      {
+        "position": "FW",
+        "name": "Lelê"
+      },
+      {
+        "position": "FW",
+        "name": "Luciana"
+      }
+    ]
+  },
+  {
+    "name": "Gremio Foot-ball Porto Alegrense",
+    "internalName": "gremio",
+    "shortName": "Grêmio",
+    "abbreviation": "GRE",
+    "colors": {
+      "outline": "#0d80bf",
+      "background": "#000000",
+      "name": "#0d80bf"
+    },
+    "initialOverallStrength": 84,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Drika"
+      },
+      {
+        "position": "GK",
+        "name": "Allyne"
+      },
+      {
+        "position": "DF",
+        "name": "Amanda"
+      },
+      {
+        "position": "DF",
+        "name": "Vidal"
+      },
+      {
+        "position": "DF",
+        "name": "Bia"
+      },
+      {
+        "position": "DF",
+        "name": "Brenda"
+      },
+      {
+        "position": "DF",
+        "name": "Arrieta"
+      },
+      {
+        "position": "DF",
+        "name": "Camila"
+      },
+      {
+        "position": "MF",
+        "name": "Camila Pini"
+      },
+      {
+        "position": "MF",
+        "name": "Daiana"
+      },
+      {
+        "position": "MF",
+        "name": "Dani Barao"
+      },
+      {
+        "position": "MF",
+        "name": "Emille Campos"
+      },
+      {
+        "position": "MF",
+        "name": "Giovaninha"
+      },
+      {
+        "position": "MF",
+        "name": "Gisele"
+      },
+      {
+        "position": "MF",
+        "name": "Iara"
+      },
+      {
+        "position": "FW",
+        "name": "Izadora"
+      },
+      {
+        "position": "FW",
+        "name": "Josi"
+      },
+      {
+        "position": "FW",
+        "name": "Julia"
+      },
+      {
+        "position": "FW",
+        "name": "Leidiane"
+      },
+      {
+        "position": "FW",
+        "name": "Leticia"
+      },
+      {
+        "position": "FW",
+        "name": "Kika Moreno"
+      },
+      {
+        "position": "FW",
+        "name": "Luana"
+      },
+      {
+        "position": "FW",
+        "name": "Lucilene"
+      }
+    ]
+  },
+  {
+    "name": "Sport Club Internacional",
+    "internalName": "internacional",
+    "shortName": "Internacional",
+    "abbreviation": "INT",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#e5050f",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 85,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Alice"
+      },
+      {
+        "position": "GK",
+        "name": "Alice Santos Silva"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Clara"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Guell"
+      },
+      {
+        "position": "DF",
+        "name": "Barbara"
+      },
+      {
+        "position": "DF",
+        "name": "Bianca"
+      },
+      {
+        "position": "DF",
+        "name": "Bruna Benites"
+      },
+      {
+        "position": "DF",
+        "name": "Camilly"
+      },
+      {
+        "position": "MF",
+        "name": "Caty"
+      },
+      {
+        "position": "MF",
+        "name": "Clara"
+      },
+      {
+        "position": "MF",
+        "name": "Darlene"
+      },
+      {
+        "position": "MF",
+        "name": "Dayana"
+      },
+      {
+        "position": "MF",
+        "name": "Debora"
+      },
+      {
+        "position": "MF",
+        "name": "Myka"
+      },
+      {
+        "position": "MF",
+        "name": "Sole"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriela"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriella"
+      },
+      {
+        "position": "FW",
+        "name": "Gi Mazzotti"
+      },
+      {
+        "position": "FW",
+        "name": "Sorriso"
+      },
+      {
+        "position": "FW",
+        "name": "Isadora"
+      },
+      {
+        "position": "FW",
+        "name": "Joana"
+      },
+      {
+        "position": "FW",
+        "name": "Jordana"
+      },
+      {
+        "position": "FW",
+        "name": "Julia"
+      }
+    ]
+  },
+  {
+    "name": "Esporte Clube Juventude",
+    "internalName": "juventude-rs",
+    "shortName": "Juventude",
+    "abbreviation": "JUV",
+    "colors": {
+      "outline": "#009c3b",
+      "background": "#ffffff",
+      "name": "#009c3b"
+    },
+    "initialOverallStrength": 74,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Alexia"
+      },
+      {
+        "position": "GK",
+        "name": "Aninha"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Luiza"
+      },
+      {
+        "position": "DF",
+        "name": "Andressa"
+      },
+      {
+        "position": "DF",
+        "name": "Apoliana"
+      },
+      {
+        "position": "DF",
+        "name": "Bruna"
+      },
+      {
+        "position": "DF",
+        "name": "Carla"
+      },
+      {
+        "position": "DF",
+        "name": "Carolzinha"
+      },
+      {
+        "position": "MF",
+        "name": "Gio Oliveira"
+      },
+      {
+        "position": "MF",
+        "name": "Grazi"
+      },
+      {
+        "position": "MF",
+        "name": "Isa"
+      },
+      {
+        "position": "MF",
+        "name": "Joice"
+      },
+      {
+        "position": "MF",
+        "name": "Joyce"
+      },
+      {
+        "position": "MF",
+        "name": "Kailane"
+      },
+      {
+        "position": "MF",
+        "name": "Kamile"
+      },
+      {
+        "position": "FW",
+        "name": "Laura"
+      },
+      {
+        "position": "FW",
+        "name": "Fretes"
+      },
+      {
+        "position": "FW",
+        "name": "Luciene Baião"
+      },
+      {
+        "position": "FW",
+        "name": "Maiza"
+      },
+      {
+        "position": "FW",
+        "name": "Duda Calazans"
+      },
+      {
+        "position": "FW",
+        "name": "Martha"
+      },
+      {
+        "position": "FW",
+        "name": "Nicole"
+      },
+      {
+        "position": "FW",
+        "name": "Nubia"
+      }
+    ]
+  },
+  {
+    "name": "Mixto Esporte Clube",
+    "internalName": "mixto-mt",
+    "shortName": "Mixto",
+    "abbreviation": "MIX",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#000000",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 73,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Andressa"
+      },
+      {
+        "position": "GK",
+        "name": "Martinha"
+      },
+      {
+        "position": "DF",
+        "name": "Fany Gauto"
+      },
+      {
+        "position": "DF",
+        "name": "Gessica"
+      },
+      {
+        "position": "DF",
+        "name": "Isabela"
+      },
+      {
+        "position": "DF",
+        "name": "Isa"
+      },
+      {
+        "position": "DF",
+        "name": "Jersia"
+      },
+      {
+        "position": "DF",
+        "name": "Joycinha"
+      },
+      {
+        "position": "MF",
+        "name": "Karol Alves"
+      },
+      {
+        "position": "MF",
+        "name": "Livia"
+      },
+      {
+        "position": "MF",
+        "name": "Lorena"
+      },
+      {
+        "position": "MF",
+        "name": "Luana Lima"
+      },
+      {
+        "position": "MF",
+        "name": "Nagila"
+      },
+      {
+        "position": "MF",
+        "name": "Natalia"
+      },
+      {
+        "position": "MF",
+        "name": "Nay"
+      },
+      {
+        "position": "FW",
+        "name": "Priscila"
+      },
+      {
+        "position": "FW",
+        "name": "Sabrina"
+      },
+      {
+        "position": "FW",
+        "name": "Sara"
+      },
+      {
+        "position": "FW",
+        "name": "Scarlet"
+      },
+      {
+        "position": "FW",
+        "name": "Baiana"
+      },
+      {
+        "position": "FW",
+        "name": "Suyane"
+      },
+      {
+        "position": "FW",
+        "name": "Taiane"
+      },
+      {
+        "position": "FW",
+        "name": "Thais"
+      }
+    ]
+  },
+  {
+    "name": "Sociedade Esportiva Palmeiras",
+    "internalName": "palmeiras",
+    "shortName": "Palmeiras",
+    "abbreviation": "PAL",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#006437",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 89,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Ana"
+      },
+      {
+        "position": "GK",
+        "name": "Ana Flávia"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Maria Guzman Zapata"
+      },
+      {
+        "position": "DF",
+        "name": "Andressinha"
+      },
+      {
+        "position": "DF",
+        "name": "Antonia"
+      },
+      {
+        "position": "DF",
+        "name": "Bia Zaneratto"
+      },
+      {
+        "position": "DF",
+        "name": "Brena"
+      },
+      {
+        "position": "DF",
+        "name": "Bruna"
+      },
+      {
+        "position": "MF",
+        "name": "Carla"
+      },
+      {
+        "position": "MF",
+        "name": "Diany"
+      },
+      {
+        "position": "MF",
+        "name": "Duda Santos"
+      },
+      {
+        "position": "MF",
+        "name": "Emily"
+      },
+      {
+        "position": "MF",
+        "name": "Evelyn"
+      },
+      {
+        "position": "MF",
+        "name": "Fe Palermo"
+      },
+      {
+        "position": "MF",
+        "name": "Lorena"
+      },
+      {
+        "position": "FW",
+        "name": "Giovanna"
+      },
+      {
+        "position": "FW",
+        "name": "Glaucia"
+      },
+      {
+        "position": "FW",
+        "name": "Greicy Landazury"
+      },
+      {
+        "position": "FW",
+        "name": "Ingryd"
+      },
+      {
+        "position": "FW",
+        "name": "Espinales"
+      },
+      {
+        "position": "FW",
+        "name": "Julia Brito"
+      },
+      {
+        "position": "FW",
+        "name": "Ketelen"
+      },
+      {
+        "position": "FW",
+        "name": "Lais"
+      }
+    ]
+  },
+  {
+    "name": "Red Bull Bragantino Futebol Ltda.",
+    "internalName": "red-bull-bragantino",
+    "shortName": "Red Bull Bragantino",
+    "abbreviation": "RBB",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#e2001a",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 77,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Alissa"
+      },
+      {
+        "position": "GK",
+        "name": "Amanda"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Carla"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Cazal"
+      },
+      {
+        "position": "DF",
+        "name": "Lurdinha"
+      },
+      {
+        "position": "DF",
+        "name": "C. Ambrózio"
+      },
+      {
+        "position": "DF",
+        "name": "Carolina"
+      },
+      {
+        "position": "DF",
+        "name": "Catarina"
+      },
+      {
+        "position": "MF",
+        "name": "Duda Rodrigues"
+      },
+      {
+        "position": "MF",
+        "name": "Ester"
+      },
+      {
+        "position": "MF",
+        "name": "Gabi Medeiros"
+      },
+      {
+        "position": "MF",
+        "name": "Gaby Santos"
+      },
+      {
+        "position": "MF",
+        "name": "Gessica"
+      },
+      {
+        "position": "MF",
+        "name": "Giovanna"
+      },
+      {
+        "position": "MF",
+        "name": "Ilana"
+      },
+      {
+        "position": "FW",
+        "name": "Jane"
+      },
+      {
+        "position": "FW",
+        "name": "Janyele"
+      },
+      {
+        "position": "FW",
+        "name": "Jessica"
+      },
+      {
+        "position": "FW",
+        "name": "Karol"
+      },
+      {
+        "position": "FW",
+        "name": "Karolainy Caline Alves"
+      },
+      {
+        "position": "FW",
+        "name": "Laura Valverde"
+      },
+      {
+        "position": "FW",
+        "name": "Leticia"
+      },
+      {
+        "position": "FW",
+        "name": "Manuella"
+      }
+    ]
+  },
+  {
+    "name": "Santos Futebol Clube",
+    "internalName": "santos",
+    "shortName": "Santos FC",
+    "abbreviation": "SAN",
+    "colors": {
+      "outline": "#000000",
+      "background": "#ffffff",
+      "name": "#000000"
+    },
+    "initialOverallStrength": 82,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Ana"
+      },
+      {
+        "position": "GK",
+        "name": "Carol Baiana"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Clara"
+      },
+      {
+        "position": "DF",
+        "name": "Analuyza"
+      },
+      {
+        "position": "DF",
+        "name": "Anna Rosso"
+      },
+      {
+        "position": "DF",
+        "name": "Cury"
+      },
+      {
+        "position": "DF",
+        "name": "Barbara Cuzzuol"
+      },
+      {
+        "position": "DF",
+        "name": "Bruno Barbosa"
+      },
+      {
+        "position": "MF",
+        "name": "Camile Abreu"
+      },
+      {
+        "position": "MF",
+        "name": "Carol Lara"
+      },
+      {
+        "position": "MF",
+        "name": "Evelin"
+      },
+      {
+        "position": "MF",
+        "name": "Evellyn"
+      },
+      {
+        "position": "MF",
+        "name": "Giulia"
+      },
+      {
+        "position": "MF",
+        "name": "Yoreli"
+      },
+      {
+        "position": "MF",
+        "name": "Ingrid"
+      },
+      {
+        "position": "FW",
+        "name": "Guyd"
+      },
+      {
+        "position": "FW",
+        "name": "Isabela"
+      },
+      {
+        "position": "FW",
+        "name": "Katrine"
+      },
+      {
+        "position": "FW",
+        "name": "Ketlen"
+      },
+      {
+        "position": "FW",
+        "name": "Larissa"
+      },
+      {
+        "position": "FW",
+        "name": "Larissa Vasconcelos"
+      },
+      {
+        "position": "FW",
+        "name": "Leandra"
+      },
+      {
+        "position": "FW",
+        "name": "Leticia Santos"
+      }
+    ]
+  },
+  {
+    "name": "São Paulo Futebol Clube",
+    "internalName": "sao-paulo",
+    "shortName": "São Paulo",
+    "abbreviation": "SAO",
+    "colors": {
+      "outline": "#fe0000",
+      "background": "#ffffff",
+      "name": "#fe0000"
+    },
+    "initialOverallStrength": 88,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Milene"
+      },
+      {
+        "position": "GK",
+        "name": "Ana Beatriz"
+      },
+      {
+        "position": "DF",
+        "name": "Clara"
+      },
+      {
+        "position": "DF",
+        "name": "Anita"
+      },
+      {
+        "position": "DF",
+        "name": "Bia"
+      },
+      {
+        "position": "DF",
+        "name": "Beatriz Ferreira de Menezes"
+      },
+      {
+        "position": "DF",
+        "name": "Bruna"
+      },
+      {
+        "position": "DF",
+        "name": "Camila"
+      },
+      {
+        "position": "MF",
+        "name": "Camila Martins Pereira"
+      },
+      {
+        "position": "MF",
+        "name": "Carla"
+      },
+      {
+        "position": "MF",
+        "name": "Carolini"
+      },
+      {
+        "position": "MF",
+        "name": "Eduarda"
+      },
+      {
+        "position": "MF",
+        "name": "Eluiza"
+      },
+      {
+        "position": "MF",
+        "name": "Evelyn"
+      },
+      {
+        "position": "MF",
+        "name": "Gi Iseppe"
+      },
+      {
+        "position": "FW",
+        "name": "Giovanna"
+      },
+      {
+        "position": "FW",
+        "name": "Isa"
+      },
+      {
+        "position": "FW",
+        "name": "Julia"
+      },
+      {
+        "position": "FW",
+        "name": "Julia Vaini"
+      },
+      {
+        "position": "FW",
+        "name": "Karla Alves"
+      },
+      {
+        "position": "FW",
+        "name": "Késia Sena"
+      },
+      {
+        "position": "FW",
+        "name": "Luiza Calazans"
+      },
+      {
+        "position": "FW",
+        "name": "Vitorinha"
+      }
+    ]
+  },
+  {
+    "name": "Esporte Clube Vitoria",
+    "internalName": "vitoria",
+    "shortName": "Vitória",
+    "abbreviation": "VIT",
+    "colors": {
+      "outline": "#ff0000",
+      "background": "#000000",
+      "name": "#ff0000"
+    },
+    "initialOverallStrength": 75,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Karol Lins"
+      },
+      {
+        "position": "GK",
+        "name": "Geicy"
+      },
+      {
+        "position": "DF",
+        "name": "Iana"
+      },
+      {
+        "position": "DF",
+        "name": "Ingrid"
+      },
+      {
+        "position": "DF",
+        "name": "Lane"
+      },
+      {
+        "position": "DF",
+        "name": "Jaqueline"
+      },
+      {
+        "position": "DF",
+        "name": "Joicy"
+      },
+      {
+        "position": "DF",
+        "name": "Katyelle"
+      },
+      {
+        "position": "MF",
+        "name": "Kim"
+      },
+      {
+        "position": "MF",
+        "name": "Lais"
+      },
+      {
+        "position": "MF",
+        "name": "Liriel"
+      },
+      {
+        "position": "MF",
+        "name": "Lorena"
+      },
+      {
+        "position": "MF",
+        "name": "Lorraana"
+      },
+      {
+        "position": "MF",
+        "name": "Luciana"
+      },
+      {
+        "position": "MF",
+        "name": "Marcela"
+      },
+      {
+        "position": "FW",
+        "name": "Barbara"
+      },
+      {
+        "position": "FW",
+        "name": "Maria"
+      },
+      {
+        "position": "FW",
+        "name": "Maria Eduarda Fonseca"
+      },
+      {
+        "position": "FW",
+        "name": "Larisse"
+      },
+      {
+        "position": "FW",
+        "name": "Mari Pires"
+      },
+      {
+        "position": "FW",
+        "name": "Bispo"
+      },
+      {
+        "position": "FW",
+        "name": "Milena"
+      },
+      {
+        "position": "FW",
+        "name": "Monica"
+      }
+    ]
+  },
+  {
+    "name": "Sociedade Ação Futebol",
+    "internalName": "acao",
+    "shortName": "Ação",
+    "abbreviation": "ACA",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#0d5c63",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 65,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Alice"
+      },
+      {
+        "position": "GK",
+        "name": "Amanda"
+      },
+      {
+        "position": "DF",
+        "name": "Angelica"
+      },
+      {
+        "position": "DF",
+        "name": "Camila"
+      },
+      {
+        "position": "DF",
+        "name": "Izabelly"
+      },
+      {
+        "position": "DF",
+        "name": "Jeniffer"
+      },
+      {
+        "position": "DF",
+        "name": "Julia"
+      },
+      {
+        "position": "DF",
+        "name": "Larah"
+      },
+      {
+        "position": "MF",
+        "name": "Duda Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Rivena"
+      },
+      {
+        "position": "MF",
+        "name": "Thafny"
+      },
+      {
+        "position": "MF",
+        "name": "Rafaela Duarte"
+      },
+      {
+        "position": "MF",
+        "name": "Carla Ribeiro"
+      },
+      {
+        "position": "MF",
+        "name": "Fernanda Jardim"
+      },
+      {
+        "position": "MF",
+        "name": "Mariana Cardoso"
+      },
+      {
+        "position": "FW",
+        "name": "Yasmin Queiroz"
+      },
+      {
+        "position": "FW",
+        "name": "Camila Ipiranga"
+      },
+      {
+        "position": "FW",
+        "name": "Juliana Barbosa"
+      },
+      {
+        "position": "FW",
+        "name": "Sabrina Pacheco"
+      },
+      {
+        "position": "FW",
+        "name": "Débora Henrique"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriela Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Natália Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Aline Gomes"
+      }
+    ]
+  },
+  {
+    "name": "Associação Desportiva Taubaté Futebol Feminino",
+    "internalName": "desportiva-taubate",
+    "shortName": "Associação Desportiva Taubaté",
+    "abbreviation": "DES",
+    "colors": {
+      "outline": "#111111",
+      "background": "#e8e8e8",
+      "name": "#111111"
+    },
+    "initialOverallStrength": 64,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Naressi"
+      },
+      {
+        "position": "GK",
+        "name": "Alessandra"
+      },
+      {
+        "position": "DF",
+        "name": "Alessandra Marques de Souza"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Beatriz"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Julia"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Livia"
+      },
+      {
+        "position": "DF",
+        "name": "Rebeca"
+      },
+      {
+        "position": "DF",
+        "name": "Andresa"
+      },
+      {
+        "position": "MF",
+        "name": "Dedê"
+      },
+      {
+        "position": "MF",
+        "name": "Andressinha"
+      },
+      {
+        "position": "MF",
+        "name": "Carol Franco"
+      },
+      {
+        "position": "MF",
+        "name": "Emilly Vitoria"
+      },
+      {
+        "position": "MF",
+        "name": "Ingrid"
+      },
+      {
+        "position": "MF",
+        "name": "Baiana"
+      },
+      {
+        "position": "MF",
+        "name": "Neguinha"
+      },
+      {
+        "position": "FW",
+        "name": "Ji"
+      },
+      {
+        "position": "FW",
+        "name": "Julia Becker"
+      },
+      {
+        "position": "FW",
+        "name": "Kauane"
+      },
+      {
+        "position": "FW",
+        "name": "Lauenne"
+      },
+      {
+        "position": "FW",
+        "name": "Lavi Alves"
+      },
+      {
+        "position": "FW",
+        "name": "Luana"
+      },
+      {
+        "position": "FW",
+        "name": "Maria"
+      },
+      {
+        "position": "FW",
+        "name": "Melyssa"
+      }
+    ]
+  },
+  {
+    "name": "Atletico Rio Negro Clube",
+    "internalName": "atletico-rio-negro",
+    "shortName": "Atletico Rio Negro Clube",
+    "abbreviation": "ARN",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#00695c",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 56,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Anna"
+      },
+      {
+        "position": "GK",
+        "name": "Carol Trezzi"
+      },
+      {
+        "position": "DF",
+        "name": "Eduarda Rosinha"
+      },
+      {
+        "position": "DF",
+        "name": "Erika"
+      },
+      {
+        "position": "DF",
+        "name": "Gleiciane"
+      },
+      {
+        "position": "DF",
+        "name": "Deijinha"
+      },
+      {
+        "position": "DF",
+        "name": "Isah"
+      },
+      {
+        "position": "DF",
+        "name": "Isamara"
+      },
+      {
+        "position": "MF",
+        "name": "Isla"
+      },
+      {
+        "position": "MF",
+        "name": "Karine"
+      },
+      {
+        "position": "MF",
+        "name": "Jaja"
+      },
+      {
+        "position": "MF",
+        "name": "Kethlen"
+      },
+      {
+        "position": "MF",
+        "name": "Lú"
+      },
+      {
+        "position": "MF",
+        "name": "Lyndyara"
+      },
+      {
+        "position": "MF",
+        "name": "Dara"
+      },
+      {
+        "position": "FW",
+        "name": "Sara"
+      },
+      {
+        "position": "FW",
+        "name": "Vaneza"
+      },
+      {
+        "position": "FW",
+        "name": "Natália Farias"
+      },
+      {
+        "position": "FW",
+        "name": "Aline Teixeira"
+      },
+      {
+        "position": "FW",
+        "name": "Daniele Moreira"
+      },
+      {
+        "position": "FW",
+        "name": "Karina Esteves"
+      },
+      {
+        "position": "FW",
+        "name": "Tainá Siqueira"
+      },
+      {
+        "position": "FW",
+        "name": "Alice Lacerda"
+      }
+    ]
+  },
+  {
+    "name": "Clube Atlético Piauiense",
+    "internalName": "cap",
+    "shortName": "CAP",
+    "abbreviation": "CAP",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#0d5c63",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 67,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Nene"
+      },
+      {
+        "position": "GK",
+        "name": "Cris"
+      },
+      {
+        "position": "DF",
+        "name": "Aninha"
+      },
+      {
+        "position": "DF",
+        "name": "Natalia"
+      },
+      {
+        "position": "DF",
+        "name": "Beatriz"
+      },
+      {
+        "position": "DF",
+        "name": "Stefanny"
+      },
+      {
+        "position": "DF",
+        "name": "Dani"
+      },
+      {
+        "position": "DF",
+        "name": "Dulce"
+      },
+      {
+        "position": "MF",
+        "name": "Lene"
+      },
+      {
+        "position": "MF",
+        "name": "Edna Baiana"
+      },
+      {
+        "position": "MF",
+        "name": "Eduarda Balbino"
+      },
+      {
+        "position": "MF",
+        "name": "Jhow"
+      },
+      {
+        "position": "MF",
+        "name": "Gio Perpetuo"
+      },
+      {
+        "position": "MF",
+        "name": "Grazi"
+      },
+      {
+        "position": "MF",
+        "name": "Isabel"
+      },
+      {
+        "position": "FW",
+        "name": "Jajá"
+      },
+      {
+        "position": "FW",
+        "name": "Leticia Pires"
+      },
+      {
+        "position": "FW",
+        "name": "Lilian"
+      },
+      {
+        "position": "FW",
+        "name": "Livia"
+      },
+      {
+        "position": "FW",
+        "name": "Lorena"
+      },
+      {
+        "position": "FW",
+        "name": "Luciana"
+      },
+      {
+        "position": "FW",
+        "name": "Ludy"
+      },
+      {
+        "position": "FW",
+        "name": "Mabel"
+      }
+    ]
+  },
+  {
+    "name": "Ceará Sporting Club",
+    "internalName": "ceara",
+    "shortName": "Ceará",
+    "abbreviation": "CEA",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#000000",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 63,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Adrijane"
+      },
+      {
+        "position": "GK",
+        "name": "Amanda"
+      },
+      {
+        "position": "DF",
+        "name": "Bia"
+      },
+      {
+        "position": "DF",
+        "name": "Andressa"
+      },
+      {
+        "position": "DF",
+        "name": "Edna"
+      },
+      {
+        "position": "DF",
+        "name": "Emely"
+      },
+      {
+        "position": "DF",
+        "name": "Emilly"
+      },
+      {
+        "position": "DF",
+        "name": "Emilly Kaillany"
+      },
+      {
+        "position": "MF",
+        "name": "Francyellen"
+      },
+      {
+        "position": "MF",
+        "name": "Gabizinha"
+      },
+      {
+        "position": "MF",
+        "name": "Jady"
+      },
+      {
+        "position": "MF",
+        "name": "Jo"
+      },
+      {
+        "position": "MF",
+        "name": "Kaylane"
+      },
+      {
+        "position": "MF",
+        "name": "Lais"
+      },
+      {
+        "position": "MF",
+        "name": "Lana"
+      },
+      {
+        "position": "FW",
+        "name": "Ketlen"
+      },
+      {
+        "position": "FW",
+        "name": "Luzia"
+      },
+      {
+        "position": "FW",
+        "name": "Mayara"
+      },
+      {
+        "position": "FW",
+        "name": "Rebeca"
+      },
+      {
+        "position": "FW",
+        "name": "Thais"
+      },
+      {
+        "position": "FW",
+        "name": "Thayla"
+      },
+      {
+        "position": "FW",
+        "name": "Vitoria"
+      },
+      {
+        "position": "FW",
+        "name": "Fernanda Oliveira"
+      }
+    ]
+  },
+  {
+    "name": "Doce Mel Esporte Clube",
+    "internalName": "doce-mel",
+    "shortName": "Doce Mel",
+    "abbreviation": "DOC",
+    "colors": {
+      "outline": "#0f0f0f",
+      "background": "#f2c200",
+      "name": "#0f0f0f"
+    },
+    "initialOverallStrength": 70,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Alexia"
+      },
+      {
+        "position": "GK",
+        "name": "Cailane"
+      },
+      {
+        "position": "DF",
+        "name": "Gaby"
+      },
+      {
+        "position": "DF",
+        "name": "Geovana da Silva Lima"
+      },
+      {
+        "position": "DF",
+        "name": "Bate Pe"
+      },
+      {
+        "position": "DF",
+        "name": "Jessica"
+      },
+      {
+        "position": "DF",
+        "name": "Juliana Pereira"
+      },
+      {
+        "position": "DF",
+        "name": "Kaka"
+      },
+      {
+        "position": "MF",
+        "name": "Katiele"
+      },
+      {
+        "position": "MF",
+        "name": "Layla"
+      },
+      {
+        "position": "MF",
+        "name": "Lourrane"
+      },
+      {
+        "position": "MF",
+        "name": "Rafa"
+      },
+      {
+        "position": "MF",
+        "name": "Samile"
+      },
+      {
+        "position": "MF",
+        "name": "Camila Cardoso"
+      },
+      {
+        "position": "MF",
+        "name": "Juliana Queiroz"
+      },
+      {
+        "position": "FW",
+        "name": "Sabrina Ipiranga"
+      },
+      {
+        "position": "FW",
+        "name": "Débora Barbosa"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriela Pacheco"
+      },
+      {
+        "position": "FW",
+        "name": "Natália Henrique"
+      },
+      {
+        "position": "FW",
+        "name": "Aline Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Daniele Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Karina Gomes"
+      },
+      {
+        "position": "FW",
+        "name": "Tainá Vieira"
+      }
+    ]
+  },
+  {
+    "name": "Instituto Bosco Brasil Binda - Instituto 3b",
+    "internalName": "instituto-3b",
+    "shortName": "Instituto 3b",
+    "abbreviation": "INS",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#0d5c63",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 59,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Alanna"
+      },
+      {
+        "position": "GK",
+        "name": "Ana Beatriz"
+      },
+      {
+        "position": "DF",
+        "name": "Carol"
+      },
+      {
+        "position": "DF",
+        "name": "Barbara"
+      },
+      {
+        "position": "DF",
+        "name": "Bru"
+      },
+      {
+        "position": "DF",
+        "name": "Carla Nunes"
+      },
+      {
+        "position": "DF",
+        "name": "Gisele"
+      },
+      {
+        "position": "DF",
+        "name": "Isabella"
+      },
+      {
+        "position": "MF",
+        "name": "Josefa"
+      },
+      {
+        "position": "MF",
+        "name": "Luana"
+      },
+      {
+        "position": "MF",
+        "name": "Maii Maii"
+      },
+      {
+        "position": "MF",
+        "name": "Maria Vitoria"
+      },
+      {
+        "position": "MF",
+        "name": "Monique Peçanha"
+      },
+      {
+        "position": "MF",
+        "name": "Nai"
+      },
+      {
+        "position": "MF",
+        "name": "Paula"
+      },
+      {
+        "position": "FW",
+        "name": "Petra"
+      },
+      {
+        "position": "FW",
+        "name": "Quezia"
+      },
+      {
+        "position": "FW",
+        "name": "Ferrer"
+      },
+      {
+        "position": "FW",
+        "name": "Helena Henrique"
+      },
+      {
+        "position": "FW",
+        "name": "Patrícia Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Bruna Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Eduarda Gomes"
+      },
+      {
+        "position": "FW",
+        "name": "Larissa Vieira"
+      }
+    ]
+  },
+  {
+    "name": "Itabirito Sociedade Anônima do Futebol",
+    "internalName": "itabirito",
+    "shortName": "Itabirito Saf",
+    "abbreviation": "ITA",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#c8102e",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 66,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Aninha"
+      },
+      {
+        "position": "GK",
+        "name": "Aryane"
+      },
+      {
+        "position": "DF",
+        "name": "Beatriz"
+      },
+      {
+        "position": "DF",
+        "name": "Bruna Peligrinelli"
+      },
+      {
+        "position": "DF",
+        "name": "Bruna"
+      },
+      {
+        "position": "DF",
+        "name": "Elisvania"
+      },
+      {
+        "position": "DF",
+        "name": "Emmily Karla"
+      },
+      {
+        "position": "DF",
+        "name": "Flavinha"
+      },
+      {
+        "position": "MF",
+        "name": "Jojo"
+      },
+      {
+        "position": "MF",
+        "name": "Hilary"
+      },
+      {
+        "position": "MF",
+        "name": "Camila"
+      },
+      {
+        "position": "MF",
+        "name": "Janete"
+      },
+      {
+        "position": "MF",
+        "name": "Juliana"
+      },
+      {
+        "position": "MF",
+        "name": "Karen"
+      },
+      {
+        "position": "MF",
+        "name": "Kathlen"
+      },
+      {
+        "position": "FW",
+        "name": "Kayla"
+      },
+      {
+        "position": "FW",
+        "name": "De la Torre"
+      },
+      {
+        "position": "FW",
+        "name": "Luana"
+      },
+      {
+        "position": "FW",
+        "name": "Marcelle"
+      },
+      {
+        "position": "FW",
+        "name": "Nat"
+      },
+      {
+        "position": "FW",
+        "name": "Stephani"
+      },
+      {
+        "position": "FW",
+        "name": "Tamires"
+      },
+      {
+        "position": "FW",
+        "name": "Thalita"
+      }
+    ]
+  },
+  {
+    "name": "Jc Futebol Clube",
+    "internalName": "itacoatiara",
+    "shortName": "Itacoatiara Futebol Clube",
+    "abbreviation": "ITB",
+    "colors": {
+      "outline": "#ffe9c4",
+      "background": "#5c2b0a",
+      "name": "#ffe9c4"
+    },
+    "initialOverallStrength": 61,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Ana Keyla"
+      },
+      {
+        "position": "GK",
+        "name": "Ataize"
+      },
+      {
+        "position": "DF",
+        "name": "Dieny"
+      },
+      {
+        "position": "DF",
+        "name": "Edileny"
+      },
+      {
+        "position": "DF",
+        "name": "Geiziele"
+      },
+      {
+        "position": "DF",
+        "name": "K1"
+      },
+      {
+        "position": "DF",
+        "name": "Laiane"
+      },
+      {
+        "position": "DF",
+        "name": "Layla"
+      },
+      {
+        "position": "MF",
+        "name": "Livia"
+      },
+      {
+        "position": "MF",
+        "name": "Mama"
+      },
+      {
+        "position": "MF",
+        "name": "Duda Werneck"
+      },
+      {
+        "position": "MF",
+        "name": "Maria"
+      },
+      {
+        "position": "MF",
+        "name": "Mavi"
+      },
+      {
+        "position": "MF",
+        "name": "Mari"
+      },
+      {
+        "position": "MF",
+        "name": "Mayllene"
+      },
+      {
+        "position": "FW",
+        "name": "Michele"
+      },
+      {
+        "position": "FW",
+        "name": "Monique"
+      },
+      {
+        "position": "FW",
+        "name": "Rayane"
+      },
+      {
+        "position": "FW",
+        "name": "Roseane"
+      },
+      {
+        "position": "FW",
+        "name": "Samara"
+      },
+      {
+        "position": "FW",
+        "name": "Simone"
+      },
+      {
+        "position": "FW",
+        "name": "Thayla"
+      },
+      {
+        "position": "FW",
+        "name": "Vitória"
+      }
+    ]
+  },
+  {
+    "name": "Minas Brasilia",
+    "internalName": "minas-brasilia",
+    "shortName": "Minas Brasília",
+    "abbreviation": "MIN",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#0033a0",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 57,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Bia Batista"
+      },
+      {
+        "position": "GK",
+        "name": "Ana Beatriz"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Clara"
+      },
+      {
+        "position": "DF",
+        "name": "Ana"
+      },
+      {
+        "position": "DF",
+        "name": "Aninha"
+      },
+      {
+        "position": "DF",
+        "name": "Monse Ayala"
+      },
+      {
+        "position": "DF",
+        "name": "Drielly"
+      },
+      {
+        "position": "DF",
+        "name": "Manu"
+      },
+      {
+        "position": "MF",
+        "name": "Esther"
+      },
+      {
+        "position": "MF",
+        "name": "Gabi"
+      },
+      {
+        "position": "MF",
+        "name": "Gaby"
+      },
+      {
+        "position": "MF",
+        "name": "Geysna"
+      },
+      {
+        "position": "MF",
+        "name": "Hadri"
+      },
+      {
+        "position": "MF",
+        "name": "Jayane"
+      },
+      {
+        "position": "MF",
+        "name": "Michele"
+      },
+      {
+        "position": "FW",
+        "name": "Paloma"
+      },
+      {
+        "position": "FW",
+        "name": "Rafaela"
+      },
+      {
+        "position": "FW",
+        "name": "Rayane"
+      },
+      {
+        "position": "FW",
+        "name": "Rayla"
+      },
+      {
+        "position": "FW",
+        "name": "Rhayssa"
+      },
+      {
+        "position": "FW",
+        "name": "Rubi"
+      },
+      {
+        "position": "FW",
+        "name": "Stephane"
+      },
+      {
+        "position": "FW",
+        "name": "Suzana"
+      }
+    ]
+  },
+  {
+    "name": "Paysandu Sport Club",
+    "internalName": "paysandu",
+    "shortName": "Paysandu",
+    "abbreviation": "PAY",
+    "colors": {
+      "outline": "#005baa",
+      "background": "#ffffff",
+      "name": "#005baa"
+    },
+    "initialOverallStrength": 69,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Áhlice"
+      },
+      {
+        "position": "GK",
+        "name": "Alessandra"
+      },
+      {
+        "position": "DF",
+        "name": "Ale"
+      },
+      {
+        "position": "DF",
+        "name": "Bia"
+      },
+      {
+        "position": "DF",
+        "name": "Esquerdinha"
+      },
+      {
+        "position": "DF",
+        "name": "Karol"
+      },
+      {
+        "position": "DF",
+        "name": "Andrea"
+      },
+      {
+        "position": "DF",
+        "name": "Anne"
+      },
+      {
+        "position": "MF",
+        "name": "Brenda"
+      },
+      {
+        "position": "MF",
+        "name": "Dany"
+      },
+      {
+        "position": "MF",
+        "name": "Cristiellen Toro"
+      },
+      {
+        "position": "MF",
+        "name": "Elaine"
+      },
+      {
+        "position": "MF",
+        "name": "Nanda Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Francy"
+      },
+      {
+        "position": "MF",
+        "name": "Perotes"
+      },
+      {
+        "position": "FW",
+        "name": "Gysele Marabá"
+      },
+      {
+        "position": "FW",
+        "name": "Hanna"
+      },
+      {
+        "position": "FW",
+        "name": "Irley"
+      },
+      {
+        "position": "FW",
+        "name": "Isabella"
+      },
+      {
+        "position": "FW",
+        "name": "Jeniffer Gomes"
+      },
+      {
+        "position": "FW",
+        "name": "Joyci"
+      },
+      {
+        "position": "FW",
+        "name": "Keli"
+      },
+      {
+        "position": "FW",
+        "name": "Lidiane"
+      }
+    ]
+  },
+  {
+    "name": "Viva Rio",
+    "internalName": "perolas-negras",
+    "shortName": "Pérolas Negras",
+    "abbreviation": "PER",
+    "colors": {
+      "outline": "#1a1a1a",
+      "background": "#ffb703",
+      "name": "#1a1a1a"
+    },
+    "initialOverallStrength": 62,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Agatha"
+      },
+      {
+        "position": "GK",
+        "name": "Ana"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Lidia Martins dos Santos"
+      },
+      {
+        "position": "DF",
+        "name": "Priscila"
+      },
+      {
+        "position": "DF",
+        "name": "Emilly"
+      },
+      {
+        "position": "DF",
+        "name": "Evyllyn"
+      },
+      {
+        "position": "DF",
+        "name": "Geisiane"
+      },
+      {
+        "position": "DF",
+        "name": "Jamilly"
+      },
+      {
+        "position": "MF",
+        "name": "Jeniffer"
+      },
+      {
+        "position": "MF",
+        "name": "Jenyfer"
+      },
+      {
+        "position": "MF",
+        "name": "Livia"
+      },
+      {
+        "position": "MF",
+        "name": "Ludmila"
+      },
+      {
+        "position": "MF",
+        "name": "Manu"
+      },
+      {
+        "position": "MF",
+        "name": "Mc"
+      },
+      {
+        "position": "MF",
+        "name": "Maria"
+      },
+      {
+        "position": "FW",
+        "name": "Maria Luiza"
+      },
+      {
+        "position": "FW",
+        "name": "Mai"
+      },
+      {
+        "position": "FW",
+        "name": "Michele"
+      },
+      {
+        "position": "FW",
+        "name": "Priscylla"
+      },
+      {
+        "position": "FW",
+        "name": "Rafaela"
+      },
+      {
+        "position": "FW",
+        "name": "Rafaella"
+      },
+      {
+        "position": "FW",
+        "name": "Thais"
+      },
+      {
+        "position": "FW",
+        "name": "Yasmin"
+      }
+    ]
+  },
+  {
+    "name": "Sport Club do Recife",
+    "internalName": "sport-recife",
+    "shortName": "Sport Recife",
+    "abbreviation": "SPO",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#c40000",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 60,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Alessandra Silva dos Santos"
+      },
+      {
+        "position": "GK",
+        "name": "Priscila"
+      },
+      {
+        "position": "DF",
+        "name": "Andreia"
+      },
+      {
+        "position": "DF",
+        "name": "Andrezinha"
+      },
+      {
+        "position": "DF",
+        "name": "Belen"
+      },
+      {
+        "position": "DF",
+        "name": "Debora"
+      },
+      {
+        "position": "DF",
+        "name": "Deborah"
+      },
+      {
+        "position": "DF",
+        "name": "Esther"
+      },
+      {
+        "position": "MF",
+        "name": "Esther de Menezes Santiago"
+      },
+      {
+        "position": "MF",
+        "name": "Evelin"
+      },
+      {
+        "position": "MF",
+        "name": "Nanda"
+      },
+      {
+        "position": "MF",
+        "name": "Fernanda Santos Freitas"
+      },
+      {
+        "position": "MF",
+        "name": "Gabi"
+      },
+      {
+        "position": "MF",
+        "name": "Gleyciane"
+      },
+      {
+        "position": "MF",
+        "name": "Hayla"
+      },
+      {
+        "position": "FW",
+        "name": "Ingrid Beatriz"
+      },
+      {
+        "position": "FW",
+        "name": "Ingrid"
+      },
+      {
+        "position": "FW",
+        "name": "Cabral"
+      },
+      {
+        "position": "FW",
+        "name": "Isabelly"
+      },
+      {
+        "position": "FW",
+        "name": "Janaina"
+      },
+      {
+        "position": "FW",
+        "name": "Janaina Mickaely Lopes do Nascimento"
+      },
+      {
+        "position": "FW",
+        "name": "Jaque"
+      },
+      {
+        "position": "FW",
+        "name": "Juju"
+      }
+    ]
+  },
+  {
+    "name": "União Desportiva Alagoana Ltda - Me",
+    "internalName": "uda",
+    "shortName": "Uda",
+    "abbreviation": "UDA",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#c8102e",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 68,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Adiklecia"
+      },
+      {
+        "position": "GK",
+        "name": "Alice"
+      },
+      {
+        "position": "DF",
+        "name": "Aline"
+      },
+      {
+        "position": "DF",
+        "name": "Bea"
+      },
+      {
+        "position": "DF",
+        "name": "Daisinha"
+      },
+      {
+        "position": "DF",
+        "name": "Melissa"
+      },
+      {
+        "position": "DF",
+        "name": "Giselle"
+      },
+      {
+        "position": "DF",
+        "name": "Jack"
+      },
+      {
+        "position": "MF",
+        "name": "Jheniffer"
+      },
+      {
+        "position": "MF",
+        "name": "Jú"
+      },
+      {
+        "position": "MF",
+        "name": "Kimberlly"
+      },
+      {
+        "position": "MF",
+        "name": "Laysa"
+      },
+      {
+        "position": "MF",
+        "name": "Leandressa"
+      },
+      {
+        "position": "MF",
+        "name": "Leticia"
+      },
+      {
+        "position": "MF",
+        "name": "Lu"
+      },
+      {
+        "position": "FW",
+        "name": "Duda"
+      },
+      {
+        "position": "FW",
+        "name": "Maria"
+      },
+      {
+        "position": "FW",
+        "name": "Mariana"
+      },
+      {
+        "position": "FW",
+        "name": "Max"
+      },
+      {
+        "position": "FW",
+        "name": "Micherlanne"
+      },
+      {
+        "position": "FW",
+        "name": "Milena"
+      },
+      {
+        "position": "FW",
+        "name": "Naty"
+      },
+      {
+        "position": "FW",
+        "name": "Olga"
+      }
+    ]
+  },
+  {
+    "name": "Vasco da Gama Sociedade Anônima do Futebol",
+    "internalName": "vasco-da-gama",
+    "shortName": "Vasco da Gama Saf",
+    "abbreviation": "VDG",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#000000",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 58,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Aninha"
+      },
+      {
+        "position": "GK",
+        "name": "Vick"
+      },
+      {
+        "position": "DF",
+        "name": "Ariely"
+      },
+      {
+        "position": "DF",
+        "name": "Avril"
+      },
+      {
+        "position": "DF",
+        "name": "Caroline"
+      },
+      {
+        "position": "DF",
+        "name": "Manu"
+      },
+      {
+        "position": "DF",
+        "name": "Loira"
+      },
+      {
+        "position": "DF",
+        "name": "Tefa"
+      },
+      {
+        "position": "MF",
+        "name": "Fernanda"
+      },
+      {
+        "position": "MF",
+        "name": "Gabriela"
+      },
+      {
+        "position": "MF",
+        "name": "Giovanna"
+      },
+      {
+        "position": "MF",
+        "name": "Graci"
+      },
+      {
+        "position": "MF",
+        "name": "Helo"
+      },
+      {
+        "position": "MF",
+        "name": "Isabela"
+      },
+      {
+        "position": "MF",
+        "name": "Isabella"
+      },
+      {
+        "position": "FW",
+        "name": "Jennyfer"
+      },
+      {
+        "position": "FW",
+        "name": "Juliana"
+      },
+      {
+        "position": "FW",
+        "name": "Jullyana"
+      },
+      {
+        "position": "FW",
+        "name": "Bea"
+      },
+      {
+        "position": "FW",
+        "name": "Larissa"
+      },
+      {
+        "position": "FW",
+        "name": "Layza"
+      },
+      {
+        "position": "FW",
+        "name": "Lindiane"
+      },
+      {
+        "position": "FW",
+        "name": "Liz"
+      }
+    ]
+  },
+  {
+    "name": "Vila Nova Futebol Clube",
+    "internalName": "vila-nova",
+    "shortName": "Vila Nova",
+    "abbreviation": "VIL",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#c8102e",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 63,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Adriely"
+      },
+      {
+        "position": "GK",
+        "name": "Ana"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Leticia Rodrigues Lopes da Costa"
+      },
+      {
+        "position": "DF",
+        "name": "Bárbara"
+      },
+      {
+        "position": "DF",
+        "name": "Bianca Nezo"
+      },
+      {
+        "position": "DF",
+        "name": "Cecília"
+      },
+      {
+        "position": "DF",
+        "name": "Eduarda"
+      },
+      {
+        "position": "DF",
+        "name": "Duda"
+      },
+      {
+        "position": "MF",
+        "name": "Elen"
+      },
+      {
+        "position": "MF",
+        "name": "Ellem"
+      },
+      {
+        "position": "MF",
+        "name": "Isadora"
+      },
+      {
+        "position": "MF",
+        "name": "Kauane"
+      },
+      {
+        "position": "MF",
+        "name": "Leticia"
+      },
+      {
+        "position": "MF",
+        "name": "Manuella"
+      },
+      {
+        "position": "MF",
+        "name": "Marina"
+      },
+      {
+        "position": "FW",
+        "name": "Naty"
+      },
+      {
+        "position": "FW",
+        "name": "Rafaela"
+      },
+      {
+        "position": "FW",
+        "name": "Samara"
+      },
+      {
+        "position": "FW",
+        "name": "Sebá"
+      },
+      {
+        "position": "FW",
+        "name": "Teté"
+      },
+      {
+        "position": "FW",
+        "name": "Tamara"
+      },
+      {
+        "position": "FW",
+        "name": "Thalita"
+      },
+      {
+        "position": "FW",
+        "name": "Thaynara"
+      }
+    ]
+  },
+  {
+    "name": "Araguari Atletico Clube",
+    "internalName": "araguari",
+    "shortName": "Araguari A.c.",
+    "abbreviation": "ARA",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#7a0b3d",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 53,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Ana"
+      },
+      {
+        "position": "GK",
+        "name": "Ana Luiza"
+      },
+      {
+        "position": "DF",
+        "name": "Camilly"
+      },
+      {
+        "position": "DF",
+        "name": "Daniela"
+      },
+      {
+        "position": "DF",
+        "name": "Fernanda"
+      },
+      {
+        "position": "DF",
+        "name": "Fernanda Conceição Guedes"
+      },
+      {
+        "position": "DF",
+        "name": "Giovanna"
+      },
+      {
+        "position": "DF",
+        "name": "Gloria"
+      },
+      {
+        "position": "MF",
+        "name": "Iasmim"
+      },
+      {
+        "position": "MF",
+        "name": "Iorrayne"
+      },
+      {
+        "position": "MF",
+        "name": "Isabelly"
+      },
+      {
+        "position": "MF",
+        "name": "Isadora"
+      },
+      {
+        "position": "MF",
+        "name": "Istefany"
+      },
+      {
+        "position": "MF",
+        "name": "Jessica"
+      },
+      {
+        "position": "MF",
+        "name": "Kamilly"
+      },
+      {
+        "position": "FW",
+        "name": "Karolayne"
+      },
+      {
+        "position": "FW",
+        "name": "Kauanny"
+      },
+      {
+        "position": "FW",
+        "name": "Larissa"
+      },
+      {
+        "position": "FW",
+        "name": "Lavinia"
+      },
+      {
+        "position": "FW",
+        "name": "Lorena"
+      },
+      {
+        "position": "FW",
+        "name": "Luiza"
+      },
+      {
+        "position": "FW",
+        "name": "Duda"
+      },
+      {
+        "position": "FW",
+        "name": "Mayara"
+      }
+    ]
+  },
+  {
+    "name": "Alagoinhas Atletico Clube",
+    "internalName": "atletico-de-alagoinhas",
+    "shortName": "Atlético de Alagoinhas",
+    "abbreviation": "ADA",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#0b6e4f",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 50,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Alice Almeida"
+      },
+      {
+        "position": "GK",
+        "name": "Helena Oliveira"
+      },
+      {
+        "position": "DF",
+        "name": "Patrícia Gomes"
+      },
+      {
+        "position": "DF",
+        "name": "Bruna Vieira"
+      },
+      {
+        "position": "DF",
+        "name": "Eduarda Nunes"
+      },
+      {
+        "position": "DF",
+        "name": "Larissa Farias"
+      },
+      {
+        "position": "DF",
+        "name": "Vanessa Teixeira"
+      },
+      {
+        "position": "DF",
+        "name": "Bianca Moreira"
+      },
+      {
+        "position": "MF",
+        "name": "Isabela Esteves"
+      },
+      {
+        "position": "MF",
+        "name": "Rafaela Siqueira"
+      },
+      {
+        "position": "MF",
+        "name": "Carla Lacerda"
+      },
+      {
+        "position": "MF",
+        "name": "Fernanda Duarte"
+      },
+      {
+        "position": "MF",
+        "name": "Mariana Ribeiro"
+      },
+      {
+        "position": "MF",
+        "name": "Yasmin Jardim"
+      },
+      {
+        "position": "MF",
+        "name": "Camila Cardoso"
+      },
+      {
+        "position": "FW",
+        "name": "Juliana Queiroz"
+      },
+      {
+        "position": "FW",
+        "name": "Sabrina Ipiranga"
+      },
+      {
+        "position": "FW",
+        "name": "Débora Barbosa"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriela Pacheco"
+      },
+      {
+        "position": "FW",
+        "name": "Natália Henrique"
+      },
+      {
+        "position": "FW",
+        "name": "Aline Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Daniele Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Karina Gomes"
+      }
+    ]
+  },
+  {
+    "name": "Sociedade Esportiva Recreativa E Cultural Brasil",
+    "internalName": "brasil-de-farroupilha",
+    "shortName": "Brasil de Farroupilha",
+    "abbreviation": "BDF",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#1f6f4a",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 42,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Andressa"
+      },
+      {
+        "position": "GK",
+        "name": "Dani Soares"
+      },
+      {
+        "position": "DF",
+        "name": "Duda Mattos"
+      },
+      {
+        "position": "DF",
+        "name": "Fabris"
+      },
+      {
+        "position": "DF",
+        "name": "Karoline"
+      },
+      {
+        "position": "DF",
+        "name": "Katry"
+      },
+      {
+        "position": "DF",
+        "name": "Marcela"
+      },
+      {
+        "position": "DF",
+        "name": "Maria"
+      },
+      {
+        "position": "MF",
+        "name": "Maju"
+      },
+      {
+        "position": "MF",
+        "name": "Yasmin"
+      },
+      {
+        "position": "MF",
+        "name": "Yasmin Queiroz"
+      },
+      {
+        "position": "MF",
+        "name": "Camila Ipiranga"
+      },
+      {
+        "position": "MF",
+        "name": "Juliana Barbosa"
+      },
+      {
+        "position": "MF",
+        "name": "Sabrina Pacheco"
+      },
+      {
+        "position": "MF",
+        "name": "Débora Henrique"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriela Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Natália Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Aline Gomes"
+      },
+      {
+        "position": "FW",
+        "name": "Daniele Vieira"
+      },
+      {
+        "position": "FW",
+        "name": "Karina Nunes"
+      },
+      {
+        "position": "FW",
+        "name": "Tainá Farias"
+      },
+      {
+        "position": "FW",
+        "name": "Alice Teixeira"
+      },
+      {
+        "position": "FW",
+        "name": "Helena Moreira"
+      }
+    ]
+  },
+  {
+    "name": "Coritiba Sociedade Anônima do Futebol",
+    "internalName": "coritiba",
+    "shortName": "Coritiba SAF",
+    "abbreviation": "COA",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#005c3c",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 50,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Ale"
+      },
+      {
+        "position": "GK",
+        "name": "Amanda Inácio"
+      },
+      {
+        "position": "DF",
+        "name": "Brendha"
+      },
+      {
+        "position": "DF",
+        "name": "Mily"
+      },
+      {
+        "position": "DF",
+        "name": "Iasmyn"
+      },
+      {
+        "position": "DF",
+        "name": "Joyce"
+      },
+      {
+        "position": "DF",
+        "name": "D'oliveira"
+      },
+      {
+        "position": "DF",
+        "name": "Julia Correia"
+      },
+      {
+        "position": "MF",
+        "name": "Karoline"
+      },
+      {
+        "position": "MF",
+        "name": "Duda"
+      },
+      {
+        "position": "MF",
+        "name": "Nicky"
+      },
+      {
+        "position": "MF",
+        "name": "Thai"
+      },
+      {
+        "position": "MF",
+        "name": "Thamirys"
+      },
+      {
+        "position": "MF",
+        "name": "Juliana Barbosa"
+      },
+      {
+        "position": "MF",
+        "name": "Sabrina Pacheco"
+      },
+      {
+        "position": "FW",
+        "name": "Débora Henrique"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriela Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Natália Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Aline Gomes"
+      },
+      {
+        "position": "FW",
+        "name": "Daniele Vieira"
+      },
+      {
+        "position": "FW",
+        "name": "Karina Nunes"
+      },
+      {
+        "position": "FW",
+        "name": "Tainá Farias"
+      },
+      {
+        "position": "FW",
+        "name": "Alice Teixeira"
+      }
+    ]
+  },
+  {
+    "name": "Clube Recreativo Esportivo dos Subtenentes",
+    "internalName": "cresspom",
+    "shortName": "Cresspom",
+    "abbreviation": "CRE",
+    "colors": {
+      "outline": "#1a1a1a",
+      "background": "#ffb703",
+      "name": "#1a1a1a"
+    },
+    "initialOverallStrength": 42,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Agata"
+      },
+      {
+        "position": "GK",
+        "name": "Bruna"
+      },
+      {
+        "position": "DF",
+        "name": "Ellen"
+      },
+      {
+        "position": "DF",
+        "name": "Franciane"
+      },
+      {
+        "position": "DF",
+        "name": "Gabriel Vale"
+      },
+      {
+        "position": "DF",
+        "name": "Zazá"
+      },
+      {
+        "position": "DF",
+        "name": "Janaina"
+      },
+      {
+        "position": "DF",
+        "name": "Jenifer Lopes"
+      },
+      {
+        "position": "MF",
+        "name": "Jessica"
+      },
+      {
+        "position": "MF",
+        "name": "Karolzinha"
+      },
+      {
+        "position": "MF",
+        "name": "Leticia"
+      },
+      {
+        "position": "MF",
+        "name": "Livia Leal"
+      },
+      {
+        "position": "MF",
+        "name": "Naiara"
+      },
+      {
+        "position": "MF",
+        "name": "Renata"
+      },
+      {
+        "position": "MF",
+        "name": "Sandra"
+      },
+      {
+        "position": "FW",
+        "name": "Silvania"
+      },
+      {
+        "position": "FW",
+        "name": "Tais"
+      },
+      {
+        "position": "FW",
+        "name": "Tatiane"
+      },
+      {
+        "position": "FW",
+        "name": "Vitoria"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriela Pacheco"
+      },
+      {
+        "position": "FW",
+        "name": "Natália Henrique"
+      },
+      {
+        "position": "FW",
+        "name": "Aline Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Daniele Oliveira"
+      }
+    ]
+  },
+  {
+    "name": "Criciúma Esporte Clube",
+    "internalName": "criciuma",
+    "shortName": "Criciúma",
+    "abbreviation": "CRI",
+    "colors": {
+      "outline": "#ffe600",
+      "background": "#000000",
+      "name": "#ffe600"
+    },
+    "initialOverallStrength": 43,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Ana"
+      },
+      {
+        "position": "GK",
+        "name": "Ana Julia"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Paula"
+      },
+      {
+        "position": "DF",
+        "name": "Andressa"
+      },
+      {
+        "position": "DF",
+        "name": "Beatriz"
+      },
+      {
+        "position": "DF",
+        "name": "Japa"
+      },
+      {
+        "position": "DF",
+        "name": "Carol"
+      },
+      {
+        "position": "DF",
+        "name": "Gigi"
+      },
+      {
+        "position": "MF",
+        "name": "Greice"
+      },
+      {
+        "position": "MF",
+        "name": "Hevellyn"
+      },
+      {
+        "position": "MF",
+        "name": "Leone"
+      },
+      {
+        "position": "MF",
+        "name": "Julia"
+      },
+      {
+        "position": "MF",
+        "name": "Leticia"
+      },
+      {
+        "position": "MF",
+        "name": "Letícia"
+      },
+      {
+        "position": "MF",
+        "name": "Ludmyla"
+      },
+      {
+        "position": "FW",
+        "name": "Maria"
+      },
+      {
+        "position": "FW",
+        "name": "Maria Clara Lacerda de Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Maria Clara"
+      },
+      {
+        "position": "FW",
+        "name": "Maria Eduarda"
+      },
+      {
+        "position": "FW",
+        "name": "Maria Julia"
+      },
+      {
+        "position": "FW",
+        "name": "Maria Luiza"
+      },
+      {
+        "position": "FW",
+        "name": "Marielly"
+      },
+      {
+        "position": "FW",
+        "name": "Milena"
+      }
+    ]
+  },
+  {
+    "name": "Associação Desportiva Itapuense - Adpi",
+    "internalName": "desportiva-itapuense",
+    "shortName": "Desportiva Itapuense",
+    "abbreviation": "DEA",
+    "colors": {
+      "outline": "#111111",
+      "background": "#e8e8e8",
+      "name": "#111111"
+    },
+    "initialOverallStrength": 46,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Aline"
+      },
+      {
+        "position": "GK",
+        "name": "Ana"
+      },
+      {
+        "position": "DF",
+        "name": "Analys"
+      },
+      {
+        "position": "DF",
+        "name": "Angelina"
+      },
+      {
+        "position": "DF",
+        "name": "Caren"
+      },
+      {
+        "position": "DF",
+        "name": "Crislane"
+      },
+      {
+        "position": "DF",
+        "name": "Fernanda"
+      },
+      {
+        "position": "DF",
+        "name": "Tatinha"
+      },
+      {
+        "position": "MF",
+        "name": "Jairla"
+      },
+      {
+        "position": "MF",
+        "name": "Keila"
+      },
+      {
+        "position": "MF",
+        "name": "Hulk"
+      },
+      {
+        "position": "MF",
+        "name": "Meli"
+      },
+      {
+        "position": "MF",
+        "name": "Milena"
+      },
+      {
+        "position": "MF",
+        "name": "Miriam"
+      },
+      {
+        "position": "MF",
+        "name": "Nicoli"
+      },
+      {
+        "position": "FW",
+        "name": "Paulo Dinis Alves Suares"
+      },
+      {
+        "position": "FW",
+        "name": "Raab"
+      },
+      {
+        "position": "FW",
+        "name": "Rosana"
+      },
+      {
+        "position": "FW",
+        "name": "Rosinha"
+      },
+      {
+        "position": "FW",
+        "name": "Terezinha"
+      },
+      {
+        "position": "FW",
+        "name": "Thaline"
+      },
+      {
+        "position": "FW",
+        "name": "Vanda"
+      },
+      {
+        "position": "FW",
+        "name": "Bruna Farias"
+      }
+    ]
+  },
+  {
+    "name": "Galvez Esporte Clube",
+    "internalName": "galvez",
+    "shortName": "Galvez",
+    "abbreviation": "GAL",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#0033a0",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 54,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Ana Paula"
+      },
+      {
+        "position": "GK",
+        "name": "Anna"
+      },
+      {
+        "position": "DF",
+        "name": "Marreiro"
+      },
+      {
+        "position": "DF",
+        "name": "Bruna Vilhalva"
+      },
+      {
+        "position": "DF",
+        "name": "Cailane"
+      },
+      {
+        "position": "DF",
+        "name": "Cris Dantas"
+      },
+      {
+        "position": "DF",
+        "name": "Isadora"
+      },
+      {
+        "position": "DF",
+        "name": "Jaqueline"
+      },
+      {
+        "position": "MF",
+        "name": "Biro"
+      },
+      {
+        "position": "MF",
+        "name": "Katrina"
+      },
+      {
+        "position": "MF",
+        "name": "Kedina"
+      },
+      {
+        "position": "MF",
+        "name": "Kethelyn"
+      },
+      {
+        "position": "MF",
+        "name": "Lorena"
+      },
+      {
+        "position": "MF",
+        "name": "Monteiro"
+      },
+      {
+        "position": "MF",
+        "name": "Maria"
+      },
+      {
+        "position": "FW",
+        "name": "Polly"
+      },
+      {
+        "position": "FW",
+        "name": "Raiane"
+      },
+      {
+        "position": "FW",
+        "name": "Rosalia"
+      },
+      {
+        "position": "FW",
+        "name": "Samela"
+      },
+      {
+        "position": "FW",
+        "name": "Tati"
+      },
+      {
+        "position": "FW",
+        "name": "Thawanne"
+      },
+      {
+        "position": "FW",
+        "name": "Vanessa"
+      },
+      {
+        "position": "FW",
+        "name": "Carla Cardoso"
+      }
+    ]
+  },
+  {
+    "name": "Associação Esportiva Guarani de Paripueira",
+    "internalName": "guarani-de-paripueira",
+    "shortName": "Guarani de Paripueira",
+    "abbreviation": "GDP",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#7a0b3d",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 41,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Ana"
+      },
+      {
+        "position": "GK",
+        "name": "Ana Paula Santana Batista"
+      },
+      {
+        "position": "DF",
+        "name": "Andressa"
+      },
+      {
+        "position": "DF",
+        "name": "Nice"
+      },
+      {
+        "position": "DF",
+        "name": "Deyse"
+      },
+      {
+        "position": "DF",
+        "name": "Josiane"
+      },
+      {
+        "position": "DF",
+        "name": "Laryssa"
+      },
+      {
+        "position": "DF",
+        "name": "Lethicia"
+      },
+      {
+        "position": "MF",
+        "name": "Lucivania"
+      },
+      {
+        "position": "MF",
+        "name": "Luziane"
+      },
+      {
+        "position": "MF",
+        "name": "Maria"
+      },
+      {
+        "position": "MF",
+        "name": "Eduarda"
+      },
+      {
+        "position": "MF",
+        "name": "Maria Eugenia Nascimento dos Santos"
+      },
+      {
+        "position": "MF",
+        "name": "Monique"
+      },
+      {
+        "position": "MF",
+        "name": "Raiane"
+      },
+      {
+        "position": "FW",
+        "name": "Raislane"
+      },
+      {
+        "position": "FW",
+        "name": "Rayane"
+      },
+      {
+        "position": "FW",
+        "name": "Tereza"
+      },
+      {
+        "position": "FW",
+        "name": "Larissa Vieira"
+      },
+      {
+        "position": "FW",
+        "name": "Vanessa Nunes"
+      },
+      {
+        "position": "FW",
+        "name": "Bianca Farias"
+      },
+      {
+        "position": "FW",
+        "name": "Isabela Teixeira"
+      },
+      {
+        "position": "FW",
+        "name": "Rafaela Moreira"
+      }
+    ]
+  },
+  {
+    "name": "Centro Esportivo Social E Cultural Heips",
+    "internalName": "heips",
+    "shortName": "Heips",
+    "abbreviation": "HEI",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#8b1a1a",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 46,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Ana"
+      },
+      {
+        "position": "GK",
+        "name": "Ana Karolina Barcelos Vieira Monteiro"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Rita Alves Gomes Jardim"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Yara da Silva Souza"
+      },
+      {
+        "position": "DF",
+        "name": "Anna"
+      },
+      {
+        "position": "DF",
+        "name": "Dayane"
+      },
+      {
+        "position": "DF",
+        "name": "Siqueira"
+      },
+      {
+        "position": "DF",
+        "name": "Giovanna"
+      },
+      {
+        "position": "MF",
+        "name": "Isabela"
+      },
+      {
+        "position": "MF",
+        "name": "Isabelle"
+      },
+      {
+        "position": "MF",
+        "name": "Jade"
+      },
+      {
+        "position": "MF",
+        "name": "Janaina"
+      },
+      {
+        "position": "MF",
+        "name": "Jenifer"
+      },
+      {
+        "position": "MF",
+        "name": "Jhennifer Oliveira Mello"
+      },
+      {
+        "position": "MF",
+        "name": "Joalina"
+      },
+      {
+        "position": "FW",
+        "name": "Ketelen"
+      },
+      {
+        "position": "FW",
+        "name": "Kethllen"
+      },
+      {
+        "position": "FW",
+        "name": "Lara"
+      },
+      {
+        "position": "FW",
+        "name": "Laura"
+      },
+      {
+        "position": "FW",
+        "name": "Leticia"
+      },
+      {
+        "position": "FW",
+        "name": "Lorrayne"
+      },
+      {
+        "position": "FW",
+        "name": "Naiany"
+      },
+      {
+        "position": "FW",
+        "name": "Natalia"
+      }
+    ]
+  },
+  {
+    "name": "Ipojuca Atletico Clube",
+    "internalName": "ipojuca",
+    "shortName": "Ipojuca",
+    "abbreviation": "IPO",
+    "colors": {
+      "outline": "#1a1a1a",
+      "background": "#ffb703",
+      "name": "#1a1a1a"
+    },
+    "initialOverallStrength": 44,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Livia"
+      },
+      {
+        "position": "GK",
+        "name": "Beatriz"
+      },
+      {
+        "position": "DF",
+        "name": "Iris"
+      },
+      {
+        "position": "DF",
+        "name": "Isabel"
+      },
+      {
+        "position": "DF",
+        "name": "Reis"
+      },
+      {
+        "position": "DF",
+        "name": "Simon"
+      },
+      {
+        "position": "DF",
+        "name": "Maria Eduarda"
+      },
+      {
+        "position": "DF",
+        "name": "Mariana"
+      },
+      {
+        "position": "MF",
+        "name": "Niele"
+      },
+      {
+        "position": "MF",
+        "name": "Rawena"
+      },
+      {
+        "position": "MF",
+        "name": "Karine"
+      },
+      {
+        "position": "MF",
+        "name": "Yasmim"
+      },
+      {
+        "position": "MF",
+        "name": "Carla Gomes"
+      },
+      {
+        "position": "MF",
+        "name": "Fernanda Vieira"
+      },
+      {
+        "position": "MF",
+        "name": "Mariana Nunes"
+      },
+      {
+        "position": "FW",
+        "name": "Yasmin Farias"
+      },
+      {
+        "position": "FW",
+        "name": "Camila Teixeira"
+      },
+      {
+        "position": "FW",
+        "name": "Juliana Moreira"
+      },
+      {
+        "position": "FW",
+        "name": "Sabrina Esteves"
+      },
+      {
+        "position": "FW",
+        "name": "Débora Siqueira"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriela Lacerda"
+      },
+      {
+        "position": "FW",
+        "name": "Natália Duarte"
+      },
+      {
+        "position": "FW",
+        "name": "Aline Ribeiro"
+      }
+    ]
+  },
+  {
+    "name": "Clube Esportivo Juventude",
+    "internalName": "juventude-se",
+    "shortName": "Juventude",
+    "abbreviation": "JUA",
+    "colors": {
+      "outline": "#111111",
+      "background": "#7fc6a4",
+      "name": "#111111"
+    },
+    "initialOverallStrength": 47,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Alice"
+      },
+      {
+        "position": "GK",
+        "name": "Anna Alice"
+      },
+      {
+        "position": "DF",
+        "name": "Sorriso"
+      },
+      {
+        "position": "DF",
+        "name": "Ianny"
+      },
+      {
+        "position": "DF",
+        "name": "Ilma"
+      },
+      {
+        "position": "DF",
+        "name": "Jamilly"
+      },
+      {
+        "position": "DF",
+        "name": "Nayra"
+      },
+      {
+        "position": "DF",
+        "name": "Juliana"
+      },
+      {
+        "position": "MF",
+        "name": "Juliana Santos de Oliveira"
+      },
+      {
+        "position": "MF",
+        "name": "Kamilly"
+      },
+      {
+        "position": "MF",
+        "name": "Kim"
+      },
+      {
+        "position": "MF",
+        "name": "Fernanda"
+      },
+      {
+        "position": "MF",
+        "name": "Laureen"
+      },
+      {
+        "position": "MF",
+        "name": "Luzivania"
+      },
+      {
+        "position": "MF",
+        "name": "Manu"
+      },
+      {
+        "position": "FW",
+        "name": "Duda"
+      },
+      {
+        "position": "FW",
+        "name": "Rosinha"
+      },
+      {
+        "position": "FW",
+        "name": "Mica"
+      },
+      {
+        "position": "FW",
+        "name": "Monique"
+      },
+      {
+        "position": "FW",
+        "name": "Rai"
+      },
+      {
+        "position": "FW",
+        "name": "Sara"
+      },
+      {
+        "position": "FW",
+        "name": "Sachenka"
+      },
+      {
+        "position": "FW",
+        "name": "Suelen"
+      }
+    ]
+  },
+  {
+    "name": "Liga de Futebol da Cidade de São João do Piauí",
+    "internalName": "liga-sanjoanense",
+    "shortName": "Liga Sanjoanense",
+    "abbreviation": "LIG",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#4a1d6b",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 49,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Aline"
+      },
+      {
+        "position": "GK",
+        "name": "Ana"
+      },
+      {
+        "position": "DF",
+        "name": "Clara"
+      },
+      {
+        "position": "DF",
+        "name": "Kelline"
+      },
+      {
+        "position": "DF",
+        "name": "Lissa"
+      },
+      {
+        "position": "DF",
+        "name": "Vitoria"
+      },
+      {
+        "position": "DF",
+        "name": "Vanessa"
+      },
+      {
+        "position": "DF",
+        "name": "Aline Nunes"
+      },
+      {
+        "position": "MF",
+        "name": "Daniele Farias"
+      },
+      {
+        "position": "MF",
+        "name": "Karina Teixeira"
+      },
+      {
+        "position": "MF",
+        "name": "Tainá Moreira"
+      },
+      {
+        "position": "MF",
+        "name": "Alice Esteves"
+      },
+      {
+        "position": "MF",
+        "name": "Helena Siqueira"
+      },
+      {
+        "position": "MF",
+        "name": "Patrícia Lacerda"
+      },
+      {
+        "position": "MF",
+        "name": "Bruna Duarte"
+      },
+      {
+        "position": "FW",
+        "name": "Eduarda Ribeiro"
+      },
+      {
+        "position": "FW",
+        "name": "Larissa Jardim"
+      },
+      {
+        "position": "FW",
+        "name": "Vanessa Cardoso"
+      },
+      {
+        "position": "FW",
+        "name": "Bianca Queiroz"
+      },
+      {
+        "position": "FW",
+        "name": "Isabela Ipiranga"
+      },
+      {
+        "position": "FW",
+        "name": "Rafaela Barbosa"
+      },
+      {
+        "position": "FW",
+        "name": "Carla Pacheco"
+      },
+      {
+        "position": "FW",
+        "name": "Fernanda Henrique"
+      }
+    ]
+  },
+  {
+    "name": "Gremio Esportivo Mauaense",
+    "internalName": "mauaense",
+    "shortName": "Mauaense",
+    "abbreviation": "MAU",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#5d4037",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 54,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Ana Clara"
+      },
+      {
+        "position": "GK",
+        "name": "Ana Luiza"
+      },
+      {
+        "position": "DF",
+        "name": "Ariane"
+      },
+      {
+        "position": "DF",
+        "name": "Dayane"
+      },
+      {
+        "position": "DF",
+        "name": "Gabi Soares"
+      },
+      {
+        "position": "DF",
+        "name": "Giovana"
+      },
+      {
+        "position": "DF",
+        "name": "Nenê"
+      },
+      {
+        "position": "DF",
+        "name": "Isabella"
+      },
+      {
+        "position": "MF",
+        "name": "Isa"
+      },
+      {
+        "position": "MF",
+        "name": "Isabely Cristina do Nascimento Queiroz"
+      },
+      {
+        "position": "MF",
+        "name": "Isabely"
+      },
+      {
+        "position": "MF",
+        "name": "Jeniffer Sampaio"
+      },
+      {
+        "position": "MF",
+        "name": "Julia"
+      },
+      {
+        "position": "MF",
+        "name": "Julia Pinto Batista da Conceição"
+      },
+      {
+        "position": "MF",
+        "name": "Kamilly"
+      },
+      {
+        "position": "FW",
+        "name": "Kemilyn"
+      },
+      {
+        "position": "FW",
+        "name": "Larissa Reis"
+      },
+      {
+        "position": "FW",
+        "name": "Larissa"
+      },
+      {
+        "position": "FW",
+        "name": "Lari"
+      },
+      {
+        "position": "FW",
+        "name": "Maiara"
+      },
+      {
+        "position": "FW",
+        "name": "Mariele"
+      },
+      {
+        "position": "FW",
+        "name": "Milena"
+      },
+      {
+        "position": "FW",
+        "name": "Rafaela"
+      }
+    ]
+  },
+  {
+    "name": "Mixto Esporte Clube",
+    "internalName": "mixto-pb",
+    "shortName": "Mixto",
+    "abbreviation": "MIA",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#1f6f4a",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 47,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Barbara"
+      },
+      {
+        "position": "GK",
+        "name": "Debora"
+      },
+      {
+        "position": "DF",
+        "name": "Deborah"
+      },
+      {
+        "position": "DF",
+        "name": "Jamily"
+      },
+      {
+        "position": "DF",
+        "name": "Luciana"
+      },
+      {
+        "position": "DF",
+        "name": "Dafine"
+      },
+      {
+        "position": "DF",
+        "name": "Fatinha"
+      },
+      {
+        "position": "DF",
+        "name": "Dudinha"
+      },
+      {
+        "position": "MF",
+        "name": "Leandra"
+      },
+      {
+        "position": "MF",
+        "name": "Nina"
+      },
+      {
+        "position": "MF",
+        "name": "Rayza"
+      },
+      {
+        "position": "MF",
+        "name": "Sthefani"
+      },
+      {
+        "position": "MF",
+        "name": "Thainá"
+      },
+      {
+        "position": "MF",
+        "name": "Thauane"
+      },
+      {
+        "position": "MF",
+        "name": "Wili"
+      },
+      {
+        "position": "FW",
+        "name": "Zayra"
+      },
+      {
+        "position": "FW",
+        "name": "Yasmin Moreira"
+      },
+      {
+        "position": "FW",
+        "name": "Camila Esteves"
+      },
+      {
+        "position": "FW",
+        "name": "Juliana Siqueira"
+      },
+      {
+        "position": "FW",
+        "name": "Sabrina Lacerda"
+      },
+      {
+        "position": "FW",
+        "name": "Débora Duarte"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriela Ribeiro"
+      },
+      {
+        "position": "FW",
+        "name": "Natália Jardim"
+      }
+    ]
+  },
+  {
+    "name": "Futebol Clube Pantanal SAF",
+    "internalName": "pantanal",
+    "shortName": "Pantanal SAF",
+    "abbreviation": "PAN",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#00695c",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 52,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Aissa"
+      },
+      {
+        "position": "GK",
+        "name": "Carolzinha"
+      },
+      {
+        "position": "DF",
+        "name": "Ariane"
+      },
+      {
+        "position": "DF",
+        "name": "Camila Menezes"
+      },
+      {
+        "position": "DF",
+        "name": "Deise"
+      },
+      {
+        "position": "DF",
+        "name": "Emanuelle"
+      },
+      {
+        "position": "DF",
+        "name": "Eustaquio"
+      },
+      {
+        "position": "DF",
+        "name": "Evelyn"
+      },
+      {
+        "position": "MF",
+        "name": "Gabrielle"
+      },
+      {
+        "position": "MF",
+        "name": "Sorriso"
+      },
+      {
+        "position": "MF",
+        "name": "Isabela"
+      },
+      {
+        "position": "MF",
+        "name": "Isabela Ribeiro de Oliveira"
+      },
+      {
+        "position": "MF",
+        "name": "Jose Alex Martins de Sousa"
+      },
+      {
+        "position": "MF",
+        "name": "Kamila"
+      },
+      {
+        "position": "MF",
+        "name": "Kety"
+      },
+      {
+        "position": "FW",
+        "name": "Marielle"
+      },
+      {
+        "position": "FW",
+        "name": "Sabrina"
+      },
+      {
+        "position": "FW",
+        "name": "Sarah"
+      },
+      {
+        "position": "FW",
+        "name": "Silvani"
+      },
+      {
+        "position": "FW",
+        "name": "Thafila"
+      },
+      {
+        "position": "FW",
+        "name": "Vanice"
+      },
+      {
+        "position": "FW",
+        "name": "Fernanda Farias"
+      },
+      {
+        "position": "FW",
+        "name": "Mariana Teixeira"
+      }
+    ]
+  },
+  {
+    "name": "Escola de Futebol Profissionalizante",
+    "internalName": "paraiso",
+    "shortName": "Paraíso Esporte Clube",
+    "abbreviation": "PAR",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#2b2f77",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 48,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Ana Julia"
+      },
+      {
+        "position": "GK",
+        "name": "Ane Carol"
+      },
+      {
+        "position": "DF",
+        "name": "Aylla"
+      },
+      {
+        "position": "DF",
+        "name": "Barbara"
+      },
+      {
+        "position": "DF",
+        "name": "Camila"
+      },
+      {
+        "position": "DF",
+        "name": "Darlene"
+      },
+      {
+        "position": "DF",
+        "name": "Dada"
+      },
+      {
+        "position": "DF",
+        "name": "Esquerdinha"
+      },
+      {
+        "position": "MF",
+        "name": "Esther"
+      },
+      {
+        "position": "MF",
+        "name": "Fernanda"
+      },
+      {
+        "position": "MF",
+        "name": "Gabriela"
+      },
+      {
+        "position": "MF",
+        "name": "Hellen"
+      },
+      {
+        "position": "MF",
+        "name": "Leticia"
+      },
+      {
+        "position": "MF",
+        "name": "Luna"
+      },
+      {
+        "position": "MF",
+        "name": "Maria Clara"
+      },
+      {
+        "position": "FW",
+        "name": "Maria"
+      },
+      {
+        "position": "FW",
+        "name": "Paula"
+      },
+      {
+        "position": "FW",
+        "name": "Shay"
+      },
+      {
+        "position": "FW",
+        "name": "Talita"
+      },
+      {
+        "position": "FW",
+        "name": "Juliana Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Sabrina Gomes"
+      },
+      {
+        "position": "FW",
+        "name": "Débora Vieira"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriela Nunes"
+      }
+    ]
+  },
+  {
+    "name": "Penarol Atletico Clube",
+    "internalName": "penarol",
+    "shortName": "Penarol",
+    "abbreviation": "PEN",
+    "colors": {
+      "outline": "#ffe600",
+      "background": "#000000",
+      "name": "#ffe600"
+    },
+    "initialOverallStrength": 55,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Brenna"
+      },
+      {
+        "position": "GK",
+        "name": "Neia"
+      },
+      {
+        "position": "DF",
+        "name": "Digliene"
+      },
+      {
+        "position": "DF",
+        "name": "Grazi"
+      },
+      {
+        "position": "DF",
+        "name": "Keliane"
+      },
+      {
+        "position": "DF",
+        "name": "Maria"
+      },
+      {
+        "position": "DF",
+        "name": "Vanessa Gomes"
+      },
+      {
+        "position": "DF",
+        "name": "Bianca Vieira"
+      },
+      {
+        "position": "MF",
+        "name": "Isabela Nunes"
+      },
+      {
+        "position": "MF",
+        "name": "Rafaela Farias"
+      },
+      {
+        "position": "MF",
+        "name": "Carla Teixeira"
+      },
+      {
+        "position": "MF",
+        "name": "Fernanda Moreira"
+      },
+      {
+        "position": "MF",
+        "name": "Mariana Esteves"
+      },
+      {
+        "position": "MF",
+        "name": "Yasmin Siqueira"
+      },
+      {
+        "position": "MF",
+        "name": "Camila Lacerda"
+      },
+      {
+        "position": "FW",
+        "name": "Juliana Duarte"
+      },
+      {
+        "position": "FW",
+        "name": "Sabrina Ribeiro"
+      },
+      {
+        "position": "FW",
+        "name": "Débora Jardim"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriela Cardoso"
+      },
+      {
+        "position": "FW",
+        "name": "Natália Queiroz"
+      },
+      {
+        "position": "FW",
+        "name": "Aline Ipiranga"
+      },
+      {
+        "position": "FW",
+        "name": "Daniele Barbosa"
+      },
+      {
+        "position": "FW",
+        "name": "Karina Pacheco"
+      }
+    ]
+  },
+  {
+    "name": "Planalto Esporte Clube S.a.f",
+    "internalName": "planalto",
+    "shortName": "Planalto Esporte Clube",
+    "abbreviation": "PLA",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#4a1d6b",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 45,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Brenda"
+      },
+      {
+        "position": "GK",
+        "name": "Cibelly"
+      },
+      {
+        "position": "DF",
+        "name": "Daniele"
+      },
+      {
+        "position": "DF",
+        "name": "Formiga"
+      },
+      {
+        "position": "DF",
+        "name": "Emily Oliveira"
+      },
+      {
+        "position": "DF",
+        "name": "Erica Santos"
+      },
+      {
+        "position": "DF",
+        "name": "Gabi"
+      },
+      {
+        "position": "DF",
+        "name": "Lora Capanema"
+      },
+      {
+        "position": "MF",
+        "name": "Idalana"
+      },
+      {
+        "position": "MF",
+        "name": "Jhemmily"
+      },
+      {
+        "position": "MF",
+        "name": "Jhulian Faria"
+      },
+      {
+        "position": "MF",
+        "name": "Joice"
+      },
+      {
+        "position": "MF",
+        "name": "Ronaldinha"
+      },
+      {
+        "position": "MF",
+        "name": "Livia"
+      },
+      {
+        "position": "MF",
+        "name": "Lorrayne"
+      },
+      {
+        "position": "FW",
+        "name": "Lorraynne Macedo Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Marcelly"
+      },
+      {
+        "position": "FW",
+        "name": "Maria"
+      },
+      {
+        "position": "FW",
+        "name": "Duda"
+      },
+      {
+        "position": "FW",
+        "name": "Maria Lauane da Silva Pereira"
+      },
+      {
+        "position": "FW",
+        "name": "Mayara"
+      },
+      {
+        "position": "FW",
+        "name": "Moara"
+      },
+      {
+        "position": "FW",
+        "name": "Palominha"
+      }
+    ]
+  },
+  {
+    "name": "Portuguesa de Desporto do Amapa",
+    "internalName": "portuguesa",
+    "shortName": "Portuguesa",
+    "abbreviation": "POR",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#006437",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 45,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Pandora"
+      },
+      {
+        "position": "GK",
+        "name": "Aninha Belém"
+      },
+      {
+        "position": "DF",
+        "name": "Barbara"
+      },
+      {
+        "position": "DF",
+        "name": "Beatriz"
+      },
+      {
+        "position": "DF",
+        "name": "Ditta"
+      },
+      {
+        "position": "DF",
+        "name": "Lora Soure"
+      },
+      {
+        "position": "DF",
+        "name": "Cleici"
+      },
+      {
+        "position": "DF",
+        "name": "Dandara"
+      },
+      {
+        "position": "MF",
+        "name": "Dhessica"
+      },
+      {
+        "position": "MF",
+        "name": "Índia"
+      },
+      {
+        "position": "MF",
+        "name": "Gaby"
+      },
+      {
+        "position": "MF",
+        "name": "Sabattine"
+      },
+      {
+        "position": "MF",
+        "name": "Jaque"
+      },
+      {
+        "position": "MF",
+        "name": "Jenniff"
+      },
+      {
+        "position": "MF",
+        "name": "Juh Lourenço"
+      },
+      {
+        "position": "FW",
+        "name": "Elenny"
+      },
+      {
+        "position": "FW",
+        "name": "Mariana"
+      },
+      {
+        "position": "FW",
+        "name": "Kadja"
+      },
+      {
+        "position": "FW",
+        "name": "Gigante"
+      },
+      {
+        "position": "FW",
+        "name": "Naiane"
+      },
+      {
+        "position": "FW",
+        "name": "Rafa Marajó"
+      },
+      {
+        "position": "FW",
+        "name": "Railene"
+      },
+      {
+        "position": "FW",
+        "name": "Ray"
+      }
+    ]
+  },
+  {
+    "name": "Prosperidade Futebol Clube Feminino",
+    "internalName": "prosperidade",
+    "shortName": "Prosperidade F. C.",
+    "abbreviation": "PRO",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#0d5c63",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 43,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Russinha"
+      },
+      {
+        "position": "GK",
+        "name": "Allyce"
+      },
+      {
+        "position": "DF",
+        "name": "Camila"
+      },
+      {
+        "position": "DF",
+        "name": "Eniely"
+      },
+      {
+        "position": "DF",
+        "name": "Mística"
+      },
+      {
+        "position": "DF",
+        "name": "Kelly"
+      },
+      {
+        "position": "DF",
+        "name": "Jamili"
+      },
+      {
+        "position": "DF",
+        "name": "Jasmim"
+      },
+      {
+        "position": "MF",
+        "name": "Larissa"
+      },
+      {
+        "position": "MF",
+        "name": "Laura"
+      },
+      {
+        "position": "MF",
+        "name": "Lorena"
+      },
+      {
+        "position": "MF",
+        "name": "Duda Capixaba"
+      },
+      {
+        "position": "MF",
+        "name": "Gurgel"
+      },
+      {
+        "position": "MF",
+        "name": "Mariana"
+      },
+      {
+        "position": "MF",
+        "name": "Michelle"
+      },
+      {
+        "position": "FW",
+        "name": "Nathane"
+      },
+      {
+        "position": "FW",
+        "name": "Rosy"
+      },
+      {
+        "position": "FW",
+        "name": "Suzy"
+      },
+      {
+        "position": "FW",
+        "name": "Tais"
+      },
+      {
+        "position": "FW",
+        "name": "Tayane"
+      },
+      {
+        "position": "FW",
+        "name": "Kayapó"
+      },
+      {
+        "position": "FW",
+        "name": "Feijão"
+      },
+      {
+        "position": "FW",
+        "name": "Victoria"
+      }
+    ]
+  },
+  {
+    "name": "R4 Esporte Clube",
+    "internalName": "r4",
+    "shortName": "R4",
+    "abbreviation": "R4X",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#0d5c63",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 51,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Bia Natal"
+      },
+      {
+        "position": "GK",
+        "name": "Ana Maria"
+      },
+      {
+        "position": "DF",
+        "name": "Anna"
+      },
+      {
+        "position": "DF",
+        "name": "Vitoria"
+      },
+      {
+        "position": "DF",
+        "name": "Abida"
+      },
+      {
+        "position": "DF",
+        "name": "Daniela"
+      },
+      {
+        "position": "DF",
+        "name": "Fabiana"
+      },
+      {
+        "position": "DF",
+        "name": "Janiely"
+      },
+      {
+        "position": "MF",
+        "name": "Brena"
+      },
+      {
+        "position": "MF",
+        "name": "Juliana"
+      },
+      {
+        "position": "MF",
+        "name": "Alane"
+      },
+      {
+        "position": "MF",
+        "name": "Alice"
+      },
+      {
+        "position": "MF",
+        "name": "Duda"
+      },
+      {
+        "position": "MF",
+        "name": "Izabel"
+      },
+      {
+        "position": "MF",
+        "name": "Janaina"
+      },
+      {
+        "position": "FW",
+        "name": "Nayara"
+      },
+      {
+        "position": "FW",
+        "name": "Ortencia"
+      },
+      {
+        "position": "FW",
+        "name": "Shayanne"
+      },
+      {
+        "position": "FW",
+        "name": "Thallita"
+      },
+      {
+        "position": "FW",
+        "name": "Virlene"
+      },
+      {
+        "position": "FW",
+        "name": "Débora Moreira"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriela Esteves"
+      },
+      {
+        "position": "FW",
+        "name": "Natália Siqueira"
+      }
+    ]
+  },
+  {
+    "name": "Associacao Esportiva Realidade Jovem Rio Preto",
+    "internalName": "realidade-jovem",
+    "shortName": "Realidade Jovem",
+    "abbreviation": "REA",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#123a6b",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 52,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Barbara"
+      },
+      {
+        "position": "GK",
+        "name": "Carol Fernandes"
+      },
+      {
+        "position": "DF",
+        "name": "Caylane"
+      },
+      {
+        "position": "DF",
+        "name": "Emilly"
+      },
+      {
+        "position": "DF",
+        "name": "Gabi"
+      },
+      {
+        "position": "DF",
+        "name": "Bia"
+      },
+      {
+        "position": "DF",
+        "name": "Ingrid"
+      },
+      {
+        "position": "DF",
+        "name": "Ingrid Barbosa Leão"
+      },
+      {
+        "position": "MF",
+        "name": "Ingrid dos Santos da Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Isabelle"
+      },
+      {
+        "position": "MF",
+        "name": "Julia Silva"
+      },
+      {
+        "position": "MF",
+        "name": "Lais"
+      },
+      {
+        "position": "MF",
+        "name": "Mari"
+      },
+      {
+        "position": "MF",
+        "name": "Stela"
+      },
+      {
+        "position": "MF",
+        "name": "Naely"
+      },
+      {
+        "position": "FW",
+        "name": "Nicoly"
+      },
+      {
+        "position": "FW",
+        "name": "Rafaelly"
+      },
+      {
+        "position": "FW",
+        "name": "Raiza"
+      },
+      {
+        "position": "FW",
+        "name": "Rayane"
+      },
+      {
+        "position": "FW",
+        "name": "Renaly"
+      },
+      {
+        "position": "FW",
+        "name": "Sabrina"
+      },
+      {
+        "position": "FW",
+        "name": "Sabrina Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Débora Oliveira"
+      }
+    ]
+  },
+  {
+    "name": "Clube do Remo",
+    "internalName": "remo",
+    "shortName": "Remo",
+    "abbreviation": "REM",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#00539b",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 46,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Daniele Queiroz"
+      },
+      {
+        "position": "GK",
+        "name": "Karina Ipiranga"
+      },
+      {
+        "position": "DF",
+        "name": "Tainá Barbosa"
+      },
+      {
+        "position": "DF",
+        "name": "Alice Pacheco"
+      },
+      {
+        "position": "DF",
+        "name": "Helena Henrique"
+      },
+      {
+        "position": "DF",
+        "name": "Patrícia Almeida"
+      },
+      {
+        "position": "DF",
+        "name": "Bruna Oliveira"
+      },
+      {
+        "position": "DF",
+        "name": "Eduarda Gomes"
+      },
+      {
+        "position": "MF",
+        "name": "Larissa Vieira"
+      },
+      {
+        "position": "MF",
+        "name": "Vanessa Nunes"
+      },
+      {
+        "position": "MF",
+        "name": "Bianca Farias"
+      },
+      {
+        "position": "MF",
+        "name": "Isabela Teixeira"
+      },
+      {
+        "position": "MF",
+        "name": "Rafaela Moreira"
+      },
+      {
+        "position": "MF",
+        "name": "Carla Esteves"
+      },
+      {
+        "position": "MF",
+        "name": "Fernanda Siqueira"
+      },
+      {
+        "position": "FW",
+        "name": "Mariana Lacerda"
+      },
+      {
+        "position": "FW",
+        "name": "Yasmin Duarte"
+      },
+      {
+        "position": "FW",
+        "name": "Camila Ribeiro"
+      },
+      {
+        "position": "FW",
+        "name": "Juliana Jardim"
+      },
+      {
+        "position": "FW",
+        "name": "Sabrina Cardoso"
+      },
+      {
+        "position": "FW",
+        "name": "Débora Queiroz"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriela Ipiranga"
+      },
+      {
+        "position": "FW",
+        "name": "Natália Barbosa"
+      }
+    ]
+  },
+  {
+    "name": "Rolim de Moura Esporte Clube",
+    "internalName": "rolim-de-moura",
+    "shortName": "Rolim de Moura",
+    "abbreviation": "RDM",
+    "colors": {
+      "outline": "#f5f5f5",
+      "background": "#37474f",
+      "name": "#f5f5f5"
+    },
+    "initialOverallStrength": 51,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Cassi"
+      },
+      {
+        "position": "GK",
+        "name": "Gleicinha"
+      },
+      {
+        "position": "DF",
+        "name": "Jaja"
+      },
+      {
+        "position": "DF",
+        "name": "Leticia"
+      },
+      {
+        "position": "DF",
+        "name": "Naty"
+      },
+      {
+        "position": "DF",
+        "name": "Raissa"
+      },
+      {
+        "position": "DF",
+        "name": "Tamires"
+      },
+      {
+        "position": "DF",
+        "name": "Vitoria"
+      },
+      {
+        "position": "MF",
+        "name": "Vitoria Rodrigues Correa"
+      },
+      {
+        "position": "MF",
+        "name": "Gaby"
+      },
+      {
+        "position": "MF",
+        "name": "Mariana Esteves"
+      },
+      {
+        "position": "MF",
+        "name": "Yasmin Siqueira"
+      },
+      {
+        "position": "MF",
+        "name": "Camila Lacerda"
+      },
+      {
+        "position": "MF",
+        "name": "Juliana Duarte"
+      },
+      {
+        "position": "MF",
+        "name": "Sabrina Ribeiro"
+      },
+      {
+        "position": "FW",
+        "name": "Débora Jardim"
+      },
+      {
+        "position": "FW",
+        "name": "Gabriela Cardoso"
+      },
+      {
+        "position": "FW",
+        "name": "Natália Queiroz"
+      },
+      {
+        "position": "FW",
+        "name": "Aline Ipiranga"
+      },
+      {
+        "position": "FW",
+        "name": "Daniele Barbosa"
+      },
+      {
+        "position": "FW",
+        "name": "Karina Pacheco"
+      },
+      {
+        "position": "FW",
+        "name": "Tainá Henrique"
+      },
+      {
+        "position": "FW",
+        "name": "Alice Almeida"
+      }
+    ]
+  },
+  {
+    "name": "Sampaio Corrêa Futebol Clube",
+    "internalName": "sampaio-correa",
+    "shortName": "Sampaio Corrêa",
+    "abbreviation": "SAM",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#c8102e",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 53,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Cris"
+      },
+      {
+        "position": "GK",
+        "name": "Dayane"
+      },
+      {
+        "position": "DF",
+        "name": "Del"
+      },
+      {
+        "position": "DF",
+        "name": "Keylianne"
+      },
+      {
+        "position": "DF",
+        "name": "Isabel"
+      },
+      {
+        "position": "DF",
+        "name": "Islaeny"
+      },
+      {
+        "position": "DF",
+        "name": "Leonice"
+      },
+      {
+        "position": "DF",
+        "name": "Nayara"
+      },
+      {
+        "position": "MF",
+        "name": "Olivia"
+      },
+      {
+        "position": "MF",
+        "name": "Amanda"
+      },
+      {
+        "position": "MF",
+        "name": "Gabriela Cardoso"
+      },
+      {
+        "position": "MF",
+        "name": "Natália Queiroz"
+      },
+      {
+        "position": "MF",
+        "name": "Aline Ipiranga"
+      },
+      {
+        "position": "MF",
+        "name": "Daniele Barbosa"
+      },
+      {
+        "position": "MF",
+        "name": "Karina Pacheco"
+      },
+      {
+        "position": "FW",
+        "name": "Tainá Henrique"
+      },
+      {
+        "position": "FW",
+        "name": "Alice Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Helena Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Patrícia Gomes"
+      },
+      {
+        "position": "FW",
+        "name": "Bruna Vieira"
+      },
+      {
+        "position": "FW",
+        "name": "Eduarda Nunes"
+      },
+      {
+        "position": "FW",
+        "name": "Larissa Farias"
+      },
+      {
+        "position": "FW",
+        "name": "Vanessa Teixeira"
+      }
+    ]
+  },
+  {
+    "name": "São Jose Esporte Clube - Sociedade Anonima do Futebol",
+    "internalName": "sao-jose",
+    "shortName": "São Jose Esporte Clube Saf",
+    "abbreviation": "SAA",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#0a3d91",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 55,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Alissa"
+      },
+      {
+        "position": "GK",
+        "name": "Ana Clara"
+      },
+      {
+        "position": "DF",
+        "name": "Livinha"
+      },
+      {
+        "position": "DF",
+        "name": "Aylana"
+      },
+      {
+        "position": "DF",
+        "name": "Emily"
+      },
+      {
+        "position": "DF",
+        "name": "Emilyn"
+      },
+      {
+        "position": "DF",
+        "name": "Yaia"
+      },
+      {
+        "position": "DF",
+        "name": "Evelyn"
+      },
+      {
+        "position": "MF",
+        "name": "Gabrielle"
+      },
+      {
+        "position": "MF",
+        "name": "Geovaninha"
+      },
+      {
+        "position": "MF",
+        "name": "Isa"
+      },
+      {
+        "position": "MF",
+        "name": "Julia Oliveira"
+      },
+      {
+        "position": "MF",
+        "name": "Larissa"
+      },
+      {
+        "position": "MF",
+        "name": "Maria Cristina"
+      },
+      {
+        "position": "MF",
+        "name": "Maria"
+      },
+      {
+        "position": "FW",
+        "name": "Maria Luiza"
+      },
+      {
+        "position": "FW",
+        "name": "Maria Luiza Veras Silva"
+      },
+      {
+        "position": "FW",
+        "name": "Rayssa"
+      },
+      {
+        "position": "FW",
+        "name": "Sabrina"
+      },
+      {
+        "position": "FW",
+        "name": "Sarah"
+      },
+      {
+        "position": "FW",
+        "name": "Thaliane"
+      },
+      {
+        "position": "FW",
+        "name": "Vitória Brandi"
+      },
+      {
+        "position": "FW",
+        "name": "Isabela Ipiranga"
+      }
+    ]
+  },
+  {
+    "name": "São Raimundo Esporte Clube",
+    "internalName": "sao-raimundo",
+    "shortName": "São Raimundo",
+    "abbreviation": "SAB",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#8b1a1a",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 44,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Malú"
+      },
+      {
+        "position": "GK",
+        "name": "Carla"
+      },
+      {
+        "position": "DF",
+        "name": "Cristina"
+      },
+      {
+        "position": "DF",
+        "name": "Erika"
+      },
+      {
+        "position": "DF",
+        "name": "Hosana"
+      },
+      {
+        "position": "DF",
+        "name": "Iris"
+      },
+      {
+        "position": "DF",
+        "name": "Karina"
+      },
+      {
+        "position": "DF",
+        "name": "Keiciane"
+      },
+      {
+        "position": "MF",
+        "name": "Luanara"
+      },
+      {
+        "position": "MF",
+        "name": "Maria"
+      },
+      {
+        "position": "MF",
+        "name": "Mayra"
+      },
+      {
+        "position": "MF",
+        "name": "Millena"
+      },
+      {
+        "position": "MF",
+        "name": "Natiele"
+      },
+      {
+        "position": "MF",
+        "name": "Nay"
+      },
+      {
+        "position": "MF",
+        "name": "Rayanny"
+      },
+      {
+        "position": "FW",
+        "name": "Bianca Farias"
+      },
+      {
+        "position": "FW",
+        "name": "Isabela Teixeira"
+      },
+      {
+        "position": "FW",
+        "name": "Rafaela Moreira"
+      },
+      {
+        "position": "FW",
+        "name": "Carla Esteves"
+      },
+      {
+        "position": "FW",
+        "name": "Fernanda Siqueira"
+      },
+      {
+        "position": "FW",
+        "name": "Mariana Lacerda"
+      },
+      {
+        "position": "FW",
+        "name": "Yasmin Duarte"
+      },
+      {
+        "position": "FW",
+        "name": "Camila Ribeiro"
+      }
+    ]
+  },
+  {
+    "name": "Associacao Atletica Tiradentes",
+    "internalName": "tiradentes",
+    "shortName": "Tiradentes",
+    "abbreviation": "TIR",
+    "colors": {
+      "outline": "#ffffff",
+      "background": "#0b6e4f",
+      "name": "#ffffff"
+    },
+    "initialOverallStrength": 49,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Adryele"
+      },
+      {
+        "position": "GK",
+        "name": "Aiice"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Clara"
+      },
+      {
+        "position": "DF",
+        "name": "Ana Julia"
+      },
+      {
+        "position": "DF",
+        "name": "Pingo"
+      },
+      {
+        "position": "DF",
+        "name": "Antonia"
+      },
+      {
+        "position": "DF",
+        "name": "Carla Serrão"
+      },
+      {
+        "position": "DF",
+        "name": "Cintia"
+      },
+      {
+        "position": "MF",
+        "name": "Debora"
+      },
+      {
+        "position": "MF",
+        "name": "Debora Regina Alcantara de Oliveira"
+      },
+      {
+        "position": "MF",
+        "name": "Eliane"
+      },
+      {
+        "position": "MF",
+        "name": "Fabiane Gomes"
+      },
+      {
+        "position": "MF",
+        "name": "Gabi Quaresma"
+      },
+      {
+        "position": "MF",
+        "name": "Ingrid"
+      },
+      {
+        "position": "MF",
+        "name": "Kaylane"
+      },
+      {
+        "position": "FW",
+        "name": "Laila"
+      },
+      {
+        "position": "FW",
+        "name": "Leticia"
+      },
+      {
+        "position": "FW",
+        "name": "Liandra Santos"
+      },
+      {
+        "position": "FW",
+        "name": "Mayane"
+      },
+      {
+        "position": "FW",
+        "name": "Miriam Brito"
+      },
+      {
+        "position": "FW",
+        "name": "Nathi"
+      },
+      {
+        "position": "FW",
+        "name": "Pamela"
+      },
+      {
+        "position": "FW",
+        "name": "Paula"
+      }
+    ]
+  },
+  {
+    "name": "Sociedade Esportiva Uniao",
+    "internalName": "uniao",
+    "shortName": "União",
+    "abbreviation": "UNI",
+    "colors": {
+      "outline": "#ffe9c4",
+      "background": "#5c2b0a",
+      "name": "#ffe9c4"
+    },
+    "initialOverallStrength": 41,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Aninha"
+      },
+      {
+        "position": "GK",
+        "name": "Kivia"
+      },
+      {
+        "position": "DF",
+        "name": "Dany"
+      },
+      {
+        "position": "DF",
+        "name": "Demily"
+      },
+      {
+        "position": "DF",
+        "name": "Elida"
+      },
+      {
+        "position": "DF",
+        "name": "Gi"
+      },
+      {
+        "position": "DF",
+        "name": "Eduarda"
+      },
+      {
+        "position": "DF",
+        "name": "Izabel"
+      },
+      {
+        "position": "MF",
+        "name": "Mari"
+      },
+      {
+        "position": "MF",
+        "name": "Michelle"
+      },
+      {
+        "position": "MF",
+        "name": "Mirian da Paixao"
+      },
+      {
+        "position": "MF",
+        "name": "Naiara"
+      },
+      {
+        "position": "MF",
+        "name": "Priscila"
+      },
+      {
+        "position": "MF",
+        "name": "Raquel"
+      },
+      {
+        "position": "MF",
+        "name": "Isabela Almeida"
+      },
+      {
+        "position": "FW",
+        "name": "Rafaela Oliveira"
+      },
+      {
+        "position": "FW",
+        "name": "Carla Gomes"
+      },
+      {
+        "position": "FW",
+        "name": "Fernanda Vieira"
+      },
+      {
+        "position": "FW",
+        "name": "Mariana Nunes"
+      },
+      {
+        "position": "FW",
+        "name": "Yasmin Farias"
+      },
+      {
+        "position": "FW",
+        "name": "Camila Teixeira"
+      },
+      {
+        "position": "FW",
+        "name": "Juliana Moreira"
+      },
+      {
+        "position": "FW",
+        "name": "Sabrina Esteves"
+      }
+    ]
+  },
+  {
+    "name": "Várzea Grande Esporte Clube Ltda",
+    "internalName": "varzea-grande",
+    "shortName": "Várzea Grande",
+    "abbreviation": "VAR",
+    "colors": {
+      "outline": "#111111",
+      "background": "#e8e8e8",
+      "name": "#111111"
+    },
+    "initialOverallStrength": 48,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Natália Barbosa"
+      },
+      {
+        "position": "GK",
+        "name": "Aline Pacheco"
+      },
+      {
+        "position": "DF",
+        "name": "Daniele Henrique"
+      },
+      {
+        "position": "DF",
+        "name": "Karina Almeida"
+      },
+      {
+        "position": "DF",
+        "name": "Tainá Oliveira"
+      },
+      {
+        "position": "DF",
+        "name": "Alice Gomes"
+      },
+      {
+        "position": "DF",
+        "name": "Helena Vieira"
+      },
+      {
+        "position": "DF",
+        "name": "Patrícia Nunes"
+      },
+      {
+        "position": "MF",
+        "name": "Bruna Farias"
+      },
+      {
+        "position": "MF",
+        "name": "Eduarda Teixeira"
+      },
+      {
+        "position": "MF",
+        "name": "Larissa Moreira"
+      },
+      {
+        "position": "MF",
+        "name": "Vanessa Esteves"
+      },
+      {
+        "position": "MF",
+        "name": "Bianca Siqueira"
+      },
+      {
+        "position": "MF",
+        "name": "Isabela Lacerda"
+      },
+      {
+        "position": "MF",
+        "name": "Rafaela Duarte"
+      },
+      {
+        "position": "FW",
+        "name": "Carla Ribeiro"
+      },
+      {
+        "position": "FW",
+        "name": "Fernanda Jardim"
+      },
+      {
+        "position": "FW",
+        "name": "Mariana Cardoso"
+      },
+      {
+        "position": "FW",
+        "name": "Yasmin Queiroz"
+      },
+      {
+        "position": "FW",
+        "name": "Camila Ipiranga"
+      },
+      {
+        "position": "FW",
+        "name": "Juliana Barbosa"
+      },
+      {
+        "position": "FW",
+        "name": "Sabrina Pacheco"
+      },
+      {
+        "position": "FW",
+        "name": "Débora Henrique"
+      }
+    ]
+  },
+  {
+    "name": "Ypiranga Clube",
+    "internalName": "ypiranga",
+    "shortName": "Ypiranga Clube",
+    "abbreviation": "YPI",
+    "colors": {
+      "outline": "#111111",
+      "background": "#7fc6a4",
+      "name": "#111111"
+    },
+    "initialOverallStrength": 50,
+    "players": [
+      {
+        "position": "GK",
+        "name": "Vanessa Lacerda"
+      },
+      {
+        "position": "GK",
+        "name": "Bianca Duarte"
+      },
+      {
+        "position": "DF",
+        "name": "Isabela Ribeiro"
+      },
+      {
+        "position": "DF",
+        "name": "Rafaela Jardim"
+      },
+      {
+        "position": "DF",
+        "name": "Carla Cardoso"
+      },
+      {
+        "position": "DF",
+        "name": "Fernanda Queiroz"
+      },
+      {
+        "position": "DF",
+        "name": "Mariana Ipiranga"
+      },
+      {
+        "position": "DF",
+        "name": "Yasmin Barbosa"
+      },
+      {
+        "position": "MF",
+        "name": "Camila Pacheco"
+      },
+      {
+        "position": "MF",
+        "name": "Juliana Henrique"
+      },
+      {
+        "position": "MF",
+        "name": "Sabrina Almeida"
+      },
+      {
+        "position": "MF",
+        "name": "Débora Oliveira"
+      },
+      {
+        "position": "MF",
+        "name": "Gabriela Gomes"
+      },
+      {
+        "position": "MF",
+        "name": "Natália Vieira"
+      },
+      {
+        "position": "MF",
+        "name": "Aline Nunes"
+      },
+      {
+        "position": "FW",
+        "name": "Daniele Farias"
+      },
+      {
+        "position": "FW",
+        "name": "Karina Teixeira"
+      },
+      {
+        "position": "FW",
+        "name": "Tainá Moreira"
+      },
+      {
+        "position": "FW",
+        "name": "Alice Esteves"
+      },
+      {
+        "position": "FW",
+        "name": "Helena Siqueira"
+      },
+      {
+        "position": "FW",
+        "name": "Patrícia Lacerda"
+      },
+      {
+        "position": "FW",
+        "name": "Bruna Duarte"
+      },
+      {
+        "position": "FW",
+        "name": "Eduarda Ribeiro"
+      }
+    ]
+  }
+]
