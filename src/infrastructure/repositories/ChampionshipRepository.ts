@@ -31,6 +31,7 @@ export function getChampionship(
     },
     type: championshipJSONDTO.type,
     leagueType: championshipJSONDTO.leagueType,
+    phases: championshipJSONDTO.phases,
     hasTeamControlledByHuman,
     isPromotable: false,
     isRelegatable: false,
@@ -50,6 +51,7 @@ export function getChampionship(
       isRelegatable: true,
       numberOfRelegatableTeams,
       relegationChampionshipInternalName,
+      relegationRule: championshipJSONDTO.relegationRule ?? 'table-position',
     };
   }
 
@@ -67,6 +69,7 @@ export function getChampionship(
       isPromotable: true,
       numberOfPromotableTeams,
       promotionChampionshipInternalName,
+      promotionRule: championshipJSONDTO.promotionRule ?? 'table-position',
     };
   }
 
