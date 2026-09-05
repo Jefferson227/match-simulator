@@ -1,0 +1,131 @@
+{
+  "name": "Paysandu Sport Club",
+  "shortName": "Paysandu",
+  "abbreviation": "PAY",
+  "colors": {
+    "outline": "#005baa",
+    "background": "#ffffff",
+    "name": "#005baa"
+  },
+  "initialOverallStrength": 69,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Áhlice",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Alessandra",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ale",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Esquerdinha",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Karol",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Andrea",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Anne",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Brenda",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Dany",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Cristiellen Toro",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Elaine",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Nanda Silva",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Francy",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Perotes",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Gysele Marabá",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Hanna",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Irley",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Isabella",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Jeniffer Gomes",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Joyci",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Keli",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Lidiane",
+      "strength": 0
+    }
+  ]
+}

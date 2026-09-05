@@ -1,0 +1,131 @@
+{
+  "name": "América Futebol Clube Sociedade Anônima do Futebol",
+  "shortName": "América",
+  "abbreviation": "AME",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#00723f",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 76,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Ana Clara",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Ana Clara Lana da Silva",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Julia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Anna Clara",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Anna Julia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Dani Ortolan",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Emily",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Gi",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Giselly",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Julia da Cruz",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Karoliny",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Luaninha",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Mai",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Maria Eduarda",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Olivia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Pamella",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Sandy",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Taina",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Thaini",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Thais Emanuelle",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Mariana Ipiranga",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Yasmin Barbosa",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Camila Pacheco",
+      "strength": 0
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "name": "SAF Botafogo",
+  "shortName": "Botafogo",
+  "abbreviation": "BOT",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#000000",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 78,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Ana Beatriz",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Ana",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Lara",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Laura",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Rebeca",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Maranhão",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Anna",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Beatrys",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Camila",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Dandara",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Ellen",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Emanuelle",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Tipa",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Franciele",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isa Ramires",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Jullia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Kaila",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Kewllen",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Leticia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Letícia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Lorena",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Luh",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Maria Camila",
+      "strength": 0
+    }
+  ]
+}

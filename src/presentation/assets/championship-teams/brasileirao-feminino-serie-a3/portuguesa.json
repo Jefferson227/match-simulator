@@ -1,0 +1,131 @@
+{
+  "name": "Portuguesa de Desporto do Amapa",
+  "shortName": "Portuguesa",
+  "abbreviation": "POR",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#006437",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 45,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Pandora",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Aninha Belém",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Barbara",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Beatriz",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ditta",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Lora Soure",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Cleici",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Dandara",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Dhessica",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Índia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gaby",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Sabattine",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jaque",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jenniff",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Juh Lourenço",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Elenny",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Mariana",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Kadja",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Gigante",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Naiane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rafa Marajó",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Railene",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Ray",
+      "strength": 0
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "name": "Futebol Clube Pantanal SAF",
+  "shortName": "Pantanal SAF",
+  "abbreviation": "PAN",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#00695c",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 52,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Aissa",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Carolzinha",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ariane",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Camila Menezes",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Deise",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Emanuelle",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Eustaquio",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Evelyn",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gabrielle",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Sorriso",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isabela",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isabela Ribeiro de Oliveira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jose Alex Martins de Sousa",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Kamila",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Kety",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Marielle",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Sabrina",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Sarah",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Silvani",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Thafila",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Vanice",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Fernanda Farias",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Mariana Teixeira",
+      "strength": 0
+    }
+  ]
+}

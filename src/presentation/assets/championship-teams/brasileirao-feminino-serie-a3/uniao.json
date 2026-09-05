@@ -1,0 +1,131 @@
+{
+  "name": "Sociedade Esportiva Uniao",
+  "shortName": "União",
+  "abbreviation": "UNI",
+  "colors": {
+    "outline": "#ffe9c4",
+    "background": "#5c2b0a",
+    "name": "#ffe9c4"
+  },
+  "initialOverallStrength": 41,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Aninha",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Kivia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Dany",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Demily",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Elida",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Gi",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Eduarda",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Izabel",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Mari",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Michelle",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Mirian da Paixao",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Naiara",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Priscila",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Raquel",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isabela Almeida",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rafaela Oliveira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Carla Gomes",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Fernanda Vieira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Mariana Nunes",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Yasmin Farias",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Camila Teixeira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Juliana Moreira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Sabrina Esteves",
+      "strength": 0
+    }
+  ]
+}

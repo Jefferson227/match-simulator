@@ -1,0 +1,131 @@
+{
+  "name": "Sport Club do Recife",
+  "shortName": "Sport Recife",
+  "abbreviation": "SPO",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#c40000",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 60,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Alessandra Silva dos Santos",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Priscila",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Andreia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Andrezinha",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Belen",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Debora",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Deborah",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Esther",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Esther de Menezes Santiago",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Evelin",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Nanda",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Fernanda Santos Freitas",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gabi",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gleyciane",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Hayla",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Ingrid Beatriz",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Ingrid",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Cabral",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Isabelly",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Janaina",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Janaina Mickaely Lopes do Nascimento",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Jaque",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Juju",
+      "strength": 0
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "name": "São Raimundo Esporte Clube",
+  "shortName": "São Raimundo",
+  "abbreviation": "SAB",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#8b1a1a",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 44,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Malú",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Carla",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Cristina",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Erika",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Hosana",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Iris",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Karina",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Keiciane",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Luanara",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Maria",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Mayra",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Millena",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Natiele",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Nay",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Rayanny",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Bianca Farias",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Isabela Teixeira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rafaela Moreira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Carla Esteves",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Fernanda Siqueira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Mariana Lacerda",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Yasmin Duarte",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Camila Ribeiro",
+      "strength": 0
+    }
+  ]
+}

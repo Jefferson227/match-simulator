@@ -1,0 +1,131 @@
+{
+  "name": "Escola de Futebol Profissionalizante",
+  "shortName": "Paraíso Esporte Clube",
+  "abbreviation": "PAR",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#2b2f77",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 48,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Ana Julia",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Ane Carol",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Aylla",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Barbara",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Camila",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Darlene",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Dada",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Esquerdinha",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Esther",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Fernanda",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gabriela",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Hellen",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Leticia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Luna",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Maria Clara",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Maria",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Paula",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Shay",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Talita",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Juliana Oliveira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Sabrina Gomes",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Débora Vieira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Gabriela Nunes",
+      "strength": 0
+    }
+  ]
+}

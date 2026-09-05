@@ -1,0 +1,131 @@
+{
+  "name": "União Desportiva Alagoana Ltda - Me",
+  "shortName": "Uda",
+  "abbreviation": "UDA",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#c8102e",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 68,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Adiklecia",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Alice",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Aline",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bea",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Daisinha",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Melissa",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Giselle",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Jack",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jheniffer",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jú",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Kimberlly",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Laysa",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Leandressa",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Leticia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Lu",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Duda",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Maria",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Mariana",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Max",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Micherlanne",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Milena",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Naty",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Olga",
+      "strength": 0
+    }
+  ]
+}

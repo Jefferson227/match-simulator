@@ -1,0 +1,131 @@
+{
+  "name": "Ceará Sporting Club",
+  "shortName": "Ceará",
+  "abbreviation": "CEA",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#000000",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 63,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Adrijane",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Amanda",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Andressa",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Edna",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Emely",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Emilly",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Emilly Kaillany",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Francyellen",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gabizinha",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jady",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jo",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Kaylane",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Lais",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Lana",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Ketlen",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Luzia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Mayara",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rebeca",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Thais",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Thayla",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Vitoria",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Fernanda Oliveira",
+      "strength": 0
+    }
+  ]
+}

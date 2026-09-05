@@ -1,0 +1,131 @@
+{
+  "name": "São Jose Esporte Clube - Sociedade Anonima do Futebol",
+  "shortName": "São Jose Esporte Clube Saf",
+  "abbreviation": "SAA",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#0a3d91",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 55,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Alissa",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Ana Clara",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Livinha",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Aylana",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Emily",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Emilyn",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Yaia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Evelyn",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gabrielle",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Geovaninha",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isa",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Julia Oliveira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Larissa",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Maria Cristina",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Maria",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Maria Luiza",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Maria Luiza Veras Silva",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rayssa",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Sabrina",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Sarah",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Thaliane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Vitória Brandi",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Isabela Ipiranga",
+      "strength": 0
+    }
+  ]
+}

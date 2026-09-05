@@ -1,0 +1,131 @@
+{
+  "name": "Clube Atlético Piauiense",
+  "shortName": "CAP",
+  "abbreviation": "CAP",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#0d5c63",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 67,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Nene",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Cris",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Aninha",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Natalia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Beatriz",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Stefanny",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Dani",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Dulce",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Lene",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Edna Baiana",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Eduarda Balbino",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jhow",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gio Perpetuo",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Grazi",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isabel",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Jajá",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Leticia Pires",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Lilian",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Livia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Lorena",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Luciana",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Ludy",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Mabel",
+      "strength": 0
+    }
+  ]
+}

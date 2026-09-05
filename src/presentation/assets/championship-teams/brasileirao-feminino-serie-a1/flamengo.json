@@ -1,0 +1,131 @@
+{
+  "name": "Clube de Regatas do Flamengo",
+  "shortName": "Flamengo",
+  "abbreviation": "FLA",
+  "colors": {
+    "outline": "#e00000",
+    "background": "#000000",
+    "name": "#e00000"
+  },
+  "initialOverallStrength": 86,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Bibi",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Alice",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Papel",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Aninha",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Laura",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Anna Luiza",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Brendha",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bruna",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Cristiane",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Djenifer",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Eduarda",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Emilly",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Fabiana",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Fernandinha",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Flavia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Isabela",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Isa Condorelli",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Jucinara",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Ju",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Kaylane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Larissa",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Laysa",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Lay",
+      "strength": 0
+    }
+  ]
+}

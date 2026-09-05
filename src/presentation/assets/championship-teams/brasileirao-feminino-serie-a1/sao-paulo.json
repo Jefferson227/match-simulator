@@ -1,0 +1,131 @@
+{
+  "name": "São Paulo Futebol Clube",
+  "shortName": "São Paulo",
+  "abbreviation": "SAO",
+  "colors": {
+    "outline": "#fe0000",
+    "background": "#ffffff",
+    "name": "#fe0000"
+  },
+  "initialOverallStrength": 88,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Milene",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Ana Beatriz",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Clara",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Anita",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Beatriz Ferreira de Menezes",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bruna",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Camila",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Camila Martins Pereira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Carla",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Carolini",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Eduarda",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Eluiza",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Evelyn",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gi Iseppe",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Giovanna",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Isa",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Julia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Julia Vaini",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Karla Alves",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Késia Sena",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Luiza Calazans",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Vitorinha",
+      "strength": 0
+    }
+  ]
+}

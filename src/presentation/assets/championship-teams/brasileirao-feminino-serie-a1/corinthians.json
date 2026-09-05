@@ -1,0 +1,131 @@
+{
+  "name": "Sport Club Corinthians Paulista",
+  "shortName": "Corinthians",
+  "abbreviation": "COR",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#000000",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 90,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Agustina",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Carol",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Morganti",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Vitória",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Andressa",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ariel",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Belen",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Day",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Erika",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gabi Zanotti",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Fernandes",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gisela",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jhonson",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Ivana",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jaqueline",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Juju",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Leticia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Leticia Izidoro Lima da Silva",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Duda Mineira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Duda Sampaio",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Nicole",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Paola",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rafaela",
+      "strength": 0
+    }
+  ]
+}

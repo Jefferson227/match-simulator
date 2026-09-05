@@ -1,0 +1,131 @@
+{
+  "name": "Minas Brasilia",
+  "shortName": "Minas Brasília",
+  "abbreviation": "MIN",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#0033a0",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 57,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Bia Batista",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Ana Beatriz",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Clara",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Aninha",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Monse Ayala",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Drielly",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Manu",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Esther",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gabi",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gaby",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Geysna",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Hadri",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jayane",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Michele",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Paloma",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rafaela",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rayane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rayla",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rhayssa",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rubi",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Stephane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Suzana",
+      "strength": 0
+    }
+  ]
+}

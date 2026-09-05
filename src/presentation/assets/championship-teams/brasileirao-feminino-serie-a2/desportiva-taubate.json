@@ -1,0 +1,131 @@
+{
+  "name": "Associação Desportiva Taubaté Futebol Feminino",
+  "shortName": "Associação Desportiva Taubaté",
+  "abbreviation": "DES",
+  "colors": {
+    "outline": "#111111",
+    "background": "#e8e8e8",
+    "name": "#111111"
+  },
+  "initialOverallStrength": 64,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Naressi",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Alessandra",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Alessandra Marques de Souza",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Beatriz",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Julia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Livia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Rebeca",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Andresa",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Dedê",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Andressinha",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Carol Franco",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Emilly Vitoria",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Ingrid",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Baiana",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Neguinha",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Ji",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Julia Becker",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Kauane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Lauenne",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Lavi Alves",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Luana",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Maria",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Melyssa",
+      "strength": 0
+    }
+  ]
+}

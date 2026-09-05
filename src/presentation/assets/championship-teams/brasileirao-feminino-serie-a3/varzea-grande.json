@@ -1,0 +1,131 @@
+{
+  "name": "Várzea Grande Esporte Clube Ltda",
+  "shortName": "Várzea Grande",
+  "abbreviation": "VAR",
+  "colors": {
+    "outline": "#111111",
+    "background": "#e8e8e8",
+    "name": "#111111"
+  },
+  "initialOverallStrength": 48,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Natália Barbosa",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Aline Pacheco",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Daniele Henrique",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Karina Almeida",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Tainá Oliveira",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Alice Gomes",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Helena Vieira",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Patrícia Nunes",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Bruna Farias",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Eduarda Teixeira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Larissa Moreira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Vanessa Esteves",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Bianca Siqueira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isabela Lacerda",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Rafaela Duarte",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Carla Ribeiro",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Fernanda Jardim",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Mariana Cardoso",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Yasmin Queiroz",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Camila Ipiranga",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Juliana Barbosa",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Sabrina Pacheco",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Débora Henrique",
+      "strength": 0
+    }
+  ]
+}

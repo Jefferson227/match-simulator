@@ -1,0 +1,131 @@
+{
+  "name": "R4 Esporte Clube",
+  "shortName": "R4",
+  "abbreviation": "R4X",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#0d5c63",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 51,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Bia Natal",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Ana Maria",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Anna",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Vitoria",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Abida",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Daniela",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Fabiana",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Janiely",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Brena",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Juliana",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Alane",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Alice",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Duda",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Izabel",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Janaina",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Nayara",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Ortencia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Shayanne",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Thallita",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Virlene",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Débora Moreira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Gabriela Esteves",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Natália Siqueira",
+      "strength": 0
+    }
+  ]
+}

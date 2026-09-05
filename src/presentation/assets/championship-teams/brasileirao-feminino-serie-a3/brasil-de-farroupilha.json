@@ -1,0 +1,131 @@
+{
+  "name": "Sociedade Esportiva Recreativa E Cultural Brasil",
+  "shortName": "Brasil de Farroupilha",
+  "abbreviation": "BDF",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#1f6f4a",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 42,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Andressa",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Dani Soares",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Duda Mattos",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Fabris",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Karoline",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Katry",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Marcela",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Maria",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Maju",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Yasmin",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Yasmin Queiroz",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Camila Ipiranga",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Juliana Barbosa",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Sabrina Pacheco",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Débora Henrique",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Gabriela Almeida",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Natália Oliveira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Aline Gomes",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Daniele Vieira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Karina Nunes",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Tainá Farias",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Alice Teixeira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Helena Moreira",
+      "strength": 0
+    }
+  ]
+}

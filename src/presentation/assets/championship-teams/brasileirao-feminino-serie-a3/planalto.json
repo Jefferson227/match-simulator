@@ -1,0 +1,131 @@
+{
+  "name": "Planalto Esporte Clube S.a.f",
+  "shortName": "Planalto Esporte Clube",
+  "abbreviation": "PLA",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#4a1d6b",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 45,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Brenda",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Cibelly",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Daniele",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Formiga",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Emily Oliveira",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Erica Santos",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Gabi",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Lora Capanema",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Idalana",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jhemmily",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jhulian Faria",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Joice",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Ronaldinha",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Livia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Lorrayne",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Lorraynne Macedo Silva",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Marcelly",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Maria",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Duda",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Maria Lauane da Silva Pereira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Mayara",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Moara",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Palominha",
+      "strength": 0
+    }
+  ]
+}

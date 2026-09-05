@@ -1,0 +1,131 @@
+{
+  "name": "Itabirito Sociedade Anônima do Futebol",
+  "shortName": "Itabirito Saf",
+  "abbreviation": "ITA",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#c8102e",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 66,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Aninha",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Aryane",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Beatriz",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bruna Peligrinelli",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bruna",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Elisvania",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Emmily Karla",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Flavinha",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jojo",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Hilary",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Camila",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Janete",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Juliana",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Karen",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Kathlen",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Kayla",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "De la Torre",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Luana",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Marcelle",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Nat",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Stephani",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Tamires",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Thalita",
+      "strength": 0
+    }
+  ]
+}

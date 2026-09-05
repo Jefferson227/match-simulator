@@ -1,0 +1,131 @@
+{
+  "name": "Red Bull Bragantino Futebol Ltda.",
+  "shortName": "Red Bull Bragantino",
+  "abbreviation": "RBB",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#e2001a",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 77,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Alissa",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Amanda",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Carla",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Cazal",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Lurdinha",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "C. Ambrózio",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Carolina",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Catarina",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Duda Rodrigues",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Ester",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gabi Medeiros",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gaby Santos",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gessica",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Giovanna",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Ilana",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Jane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Janyele",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Jessica",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Karol",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Karolainy Caline Alves",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Laura Valverde",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Leticia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Manuella",
+      "strength": 0
+    }
+  ]
+}

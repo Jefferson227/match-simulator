@@ -1,0 +1,131 @@
+{
+  "name": "Penarol Atletico Clube",
+  "shortName": "Penarol",
+  "abbreviation": "PEN",
+  "colors": {
+    "outline": "#ffe600",
+    "background": "#000000",
+    "name": "#ffe600"
+  },
+  "initialOverallStrength": 55,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Brenna",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Neia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Digliene",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Grazi",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Keliane",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Maria",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Vanessa Gomes",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bianca Vieira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isabela Nunes",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Rafaela Farias",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Carla Teixeira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Fernanda Moreira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Mariana Esteves",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Yasmin Siqueira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Camila Lacerda",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Juliana Duarte",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Sabrina Ribeiro",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Débora Jardim",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Gabriela Cardoso",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Natália Queiroz",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Aline Ipiranga",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Daniele Barbosa",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Karina Pacheco",
+      "strength": 0
+    }
+  ]
+}

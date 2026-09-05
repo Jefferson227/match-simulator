@@ -1,0 +1,131 @@
+{
+  "name": "Criciúma Esporte Clube",
+  "shortName": "Criciúma",
+  "abbreviation": "CRI",
+  "colors": {
+    "outline": "#ffe600",
+    "background": "#000000",
+    "name": "#ffe600"
+  },
+  "initialOverallStrength": 43,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Ana",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Ana Julia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Paula",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Andressa",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Beatriz",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Japa",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Carol",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Gigi",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Greice",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Hevellyn",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Leone",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Julia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Leticia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Letícia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Ludmyla",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Maria",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Maria Clara Lacerda de Almeida",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Maria Clara",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Maria Eduarda",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Maria Julia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Maria Luiza",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Marielly",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Milena",
+      "strength": 0
+    }
+  ]
+}

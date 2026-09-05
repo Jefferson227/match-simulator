@@ -1,0 +1,131 @@
+{
+  "name": "Gremio Foot-ball Porto Alegrense",
+  "shortName": "Grêmio",
+  "abbreviation": "GRE",
+  "colors": {
+    "outline": "#0d80bf",
+    "background": "#000000",
+    "name": "#0d80bf"
+  },
+  "initialOverallStrength": 84,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Drika",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Allyne",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Amanda",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Vidal",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Brenda",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Arrieta",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Camila",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Camila Pini",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Daiana",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Dani Barao",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Emille Campos",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Giovaninha",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gisele",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Iara",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Izadora",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Josi",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Julia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Leidiane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Leticia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Kika Moreno",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Luana",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Lucilene",
+      "strength": 0
+    }
+  ]
+}

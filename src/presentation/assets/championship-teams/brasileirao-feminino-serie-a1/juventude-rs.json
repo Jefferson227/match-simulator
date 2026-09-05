@@ -1,0 +1,131 @@
+{
+  "name": "Esporte Clube Juventude",
+  "shortName": "Juventude",
+  "abbreviation": "JUV",
+  "colors": {
+    "outline": "#009c3b",
+    "background": "#ffffff",
+    "name": "#009c3b"
+  },
+  "initialOverallStrength": 74,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Alexia",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Aninha",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Luiza",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Andressa",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Apoliana",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bruna",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Carla",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Carolzinha",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gio Oliveira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Grazi",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isa",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Joice",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Joyce",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Kailane",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Kamile",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Laura",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Fretes",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Luciene Baião",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Maiza",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Duda Calazans",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Martha",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Nicole",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Nubia",
+      "strength": 0
+    }
+  ]
+}

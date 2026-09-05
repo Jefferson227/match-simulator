@@ -1,0 +1,131 @@
+{
+  "name": "Gremio Esportivo Mauaense",
+  "shortName": "Mauaense",
+  "abbreviation": "MAU",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#5d4037",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 54,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Ana Clara",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Ana Luiza",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ariane",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Dayane",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Gabi Soares",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Giovana",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Nenê",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Isabella",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isa",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isabely Cristina do Nascimento Queiroz",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isabely",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jeniffer Sampaio",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Julia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Julia Pinto Batista da Conceição",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Kamilly",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Kemilyn",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Larissa Reis",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Larissa",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Lari",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Maiara",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Mariele",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Milena",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rafaela",
+      "strength": 0
+    }
+  ]
+}

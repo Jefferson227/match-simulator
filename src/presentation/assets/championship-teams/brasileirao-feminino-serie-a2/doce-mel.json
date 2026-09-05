@@ -1,0 +1,131 @@
+{
+  "name": "Doce Mel Esporte Clube",
+  "shortName": "Doce Mel",
+  "abbreviation": "DOC",
+  "colors": {
+    "outline": "#0f0f0f",
+    "background": "#f2c200",
+    "name": "#0f0f0f"
+  },
+  "initialOverallStrength": 70,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Alexia",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Cailane",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Gaby",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Geovana da Silva Lima",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bate Pe",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Jessica",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Juliana Pereira",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Kaka",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Katiele",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Layla",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Lourrane",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Rafa",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Samile",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Camila Cardoso",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Juliana Queiroz",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Sabrina Ipiranga",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Débora Barbosa",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Gabriela Pacheco",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Natália Henrique",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Aline Almeida",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Daniele Oliveira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Karina Gomes",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Tainá Vieira",
+      "strength": 0
+    }
+  ]
+}

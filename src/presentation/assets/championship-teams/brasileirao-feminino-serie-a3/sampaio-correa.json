@@ -1,0 +1,131 @@
+{
+  "name": "Sampaio Corrêa Futebol Clube",
+  "shortName": "Sampaio Corrêa",
+  "abbreviation": "SAM",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#c8102e",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 53,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Cris",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Dayane",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Del",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Keylianne",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Isabel",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Islaeny",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Leonice",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Nayara",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Olivia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Amanda",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gabriela Cardoso",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Natália Queiroz",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Aline Ipiranga",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Daniele Barbosa",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Karina Pacheco",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Tainá Henrique",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Alice Almeida",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Helena Oliveira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Patrícia Gomes",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Bruna Vieira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Eduarda Nunes",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Larissa Farias",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Vanessa Teixeira",
+      "strength": 0
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "name": "Liga de Futebol da Cidade de São João do Piauí",
+  "shortName": "Liga Sanjoanense",
+  "abbreviation": "LIG",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#4a1d6b",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 49,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Aline",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Ana",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Clara",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Kelline",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Lissa",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Vitoria",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Vanessa",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Aline Nunes",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Daniele Farias",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Karina Teixeira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Tainá Moreira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Alice Esteves",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Helena Siqueira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Patrícia Lacerda",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Bruna Duarte",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Eduarda Ribeiro",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Larissa Jardim",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Vanessa Cardoso",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Bianca Queiroz",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Isabela Ipiranga",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rafaela Barbosa",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Carla Pacheco",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Fernanda Henrique",
+      "strength": 0
+    }
+  ]
+}

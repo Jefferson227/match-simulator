@@ -1,0 +1,131 @@
+{
+  "name": "Associação Esportiva Guarani de Paripueira",
+  "shortName": "Guarani de Paripueira",
+  "abbreviation": "GDP",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#7a0b3d",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 41,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Ana",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Ana Paula Santana Batista",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Andressa",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Nice",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Deyse",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Josiane",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Laryssa",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Lethicia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Lucivania",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Luziane",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Maria",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Eduarda",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Maria Eugenia Nascimento dos Santos",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Monique",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Raiane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Raislane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rayane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Tereza",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Larissa Vieira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Vanessa Nunes",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Bianca Farias",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Isabela Teixeira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rafaela Moreira",
+      "strength": 0
+    }
+  ]
+}

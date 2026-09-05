@@ -1,0 +1,131 @@
+{
+  "name": "Centro Esportivo Social E Cultural Heips",
+  "shortName": "Heips",
+  "abbreviation": "HEI",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#8b1a1a",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 46,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Ana",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Ana Karolina Barcelos Vieira Monteiro",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Rita Alves Gomes Jardim",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Yara da Silva Souza",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Anna",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Dayane",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Siqueira",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Giovanna",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isabela",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isabelle",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jade",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Janaina",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jenifer",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jhennifer Oliveira Mello",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Joalina",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Ketelen",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Kethllen",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Lara",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Laura",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Leticia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Lorrayne",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Naiany",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Natalia",
+      "strength": 0
+    }
+  ]
+}

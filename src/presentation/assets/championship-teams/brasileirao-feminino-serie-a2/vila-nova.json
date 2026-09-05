@@ -1,0 +1,131 @@
+{
+  "name": "Vila Nova Futebol Clube",
+  "shortName": "Vila Nova",
+  "abbreviation": "VIL",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#c8102e",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 63,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Adriely",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Ana",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Leticia Rodrigues Lopes da Costa",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bárbara",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bianca Nezo",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Cecília",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Eduarda",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Duda",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Elen",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Ellem",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isadora",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Kauane",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Leticia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Manuella",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Marina",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Naty",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rafaela",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Samara",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Sebá",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Teté",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Tamara",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Thalita",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Thaynara",
+      "strength": 0
+    }
+  ]
+}

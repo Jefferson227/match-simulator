@@ -1,0 +1,131 @@
+{
+  "name": "Esporte Clube Vitoria",
+  "shortName": "Vitória",
+  "abbreviation": "VIT",
+  "colors": {
+    "outline": "#ff0000",
+    "background": "#000000",
+    "name": "#ff0000"
+  },
+  "initialOverallStrength": 75,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Karol Lins",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Geicy",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Iana",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ingrid",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Lane",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Jaqueline",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Joicy",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Katyelle",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Kim",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Lais",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Liriel",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Lorena",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Lorraana",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Luciana",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Marcela",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Barbara",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Maria",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Maria Eduarda Fonseca",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Larisse",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Mari Pires",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Bispo",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Milena",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Monica",
+      "strength": 0
+    }
+  ]
+}

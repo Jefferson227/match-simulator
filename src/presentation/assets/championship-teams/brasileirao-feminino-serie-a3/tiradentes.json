@@ -1,0 +1,131 @@
+{
+  "name": "Associacao Atletica Tiradentes",
+  "shortName": "Tiradentes",
+  "abbreviation": "TIR",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#0b6e4f",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 49,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Adryele",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Aiice",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Clara",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Julia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Pingo",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Antonia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Carla Serrão",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Cintia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Debora",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Debora Regina Alcantara de Oliveira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Eliane",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Fabiane Gomes",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gabi Quaresma",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Ingrid",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Kaylane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Laila",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Leticia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Liandra Santos",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Mayane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Miriam Brito",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Nathi",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Pamela",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Paula",
+      "strength": 0
+    }
+  ]
+}

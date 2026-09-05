@@ -1,0 +1,131 @@
+{
+  "name": "Clube Recreativo Esportivo dos Subtenentes",
+  "shortName": "Cresspom",
+  "abbreviation": "CRE",
+  "colors": {
+    "outline": "#1a1a1a",
+    "background": "#ffb703",
+    "name": "#1a1a1a"
+  },
+  "initialOverallStrength": 42,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Agata",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Bruna",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ellen",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Franciane",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Gabriel Vale",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Zazá",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Janaina",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Jenifer Lopes",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jessica",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Karolzinha",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Leticia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Livia Leal",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Naiara",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Renata",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Sandra",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Silvania",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Tais",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Tatiane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Vitoria",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Gabriela Pacheco",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Natália Henrique",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Aline Almeida",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Daniele Oliveira",
+      "strength": 0
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "name": "Atlético Mineiro SAF",
+  "shortName": "Atlético Mineiro",
+  "abbreviation": "ATL",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#000000",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 80,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Alice",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Karol Dias",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Amalia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Anny Maraba",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Barbara Santos de Melo",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Cindy",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Daiane",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Diovanna",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Giovanna",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Hingredy",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Paixao",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Bell",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isabel Ortiz",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isadora",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Ju Pacheco",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Kaiuska",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Karen",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Karen Cristina Costa da Silva",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Kelen",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Lari",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Puella",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Laura",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Ludmila",
+      "strength": 0
+    }
+  ]
+}

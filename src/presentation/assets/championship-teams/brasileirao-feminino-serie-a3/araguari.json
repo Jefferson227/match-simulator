@@ -1,0 +1,131 @@
+{
+  "name": "Araguari Atletico Clube",
+  "shortName": "Araguari A.c.",
+  "abbreviation": "ARA",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#7a0b3d",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 53,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Ana",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Ana Luiza",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Camilly",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Daniela",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Fernanda",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Fernanda Conceição Guedes",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Giovanna",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Gloria",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Iasmim",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Iorrayne",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isabelly",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isadora",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Istefany",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jessica",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Kamilly",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Karolayne",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Kauanny",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Larissa",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Lavinia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Lorena",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Luiza",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Duda",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Mayara",
+      "strength": 0
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "name": "Prosperidade Futebol Clube Feminino",
+  "shortName": "Prosperidade F. C.",
+  "abbreviation": "PRO",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#0d5c63",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 43,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Russinha",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Allyce",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Camila",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Eniely",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Mística",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Kelly",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Jamili",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Jasmim",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Larissa",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Laura",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Lorena",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Duda Capixaba",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gurgel",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Mariana",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Michelle",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Nathane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rosy",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Suzy",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Tais",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Tayane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Kayapó",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Feijão",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Victoria",
+      "strength": 0
+    }
+  ]
+}

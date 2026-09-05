@@ -1,0 +1,131 @@
+{
+  "name": "Sociedade Esportiva Palmeiras",
+  "shortName": "Palmeiras",
+  "abbreviation": "PAL",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#006437",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 89,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Ana",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Ana Flávia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Maria Guzman Zapata",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Andressinha",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Antonia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bia Zaneratto",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Brena",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bruna",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Carla",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Diany",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Duda Santos",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Emily",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Evelyn",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Fe Palermo",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Lorena",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Giovanna",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Glaucia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Greicy Landazury",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Ingryd",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Espinales",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Julia Brito",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Ketelen",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Lais",
+      "strength": 0
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "name": "Associacao Esportiva Realidade Jovem Rio Preto",
+  "shortName": "Realidade Jovem",
+  "abbreviation": "REA",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#123a6b",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 52,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Barbara",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Carol Fernandes",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Caylane",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Emilly",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Gabi",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ingrid",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ingrid Barbosa Leão",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Ingrid dos Santos da Silva",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isabelle",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Julia Silva",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Lais",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Mari",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Stela",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Naely",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Nicoly",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rafaelly",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Raiza",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rayane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Renaly",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Sabrina",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Sabrina Almeida",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Débora Oliveira",
+      "strength": 0
+    }
+  ]
+}

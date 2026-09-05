@@ -1,0 +1,131 @@
+{
+  "name": "Clube do Remo",
+  "shortName": "Remo",
+  "abbreviation": "REM",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#00539b",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 46,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Daniele Queiroz",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Karina Ipiranga",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Tainá Barbosa",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Alice Pacheco",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Helena Henrique",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Patrícia Almeida",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bruna Oliveira",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Eduarda Gomes",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Larissa Vieira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Vanessa Nunes",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Bianca Farias",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isabela Teixeira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Rafaela Moreira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Carla Esteves",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Fernanda Siqueira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Mariana Lacerda",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Yasmin Duarte",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Camila Ribeiro",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Juliana Jardim",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Sabrina Cardoso",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Débora Queiroz",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Gabriela Ipiranga",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Natália Barbosa",
+      "strength": 0
+    }
+  ]
+}

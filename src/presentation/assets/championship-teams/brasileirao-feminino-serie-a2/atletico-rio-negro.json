@@ -1,0 +1,131 @@
+{
+  "name": "Atletico Rio Negro Clube",
+  "shortName": "Atletico Rio Negro Clube",
+  "abbreviation": "ARN",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#00695c",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 56,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Anna",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Carol Trezzi",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Eduarda Rosinha",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Erika",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Gleiciane",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Deijinha",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Isah",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Isamara",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isla",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Karine",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jaja",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Kethlen",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Lú",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Lyndyara",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Dara",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Sara",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Vaneza",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Natália Farias",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Aline Teixeira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Daniele Moreira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Karina Esteves",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Tainá Siqueira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Alice Lacerda",
+      "strength": 0
+    }
+  ]
+}

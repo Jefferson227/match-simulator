@@ -1,0 +1,131 @@
+{
+  "name": "Mixto Esporte Clube",
+  "shortName": "Mixto",
+  "abbreviation": "MIA",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#1f6f4a",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 47,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Barbara",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Debora",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Deborah",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Jamily",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Luciana",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Dafine",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Fatinha",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Dudinha",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Leandra",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Nina",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Rayza",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Sthefani",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Thainá",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Thauane",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Wili",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Zayra",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Yasmin Moreira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Camila Esteves",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Juliana Siqueira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Sabrina Lacerda",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Débora Duarte",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Gabriela Ribeiro",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Natália Jardim",
+      "strength": 0
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "name": "Ferroviaria SAF",
+  "shortName": "Ferroviária",
+  "abbreviation": "FER",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#b01c2e",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 83,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Amanda",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Ana",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Luiza Hansen",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Andressa",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Brenda",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Camila",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Diana",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Fernanda",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Fatima",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Fogaça",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isadora",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Julia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Katiuscia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Kedima",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Luana",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Luciana",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Maressa",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Dudinha",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Eduarda",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Mariana",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Mica",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Monique",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Nana",
+      "strength": 0
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "name": "Alagoinhas Atletico Clube",
+  "shortName": "Atlético de Alagoinhas",
+  "abbreviation": "ADA",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#0b6e4f",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 50,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Alice Almeida",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Helena Oliveira",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Patrícia Gomes",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bruna Vieira",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Eduarda Nunes",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Larissa Farias",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Vanessa Teixeira",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bianca Moreira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isabela Esteves",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Rafaela Siqueira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Carla Lacerda",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Fernanda Duarte",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Mariana Ribeiro",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Yasmin Jardim",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Camila Cardoso",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Juliana Queiroz",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Sabrina Ipiranga",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Débora Barbosa",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Gabriela Pacheco",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Natália Henrique",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Aline Almeida",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Daniele Oliveira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Karina Gomes",
+      "strength": 0
+    }
+  ]
+}

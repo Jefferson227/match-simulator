@@ -1,0 +1,131 @@
+{
+  "name": "Cruzeiro Esporte Clube - Sociedade Anônima do Futebol",
+  "shortName": "Cruzeiro",
+  "abbreviation": "CRU",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#1c3c8c",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 87,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Ana Flavia",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Ana Flavia Rodrigues Silva",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Byanca Brasil",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Camila R.",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Carina",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Claudia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Fernanda",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Gaby",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gaby Soares",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gisseli",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isabela",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isadora",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Kerolly",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Ketlin",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Leilane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "L. Alves",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Leticia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Bedoya",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Mariana",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Marilia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Mel",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Michelle Castillo",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Milca",
+      "strength": 0
+    }
+  ]
+}

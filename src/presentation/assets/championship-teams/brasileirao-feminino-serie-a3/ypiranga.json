@@ -1,0 +1,131 @@
+{
+  "name": "Ypiranga Clube",
+  "shortName": "Ypiranga Clube",
+  "abbreviation": "YPI",
+  "colors": {
+    "outline": "#111111",
+    "background": "#7fc6a4",
+    "name": "#111111"
+  },
+  "initialOverallStrength": 50,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Vanessa Lacerda",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Bianca Duarte",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Isabela Ribeiro",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Rafaela Jardim",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Carla Cardoso",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Fernanda Queiroz",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Mariana Ipiranga",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Yasmin Barbosa",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Camila Pacheco",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Juliana Henrique",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Sabrina Almeida",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Débora Oliveira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gabriela Gomes",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Natália Vieira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Aline Nunes",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Daniele Farias",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Karina Teixeira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Tainá Moreira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Alice Esteves",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Helena Siqueira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Patrícia Lacerda",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Bruna Duarte",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Eduarda Ribeiro",
+      "strength": 0
+    }
+  ]
+}

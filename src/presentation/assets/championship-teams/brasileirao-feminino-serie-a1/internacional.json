@@ -1,0 +1,131 @@
+{
+  "name": "Sport Club Internacional",
+  "shortName": "Internacional",
+  "abbreviation": "INT",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#e5050f",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 85,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Alice",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Alice Santos Silva",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Clara",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Guell",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Barbara",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bianca",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bruna Benites",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Camilly",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Caty",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Clara",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Darlene",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Dayana",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Debora",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Myka",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Sole",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Gabriela",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Gabriella",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Gi Mazzotti",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Sorriso",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Isadora",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Joana",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Jordana",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Julia",
+      "strength": 0
+    }
+  ]
+}

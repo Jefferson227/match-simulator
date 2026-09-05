@@ -1,0 +1,131 @@
+{
+  "name": "Sociedade Ação Futebol",
+  "shortName": "Ação",
+  "abbreviation": "ACA",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#0d5c63",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 65,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Alice",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Amanda",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Angelica",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Camila",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Izabelly",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Jeniffer",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Julia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Larah",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Duda Silva",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Rivena",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Thafny",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Rafaela Duarte",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Carla Ribeiro",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Fernanda Jardim",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Mariana Cardoso",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Yasmin Queiroz",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Camila Ipiranga",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Juliana Barbosa",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Sabrina Pacheco",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Débora Henrique",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Gabriela Almeida",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Natália Oliveira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Aline Gomes",
+      "strength": 0
+    }
+  ]
+}

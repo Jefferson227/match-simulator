@@ -1,0 +1,131 @@
+{
+  "name": "Mixto Esporte Clube",
+  "shortName": "Mixto",
+  "abbreviation": "MIX",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#000000",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 73,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Andressa",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Martinha",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Fany Gauto",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Gessica",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Isabela",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Isa",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Jersia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Joycinha",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Karol Alves",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Livia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Lorena",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Luana Lima",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Nagila",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Natalia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Nay",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Priscila",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Sabrina",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Sara",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Scarlet",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Baiana",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Suyane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Taiane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Thais",
+      "strength": 0
+    }
+  ]
+}

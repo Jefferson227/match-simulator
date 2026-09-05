@@ -1,0 +1,131 @@
+{
+  "name": "Galvez Esporte Clube",
+  "shortName": "Galvez",
+  "abbreviation": "GAL",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#0033a0",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 54,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Ana Paula",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Anna",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Marreiro",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bruna Vilhalva",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Cailane",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Cris Dantas",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Isadora",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Jaqueline",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Biro",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Katrina",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Kedina",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Kethelyn",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Lorena",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Monteiro",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Maria",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Polly",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Raiane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rosalia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Samela",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Tati",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Thawanne",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Vanessa",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Carla Cardoso",
+      "strength": 0
+    }
+  ]
+}

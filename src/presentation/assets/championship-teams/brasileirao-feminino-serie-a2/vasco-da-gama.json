@@ -1,0 +1,131 @@
+{
+  "name": "Vasco da Gama Sociedade Anônima do Futebol",
+  "shortName": "Vasco da Gama Saf",
+  "abbreviation": "VDG",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#000000",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 58,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Aninha",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Vick",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ariely",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Avril",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Caroline",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Manu",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Loira",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Tefa",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Fernanda",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gabriela",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Giovanna",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Graci",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Helo",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isabela",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isabella",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Jennyfer",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Juliana",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Jullyana",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Bea",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Larissa",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Layza",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Lindiane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Liz",
+      "strength": 0
+    }
+  ]
+}

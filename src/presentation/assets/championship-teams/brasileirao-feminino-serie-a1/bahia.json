@@ -1,0 +1,131 @@
+{
+  "name": "Esporte Clube Bahia SAF",
+  "shortName": "Bahia",
+  "abbreviation": "BAH",
+  "colors": {
+    "outline": "#005cb9",
+    "background": "#ffffff",
+    "name": "#005cb9"
+  },
+  "initialOverallStrength": 81,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Aila",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Aline",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Julia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Kauane",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Angela Noemi",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Mila Santos",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Carol Martins",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Cassia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Damiana",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Dan",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Eduarda Tosti",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Ellen",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gica",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Helen",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Isa Fernandes",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Isa Cruz",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Jennifer",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Kerolyn",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Juliana",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Maia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Heloisa",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Martina",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Maryana",
+      "strength": 0
+    }
+  ]
+}

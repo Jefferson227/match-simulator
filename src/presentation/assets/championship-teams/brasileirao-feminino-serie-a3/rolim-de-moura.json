@@ -1,0 +1,131 @@
+{
+  "name": "Rolim de Moura Esporte Clube",
+  "shortName": "Rolim de Moura",
+  "abbreviation": "RDM",
+  "colors": {
+    "outline": "#f5f5f5",
+    "background": "#37474f",
+    "name": "#f5f5f5"
+  },
+  "initialOverallStrength": 51,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Cassi",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Gleicinha",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Jaja",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Leticia",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Naty",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Raissa",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Tamires",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Vitoria",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Vitoria Rodrigues Correa",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gaby",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Mariana Esteves",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Yasmin Siqueira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Camila Lacerda",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Juliana Duarte",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Sabrina Ribeiro",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Débora Jardim",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Gabriela Cardoso",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Natália Queiroz",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Aline Ipiranga",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Daniele Barbosa",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Karina Pacheco",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Tainá Henrique",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Alice Almeida",
+      "strength": 0
+    }
+  ]
+}

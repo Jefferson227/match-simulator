@@ -1,0 +1,131 @@
+{
+  "name": "Ipojuca Atletico Clube",
+  "shortName": "Ipojuca",
+  "abbreviation": "IPO",
+  "colors": {
+    "outline": "#1a1a1a",
+    "background": "#ffb703",
+    "name": "#1a1a1a"
+  },
+  "initialOverallStrength": 44,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Livia",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Beatriz",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Iris",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Isabel",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Reis",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Simon",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Maria Eduarda",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Mariana",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Niele",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Rawena",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Karine",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Yasmim",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Carla Gomes",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Fernanda Vieira",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Mariana Nunes",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Yasmin Farias",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Camila Teixeira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Juliana Moreira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Sabrina Esteves",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Débora Siqueira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Gabriela Lacerda",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Natália Duarte",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Aline Ribeiro",
+      "strength": 0
+    }
+  ]
+}

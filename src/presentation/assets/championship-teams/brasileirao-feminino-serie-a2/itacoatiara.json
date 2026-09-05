@@ -1,0 +1,131 @@
+{
+  "name": "Jc Futebol Clube",
+  "shortName": "Itacoatiara Futebol Clube",
+  "abbreviation": "ITB",
+  "colors": {
+    "outline": "#ffe9c4",
+    "background": "#5c2b0a",
+    "name": "#ffe9c4"
+  },
+  "initialOverallStrength": 61,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Ana Keyla",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Ataize",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Dieny",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Edileny",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Geiziele",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "K1",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Laiane",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Layla",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Livia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Mama",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Duda Werneck",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Maria",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Mavi",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Mari",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Mayllene",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Michele",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Monique",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rayane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Roseane",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Samara",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Simone",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Thayla",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Vitória",
+      "strength": 0
+    }
+  ]
+}

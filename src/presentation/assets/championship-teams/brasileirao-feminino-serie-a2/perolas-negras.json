@@ -1,0 +1,131 @@
+{
+  "name": "Viva Rio",
+  "shortName": "Pérolas Negras",
+  "abbreviation": "PER",
+  "colors": {
+    "outline": "#1a1a1a",
+    "background": "#ffb703",
+    "name": "#1a1a1a"
+  },
+  "initialOverallStrength": 62,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Agatha",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Ana",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Lidia Martins dos Santos",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Priscila",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Emilly",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Evyllyn",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Geisiane",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Jamilly",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jeniffer",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jenyfer",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Livia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Ludmila",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Manu",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Mc",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Maria",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Maria Luiza",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Mai",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Michele",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Priscylla",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rafaela",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rafaella",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Thais",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Yasmin",
+      "strength": 0
+    }
+  ]
+}

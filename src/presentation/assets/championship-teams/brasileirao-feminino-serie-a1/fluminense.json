@@ -1,0 +1,131 @@
+{
+  "name": "Fluminense Football Club",
+  "shortName": "Fluminense",
+  "abbreviation": "FLU",
+  "colors": {
+    "outline": "#9f022f",
+    "background": "#006437",
+    "name": "#9f022f"
+  },
+  "initialOverallStrength": 79,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Adrielly",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Altamires",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Beatriz",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bruna",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Pelé",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Camila",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Carina",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Claudinha",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Cris",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Daniela",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Sorriso",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Driely",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Chu",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gabi",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Gislaine",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Janielly",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Kaline",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Kah",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Kathleen Luane da Silva",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Kemelli",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Leticia Bussatto",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Lelê",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Luciana",
+      "strength": 0
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "name": "Santos Futebol Clube",
+  "shortName": "Santos FC",
+  "abbreviation": "SAN",
+  "colors": {
+    "outline": "#000000",
+    "background": "#ffffff",
+    "name": "#000000"
+  },
+  "initialOverallStrength": 82,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Ana",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Carol Baiana",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Ana Clara",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Analuyza",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Anna Rosso",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Cury",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Barbara Cuzzuol",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bruno Barbosa",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Camile Abreu",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Carol Lara",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Evelin",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Evellyn",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Giulia",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Yoreli",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Ingrid",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Guyd",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Isabela",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Katrine",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Ketlen",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Larissa",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Larissa Vasconcelos",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Leandra",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Leticia Santos",
+      "strength": 0
+    }
+  ]
+}

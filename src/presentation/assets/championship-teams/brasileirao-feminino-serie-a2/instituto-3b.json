@@ -1,0 +1,131 @@
+{
+  "name": "Instituto Bosco Brasil Binda - Instituto 3b",
+  "shortName": "Instituto 3b",
+  "abbreviation": "INS",
+  "colors": {
+    "outline": "#ffffff",
+    "background": "#0d5c63",
+    "name": "#ffffff"
+  },
+  "initialOverallStrength": 59,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Alanna",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Ana Beatriz",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Carol",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Barbara",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Bru",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Carla Nunes",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Gisele",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Isabella",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Josefa",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Luana",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Maii Maii",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Maria Vitoria",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Monique Peçanha",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Nai",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Paula",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Petra",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Quezia",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Ferrer",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Helena Henrique",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Patrícia Almeida",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Bruna Oliveira",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Eduarda Gomes",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Larissa Vieira",
+      "strength": 0
+    }
+  ]
+}

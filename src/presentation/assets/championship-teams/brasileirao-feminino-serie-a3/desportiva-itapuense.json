@@ -1,0 +1,131 @@
+{
+  "name": "Associação Desportiva Itapuense - Adpi",
+  "shortName": "Desportiva Itapuense",
+  "abbreviation": "DEA",
+  "colors": {
+    "outline": "#111111",
+    "background": "#e8e8e8",
+    "name": "#111111"
+  },
+  "initialOverallStrength": 46,
+  "formation": "",
+  "morale": 0,
+  "overallMood": 0,
+  "players": [
+    {
+      "position": "GK",
+      "name": "Aline",
+      "strength": 0
+    },
+    {
+      "position": "GK",
+      "name": "Ana",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Analys",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Angelina",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Caren",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Crislane",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Fernanda",
+      "strength": 0
+    },
+    {
+      "position": "DF",
+      "name": "Tatinha",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Jairla",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Keila",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Hulk",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Meli",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Milena",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Miriam",
+      "strength": 0
+    },
+    {
+      "position": "MF",
+      "name": "Nicoli",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Paulo Dinis Alves Suares",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Raab",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rosana",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Rosinha",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Terezinha",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Thaline",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Vanda",
+      "strength": 0
+    },
+    {
+      "position": "FW",
+      "name": "Bruna Farias",
+      "strength": 0
+    }
+  ]
+}
