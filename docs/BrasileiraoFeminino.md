@@ -167,4 +167,145 @@ round-robin. Consequences:
 
 ## Cups
 
-*(To be completed by MS-102 task 07 — Copa do Brasil Feminino and Supercopa do Brasil Feminino.)*
+Extracted 2026-09-05. **Neither cup is seeded by MS-102** — this section is the spec, and the JSON
+entries plus the model work they need are deferred to MS-103/MS-104.
+
+### Why neither fits the `Championship` model
+
+Both are pure knockouts. `Championship` assumes a league: it carries `numberOfTeams`, a `standings`
+array built once from the team list, and a `matchContainer` of numbered rounds that
+`ChampionshipService.createMatches` fills by round-robin rotation. A cup has no table to stand in
+`standings`, its bracket shrinks each round instead of repeating a fixed fixture list, and the Copa
+starts with **two participants still undecided**, which nothing in the current model can express.
+The `phases` descriptor added by MS-102 covers the knockout *shape*, but a cup would also need the
+league scaffolding to become optional.
+
+### Copa do Brasil Feminino 2026
+
+| | |
+|---|---|
+| Official name | Copa do Brasil — Feminino |
+| Slug | `copa-do-brasil/feminino/2026` |
+| competitionId | `1260632` (championshipId `24`, categoryId `55`) |
+| Entry slots | **68** — 66 named clubs and 2 still listed as "A Definir" |
+| Format | Straight knockout; every phase is `fase_tipo: eliminacao` |
+
+Phases, exactly as CBF's own competition data reports them:
+
+| Phase | fase_id | Legs | Matches per tie |
+|---|---|---|---|
+| PRELIMINAR | 2033 | 1 | 1 |
+| 1ª Fase | 2034 | 1 | 1 |
+| 2ª Fase | 2055 | 1 | 1 |
+| 3ª Fase | 2060 | 1 | 1 |
+| 4ª Fase | 2069 | 1 | 1 |
+| 5ª Fase | 2077 | **2** | **2** |
+
+Source: `https://www.cbf.com.br/futebol-brasileiro/tabelas/copa-do-brasil/feminino/2026` and its
+per-phase pages (`.../2026/<fase_id>`).
+
+**Participants.** The 66 named entrants are **exactly the 66 clubs seeded by MS-102** — all 18 of
+A1, all 16 of A2 and all 32 of A3, with no club from outside the three divisions. Seeding the Copa
+therefore needs no new team data, only bracket support.
+
+| Club | UF | Division |
+|---|---|---|
+| América | MG | A1 |
+| Atlético Mineiro | MG | A1 |
+| Bahia | BA | A1 |
+| Botafogo | RJ | A1 |
+| Corinthians | SP | A1 |
+| Cruzeiro | MG | A1 |
+| Ferroviária | SP | A1 |
+| Flamengo | RJ | A1 |
+| Fluminense | RJ | A1 |
+| Grêmio | RS | A1 |
+| Internacional | RS | A1 |
+| Juventude | RS | A1 |
+| Mixto | MT | A1 |
+| Palmeiras | SP | A1 |
+| Red Bull Bragantino | SP | A1 |
+| Santos FC | SP | A1 |
+| São Paulo | SP | A1 |
+| Vitória | BA | A1 |
+| Associação Desportiva Taubaté | SP | A2 |
+| Atletico Rio Negro Clube | RR | A2 |
+| Ação | MT | A2 |
+| CAP | PI | A2 |
+| Ceará | CE | A2 |
+| Doce Mel | BA | A2 |
+| Instituto 3b | AM | A2 |
+| Itabirito Saf | MG | A2 |
+| Itacoatiara Futebol Clube | AM | A2 |
+| Minas Brasília | DF | A2 |
+| Paysandu | PA | A2 |
+| Pérolas Negras | RJ | A2 |
+| Sport Recife | PE | A2 |
+| Uda | AL | A2 |
+| Vasco da Gama Saf | RJ | A2 |
+| Vila Nova | GO | A2 |
+| Araguari A.c. | MG | A3 |
+| Atlético de Alagoinhas | BA | A3 |
+| Brasil de Farroupilha | RS | A3 |
+| Coritiba SAF | PR | A3 |
+| Cresspom | DF | A3 |
+| Criciúma | SC | A3 |
+| Desportiva Itapuense | RO | A3 |
+| Galvez | AC | A3 |
+| Guarani de Paripueira | AL | A3 |
+| Heips | RJ | A3 |
+| Ipojuca | PE | A3 |
+| Juventude | SE | A3 |
+| Liga Sanjoanense | PI | A3 |
+| Mauaense | SP | A3 |
+| Mixto | PB | A3 |
+| Pantanal SAF | MS | A3 |
+| Paraíso Esporte Clube | TO | A3 |
+| Penarol | AM | A3 |
+| Planalto Esporte Clube | GO | A3 |
+| Portuguesa | AP | A3 |
+| Prosperidade F. C. | ES | A3 |
+| R4 | CE | A3 |
+| Realidade Jovem | SP | A3 |
+| Remo | PA | A3 |
+| Rolim de Moura | RO | A3 |
+| Sampaio Corrêa | MA | A3 |
+| São Jose Esporte Clube Saf | SP | A3 |
+| São Raimundo | RR | A3 |
+| Tiradentes | PA | A3 |
+| União | RN | A3 |
+| Várzea Grande | MT | A3 |
+| Ypiranga Clube | AP | A3 |
+
+Plus 2 unresolved "A Definir" slots (club ids 53397 and 58916).
+
+**Open gaps.** Two things could not be established on 2026-09-05:
+
+- **Qualification criteria.** How a club earns its Copa place is defined in the competition's REC,
+  and the CMS endpoint that serves REC PDFs
+  (`https://cms.cbf.com.br/api/championship-documents?filters[slug][$eq]=...`) returned an empty
+  body for every slug tried, **including the known-good `campeonato-brasileiro/feminino-a1/2026`**
+  that worked earlier in MS-102. The endpoint is down or has changed, not the slug. Retry before
+  MS-103 starts.
+- **Bracket arithmetic.** Six phases do not divide 68 entrants cleanly, and the 5ª Fase is the last
+  phase CBF lists. Either later phases are published only as the competition reaches them, or the
+  preliminary round feeds a bracket narrower than 64. Do not infer the missing rounds — read them
+  off the REC once the CMS endpoint is serving again.
+
+### Supercopa do Brasil Feminino 2026
+
+| | |
+|---|---|
+| Official name | Supercopa do Brasil — Feminino |
+| Slug | `supercopa-do-brasil/feminino/2026` |
+| competitionId | `1260617` |
+| Clubs | **2** — Corinthians (SP) and Palmeiras (SP) |
+| Format | **A single match.** No two legs, no table |
+
+Qualification is the one cup rule that *is* citable: REC A1 **Art. 5º** defines the Supercopa as a
+one-off match (*"em jogo único"*) between the previous season's Copa do Brasil Feminina champion and
+Brasileirão Feminino A1 champion. Its parágrafo único covers the overlap: if one club won both, the
+A1 runner-up takes the second slot.
+
+Modelling the Supercopa is nearly free once knockouts exist — it is one tie of one leg between two
+clubs the game already has. It is the natural first cup to implement.
