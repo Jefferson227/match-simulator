@@ -74,7 +74,7 @@ export function getChampionship(
   }
 
   const teams = championshipJSONDTO.teamNames
-    .map((teamName) => TeamRepository.getTeam(teamName))
+    .map((teamName) => TeamRepository.getTeam(teamName, championshipJSONDTO.leagueType))
     .filter((team): team is NonNullable<typeof team> => Boolean(team));
 
   if (teams.length !== championshipJSONDTO.teamNames.length) {

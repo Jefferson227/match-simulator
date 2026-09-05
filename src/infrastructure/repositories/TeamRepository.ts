@@ -2,21 +2,30 @@ import TeamJSONDTO from '../data-transfer-objects/TeamJSONDTO';
 import PlayerPosition from '../../domain/enums/PlayerPosition';
 import { Team } from '../../domain/models/Team';
 import { getRandomPlayerStrength } from '../../domain/utils/Utils';
-import teamsData from '../data/teams.json';
+import LeagueType from '../../domain/enums/LeagueType';
+import mensTeamsData from '../data/teams.json';
+import womensTeamsData from '../data/teams-womens.json';
 
-let teamsByInternalName: Record<string, TeamJSONDTO> = {};
+const teamsDataByLeagueType: Record<LeagueType, TeamJSONDTO[]> = {
+  mens: mensTeamsData as TeamJSONDTO[],
+  womens: womensTeamsData as TeamJSONDTO[],
+};
 
-function initTeams(): void {
+// Cached per league type so the two seed files cannot cross-contaminate each other.
+const teamsByLeagueType: Partial<Record<LeagueType, Record<string, TeamJSONDTO>>> = {};
+
+function initTeams(leagueType: LeagueType): Record<string, TeamJSONDTO> {
   const nextTeamsByInternalName: Record<string, TeamJSONDTO> = {};
-  for (const team of teamsData as TeamJSONDTO[]) {
+  for (const team of teamsDataByLeagueType[leagueType]) {
     nextTeamsByInternalName[team.internalName] = team;
   }
 
-  teamsByInternalName = nextTeamsByInternalName;
+  teamsByLeagueType[leagueType] = nextTeamsByInternalName;
+  return nextTeamsByInternalName;
 }
 
-function getTeam(internalName: string): Team {
-  if (Object.keys(teamsByInternalName).length === 0) initTeams();
+function getTeam(internalName: string, leagueType: LeagueType = 'mens'): Team {
+  const teamsByInternalName = teamsByLeagueType[leagueType] ?? initTeams(leagueType);
 
   const teamJSONDTO = teamsByInternalName[internalName];
   if (!teamJSONDTO) throw new Error(`Team not found: ${internalName}.`);
