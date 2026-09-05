@@ -60,5 +60,250 @@
       "vila-nova",
       "volta-redonda"
     ]
+  },
+  {
+    "name": "BRASILEIRÃO FEMININO A1",
+    "internalName": "brasileirao-feminino-serie-a1",
+    "numberOfTeams": 18,
+    "numberOfRelegatableTeams": 2,
+    "relegationChampionshipInternalName": "brasileirao-feminino-serie-a2",
+    "relegationRule": "first-phase-table-position",
+    "type": "double-round-robin",
+    "leagueType": "womens",
+    "phases": [
+      {
+        "kind": "round-robin",
+        "name": "1ª Fase",
+        "numberOfGroups": 1,
+        "teamsPerGroup": 18,
+        "legs": 1,
+        "advancingPerGroup": 8
+      },
+      {
+        "kind": "knockout",
+        "name": "Quartas de Final",
+        "numberOfTies": 4,
+        "legs": 2,
+        "secondLegHost": "higher-seed",
+        "tiebreakers": [
+          "goal-difference",
+          "penalties"
+        ]
+      },
+      {
+        "kind": "knockout",
+        "name": "Semifinal",
+        "numberOfTies": 2,
+        "legs": 2,
+        "secondLegHost": "accumulated-points",
+        "tiebreakers": [
+          "goal-difference",
+          "penalties"
+        ]
+      },
+      {
+        "kind": "knockout",
+        "name": "Final",
+        "numberOfTies": 1,
+        "legs": 2,
+        "secondLegHost": "accumulated-points",
+        "tiebreakers": [
+          "goal-difference",
+          "penalties"
+        ]
+      }
+    ],
+    "teamNames": [
+      "america",
+      "atletico-mineiro",
+      "bahia",
+      "botafogo",
+      "corinthians",
+      "cruzeiro",
+      "ferroviaria",
+      "flamengo",
+      "fluminense",
+      "gremio",
+      "internacional",
+      "juventude-rs",
+      "mixto-mt",
+      "palmeiras",
+      "red-bull-bragantino",
+      "santos",
+      "sao-paulo",
+      "vitoria"
+    ]
+  },
+  {
+    "name": "BRASILEIRÃO FEMININO A2",
+    "internalName": "brasileirao-feminino-serie-a2",
+    "numberOfTeams": 16,
+    "numberOfPromotableTeams": 4,
+    "promotionChampionshipInternalName": "brasileirao-feminino-serie-a1",
+    "promotionRule": "semifinalists",
+    "numberOfRelegatableTeams": 2,
+    "relegationChampionshipInternalName": "brasileirao-feminino-serie-a3",
+    "relegationRule": "first-phase-table-position",
+    "type": "double-round-robin",
+    "leagueType": "womens",
+    "phases": [
+      {
+        "kind": "round-robin",
+        "name": "1ª Fase",
+        "numberOfGroups": 1,
+        "teamsPerGroup": 16,
+        "legs": 1,
+        "advancingPerGroup": 8
+      },
+      {
+        "kind": "knockout",
+        "name": "Quartas de Final",
+        "numberOfTies": 4,
+        "legs": 2,
+        "secondLegHost": "higher-seed",
+        "tiebreakers": [
+          "goal-difference",
+          "penalties"
+        ]
+      },
+      {
+        "kind": "knockout",
+        "name": "Semifinal",
+        "numberOfTies": 2,
+        "legs": 2,
+        "secondLegHost": "accumulated-points",
+        "tiebreakers": [
+          "goal-difference",
+          "penalties"
+        ]
+      },
+      {
+        "kind": "knockout",
+        "name": "Final",
+        "numberOfTies": 1,
+        "legs": 2,
+        "secondLegHost": "accumulated-points",
+        "tiebreakers": [
+          "goal-difference",
+          "penalties"
+        ]
+      }
+    ],
+    "teamNames": [
+      "acao",
+      "desportiva-taubate",
+      "atletico-rio-negro",
+      "cap",
+      "ceara",
+      "doce-mel",
+      "instituto-3b",
+      "itabirito",
+      "itacoatiara",
+      "minas-brasilia",
+      "paysandu",
+      "perolas-negras",
+      "sport-recife",
+      "uda",
+      "vasco-da-gama",
+      "vila-nova"
+    ]
+  },
+  {
+    "name": "BRASILEIRÃO FEMININO A3",
+    "internalName": "brasileirao-feminino-serie-a3",
+    "numberOfTeams": 32,
+    "numberOfPromotableTeams": 4,
+    "promotionChampionshipInternalName": "brasileirao-feminino-serie-a2",
+    "promotionRule": "semifinalists",
+    "type": "double-round-robin",
+    "leagueType": "womens",
+    "phases": [
+      {
+        "kind": "round-robin",
+        "name": "1ª Fase",
+        "numberOfGroups": 8,
+        "teamsPerGroup": 4,
+        "legs": 2,
+        "advancingPerGroup": 2
+      },
+      {
+        "kind": "knockout",
+        "name": "Oitavas de Final",
+        "numberOfTies": 8,
+        "legs": 2,
+        "secondLegHost": "group-winner",
+        "tiebreakers": [
+          "goal-difference",
+          "penalties"
+        ]
+      },
+      {
+        "kind": "knockout",
+        "name": "Quartas de Final",
+        "numberOfTies": 4,
+        "legs": 2,
+        "secondLegHost": "accumulated-points",
+        "tiebreakers": [
+          "goal-difference",
+          "penalties"
+        ]
+      },
+      {
+        "kind": "knockout",
+        "name": "Semifinal",
+        "numberOfTies": 2,
+        "legs": 2,
+        "secondLegHost": "accumulated-points",
+        "tiebreakers": [
+          "goal-difference",
+          "penalties"
+        ]
+      },
+      {
+        "kind": "knockout",
+        "name": "Final",
+        "numberOfTies": 1,
+        "legs": 2,
+        "secondLegHost": "accumulated-points",
+        "tiebreakers": [
+          "goal-difference",
+          "penalties"
+        ]
+      }
+    ],
+    "teamNames": [
+      "araguari",
+      "atletico-de-alagoinhas",
+      "brasil-de-farroupilha",
+      "coritiba",
+      "cresspom",
+      "criciuma",
+      "desportiva-itapuense",
+      "galvez",
+      "guarani-de-paripueira",
+      "heips",
+      "ipojuca",
+      "juventude-se",
+      "liga-sanjoanense",
+      "mauaense",
+      "mixto-pb",
+      "pantanal",
+      "paraiso",
+      "penarol",
+      "planalto",
+      "portuguesa",
+      "prosperidade",
+      "r4",
+      "realidade-jovem",
+      "remo",
+      "rolim-de-moura",
+      "sampaio-correa",
+      "sao-jose",
+      "sao-raimundo",
+      "tiradentes",
+      "uniao",
+      "varzea-grande",
+      "ypiranga"
+    ]
   }
 ]

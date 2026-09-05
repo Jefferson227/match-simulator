@@ -8,10 +8,13 @@ describe('ChampionshipRepository', () => {
     test('returns every championship when no league type is given', () => {
       const championships = getChampionships();
 
-      expect(championships).toHaveLength(2);
+      expect(championships).toHaveLength(5);
       expect(championships.map((c) => c.internalName)).toEqual([
         'brasileirao-serie-a',
         'brasileirao-serie-b',
+        'brasileirao-feminino-serie-a1',
+        'brasileirao-feminino-serie-a2',
+        'brasileirao-feminino-serie-a3',
       ]);
     });
 
@@ -24,9 +27,17 @@ describe('ChampionshipRepository', () => {
       });
     });
 
-    test("returns an empty array without throwing when filtering by 'womens'", () => {
-      expect(() => getChampionships('womens')).not.toThrow();
-      expect(getChampionships('womens')).toEqual([]);
+    test("returns the three women's divisions when filtering by 'womens'", () => {
+      const championships = getChampionships('womens');
+
+      expect(championships.map((c) => c.internalName)).toEqual([
+        'brasileirao-feminino-serie-a1',
+        'brasileirao-feminino-serie-a2',
+        'brasileirao-feminino-serie-a3',
+      ]);
+      championships.forEach((championship) => {
+        expect(championship.leagueType).toBe('womens');
+      });
     });
 
     test('projects only internalName, name and leagueType', () => {
