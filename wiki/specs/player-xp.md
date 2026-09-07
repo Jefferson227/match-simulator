@@ -1,3 +1,18 @@
+---
+title: Player XP progression
+type: spec
+verified: 2026-09-07
+owner: user
+asserts:
+  - file: src/domain/services/PlayerProgressionService.ts
+    exists: true
+---
+
+> **Spec, not description.** This is the contract `PlayerProgressionService.ts` is judged against,
+> not a summary of what it currently does. If the code and this page disagree, the code is wrong
+> until the user says otherwise. The user owns this page; Claude keeps it in sync and drafts changes,
+> but does not change the rules unilaterally.
+
 # Player Strength Evolution System (XP-Based)
 
 ## Overview

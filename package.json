@@ -6,6 +6,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "lint-wiki": "node scripts/lint-wiki.cjs",
     "preview": "vite preview",
     "test": "jest",
     "test-front": "jest src/presentation",

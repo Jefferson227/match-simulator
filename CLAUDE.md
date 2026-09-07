@@ -20,7 +20,7 @@ Type checking is not wired into `build` or `lint`. `npx tsc --noEmit` currently 
 
 ## Architecture
 
-Layered single-package app. The dependency direction is enforced by convention only (documented in `docs/FolderRestructuring.md`):
+Layered single-package app. The dependency direction is enforced by convention only (reasoning in `wiki/decisions/layer-boundaries.md`):
 
 ```
 presentation → use-cases → domain
@@ -91,6 +91,23 @@ Fixtures are built by round-robin rotation in `ChampionshipService.createMatches
 
 Work on `dev`; PRs target `dev`, not `main`.
 
-## Additional docs
+## Knowledge base
 
-`docs/GameEngine.md` (engine usage), `docs/FolderRestructuring.md` (layer rules), `docs/RefactorPlan.md` (entity field reference), `docs/PlayerXpSystem.md` (spec for the XP-based player strength progression — see `PlayerProgressionService.ts`).
+`wiki/` holds the knowledge this repo does not contain: the real rules of Brazilian competitions, the
+reasoning behind past decisions, and the specs the code must satisfy. It replaced `docs/`.
+
+- **Start at `wiki/index.md`** — it catalogs every page. Read it before answering a domain question.
+- `wiki/CLAUDE.md` is its schema: how to ingest sources, what gets a page, how to lint. Read it
+  before writing anything under `wiki/`.
+- `wiki/specs/player-xp.md` is the contract for `PlayerProgressionService.ts`.
+
+**Its one rule:** a fact you can get by reading the repo does not get a wiki page. Code, seed JSON
+and git history are the truth for those.
+
+**When to write to it.** Most changes write nothing — bug fixes, refactors, renames, tests and
+styling leave no residue. Write only when a change produces external evidence, a decision whose
+rationale the code cannot state, a spec change, or a discovered contradiction. Then update
+`wiki/index.md` and append to `wiki/log.md`.
+
+`.plans/<TICKET>/` remains the ephemeral working area (it is gitignored). Durable findings move from
+there into `wiki/` at ticket close-out — otherwise they are lost.

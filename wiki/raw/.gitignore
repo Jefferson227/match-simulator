@@ -1,0 +1,4 @@
+# Raw sources are re-fetchable from sources.md; keep binaries out of git.
+*.pdf
+*.json
+*.html
