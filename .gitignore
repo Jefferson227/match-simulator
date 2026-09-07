@@ -25,3 +25,6 @@ dist-ssr
 
 # /create-plan 
 .plans
+
+# Obsidian vault config (wiki/)
+wiki/.obsidian/
