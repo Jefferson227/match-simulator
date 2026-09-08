@@ -318,6 +318,46 @@ export function resolveCompletedPhase(
   };
 }
 
+/** True once the last phase's final has been decided. */
+export function isPhasedChampionshipOver(championship: Championship): boolean {
+  const phases = championship.phases;
+  if (!phases?.length) return false;
+
+  return isPhaseComplete(championship.matchContainer.rounds, phases.length - 1);
+}
+
+/**
+ * The final classification of a phased championship: points accumulated across every phase, with
+ * the champion and runner-up forced to 1st and 2nd (REC A1 Art. 27, REC A3 Art. 21) — a club can
+ * win the title from outside the top two on accumulated points.
+ *
+ * An unphased championship has no phases to accumulate, so its live table is its classification.
+ */
+export function buildFinalClassification(championship: Championship): Standing[] {
+  if (!championship.phases?.length) return championship.standings;
+
+  const accumulated = rankStandings(championship.accumulatedStandings ?? championship.standings);
+  if (!isPhasedChampionshipOver(championship)) return accumulated;
+
+  const championId = championship.survivingTeamIds?.[0];
+  const finalists = championship.phaseParticipants?.[championship.phases.length - 1] ?? [];
+  const runnerUpId = finalists.find((teamId) => teamId !== championId);
+
+  const podium = [championId, runnerUpId].filter(
+    (teamId): teamId is Team['id'] => teamId !== undefined
+  );
+  if (!podium.length) return accumulated;
+
+  const ordered = [
+    ...podium
+      .map((teamId) => accumulated.find((standing) => standing.team.id === teamId))
+      .filter((standing): standing is Standing => Boolean(standing)),
+    ...accumulated.filter((standing) => !podium.includes(standing.team.id)),
+  ];
+
+  return ordered.map((standing, index) => ({ ...standing, position: index + 1 }));
+}
+
 /** Initial phase state for a freshly generated phased championship. */
 export function initialisePhaseState(championship: Championship): Championship {
   if (!championship.phases?.length) return championship;

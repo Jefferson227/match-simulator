@@ -8,7 +8,12 @@ import Standing from '../models/Standing';
 import LeagueType from '../enums/LeagueType';
 import { createMatches } from '../features/fixture-generation/FixtureGenerator';
 import { rankStandings } from '../features/standings/StandingsComparator';
-import { initialisePhaseState, resolveCompletedPhase } from '../features/phases/PhaseProgression';
+import {
+  buildFinalClassification,
+  initialisePhaseState,
+  isPhasedChampionshipOver,
+  resolveCompletedPhase,
+} from '../features/phases/PhaseProgression';
 import { RandomProvider } from '../features/match-simulation/types';
 import { getRandomNumber } from '../utils/Utils';
 
@@ -233,6 +238,10 @@ function resetChampionshipForNewSeason(championship: Championship, teams: Team[]
 }
 
 function isChampionshipOver(championship: Championship): boolean {
+  // A phased championship is over when its final is decided, not when its rounds run out — the
+  // round list grows as each phase is generated, so the round count means nothing until then.
+  if (championship.phases?.length) return isPhasedChampionshipOver(championship);
+
   return championship.matchContainer.currentRound >= championship.matchContainer.totalRounds;
 }
 
@@ -538,8 +547,22 @@ const runEndOfChampionshipActions = (
   }
 };
 
+const getFinalClassification = (championship: Championship): OperationResult<Standing[]> => {
+  try {
+    const result = new OperationResult<Standing[]>(buildFinalClassification(championship));
+    result.setSuccess();
+    return result;
+  } catch (error) {
+    const result = new OperationResult<Standing[]>([]);
+    const message = error instanceof Error ? error.message : String(error);
+    result.setError({ errorCode: 'exception', message });
+    return result;
+  }
+};
+
 export default {
   initChampionships,
+  getFinalClassification,
   getChampionships,
   getTeamControlledByHuman,
   getMatchesForCurrentRound,
