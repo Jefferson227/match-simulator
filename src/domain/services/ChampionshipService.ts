@@ -7,6 +7,7 @@ import { Championship } from '../models/Championship';
 import Standing from '../models/Standing';
 import LeagueType from '../enums/LeagueType';
 import { createMatches } from '../features/fixture-generation/FixtureGenerator';
+import { rankStandings } from '../features/standings/StandingsComparator';
 
 function startRound(championship: Championship): Championship {
   if (!championship?.matchContainer?.rounds) {
@@ -148,25 +149,7 @@ function updateStandings(currentStandings: Standing[], matches: Match[]): Standi
     }
   }
 
-  return Array.from(standingsMap.values())
-    .sort((a, b) => {
-      const pointsDifference = b.points - a.points;
-      if (pointsDifference !== 0) return pointsDifference;
-
-      const goalDifferenceA = a.goalsFor - a.goalsAgainst;
-      const goalDifferenceB = b.goalsFor - b.goalsAgainst;
-      const goalDifference = goalDifferenceB - goalDifferenceA;
-      if (goalDifference !== 0) return goalDifference;
-
-      const goalsForDifference = b.goalsFor - a.goalsFor;
-      if (goalsForDifference !== 0) return goalsForDifference;
-
-      return a.team.abbreviation.localeCompare(b.team.abbreviation);
-    })
-    .map((standing, index) => ({
-      ...standing,
-      position: index + 1,
-    }));
+  return rankStandings(Array.from(standingsMap.values()));
 }
 
 function buildStandings(teams: Team[]): Standing[] {

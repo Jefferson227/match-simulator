@@ -12,6 +12,7 @@ import MatchContainer from '../../models/MatchContainer';
 import Round from '../../models/Round';
 import { Team } from '../../models/Team';
 import ChampionshipPhase, { RoundRobinPhase } from '../../models/ChampionshipPhase';
+import { BracketEntrant, buildKnockoutPhaseRounds } from './KnockoutBracket';
 
 function createMatch(homeTeam: Team, awayTeam: Team, fields: Partial<Match> = {}): Match {
   return {
@@ -140,7 +141,14 @@ export function buildRoundRobinPhaseRounds(
   return rounds;
 }
 
-/** Builds the rounds of a single phase, whatever its kind. */
+/**
+ * Builds the rounds of a single phase from a plain club list.
+ *
+ * A knockout phase reached this way is seeded straight off the declared order — the case of a
+ * competition whose *first* phase is a knockout. Every later knockout phase is built by
+ * `KnockoutBracket.buildKnockoutPhaseRounds` from entrants carrying real seeds, groups and
+ * accumulated points.
+ */
 export function buildPhaseRounds(
   teams: Team[],
   phase: ChampionshipPhase,
@@ -151,7 +159,8 @@ export function buildPhaseRounds(
     return buildRoundRobinPhaseRounds(teams, phase, phaseIndex, firstRoundNumber);
   }
 
-  throw new Error(`Unsupported phase kind: ${(phase as ChampionshipPhase).kind}.`);
+  const entrants: BracketEntrant[] = teams.map((team, index) => ({ team, seed: index + 1 }));
+  return buildKnockoutPhaseRounds(entrants, phase, 'table', phaseIndex, firstRoundNumber).rounds;
 }
 
 function buildLegacyRounds(startingTeams: Team[]): Round[] {
