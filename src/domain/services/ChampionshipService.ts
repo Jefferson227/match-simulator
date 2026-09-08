@@ -207,13 +207,72 @@ function buildStandings(teams: Team[]): Standing[] {
   }));
 }
 
-function getPromotedTeams(championship: Championship, amount: number): Team[] {
-  return championship.standings.slice(0, amount).map((standing) => standing.team);
+/**
+ * The clubs that reached the semifinal, best first by final classification.
+ *
+ * The semifinal is the second-to-last phase in every seeded format — A1/A2 index 2 of 4, A3 index 3
+ * of 5 — and `phaseParticipants` records who played it (task 04).
+ */
+function getSemifinalists(championship: Championship): Team[] {
+  const phases = championship.phases;
+  if (!phases?.length) return [];
+
+  const semifinalIndex = phases.length - 2;
+  const semifinalists = championship.phaseParticipants?.[semifinalIndex];
+  if (!semifinalists?.length) return [];
+
+  const alive = new Set<string>(semifinalists);
+  return buildFinalClassification(championship)
+    .filter((standing) => alive.has(standing.team.id))
+    .map((standing) => standing.team);
 }
 
+/**
+ * Promotion, dispatched on the rule the championship declares.
+ *
+ * - `'semifinalists'` — everyone who reached the semifinal goes up, whatever their table position.
+ *   A club can finish 8th in the league phase, win a quarter-final and be promoted ahead of the
+ *   club that finished 1st (REC A2 Art. 5º, REC A3 Art. 5º).
+ * - `'table-position'` — the top of the table, the default and the men's divisions' behaviour.
+ */
+function getPromotedTeams(championship: Championship, amount: number): Team[] {
+  if (amount <= 0) return [];
+
+  const rule = championship.isPromotable ? championship.promotionRule : undefined;
+
+  if (rule === 'semifinalists') {
+    const semifinalists = getSemifinalists(championship);
+    // `amount` is `numberOfPromotableTeams`, which is 4 for both A2 and A3 — exactly the number of
+    // semifinalists. It is applied so a mismatched count can never inflate the promoted field.
+    if (semifinalists.length) return semifinalists.slice(0, amount);
+  }
+
+  return buildFinalClassification(championship)
+    .slice(0, amount)
+    .map((standing) => standing.team);
+}
+
+/**
+ * Relegation, dispatched on the rule the championship declares.
+ *
+ * - `'first-phase-table-position'` — the bottom of the **1ª Fase** table, not the final
+ *   classification (REC A1 Art. 26, REC A2 Art. 25).
+ * - `'table-position'` — the bottom of the table, the default and the men's divisions' behaviour.
+ */
 function getRelegatedTeams(championship: Championship, amount: number): Team[] {
   if (amount <= 0) return [];
-  return championship.standings.slice(-amount).map((standing) => standing.team);
+
+  const rule = championship.isRelegatable ? championship.relegationRule : undefined;
+
+  if (rule === 'first-phase-table-position' && championship.firstPhaseStandings?.length) {
+    return rankStandings(championship.firstPhaseStandings)
+      .slice(-amount)
+      .map((standing) => standing.team);
+  }
+
+  return buildFinalClassification(championship)
+    .slice(-amount)
+    .map((standing) => standing.team);
 }
 
 function removeTeams(sourceTeams: Team[], teamsToRemove: Team[]): Team[] {
