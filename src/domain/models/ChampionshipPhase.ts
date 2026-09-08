@@ -23,8 +23,10 @@ export type RoundRobinPhase = {
  * - `higher-seed` — the better-placed club of the previous phase's table (A1/A2 quarter-finals).
  * - `group-winner` — the club that won its first-phase group (A3's round of 16).
  * - `accumulated-points` — most points across every phase played so far (all semifinals and finals).
+ * - `drawn` — a public DCO draw, redone at every phase. The cups use this and only this; the
+ *   divisions' seeded hosting right does not apply to them (Copa Arts. 14–21, Supercopa Art. 12 §1).
  */
-export type SecondLegHost = 'higher-seed' | 'group-winner' | 'accumulated-points';
+export type SecondLegHost = 'higher-seed' | 'group-winner' | 'accumulated-points' | 'drawn';
 
 /** A knockout tie. Ties are level on points, so these decide them, in order. */
 export type KnockoutTiebreaker = 'goal-difference' | 'penalties';
@@ -37,6 +39,14 @@ export type KnockoutPhase = {
   legs: 1 | 2;
   secondLegHost: SecondLegHost;
   tiebreakers: KnockoutTiebreaker[];
+  /**
+   * Clubs joining the competition at this phase, named as they are in the seed data.
+   *
+   * A cup has **staggered entry** and no byes: the Copa's 66 clubs enter at the Preliminar, 1ª, 2ª
+   * or 3ª Fase by Ranking Adaptado (Copa Arts. 14–17). The repository resolves these names into
+   * `Championship.phaseEntrants`.
+   */
+  entrants?: string[];
 };
 
 export type ChampionshipPhase = RoundRobinPhase | KnockoutPhase;

@@ -33,6 +33,16 @@ type BaseChampionship = {
    */
   phases?: ChampionshipPhase[];
   /**
+   * Whether the competition has a league table at all. Absent or `true` for every division; `false`
+   * for a cup, which is a bracket with no standings (`standings` stays empty).
+   */
+  hasLeagueTable?: boolean;
+  /**
+   * Clubs joining at each phase, indexed by phase — the shape staggered entry needs. Absent for a
+   * competition whose whole field starts together.
+   */
+  phaseEntrants?: Team[][];
+  /**
    * Index into `phases` of the phase currently being played. Absent for an unphased
    * championship, which has no phases to track.
    */

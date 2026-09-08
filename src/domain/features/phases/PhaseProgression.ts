@@ -6,7 +6,10 @@
  * Every phase restarts at zero points (REC A1 Art. 12 par. único, A2 Art. 11, A3 Art. 11).
  */
 import { Championship } from '../../models/Championship';
-import ChampionshipPhase, { RoundRobinPhase } from '../../models/ChampionshipPhase';
+import ChampionshipPhase, {
+  KnockoutTiebreaker,
+  RoundRobinPhase,
+} from '../../models/ChampionshipPhase';
 import Match from '../../models/Match';
 import Round from '../../models/Round';
 import PenaltyShootout from '../../models/PenaltyShootout';
@@ -100,6 +103,22 @@ function accumulatedFor(accumulated: Standing[], teamId: string): Standing | und
   return accumulated.find((standing) => standing.team.id === teamId);
 }
 
+/** Who played a phase, read off its fixtures — the only source a competition with no table has. */
+function participantsOfPhase(matches: Match[]): Team['id'][] {
+  const ids: Team['id'][] = [];
+  const seen = new Set<string>();
+
+  for (const match of matches) {
+    for (const team of [match.homeTeam, match.awayTeam]) {
+      if (seen.has(team.id)) continue;
+      seen.add(team.id);
+      ids.push(team.id);
+    }
+  }
+
+  return ids;
+}
+
 /** The clubs going through from a completed round-robin phase, ordered best first. */
 export function qualifiersFromRoundRobin(
   phase: RoundRobinPhase,
@@ -157,7 +176,8 @@ export type KnockoutPhaseResolution = {
 /** Resolves every tie of a completed knockout phase, in the order the ties were generated. */
 export function resolveKnockoutPhase(
   matches: Match[],
-  deps: PhaseProgressionDependencies
+  deps: PhaseProgressionDependencies,
+  tiebreakers?: KnockoutTiebreaker[]
 ): KnockoutPhaseResolution {
   const ties = groupMatchesIntoTies(matches);
   const outcomes: TieOutcome[] = [];
@@ -165,7 +185,7 @@ export function resolveKnockoutPhase(
   const decidingLegByTie = new Map<string, number>();
 
   for (const [tieId, legs] of ties) {
-    const outcome = resolveTie(legs, deps, simulatePenaltyShootout);
+    const outcome = resolveTie(legs, deps, simulatePenaltyShootout, tiebreakers);
     outcomes.push(outcome);
     if (outcome.shootout) {
       shootoutByTie.set(tieId, outcome.shootout);
@@ -215,8 +235,13 @@ function entrantsFromOutcomes(outcomes: TieOutcome[], accumulated: Standing[]): 
   }));
 }
 
-/** How the next phase pairs its entrants, given the phase they came out of. */
-export function seedingForNextPhase(completed: ChampionshipPhase): BracketSeeding {
+/** How the next phase pairs its entrants, given the phase they came out of and the one they enter. */
+export function seedingForNextPhase(
+  completed: ChampionshipPhase,
+  next?: ChampionshipPhase
+): BracketSeeding {
+  // The cups draw their pairings afresh at every phase, so there is no bracket to carry through.
+  if (next?.kind === 'knockout' && next.secondLegHost === 'drawn') return 'draw';
   if (completed.kind === 'knockout') return 'bracket';
   return completed.numberOfGroups > 1 ? 'groups' : 'table';
 }
@@ -253,8 +278,11 @@ export function resolveCompletedPhase(
     phaseStandings
   );
 
+  const phaseMatches = matchesOfPhase(rounds, phaseIndex);
   const participants = [...(championship.phaseParticipants ?? [])];
-  participants[phaseIndex] = phaseStandings.map((standing) => standing.team.id);
+  participants[phaseIndex] = phaseStandings.length
+    ? phaseStandings.map((standing) => standing.team.id)
+    : participantsOfPhase(phaseMatches);
 
   let updatedRounds = rounds;
   let entrants: BracketEntrant[];
@@ -267,7 +295,7 @@ export function resolveCompletedPhase(
       accumulated
     );
   } else {
-    const resolution = resolveKnockoutPhase(matchesOfPhase(rounds, phaseIndex), deps);
+    const resolution = resolveKnockoutPhase(phaseMatches, deps, phase.tiebreakers);
     updatedRounds = withShootoutsRecorded(rounds, phaseIndex, resolution);
     entrants = entrantsFromOutcomes(resolution.outcomes, accumulated);
   }
@@ -294,13 +322,26 @@ export function resolveCompletedPhase(
     );
   }
 
+  // Staggered entry: a cup's clubs join at different phases, so the next phase's field is the
+  // survivors plus whoever enters now. There are no byes (Copa Arts. 14–17).
+  const joining = championship.phaseEntrants?.[phaseIndex + 1] ?? [];
+  const field: BracketEntrant[] = [
+    ...entrants,
+    ...joining.map((team, index) => ({
+      team,
+      seed: entrants.length + index + 1,
+      accumulated: accumulatedFor(accumulated, team.id),
+    })),
+  ];
+
   const lastRoundNumber = updatedRounds.reduce((last, round) => Math.max(last, round.number), 0);
   const { rounds: nextRounds } = buildKnockoutPhaseRounds(
-    entrants,
+    field,
     nextPhase,
-    seedingForNextPhase(phase),
+    seedingForNextPhase(phase, nextPhase),
     phaseIndex + 1,
-    lastRoundNumber + 1
+    lastRoundNumber + 1,
+    deps.rng
   );
 
   const allRounds = [...updatedRounds, ...nextRounds];
@@ -308,8 +349,13 @@ export function resolveCompletedPhase(
   return {
     ...base,
     currentPhaseIndex: phaseIndex + 1,
-    // Every phase restarts at zero, and only the survivors have a table.
-    standings: buildEmptyStandings(entrants.map((entrant) => entrant.team)),
+    survivingTeamIds: field.map((entrant) => entrant.team.id),
+    // Every phase restarts at zero, and only the survivors have a table. A competition with no
+    // league table keeps none at all.
+    standings:
+      championship.hasLeagueTable === false
+        ? []
+        : buildEmptyStandings(field.map((entrant) => entrant.team)),
     matchContainer: {
       ...championship.matchContainer,
       rounds: allRounds,
@@ -368,10 +414,15 @@ export function buildFinalClassification(championship: Championship): Standing[]
 export function initialisePhaseState(championship: Championship): Championship {
   if (!championship.phases?.length) return championship;
 
+  // With staggered entry only the first phase's entrants are in the competition on day one.
+  const startingField = championship.phaseEntrants?.[0]?.length
+    ? championship.phaseEntrants[0]
+    : championship.teams;
+
   return {
     ...championship,
     currentPhaseIndex: 0,
-    survivingTeamIds: championship.teams.map((team) => team.id),
+    survivingTeamIds: startingField.map((team) => team.id),
     phaseParticipants: [],
     accumulatedStandings: [],
     firstPhaseStandings: undefined,

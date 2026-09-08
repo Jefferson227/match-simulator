@@ -5,7 +5,8 @@
  * two-legged ties, the Copa (Art. 13 §1):
  *
  * 1. points across the tie — every phase restarts at zero;
- * 2. goal difference over the two legs;
+ * 2. goal difference over the two legs — **two-legged ties only**; a single-legged phase goes
+ *    straight from a draw to penalties (Copa Art. 13 §1, Supercopa Art. 10);
  * 3. a penalty shootout.
  *
  * **No away goals and no extra time** — neither appears in any REC.
@@ -13,6 +14,7 @@
 import Match from '../../models/Match';
 import PenaltyShootout from '../../models/PenaltyShootout';
 import { Team } from '../../models/Team';
+import { KnockoutTiebreaker } from '../../models/ChampionshipPhase';
 import { RandomProvider } from '../match-simulation/types';
 
 export type TieOutcome = {
@@ -92,7 +94,8 @@ export function resolveTie(
   ) => {
     winner: Team;
     shootout: PenaltyShootout;
-  }
+  },
+  tiebreakers: KnockoutTiebreaker[] = ['goal-difference', 'penalties']
 ): TieOutcome {
   if (!legs.length) throw new Error('A tie needs at least one leg to be resolved.');
 
@@ -113,12 +116,16 @@ export function resolveTie(
       : { tieId, winner: b.team, loser: a.team };
   }
 
-  const differenceA = a.goalsFor - a.goalsAgainst;
-  const differenceB = b.goalsFor - b.goalsAgainst;
-  if (differenceA !== differenceB) {
-    return differenceA > differenceB
-      ? { tieId, winner: a.team, loser: b.team }
-      : { tieId, winner: b.team, loser: a.team };
+  // A single-legged tie has no goal-difference step — a drawn match goes straight to penalties
+  // (Copa Art. 13 §1, Supercopa Art. 10). The phase declares which steps it uses.
+  if (tiebreakers.includes('goal-difference')) {
+    const differenceA = a.goalsFor - a.goalsAgainst;
+    const differenceB = b.goalsFor - b.goalsAgainst;
+    if (differenceA !== differenceB) {
+      return differenceA > differenceB
+        ? { tieId, winner: a.team, loser: b.team }
+        : { tieId, winner: b.team, loser: a.team };
+    }
   }
 
   if (!shootout) {

@@ -298,7 +298,11 @@ function removeTeams(sourceTeams: Team[], teamsToRemove: Team[]): Team[] {
 }
 
 function resetChampionshipForNewSeason(championship: Championship, teams: Team[]): Championship {
-  const nextSeasonMatchContainer = createMatches(teams, championship.phases);
+  const nextSeasonMatchContainer = createMatches(
+    teams,
+    championship.phases,
+    championship.phaseEntrants
+  );
   const currentSeason =
     championship.matchContainer.currentSeason || nextSeasonMatchContainer.currentSeason;
 
@@ -466,7 +470,11 @@ const initChampionships = (
     );
     playableChampionship = initialisePhaseState({
       ...playableChampionship,
-      matchContainer: createMatches(playableChampionship.teams, playableChampionship.phases),
+      matchContainer: createMatches(
+        playableChampionship.teams,
+        playableChampionship.phases,
+        playableChampionship.phaseEntrants
+      ),
     });
 
     championshipContainer = {
@@ -482,7 +490,11 @@ const initChampionships = (
 
       promotionChampionship = initialisePhaseState({
         ...promotionChampionship,
-        matchContainer: createMatches(promotionChampionship.teams, promotionChampionship.phases),
+        matchContainer: createMatches(
+          promotionChampionship.teams,
+          promotionChampionship.phases,
+          promotionChampionship.phaseEntrants
+        ),
       });
 
       championshipContainer = {
@@ -499,7 +511,11 @@ const initChampionships = (
 
       relegationChampionship = initialisePhaseState({
         ...relegationChampionship,
-        matchContainer: createMatches(relegationChampionship.teams, relegationChampionship.phases),
+        matchContainer: createMatches(
+          relegationChampionship.teams,
+          relegationChampionship.phases,
+          relegationChampionship.phaseEntrants
+        ),
       });
 
       championshipContainer = {

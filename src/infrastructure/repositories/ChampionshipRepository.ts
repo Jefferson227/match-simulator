@@ -79,27 +79,56 @@ export function getChampionship(
     .map((teamName) => TeamRepository.getTeam(teamName, championshipJSONDTO.leagueType))
     .filter((team): team is NonNullable<typeof team> => Boolean(team));
 
+  const teamsByName = new Map(
+    championshipJSONDTO.teamNames.map((teamName, index) => [teamName, teams[index]])
+  );
+
   if (teams.length !== championshipJSONDTO.teamNames.length) {
     throw new Error(
       `Number of teams found is not the same as expected. Found: ${teams.length}; Expected: ${championshipJSONDTO.teamNames.length}.`
     );
   }
 
-  const standings = teams.map((team, index) => ({
-    team,
-    position: index + 1,
-    wins: 0,
-    draws: 0,
-    losses: 0,
-    goalsFor: 0,
-    goalsAgainst: 0,
-    points: 0,
-  }));
+  // Staggered entry: a phase may name the clubs joining at it. Resolved here, where the seed names
+  // are still in scope; the domain only ever sees `Team` objects.
+  const phaseEntrants = championshipJSONDTO.phases?.map((phase) =>
+    phase.kind === 'knockout' && phase.entrants?.length
+      ? phase.entrants
+          .map((teamName) => teamsByName.get(teamName))
+          .filter((team): team is NonNullable<typeof team> => Boolean(team))
+      : []
+  );
+
+  if (
+    phaseEntrants?.some((entrants, index) => {
+      const declared = championshipJSONDTO.phases?.[index];
+      return declared?.kind === 'knockout' && (declared.entrants?.length ?? 0) !== entrants.length;
+    })
+  ) {
+    throw new Error(`Some phase entrants of ${championshipInternalName} are not seeded teams.`);
+  }
+
+  const hasLeagueTable = championshipJSONDTO.hasLeagueTable !== false;
+
+  const standings = hasLeagueTable
+    ? teams.map((team, index) => ({
+        team,
+        position: index + 1,
+        wins: 0,
+        draws: 0,
+        losses: 0,
+        goalsFor: 0,
+        goalsAgainst: 0,
+        points: 0,
+      }))
+    : [];
 
   mappedChampionship = {
     ...mappedChampionship,
     teams,
     standings,
+    hasLeagueTable,
+    ...(phaseEntrants?.some((entrants) => entrants.length) ? { phaseEntrants } : {}),
   };
 
   return mappedChampionship;

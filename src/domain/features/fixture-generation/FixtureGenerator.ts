@@ -184,7 +184,8 @@ export function buildPhaseRounds(
   }
 
   const entrants: BracketEntrant[] = teams.map((team, index) => ({ team, seed: index + 1 }));
-  return buildKnockoutPhaseRounds(entrants, phase, 'table', phaseIndex, firstRoundNumber).rounds;
+  const seeding = phase.secondLegHost === 'drawn' ? 'draw' : 'table';
+  return buildKnockoutPhaseRounds(entrants, phase, seeding, phaseIndex, firstRoundNumber).rounds;
 }
 
 function buildLegacyRounds(startingTeams: Team[]): Round[] {
@@ -201,10 +202,16 @@ function buildLegacyRounds(startingTeams: Team[]): Round[] {
  * engine has always played. With `phases` it generates the **first** phase only — every later phase
  * depends on results that do not exist yet, and is generated as its predecessor is resolved.
  */
-export function createMatches(startingTeams: Team[], phases?: ChampionshipPhase[]): MatchContainer {
+export function createMatches(
+  startingTeams: Team[],
+  phases?: ChampionshipPhase[],
+  phaseEntrants?: Team[][]
+): MatchContainer {
   const isPhased = Boolean(phases?.length);
+  // With staggered entry, only the clubs entered into the first phase play it.
+  const startingField = phaseEntrants?.[0]?.length ? phaseEntrants[0] : startingTeams;
   const rounds = isPhased
-    ? buildPhaseRounds(startingTeams, phases![0], 0, 1)
+    ? buildPhaseRounds(startingField, phases![0], 0, 1)
     : buildLegacyRounds(startingTeams);
 
   return {

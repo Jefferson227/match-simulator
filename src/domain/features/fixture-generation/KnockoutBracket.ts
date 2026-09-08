@@ -10,6 +10,7 @@ import Standing from '../../models/Standing';
 import { Team } from '../../models/Team';
 import { KnockoutPhase, SecondLegHost } from '../../models/ChampionshipPhase';
 import { compareStandings } from '../standings/StandingsComparator';
+import { RandomProvider } from '../match-simulation/types';
 
 /** A club arriving at a knockout phase, with everything the hosting rules need to rank it. */
 export type BracketEntrant = {
@@ -45,8 +46,10 @@ export type Tie = {
  * - `groups` — the two qualifiers of each group, crossed with the neighbouring group (A3 Art. 14).
  * - `bracket` — the survivors of the previous knockout phase, kept in bracket order, so the winners
  *   of ties *2i* and *2i+1* meet (A1 Art. 20: the semifinal pairings are fixed by bracket).
+ * - `draw` — the cups' public draw: the *n*-th club is paired with the *(N+1−n)*-th within the phase
+ *   (Copa Anexo B). Any club may face any other; there is no bracket to protect.
  */
-export type BracketSeeding = 'table' | 'groups' | 'bracket';
+export type BracketSeeding = 'table' | 'groups' | 'bracket' | 'draw';
 
 /**
  * Standard bracket order for `size` seeds: `[1, 8, 4, 5, 2, 7, 3, 6]` for 8. Reading it in pairs
@@ -135,6 +138,15 @@ function pairsFromGroups(entrants: BracketEntrant[]): [BracketEntrant, BracketEn
   return [...winnerFirst, ...winnerSecond];
 }
 
+/** Copa Anexo B: the n-th club meets the (N+1−n)-th. */
+function pairsFromDraw(entrants: BracketEntrant[]): [BracketEntrant, BracketEntrant][] {
+  const pairs: [BracketEntrant, BracketEntrant][] = [];
+  for (let i = 0; i < entrants.length / 2; i++) {
+    pairs.push([entrants[i], entrants[entrants.length - 1 - i]]);
+  }
+  return pairs;
+}
+
 function pairsInBracketOrder(entrants: BracketEntrant[]): [BracketEntrant, BracketEntrant][] {
   const pairs: [BracketEntrant, BracketEntrant][] = [];
   for (let i = 0; i < entrants.length; i += 2) {
@@ -143,12 +155,23 @@ function pairsInBracketOrder(entrants: BracketEntrant[]): [BracketEntrant, Brack
   return pairs;
 }
 
-/** Picks which of the two clubs hosts the second leg. */
+/**
+ * Picks which of the two clubs hosts the second leg — or, for a single-legged phase, the only leg.
+ *
+ * `rng` is reached only by the `drawn` mode, which the cups use and the divisions never do.
+ */
 export function resolveSecondLegHost(
   first: BracketEntrant,
   second: BracketEntrant,
-  mode: SecondLegHost
+  mode: SecondLegHost,
+  rng?: RandomProvider
 ): BracketEntrant {
+  if (mode === 'drawn') {
+    // A public draw. Without an rng — a pure call from a screen, say — the seed keeps it stable.
+    if (!rng) return first.seed <= second.seed ? first : second;
+    return rng.nextInt(0, 1) === 0 ? first : second;
+  }
+
   if (mode === 'group-winner') {
     const firstWon = first.groupPosition === 1;
     const secondWon = second.groupPosition === 1;
@@ -174,7 +197,8 @@ export function buildTies(
   entrants: BracketEntrant[],
   phase: KnockoutPhase,
   seeding: BracketSeeding,
-  phaseIndex: number
+  phaseIndex: number,
+  rng?: RandomProvider
 ): Tie[] {
   const expected = phase.numberOfTies * 2;
   if (entrants.length !== expected) {
@@ -188,10 +212,12 @@ export function buildTies(
       ? pairsFromTable(entrants)
       : seeding === 'groups'
         ? pairsFromGroups(entrants)
-        : pairsInBracketOrder(entrants);
+        : seeding === 'draw'
+          ? pairsFromDraw(entrants)
+          : pairsInBracketOrder(entrants);
 
   return pairs.map(([first, second], index) => {
-    const secondLegHost = resolveSecondLegHost(first, second, phase.secondLegHost);
+    const secondLegHost = resolveSecondLegHost(first, second, phase.secondLegHost, rng);
     const firstLegHost = secondLegHost === first ? second : first;
     return { id: `p${phaseIndex}-t${index}`, firstLegHost, secondLegHost };
   });
@@ -251,8 +277,9 @@ export function buildKnockoutPhaseRounds(
   phase: KnockoutPhase,
   seeding: BracketSeeding,
   phaseIndex: number,
-  firstRoundNumber: number
+  firstRoundNumber: number,
+  rng?: RandomProvider
 ): { rounds: Round[]; ties: Tie[] } {
-  const ties = buildTies(entrants, phase, seeding, phaseIndex);
+  const ties = buildTies(entrants, phase, seeding, phaseIndex, rng);
   return { rounds: buildKnockoutRounds(ties, phase, phaseIndex, firstRoundNumber), ties };
 }

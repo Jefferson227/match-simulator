@@ -12,6 +12,8 @@ type ChampionshipJSONDTO = {
   type: ChampionshipType;
   leagueType: LeagueType;
   teamNames: string[];
+  /** `false` for a cup: no table, only a bracket. Absent means the competition is a league. */
+  hasLeagueTable?: boolean;
   numberOfPromotableTeams?: number;
   promotionChampionshipInternalName?: string;
   promotionRule?: PromotionRule;
