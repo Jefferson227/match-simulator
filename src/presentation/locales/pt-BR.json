@@ -55,5 +55,16 @@
   },
   "teamSelector": {
     "selectATeam": "SELECIONE UM TIME"
+  },
+  "standings": {
+    "group": "GRUPO {{number}}",
+    "aggregate": "AGREG",
+    "penalties": "PÊNAL",
+    "legOf": "JOGO {{current}} DE {{total}}",
+    "notPlayedYet": "A JOGAR",
+    "advances": "AVANÇA"
+  },
+  "matchSimulator": {
+    "phaseRound": "{{phase}} - RODADA {{current}} DE {{total}}"
   }
 }

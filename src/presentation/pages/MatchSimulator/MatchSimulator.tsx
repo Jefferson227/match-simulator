@@ -1,4 +1,5 @@
 import { useState, useEffect, FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import Score from '../../components/Score';
 import MatchDetails from '../../components/MatchDetails';
 import utils from '../../../utils/utils';
@@ -18,6 +19,7 @@ const MatchSimulator: FC = () => {
   // Game engine
   const engine = useGameEngine();
   const state = useGameState(engine);
+  const { t } = useTranslation();
 
   const [time, setTime] = useState<number>(0);
   const [clockSpeed, setClockSpeed] = useState<number>(0);
@@ -42,6 +44,12 @@ const MatchSimulator: FC = () => {
   };
 
   const championshipUseCases = new ChampionshipUseCases(state);
+
+  // Which phase is being played, so a phased season shows '1ª Fase - Round 3 of 17' rather than a
+  // round number counted across the whole competition.
+  const phaseView = championshipUseCases.getPhaseView(
+    state.championshipContainer.playableChampionship
+  );
 
   useEffect(() => {
     setClockSpeed(state.gameConfig.clockSpeed);
@@ -157,7 +165,16 @@ const MatchSimulator: FC = () => {
               matches.length > 0 &&
               !showTeamMatchDetails && (
                 <span>
-                  {`${state.championshipContainer.playableChampionship.matchContainer.currentSeason} - Round ${state.championshipContainer.playableChampionship.matchContainer.currentRound} of ${state.championshipContainer.playableChampionship.matchContainer.totalRounds}`}
+                  {phaseView.isPhased
+                    ? `${state.championshipContainer.playableChampionship.matchContainer.currentSeason} - ${t(
+                        'matchSimulator.phaseRound',
+                        {
+                          phase: phaseView.phaseName,
+                          current: phaseView.roundInPhase,
+                          total: phaseView.roundsInPhase,
+                        }
+                      )}`
+                    : `${state.championshipContainer.playableChampionship.matchContainer.currentSeason} - Round ${state.championshipContainer.playableChampionship.matchContainer.currentRound} of ${state.championshipContainer.playableChampionship.matchContainer.totalRounds}`}
                 </span>
               )}
           </div>

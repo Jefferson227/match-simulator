@@ -4,6 +4,7 @@ import { Team } from '../domain/models/Team';
 import ChampionshipService from '../domain/services/ChampionshipService';
 import { GameState } from '../game-engine/GameState';
 import LeagueType from '../domain/enums/LeagueType';
+import { PhaseView } from '../domain/features/phases/PhaseView';
 
 export default class ChampionshipUseCases {
   private state = {} as GameState;
@@ -108,6 +109,11 @@ export default class ChampionshipUseCases {
     }
 
     return result.getResult();
+  }
+
+  /** The phase a championship is currently playing, for the screens. Never throws. */
+  getPhaseView(championship: Championship): PhaseView {
+    return ChampionshipService.getPhaseView(championship);
   }
 
   getMatchesForCurrentRound(championship: Championship): Match[] {

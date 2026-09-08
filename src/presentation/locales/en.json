@@ -55,5 +55,16 @@
   },
   "teamSelector": {
     "selectATeam": "SELECT A TEAM"
+  },
+  "standings": {
+    "group": "GROUP {{number}}",
+    "aggregate": "AGG",
+    "penalties": "PENS",
+    "legOf": "LEG {{current}} OF {{total}}",
+    "notPlayedYet": "TO PLAY",
+    "advances": "ADVANCES"
+  },
+  "matchSimulator": {
+    "phaseRound": "{{phase}} - ROUND {{current}} OF {{total}}"
   }
 }

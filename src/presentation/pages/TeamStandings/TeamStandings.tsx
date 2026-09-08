@@ -1,10 +1,14 @@
 import React, { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Standing from '../../../domain/models/Standing';
 import MainLayout from '../../components/MainLayout/MainLayout';
+import PhaseBracket from '../../components/PhaseBracket/PhaseBracket';
+import ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../../services/useGameState';
 
 const RESULTS_PER_PAGE = 12;
+const TIES_PER_PAGE = 4;
 
 interface TeamStandingsProps {
   standings?: Standing[];
@@ -13,9 +17,25 @@ interface TeamStandingsProps {
 const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings }) => {
   const engine = useGameEngine();
   const state = useGameState(engine);
+  const { t } = useTranslation();
   const [page, setPage] = useState(0);
 
   const championship = state.championshipContainer.playableChampionship;
+
+  // A phase view is only built for the live championship — a caller that passes `standings`
+  // explicitly is rendering a plain table and wants nothing else.
+  const phaseView = useMemo(
+    () =>
+      propStandings === undefined
+        ? new ChampionshipUseCases(state).getPhaseView(championship)
+        : { isPhased: false, phaseIndex: 0 },
+    [championship, propStandings, state]
+  );
+
+  const groups = phaseView.groups ?? [];
+  const ties = phaseView.ties ?? [];
+  const isGroupStage = groups.length > 1;
+  const isKnockout = ties.length > 0;
 
   const standings = useMemo<Standing[]>(() => {
     if (propStandings !== undefined) return propStandings;
@@ -24,11 +44,18 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
     return championship.standings;
   }, [championship, propStandings]);
 
-  const totalPages = Math.max(1, Math.ceil(standings.length / RESULTS_PER_PAGE));
-  const paginatedStandings = standings.slice(
-    page * RESULTS_PER_PAGE,
-    (page + 1) * RESULTS_PER_PAGE
-  );
+  // A group stage pages one group at a time; a knockout pages through its ties.
+  const totalPages = isGroupStage
+    ? Math.max(1, groups.length)
+    : isKnockout
+      ? Math.max(1, Math.ceil(ties.length / TIES_PER_PAGE))
+      : Math.max(1, Math.ceil(standings.length / RESULTS_PER_PAGE));
+
+  const currentGroup = isGroupStage ? groups[Math.min(page, groups.length - 1)] : undefined;
+  const paginatedStandings = isGroupStage
+    ? (currentGroup?.standings ?? [])
+    : standings.slice(page * RESULTS_PER_PAGE, (page + 1) * RESULTS_PER_PAGE);
+  const paginatedTies = ties.slice(page * TIES_PER_PAGE, (page + 1) * TIES_PER_PAGE);
 
   const totalRounds = championship?.matchContainer?.totalRounds ?? 0;
   const currentRound = championship?.matchContainer?.currentRound ?? 1;
@@ -59,10 +86,19 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
         <div className="text-center text-[16px] text-white mt-6 mb-2 tracking-wider uppercase">
           {championship?.name ?? 'Standings'}
         </div>
+        {phaseView.isPhased && (
+          <div className="text-center text-[12px] text-[#e2e2e2] mb-1 uppercase">
+            {phaseView.phaseName}
+            {currentGroup !== undefined
+              ? ` - ${t('standings.group', { number: currentGroup.group + 1 })}`
+              : ''}
+          </div>
+        )}
         <div className="text-center text-[14px] text-white mb-2 uppercase">
           {!isSeasonComplete && totalRounds > 0 && (
             <>
-              {championship?.matchContainer?.currentSeason} - Round {completedRound} of {totalRounds}
+              {championship?.matchContainer?.currentSeason} - Round {completedRound} of{' '}
+              {totalRounds}
             </>
           )}
           {isSeasonComplete && (
@@ -75,52 +111,56 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
           style={{ backgroundColor: '#397a33', border: '4px solid #e2e2e2' }}
         >
           <div className="w-full h-[587px] mt-[14px] overflow-hidden">
-            <table className="w-full border-separate border-spacing-0">
-              <thead>
-                <tr className="text-[18px] text-white">
-                  <th className="font-normal w-[56px] text-center"> </th>
-                  <th className="font-normal w-[56px] text-center"> </th>
-                  <th className="font-normal w-[56px] text-center">W</th>
-                  <th className="font-normal w-[56px] text-center">D</th>
-                  <th className="font-normal w-[56px] text-center">L</th>
-                  <th className="font-normal w-[56px] text-center pr-3">PTS</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedStandings.map((row, idx) => (
-                  <React.Fragment key={row.team.id}>
-                    <tr className="text-[18px] text-white">
-                      <td className="w-[56px] text-center py-2">
-                        {page * RESULTS_PER_PAGE + idx + 1}
-                      </td>
-                      <td className="w-[56px] text-center py-2">
-                        <div
-                          className="inline-flex min-w-[72px] justify-center border-[4px] px-2 py-1"
-                          style={{
-                            borderColor: row.team.colors.outline,
-                            backgroundColor: row.team.colors.background,
-                            color: row.team.colors.text,
-                          }}
-                        >
-                          {row.team.abbreviation}
-                        </div>
-                      </td>
-                      <td className="w-[56px] text-center">{row.wins}</td>
-                      <td className="w-[56px] text-center">{row.draws}</td>
-                      <td className="w-[56px] text-center">{row.losses}</td>
-                      <td className="w-[56px] text-center pr-0">{row.points}</td>
-                    </tr>
-                    {idx < paginatedStandings.length - 1 && (
-                      <tr>
-                        <td colSpan={6} style={{ padding: 0, border: 0 }}>
-                          <div style={{ height: '4px', background: '#e2e2e2', width: '100%' }} />
+            {isKnockout ? (
+              <PhaseBracket ties={paginatedTies} />
+            ) : (
+              <table className="w-full border-separate border-spacing-0">
+                <thead>
+                  <tr className="text-[18px] text-white">
+                    <th className="font-normal w-[56px] text-center"> </th>
+                    <th className="font-normal w-[56px] text-center"> </th>
+                    <th className="font-normal w-[56px] text-center">W</th>
+                    <th className="font-normal w-[56px] text-center">D</th>
+                    <th className="font-normal w-[56px] text-center">L</th>
+                    <th className="font-normal w-[56px] text-center pr-3">PTS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paginatedStandings.map((row, idx) => (
+                    <React.Fragment key={row.team.id}>
+                      <tr className="text-[18px] text-white">
+                        <td className="w-[56px] text-center py-2">
+                          {isGroupStage ? idx + 1 : page * RESULTS_PER_PAGE + idx + 1}
                         </td>
+                        <td className="w-[56px] text-center py-2">
+                          <div
+                            className="inline-flex min-w-[72px] justify-center border-[4px] px-2 py-1"
+                            style={{
+                              borderColor: row.team.colors.outline,
+                              backgroundColor: row.team.colors.background,
+                              color: row.team.colors.text,
+                            }}
+                          >
+                            {row.team.abbreviation}
+                          </div>
+                        </td>
+                        <td className="w-[56px] text-center">{row.wins}</td>
+                        <td className="w-[56px] text-center">{row.draws}</td>
+                        <td className="w-[56px] text-center">{row.losses}</td>
+                        <td className="w-[56px] text-center pr-0">{row.points}</td>
                       </tr>
-                    )}
-                  </React.Fragment>
-                ))}
-              </tbody>
-            </table>
+                      {idx < paginatedStandings.length - 1 && (
+                        <tr>
+                          <td colSpan={6} style={{ padding: 0, border: 0 }}>
+                            <div style={{ height: '4px', background: '#e2e2e2', width: '100%' }} />
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
 
