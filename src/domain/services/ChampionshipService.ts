@@ -3,78 +3,10 @@ import OperationResult from '../results/OperationResult';
 import * as ChampionshipRepository from '../../infrastructure/repositories/ChampionshipRepository';
 import { Team } from '../models/Team';
 import Match from '../models/Match';
-import MatchContainer from '../models/MatchContainer';
-import Round from '../models/Round';
 import { Championship } from '../models/Championship';
 import Standing from '../models/Standing';
 import LeagueType from '../enums/LeagueType';
-
-function createMatches(startingTeams: Team[]): MatchContainer {
-  const teams = [...startingTeams];
-  const roundsPerLeg = teams.length - 1;
-  const matchesPerRound = teams.length / 2;
-  const totalRounds = roundsPerLeg * 2;
-  const rounds: Round[] = [];
-  let roundNumber = 1;
-
-  for (let round = 0; round < roundsPerLeg; round++) {
-    const matches: Match[] = [];
-    for (let i = 0; i < matchesPerRound; i++) {
-      const homeTeam = teams[i];
-      const awayTeam = teams[teams.length - 1 - i];
-      matches.push({
-        id: crypto.randomUUID(),
-        homeTeam,
-        homeTeamScore: 0,
-        awayTeamScore: 0,
-        awayTeam,
-        scorers: [],
-      });
-    }
-    rounds.push({
-      id: crypto.randomUUID(),
-      number: roundNumber,
-      matches,
-      status: 'not-started',
-    });
-    roundNumber += 1;
-
-    const lastTeam = teams.pop()!;
-    teams.splice(1, 0, lastTeam);
-  }
-
-  const firstLegRoundsCount = rounds.length;
-  for (let i = 0; i < firstLegRoundsCount; i++) {
-    const matches: Match[] = [];
-    const round = rounds[i];
-    for (let j = 0; j < round.matches.length; j++) {
-      const match = round.matches[j];
-      matches.push({
-        id: crypto.randomUUID(),
-        homeTeam: match.awayTeam,
-        homeTeamScore: 0,
-        awayTeamScore: 0,
-        awayTeam: match.homeTeam,
-        scorers: [],
-      });
-    }
-    rounds.push({
-      id: crypto.randomUUID(),
-      number: roundNumber,
-      matches,
-      status: 'not-started',
-    });
-    roundNumber += 1;
-  }
-
-  return {
-    timer: 0,
-    currentSeason: new Date().getFullYear(),
-    currentRound: 1,
-    totalRounds,
-    rounds,
-  };
-}
+import { createMatches } from '../features/fixture-generation/FixtureGenerator';
 
 function startRound(championship: Championship): Championship {
   if (!championship?.matchContainer?.rounds) {
@@ -265,7 +197,7 @@ function removeTeams(sourceTeams: Team[], teamsToRemove: Team[]): Team[] {
 }
 
 function resetChampionshipForNewSeason(championship: Championship, teams: Team[]): Championship {
-  const nextSeasonMatchContainer = createMatches(teams);
+  const nextSeasonMatchContainer = createMatches(teams, championship.phases);
   const currentSeason =
     championship.matchContainer.currentSeason || nextSeasonMatchContainer.currentSeason;
 
@@ -350,7 +282,7 @@ const initChampionships = (
     );
     playableChampionship = {
       ...playableChampionship,
-      matchContainer: createMatches(playableChampionship.teams),
+      matchContainer: createMatches(playableChampionship.teams, playableChampionship.phases),
     };
 
     championshipContainer = {
@@ -366,7 +298,7 @@ const initChampionships = (
 
       promotionChampionship = {
         ...promotionChampionship,
-        matchContainer: createMatches(promotionChampionship.teams),
+        matchContainer: createMatches(promotionChampionship.teams, promotionChampionship.phases),
       };
 
       championshipContainer = {
@@ -383,7 +315,7 @@ const initChampionships = (
 
       relegationChampionship = {
         ...relegationChampionship,
-        matchContainer: createMatches(relegationChampionship.teams),
+        matchContainer: createMatches(relegationChampionship.teams, relegationChampionship.phases),
       };
 
       championshipContainer = {
