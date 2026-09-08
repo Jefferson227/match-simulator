@@ -288,12 +288,71 @@ function resetChampionshipForNewSeason(championship: Championship, teams: Team[]
   return initialisePhaseState({
     ...championship,
     teams,
+    // A division's field can change size across a roll-over — A1 is being expanded to 20 — so the
+    // seeded `numberOfTeams` is a starting value, not an invariant.
+    numberOfTeams: teams.length,
     standings: buildStandings(teams),
     matchContainer: {
       ...nextSeasonMatchContainer,
       currentSeason: currentSeason + 1,
     },
   });
+}
+
+/**
+ * How many clubs a division relegates this season.
+ *
+ * A division being expanded relegates fewer than it promotes until it reaches
+ * `targetNumberOfTeams`, then switches to `numberOfRelegatableTeamsAtTarget` so it stops growing.
+ * Driven entirely by the championship's own data — nothing here knows that A1's target is 20.
+ */
+function getRelegationCount(championship: Championship): number {
+  if (!championship.isRelegatable) return 0;
+
+  const target = championship.targetNumberOfTeams;
+  const atTarget = target !== undefined && championship.teams.length >= target;
+
+  return atTarget && championship.numberOfRelegatableTeamsAtTarget !== undefined
+    ? championship.numberOfRelegatableTeamsAtTarget
+    : championship.numberOfRelegatableTeams;
+}
+
+/**
+ * The smallest field a division can be played with, given the shape its first phase declares.
+ * A group stage needs at least two clubs per group, or the bracket it feeds cannot be built.
+ */
+function getMinimumField(championship: Championship): number {
+  const phases = championship.phases;
+  if (!phases?.length) return 2;
+
+  const firstPhase = phases[0];
+  const groupFloor =
+    firstPhase.kind === 'round-robin' && firstPhase.numberOfGroups > 1
+      ? firstPhase.numberOfGroups * 2
+      : 2;
+
+  // The phase that follows must be fillable too: a knockout of N ties needs 2N qualifiers, and a
+  // division that cannot fill its own quarter-finals is not playable.
+  const secondPhase = phases[1];
+  const bracketFloor = secondPhase?.kind === 'knockout' ? secondPhase.numberOfTies * 2 : 2;
+
+  return Math.max(groupFloor, bracketFloor);
+}
+
+/**
+ * Caps how many clubs a division can send up, so it is never emptied below a playable field.
+ *
+ * Série A3 has no backfill: CBF re-composes it every season from state champions, which the game
+ * has no source for (`wiki/concepts/invented-data.md`), so it loses 2 clubs a season. The cap stops
+ * that at a field its group stage can still be played with rather than letting it run to nothing.
+ */
+function getSustainablePromotionCount(
+  championship: Championship,
+  declared: number,
+  incoming: number
+): number {
+  const affordable = championship.teams.length + incoming - getMinimumField(championship);
+  return Math.max(0, Math.min(declared, affordable));
 }
 
 function isChampionshipOver(championship: Championship): boolean {
@@ -312,22 +371,42 @@ function runEndOfChampionshipActionsForAllChampionships(
 
   if (!isChampionshipOver(playableChampionship)) return championshipContainer;
 
-  const promotedTeams =
-    playableChampionship.isPromotable && promotionChampionship
-      ? getPromotedTeams(playableChampionship, playableChampionship.numberOfPromotableTeams)
-      : [];
-  const relegatedFromPromotion =
-    playableChampionship.isPromotable && promotionChampionship
-      ? getRelegatedTeams(promotionChampionship, playableChampionship.numberOfPromotableTeams)
-      : [];
+  // Each division's own counts drive its own exchange. Before MS-103 both sides of every exchange
+  // used the *playable* championship's count, which kept the club totals stable only by making A1
+  // relegate 4 when its REC says 2, and A3 promote 2 when its REC says 4.
+  const promotesUp = playableChampionship.isPromotable && Boolean(promotionChampionship);
+  const relegatesDown = playableChampionship.isRelegatable && Boolean(relegationChampionship);
 
-  const relegatedTeams =
-    playableChampionship.isRelegatable && relegationChampionship
-      ? getRelegatedTeams(playableChampionship, playableChampionship.numberOfRelegatableTeams)
+  const relegatedFromPromotion =
+    promotesUp && promotionChampionship
+      ? getRelegatedTeams(promotionChampionship, getRelegationCount(promotionChampionship))
       : [];
+  const promotedTeams = promotesUp
+    ? getPromotedTeams(
+        playableChampionship,
+        getSustainablePromotionCount(
+          playableChampionship,
+          playableChampionship.isPromotable ? playableChampionship.numberOfPromotableTeams : 0,
+          relegatedFromPromotion.length
+        )
+      )
+    : [];
+
+  const relegatedTeams = relegatesDown
+    ? getRelegatedTeams(playableChampionship, getRelegationCount(playableChampionship))
+    : [];
   const promotedFromRelegation =
-    playableChampionship.isRelegatable && relegationChampionship
-      ? getPromotedTeams(relegationChampionship, playableChampionship.numberOfRelegatableTeams)
+    relegatesDown && relegationChampionship
+      ? getPromotedTeams(
+          relegationChampionship,
+          getSustainablePromotionCount(
+            relegationChampionship,
+            relegationChampionship.isPromotable
+              ? relegationChampionship.numberOfPromotableTeams
+              : 0,
+            relegatedTeams.length
+          )
+        )
       : [];
 
   const nextPlayableTeams = [

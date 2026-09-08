@@ -135,8 +135,17 @@ describe('FixtureGenerator.buildRoundRobinRounds', () => {
     }
   });
 
-  it('refuses an odd number of clubs rather than inventing a bye', () => {
-    expect(() => buildRoundRobinRounds(buildTeams(7), 1)).toThrow(/even number of clubs/);
+  it('gives an odd field a bye instead of an overlapping fixture', () => {
+    const rounds = buildRoundRobinRounds(buildTeams(7), 1);
+
+    // Seven clubs play seven rounds; one club sits out each round.
+    expect(rounds).toHaveLength(7);
+    expect(rounds.every((round) => round.length === 3)).toBe(true);
+
+    const pairs = rounds
+      .flat()
+      .map((match) => [match.homeTeam.id, match.awayTeam.id].sort().join('|'));
+    expect(new Set(pairs).size).toBe((7 * 6) / 2);
   });
 });
 
@@ -150,8 +159,17 @@ describe('FixtureGenerator.splitIntoGroups', () => {
     expect(groups[7].map((team) => team.id)).toEqual(['team-28', 'team-29', 'team-30', 'team-31']);
   });
 
-  it('rejects a field that does not fill the declared groups', () => {
-    expect(() => splitIntoGroups(buildTeams(30), 8, 4)).toThrow(/8 groups of 4/);
+  it('spreads a drifted field evenly rather than rejecting it', () => {
+    // A3 after one roll-over: 32 clubs become 30, and the group stage must still be playable.
+    const groups = splitIntoGroups(buildTeams(30), 8, 4);
+
+    expect(groups).toHaveLength(8);
+    expect(groups.map((group) => group.length)).toEqual([4, 4, 4, 4, 4, 4, 3, 3]);
+    expect(groups.flat()).toHaveLength(30);
+  });
+
+  it('refuses a field too small to give every group two clubs', () => {
+    expect(() => splitIntoGroups(buildTeams(15), 8, 4)).toThrow(/at least 2 clubs per group/);
   });
 });
 

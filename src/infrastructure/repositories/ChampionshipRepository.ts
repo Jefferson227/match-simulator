@@ -20,6 +20,7 @@ export function getChampionship(
     name: championshipJSONDTO.name,
     internalName: championshipJSONDTO.internalName,
     numberOfTeams: championshipJSONDTO.numberOfTeams,
+    targetNumberOfTeams: championshipJSONDTO.targetNumberOfTeams,
     teams: [],
     standings: [],
     matchContainer: {
@@ -52,6 +53,7 @@ export function getChampionship(
       numberOfRelegatableTeams,
       relegationChampionshipInternalName,
       relegationRule: championshipJSONDTO.relegationRule ?? 'table-position',
+      numberOfRelegatableTeamsAtTarget: championshipJSONDTO.numberOfRelegatableTeamsAtTarget,
     };
   }
 

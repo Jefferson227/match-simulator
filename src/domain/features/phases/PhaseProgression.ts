@@ -336,7 +336,13 @@ export function isPhasedChampionshipOver(championship: Championship): boolean {
 export function buildFinalClassification(championship: Championship): Standing[] {
   if (!championship.phases?.length) return championship.standings;
 
-  const accumulated = rankStandings(championship.accumulatedStandings ?? championship.standings);
+  // `initialisePhaseState` seeds `accumulatedStandings` as an empty array, so an *empty* table means
+  // "nothing accumulated yet", not "everyone on zero" — fall back to the live table.
+  const accumulated = rankStandings(
+    championship.accumulatedStandings?.length
+      ? championship.accumulatedStandings
+      : championship.standings
+  );
   if (!isPhasedChampionshipOver(championship)) return accumulated;
 
   const championId = championship.survivingTeamIds?.[0];

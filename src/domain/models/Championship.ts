@@ -14,6 +14,13 @@ type BaseChampionship = {
   name: string;
   internalName: string;
   numberOfTeams: number;
+  /**
+   * The club count the division is growing towards, when it is growing. A1 is being expanded
+   * 16 → 18 → 20 by relegating 2 and promoting 4 (CBF, 17/01/2025 — a news article, not a
+   * regulation; see `wiki/concepts/known-contradictions.md`). Absent means the division is stable
+   * and `numberOfTeams` never changes.
+   */
+  targetNumberOfTeams?: number;
   teams: Team[];
   standings: Standing[];
   matchContainer: MatchContainer;
@@ -76,6 +83,12 @@ type Relegatable = {
    * (Brasileirão Feminino A1 and A2). Not honoured yet; MS-103.
    */
   relegationRule?: RelegationRule;
+  /**
+   * How many clubs are relegated once the division has reached `targetNumberOfTeams`. A1 switches
+   * to 4 down / 4 up at 20 clubs, which balances against A2's four semifinalists. CBF has published
+   * no post-expansion rule, so this is inference — see `wiki/decisions/`.
+   */
+  numberOfRelegatableTeamsAtTarget?: number;
 };
 
 type PromotableFields = { isPromotable: false } | ({ isPromotable: true } & Promotable);

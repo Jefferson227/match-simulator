@@ -7,6 +7,8 @@ type ChampionshipJSONDTO = {
   name: string;
   internalName: string;
   numberOfTeams: number;
+  /** The club count the division is growing towards. Absent means it is stable. */
+  targetNumberOfTeams?: number;
   type: ChampionshipType;
   leagueType: LeagueType;
   teamNames: string[];
@@ -16,7 +18,9 @@ type ChampionshipJSONDTO = {
   numberOfRelegatableTeams?: number;
   relegationChampionshipInternalName?: string;
   relegationRule?: RelegationRule;
-  /** The real competition format. Declared only — see `src/domain/models/ChampionshipPhase.ts`. */
+  /** Clubs relegated once `targetNumberOfTeams` is reached. */
+  numberOfRelegatableTeamsAtTarget?: number;
+  /** The real competition format — see `src/domain/models/ChampionshipPhase.ts`. */
   phases?: ChampionshipPhase[];
 };
 

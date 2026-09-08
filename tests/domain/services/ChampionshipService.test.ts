@@ -91,6 +91,8 @@ describe('ChampionshipService.runEndOfChampionshipActions', () => {
     const lowerC = buildTeam('k', 'LWC');
     const lowerD = buildTeam('l', 'LWD');
 
+    // Each division declares its own exchange counts: since MS-103 the upper division's own
+    // relegation count decides how many clubs come down, not the playable division's.
     const promotionChampionship = buildChampionship({
       id: 'promotion',
       name: 'Upper Division',
@@ -99,6 +101,9 @@ describe('ChampionshipService.runEndOfChampionshipActions', () => {
       standingsOrder: [upperA, upperB, upperC, upperD],
       currentRound: 6,
       totalRounds: 6,
+      isRelegatable: true,
+      numberOfRelegatableTeams: 1,
+      relegationChampionshipInternalName: 'playable',
     });
 
     const playableChampionship = buildChampionship({
@@ -125,6 +130,9 @@ describe('ChampionshipService.runEndOfChampionshipActions', () => {
       standingsOrder: [lowerA, lowerB, lowerC, lowerD],
       currentRound: 6,
       totalRounds: 6,
+      isPromotable: true,
+      numberOfPromotableTeams: 1,
+      promotionChampionshipInternalName: 'playable',
     });
 
     const championshipContainer: ChampionshipContainer = {

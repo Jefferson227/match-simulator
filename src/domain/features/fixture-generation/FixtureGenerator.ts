@@ -30,15 +30,17 @@ function createMatch(homeTeam: Team, awayTeam: Team, fields: Partial<Match> = {}
  * The circle method: club 0 stays put, the rest rotate one place each round. Preserved verbatim
  * from the original `ChampionshipService.createMatches` so the legacy path is unchanged.
  */
-export function buildRoundRobinRounds(startingTeams: Team[], legs: 1 | 2): Match[][] {
-  const teams = [...startingTeams];
+/** Placeholder opponent for an odd field: whoever draws it sits the round out. */
+const BYE = null;
 
-  if (teams.length < 2) return [];
-  if (teams.length % 2 !== 0) {
-    throw new Error(
-      `A round-robin needs an even number of clubs; received ${teams.length}. Byes are not supported.`
-    );
-  }
+export function buildRoundRobinRounds(startingTeams: Team[], legs: 1 | 2): Match[][] {
+  if (startingTeams.length < 2) return [];
+
+  // An odd field gets a bye: a placeholder is added to make the rotation work, and the fixture it
+  // would have played is dropped. A division whose club count drifts across a season roll-over
+  // (task 08) can land on an odd group, and the season must still be playable.
+  const teams: (Team | typeof BYE)[] = [...startingTeams];
+  if (teams.length % 2 !== 0) teams.push(BYE);
 
   const roundsPerLeg = teams.length - 1;
   const matchesPerRound = teams.length / 2;
@@ -47,7 +49,10 @@ export function buildRoundRobinRounds(startingTeams: Team[], legs: 1 | 2): Match
   for (let round = 0; round < roundsPerLeg; round++) {
     const matches: Match[] = [];
     for (let i = 0; i < matchesPerRound; i++) {
-      matches.push(createMatch(teams[i], teams[teams.length - 1 - i]));
+      const homeTeam = teams[i];
+      const awayTeam = teams[teams.length - 1 - i];
+      if (homeTeam === BYE || awayTeam === BYE) continue;
+      matches.push(createMatch(homeTeam, awayTeam));
     }
     rounds.push(matches);
 
@@ -77,16 +82,35 @@ export function splitIntoGroups(
   numberOfGroups: number,
   teamsPerGroup: number
 ): Team[][] {
-  const expected = numberOfGroups * teamsPerGroup;
-  if (teams.length !== expected) {
+  if (numberOfGroups < 1) throw new Error(`A group stage needs at least one group.`);
+  if (teams.length < numberOfGroups * 2) {
     throw new Error(
-      `Group stage expects ${numberOfGroups} groups of ${teamsPerGroup} (${expected} clubs); received ${teams.length}.`
+      `Group stage needs at least 2 clubs per group (${numberOfGroups * 2}); received ${teams.length}.`
     );
   }
 
+  // The declared shape when the field fills it — which is every seeded competition's first season.
+  const fillsDeclaredShape = teams.length === numberOfGroups * teamsPerGroup;
+  const sizes: number[] = [];
+
+  if (fillsDeclaredShape) {
+    sizes.push(...Array.from({ length: numberOfGroups }, () => teamsPerGroup));
+  } else {
+    // A field that has drifted across a roll-over is spread as evenly as the group count allows,
+    // so the qualifier count — and therefore the bracket — is unchanged.
+    const base = Math.floor(teams.length / numberOfGroups);
+    let remainder = teams.length % numberOfGroups;
+    for (let group = 0; group < numberOfGroups; group++) {
+      sizes.push(base + (remainder > 0 ? 1 : 0));
+      if (remainder > 0) remainder -= 1;
+    }
+  }
+
   const groups: Team[][] = [];
-  for (let group = 0; group < numberOfGroups; group++) {
-    groups.push(teams.slice(group * teamsPerGroup, (group + 1) * teamsPerGroup));
+  let cursor = 0;
+  for (const size of sizes) {
+    groups.push(teams.slice(cursor, cursor + size));
+    cursor += size;
   }
 
   return groups;
