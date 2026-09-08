@@ -333,5 +333,240 @@
       "corinthians",
       "palmeiras"
     ]
+  },
+  {
+    "name": "COPA DO BRASIL FEMININA",
+    "internalName": "copa-do-brasil-feminina",
+    "numberOfTeams": 66,
+    "type": "knockout",
+    "leagueType": "womens",
+    "hasLeagueTable": false,
+    "phases": [
+      {
+        "kind": "knockout",
+        "name": "Fase Preliminar",
+        "numberOfTies": 2,
+        "legs": 1,
+        "secondLegHost": "drawn",
+        "tiebreakers": [
+          "penalties"
+        ],
+        "entrants": [
+          "liga-sanjoanense",
+          "sampaio-correa",
+          "pantanal",
+          "portuguesa"
+        ]
+      },
+      {
+        "kind": "knockout",
+        "name": "1ª Fase",
+        "numberOfTies": 16,
+        "legs": 1,
+        "secondLegHost": "drawn",
+        "tiebreakers": [
+          "penalties"
+        ],
+        "entrants": [
+          "sao-jose",
+          "remo",
+          "cresspom",
+          "realidade-jovem",
+          "coritiba",
+          "ypiranga",
+          "brasil-de-farroupilha",
+          "uniao",
+          "criciuma",
+          "mixto-pb",
+          "sao-raimundo",
+          "paraiso",
+          "ipojuca",
+          "juventude-se",
+          "rolim-de-moura",
+          "prosperidade",
+          "galvez",
+          "atletico-de-alagoinhas",
+          "varzea-grande",
+          "guarani-de-paripueira",
+          "r4",
+          "mauaense",
+          "heips",
+          "araguari",
+          "penarol",
+          "tiradentes",
+          "planalto",
+          "desportiva-itapuense",
+          "perolas-negras",
+          "itabirito"
+        ]
+      },
+      {
+        "kind": "knockout",
+        "name": "2ª Fase",
+        "numberOfTies": 16,
+        "legs": 1,
+        "secondLegHost": "drawn",
+        "tiebreakers": [
+          "penalties"
+        ],
+        "entrants": [
+          "sport-recife",
+          "instituto-3b",
+          "minas-brasilia",
+          "itacoatiara",
+          "desportiva-taubate",
+          "vasco-da-gama",
+          "uda",
+          "ceara",
+          "doce-mel",
+          "vila-nova",
+          "acao",
+          "paysandu",
+          "atletico-rio-negro",
+          "cap",
+          "mixto-mt",
+          "vitoria"
+        ]
+      },
+      {
+        "kind": "knockout",
+        "name": "3ª Fase",
+        "numberOfTies": 16,
+        "legs": 1,
+        "secondLegHost": "drawn",
+        "tiebreakers": [
+          "penalties"
+        ],
+        "entrants": [
+          "corinthians",
+          "palmeiras",
+          "ferroviaria",
+          "sao-paulo",
+          "internacional",
+          "red-bull-bragantino",
+          "flamengo",
+          "bahia",
+          "cruzeiro",
+          "gremio",
+          "santos",
+          "fluminense",
+          "america",
+          "atletico-mineiro",
+          "botafogo",
+          "juventude-rs"
+        ]
+      },
+      {
+        "kind": "knockout",
+        "name": "4ª Fase",
+        "numberOfTies": 8,
+        "legs": 1,
+        "secondLegHost": "drawn",
+        "tiebreakers": [
+          "penalties"
+        ]
+      },
+      {
+        "kind": "knockout",
+        "name": "5ª Fase",
+        "numberOfTies": 4,
+        "legs": 2,
+        "secondLegHost": "drawn",
+        "tiebreakers": [
+          "goal-difference",
+          "penalties"
+        ]
+      },
+      {
+        "kind": "knockout",
+        "name": "6ª Fase",
+        "numberOfTies": 2,
+        "legs": 2,
+        "secondLegHost": "drawn",
+        "tiebreakers": [
+          "goal-difference",
+          "penalties"
+        ]
+      },
+      {
+        "kind": "knockout",
+        "name": "7ª Fase",
+        "numberOfTies": 1,
+        "legs": 2,
+        "secondLegHost": "drawn",
+        "tiebreakers": [
+          "goal-difference",
+          "penalties"
+        ]
+      }
+    ],
+    "teamNames": [
+      "liga-sanjoanense",
+      "sampaio-correa",
+      "pantanal",
+      "portuguesa",
+      "sao-jose",
+      "remo",
+      "cresspom",
+      "realidade-jovem",
+      "coritiba",
+      "ypiranga",
+      "brasil-de-farroupilha",
+      "uniao",
+      "criciuma",
+      "mixto-pb",
+      "sao-raimundo",
+      "paraiso",
+      "ipojuca",
+      "juventude-se",
+      "rolim-de-moura",
+      "prosperidade",
+      "galvez",
+      "atletico-de-alagoinhas",
+      "varzea-grande",
+      "guarani-de-paripueira",
+      "r4",
+      "mauaense",
+      "heips",
+      "araguari",
+      "penarol",
+      "tiradentes",
+      "planalto",
+      "desportiva-itapuense",
+      "perolas-negras",
+      "itabirito",
+      "sport-recife",
+      "instituto-3b",
+      "minas-brasilia",
+      "itacoatiara",
+      "desportiva-taubate",
+      "vasco-da-gama",
+      "uda",
+      "ceara",
+      "doce-mel",
+      "vila-nova",
+      "acao",
+      "paysandu",
+      "atletico-rio-negro",
+      "cap",
+      "mixto-mt",
+      "vitoria",
+      "corinthians",
+      "palmeiras",
+      "ferroviaria",
+      "sao-paulo",
+      "internacional",
+      "red-bull-bragantino",
+      "flamengo",
+      "bahia",
+      "cruzeiro",
+      "gremio",
+      "santos",
+      "fluminense",
+      "america",
+      "atletico-mineiro",
+      "botafogo",
+      "juventude-rs"
+    ]
   }
 ]

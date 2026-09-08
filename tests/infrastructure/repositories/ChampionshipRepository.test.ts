@@ -8,7 +8,7 @@ describe('ChampionshipRepository', () => {
     test('returns every championship when no league type is given', () => {
       const championships = getChampionships();
 
-      expect(championships).toHaveLength(6);
+      expect(championships).toHaveLength(7);
       expect(championships.map((c) => c.internalName)).toEqual([
         'brasileirao-serie-a',
         'brasileirao-serie-b',
@@ -16,6 +16,7 @@ describe('ChampionshipRepository', () => {
         'brasileirao-feminino-serie-a2',
         'brasileirao-feminino-serie-a3',
         'supercopa-feminina',
+        'copa-do-brasil-feminina',
       ]);
     });
 
@@ -36,6 +37,7 @@ describe('ChampionshipRepository', () => {
         'brasileirao-feminino-serie-a2',
         'brasileirao-feminino-serie-a3',
         'supercopa-feminina',
+        'copa-do-brasil-feminina',
       ]);
       championships.forEach((championship) => {
         expect(championship.leagueType).toBe('womens');
