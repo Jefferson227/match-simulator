@@ -8,6 +8,17 @@ import Standing from '../models/Standing';
 import LeagueType from '../enums/LeagueType';
 import { createMatches } from '../features/fixture-generation/FixtureGenerator';
 import { rankStandings } from '../features/standings/StandingsComparator';
+import { initialisePhaseState, resolveCompletedPhase } from '../features/phases/PhaseProgression';
+import { RandomProvider } from '../features/match-simulation/types';
+import { getRandomNumber } from '../utils/Utils';
+
+type ChampionshipServiceDependencies = {
+  rng?: RandomProvider;
+};
+
+const defaultDependencies: Required<ChampionshipServiceDependencies> = {
+  rng: { nextInt: getRandomNumber },
+};
 
 function startRound(championship: Championship): Championship {
   if (!championship?.matchContainer?.rounds) {
@@ -65,7 +76,10 @@ function startRound(championship: Championship): Championship {
   };
 }
 
-function endRound(championship: Championship): Championship {
+function endRound(
+  championship: Championship,
+  dependencies: ChampionshipServiceDependencies = {}
+): Championship {
   if (!championship?.matchContainer?.rounds) {
     throw new Error("Championship couldn't be found.");
   }
@@ -95,21 +109,44 @@ function endRound(championship: Championship): Championship {
     status: 'ended',
   };
 
-  const nextRoundNumber =
-    matchContainer.currentRound < matchContainer.totalRounds
-      ? matchContainer.currentRound + 1
-      : matchContainer.totalRounds + 1;
-
-  return {
+  const withRoundEnded: Championship = {
     ...championship,
     standings: updatedStandings,
     matchContainer: {
       ...matchContainer,
       rounds: updatedRounds,
+    },
+  };
+
+  // A phased championship does not end when its rounds run out — it resolves the phase and
+  // generates the next one, which appends rounds and grows `totalRounds`. So the phase is resolved
+  // before the next round number is worked out.
+  const resolved = withPhaseResolution(withRoundEnded, dependencies);
+  const resolvedContainer = resolved.matchContainer;
+
+  const nextRoundNumber =
+    resolvedContainer.currentRound < resolvedContainer.totalRounds
+      ? resolvedContainer.currentRound + 1
+      : resolvedContainer.totalRounds + 1;
+
+  return {
+    ...resolved,
+    matchContainer: {
+      ...resolvedContainer,
       currentRound: nextRoundNumber,
       timer: 0,
     },
   };
+}
+
+function withPhaseResolution(
+  championship: Championship,
+  dependencies: ChampionshipServiceDependencies
+): Championship {
+  if (!championship.phases?.length) return championship;
+
+  const deps = { ...defaultDependencies, ...dependencies };
+  return resolveCompletedPhase(championship, { rng: deps.rng });
 }
 
 function updateStandings(currentStandings: Standing[], matches: Match[]): Standing[] {
@@ -184,7 +221,7 @@ function resetChampionshipForNewSeason(championship: Championship, teams: Team[]
   const currentSeason =
     championship.matchContainer.currentSeason || nextSeasonMatchContainer.currentSeason;
 
-  return {
+  return initialisePhaseState({
     ...championship,
     teams,
     standings: buildStandings(teams),
@@ -192,7 +229,7 @@ function resetChampionshipForNewSeason(championship: Championship, teams: Team[]
       ...nextSeasonMatchContainer,
       currentSeason: currentSeason + 1,
     },
-  };
+  });
 }
 
 function isChampionshipOver(championship: Championship): boolean {
@@ -263,10 +300,10 @@ const initChampionships = (
       championshipInternalName,
       true
     );
-    playableChampionship = {
+    playableChampionship = initialisePhaseState({
       ...playableChampionship,
       matchContainer: createMatches(playableChampionship.teams, playableChampionship.phases),
-    };
+    });
 
     championshipContainer = {
       ...championshipContainer,
@@ -279,10 +316,10 @@ const initChampionships = (
         false
       );
 
-      promotionChampionship = {
+      promotionChampionship = initialisePhaseState({
         ...promotionChampionship,
         matchContainer: createMatches(promotionChampionship.teams, promotionChampionship.phases),
-      };
+      });
 
       championshipContainer = {
         ...championshipContainer,
@@ -296,10 +333,10 @@ const initChampionships = (
         false
       );
 
-      relegationChampionship = {
+      relegationChampionship = initialisePhaseState({
         ...relegationChampionship,
         matchContainer: createMatches(relegationChampionship.teams, relegationChampionship.phases),
-      };
+      });
 
       championshipContainer = {
         ...championshipContainer,
@@ -431,12 +468,16 @@ const startRoundForAllChampionships = (
 };
 
 const endRoundForAllChampionships = (
-  championshipContainer: ChampionshipContainer
+  championshipContainer: ChampionshipContainer,
+  dependencies: ChampionshipServiceDependencies = {}
 ): OperationResult<ChampionshipContainer> => {
   try {
     let updatedChampionshipContainer = { ...championshipContainer };
 
-    const updatedPlayableChampionship = endRound(championshipContainer.playableChampionship);
+    const updatedPlayableChampionship = endRound(
+      championshipContainer.playableChampionship,
+      dependencies
+    );
     updatedChampionshipContainer = {
       ...updatedChampionshipContainer,
       playableChampionship: updatedPlayableChampionship,
@@ -444,7 +485,10 @@ const endRoundForAllChampionships = (
 
     let updatedPromotionChampionship: Championship | undefined;
     if (championshipContainer.playableChampionship.isPromotable) {
-      updatedPromotionChampionship = endRound(championshipContainer.promotionChampionship!);
+      updatedPromotionChampionship = endRound(
+        championshipContainer.promotionChampionship!,
+        dependencies
+      );
 
       updatedChampionshipContainer = {
         ...updatedChampionshipContainer,
@@ -454,7 +498,10 @@ const endRoundForAllChampionships = (
 
     let updatedRelegationChampionship: Championship | undefined;
     if (championshipContainer.playableChampionship.isRelegatable) {
-      updatedRelegationChampionship = endRound(championshipContainer.relegationChampionship!);
+      updatedRelegationChampionship = endRound(
+        championshipContainer.relegationChampionship!,
+        dependencies
+      );
 
       updatedChampionshipContainer = {
         ...updatedChampionshipContainer,

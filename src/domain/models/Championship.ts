@@ -41,6 +41,17 @@ type BaseChampionship = {
    * (REC A1 Art. 26, REC A2 Art. 25).
    */
   firstPhaseStandings?: Standing[];
+  /**
+   * The clubs that played each phase, indexed by phase. `phaseParticipants[2]` for A1 is the four
+   * semifinalists — which is how A2 and A3 promote, since a semifinalist need not be near the top
+   * of any table (REC A2 Art. 5º, REC A3 Art. 5º).
+   */
+  phaseParticipants?: Team['id'][][];
+  /**
+   * Points and goals summed across every phase played so far. Drives `accumulated-points` second-leg
+   * hosting and the final classification (REC A1 Art. 27, REC A3 Art. 21).
+   */
+  accumulatedStandings?: Standing[];
 };
 
 type Promotable = {
