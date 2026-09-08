@@ -23,7 +23,10 @@ type Phase =
 type ChampionshipEntry = {
   internalName: string;
   leagueType: string;
+  type: string;
   numberOfTeams: number;
+  /** Absent for a division; `false` for a cup, which has no table. */
+  hasLeagueTable?: boolean;
   teamNames: string[];
   promotionChampionshipInternalName?: string;
   relegationChampionshipInternalName?: string;
@@ -106,7 +109,11 @@ describe('championships.json data integrity', () => {
   });
 
   describe('phases', () => {
-    const withPhases = championships.filter((championship) => championship.phases?.length);
+    // The cups declare phases too, but they are pure brackets with no table and no round-robin
+    // first phase, so the division-shaped assertions below are scoped to the divisions.
+    const withPhases = championships.filter(
+      (championship) => championship.phases?.length && championship.hasLeagueTable !== false
+    );
 
     test('the three women divisions declare their phases', () => {
       expect(withPhases.map((championship) => championship.internalName)).toEqual([
@@ -164,6 +171,51 @@ describe('championships.json data integrity', () => {
     });
   });
 
+  describe('the cups', () => {
+    const cups = championships.filter((championship) => championship.hasLeagueTable === false);
+
+    test('every cup is a knockout with no table and no promotion or relegation', () => {
+      expect(cups.length).toBeGreaterThan(0);
+
+      cups.forEach((cup) => {
+        expect(cup.type).toBe('knockout');
+        expect(cup.phases?.length).toBeGreaterThan(0);
+        expect(cup.promotionChampionshipInternalName).toBeUndefined();
+        expect(cup.relegationChampionshipInternalName).toBeUndefined();
+      });
+    });
+
+    test('every cup phase is a knockout hosted by draw', () => {
+      cups.forEach((cup) => {
+        (cup.phases as Phase[]).forEach((phase) => {
+          expect(phase.kind).toBe('knockout');
+          if (phase.kind !== 'knockout') return;
+          // The cups draw hosting at every phase; the divisions' seeded rule does not apply.
+          expect(phase.secondLegHost).toBe('drawn');
+        });
+      });
+    });
+
+    test('a single-legged cup phase goes straight to penalties', () => {
+      cups.forEach((cup) => {
+        (cup.phases as Phase[]).forEach((phase) => {
+          if (phase.kind !== 'knockout') return;
+          expect(phase.tiebreakers).toEqual(
+            phase.legs === 1 ? ['penalties'] : ['goal-difference', 'penalties']
+          );
+        });
+      });
+    });
+
+    test('every cup entrant is a club the game already seeds', () => {
+      cups.forEach((cup) => {
+        const known = teamInternalNamesByLeagueType[cup.leagueType];
+        cup.teamNames.forEach((teamName) => expect(known.has(teamName)).toBe(true));
+        expect(cup.teamNames).toHaveLength(cup.numberOfTeams);
+      });
+    });
+  });
+
   describe("the women's divisions", () => {
     test('A1 relegates two off the first-phase table and does not promote', () => {
       const a1 = findByInternalName('brasileirao-feminino-serie-a1');
@@ -194,8 +246,12 @@ describe('championships.json data integrity', () => {
     });
 
     test('no team plays in two divisions at once', () => {
-      const womens = championships.filter((championship) => championship.leagueType === 'womens');
-      const everyName = womens.flatMap((championship) => championship.teamNames);
+      // Cups draw their field from the divisions by design, so only the divisions are checked.
+      const divisions = championships.filter(
+        (championship) =>
+          championship.leagueType === 'womens' && championship.hasLeagueTable !== false
+      );
+      const everyName = divisions.flatMap((championship) => championship.teamNames);
 
       expect(new Set(everyName).size).toBe(everyName.length);
     });

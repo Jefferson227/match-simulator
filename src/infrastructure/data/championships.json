@@ -309,5 +309,29 @@
       "varzea-grande",
       "ypiranga"
     ]
+  },
+  {
+    "name": "SUPERCOPA FEMININA DE 2026",
+    "internalName": "supercopa-feminina",
+    "numberOfTeams": 2,
+    "type": "knockout",
+    "leagueType": "womens",
+    "hasLeagueTable": false,
+    "phases": [
+      {
+        "kind": "knockout",
+        "name": "Final",
+        "numberOfTies": 1,
+        "legs": 1,
+        "secondLegHost": "drawn",
+        "tiebreakers": [
+          "penalties"
+        ]
+      }
+    ],
+    "teamNames": [
+      "corinthians",
+      "palmeiras"
+    ]
   }
 ]
