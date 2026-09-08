@@ -1,8 +1,8 @@
 ---
 title: Invented data
 type: concept
-verified: 2026-09-05
-sources: [atletas-api]
+verified: 2026-09-07
+sources: [atletas-api, rec-a3-2026, rec-copa-2026]
 ---
 
 # Invented data
@@ -24,8 +24,31 @@ CBF publishes none of the following, so MS-102 invents them:
 
 Player *names* and club *names* are real CBF data.
 
-
 Why CBF publishes no positions and why squads come back short is on [[cbf-data-sources]].
+
+## Invented by MS-103
+
+Two bracket rules the RECs do not fully specify. Neither is fabricated *data* — both are
+deterministic substitutions for a draw the game cannot perform — but both are inventions and are
+recorded here for the same reason.
+
+- **Série A3's groups are split in seed order.** REC A3 Art. 12 draws the eight groups by
+  **geographic proximity** (A1–A4 from Sul, Sudeste, Centro-Oeste and Norte; A5–A8 from Nordeste,
+  Espírito Santo and Norte). The seed carries no geography — `teams-womens.json` has no UF field —
+  so the field is dealt into groups in the order `teamNames` declares. Deterministic, and wrong
+  against the regulation.
+- **Série A3's round of 16 crosses neighbouring groups.** REC A3 Art. 14 states only that the top two
+  of each group advance; it does not give the cross. The game pairs the winner of group *g* with the
+  runner-up of its partner group and vice versa, which guarantees that no tie repeats a group-stage
+  fixture and that every tie holds exactly one group winner — the precondition `group-winner` hosting
+  needs (Art. 18). The regulation may cross them differently.
+
+Both live in `src/domain/features/fixture-generation/`. See [[phases-and-knockouts]].
+
+**A third thing MS-103 chose not to invent.** A3 loses 2 clubs a season, because CBF re-composes it
+each year from 27 state champions plus relegated clubs (REC A3 2026 Art. 2º) and the game has no
+source for state champions. Generating clubs to keep it at 32 was rejected; its outflow is capped
+instead so it cannot fall below a playable field. See [[ms-103-a1-club-count-growth]].
 
 ---
 

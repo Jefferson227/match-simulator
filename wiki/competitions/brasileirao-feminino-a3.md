@@ -20,6 +20,10 @@ asserts:
     equals: 5
   - file: src/infrastructure/data/championships.json
     select: internalName=brasileirao-feminino-serie-a3
+    path: type
+    equals: group-stage-knockout
+  - file: src/infrastructure/data/championships.json
+    select: internalName=brasileirao-feminino-serie-a3
     absent: numberOfRelegatableTeams
 ---
 
@@ -57,9 +61,10 @@ Played in **5 phases** (REC A3 Art. 11):
 - **Relegation**: **none.** REC A3 contains no relegation clause — A3 is the bottom senior tier.
 
 
-> **Sharpest simplification in the game.** Flattened to a double round-robin, A3 plays **62 rounds /
-> 992 matches** instead of 6 group rounds plus 4 knockout rounds. Accepted knowingly; the alternative
-> was hiding A3 from the selector until MS-103. See [[ms-102-simplifications]].
+> **Fixed by MS-103.** A3 was flattened to a double round-robin and played **62 rounds / 992
+> matches**; it now plays its real format — 6 group rounds and 96 matches, then a four-phase bracket,
+> 14 rounds in all. That was the sharpest of the MS-102 simplifications and the main reason MS-103
+> existed. See [[ms-102-simplifications]], [[phases-and-knockouts]].
 
 ## Feeds
 

@@ -1,8 +1,11 @@
 ---
 title: Fetching data from CBF
 type: concept
-verified: 2026-09-06
-sources: [tabelas-copa-2026, atletas-api]
+verified: 2026-09-07
+sources: [tabelas-copa-2026, atletas-api, times-a1-2026]
+asserts:
+  - file: wiki/raw/fetch.sh
+    exists: true
 ---
 
 # Fetching data from CBF
@@ -47,6 +50,34 @@ and returned only 29 across its pages.
 
 `https://conteudo.cbf.com.br/clubes/<clubId>/escudo.jpg`. Not used by the game — the seed carries
 `colors`, not images — but it is the only visual asset CBF exposes per club.
+
+## `tabelas/` returns 200 for a season that does not exist
+
+`/futebol-brasileiro/tabelas/<comp>/<year>` returns **HTTP 200 with an empty flight payload** for an
+unpublished year, while `times/` and `competicoes/` correctly 404 for the same year. **A 200 there is
+not evidence the season exists.** Check the payload for `nome_popular` / `campeonato_id` before
+believing it. Found 2026-09-07, after a pass spent probing 2027.
+
+## `times` emits one record per legal entity, not per club
+
+A mid-season SAF conversion leaves the club with two records, so a raw count over-reports the field:
+Bahia (2023), Fortaleza (2025) and Botafogo (2022–23) each appear twice. **Deduplicate on
+`nome_popular` and cross-check the REC's Art. 2º.** A raw record count is an upper bound, never a
+club count.
+
+## `curl` needs `-g` for the bracketed filter
+
+```sh
+curl -fsSLg "https://cms.cbf.com.br/api/championship-documents?filters[slug][\$eq]=<slug>&populate=*"
+```
+
+Without `-g`, curl treats `[` and `]` as glob ranges. `../raw/fetch.sh` escaped only `\$` and worked
+by luck; it now passes `-g` explicitly.
+
+## Some REC records exist with no file
+
+2022 and 2023 REC records are present in the CMS with `file: null` — CBF no longer serves those PDFs.
+A record in the index is not a document.
 
 ## Year coverage
 

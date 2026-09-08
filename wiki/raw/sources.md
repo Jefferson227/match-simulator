@@ -18,6 +18,22 @@ If CBF ever pulls a document, commit that file deliberately.
 | `tabela-copa-2026` | Tabela Detalhada PDF (updated 27/07/2026) | 2026-09-06 | `https://stcbfsiteprdimgbrs.blob.core.windows.net/img-site/cdn/Tabela_Detalhada_Copa_do_Brasil_Feminina_2026_9604f84f3a.pdf` |
 | `rec-supercopa-2026` | REC PDF | 2026-09-06 | `https://stcbfsiteprdimgbrs.blob.core.windows.net/img-site/cdn/REC_Supercopa_Feminina_2026_7bcf301c7a.pdf` |
 
+## CBF editorial — **not regulatory**
+
+Articles on `cbf.com.br/futebol-feminino`. CBF publishes them, so they are primary, but they are
+**news, not rules**: nothing in them is a REC, PGA or Anexo, and a page citing one must say so. They
+are the only source for the 20-club expansion target — see [[known-contradictions]] item 1.
+
+| id | Kind | Published | Retrieved | Says |
+|---|---|---|---|---|
+| `news-expansao-2025` | CBF news article, "CBF anuncia novidades para o futebol feminino de 2025" | 17/01/2025 | 2026-09-07 | A1 *"ampliação progressiva para 20 clubes até 2027"* via 2 down / 4 up in 2025 and 2026; A2 *"crescimento gradual para 20 clubes até 2028"* |
+| `news-calendario-2025` | CBF calendar article (Samir Xaud administration) | 24/11/2025 | 2026-09-07 | A1 *"ampliado de 16 para 18"*; A2 *"mantido"* at 16; A2 2026 composed as 2 down + 10 stayers (5º–14º) + 4 from A3. **Does not restate the 20-club goal.** |
+
+> **URLs were not recorded** when these were read on 2026-09-07, and are deliberately not
+> reconstructed here — a guessed URL is worse than none. Both are findable from
+> `https://www.cbf.com.br/futebol-feminino/noticias` by date. Capture the URL on the next pass that
+> touches them.
+
 ## CBF live endpoints
 
 | id | Used for | URL |

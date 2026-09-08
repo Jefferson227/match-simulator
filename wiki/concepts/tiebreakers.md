@@ -43,7 +43,7 @@ goes directly to penalties.
 
 ## What the code does
 
-`ChampionshipService.ts:220` sorts standings by:
+`compareStandings` in `src/domain/features/standings/StandingsComparator.ts` sorts standings by:
 
 ```
 points → goal difference → goals for → team abbreviation (alphabetical)
@@ -55,6 +55,12 @@ points → goal difference → goals for → team abbreviation (alphabetical)
 > level on points where one has more wins and the other a better goal difference will be ordered
 > **wrong**, and because relegation reads off this table the error is not cosmetic.
 >
+> **MS-103 inherited this deliberately rather than fixing it** — correcting it changes the men's
+> tables too, and it has no ticket. What MS-103 did change is that the cascade was extracted out of
+> `ChampionshipService.updateStandings` into one shared module, so the league table, the final
+> classification and `accumulated-points` second-leg hosting all order clubs the same way. There is
+> now exactly one place to fix.
+>
 > The final `localeCompare` on abbreviation also stands in for what the RECs make a *sorteio*, which
 > is a defensible substitution — a deterministic game cannot draw lots — but it is a substitution,
 > not the rule. Card-count criteria are unreachable because the simulation has no cards.
@@ -62,7 +68,14 @@ points → goal difference → goals for → team abbreviation (alphabetical)
 Not raised as a ticket yet. See [[promotion-and-relegation]] for why it matters, and
 [[known-contradictions]] for the rest.
 
+Since MS-103 a phase declares which steps its ties use: single-legged phases carry
+`tiebreakers: ['penalties']` and skip goal difference entirely, two-legged ones carry
+`['goal-difference', 'penalties']`. How the shootout itself is taken is the game's own model —
+see [[ms-103-simulated-shootout]].
+
 ## Not asserted
 
 None of this is machine-checkable — a comparator's ordering cannot be expressed as a literal
-equality. The lint pass must re-read `ChampionshipService.ts:220` by hand against the table above.
+equality. The lint pass must re-read `src/domain/features/standings/StandingsComparator.ts` by hand
+against the table above, and `src/domain/features/phases/TieResolution.ts` against the knockout
+cascade.

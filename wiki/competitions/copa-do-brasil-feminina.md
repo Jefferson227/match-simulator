@@ -4,14 +4,47 @@ type: competition
 season: 2026
 verified: 2026-09-06
 sources: [rec-copa-2026, tabela-copa-2026, tabelas-copa-2026]
-seeded: false
-asserts: []
+seeded: true
+asserts:
+  - file: src/infrastructure/data/championships.json
+    select: internalName=copa-do-brasil-feminina
+    path: numberOfTeams
+    equals: 66
+  - file: src/infrastructure/data/championships.json
+    select: internalName=copa-do-brasil-feminina
+    path: teamNames.length
+    equals: 66
+  - file: src/infrastructure/data/championships.json
+    select: internalName=copa-do-brasil-feminina
+    path: hasLeagueTable
+    equals: false
+  - file: src/infrastructure/data/championships.json
+    select: internalName=copa-do-brasil-feminina
+    path: phases.length
+    equals: 8
+  - file: src/infrastructure/data/championships.json
+    select: internalName=copa-do-brasil-feminina
+    path: phases.0.entrants.length
+    equals: 4
+  - file: src/infrastructure/data/championships.json
+    select: internalName=copa-do-brasil-feminina
+    path: phases.1.entrants.length
+    equals: 30
+  - file: src/infrastructure/data/championships.json
+    select: internalName=copa-do-brasil-feminina
+    path: phases.5.legs
+    equals: 2
 ---
 
 # Copa do Brasil Feminina — 2026
 
-**Not seeded.** This page is the spec; the JSON entry and the model work it needs are deferred —
-see [[ms-102-cups-deferred]] for why the `Championship` model cannot hold it yet.
+**Seeded 2026-09-07** by MS-103 as `copa-do-brasil-feminina`. This page remains the spec; the seed is
+generated from it. The model work it needed — optional league scaffolding, per-phase entrants, drawn
+hosting — is described in [[ms-102-cups-deferred]] and [[phases-and-knockouts]].
+
+The **Ranking Adaptado order below is now in `championships.json`**, as each phase's `entrants` list.
+The seed's phase bands are regulatory (Arts. 14–17); the ordering *within* a band is this page's
+table, which carries the extraction caveat noted under Participants.
 
 66 clubs, 8 phases, 72 matches, straight knockout with **staggered entry**. Its 66 participants are
 exactly the clubs of [[brasileirao-feminino-a1]], [[brasileirao-feminino-a2]] and

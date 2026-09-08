@@ -3,10 +3,14 @@ title: Cups deferred out of MS-102
 type: decision
 ticket: MS-102
 decided: 2026-09-06
-status: deferred to MS-103/MS-104
+status: resolved by MS-103 — both cups seeded 2026-09-07
 ---
 
 # Cups deferred out of MS-102
+
+> **Resolved 2026-09-07.** MS-103 built the model support described below and seeded **both** cups.
+> The page is kept for the decision to extract-now-seed-later, and for the cost analysis that turned
+> out to be right.
 
 **Decision.** Extract and document both women's cups in full, but seed neither. The specs live at
 [[copa-do-brasil-feminina]] and [[supercopa-feminina]]; no JSON entry, no model change.
@@ -36,6 +40,22 @@ scaffolding to become optional and the phase descriptor to carry per-phase entra
 The Supercopa is **nearly free** once knockouts exist and is the natural first cup to implement. The
 Copa needs the `phases` descriptor to carry per-phase entrants and needs hosting to become a
 per-competition choice — see [[phases-and-knockouts]].
+
+## How MS-103 unblocked it
+
+The league scaffolding was made **optional** rather than duplicated into a second competition type:
+
+- `hasLeagueTable: false` keeps `standings` empty for the life of the competition, and who played
+  each phase is read off the fixtures instead of off a table.
+- `KnockoutPhase.entrants` names the clubs joining at that phase; each phase's field is the survivors
+  plus whoever enters now, so staggered entry needs no byes.
+- `secondLegHost: 'drawn'` and a matching draw pairing exist, so a cup never inherits the divisions'
+  seeded hosting right.
+- A phase's declared `tiebreakers` are honoured, which is what sends a drawn single leg straight to
+  penalties.
+
+The cost estimate in the table above held: the Supercopa was one JSON entry and no new code beyond
+what the Copa needed anyway.
 
 ## Why extract now and seed later
 

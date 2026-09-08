@@ -4,14 +4,35 @@ type: competition
 season: 2026
 verified: 2026-09-06
 sources: [rec-supercopa-2026, tabelas-supercopa-2026]
-seeded: false
-asserts: []
+seeded: true
+asserts:
+  - file: src/infrastructure/data/championships.json
+    select: internalName=supercopa-feminina
+    path: numberOfTeams
+    equals: 2
+  - file: src/infrastructure/data/championships.json
+    select: internalName=supercopa-feminina
+    path: hasLeagueTable
+    equals: false
+  - file: src/infrastructure/data/championships.json
+    select: internalName=supercopa-feminina
+    path: phases.length
+    equals: 1
+  - file: src/infrastructure/data/championships.json
+    select: internalName=supercopa-feminina
+    path: phases.0.legs
+    equals: 1
+  - file: src/infrastructure/data/championships.json
+    select: internalName=supercopa-feminina
+    path: phases.0.secondLegHost
+    equals: drawn
 ---
 
 # Supercopa Feminina — 2026
 
-**Not seeded**, but the cheapest cup to add: one tie, one leg, two clubs the game already has, no
-bracket. The natural first cup to implement once knockouts exist. See [[ms-102-cups-deferred]].
+**Seeded 2026-09-07** by MS-103 as `supercopa-feminina`: one tie, one leg, two clubs the game already
+had, no bracket, no new team data. It was the smoke test for knockout-only competitions — see
+[[ms-102-cups-deferred]].
 
 | | |
 |---|---|
@@ -50,8 +71,10 @@ Corinthians on the left (which under Art. 12 §1 would make it the home club), b
 table and the live fixture both have **Palmeiras as mandante**. Anexo B is the pre-draw template; the
 draw is decisive.
 
-Modelling the Supercopa is nearly free once knockouts exist — one tie, one leg, two clubs the game
-already has, and no bracket. It is the natural first cup to implement.
+The game seeds it as a single knockout phase named `Final` with `legs: 1`,
+`secondLegHost: 'drawn'` and `tiebreakers: ['penalties']`, so a drawn match goes straight to a
+shootout with no goal-difference step and no extra time. **The 2026 result is not seeded** — the game
+plays the fixture rather than replaying CBF's.
 
 
 ## Feeds

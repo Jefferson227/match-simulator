@@ -86,3 +86,87 @@ Two design notes worth keeping:
 
 Also wired step 9 of the `execute-tasks` skill (user-level, shared across projects) to run the
 close-out filter, gated on a `wiki/` folder existing and deferring to `wiki/CLAUDE.md` when present.
+
+## [2026-09-08] ingest | MS-103 — the engine plays what `phases` declares — sha f7966cd
+
+MS-102 declared the women's formats and left them inert. MS-103 executes them: group stages,
+single-leg round-robins, two-legged knockouts, per-phase standings resets, the regulations' hosting
+and tiebreaker rules, semifinalist promotion, and both cups seeded. 15 tasks, 15 commits.
+
+**Verification at close-out:** `npm test` 38 suites / 340 tests green; `test-back` 28/284;
+`test-front` 10/56; `npm run build` succeeds; `npx tsc --noEmit` **136 errors against the documented
+103-error baseline**. The whole +33 is in the two component test files MS-103 added and uses only
+error classes the baseline already contains (jest-dom matchers, `jest.Mock`); the non-test error set
+is byte-identical to the baseline.
+
+### What changed in the seed
+
+| | Was | Now |
+|---|---|---|
+| A1 `type` | `double-round-robin`, 34 rounds | `single-round-robin`, **23 rounds** |
+| A2 `type` | `double-round-robin`, 30 rounds | `single-round-robin`, **21 rounds** |
+| A3 `type` | `double-round-robin`, **62 rounds / 992 matches** | `group-stage-knockout`, **14 rounds**, 96 group matches |
+| Cups | none seeded | [[supercopa-feminina]] and [[copa-do-brasil-feminina]], 7 competitions in all |
+| New fields | — | `targetNumberOfTeams`, `numberOfRelegatableTeamsAtTarget`, `hasLeagueTable`, `KnockoutPhase.entrants` |
+
+The men's divisions are untouched — no `phases`, `double-round-robin`, `'table-position'`, 38 rounds,
+identical fixtures — and a regression suite now pins that against a verbatim copy of the pre-MS-103
+generator.
+
+### External evidence gathered
+
+The 2026-09-07 pass on the A1 club-count question. Two CBF **news** articles registered in
+[[sources]] under a new non-regulatory tier, plus REC A1 2025/2026 and REC A2 2025 Art. 2º as
+corroboration. Outcome: [[known-contradictions]] item 1 is resolved **in direction but not by
+regulation**, and its A2 arithmetic — which said the numbers do not close — is **corrected**: A2
+balances at exactly 16, only A1 is unbalanced.
+
+Also new on that page: a **contradiction** between REC A2 2026 Art. 2º and the 24/11/2025 calendar
+article over how A2 2026 is composed (both total 16; the REC is decisive), and an **open gap** — CBF
+states "A2 com 20 equipes até 2028" and publishes no mechanism that reaches it. Not inferred.
+
+### Decisions filed
+
+| Page | Call |
+|---|---|
+| [[ms-103-a1-club-count-growth]] | A1 grows 18 → 20, then 4 down / 4 up. Data-driven, **partly inference** |
+| [[ms-103-ai-championship-catch-up]] | The playable championship is the clock; AI divisions catch up at sync points |
+| [[ms-103-simulated-shootout]] | Shootouts simulated kick by kick on player strength, not drawn |
+
+[[ms-102-simplifications]] is **superseded** — every simplification it recorded is undone, and its
+stale `type` assert is corrected rather than deleted, so it still guards the new value.
+[[ms-102-cups-deferred]] is **resolved**.
+
+### Live defect fixed, and one deliberately not
+
+`endRoundForAllChampionships` stepped all three championships round for round, which only ever worked
+because Série A and B both play 38 rounds. **It was already broken on the MS-102 seeds**: with A1
+playable it threw `Championship couldn't be found.` at round 22, when A2 ran out. Reproduced before
+fixing; see [[ms-103-ai-championship-catch-up]].
+
+The missing `wins` tiebreaker was **inherited, not fixed** — correcting it changes the men's tables
+and it still has no ticket. MS-103 did extract the cascade into one shared module, so
+[[tiebreakers]]' callout now points at `StandingsComparator.ts` and there is a single place to fix.
+
+### Retrieval traps added to [[cbf-data-sources]]
+
+- `tabelas/<comp>/<year>` returns **200 with an empty payload** for an unpublished year, while
+  `times/` and `competicoes/` correctly 404. A 200 is not evidence a season exists.
+- `times` emits **one record per legal entity**, so a mid-season SAF conversion inflates the count
+  (Bahia 2023, Fortaleza 2025, Botafogo 2022–23). Deduplicate on `nome_popular`.
+- `curl` needs **`-g`** for the bracketed `filters[slug][$eq]` query. `raw/fetch.sh` escaped only
+  `\$` and worked by luck; it now passes `-g`.
+- 2022 and 2023 REC records exist in the CMS with `file: null`.
+
+### Rescued from `.plans/MS-103/`
+
+Two bracket rules the RECs do not fully specify, now on [[invented-data]]: A3's groups are split in
+**seed order** (Art. 12 draws them by geographic proximity, which the seed has no data for), and
+A3's round of 16 **crosses neighbouring groups** (Art. 14 does not give the cross). Both are
+deterministic substitutions for a draw, and both could be wrong against the regulation.
+
+### Left open
+
+- **URLs for the two CBF news articles were not recorded** and are deliberately not reconstructed.
+- A1 2027's club count, and A2's route to 20, remain inference.
+- A3's field shrinks 2 clubs a season; bounded by a floor, not solved.

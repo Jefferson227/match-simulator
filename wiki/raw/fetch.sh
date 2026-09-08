@@ -19,7 +19,8 @@ fetch rec-supercopa-2026 "$CDN/REC_Supercopa_Feminina_2026_7bcf301c7a.pdf"
 # NOTE: &populate=* is mandatory — without it every document comes back with url: null.
 for d in a1 a2 a3; do
   [ -f "rec-$d-2026.pdf" ] && { echo "have rec-$d-2026"; continue; }
-  url=$(curl -fsSL "https://cms.cbf.com.br/api/championship-documents?filters[slug][\$eq]=campeonato-brasileiro/feminino-$d/2026&populate=*" \
+  # -g is mandatory: without it curl reads the [ ] in filters[slug][$eq] as a glob range.
+  url=$(curl -fsSLg "https://cms.cbf.com.br/api/championship-documents?filters[slug][\$eq]=campeonato-brasileiro/feminino-$d/2026&populate=*" \
         | grep -o 'https://[^"]*REC[^"]*\.pdf' | head -1) || true
   [ -n "${url:-}" ] && { echo "get  rec-$d-2026"; curl -fsSL -o "rec-$d-2026.pdf" "$url"; } \
                     || echo "MISS rec-$d-2026 — CMS returned no REC link"
