@@ -4,23 +4,29 @@ import ChampionshipContainer from '../../../../src/domain/models/ChampionshipCon
 import { Championship } from '../../../../src/domain/models/Championship';
 import ChampionshipPhase from '../../../../src/domain/models/ChampionshipPhase';
 import Round from '../../../../src/domain/models/Round';
+import Player from '../../../../src/domain/models/Player';
 import { Team } from '../../../../src/domain/models/Team';
 import { createMatches } from '../../../../src/domain/features/fixture-generation/FixtureGenerator';
 import { initialisePhaseState } from '../../../../src/domain/features/phases/PhaseProgression';
 import championshipsJSON from '../../../../src/infrastructure/data/championships.json';
 import { RandomProvider } from '../../../../src/domain/features/match-simulation/types';
 
-/** A deterministic rng: a fixed cycle, so a shootout always resolves the same way. */
-function stubRng(sequence: number[] = [0, 1]): RandomProvider {
+/**
+ * A deterministic pseudo-random provider — reproducible across runs, but varied enough that a
+ * penalty shootout actually separates the sides rather than ending level every time.
+ */
+function stubRng(): RandomProvider {
   let index = 0;
   return {
     nextInt: (min: number, max: number) => {
-      const value = sequence[index % sequence.length];
       index += 1;
+      const value = (index * 7919 + 104729) % 10007;
       return min + (value % (max - min + 1));
     },
   };
 }
+
+const POSITIONS = ['GK', 'DF', 'DF', 'DF', 'MF', 'MF', 'MF', 'FW', 'FW', 'FW', 'FW'] as const;
 
 function buildTeam(index: number): Team {
   return {
@@ -29,7 +35,16 @@ function buildTeam(index: number): Team {
     shortName: `T${index}`,
     abbreviation: `T${String(index).padStart(3, '0')}`,
     colors: { outline: '#000000', background: '#ffffff', text: '#000000' },
-    players: [],
+    // Real players, so a penalty shootout has takers and goalkeepers to contest.
+    players: POSITIONS.map((position, playerIndex) => ({
+      id: `player-${index}-${playerIndex}` as Player['id'],
+      position,
+      name: `Player ${index}-${playerIndex}`,
+      strength: 40 + ((index + playerIndex) % 20),
+      xp: 0,
+      isStarter: true,
+      isSub: false,
+    })),
     morale: 50,
     isControlledByHuman: false,
   };
@@ -280,8 +295,11 @@ describe('phase progression — level ties', () => {
     // Every tie was level on points and goal difference, so all 7 went to penalties.
     expect(shootouts).toHaveLength(7);
     for (const match of shootouts) {
+      // The shootout decided the tie without touching the recorded score.
       expect(match.homeTeamScore).toBe(1);
       expect(match.awayTeamScore).toBe(1);
+      expect(match.leg).toBe(2);
+      expect(match.penaltyShootout!.kicks.length).toBeGreaterThanOrEqual(2);
       expect(match.penaltyShootout!.homeScore).not.toBe(match.penaltyShootout!.awayScore);
     }
   });

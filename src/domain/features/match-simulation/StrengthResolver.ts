@@ -11,7 +11,7 @@ function getTeamMoralePercentage(team: Team): number {
   return Math.round(((30 * team.morale) / 50) * -1);
 }
 
-function getStarters(team: Team): Player[] {
+export function getStarters(team: Team): Player[] {
   const starters = team.players.filter((player) => player.isStarter);
   return starters.length ? starters : team.players;
 }
