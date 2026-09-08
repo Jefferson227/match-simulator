@@ -70,7 +70,7 @@
     "numberOfRelegatableTeamsAtTarget": 4,
     "relegationChampionshipInternalName": "brasileirao-feminino-serie-a2",
     "relegationRule": "first-phase-table-position",
-    "type": "double-round-robin",
+    "type": "single-round-robin",
     "leagueType": "womens",
     "phases": [
       {
@@ -148,7 +148,7 @@
     "numberOfRelegatableTeamsAtTarget": 4,
     "relegationChampionshipInternalName": "brasileirao-feminino-serie-a3",
     "relegationRule": "first-phase-table-position",
-    "type": "double-round-robin",
+    "type": "single-round-robin",
     "leagueType": "womens",
     "phases": [
       {
@@ -219,7 +219,7 @@
     "numberOfPromotableTeams": 4,
     "promotionChampionshipInternalName": "brasileirao-feminino-serie-a2",
     "promotionRule": "semifinalists",
-    "type": "double-round-robin",
+    "type": "group-stage-knockout",
     "leagueType": "womens",
     "phases": [
       {

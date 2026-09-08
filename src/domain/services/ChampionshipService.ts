@@ -16,6 +16,7 @@ import {
 } from '../features/phases/PhaseProgression';
 import { RandomProvider } from '../features/match-simulation/types';
 import { getRandomNumber } from '../utils/Utils';
+import { runMatchTick } from '../features/match-simulation/MatchSimulationEngine';
 
 type ChampionshipServiceDependencies = {
   rng?: RandomProvider;
@@ -25,10 +26,23 @@ const defaultDependencies: Required<ChampionshipServiceDependencies> = {
   rng: { nextInt: getRandomNumber },
 };
 
+/**
+ * True when a championship has simply run out of rounds — its season is finished.
+ *
+ * Distinguished from a genuinely missing round, which is still an error: a finished season is a
+ * no-op, so nothing can overflow the round lookup by being asked to play one round too many.
+ */
+function hasFinishedItsRounds(championship: Championship): boolean {
+  const { currentRound, totalRounds, rounds } = championship.matchContainer;
+  return currentRound > totalRounds && !rounds.some((round) => round.number === currentRound);
+}
+
 function startRound(championship: Championship): Championship {
   if (!championship?.matchContainer?.rounds) {
     throw new Error("Championship couldn't be found.");
   }
+
+  if (hasFinishedItsRounds(championship)) return championship;
 
   const matchContainer = championship.matchContainer;
   const rounds = matchContainer.rounds;
@@ -88,6 +102,8 @@ function endRound(
   if (!championship?.matchContainer?.rounds) {
     throw new Error("Championship couldn't be found.");
   }
+
+  if (hasFinishedItsRounds(championship)) return championship;
 
   const matchContainer = championship.matchContainer;
   const rounds = matchContainer.rounds;
@@ -571,37 +587,82 @@ const getMatchesForCurrentRound = (championship: Championship): OperationResult<
   }
 };
 
+/**
+ * A guard, not a rule. No seeded competition owes anywhere near this many rounds; it stops a
+ * malformed fixture list from looping forever.
+ */
+const MAX_CATCH_UP_ROUNDS = 500;
+
+/** Plays a whole round of an AI championship in one pass, 90 minutes at a time. */
+function simulateRoundInOnePass(championship: Championship, rng: RandomProvider): Championship {
+  const matchContainer = championship.matchContainer;
+  const roundIndex = matchContainer.rounds.findIndex(
+    (round) => round.number === matchContainer.currentRound
+  );
+  if (roundIndex === -1) return championship;
+
+  const round = matchContainer.rounds[roundIndex];
+  let matches = round.matches;
+  for (let minute = 0; minute < 90; minute++) {
+    matches = matches.map((match) => runMatchTick(match, minute, rng));
+  }
+
+  const rounds = matchContainer.rounds.slice();
+  rounds[roundIndex] = { ...round, matches };
+
+  return {
+    ...championship,
+    matchContainer: { ...matchContainer, rounds, timer: 90 },
+  };
+}
+
+/**
+ * Brings an AI championship up to date in a single execution: every round it still owes, and every
+ * phase it completes on the way.
+ *
+ * The playable championship is the clock, and the AI divisions no longer have matching round counts
+ * — A1 plays 23, A2 21, A3 14 — so they cannot be stepped in pairs with it. They are caught up at
+ * the playable championship's phase boundaries and at the end of its season, which is the last
+ * point before promotion and relegation read their semifinalists and 1ª Fase tables.
+ *
+ * A championship with no round left to play is returned untouched, so a division that finished
+ * early can never overflow its round lookup.
+ */
+function catchUpChampionship(
+  championship: Championship | undefined,
+  dependencies: ChampionshipServiceDependencies
+): Championship | undefined {
+  if (!championship?.matchContainer?.rounds) return championship;
+
+  const deps = { ...defaultDependencies, ...dependencies };
+  let current = championship;
+
+  for (let guard = 0; guard < MAX_CATCH_UP_ROUNDS; guard++) {
+    const matchContainer = current.matchContainer;
+    const hasRoundToPlay = matchContainer.rounds.some(
+      (round) => round.number === matchContainer.currentRound
+    );
+    if (!hasRoundToPlay) break;
+
+    current = endRound(simulateRoundInOnePass(startRound(current), deps.rng), dependencies);
+  }
+
+  return current;
+}
+
+/**
+ * Starts the playable championship's round. The AI championships are **not** started here — they are
+ * played in one pass at the sync points in `endRoundForAllChampionships`, so starting a round for
+ * them would only reset scores they are about to play for themselves.
+ */
 const startRoundForAllChampionships = (
   championshipContainer: ChampionshipContainer
 ): OperationResult<ChampionshipContainer> => {
   try {
-    let updatedChampionshipContainer = { ...championshipContainer };
-
-    const updatedPlayableChampionship = startRound(championshipContainer.playableChampionship);
-    updatedChampionshipContainer = {
-      ...updatedChampionshipContainer,
-      playableChampionship: updatedPlayableChampionship,
+    const updatedChampionshipContainer: ChampionshipContainer = {
+      ...championshipContainer,
+      playableChampionship: startRound(championshipContainer.playableChampionship),
     };
-
-    let updatedPromotionChampionship: Championship | undefined;
-    if (championshipContainer.playableChampionship.isPromotable) {
-      updatedPromotionChampionship = startRound(championshipContainer.promotionChampionship!);
-
-      updatedChampionshipContainer = {
-        ...updatedChampionshipContainer,
-        promotionChampionship: updatedPromotionChampionship,
-      };
-    }
-
-    let updatedRelegationChampionship: Championship | undefined;
-    if (championshipContainer.playableChampionship.isRelegatable) {
-      updatedRelegationChampionship = startRound(championshipContainer.relegationChampionship!);
-
-      updatedChampionshipContainer = {
-        ...updatedChampionshipContainer,
-        relegationChampionship: updatedRelegationChampionship,
-      };
-    }
 
     const result = new OperationResult<ChampionshipContainer>(updatedChampionshipContainer);
     result.setSuccess();
@@ -614,45 +675,44 @@ const startRoundForAllChampionships = (
   }
 };
 
+/**
+ * Advances the playable championship by one round, and brings the AI championships up to date at
+ * the sync points: the end of each of the playable championship's phases, and the end of its
+ * season.
+ *
+ * Before MS-103 this stepped all three round for round, which only worked because Série A and B
+ * both play 38 rounds. The women's divisions do not — A1 plays 23 rounds, A2 21, A3 14 — and the
+ * pairing threw `Championship couldn't be found.` as soon as the shorter one ran out.
+ */
 const endRoundForAllChampionships = (
   championshipContainer: ChampionshipContainer,
   dependencies: ChampionshipServiceDependencies = {}
 ): OperationResult<ChampionshipContainer> => {
   try {
-    let updatedChampionshipContainer = { ...championshipContainer };
+    const previousChampionship = championshipContainer.playableChampionship;
+    const playableChampionship = endRound(previousChampionship, dependencies);
 
-    const updatedPlayableChampionship = endRound(
-      championshipContainer.playableChampionship,
-      dependencies
-    );
-    updatedChampionshipContainer = {
-      ...updatedChampionshipContainer,
-      playableChampionship: updatedPlayableChampionship,
+    let updatedChampionshipContainer: ChampionshipContainer = {
+      ...championshipContainer,
+      playableChampionship,
     };
 
-    let updatedPromotionChampionship: Championship | undefined;
-    if (championshipContainer.playableChampionship.isPromotable) {
-      updatedPromotionChampionship = endRound(
-        championshipContainer.promotionChampionship!,
-        dependencies
-      );
+    const crossedPhaseBoundary =
+      (previousChampionship.currentPhaseIndex ?? 0) !==
+      (playableChampionship.currentPhaseIndex ?? 0);
+    const seasonIsOver = isChampionshipOver(playableChampionship);
 
+    if (crossedPhaseBoundary || seasonIsOver) {
       updatedChampionshipContainer = {
         ...updatedChampionshipContainer,
-        promotionChampionship: updatedPromotionChampionship,
-      };
-    }
-
-    let updatedRelegationChampionship: Championship | undefined;
-    if (championshipContainer.playableChampionship.isRelegatable) {
-      updatedRelegationChampionship = endRound(
-        championshipContainer.relegationChampionship!,
-        dependencies
-      );
-
-      updatedChampionshipContainer = {
-        ...updatedChampionshipContainer,
-        relegationChampionship: updatedRelegationChampionship,
+        promotionChampionship: catchUpChampionship(
+          championshipContainer.promotionChampionship,
+          dependencies
+        ),
+        relegationChampionship: catchUpChampionship(
+          championshipContainer.relegationChampionship,
+          dependencies
+        ),
       };
     }
 
