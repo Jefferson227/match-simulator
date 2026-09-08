@@ -1,12 +1,8 @@
 /**
  * Declarative description of how a championship is actually played.
  *
- * These phases are *recorded*, not executed: nothing in the match engine reads them yet.
- * `ChampionshipService.createMatches` still generates a flat round-robin from
- * `Championship.type`. Group-stage fixture generation, two-legged knockout brackets and
- * per-phase standings resets are MS-103.
- *
- * See `docs/BrasileiraoFeminino.md` for the CBF regulations these shapes were derived from.
+ * See `wiki/concepts/phases-and-knockouts.md` for the CBF regulations these shapes were derived
+ * from, and the per-competition table of which phase uses which `secondLegHost`.
  */
 
 /** A phase where every club in a group plays every other club, once (`legs: 1`) or twice (`legs: 2`). */

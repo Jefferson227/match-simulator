@@ -21,10 +21,26 @@ type BaseChampionship = {
   leagueType: LeagueType;
   hasTeamControlledByHuman: boolean;
   /**
-   * The real competition format, as declared in `championships.json`. Recorded only — the match
-   * engine still plays `type`. See `src/domain/models/ChampionshipPhase.ts`.
+   * The real competition format, as declared in `championships.json`.
+   * See `src/domain/models/ChampionshipPhase.ts`.
    */
   phases?: ChampionshipPhase[];
+  /**
+   * Index into `phases` of the phase currently being played. Absent for an unphased
+   * championship, which has no phases to track.
+   */
+  currentPhaseIndex?: number;
+  /**
+   * The clubs still alive in the competition — the whole field during the first phase, then the
+   * qualifiers of each phase. Absent for an unphased championship.
+   */
+  survivingTeamIds?: Team['id'][];
+  /**
+   * The 1ª Fase table, held aside before the standings are zeroed for the second phase.
+   * A1 and A2 relegate off this table rather than the final classification
+   * (REC A1 Art. 26, REC A2 Art. 25).
+   */
+  firstPhaseStandings?: Standing[];
 };
 
 type Promotable = {
