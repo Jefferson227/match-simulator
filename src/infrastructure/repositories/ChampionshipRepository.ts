@@ -1,8 +1,64 @@
 import ChampionshipJSONDTO from '../data-transfer-objects/ChampionshipJSONDTO';
 import championshipsJSON from '../data/championships.json';
 import { Championship } from '../../domain/models/Championship';
+import { PhaseVariant } from '../../domain/models/ChampionshipPhase';
 import LeagueType from '../../domain/enums/LeagueType';
 import TeamRepository from './TeamRepository';
+
+/**
+ * Rejects every variant list the rest of the system cannot honour.
+ *
+ * Thrown as a plain `Error`, the repository's convention — the services turn these into
+ * `OperationResult` errors. A variant list is seed data, so every one of these is a data bug that
+ * should stop the game loading rather than surface as a malformed season.
+ */
+function validatePhaseVariants(championship: ChampionshipJSONDTO): void {
+  const variants = championship.phaseVariants;
+  if (!variants?.length) return;
+
+  const name = championship.internalName;
+
+  const sortedDescending = variants.every(
+    (variant, index) =>
+      index === 0 || variants[index - 1].minNumberOfTeams > variant.minNumberOfTeams
+  );
+  if (!sortedDescending) {
+    throw new Error(
+      `Phase variants of ${name} must be sorted descending by minNumberOfTeams; they are matched in declared order.`
+    );
+  }
+
+  const fieldSize = championship.teamNames.length;
+  const matching = variants.find((variant) => variant.minNumberOfTeams <= fieldSize);
+  if (!matching) {
+    throw new Error(
+      `No phase variant of ${name} can be played with its seeded field of ${fieldSize} clubs.`
+    );
+  }
+
+  // Staggered entry and variants are not combined: `phaseEntrants` is resolved once from `phases`
+  // and would go stale the moment a roll-over swapped the shape underneath it.
+  if (
+    variants.some((variant) =>
+      variant.phases.some((phase) => phase.kind === 'knockout' && phase.entrants?.length)
+    )
+  ) {
+    throw new Error(
+      `Phase variants of ${name} must not declare entrants; staggered entry cannot survive a shape change.`
+    );
+  }
+
+  // A fresh load and a roll-over into the same size have to agree, so the shape in force must be
+  // the one the seeded club count selects.
+  const inForce = variants.find(
+    (variant) => variant.minNumberOfTeams <= championship.numberOfTeams
+  ) as PhaseVariant | undefined;
+  if (JSON.stringify(championship.phases) !== JSON.stringify(inForce?.phases)) {
+    throw new Error(
+      `Phases of ${name} must equal the variant matching its numberOfTeams (${championship.numberOfTeams}).`
+    );
+  }
+}
 
 export function getChampionship(
   championshipInternalName: string,
@@ -14,6 +70,8 @@ export function getChampionship(
   );
 
   if (!championshipJSONDTO) throw new Error('Championship not found.');
+
+  validatePhaseVariants(championshipJSONDTO);
 
   let mappedChampionship = {
     id: crypto.randomUUID(),
@@ -33,6 +91,7 @@ export function getChampionship(
     type: championshipJSONDTO.type,
     leagueType: championshipJSONDTO.leagueType,
     phases: championshipJSONDTO.phases,
+    phaseVariants: championshipJSONDTO.phaseVariants,
     hasTeamControlledByHuman,
     isPromotable: false,
     isRelegatable: false,

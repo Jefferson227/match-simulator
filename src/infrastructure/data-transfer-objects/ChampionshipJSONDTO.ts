@@ -1,6 +1,6 @@
 import ChampionshipType from '../../domain/enums/ChampionshipType';
 import LeagueType from '../../domain/enums/LeagueType';
-import ChampionshipPhase from '../../domain/models/ChampionshipPhase';
+import ChampionshipPhase, { PhaseVariant } from '../../domain/models/ChampionshipPhase';
 import { PromotionRule, RelegationRule } from '../../domain/models/Championship';
 
 type ChampionshipJSONDTO = {
@@ -24,6 +24,11 @@ type ChampionshipJSONDTO = {
   numberOfRelegatableTeamsAtTarget?: number;
   /** The real competition format — see `src/domain/models/ChampionshipPhase.ts`. */
   phases?: ChampionshipPhase[];
+  /**
+   * The shapes this competition can be played in, most demanding first. `phases` must equal the
+   * variant matching `numberOfTeams`; the repository rejects seed data where it does not.
+   */
+  phaseVariants?: PhaseVariant[];
 };
 
 export default ChampionshipJSONDTO;

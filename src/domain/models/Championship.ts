@@ -1,6 +1,6 @@
 import Standing from './Standing';
 import ChampionshipType from '../enums/ChampionshipType';
-import ChampionshipPhase from './ChampionshipPhase';
+import ChampionshipPhase, { PhaseVariant } from './ChampionshipPhase';
 import LeagueType from '../enums/LeagueType';
 import { Team } from './Team';
 import MatchContainer from './MatchContainer';
@@ -32,6 +32,16 @@ type BaseChampionship = {
    * See `src/domain/models/ChampionshipPhase.ts`.
    */
   phases?: ChampionshipPhase[];
+  /**
+   * The shapes this competition can be played in, most demanding first; `phases` always holds the
+   * one currently in force. The season roll-over reselects it from the incoming field, so a
+   * division that shrinks is never left playing a shape its club count no longer fills.
+   *
+   * `phases` stays the single source of truth for every consumer — `PhaseView`, `PhaseProgression`,
+   * `FixtureGenerator` and `getMinimumField` are not taught about variants. Absent for a
+   * competition played in exactly one shape, which is every competition but Série A3.
+   */
+  phaseVariants?: PhaseVariant[];
   /**
    * Whether the competition has a league table at all. Absent or `true` for every division; `false`
    * for a cup, which is a bracket with no standings (`standings` stays empty).

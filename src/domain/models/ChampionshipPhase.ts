@@ -51,4 +51,18 @@ export type KnockoutPhase = {
 
 export type ChampionshipPhase = RoundRobinPhase | KnockoutPhase;
 
+/**
+ * One shape a competition can be played in, guarded by the smallest field it needs.
+ *
+ * A division whose club count moves across season roll-overs cannot keep a single frozen shape:
+ * Série A3 loses clubs every season, and eight groups of four becomes eight lopsided groups. A
+ * competition therefore declares its shapes most demanding first, and the roll-over picks the first
+ * one the actual field satisfies.
+ */
+export type PhaseVariant = {
+  /** Smallest field this shape can be played with. Variants are matched in declared order. */
+  minNumberOfTeams: number;
+  phases: ChampionshipPhase[];
+};
+
 export default ChampionshipPhase;
