@@ -361,8 +361,12 @@ function selectPhasesForFieldSize(
   return variant ? variant.phases : championship.phases;
 }
 
-/** The shape a competition is played in with a given field. See `selectPhasesForFieldSize`. */
-function selectPhases(championship: Championship, teams: Team[]): ChampionshipPhase[] | undefined {
+/**
+ * The shape a competition is played in with a given field. See `selectPhasesForFieldSize`.
+ *
+ * Exported so the selection boundaries can be pinned directly; the roll-over is the only caller.
+ */
+export function selectPhases(championship: Championship, teams: Team[]): ChampionshipPhase[] | undefined {
   return selectPhasesForFieldSize(championship, teams.length);
 }
 

@@ -7,7 +7,8 @@ import {
 import Match from '../../../../src/domain/models/Match';
 import Round from '../../../../src/domain/models/Round';
 import { Team } from '../../../../src/domain/models/Team';
-import { RoundRobinPhase } from '../../../../src/domain/models/ChampionshipPhase';
+import { KnockoutPhase, RoundRobinPhase } from '../../../../src/domain/models/ChampionshipPhase';
+import { buildKnockoutPhaseRounds } from '../../../../src/domain/features/fixture-generation/KnockoutBracket';
 
 function buildTeams(count: number): Team[] {
   return Array.from({ length: count }, (_, index) => ({
@@ -274,4 +275,102 @@ describe('FixtureGenerator.createMatches — round-robin phases', () => {
     expect(container.rounds).toHaveLength(17);
     expect(container.rounds.every((round) => round.phaseIndex === 0)).toBe(true);
   });
+});
+
+/**
+ * Série A3's field shrinks 2 clubs a season, so from its second season it is played in the reduced
+ * shape: 4 groups over a single leg, feeding a Quartas instead of an Oitavas. These pin the group
+ * split, the group-stage length and the qualifier count at every size the shape is actually played
+ * with.
+ */
+describe('FixtureGenerator — Série A3’s reduced 4-group shape', () => {
+  const a3RegulationFirstPhase: RoundRobinPhase = {
+    kind: 'round-robin',
+    name: '1ª Fase',
+    numberOfGroups: 8,
+    teamsPerGroup: 4,
+    legs: 2,
+    advancingPerGroup: 2,
+  };
+
+  const a3ReducedFirstPhase: RoundRobinPhase = {
+    kind: 'round-robin',
+    name: '1ª Fase',
+    numberOfGroups: 4,
+    teamsPerGroup: 8,
+    legs: 1,
+    advancingPerGroup: 2,
+  };
+
+  const a3Quartas: KnockoutPhase = {
+    kind: 'knockout',
+    name: 'Quartas de Final',
+    numberOfTies: 4,
+    legs: 2,
+    secondLegHost: 'group-winner',
+    tiebreakers: ['goal-difference', 'penalties'],
+  };
+
+  it.each([
+    [30, [8, 8, 7, 7]],
+    [28, [7, 7, 7, 7]],
+    [26, [7, 7, 6, 6]],
+  ])('splits %i clubs into groups of %j', (fieldSize, expectedSizes) => {
+    const groups = splitIntoGroups(buildTeams(fieldSize), 4, 8);
+
+    expect(groups.map((group) => group.length)).toEqual(expectedSizes);
+  });
+
+  it.each([30, 28, 26])('plays %i clubs over 7 group-stage rounds', (fieldSize) => {
+    const container = createMatches(buildTeams(fieldSize), [a3ReducedFirstPhase]);
+
+    // The longest group sets the round count; a group of 7 takes a bye and still needs 7 rounds.
+    expect(container.rounds).toHaveLength(7);
+    expect(container.totalRounds).toBe(7);
+  });
+
+  it('keeps the group stage comparable in length across the switch', () => {
+    // 8 groups of 4 over 2 legs is 6 rounds; 4 groups of 6–8 over 1 leg is 7. Two legs of the
+    // reduced shape would have been 12–14, roughly doubling the season.
+    const regulation = createMatches(buildTeams(32), [a3RegulationFirstPhase]);
+    const reduced = createMatches(buildTeams(26), [a3ReducedFirstPhase]);
+
+    expect(regulation.rounds).toHaveLength(6);
+    expect(reduced.rounds).toHaveLength(7);
+  });
+
+  it('still plays 32 clubs in 8 groups of 4 over 2 legs', () => {
+    const groups = splitIntoGroups(buildTeams(32), 8, 4);
+
+    expect(groups.map((group) => group.length)).toEqual([4, 4, 4, 4, 4, 4, 4, 4]);
+    expect(createMatches(buildTeams(32), [a3RegulationFirstPhase]).rounds).toHaveLength(6);
+  });
+
+  it.each([30, 28, 26])(
+    'sends exactly 8 clubs of a %i-club field into the Quartas',
+    (fieldSize) => {
+      const groups = splitIntoGroups(buildTeams(fieldSize), 4, 8);
+      const qualifiers = groups.flatMap((group, groupIndex) =>
+        group.slice(0, a3ReducedFirstPhase.advancingPerGroup).map((team, position) => ({
+          team,
+          seed: groupIndex * a3ReducedFirstPhase.advancingPerGroup + position + 1,
+          group: groupIndex,
+          groupPosition: position + 1,
+        }))
+      );
+
+      expect(qualifiers).toHaveLength(8);
+      expect(qualifiers).toHaveLength(a3Quartas.numberOfTies * 2);
+
+      const { ties } = buildKnockoutPhaseRounds(qualifiers, a3Quartas, 'table', 1, 8);
+
+      expect(ties).toHaveLength(4);
+      // Every qualifier is used exactly once — the bracket has no byes and no club left over.
+      const bracketed = ties.flatMap((tie) => [
+        tie.firstLegHost.team.id,
+        tie.secondLegHost.team.id,
+      ]);
+      expect(new Set(bracketed).size).toBe(8);
+    }
+  );
 });

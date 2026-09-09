@@ -33,6 +33,7 @@ type ChampionshipEntry = {
   promotionRule?: string;
   relegationRule?: string;
   phases?: Phase[];
+  phaseVariants?: { minNumberOfTeams: number; phases: Phase[] }[];
 };
 
 type TeamEntry = { internalName: string };
@@ -243,6 +244,81 @@ describe('championships.json data integrity', () => {
       expect(a3?.promotionChampionshipInternalName).toBe('brasileirao-feminino-serie-a2');
       expect(a3?.promotionRule).toBe('semifinalists');
       expect(a3?.relegationChampionshipInternalName).toBeUndefined();
+    });
+
+    /**
+     * A3's field shrinks 2 clubs a season, so it declares the two shapes it is played in rather
+     * than a single frozen one. The selection rule itself is generic and pinned in
+     * `tests/domain/services/PhaseVariantSelection.test.ts`; these pin A3's own numbers.
+     */
+    describe('A3’s phase variants', () => {
+      const a3 = findByInternalName('brasileirao-feminino-serie-a3');
+
+      test('declares exactly two shapes, most demanding first', () => {
+        expect(a3?.phaseVariants?.map((variant) => variant.minNumberOfTeams)).toEqual([32, 0]);
+      });
+
+      test('the demanding shape is the 32-club regulation one', () => {
+        const [regulation] = a3!.phaseVariants!;
+        const groupStage = regulation.phases[0];
+
+        expect(groupStage).toMatchObject({
+          kind: 'round-robin',
+          numberOfGroups: 8,
+          teamsPerGroup: 4,
+          legs: 2,
+          advancingPerGroup: 2,
+        });
+        expect(regulation.phases.map((phase) => phase.name)).toEqual([
+          '1ª Fase',
+          'Oitavas de Final',
+          'Quartas de Final',
+          'Semifinal',
+          'Final',
+        ]);
+      });
+
+      test('the reduced shape is 4 single-leg groups feeding a Quartas', () => {
+        const reduced = a3!.phaseVariants![1];
+        const groupStage = reduced.phases[0];
+
+        expect(groupStage).toMatchObject({
+          kind: 'round-robin',
+          numberOfGroups: 4,
+          teamsPerGroup: 8,
+          legs: 1,
+          advancingPerGroup: 2,
+        });
+        expect(reduced.phases.map((phase) => phase.name)).toEqual([
+          '1ª Fase',
+          'Quartas de Final',
+          'Semifinal',
+          'Final',
+        ]);
+
+        // 4 groups × 2 advancing fills a bracket of 4 ties exactly, with no byes.
+        const quartas = reduced.phases[1];
+        expect(quartas).toMatchObject({ kind: 'knockout', numberOfTies: 4 });
+        expect(quartas.kind === 'knockout' && quartas.secondLegHost).toBe('group-winner');
+      });
+
+      test('the shape in force is the one A3’s seeded club count selects', () => {
+        // A fresh load and a roll-over into the same size must describe the same competition; the
+        // repository refuses to load seed data where they disagree.
+        const inForce = a3!.phaseVariants!.find(
+          (variant) => variant.minNumberOfTeams <= a3!.numberOfTeams
+        );
+
+        expect(a3?.phases).toEqual(inForce?.phases);
+      });
+
+      test('no other competition declares variants — only A3’s field moves', () => {
+        const withVariants = championships
+          .filter((championship) => championship.phaseVariants)
+          .map((championship) => championship.internalName);
+
+        expect(withVariants).toEqual(['brasileirao-feminino-serie-a3']);
+      });
     });
 
     test('no team plays in two divisions at once', () => {
