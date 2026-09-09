@@ -170,3 +170,45 @@ deterministic substitutions for a draw, and both could be wrong against the regu
 - **URLs for the two CBF news articles were not recorded** and are deliberately not reconstructed.
 - A1 2027's club count, and A2's route to 20, remain inference.
 - A3's field shrinks 2 clubs a season; bounded by a floor, not solved.
+
+## [2026-09-09] ingest | MS-104 — A3's shape follows its club count
+
+sha 074e140
+
+No new source. This entry files a **decision**, and the inference behind it, not evidence.
+
+MS-103 let a division's club count move across a roll-over but left its format descriptor frozen, so
+Série A3 — which loses 2 clubs a season — was being played in eight groups that no longer held four
+clubs each. A competition can now declare several shapes, each guarded by the smallest field it
+needs, and the roll-over selects between them by club count. A3 declares two; nothing else declares
+any.
+
+Filed: [[ms-104-a3-group-shape-schedule]] — the 2026–2030 club counts for all three divisions, the
+arithmetic behind each one, why selection is by club count and never by year, why the reduced group
+stage drops to a single leg, and the explicit statement that CBF has published no post-2027
+regulation so the whole schedule is invented.
+
+Amended:
+
+- [[ms-103-a1-club-count-growth]] — marked superseded **on A3's shape only**. Its claim that A3's
+  outflow is absorbed inside a fixed 8-group shape is wrong; the floor is 8, not 16, from 2027. Its
+  asserts and everything it says about A1 and A2 stand untouched.
+- [[brasileirao-feminino-a3]] — separates the 2026 regulation shape from the game's own reduced
+  shape, with a `> **Not asserted.**` callout on the seed invariant that ties `phases` to the
+  variant its club count selects.
+- [[invented-data]] — new "Invented by MS-104" section carrying the schedule table.
+- [[index]] — new decision row, A3's summary line, and the A3 open thread closed.
+
+[[promotion-and-relegation]] was checked and **left alone**: it states A3's promotion count
+(4 semifinalists, Art. 5º), which MS-104 does not change, and no qualifier count.
+
+### Corrected during the ticket
+
+**A3 2027 is 30, not 28.** The ticket's first draft said 28, which needs a one-off removal of 2
+extra clubs that no mechanism produces. The exchange stays the only thing that moves clubs, so A3
+settles at 26 rather than 24.
+
+### Left open
+
+- Every number after 2026 remains inference. Nothing here should be read as a CBF rule.
+- A2's route to 20 and A1 2027's club count are still inference, as MS-103 left them.

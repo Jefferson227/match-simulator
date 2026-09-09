@@ -3,7 +3,7 @@ title: Brasileirão Feminino Série A3
 type: competition
 internalName: brasileirao-feminino-serie-a3
 season: 2026
-verified: 2026-09-05
+verified: 2026-09-09
 sources: [rec-a3-2026, times-a3-2026]
 asserts:
   - file: src/infrastructure/data/championships.json
@@ -37,7 +37,11 @@ a youth category. That is why REC A3 has nowhere to relegate to.
 
 `competitionId` `1260630`.
 
-Played in **5 phases** (REC A3 Art. 11):
+Played in **5 phases** (REC A3 Art. 11). Everything in this section is the **2026 regulation
+shape** — the one the seed's `phases` holds and the one the game plays in its first season. From the
+second season A3 is played in the game's own reduced shape, which no REC describes; see
+[[ms-104-a3-group-shape-schedule]] and the note below the table.
+
 
 | Phase | Name | Format |
 |---|---|---|
@@ -60,6 +64,24 @@ Played in **5 phases** (REC A3 Art. 11):
 - **Promotion**: the **4 semifinalists** ascend to A2 2027 (Art. 5º).
 - **Relegation**: **none.** REC A3 contains no relegation clause — A3 is the bottom senior tier.
 
+
+## Later seasons are not this shape
+
+A3's field shrinks 2 clubs a season, because CBF re-composes it every year from state champions the
+game cannot seed. The 2026 shape above needs 32 clubs to fill eight groups of four, so the seed also
+declares a **reduced shape** — 4 groups over a single leg, 2 advancing per group, feeding a Quartas
+instead of an Oitavas — which the roll-over selects as soon as the field falls below 32. It plays 7
+group rounds against the regulation shape's 6, and sends 8 clubs into the bracket rather than 16.
+
+**The reduced shape is invented.** CBF has published no post-2027 regulation, and nothing on this
+page's `sources` supports it. It exists so the division stays playable, and the season-by-season
+club counts behind it are on [[ms-104-a3-group-shape-schedule]] and [[invented-data]].
+
+> **Not asserted.** That the seeded `phases` is the 2026 regulation shape *and* equals the variant
+> A3's seeded club count selects is a relationship between two fields, not a literal. The repository
+> refuses to load seed data where they disagree
+> (`src/infrastructure/repositories/ChampionshipRepository.ts`), and
+> `tests/infrastructure/data/championships.test.ts` pins it.
 
 > **Fixed by MS-103.** A3 was flattened to a double round-robin and played **62 rounds / 992
 > matches**; it now plays its real format — 6 group rounds and 96 matches, then a four-phase bracket,

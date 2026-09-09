@@ -3,7 +3,7 @@ title: A1 grows to 20 clubs, then balances
 type: decision
 ticket: MS-103
 decided: 2026-09-07
-status: implemented
+status: implemented; superseded on A3's shape by MS-104
 asserts:
   - file: src/infrastructure/data/championships.json
     select: internalName=brasileirao-feminino-serie-a1
@@ -80,7 +80,19 @@ With all three divisions loaded the pyramid settles at **A1 20, A2 20, A3 26**.
   was rejected; see [[invented-data]]. Instead its outflow is capped so it never falls below a field
   its own group stage and bracket can fill.
 
+  > **Superseded by MS-104.** This paragraph assumed the outflow would be absorbed *inside a fixed
+  > 8-group shape*. It is not: from its second season A3 is played in 4 groups over a single leg, so
+  > the floor it is capped against is 8 rather than 16, and the cap is inert across the whole
+  > schedule. The rejection of backfilling still stands. See
+  > [[ms-104-a3-group-shape-schedule]].
+
 ## Consequences
+
+> **Superseded by MS-104 on one point.** MS-103 left A3's `phases` descriptor frozen at 8 groups of
+> 4 while its field shrank, so every season after the first was played in eight lopsided groups.
+> A3 now declares two shapes and the roll-over selects between them by club count. Everything below
+> — and every assert on this page — still holds: **A1 and A2 are unchanged by MS-104.** See
+> [[ms-104-a3-group-shape-schedule]].
 
 - `numberOfTeams` is now a **starting value, not an invariant** — it follows the actual team list
   after a roll-over. An assert on it is about the seed only.
@@ -88,4 +100,5 @@ With all three divisions loaded the pyramid settles at **A1 20, A2 20, A3 26**.
   `ChampionshipContainer` only ever holds the playable division and its two neighbours. Playing A1,
   A2 loses 2 clubs once (16 → 14) and then holds. Accepted.
 
-See [[promotion-and-relegation]], [[ms-103-ai-championship-catch-up]].
+See [[promotion-and-relegation]], [[ms-103-ai-championship-catch-up]],
+[[ms-104-a3-group-shape-schedule]].

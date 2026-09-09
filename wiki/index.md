@@ -14,7 +14,7 @@ Real formats and rules, cited to CBF's *Regulamento Específico da Competição*
 |---|---|---|---|
 | [[brasileirao-feminino-a1]] | yes | 18 | Top women's tier. 4 phases; relegates 2 off the 1ª Fase table. |
 | [[brasileirao-feminino-a2]] | yes | 16 | 4 phases. Promotes its 4 **semifinalists**; relegates 2. |
-| [[brasileirao-feminino-a3]] | yes | 32 | 8 groups of 4 then knockouts. Promotes 4 semifinalists; no relegation. |
+| [[brasileirao-feminino-a3]] | yes | 32 | 8 groups of 4 then knockouts, reshaping to 4 groups as it shrinks. Promotes 4 semifinalists; no relegation. |
 | [[copa-do-brasil-feminina]] | yes | 66 | 8-phase knockout with staggered entry. 72 matches. |
 | [[supercopa-feminina]] | yes | 2 | A single match, decided on penalties if drawn. |
 
@@ -53,9 +53,10 @@ Why things are the way they are — the part the code cannot state.
 | [[league-type-flow]] | MS-101 | implemented |
 | [[ms-102-simplifications]] | MS-102 | superseded by MS-103 |
 | [[ms-102-cups-deferred]] | MS-102 | resolved — both cups seeded |
-| [[ms-103-a1-club-count-growth]] | MS-103 | implemented; **partly inference** |
+| [[ms-103-a1-club-count-growth]] | MS-103 | implemented; superseded on A3's shape by MS-104 |
 | [[ms-103-ai-championship-catch-up]] | MS-103 | implemented |
 | [[ms-103-simulated-shootout]] | MS-103 | implemented |
+| [[ms-104-a3-group-shape-schedule]] | MS-104 | implemented; **wholly inference** |
 
 ## Raw
 
@@ -72,5 +73,7 @@ Things named across these pages that nothing currently owns:
 - **A1 2027's club count is inference, not regulation**, and so is A2's route to 20. See
   [[ms-103-a1-club-count-growth]] and the open gap on [[known-contradictions]].
 - **URLs for the two CBF news articles were never recorded.** See [[sources]].
-- Série A3's field shrinks 2 clubs a season, because CBF re-composes it from state champions the game
-  cannot seed. Bounded, not fixed. See [[ms-103-a1-club-count-growth]].
+- ~~Série A3's field shrinks 2 clubs a season~~ — **closed by MS-104.** It still shrinks, and the
+  game still refuses to invent state champions, but its format now follows its club count instead of
+  staying frozen at 8 groups of 4. The pyramid settles at A1 20 / A2 20 / A3 26 from 2029. The whole
+  post-2026 schedule is invented; see [[ms-104-a3-group-shape-schedule]].

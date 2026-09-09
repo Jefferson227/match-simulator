@@ -1,7 +1,7 @@
 ---
 title: Invented data
 type: concept
-verified: 2026-09-07
+verified: 2026-09-09
 sources: [atletas-api, rec-a3-2026, rec-copa-2026]
 ---
 
@@ -49,6 +49,31 @@ Both live in `src/domain/features/fixture-generation/`. See [[phases-and-knockou
 each year from 27 state champions plus relegated clubs (REC A3 2026 Art. 2º) and the game has no
 source for state champions. Generating clubs to keep it at 32 was rejected; its outflow is capped
 instead so it cannot fall below a playable field. See [[ms-103-a1-club-count-growth]].
+
+## Invented by MS-104
+
+**The whole post-2026 schedule of the women's pyramid.** CBF has published no regulation for any
+season after 2026, so every row below the first is inference, invented for playability. It is not a
+claim about the real competition.
+
+| Season | A1 clubs | A2 clubs | A3 clubs |
+|---|---|---|---|
+| 2026 | 18 | 16 | 32 |
+| 2027 | 20 | 16 | 30 |
+| 2028 | 20 | 18 | 28 |
+| 2029+ | 20 | 20 | 26 |
+
+- **A3's reduced format.** Once its field falls below 32 the division is played in **4 groups over a
+  single leg**, 2 advancing per group, feeding a Quartas rather than an Oitavas. No REC describes
+  this shape. Group sizes come out as 8/8/7/7 at 30 clubs, 7×4 at 28 and 7/7/6/6 at 26, from the
+  same seed-order split already recorded above. The single leg is a deliberate choice: two legs
+  would take 12–14 rounds against the regulation shape's 6.
+- **The counts themselves are not invented data so much as consequences.** Nothing in the seed
+  states a club count for 2027; each one falls out of the exchange rules MS-103 seeded. What is
+  invented is the *rules staying as they are* for seasons CBF has not regulated.
+
+The arithmetic, the rejected alternatives and the reasoning behind selecting by club count rather
+than by year are on [[ms-104-a3-group-shape-schedule]].
 
 ---
 
