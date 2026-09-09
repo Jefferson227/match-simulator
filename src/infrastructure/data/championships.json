@@ -275,6 +275,111 @@
         ]
       }
     ],
+    "phaseVariants": [
+      {
+        "minNumberOfTeams": 32,
+        "phases": [
+          {
+            "kind": "round-robin",
+            "name": "1ª Fase",
+            "numberOfGroups": 8,
+            "teamsPerGroup": 4,
+            "legs": 2,
+            "advancingPerGroup": 2
+          },
+          {
+            "kind": "knockout",
+            "name": "Oitavas de Final",
+            "numberOfTies": 8,
+            "legs": 2,
+            "secondLegHost": "group-winner",
+            "tiebreakers": [
+              "goal-difference",
+              "penalties"
+            ]
+          },
+          {
+            "kind": "knockout",
+            "name": "Quartas de Final",
+            "numberOfTies": 4,
+            "legs": 2,
+            "secondLegHost": "accumulated-points",
+            "tiebreakers": [
+              "goal-difference",
+              "penalties"
+            ]
+          },
+          {
+            "kind": "knockout",
+            "name": "Semifinal",
+            "numberOfTies": 2,
+            "legs": 2,
+            "secondLegHost": "accumulated-points",
+            "tiebreakers": [
+              "goal-difference",
+              "penalties"
+            ]
+          },
+          {
+            "kind": "knockout",
+            "name": "Final",
+            "numberOfTies": 1,
+            "legs": 2,
+            "secondLegHost": "accumulated-points",
+            "tiebreakers": [
+              "goal-difference",
+              "penalties"
+            ]
+          }
+        ]
+      },
+      {
+        "minNumberOfTeams": 0,
+        "phases": [
+          {
+            "kind": "round-robin",
+            "name": "1ª Fase",
+            "numberOfGroups": 4,
+            "teamsPerGroup": 8,
+            "legs": 1,
+            "advancingPerGroup": 2
+          },
+          {
+            "kind": "knockout",
+            "name": "Quartas de Final",
+            "numberOfTies": 4,
+            "legs": 2,
+            "secondLegHost": "group-winner",
+            "tiebreakers": [
+              "goal-difference",
+              "penalties"
+            ]
+          },
+          {
+            "kind": "knockout",
+            "name": "Semifinal",
+            "numberOfTies": 2,
+            "legs": 2,
+            "secondLegHost": "accumulated-points",
+            "tiebreakers": [
+              "goal-difference",
+              "penalties"
+            ]
+          },
+          {
+            "kind": "knockout",
+            "name": "Final",
+            "numberOfTies": 1,
+            "legs": 2,
+            "secondLegHost": "accumulated-points",
+            "tiebreakers": [
+              "goal-difference",
+              "penalties"
+            ]
+          }
+        ]
+      }
+    ],
     "teamNames": [
       "araguari",
       "atletico-de-alagoinhas",

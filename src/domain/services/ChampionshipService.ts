@@ -4,6 +4,7 @@ import * as ChampionshipRepository from '../../infrastructure/repositories/Champ
 import { Team } from '../models/Team';
 import Match from '../models/Match';
 import { Championship } from '../models/Championship';
+import ChampionshipPhase from '../models/ChampionshipPhase';
 import Standing from '../models/Standing';
 import LeagueType from '../enums/LeagueType';
 import { createMatches } from '../features/fixture-generation/FixtureGenerator';
@@ -298,16 +299,19 @@ function removeTeams(sourceTeams: Team[], teamsToRemove: Team[]): Team[] {
 }
 
 function resetChampionshipForNewSeason(championship: Championship, teams: Team[]): Championship {
-  const nextSeasonMatchContainer = createMatches(
-    teams,
-    championship.phases,
-    championship.phaseEntrants
-  );
+  // The shape is chosen before the fixtures are generated, so both the new season's rounds and the
+  // championship that carries them describe the same competition.
+  const phases = selectPhases(championship, teams);
+  const nextSeasonMatchContainer = createMatches(teams, phases, championship.phaseEntrants);
   const currentSeason =
     championship.matchContainer.currentSeason || nextSeasonMatchContainer.currentSeason;
 
+  // `initialisePhaseState` zeroes `currentPhaseIndex`, `survivingTeamIds`, `phaseParticipants`,
+  // `accumulatedStandings` and `firstPhaseStandings`, so a shape change carries no phase state of
+  // the shape it replaced.
   return initialisePhaseState({
     ...championship,
+    phases,
     teams,
     // A division's field can change size across a roll-over — A1 is being expanded to 20 — so the
     // seeded `numberOfTeams` is a starting value, not an invariant.
@@ -339,11 +343,34 @@ function getRelegationCount(championship: Championship): number {
 }
 
 /**
+ * The shape a competition is played in with a field of `fieldSize` clubs.
+ *
+ * A competition declaring `phaseVariants` is played in the first variant its field satisfies — the
+ * list is seeded most demanding first, and the repository rejects one that is not. Everything else
+ * keeps the single shape it declares. Driven entirely by the championship's own data: nothing here
+ * knows which competition changes shape, or at what size.
+ */
+function selectPhasesForFieldSize(
+  championship: Championship,
+  fieldSize: number
+): ChampionshipPhase[] | undefined {
+  const variants = championship.phaseVariants;
+  if (!variants?.length) return championship.phases;
+
+  const variant = variants.find((candidate) => candidate.minNumberOfTeams <= fieldSize);
+  return variant ? variant.phases : championship.phases;
+}
+
+/** The shape a competition is played in with a given field. See `selectPhasesForFieldSize`. */
+function selectPhases(championship: Championship, teams: Team[]): ChampionshipPhase[] | undefined {
+  return selectPhasesForFieldSize(championship, teams.length);
+}
+
+/**
  * The smallest field a division can be played with, given the shape its first phase declares.
  * A group stage needs at least two clubs per group, or the bracket it feeds cannot be built.
  */
-function getMinimumField(championship: Championship): number {
-  const phases = championship.phases;
+function getMinimumField(phases: ChampionshipPhase[] | undefined): number {
   if (!phases?.length) return 2;
 
   const firstPhase = phases[0];
@@ -372,7 +399,14 @@ function getSustainablePromotionCount(
   declared: number,
   incoming: number
 ): number {
-  const affordable = championship.teams.length + incoming - getMinimumField(championship);
+  // The floor comes from the shape the division will *next* be played in, not the one it has just
+  // played: a division that has shrunk out of its group stage is not held to that stage's floor.
+  // The prospective field assumes the whole declared promotion goes through, which is the shape the
+  // roll-over then selects whenever the cap does not bind.
+  const prospectiveField = championship.teams.length + incoming - declared;
+  const floor = getMinimumField(selectPhasesForFieldSize(championship, prospectiveField));
+
+  const affordable = championship.teams.length + incoming - floor;
   return Math.max(0, Math.min(declared, affordable));
 }
 
