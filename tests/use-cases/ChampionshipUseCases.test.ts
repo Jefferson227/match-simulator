@@ -17,6 +17,7 @@ jest.mock('../../src/domain/services/ChampionshipService', () => ({
     runEndOfChampionshipActions: jest.fn(),
     getChampionships: jest.fn(),
     getTeamControlledByHuman: jest.fn(),
+    drawTeamForHumanPlayer: jest.fn(),
     getMatchesForCurrentRound: jest.fn(),
   },
 }));
@@ -110,6 +111,110 @@ describe('ChampionshipUseCases', () => {
       expect(nextState.hasError).toBe(true);
       expect(nextState.errorMessage).toBe('Failed to initialize championships');
       expect(nextState.championshipContainer).toBe(initialState.championshipContainer);
+    });
+  });
+
+  describe('drawTeamForHumanPlayer', () => {
+    const buildTeam = (id: string): Team =>
+      ({
+        id,
+        fullName: `Team ${id}`,
+        shortName: id,
+        abbreviation: id,
+        colors: { outline: '#111111', background: '#222222', text: '#eeeeee' },
+        players: [],
+        morale: 50,
+        isControlledByHuman: false,
+      }) as unknown as Team;
+
+    const teams = [buildTeam('team-a'), buildTeam('team-b'), buildTeam('team-c')];
+    const entryContainer = (): ChampionshipContainer => ({
+      playableChampionship: { ...buildMockChampionship(), teams },
+    });
+
+    it.each<[GameState['leagueType'], string]>([
+      ['mens', 'brasileirao-serie-d'],
+      ['womens', 'brasileirao-feminino-serie-a3'],
+    ])('initialises the %s entry division, %s', (leagueType, internalName) => {
+      const useCases = new ChampionshipUseCases({ ...buildState(), leagueType });
+      mockedChampionshipService.initChampionships.mockReturnValue(successResult(entryContainer()));
+      mockedChampionshipService.drawTeamForHumanPlayer.mockReturnValue(successResult(teams[0]));
+
+      useCases.drawTeamForHumanPlayer();
+
+      expect(mockedChampionshipService.initChampionships).toHaveBeenCalledWith(internalName);
+    });
+
+    it('marks exactly the drawn club as controlled by the human', () => {
+      const useCases = new ChampionshipUseCases(buildState());
+      const container = entryContainer();
+      const rng = { nextInt: jest.fn(() => 1) };
+      mockedChampionshipService.initChampionships.mockReturnValue(successResult(container));
+      mockedChampionshipService.drawTeamForHumanPlayer.mockReturnValue(successResult(teams[1]));
+
+      const nextState = useCases.drawTeamForHumanPlayer({ rng });
+
+      expect(mockedChampionshipService.drawTeamForHumanPlayer).toHaveBeenCalledWith(
+        container.playableChampionship,
+        { rng }
+      );
+      expect(
+        nextState.championshipContainer.playableChampionship.teams
+          .filter((team) => team.isControlledByHuman)
+          .map((team) => team.id)
+      ).toEqual(['team-b']);
+      expect(nextState.hasError).toBe(false);
+    });
+
+    it('sets the same gameConfig as initChampionships', () => {
+      const useCases = new ChampionshipUseCases(buildState());
+      mockedChampionshipService.initChampionships.mockReturnValue(successResult(entryContainer()));
+      mockedChampionshipService.drawTeamForHumanPlayer.mockReturnValue(successResult(teams[0]));
+
+      const nextState = useCases.drawTeamForHumanPlayer();
+
+      expect(nextState.gameConfig).toEqual({ clockSpeed: 250 });
+    });
+
+    it('returns error state when the entry division cannot be initialised', () => {
+      const initialState = buildState();
+      const useCases = new ChampionshipUseCases(initialState);
+      mockedChampionshipService.initChampionships.mockReturnValue(
+        failureResult({} as ChampionshipContainer, 'Championship not found.')
+      );
+
+      const nextState = useCases.drawTeamForHumanPlayer();
+
+      expect(nextState.hasError).toBe(true);
+      expect(nextState.errorMessage).toBe('Championship not found.');
+      expect(nextState.championshipContainer).toBe(initialState.championshipContainer);
+      expect(mockedChampionshipService.drawTeamForHumanPlayer).not.toHaveBeenCalled();
+    });
+
+    it('returns error state when the draw fails', () => {
+      const initialState = buildState();
+      const useCases = new ChampionshipUseCases(initialState);
+      mockedChampionshipService.initChampionships.mockReturnValue(successResult(entryContainer()));
+      mockedChampionshipService.drawTeamForHumanPlayer.mockReturnValue(
+        failureResult({} as Team, 'Championship has no teams to draw from.')
+      );
+
+      const nextState = useCases.drawTeamForHumanPlayer();
+
+      expect(nextState.hasError).toBe(true);
+      expect(nextState.errorMessage).toBe('Championship has no teams to draw from.');
+      expect(nextState.championshipContainer).toBe(initialState.championshipContainer);
+    });
+
+    it('returns error state without initialising anything when the league type is unset', () => {
+      const initialState = { ...buildState(), leagueType: undefined } as unknown as GameState;
+      const useCases = new ChampionshipUseCases(initialState);
+
+      const nextState = useCases.drawTeamForHumanPlayer();
+
+      expect(nextState.hasError).toBe(true);
+      expect(nextState.errorMessage).toBe('No entry championship for league type "undefined".');
+      expect(mockedChampionshipService.initChampionships).not.toHaveBeenCalled();
     });
   });
 

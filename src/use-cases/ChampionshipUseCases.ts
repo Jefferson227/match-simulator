@@ -2,9 +2,12 @@ import { Championship } from '../domain/models/Championship';
 import Match from '../domain/models/Match';
 import { Team } from '../domain/models/Team';
 import ChampionshipService from '../domain/services/ChampionshipService';
+import TeamService from '../domain/services/TeamService';
 import { GameState } from '../game-engine/GameState';
 import LeagueType from '../domain/enums/LeagueType';
 import { PhaseView } from '../domain/features/phases/PhaseView';
+import { RandomProvider } from '../domain/features/match-simulation/types';
+import { ENTRY_CHAMPIONSHIP_BY_LEAGUE_TYPE } from '../domain/constants/EntryChampionships';
 
 export default class ChampionshipUseCases {
   private state = {} as GameState;
@@ -29,6 +32,66 @@ export default class ChampionshipUseCases {
         clockSpeed: 250,
       },
       championshipContainer: result.getResult(),
+    };
+  }
+
+  /**
+   * Starts a new game: initialises the entry division for the league type, draws the human's club
+   * from it and hands the club to the human, the same way SELECT_TEAM does.
+   */
+  drawTeamForHumanPlayer(dependencies?: { rng?: RandomProvider }): GameState {
+    const internalName = ENTRY_CHAMPIONSHIP_BY_LEAGUE_TYPE[this.state.leagueType];
+    if (!internalName) {
+      return {
+        ...this.state,
+        hasError: true,
+        errorMessage: `No entry championship for league type "${this.state.leagueType}".`,
+      };
+    }
+
+    const initResult = ChampionshipService.initChampionships(internalName);
+    if (!initResult.succeeded) {
+      return {
+        ...this.state,
+        hasError: true,
+        errorMessage: initResult.error.message,
+      };
+    }
+
+    const container = initResult.getResult();
+    const drawResult = ChampionshipService.drawTeamForHumanPlayer(
+      container.playableChampionship,
+      dependencies
+    );
+    if (!drawResult.succeeded) {
+      return {
+        ...this.state,
+        hasError: true,
+        errorMessage: drawResult.error.message,
+      };
+    }
+
+    const selectResult = TeamService.selectTeam(
+      container.playableChampionship,
+      drawResult.getResult().id
+    );
+    if (!selectResult.succeeded) {
+      return {
+        ...this.state,
+        hasError: true,
+        errorMessage: selectResult.error.message,
+      };
+    }
+
+    return {
+      ...this.state,
+      gameConfig: {
+        clockSpeed: 250,
+      },
+      championshipContainer: {
+        ...container,
+        playableChampionship: selectResult.getResult(),
+      },
     };
   }
 
