@@ -75,12 +75,14 @@ export function buildRoundRobinRounds(startingTeams: Team[], legs: 1 | 2): Match
  *
  * REC A3 Art. 12 draws the groups by geographic proximity. The seed data carries no geography, so
  * the split is the declared order — deterministic, and recorded as a simplification in
- * `wiki/concepts/invented-data.md`.
+ * `wiki/concepts/invented-data.md`. A phase declaring `groupAllocation: 'serpentine'` is dealt from
+ * a ranked field instead; see `dealSerpentine`.
  */
 export function splitIntoGroups(
   teams: Team[],
   numberOfGroups: number,
-  teamsPerGroup: number
+  teamsPerGroup: number,
+  allocation: RoundRobinPhase['groupAllocation'] = 'declared-order'
 ): Team[][] {
   if (numberOfGroups < 1) throw new Error(`A group stage needs at least one group.`);
   if (teams.length < numberOfGroups * 2) {
@@ -106,12 +108,31 @@ export function splitIntoGroups(
     }
   }
 
+  if (allocation === 'serpentine') return dealSerpentine(teams, numberOfGroups);
+
   const groups: Team[][] = [];
   let cursor = 0;
   for (const size of sizes) {
     groups.push(teams.slice(cursor, cursor + size));
     cursor += size;
   }
+
+  return groups;
+}
+
+/**
+ * Deals a ranked field snaking across the groups — left to right, then right to left — so each
+ * group gets one club from every band of the ranking: 1-4-5-8 / 2-3-6-7 for two groups (REC C
+ * Anexo B). Group sizes differ by at most one.
+ */
+function dealSerpentine(teams: Team[], numberOfGroups: number): Team[][] {
+  const groups: Team[][] = Array.from({ length: numberOfGroups }, () => []);
+
+  teams.forEach((team, rank) => {
+    const pass = Math.floor(rank / numberOfGroups);
+    const offset = rank % numberOfGroups;
+    groups[pass % 2 === 0 ? offset : numberOfGroups - 1 - offset].push(team);
+  });
 
   return groups;
 }
@@ -129,7 +150,7 @@ export function buildRoundRobinPhaseRounds(
 ): Round[] {
   const groups =
     phase.numberOfGroups > 1
-      ? splitIntoGroups(teams, phase.numberOfGroups, phase.teamsPerGroup)
+      ? splitIntoGroups(teams, phase.numberOfGroups, phase.teamsPerGroup, phase.groupAllocation)
       : [teams];
 
   const roundsPerGroup = groups.map((groupTeams) => buildRoundRobinRounds(groupTeams, phase.legs));

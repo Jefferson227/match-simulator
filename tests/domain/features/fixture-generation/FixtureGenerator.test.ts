@@ -174,6 +174,42 @@ describe('FixtureGenerator.splitIntoGroups', () => {
   });
 });
 
+describe('FixtureGenerator.splitIntoGroups — serpentine', () => {
+  /** 1-based rank of each club, as the REC's Anexo B writes them. */
+  const ranks = (groups: Team[][]) =>
+    groups.map((group) => group.map((team) => Number(team.id.replace('team-', '')) + 1));
+
+  it("deals Série C's 2ª Fase 1-4-5-8 / 2-3-6-7 from the 1ª Fase top 8 (REC C Anexo B)", () => {
+    expect(ranks(splitIntoGroups(buildTeams(8), 2, 4, 'serpentine'))).toEqual([
+      [1, 4, 5, 8],
+      [2, 3, 6, 7],
+    ]);
+  });
+
+  it('snakes across any number of groups', () => {
+    expect(ranks(splitIntoGroups(buildTeams(12), 3, 4, 'serpentine'))).toEqual([
+      [1, 6, 7, 12],
+      [2, 5, 8, 11],
+      [3, 4, 9, 10],
+    ]);
+  });
+
+  it('keeps group sizes within one of each other on a drifted field', () => {
+    const groups = splitIntoGroups(buildTeams(7), 2, 4, 'serpentine');
+
+    expect(ranks(groups)).toEqual([
+      [1, 4, 5],
+      [2, 3, 6, 7],
+    ]);
+  });
+
+  it('treats an explicit declared-order exactly like the default', () => {
+    expect(splitIntoGroups(buildTeams(30), 8, 4, 'declared-order')).toEqual(
+      splitIntoGroups(buildTeams(30), 8, 4)
+    );
+  });
+});
+
 describe('FixtureGenerator.createMatches — round-robin phases', () => {
   const a1FirstPhase: RoundRobinPhase = {
     kind: 'round-robin',
