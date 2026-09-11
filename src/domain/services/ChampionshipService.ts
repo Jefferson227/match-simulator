@@ -11,6 +11,7 @@ import { createMatches } from '../features/fixture-generation/FixtureGenerator';
 import { rankStandings } from '../features/standings/StandingsComparator';
 import {
   buildFinalClassification,
+  groupsOfPhase,
   initialisePhaseState,
   isPhasedChampionshipOver,
   resolveCompletedPhase,
@@ -246,17 +247,61 @@ function getSemifinalists(championship: Championship): Team[] {
 }
 
 /**
+ * The top of each group of the phase `promotionPhaseIndex` points at, read off that phase's kept
+ * table — group winners first, then runners-up, each block in table order. Série C promotes the top
+ * 2 of each 2ª Fase group, so a club that won the 1ª Fase and finished last in its group stays down,
+ * and the final only awards the title (REC C Art. 5º).
+ */
+function getPhaseGroupPositionPromoted(championship: Championship): Team[] {
+  if (!championship.isPromotable) return [];
+
+  const phaseIndex = championship.promotionPhaseIndex;
+  if (phaseIndex === undefined) return [];
+
+  const phase = championship.phases?.[phaseIndex];
+  const table = championship.phaseStandings?.[phaseIndex];
+  if (phase?.kind !== 'round-robin' || !table?.length) return [];
+
+  const perGroup = Math.floor(championship.numberOfPromotableTeams / phase.numberOfGroups);
+  const groups = groupsOfPhase(championship.matchContainer.rounds, phaseIndex);
+  const taken = new Map<number, number>();
+  const promoted: { team: Team; groupPosition: number; overall: number }[] = [];
+
+  rankStandings(table).forEach((standing, overall) => {
+    const group = groups.get(standing.team.id);
+    if (group === undefined) return;
+
+    const groupPosition = (taken.get(group) ?? 0) + 1;
+    taken.set(group, groupPosition);
+    if (groupPosition <= perGroup) promoted.push({ team: standing.team, groupPosition, overall });
+  });
+
+  return promoted
+    .sort((a, b) => a.groupPosition - b.groupPosition || a.overall - b.overall)
+    .map((entry) => entry.team);
+}
+
+/**
  * Promotion, dispatched on the rule the championship declares.
  *
  * - `'semifinalists'` — everyone who reached the semifinal goes up, whatever their table position.
  *   A club can finish 8th in the league phase, win a quarter-final and be promoted ahead of the
  *   club that finished 1st (REC A2 Art. 5º, REC A3 Art. 5º).
+ * - `'phase-group-position'` — the top of each group of a chosen phase (Série C, REC C Art. 5º).
  * - `'table-position'` — the top of the table, the default and the men's divisions' behaviour.
+ *
+ * A cap from `getSustainablePromotionCount` trims the group-position list from the end, so group
+ * winners are the last to lose their place.
  */
 function getPromotedTeams(championship: Championship, amount: number): Team[] {
   if (amount <= 0) return [];
 
   const rule = championship.isPromotable ? championship.promotionRule : undefined;
+
+  if (rule === 'phase-group-position') {
+    const promoted = getPhaseGroupPositionPromoted(championship);
+    if (promoted.length) return promoted.slice(0, amount);
+  }
 
   if (rule === 'semifinalists') {
     const semifinalists = getSemifinalists(championship);
@@ -376,8 +421,17 @@ export function selectPhases(
 /**
  * The smallest field a division can be played with, given the shape its first phase declares.
  * A group stage needs at least two clubs per group, or the bracket it feeds cannot be built.
+ *
+ * A round-robin second phase is dealt from the first phase's qualifiers, so the division must still
+ * hold all of them once its relegated clubs have left: Série C needs its 8 qualifiers plus the 4 it
+ * relegates (REC C Arts. 6º, 15).
+ *
+ * Exported so the floor can be pinned directly; `getSustainablePromotionCount` is the only caller.
  */
-function getMinimumField(phases: ChampionshipPhase[] | undefined): number {
+export function getMinimumField(
+  phases: ChampionshipPhase[] | undefined,
+  relegationCount = 0
+): number {
   if (!phases?.length) return 2;
 
   const firstPhase = phases[0];
@@ -391,7 +445,12 @@ function getMinimumField(phases: ChampionshipPhase[] | undefined): number {
   const secondPhase = phases[1];
   const bracketFloor = secondPhase?.kind === 'knockout' ? secondPhase.numberOfTies * 2 : 2;
 
-  return Math.max(groupFloor, bracketFloor);
+  const qualifierFloor =
+    secondPhase?.kind === 'round-robin' && firstPhase.kind === 'round-robin'
+      ? firstPhase.numberOfGroups * firstPhase.advancingPerGroup + relegationCount
+      : 2;
+
+  return Math.max(groupFloor, bracketFloor, qualifierFloor);
 }
 
 /**
@@ -411,7 +470,10 @@ function getSustainablePromotionCount(
   // The prospective field assumes the whole declared promotion goes through, which is the shape the
   // roll-over then selects whenever the cap does not bind.
   const prospectiveField = championship.teams.length + incoming - declared;
-  const floor = getMinimumField(selectPhasesForFieldSize(championship, prospectiveField));
+  const floor = getMinimumField(
+    selectPhasesForFieldSize(championship, prospectiveField),
+    getRelegationCount(championship)
+  );
 
   const affordable = championship.teams.length + incoming - floor;
   return Math.max(0, Math.min(declared, affordable));
