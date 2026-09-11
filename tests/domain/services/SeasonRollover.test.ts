@@ -106,19 +106,23 @@ describe('season roll-over — the women’s pyramid, playing A1', () => {
 });
 
 describe('season roll-over — the men’s divisions are untouched', () => {
-  it.each(['brasileirao-serie-a', 'brasileirao-serie-b'])(
-    'keeps %s and its partner at 20 clubs over three roll-overs',
-    (internalName) => {
+  // Série B's relegation neighbour is Série C since MS-106, so its container holds three divisions.
+  it.each([
+    ['brasileirao-serie-a', { 'brasileirao-serie-a': 20, 'brasileirao-serie-b': 20 }],
+    [
+      'brasileirao-serie-b',
+      { 'brasileirao-serie-a': 20, 'brasileirao-serie-b': 20, 'brasileirao-serie-c': 20 },
+    ],
+  ])(
+    'keeps %s and its neighbours at 20 clubs over three roll-overs',
+    (internalName, expectedCounts) => {
       let container = init(internalName);
       const initialIds = new Set(allTeamIds(container));
 
       for (let season = 0; season < 3; season++) {
         container = rollOver(container);
 
-        expect(counts(container)).toEqual({
-          'brasileirao-serie-a': 20,
-          'brasileirao-serie-b': 20,
-        });
+        expect(counts(container)).toEqual(expectedCounts);
 
         const ids = allTeamIds(container);
         expect(new Set(ids).size).toBe(ids.length);

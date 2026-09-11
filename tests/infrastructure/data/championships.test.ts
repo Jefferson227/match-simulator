@@ -116,8 +116,10 @@ describe('championships.json data integrity', () => {
       (championship) => championship.phases?.length && championship.hasLeagueTable !== false
     );
 
-    test('the three women divisions declare their phases', () => {
+    test('the phased divisions declare their phases', () => {
       expect(withPhases.map((championship) => championship.internalName)).toEqual([
+        'brasileirao-serie-c',
+        'brasileirao-serie-d',
         'brasileirao-feminino-serie-a1',
         'brasileirao-feminino-serie-a2',
         'brasileirao-feminino-serie-a3',
@@ -134,15 +136,20 @@ describe('championships.json data integrity', () => {
       });
     });
 
-    test('each knockout phase halves the survivors of the phase before it', () => {
+    test('each later phase is filled by the survivors of the phase before it', () => {
       withPhases.forEach((championship) => {
         const phases = championship.phases as Phase[];
-        const [first, ...knockouts] = phases;
+        const [first, ...later] = phases;
         if (first.kind !== 'round-robin') throw new Error('expected a round-robin first phase');
 
         let survivors = first.numberOfGroups * first.advancingPerGroup;
-        knockouts.forEach((phase) => {
-          if (phase.kind !== 'knockout') throw new Error('expected a knockout phase');
+        later.forEach((phase) => {
+          // Série C's 2ª Fase: a round-robin holding exactly the 1ª Fase qualifiers.
+          if (phase.kind === 'round-robin') {
+            expect(phase.numberOfGroups * phase.teamsPerGroup).toBe(survivors);
+            survivors = phase.numberOfGroups * phase.advancingPerGroup;
+            return;
+          }
 
           expect({ phase: phase.name, ties: phase.numberOfTies }).toEqual({
             phase: phase.name,

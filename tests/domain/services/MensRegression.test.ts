@@ -17,6 +17,21 @@ beforeAll(() => {
 
 const MENS = ['brasileirao-serie-a', 'brasileirao-serie-b'] as const;
 
+/**
+ * The championships of a container that are Série A or B. Since MS-106 Série B's relegation
+ * neighbour is the phased Série C, which these pre-MS-103 pins do not describe.
+ */
+function unphasedMens(container: ChampionshipContainer): Championship[] {
+  return [
+    container.playableChampionship,
+    container.promotionChampionship,
+    container.relegationChampionship,
+  ].filter(
+    (championship): championship is Championship =>
+      Boolean(championship) && (MENS as readonly string[]).includes(championship!.internalName)
+  );
+}
+
 type Entry = Record<string, unknown> & { internalName: string };
 
 function record(internalName: string): Entry {
@@ -143,12 +158,7 @@ describe("the men's championships load unphased", () => {
   it.each(MENS)('%s defaults both exchange rules to table-position', (internalName) => {
     const container = init(internalName);
 
-    for (const championship of [
-      container.playableChampionship,
-      container.promotionChampionship,
-      container.relegationChampionship,
-    ]) {
-      if (!championship) continue;
+    for (const championship of unphasedMens(container)) {
       if (championship.isPromotable) expect(championship.promotionRule).toBe('table-position');
       if (championship.isRelegatable) expect(championship.relegationRule).toBe('table-position');
     }
@@ -159,13 +169,7 @@ describe("the men's fixtures are byte-identical to the pre-MS-103 generator", ()
   it.each(MENS)('%s generates the same 38 rounds and 380 matches', (internalName) => {
     const container = init(internalName);
 
-    for (const championship of [
-      container.playableChampionship,
-      container.promotionChampionship,
-      container.relegationChampionship,
-    ]) {
-      if (!championship) continue;
-
+    for (const championship of unphasedMens(container)) {
       const expected = legacyFixtures(championship.teams);
 
       expect(championship.matchContainer.totalRounds).toBe(38);
@@ -249,6 +253,8 @@ describe("the men's promotion, relegation and roll-over are unchanged", () => {
       for (const championship of all) {
         expect(championship.teams).toHaveLength(20);
         expect(championship.numberOfTeams).toBe(20);
+      }
+      for (const championship of unphasedMens(container)) {
         expect(championship.matchContainer.totalRounds).toBe(38);
         expect(championship.phases).toBeUndefined();
       }
