@@ -17,6 +17,8 @@ type ChampionshipJSONDTO = {
   numberOfPromotableTeams?: number;
   promotionChampionshipInternalName?: string;
   promotionRule?: PromotionRule;
+  /** The grouped round-robin phase a `'phase-group-position'` promotion reads. */
+  promotionPhaseIndex?: number;
   numberOfRelegatableTeams?: number;
   relegationChampionshipInternalName?: string;
   relegationRule?: RelegationRule;
@@ -29,6 +31,8 @@ type ChampionshipJSONDTO = {
    * variant matching `numberOfTeams`; the repository rejects seed data where it does not.
    */
   phaseVariants?: PhaseVariant[];
+  /** `replace-in-place` keeps every non-exchanged club at its list position across a roll-over. */
+  rolloverSlotting?: 'replace-in-place';
 };
 
 export default ChampionshipJSONDTO;

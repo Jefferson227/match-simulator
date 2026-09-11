@@ -1,7 +1,7 @@
 import ChampionshipJSONDTO from '../data-transfer-objects/ChampionshipJSONDTO';
 import championshipsJSON from '../data/championships.json';
 import { Championship } from '../../domain/models/Championship';
-import { PhaseVariant } from '../../domain/models/ChampionshipPhase';
+import ChampionshipPhase, { PhaseVariant } from '../../domain/models/ChampionshipPhase';
 import LeagueType from '../../domain/enums/LeagueType';
 import TeamRepository from './TeamRepository';
 
@@ -60,6 +60,86 @@ function validatePhaseVariants(championship: ChampionshipJSONDTO): void {
   }
 }
 
+/**
+ * Rejects fixed pairings the previous phase cannot produce: a `group-position` slot naming a group
+ * or placing that does not qualify, or a `previous-ties` index past the previous knockout's ties.
+ * The bracket builder would otherwise fail mid-season, when the phase is generated.
+ */
+function validateCrossings(name: string, phases: ChampionshipPhase[] | undefined): void {
+  phases?.forEach((phase, index) => {
+    if (phase.kind !== 'knockout' || !phase.crossings) return;
+
+    const previous = phases[index - 1];
+    const { crossings } = phase;
+    const where = `Crossings of ${name} phase '${phase.name}'`;
+
+    if (crossings.pairs.length !== phase.numberOfTies) {
+      throw new Error(
+        `${where} declare ${crossings.pairs.length} pairs for ${phase.numberOfTies} ties.`
+      );
+    }
+
+    if (crossings.from === 'group-position') {
+      if (previous?.kind !== 'round-robin') {
+        throw new Error(
+          `${where} read group positions, but the previous phase is not a round-robin.`
+        );
+      }
+      for (const slot of crossings.pairs.flat()) {
+        if (
+          !Number.isInteger(slot.group) ||
+          slot.group < 0 ||
+          slot.group >= previous.numberOfGroups ||
+          !Number.isInteger(slot.position) ||
+          slot.position < 1 ||
+          slot.position > previous.advancingPerGroup
+        ) {
+          throw new Error(
+            `${where} name group ${slot.group} position ${slot.position}, which '${previous.name}' (${previous.numberOfGroups} groups, ${previous.advancingPerGroup} advancing each) cannot produce.`
+          );
+        }
+      }
+      return;
+    }
+
+    if (previous?.kind !== 'knockout') {
+      throw new Error(`${where} read previous ties, but the previous phase is not a knockout.`);
+    }
+    for (const tieIndex of crossings.pairs.flat()) {
+      if (!Number.isInteger(tieIndex) || tieIndex < 0 || tieIndex >= previous.numberOfTies) {
+        throw new Error(
+          `${where} name tie ${tieIndex}, but '${previous.name}' has ${previous.numberOfTies} ties.`
+        );
+      }
+    }
+  });
+}
+
+/**
+ * Rejects a `'phase-group-position'` promotion that cannot be read: it needs a grouped round-robin
+ * phase to read, and a promotable count every group can contribute equally to (REC C Art. 5º).
+ */
+function validatePromotionRule(championship: ChampionshipJSONDTO): void {
+  if (championship.promotionRule !== 'phase-group-position') return;
+
+  const name = championship.internalName;
+  const index = championship.promotionPhaseIndex;
+  const phase = index === undefined ? undefined : championship.phases?.[index];
+
+  if (phase?.kind !== 'round-robin' || phase.numberOfGroups < 2) {
+    throw new Error(
+      `Promotion of ${name} reads group positions, but promotionPhaseIndex ${index} is not a grouped round-robin phase.`
+    );
+  }
+
+  const promotable = championship.numberOfPromotableTeams ?? 0;
+  if (promotable % phase.numberOfGroups !== 0) {
+    throw new Error(
+      `Promotion of ${name} sends ${promotable} clubs up from the ${phase.numberOfGroups} groups of '${phase.name}'; the count must divide evenly.`
+    );
+  }
+}
+
 export function getChampionship(
   championshipInternalName: string,
   hasTeamControlledByHuman: boolean
@@ -72,6 +152,11 @@ export function getChampionship(
   if (!championshipJSONDTO) throw new Error('Championship not found.');
 
   validatePhaseVariants(championshipJSONDTO);
+  validateCrossings(championshipJSONDTO.internalName, championshipJSONDTO.phases);
+  championshipJSONDTO.phaseVariants?.forEach((variant) =>
+    validateCrossings(championshipJSONDTO.internalName, variant.phases)
+  );
+  validatePromotionRule(championshipJSONDTO);
 
   let mappedChampionship = {
     id: crypto.randomUUID(),
@@ -92,6 +177,7 @@ export function getChampionship(
     leagueType: championshipJSONDTO.leagueType,
     phases: championshipJSONDTO.phases,
     phaseVariants: championshipJSONDTO.phaseVariants,
+    rolloverSlotting: championshipJSONDTO.rolloverSlotting,
     hasTeamControlledByHuman,
     isPromotable: false,
     isRelegatable: false,
@@ -131,6 +217,7 @@ export function getChampionship(
       numberOfPromotableTeams,
       promotionChampionshipInternalName,
       promotionRule: championshipJSONDTO.promotionRule ?? 'table-position',
+      promotionPhaseIndex: championshipJSONDTO.promotionPhaseIndex,
     };
   }
 
