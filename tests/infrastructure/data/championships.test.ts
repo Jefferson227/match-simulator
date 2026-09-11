@@ -28,9 +28,13 @@ type ChampionshipEntry = {
   /** Absent for a division; `false` for a cup, which has no table. */
   hasLeagueTable?: boolean;
   teamNames: string[];
+  numberOfPromotableTeams?: number;
+  numberOfRelegatableTeams?: number;
   promotionChampionshipInternalName?: string;
   relegationChampionshipInternalName?: string;
   promotionRule?: string;
+  promotionPhaseIndex?: number;
+  rolloverSlotting?: string;
   relegationRule?: string;
   phases?: Phase[];
   phaseVariants?: { minNumberOfTeams: number; phases: Phase[] }[];
@@ -337,6 +341,172 @@ describe('championships.json data integrity', () => {
       const everyName = divisions.flatMap((championship) => championship.teamNames);
 
       expect(new Set(everyName).size).toBe(everyName.length);
+    });
+  });
+
+  describe("the men's divisions", () => {
+    const PYRAMID = [
+      'brasileirao-serie-a',
+      'brasileirao-serie-b',
+      'brasileirao-serie-c',
+      'brasileirao-serie-d',
+    ];
+    const mensTeams = new Set((mensTeamsJSON as TeamEntry[]).map((team) => team.internalName));
+
+    test('the pyramid runs Série A to Série D', () => {
+      expect(
+        championships
+          .filter((championship) => championship.leagueType === 'mens')
+          .map((championship) => championship.internalName)
+      ).toEqual(PYRAMID);
+    });
+
+    test('Série C seeds 20 clubs and Série D 64, every one a seeded men’s club', () => {
+      const serieC = findByInternalName('brasileirao-serie-c')!;
+      const serieD = findByInternalName('brasileirao-serie-d')!;
+
+      expect(serieC.teamNames).toHaveLength(20);
+      expect(serieC.numberOfTeams).toBe(20);
+      expect(serieD.teamNames).toHaveLength(64);
+      expect(serieD.numberOfTeams).toBe(64);
+      [...serieC.teamNames, ...serieD.teamNames].forEach((teamName) =>
+        expect(mensTeams.has(teamName)).toBe(true)
+      );
+    });
+
+    test('no club plays in two men’s divisions', () => {
+      const everyName = PYRAMID.flatMap(
+        (internalName) => findByInternalName(internalName)!.teamNames
+      );
+
+      expect(everyName).toHaveLength(20 + 20 + 20 + 64);
+      expect(new Set(everyName).size).toBe(everyName.length);
+    });
+
+    test('Série D’s teamNames, dealt in eights, are the 8 groups of REC D 2025 Anexo B', () => {
+      const teamNames = findByInternalName('brasileirao-serie-d')!.teamNames;
+      const groups = Array.from({ length: 8 }, (_, group) =>
+        teamNames.slice(group * 8, group * 8 + 8)
+      );
+
+      expect(groups).toEqual([
+        [
+          'independencia',
+          'humaita',
+          'manaus',
+          'manauara',
+          'tuna-luso',
+          'aguia-de-maraba',
+          'gremio-sampaio',
+          'trem',
+        ],
+        [
+          'maracana',
+          'iguatu',
+          'sampaio-correa',
+          'maranhao',
+          'altos',
+          'parnahyba',
+          'tocantinopolis',
+          'imperatriz',
+        ],
+        [
+          'ferroviario-ce',
+          'horizonte',
+          'sousa',
+          'treze',
+          'santa-cruz',
+          'central',
+          'america-rn',
+          'santa-cruz-rn',
+        ],
+        [
+          'asa',
+          'penedense',
+          'sergipe',
+          'lagarto',
+          'barcelona-de-ilheus',
+          'jequie',
+          'juazeirense',
+          'uniao-araguainense',
+        ],
+        [
+          'ceilandia',
+          'capital-df',
+          'aparecidense',
+          'goiania',
+          'mixto',
+          'luverdense',
+          'porto-velho',
+          'goianesia',
+        ],
+        [
+          'rio-branco-es',
+          'porto-vitoria',
+          'nova-iguacu',
+          'boavista',
+          'pouso-alegre',
+          'marica',
+          'portuguesa',
+          'agua-santa',
+        ],
+        [
+          'goiatuba',
+          'itabirito',
+          'inter-de-limeira',
+          'monte-azul',
+          'operario-ms',
+          'uberlandia',
+          'cascavel',
+          'cianorte',
+        ],
+        [
+          'azuriz',
+          'joinville',
+          'barra',
+          'marcilio-dias',
+          'sao-jose-rs',
+          'sao-luiz',
+          'guarany-de-bage',
+          'brasil-de-pelotas',
+        ],
+      ]);
+    });
+
+    test('every promotion and relegation link between neighbours is mirrored, with matching counts', () => {
+      for (let tier = 0; tier < PYRAMID.length - 1; tier++) {
+        const upper = findByInternalName(PYRAMID[tier])!;
+        const lower = findByInternalName(PYRAMID[tier + 1])!;
+
+        expect(upper.relegationChampionshipInternalName).toBe(lower.internalName);
+        expect(lower.promotionChampionshipInternalName).toBe(upper.internalName);
+        // 4 down, 4 up at every step: the divisions hold their size.
+        expect(upper.numberOfRelegatableTeams).toBe(4);
+        expect(lower.numberOfPromotableTeams).toBe(upper.numberOfRelegatableTeams);
+      }
+
+      expect(
+        findByInternalName('brasileirao-serie-a')!.promotionChampionshipInternalName
+      ).toBeUndefined();
+      expect(
+        findByInternalName('brasileirao-serie-d')!.relegationChampionshipInternalName
+      ).toBeUndefined();
+      expect(findByInternalName('brasileirao-serie-d')!.numberOfRelegatableTeams).toBeUndefined();
+    });
+
+    test('Série C promotes off its 2ª Fase groups and relegates off its 1ª Fase table', () => {
+      const serieC = findByInternalName('brasileirao-serie-c')!;
+
+      expect(serieC.promotionRule).toBe('phase-group-position');
+      expect(serieC.promotionPhaseIndex).toBe(1);
+      expect(serieC.relegationRule).toBe('first-phase-table-position');
+    });
+
+    test('Série D promotes its semifinalists and keeps its groups across roll-overs', () => {
+      const serieD = findByInternalName('brasileirao-serie-d')!;
+
+      expect(serieD.promotionRule).toBe('semifinalists');
+      expect(serieD.rolloverSlotting).toBe('replace-in-place');
     });
   });
 });
