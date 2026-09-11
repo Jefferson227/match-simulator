@@ -144,6 +144,36 @@ describe('GameEngine', () => {
     expect(engine.getState().championshipContainer).toBe(mockContainer);
   });
 
+  it('draws the human player team through ChampionshipUseCases', () => {
+    const engine = new GameEngine(initialState);
+    const drawnState: GameState = {
+      ...initialState,
+      championshipContainer: {
+        playableChampionship: {
+          ...initialState.championshipContainer.playableChampionship,
+          internalName: 'brasileirao-serie-d',
+        },
+      } as ChampionshipContainer,
+      gameConfig: {
+        clockSpeed: 250,
+      },
+    };
+    const drawTeamForHumanPlayerMock = jest.fn().mockReturnValue(drawnState);
+
+    MockedChampionshipUseCases.mockImplementation(
+      () =>
+        ({
+          drawTeamForHumanPlayer: drawTeamForHumanPlayerMock,
+        }) as unknown as jest.Mocked<ChampionshipUseCases>
+    );
+
+    engine.dispatch({ type: 'DRAW_TEAM_FOR_HUMAN_PLAYER' });
+
+    expect(MockedChampionshipUseCases).toHaveBeenLastCalledWith(initialState);
+    expect(drawTeamForHumanPlayerMock).toHaveBeenCalledTimes(1);
+    expect(engine.getState()).toBe(drawnState);
+  });
+
   it('runs end-of-championship actions through ChampionshipUseCases', () => {
     const engine = new GameEngine(initialState);
     const updatedState: GameState = {

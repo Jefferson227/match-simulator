@@ -69,6 +69,9 @@ export class GameEngine {
       case 'SELECT_TEAM':
         this.teamUseCases = new TeamUseCases(state);
         return this.teamUseCases.selectTeam(action.teamId);
+      case 'DRAW_TEAM_FOR_HUMAN_PLAYER':
+        this.championshipUseCases = new ChampionshipUseCases(state);
+        return this.championshipUseCases.drawTeamForHumanPlayer();
       case 'UPDATE_TEAM_STATS':
         this.teamUseCases = new TeamUseCases(state);
         return this.teamUseCases.updateTeamStats();
