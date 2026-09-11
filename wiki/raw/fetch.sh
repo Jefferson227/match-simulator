@@ -15,6 +15,14 @@ fetch rec-copa-2026      "$CDN/REC_Copa_do_Brasil_Feminina_2026_7376920006.pdf"
 fetch tabela-copa-2026   "$CDN/Tabela_Detalhada_Copa_do_Brasil_Feminina_2026_9604f84f3a.pdf"
 fetch rec-supercopa-2026 "$CDN/REC_Supercopa_Feminina_2026_7bcf301c7a.pdf"
 
+# Men's Série C / Série D 2025 (MS-106), plus the 2026 RECs read as 2025 outcome evidence.
+# The 2025 file names contain spaces and an accent: keep them URL-encoded.
+fetch rec-serie-c-2025   "$CDN/REC%20-%20Brasileiro%20S%C3%A9rie%20C%202025.pdf"
+fetch rec-serie-d-2025   "$CDN/REC%20-%20Brasileiro%20S%C3%A9rie%20D%202025.pdf"
+fetch rec-serie-b-2026   "$CDN/REC_Brasileiro_Serie_B_2026_dc12c977f7.pdf"
+fetch rec-serie-c-2026   "$CDN/REC_Brasileiro_Serie_C_2026_d2552ddc00.pdf"
+fetch rec-serie-d-2026   "$CDN/REC_Brasileiro_Serie_D_2026_df281f18b7.pdf"
+
 # The division RECs are addressed indirectly; resolve each slug through the CMS.
 # NOTE: &populate=* is mandatory — without it every document comes back with url: null.
 for d in a1 a2 a3; do

@@ -1,8 +1,8 @@
 ---
 title: Invented data
 type: concept
-verified: 2026-09-09
-sources: [atletas-api, rec-a3-2026, rec-copa-2026]
+verified: 2026-09-10
+sources: [atletas-api, rec-a3-2026, rec-copa-2026, jogos-api, rec-serie-c-2025, rec-serie-d-2025, rec-serie-c-2026, rec-serie-d-2026]
 ---
 
 # Invented data
@@ -74,6 +74,64 @@ claim about the real competition.
 
 The arithmetic, the rejected alternatives and the reasoning behind selecting by club count rather
 than by year are on [[ms-104-a3-group-shape-schedule]].
+
+## Invented by MS-106
+
+The men's Série C and Série D 2025 seed: 84 clubs, 20 in C and 64 in D. Club names are REC Anexo A
+and player names come from real 2025 match sheets; everything below is invented. The reasons behind
+the four big choices are on [[ms-106-mens-lower-divisions]].
+
+- **Outfield positions.** CBF marks only goalkeepers (`goleiro`, per match sheet). DF/MF/FW come
+  from a heuristic on each athlete's most-worn shirt number, following traditional numbering:
+  2/3/4/6 → DF, 5/8/10 → MF, 7/9/11 → FW, while the squad's 6/7/8 quota lasts. Everyone else fills
+  DF, then MF, then FW in selection order. **Goalkeepers are real**: an athlete flagged `goleiro` on
+  more than half their sheets.
+- **Which 23.** Athletes are ranked by starts, then sheets named on, then CBF id. The top 2
+  goalkeepers and top 21 outfielders are kept. Everything is taken from the match sheets, so fringe
+  players and mid-season departures can make the list. An athlete named for two clubs is kept only
+  by the one he has more sheets for.
+- **Strength bands.** C runs **53 → 44** and D **43 → 28**, below Série B's floor of 54, two C clubs
+  and four D clubs per step. The order is the 2025 final classification. For C that is 1º–4º
+  derived under REC C Art. 25, 5º–16º as REC C 2026 Anexo B prints them, and 17º–20º from the 1ª
+  Fase table. For D it is REC D Art. 22's order derived from the match API: elimination round first,
+  then accumulated points, wins, goal difference and goals for; 1º–4º match REC C 2026 Anexo B. D
+  sits below the seed's old 41 floor on purpose. The engine's only floor is a player strength of 1,
+  and players are drawn at team strength ± 5.
+  - The pre-existing Série A and B strengths **overlap**: A's floor is 55 and B's ceiling is 75.
+    Only their averages are ordered. MS-106 left them alone.
+- **Colours.** 31 clubs wear their real colours:
+  `ponte-preta`, `londrina`, `nautico`, `sao-bernardo`, `caxias`, `guarani`, `confianca`,
+  `ypiranga`, `ituano`, `botafogo-pb`, `figueirense`, `csa`, `abc`, `sampaio-correa`,
+  `ferroviario-ce`, `treze`, `santa-cruz`, `central`, `america-rn`, `sergipe`, `goiania`, `mixto`,
+  `luverdense`, `nova-iguacu`, `portuguesa`, `inter-de-limeira`, `operario-ms`, `uberlandia`,
+  `joinville`, `guarany-de-bage`, `brasil-de-pelotas`.
+  The other 53 take a deterministic palette colour, picked by a hash of the internal
+  name:
+  `brusque`, `floresta`, `maringa`, `anapolis`, `itabaiana`, `retro`, `tombense`, `independencia`,
+  `humaita`, `manaus`, `manauara`, `tuna-luso`, `aguia-de-maraba`, `gremio-sampaio`, `trem`,
+  `maracana`, `iguatu`, `maranhao`, `altos`, `parnahyba`, `tocantinopolis`, `imperatriz`,
+  `horizonte`, `sousa`, `santa-cruz-rn`, `asa`, `penedense`, `lagarto`, `barcelona-de-ilheus`,
+  `jequie`, `juazeirense`, `uniao-araguainense`, `ceilandia`, `capital-df`, `aparecidense`,
+  `porto-velho`, `goianesia`, `rio-branco-es`, `porto-vitoria`, `boavista`, `pouso-alegre`,
+  `marica`, `agua-santa`, `goiatuba`, `itabirito`, `monte-azul`, `cascavel`, `cianorte`, `azuriz`,
+  `barra`, `marcilio-dias`, `sao-jose-rs`, `sao-luiz`.
+- **Abbreviations.** Derived from `shortName`, particles skipped, the first free candidate wins. All
+  124 are unique across `teams.json`. The four clubs already seeded keep theirs (CAX, LEC, PON,
+  YPI).
+- **Padding: none.** No club needed a generated name and no club needed the athlete API.
+- **Série D's newcomers take the promoted clubs' group slots.** The 60 non-exchanged clubs keep
+  their real Anexo B regional group. The clubs relegated from C land wherever the promoted clubs
+  left, whatever their state. REC D gives no composition rule (Art. 14), so any placement would be
+  invented; this one is the least disruptive.
+- **Série D's field recycles.** CBF rebuilds ~56 of its 64 clubs every year from 27 state
+  championships (Arts. 2º–3º). The game does not invent state champions — the A3 precedent above —
+  so D keeps its clubs and stays at 64 on 4 in / 4 out.
+- **Série C's home order.** REC C fixes a 10/9 home split per club in the 1ª Fase (Art. 14) and
+  leaves the 2ª Fase home order to the tabela (Art. 18). The game uses its round-robin rotation for
+  both.
+- **The 2025 rules, every season.** CBF's 2026 formats differ: Série C relegates 2 (REC C 2026
+  Art. 42), and Série D grows to 96 clubs with 6 promoted (REC D 2026 Arts. 2º, 6º, 13). The game
+  applies the 2025 rules to every season. That is a claim about no real season after 2025.
 
 ---
 
@@ -183,3 +241,22 @@ The extraction and generation scripts live in the session scratchpad
 each club's athlete pages, so a re-run only hits CBF for what it does not already have. Re-running
 `build_seed.py` against the same dump is deterministic — colours, strengths, abbreviations and
 padded names are all seeded from the internal name.
+
+### MS-106 build
+
+The builder lives in the session scratchpad (`cbf_lineups.py`, `build_seed.py`, `apply_teams.py`,
+`apply_championships.py`) and is not tracked. It reads the research club lists and 51 cached
+`jogos-api` rounds: Série C phases `1899` ×19, `1969` ×6, `1983` ×2, and Série D `1900` ×14, then
+`1951`/`1957`/`1965`/`1971`/`1976` ×2. Two runs produce byte-identical output. It asserts, before
+writing, that `teamNames` equals the research groups and that the derived group positions and D's
+top 4 match CBF's.
+
+**Name cleaning.** Names use `apelido` with the shirt number stripped at either end. All-caps and
+all-lower names are title-cased, with Portuguese particles kept lower-case. Vowel-less all-caps
+initials are kept ("KT"), and a lower-case surname is capitalised ("Diego tavares"). A duplicate
+inside a squad would fall back to the full `nome`; none occurred.
+
+**The four clubs already seeded were rebuilt in place.** `caxias` was renamed "Sociedade Esportiva e
+Recreativa Caxias do Sul", strength 50 → 51, navy → grená. `londrina` went 42 → 53 and got sky blue,
+`ponte-preta` 43 → 53, and `ypiranga` 41 → 49, red → yellow/green. Their old invented squads were
+replaced by real ones.

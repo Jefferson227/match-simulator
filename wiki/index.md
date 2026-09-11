@@ -17,9 +17,12 @@ Real formats and rules, cited to CBF's *Regulamento Específico da Competição*
 | [[brasileirao-feminino-a3]] | yes | 32 | 8 groups of 4 then knockouts, reshaping to 4 groups as it shrinks. Promotes 4 semifinalists; no relegation. |
 | [[copa-do-brasil-feminina]] | yes | 66 | 8-phase knockout with staggered entry. 72 matches. |
 | [[supercopa-feminina]] | yes | 2 | A single match, decided on penalties if drawn. |
+| [[brasileirao-serie-c]] | yes | 20 | Men. League → 2 serpentine groups of 4 → final. Promotes the top 2 of each 2ª Fase group; relegates 4 off the 1ª Fase. 2025 rules. |
+| [[brasileirao-serie-d]] | yes | 64 | Men. 8 regional groups → Anexo B crossings → re-seeded quarter-finals. Promotes 4 semifinalists; no relegation. 2025 rules. |
 
-All five are seeded and played by the engine. The men's divisions have no pages — nothing about
-Série A/B is currently known beyond what `championships.json` already states.
+All seven are seeded and played by the engine. The men's Série A and B have no pages — nothing about
+them is known beyond what `championships.json` already states (they were not re-researched; only
+their exchange with Série C is confirmed by CBF's 2026 RECs).
 
 ## Concepts
 
@@ -28,11 +31,11 @@ against them.
 
 | Page | Summary |
 |---|---|
-| [[tiebreakers]] | League and knockout tiebreaker cascades. **Records a live defect** — the `wins` criterion is missing from the standings comparator. |
-| [[promotion-and-relegation]] | Why women's promotion is semifinalist-based, and why relegation reads the 1ª Fase table. |
-| [[phases-and-knockouts]] | The `phases` descriptor, what the engine does with it, and why second-leg hosting cannot be a constant. |
+| [[tiebreakers]] | League and knockout tiebreaker cascades, women's and men's. The missing `wins` criterion was fixed by MS-106, with the 2025 cases it decides; head-to-head and cards are still absent. |
+| [[promotion-and-relegation]] | Why promotion is semifinalist- or group-position-based below the top tiers, and why relegation reads the 1ª Fase table. |
+| [[phases-and-knockouts]] | The `phases` descriptor — serpentine groups, Anexo B crossings, re-seeding — what the engine does with it, and why second-leg hosting cannot be a constant. |
 | [[known-contradictions]] | Where CBF's own documents disagree, which side the seed data follows, and the gaps CBF leaves open. |
-| [[invented-data]] | Everything in the women's seed that CBF does not publish, including full MS-102 provenance. |
+| [[invented-data]] | Everything in the seed that CBF does not publish: MS-102's women's clubs, MS-106's men's Série C/D clubs, and every invented schedule. |
 | [[cbf-data-sources]] | How to fetch from CBF without repeating a wasted pass. Read before any new extraction. |
 
 ## Specs
@@ -57,6 +60,7 @@ Why things are the way they are — the part the code cannot state.
 | [[ms-103-ai-championship-catch-up]] | MS-103 | implemented |
 | [[ms-103-simulated-shootout]] | MS-103 | implemented |
 | [[ms-104-a3-group-shape-schedule]] | MS-104 | implemented; **wholly inference** |
+| [[ms-106-mens-lower-divisions]] | MS-106 | implemented; post-2025 seasons are inference |
 
 ## Raw
 
@@ -67,9 +71,18 @@ above. `raw/fetch.sh` re-downloads the PDFs, which are gitignored.
 
 Things named across these pages that nothing currently owns:
 
-- The missing `wins` tiebreaker has no ticket. See [[tiebreakers]].
+- ~~The missing `wins` tiebreaker has no ticket~~ — **closed by MS-106.** Wins now rank right after
+  points in every competition. Head-to-head and card counts are still not modelled; see
+  [[tiebreakers]].
 - Libertadores qualification via the Copa is **not verified** — outside MS-102's brief.
-- No page covers the men's competitions.
+- ~~No page covers the men's competitions~~ — **closed by MS-106** for Série C and D; Série A and B
+  still have none.
+- **Container re-centring after promotion or relegation**, men's and women's. The container stays
+  centred on the division the human started in, and `TeamManager` reads the human's club from
+  `playableChampionship`. So a human promoted or relegated out of that division is not followed.
+  This is a pre-existing gap and has no ticket. See [[ms-106-mens-lower-divisions]].
+- **The men's Série A and B strengths overlap** (A's floor 55 is below B's ceiling 75). C and D sit
+  strictly below B. No ticket. See [[invented-data]].
 - **A1 2027's club count is inference, not regulation**, and so is A2's route to 20. See
   [[ms-103-a1-club-count-growth]] and the open gap on [[known-contradictions]].
 - **URLs for the two CBF news articles were never recorded.** See [[sources]].

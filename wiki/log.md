@@ -212,3 +212,51 @@ settles at 26 rather than 24.
 
 - Every number after 2026 remains inference. Nothing here should be read as a CBF rule.
 - A2's route to 20 and A1 2027's club count are still inference, as MS-103 left them.
+
+## [2026-09-10] ingest | MS-106 — the men's pyramid runs A ↔ B ↔ C ↔ D
+
+sha 6b09f23
+
+Seeds the 2025 Série C (20 clubs) and Série D (64 clubs) with every real club, real match-sheet
+squads and their real mechanics, links Série B down to C, and fixes the missing wins tiebreaker.
+
+### External evidence gathered
+
+- Five RECs registered in [[sources]] and added to `raw/fetch.sh`: `rec-serie-c-2025` and
+  `rec-serie-d-2025` (the rules), plus `rec-serie-b-2026`, `rec-serie-c-2026` and `rec-serie-d-2026`,
+  read **only as outcome evidence**, since their Anexos state where each club finished in 2025.
+- `times` and `tabelas` endpoints for both competitions (competitionIds `12616` / `12617`, phase
+  ids from `competitionData`), and the **`jogos-api`**: 51 rounds, 216 C and 510 D matches,
+  including lineups with a `goleiro` flag. Three CBF news articles filed **with URLs**.
+
+### Filed
+
+- New competition pages: [[brasileirao-serie-c]] and [[brasileirao-serie-d]], with article
+  citations, the 2025 outcome and asserts (D's absent relegation included).
+- New decision: [[ms-106-mens-lower-divisions]] covers why 2025, why REC Anexo A names, why D's
+  newcomers take the vacated group slots, and why the rules are frozen at 2025.
+- [[cbf-data-sources]] now covers the `jogos` lineups API, `competitionData`, the athlete API's
+  ~60% loss on men's 2025, and the dedupe that `nome_popular` gets wrong both ways (Pouso Alegre,
+  the two Santa Cruz clubs). Knockout second legs returned HTTP 500 until `--retry-all-errors`.
+- [[known-contradictions]] items 8–10: `times` vs Anexo A names, REC vs tabela phase names, and REC D
+  Art. 22 §4. One new open gap: Série C 2027's size.
+- [[tiebreakers]]: the men's cascades, and the wins fix with its 2025 evidence (CSA relegated over
+  Itabaiana; Barra over São José atop D group A-8).
+- [[invented-data]]: the "Invented by MS-106" section, plus the build provenance moved out of the
+  ticket's `.plans/` task notes.
+- [[phases-and-knockouts]] and [[promotion-and-relegation]]: the new descriptor fields and the
+  `phase-group-position` rule, with the Caxias/São Bernardo counter-example.
+- [[index]]: new rows. The wins and "no men's pages" threads are closed. The container re-centring
+  and A/B strength-overlap threads are opened.
+
+### Live defect fixed
+
+The **wins** tiebreaker, preserved on purpose since MS-103, is fixed for every competition. No
+pinned expectation in the pre-existing suite changed.
+
+### Left open
+
+- Container re-centring after promotion or relegation (men's and women's).
+- Head-to-head and card tiebreakers; the RECs' final-classification tiers.
+- Every men's season after 2025 plays 2025 rules; CBF's 2026 formats are not modelled.
+- Série A/B strength overlap in the pre-existing seed.

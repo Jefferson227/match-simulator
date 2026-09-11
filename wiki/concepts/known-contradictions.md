@@ -1,8 +1,8 @@
 ---
 title: Known contradictions
 type: concept
-verified: 2026-09-07
-sources: [rec-a1-2026, rec-a2-2026, rec-a3-2026, times-a1-2026, news-expansao-2025, news-calendario-2025]
+verified: 2026-09-10
+sources: [rec-a1-2026, rec-a2-2026, rec-a3-2026, times-a1-2026, news-expansao-2025, news-calendario-2025, rec-serie-b-2026, rec-serie-c-2025, rec-serie-d-2025, rec-serie-c-2026, times-serie-c-2025, times-serie-d-2025, tabelas-serie-d-2025]
 ---
 
 # Known contradictions
@@ -49,7 +49,8 @@ every ingest.
    consistent "Brasileirão Feminino" form.
 3. **Club name spellings differ between endpoints.** For roughly 7 A1 clubs, the `times` endpoint's
    `nome_completo` disagrees with REC Anexo A's spelling. **The `times` endpoint is canonical** for
-   `name` in `teams-womens.json`.
+   `name` in `teams-womens.json`. The men's Série C and D seed deliberately does the opposite; see
+   item 8.
 4. **Squad pagination is lossy.** The athlete API reported 32 registered athletes for one club but
    returned only 29 across its pages. The reachable set is accepted; the remainder is not fabricated
    beyond position padding (see below).
@@ -67,6 +68,32 @@ every ingest.
    decisive**; the difference is A1 withdrawals pulling A2's 5º–6º up (REC A1 2026 Art. 2º, parágrafo
    único). Recorded, not resolved by inference.
 
+8. **`times` vs REC Anexo A club names, men's Série C and D 2025.** The two disagree in three ways:
+   - `times` drops diacritics and uses odd casing: "Associacao Atletica Ponte Preta", "Clube Nautico
+     Capibaribe", "Abc", "Csa", "S.a.f.".
+   - `times` names the post-SAF **legal entity** where the REC names the **association**:
+     Botafogo-PB, Londrina, Brusque, Figueirense, Maringá; Portuguesa ("Portuguesa Sociedade Anonima
+     do Futebol" vs "Associação Portuguesa De Desportos"); Azuriz ("Azuriz Futebol de Alta
+     Performance SAF" vs "Azuriz Futebol Clube").
+   - Outright differences: Altos is "Associação **Esportiva** de Altos" in `times` and "Associação
+     **Atlética** de Altos" in the REC. Pouso Alegre is "…Sociedade **Amonima**…" (sic) in `times`.
+
+   **The men's seed follows REC Anexo A** — accented association names, matching the existing
+   Série A/B style. This deliberately diverges from item 3's rule for the women's seed; the reason
+   is on [[ms-106-mens-lower-divisions]]. The one pre-existing clash was `caxias`: the seed said
+   "Caxias Futebol Clube", which is in neither source. CBF's Série C club is "Sociedade Esportiva e
+   Recreativa Caxias do Sul", and the seed now says so.
+9. **Série D phase names: REC vs tabela.** REC D 2025 Art. 13 names the knockouts "4ª Fase",
+   "5ª Fase (Semifinal)" and "6ª Fase (Final)". The tabela's `fase_nome` says "Quartas de Final",
+   "Semi Finais" and "Final" (`tabelas-serie-d-2025`). Série C's REC likewise says "3ª Fase
+   (Final)".
+   **The seed uses "Quartas de Final", "Semifinal" and "Final"**, matching the women's divisions.
+   Only display names differ; the formats agree.
+10. **REC D 2025 Art. 22 §4 is internally inconsistent.** It ranks 9º on the "somatória da 1ª, 2ª e
+    3ª fases", then ranks 10º on "1ª, 2ª, 3ª **e 4ª** fases" among clubs that never reached the 4ª
+    Fase. This is a copy-paste slip; the intent is 1ª–3ª. **No effect on the game**, which does not
+    model the REC's final-classification tiers.
+
 ## Open gaps
 
 Not contradictions — places where CBF states an outcome and publishes no mechanism for it.
@@ -76,6 +103,11 @@ Not contradictions — places where CBF states an outcome and publishes no mecha
   would grow it. The game reaches 20 only as a **consequence of MS-103's inferred A1 rule** — once A1
   is at its target and relegating 4, A2 grows — which is inference stacked on inference. See
   [[ms-103-a1-club-count-growth]]. **Do not invent a mechanism for this.**
+- **Série C 2027's size is unstated.** REC C 2026 still promotes 4 (Art. 5º) but relegates only 2
+  (Art. 42). REC D 2026 promotes 6 (Art. 6º), and REC B 2026 relegates 4 (Art. 5). That arithmetic
+  suggests a **24-club** Série C 2027, but no CBF document found says so. The game applies the 2025
+  rules to every season and never meets this; see [[ms-106-mens-lower-divisions]].
 
 Referenced by: [[brasileirao-feminino-a1]], [[brasileirao-feminino-a2]],
-[[brasileirao-feminino-a3]], [[cbf-data-sources]], [[promotion-and-relegation]].
+[[brasileirao-feminino-a3]], [[brasileirao-serie-c]], [[brasileirao-serie-d]], [[cbf-data-sources]],
+[[promotion-and-relegation]].
