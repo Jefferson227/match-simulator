@@ -1,25 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../../services/useGameState';
 import MainLayout from '../../components/MainLayout/MainLayout';
+import ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
+import { GameState } from '../../../game-engine/GameState';
+import { Team } from '../../../domain/models/Team';
 
 const TOTAL_DOTS = 3;
 const DOT_INTERVAL_IN_MS = 500;
 
-// TODO: replace with the team actually drawn for the player once the draw is implemented
-const DRAWN_TEAM = {
-  name: 'Amazonas Futebol Clube',
-  colors: {
-    outline: '#fbab2c',
-    background: '#05030e',
-    text: '#fbab2c',
-  },
-};
-
 const TeamAssigner: React.FC = () => {
   const { t } = useTranslation();
   const [visibleDots, setVisibleDots] = useState(0);
+  const [hasDispatchedDraw, setHasDispatchedDraw] = useState(false);
+  const [drawnTeam, setDrawnTeam] = useState<Team | null>(null);
+  const drawGuard = useRef(false);
 
   // Game engine
   const engine = useGameEngine();
@@ -28,7 +24,32 @@ const TeamAssigner: React.FC = () => {
   useEffect(() => {
     if (state.hasError)
       engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage: state.errorMessage });
-  }, [state]);
+  }, [state.hasError]);
+
+  // Every dispatch re-renders every subscriber, so the ref keeps the draw to exactly one.
+  useEffect(() => {
+    if (drawGuard.current) return;
+    drawGuard.current = true;
+
+    engine.dispatch({ type: 'DRAW_TEAM_FOR_HUMAN_PLAYER' });
+    setHasDispatchedDraw(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hasDispatchedDraw || state.hasError) return;
+
+    try {
+      const championshipUseCases = new ChampionshipUseCases({} as GameState);
+      setDrawnTeam(
+        championshipUseCases.getTeamControlledByHuman(
+          state.championshipContainer.playableChampionship
+        )
+      );
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage });
+    }
+  }, [hasDispatchedDraw, state.championshipContainer]);
 
   useEffect(() => {
     if (visibleDots >= TOTAL_DOTS) return;
@@ -37,12 +58,12 @@ const TeamAssigner: React.FC = () => {
     return () => clearTimeout(timeoutId);
   }, [visibleDots]);
 
-  const isDrawFinished = visibleDots >= TOTAL_DOTS;
+  const isDrawRevealed = visibleDots >= TOTAL_DOTS && drawnTeam !== null;
 
   const startGame = () => {
     engine.dispatch({
       type: 'SET_CURRENT_SCREEN',
-      screenName: 'ChampionshipSelector',
+      screenName: 'TeamManager',
     });
   };
 
@@ -60,18 +81,18 @@ const TeamAssigner: React.FC = () => {
             {t('teamAssigner.yourTeamIs', { coachName: state.coachName })}
           </p>
 
-          {isDrawFinished ? (
+          {isDrawRevealed ? (
             <div
               data-testid="drawn-team"
               className="w-[342px] min-h-[80px] px-4 py-4 flex items-center justify-center border-4 text-lg uppercase text-center"
               style={{
-                borderColor: DRAWN_TEAM.colors.outline,
-                backgroundColor: DRAWN_TEAM.colors.background,
-                color: DRAWN_TEAM.colors.text,
+                borderColor: drawnTeam.colors.outline,
+                backgroundColor: drawnTeam.colors.background,
+                color: drawnTeam.colors.text,
                 boxShadow: '-6px 6px 0 #2a5624',
               }}
             >
-              {DRAWN_TEAM.name}
+              {drawnTeam.fullName}
             </div>
           ) : (
             <div
@@ -87,7 +108,7 @@ const TeamAssigner: React.FC = () => {
 
           <button
             onClick={startGame}
-            disabled={!isDrawFinished}
+            disabled={!isDrawRevealed}
             className="w-[342px] h-[80px] px-4 border-4 border-white text-lg uppercase transition hover:bg-white hover:text-[#3d7a33] [text-shadow:-3px_3px_0_#2a5624] hover:[text-shadow:none] disabled:opacity-50 disabled:cursor-not-allowed"
             style={{ boxShadow: '-6px 6px 0 #2a5624' }}
           >
