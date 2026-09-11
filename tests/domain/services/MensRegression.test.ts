@@ -266,3 +266,55 @@ describe("the men's promotion, relegation and roll-over are unchanged", () => {
     }
   });
 });
+
+describe('the men’s pyramid runs A ↔ B ↔ C ↔ D (MS-106)', () => {
+  it('links every division to its neighbours through the loaded containers', () => {
+    const links = [
+      'brasileirao-serie-a',
+      'brasileirao-serie-b',
+      'brasileirao-serie-c',
+      'brasileirao-serie-d',
+    ].map((internalName) => {
+      const playable = init(internalName).playableChampionship;
+      return [
+        internalName,
+        playable.isPromotable ? playable.promotionChampionshipInternalName : null,
+        playable.isRelegatable ? playable.relegationChampionshipInternalName : null,
+      ];
+    });
+
+    expect(links).toEqual([
+      ['brasileirao-serie-a', null, 'brasileirao-serie-b'],
+      ['brasileirao-serie-b', 'brasileirao-serie-a', 'brasileirao-serie-c'],
+      ['brasileirao-serie-c', 'brasileirao-serie-b', 'brasileirao-serie-d'],
+      ['brasileirao-serie-d', 'brasileirao-serie-c', null],
+    ]);
+  });
+
+  it('sends Série B’s bottom 4 to Série C and takes 4 back when Série B is played', () => {
+    const container = init('brasileirao-serie-b');
+    const bottomOfB = container.playableChampionship.standings
+      .slice(-4)
+      .map((standing) => standing.team.id);
+
+    const rolled = ChampionshipService.runEndOfChampionshipActions({
+      playableChampionship: finishSeason(container.playableChampionship),
+      promotionChampionship: finishSeason(container.promotionChampionship!),
+      relegationChampionship: container.relegationChampionship,
+    }).getResult();
+
+    const serieB = rolled.playableChampionship.teams.map((team) => team.id);
+    const serieC = rolled.relegationChampionship!.teams.map((team) => team.id);
+    const cameUp = serieB.filter((id) =>
+      container.relegationChampionship!.teams.some((team) => team.id === id)
+    );
+
+    expect(bottomOfB.every((id) => serieC.includes(id))).toBe(true);
+    expect(bottomOfB.some((id) => serieB.includes(id))).toBe(false);
+    expect(cameUp).toHaveLength(4);
+    expect(serieB).toHaveLength(20);
+    expect(serieC).toHaveLength(20);
+    // Série C's next season is its real format again, not Série B's round-robin.
+    expect(rolled.relegationChampionship!.phases).toHaveLength(3);
+  });
+});

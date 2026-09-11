@@ -1,5 +1,7 @@
 import { beforeAll, describe, expect, it } from '@jest/globals';
+import { Team } from '../../../src/domain/models/Team';
 import { allTeamIds, counts, init, rollOver, useUniqueTeamIds } from '../../support/seasonHarness';
+import { ScriptedSeason } from '../../support/scriptedSeason';
 
 beforeAll(useUniqueTeamIds);
 
@@ -142,5 +144,125 @@ describe('season roll-over — the men’s divisions are untouched', () => {
     expect(after.playableChampionship.phases).toBeUndefined();
     expect(after.playableChampionship.type).toBe('double-round-robin');
     expect(after.playableChampionship.matchContainer.totalRounds).toBe(38);
+  });
+});
+
+describe('the men’s containers load their real neighbours (MS-106)', () => {
+  const neighbours = (internalName: string) => {
+    const container = init(internalName);
+    return {
+      promotion: container.promotionChampionship?.internalName,
+      relegation: container.relegationChampionship?.internalName,
+    };
+  };
+
+  it('loads Série A with Série B below', () => {
+    expect(neighbours('brasileirao-serie-a')).toEqual({
+      promotion: undefined,
+      relegation: 'brasileirao-serie-b',
+    });
+  });
+
+  it('loads Série B between Série A and Série C', () => {
+    expect(neighbours('brasileirao-serie-b')).toEqual({
+      promotion: 'brasileirao-serie-a',
+      relegation: 'brasileirao-serie-c',
+    });
+  });
+
+  it('loads Série C between Série B and Série D', () => {
+    expect(neighbours('brasileirao-serie-c')).toEqual({
+      promotion: 'brasileirao-serie-b',
+      relegation: 'brasileirao-serie-d',
+    });
+  });
+
+  it('loads Série D with only Série C above — it relegates nobody', () => {
+    expect(neighbours('brasileirao-serie-d')).toEqual({
+      promotion: 'brasileirao-serie-c',
+      relegation: undefined,
+    });
+  });
+});
+
+/**
+ * Indexes of `after` still holding the club `before` had there. Série D deals its groups in list
+ * order, so a kept index is a kept group slot.
+ */
+function keptSlots(before: Team['id'][], after: Team['id'][]): number {
+  return before.filter((id, index) => after[index] === id).length;
+}
+
+describe('season roll-over — the men’s lower divisions, played for three seasons', () => {
+  describe('with the human in Série D (D plays, C is its promotion neighbour)', () => {
+    const sizes: Record<string, number>[] = [];
+    const slotsKept: number[] = [];
+    const exchanged: number[] = [];
+
+    beforeAll(() => {
+      const season = new ScriptedSeason('brasileirao-serie-d');
+      for (let year = 0; year < 3; year++) {
+        const before = season.championship.teams.map((team) => team.id);
+        const next = season.playSeasonAndRollOver();
+        const after = next.playableChampionship.teams.map((team) => team.id);
+
+        sizes.push(counts(next));
+        slotsKept.push(keptSlots(before, after));
+        exchanged.push(after.filter((id) => !before.includes(id)).length);
+      }
+    });
+
+    it('keeps D at 64 and C at 20 every season', () => {
+      expect(sizes).toEqual(
+        Array(3).fill({ 'brasileirao-serie-d': 64, 'brasileirao-serie-c': 20 })
+      );
+    });
+
+    it('exchanges 4 clubs and keeps the other 60 in their group slots', () => {
+      expect(exchanged).toEqual([4, 4, 4]);
+      expect(slotsKept).toEqual([60, 60, 60]);
+    });
+  });
+
+  describe('with the human in Série C (C plays; B above, D below as an AI division)', () => {
+    const sizes: Record<string, number>[] = [];
+    const slotsKept: number[] = [];
+    const idsPerSeason: string[][] = [];
+
+    beforeAll(() => {
+      const season = new ScriptedSeason('brasileirao-serie-c');
+      idsPerSeason.push(allTeamIds(season.container));
+      for (let year = 0; year < 3; year++) {
+        const before = season.container.relegationChampionship!.teams.map((team) => team.id);
+        const next = season.playSeasonAndRollOver();
+        const after = next.relegationChampionship!.teams.map((team) => team.id);
+
+        sizes.push(counts(next));
+        slotsKept.push(keptSlots(before, after));
+        idsPerSeason.push(allTeamIds(next));
+      }
+    });
+
+    it('keeps C at 20, B at 20 and D at 64 every season', () => {
+      expect(sizes).toEqual(
+        Array(3).fill({
+          'brasileirao-serie-c': 20,
+          'brasileirao-serie-b': 20,
+          'brasileirao-serie-d': 64,
+        })
+      );
+    });
+
+    it('keeps D’s 60 non-exchanged clubs in their group slots while D is the AI neighbour', () => {
+      expect(slotsKept).toEqual([60, 60, 60]);
+    });
+
+    it('never duplicates or loses a club across the three divisions', () => {
+      const initial = new Set(idsPerSeason[0]);
+      for (const ids of idsPerSeason) {
+        expect(new Set(ids).size).toBe(20 + 20 + 64);
+        for (const id of ids) expect(initial.has(id)).toBe(true);
+      }
+    });
   });
 });
