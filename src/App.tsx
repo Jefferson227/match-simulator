@@ -6,8 +6,6 @@ import InitialScreen from './presentation/pages/InitialScreen/InitialScreen';
 import LeagueTypeSelector from './presentation/pages/LeagueTypeSelector/LeagueTypeSelector';
 import CoachCreator from './presentation/pages/CoachCreator/CoachCreator';
 import TeamAssigner from './presentation/pages/TeamAssigner/TeamAssigner';
-import ChampionshipSelector from './presentation/pages/ChampionshipSelector/ChampionshipSelector';
-import TeamSelector from './presentation/pages/TeamSelector/TeamSelector';
 import { useGameEngine } from './presentation/contexts/GameEngineContext';
 import { useGameState } from './services/useGameState';
 import TeamManager from './presentation/pages/TeamManager/TeamManager';
@@ -30,10 +28,6 @@ const AppContent: FC = () => {
       return <CoachCreator />;
     case 'TeamAssigner':
       return <TeamAssigner />;
-    case 'ChampionshipSelector':
-      return <ChampionshipSelector />;
-    case 'TeamSelector':
-      return <TeamSelector />;
     case 'TeamManager':
       return <TeamManager />;
     case 'MatchSimulator':

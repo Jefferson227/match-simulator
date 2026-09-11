@@ -48,14 +48,6 @@
     "yourTeamIs": "{{coachName}}, SEU TIME É:",
     "startGame": "INICIAR JOGO"
   },
-  "championshipSelector": {
-    "selectChampionship": "SELECIONAR LIGA",
-    "goBack": "VOLTAR",
-    "noChampionshipsAvailable": "NENHUMA LIGA DISPONÍVEL"
-  },
-  "teamSelector": {
-    "selectATeam": "SELECIONE UM TIME"
-  },
   "standings": {
     "group": "GRUPO {{number}}",
     "aggregate": "AGREG",

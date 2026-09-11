@@ -48,14 +48,6 @@
     "yourTeamIs": "{{coachName}}, YOUR TEAM IS:",
     "startGame": "START GAME"
   },
-  "championshipSelector": {
-    "selectChampionship": "SELECT CHAMPIONSHIP",
-    "goBack": "GO BACK",
-    "noChampionshipsAvailable": "NO CHAMPIONSHIPS AVAILABLE"
-  },
-  "teamSelector": {
-    "selectATeam": "SELECT A TEAM"
-  },
   "standings": {
     "group": "GROUP {{number}}",
     "aggregate": "AGG",
