@@ -307,8 +307,8 @@ function resetChampionshipForNewSeason(championship: Championship, teams: Team[]
     championship.matchContainer.currentSeason || nextSeasonMatchContainer.currentSeason;
 
   // `initialisePhaseState` zeroes `currentPhaseIndex`, `survivingTeamIds`, `phaseParticipants`,
-  // `accumulatedStandings` and `firstPhaseStandings`, so a shape change carries no phase state of
-  // the shape it replaced.
+  // `accumulatedStandings`, `firstPhaseStandings` and `phaseStandings`, so a shape change carries no
+  // phase state of the shape it replaced.
   return initialisePhaseState({
     ...championship,
     phases,
@@ -366,7 +366,10 @@ function selectPhasesForFieldSize(
  *
  * Exported so the selection boundaries can be pinned directly; the roll-over is the only caller.
  */
-export function selectPhases(championship: Championship, teams: Team[]): ChampionshipPhase[] | undefined {
+export function selectPhases(
+  championship: Championship,
+  teams: Team[]
+): ChampionshipPhase[] | undefined {
   return selectPhasesForFieldSize(championship, teams.length);
 }
 

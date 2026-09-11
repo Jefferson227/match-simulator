@@ -439,5 +439,6 @@ export function initialisePhaseState(championship: Championship): Championship {
     phaseParticipants: [],
     accumulatedStandings: [],
     firstPhaseStandings: undefined,
+    phaseStandings: [],
   };
 }

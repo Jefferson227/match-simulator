@@ -10,8 +10,11 @@ import { createMatches } from '../../../../src/domain/features/fixture-generatio
 import {
   groupsOfPhase,
   initialisePhaseState,
+  isPhaseComplete,
+  isPhasedChampionshipOver,
   seedingForNextPhase,
 } from '../../../../src/domain/features/phases/PhaseProgression';
+import { buildPhaseView } from '../../../../src/domain/features/phases/PhaseView';
 import { RandomProvider } from '../../../../src/domain/features/match-simulation/types';
 
 const rng: RandomProvider = { nextInt: (min) => min };
@@ -353,5 +356,100 @@ describe('phase progression — declared crossings and a re-seeded phase', () =>
   it('plays the re-seeded final to a champion', () => {
     expect(tiePairs(season, 3)).toEqual([[1, 2]]);
     expect(season.survivingTeamIds).toEqual(['team-001']);
+  });
+});
+
+describe('MS-106 audit — the code around a round-robin at phase index > 0', () => {
+  const atSecondPhase = playUntil(buildChampionship(20, serieCShape), lowerNumberWins, inPhase(1));
+  const finished = playUntil(atSecondPhase, lowerNumberWins);
+
+  it('initialisePhaseState clears the per-phase tables of the previous season', () => {
+    expect(finished.phaseStandings?.length).toBe(3);
+
+    const reset = initialisePhaseState(finished);
+    expect(reset.phaseStandings).toEqual([]);
+    expect(reset.firstPhaseStandings).toBeUndefined();
+  });
+
+  it('PhaseView shows the 2ª Fase as two group tables, not a bracket', () => {
+    const view = buildPhaseView(atSecondPhase);
+
+    expect(view).toMatchObject({
+      isPhased: true,
+      phaseIndex: 1,
+      phaseName: '2ª Fase',
+      kind: 'round-robin',
+      roundInPhase: 1,
+      roundsInPhase: 6,
+    });
+    expect(view.ties).toBeUndefined();
+    expect(
+      view.groups?.map((group) =>
+        group.standings.map((row) => number(row.team)).sort((a, b) => a - b)
+      )
+    ).toEqual([
+      [1, 4, 5, 8],
+      [2, 3, 6, 7],
+    ]);
+  });
+
+  it('isPhasedChampionshipOver stays false through a round-robin that is not the last phase', () => {
+    const endOfSecondPhase = playUntil(atSecondPhase, lowerNumberWins, inPhase(2));
+
+    expect(isPhasedChampionshipOver(atSecondPhase)).toBe(false);
+    expect(isPhaseComplete(endOfSecondPhase.matchContainer.rounds, 1)).toBe(true);
+    expect(isPhasedChampionshipOver(endOfSecondPhase)).toBe(false);
+    expect(isPhasedChampionshipOver(finished)).toBe(true);
+  });
+
+  it('the AI catch-up plays a Série C-shaped division through its later round-robin to a champion', () => {
+    // A 4-club, 2-phase playable division: its phase boundary after round 3 is a sync point.
+    const playable = buildChampionship(4, [
+      {
+        kind: 'round-robin',
+        name: '1ª Fase',
+        numberOfGroups: 1,
+        teamsPerGroup: 4,
+        legs: 1,
+        advancingPerGroup: 2,
+      },
+      {
+        kind: 'knockout',
+        name: 'Final',
+        numberOfTies: 1,
+        legs: 2,
+        secondLegHost: 'higher-seed',
+        tiebreakers: ['goal-difference', 'penalties'],
+      },
+    ]);
+    let container: ChampionshipContainer = {
+      playableChampionship: playable,
+      relegationChampionship: buildChampionship(20, serieCShape),
+    };
+
+    let seed = 0;
+    const varied: RandomProvider = {
+      nextInt: (min, max) => min + ((((seed += 1) * 7919 + 104729) % 10007) % (max - min + 1)),
+    };
+    for (let round = 0; round < 3; round++) {
+      const started = ChampionshipService.startRoundForAllChampionships(container);
+      const ended = ChampionshipService.endRoundForAllChampionships(started.getResult(), {
+        rng: varied,
+      });
+      if (!ended.succeeded) throw new Error(ended.error?.message);
+      container = ended.getResult();
+    }
+
+    const ai = container.relegationChampionship!;
+    expect(container.playableChampionship.currentPhaseIndex).toBe(1);
+    expect(isPhasedChampionshipOver(ai)).toBe(true);
+    expect(ai.matchContainer.rounds.map((round) => round.phaseIndex)).toEqual([
+      ...Array(19).fill(0),
+      ...Array(6).fill(1),
+      2,
+      2,
+    ]);
+    expect(ai.survivingTeamIds).toHaveLength(1);
+    expect(ai.phaseStandings?.[1]).toHaveLength(8);
   });
 });
