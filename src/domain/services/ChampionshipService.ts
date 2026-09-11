@@ -704,6 +704,31 @@ const getTeamControlledByHuman = (championship: Championship): OperationResult<T
   }
 };
 
+/** Draws the human player's club uniformly from every club in the championship. */
+const drawTeamForHumanPlayer = (
+  championship: Championship,
+  dependencies: ChampionshipServiceDependencies = {}
+): OperationResult<Team> => {
+  try {
+    const { rng } = { ...defaultDependencies, ...dependencies };
+    const { teams } = championship;
+    if (teams.length === 0) throw new Error('Championship has no teams to draw from.');
+
+    const result = new OperationResult<Team>(teams[rng.nextInt(0, teams.length - 1)]);
+    result.setSuccess();
+    return result;
+  } catch (error) {
+    const result = new OperationResult<Team>({} as Team);
+    const message = error instanceof Error ? error.message : String(error);
+    result.setError({
+      errorCode: 'exception',
+      message,
+    });
+
+    return result;
+  }
+};
+
 const getMatchesForCurrentRound = (championship: Championship): OperationResult<Match[]> => {
   try {
     const currentRoundNumber = championship.matchContainer.currentRound;
@@ -910,6 +935,7 @@ export default {
   getPhaseView,
   getChampionships,
   getTeamControlledByHuman,
+  drawTeamForHumanPlayer,
   getMatchesForCurrentRound,
   startRoundForAllChampionships,
   endRoundForAllChampionships,

@@ -191,3 +191,83 @@ describe('ChampionshipService.runEndOfChampionshipActions', () => {
     expect(result.getResult()).toEqual(championshipContainer);
   });
 });
+
+describe('ChampionshipService.drawTeamForHumanPlayer', () => {
+  const teams = [buildTeam('a', 'AAA'), buildTeam('b', 'BBB'), buildTeam('c', 'CCC')];
+  const championship = buildChampionship({
+    id: 'entry',
+    name: 'Entry Division',
+    internalName: 'entry',
+    teams,
+    currentRound: 1,
+    totalRounds: 4,
+  });
+
+  /** Always returns `pick`, recording the bounds it was asked for. */
+  const stubbedRng = (pick: (min: number, max: number) => number) => {
+    const calls: [number, number][] = [];
+    return {
+      calls,
+      rng: {
+        nextInt: (min: number, max: number) => {
+          calls.push([min, max]);
+          return pick(min, max);
+        },
+      },
+    };
+  };
+
+  it('draws the club at the index the rng returns', () => {
+    const { rng } = stubbedRng(() => 1);
+
+    const result = ChampionshipService.drawTeamForHumanPlayer(championship, { rng });
+
+    expect(result.succeeded).toBe(true);
+    expect(result.getResult()).toBe(teams[1]);
+  });
+
+  it('asks the rng for an index over the whole field, inclusive at both ends', () => {
+    const { rng, calls } = stubbedRng(() => 0);
+
+    ChampionshipService.drawTeamForHumanPlayer(championship, { rng });
+
+    expect(calls).toEqual([[0, teams.length - 1]]);
+  });
+
+  it('can draw both the first and the last club', () => {
+    const first = ChampionshipService.drawTeamForHumanPlayer(championship, {
+      rng: stubbedRng((min) => min).rng,
+    });
+    const last = ChampionshipService.drawTeamForHumanPlayer(championship, {
+      rng: stubbedRng((_min, max) => max).rng,
+    });
+
+    expect(first.getResult()).toBe(teams[0]);
+    expect(last.getResult()).toBe(teams[teams.length - 1]);
+  });
+
+  it('draws a club of the field without an injected rng', () => {
+    const result = ChampionshipService.drawTeamForHumanPlayer(championship);
+
+    expect(result.succeeded).toBe(true);
+    expect(teams).toContain(result.getResult());
+  });
+
+  it('fails when the championship has no clubs to draw from', () => {
+    const empty = buildChampionship({
+      id: 'empty',
+      name: 'Empty Division',
+      internalName: 'empty',
+      teams: [],
+      currentRound: 1,
+      totalRounds: 0,
+    });
+
+    const result = ChampionshipService.drawTeamForHumanPlayer(empty, {
+      rng: stubbedRng(() => 0).rng,
+    });
+
+    expect(result.succeeded).toBe(false);
+    expect(result.error.errorCode).toBe('exception');
+  });
+});
