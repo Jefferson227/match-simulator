@@ -4,9 +4,10 @@ import {
   bracketSeedOrder,
   buildKnockoutPhaseRounds,
   buildTies,
+  reseedOnAccumulatedPoints,
   resolveSecondLegHost,
 } from '../../../../src/domain/features/fixture-generation/KnockoutBracket';
-import { KnockoutPhase } from '../../../../src/domain/models/ChampionshipPhase';
+import { GroupSlot, KnockoutPhase } from '../../../../src/domain/models/ChampionshipPhase';
 import Standing from '../../../../src/domain/models/Standing';
 import { Team } from '../../../../src/domain/models/Team';
 
@@ -291,5 +292,270 @@ describe('buildKnockoutPhaseRounds', () => {
       [1, 4],
       [2, 3],
     ]);
+  });
+});
+
+/**
+ * Série D 2025's 2ª Fase, as REC D Anexo B prints it: groups paired A-1/A-2 … A-7/A-8, each pair
+ * giving 1ºx×4ºy, 2ºy×3ºx, 1ºy×4ºx, 2ºx×3ºy (B-1…B-16), zero-based groups.
+ */
+function serieDSecondPhaseCrossings(): [GroupSlot, GroupSlot][] {
+  const pairs: [GroupSlot, GroupSlot][] = [];
+  for (let x = 0; x < 8; x += 2) {
+    const y = x + 1;
+    pairs.push(
+      [
+        { group: x, position: 1 },
+        { group: y, position: 4 },
+      ],
+      [
+        { group: y, position: 2 },
+        { group: x, position: 3 },
+      ],
+      [
+        { group: y, position: 1 },
+        { group: x, position: 4 },
+      ],
+      [
+        { group: x, position: 2 },
+        { group: y, position: 3 },
+      ]
+    );
+  }
+  return pairs;
+}
+
+/** 32 qualifiers, 4 per group, seeded winners-first as `qualifiersFromRoundRobin` does. */
+function fourPerGroupEntrants(): BracketEntrant[] {
+  const entrants: BracketEntrant[] = [];
+  for (let groupPosition = 1; groupPosition <= 4; groupPosition++) {
+    for (let group = 0; group < 8; group++) {
+      entrants.push({
+        team: buildTeam(group * 10 + groupPosition),
+        seed: entrants.length + 1,
+        group,
+        groupPosition,
+      });
+    }
+  }
+  return entrants;
+}
+
+const serieDSecondPhase: KnockoutPhase = {
+  kind: 'knockout',
+  name: '2ª Fase',
+  numberOfTies: 16,
+  legs: 2,
+  secondLegHost: 'group-winner',
+  tiebreakers: ['goal-difference', 'penalties'],
+  crossings: { from: 'group-position', pairs: serieDSecondPhaseCrossings() },
+};
+
+/** C-1…C-8 = W(B1)×W(B6), W(B2)×W(B5), W(B3)×W(B8), W(B4)×W(B7), repeated for B9–B16. */
+const serieDThirdPhase: KnockoutPhase = {
+  kind: 'knockout',
+  name: '3ª Fase',
+  numberOfTies: 8,
+  legs: 2,
+  secondLegHost: 'accumulated-points',
+  tiebreakers: ['goal-difference', 'penalties'],
+  crossings: {
+    from: 'previous-ties',
+    pairs: [
+      [0, 5],
+      [1, 4],
+      [2, 7],
+      [3, 6],
+      [8, 13],
+      [9, 12],
+      [10, 15],
+      [11, 14],
+    ],
+  },
+};
+
+const slot = (entrant: BracketEntrant) => `${entrant.group}:${entrant.groupPosition}`;
+
+describe('buildTies — group-position crossings (REC D Art. 17, Anexo B)', () => {
+  const ties = buildTies(fourPerGroupEntrants(), serieDSecondPhase, 'crossings', 1);
+
+  it('builds the 16 ties exactly as declared, in declared order', () => {
+    const declared = serieDSecondPhaseCrossings().map((pair) =>
+      pair.map((groupSlot) => `${groupSlot.group}:${groupSlot.position}`).sort()
+    );
+
+    expect(ties.map((tie) => [slot(tie.firstLegHost), slot(tie.secondLegHost)].sort())).toEqual(
+      declared
+    );
+    expect(ties.map((tie) => tie.id)).toEqual(Array.from({ length: 16 }, (_, i) => `p1-t${i}`));
+  });
+
+  it('opens with B-1 = 1º A-1 × 4º A-2 and B-2 = 2º A-2 × 3º A-1', () => {
+    expect([ties[0].firstLegHost, ties[0].secondLegHost].map(slot).sort()).toEqual(['0:1', '1:4']);
+    expect([ties[1].firstLegHost, ties[1].secondLegHost].map(slot).sort()).toEqual(['0:3', '1:2']);
+  });
+
+  it('gives the second leg to the 1º/2º club of every tie (REC D Art. 21 §1)', () => {
+    for (const tie of ties) {
+      expect(tie.secondLegHost.groupPosition).toBeLessThanOrEqual(2);
+      expect(tie.firstLegHost.groupPosition).toBeGreaterThanOrEqual(3);
+    }
+  });
+
+  it('uses every qualifier exactly once', () => {
+    const ids = ties.flatMap((tie) => [tie.firstLegHost.team.id, tie.secondLegHost.team.id]);
+    expect(new Set(ids).size).toBe(32);
+  });
+});
+
+describe('buildTies — previous-ties crossings (REC D Art. 17, Anexo B)', () => {
+  const winners: BracketEntrant[] = Array.from({ length: 16 }, (_, tie) => ({
+    team: buildTeam(100 + tie),
+    seed: tie + 1,
+    fromTie: tie,
+  }));
+
+  it('pairs the winners of the declared ties, not adjacent ones', () => {
+    const ties = buildTies(winners, serieDThirdPhase, 'crossings', 2);
+
+    expect(
+      ties.map((tie) =>
+        [tie.firstLegHost.fromTie!, tie.secondLegHost.fromTie!].sort((a, b) => a - b)
+      )
+    ).toEqual([
+      [0, 5],
+      [1, 4],
+      [2, 7],
+      [3, 6],
+      [8, 13],
+      [9, 12],
+      [10, 15],
+      [11, 14],
+    ]);
+  });
+
+  it('throws when a declared tie has no winner among the entrants', () => {
+    const missing = winners.map((entrant) =>
+      entrant.fromTie === 5 ? { ...entrant, fromTie: undefined } : entrant
+    );
+
+    expect(() => buildTies(missing, serieDThirdPhase, 'crossings', 2)).toThrow(
+      /names the winner of tie 5, which no entrant holds/
+    );
+  });
+
+  it('throws when the same slot is named twice', () => {
+    const repeated: KnockoutPhase = {
+      ...serieDThirdPhase,
+      crossings: {
+        from: 'previous-ties',
+        pairs: [
+          [0, 5],
+          [5, 4],
+          [2, 7],
+          [3, 6],
+          [8, 13],
+          [9, 12],
+          [10, 15],
+          [11, 14],
+        ],
+      },
+    };
+
+    expect(() => buildTies(winners, repeated, 'crossings', 2)).toThrow(/twice/);
+  });
+
+  it('throws when a group-position slot resolves to nobody', () => {
+    const noFourths = fourPerGroupEntrants().map((entrant) =>
+      entrant.groupPosition === 4 ? { ...entrant, groupPosition: 5 } : entrant
+    );
+
+    expect(() => buildTies(noFourths, serieDSecondPhase, 'crossings', 1)).toThrow(
+      /group 1 position 4, which no entrant holds/
+    );
+  });
+
+  it('throws when a phase seeded by crossings declares none', () => {
+    const { crossings: _dropped, ...plain } = serieDThirdPhase;
+    expect(() => buildTies(winners, plain as KnockoutPhase, 'crossings', 2)).toThrow(
+      /seeded by crossings but declares none/
+    );
+  });
+});
+
+describe('buildTies — accumulated-points reseed (REC D Art. 18)', () => {
+  // The 2025 Bloco: the 3ª Fase winners in tie order, with their accumulated points.
+  const bloco: [string, number][] = [
+    ['Barra', 36],
+    ['Maranhão', 26],
+    ['Goiatuba', 29],
+    ['ASA', 41],
+    ['Santa Cruz', 32],
+    ['América-RN', 35],
+    ['Inter de Limeira', 38],
+    ['Cianorte', 30],
+  ];
+  const entrants: BracketEntrant[] = bloco.map(([name, points], index) => {
+    const team = { ...buildTeam(200 + index), shortName: name };
+    return { team, seed: index + 1, fromTie: index, accumulated: standing(team, points) };
+  });
+  const quartas: KnockoutPhase = {
+    ...quarterFinals,
+    reseed: 'accumulated-points',
+    tiebreakers: ['goal-difference', 'penalties'],
+  };
+  const ties = buildTies(entrants, quartas, 'reseed', 3);
+  const names = (tie: (typeof ties)[number]) => [
+    tie.secondLegHost.team.shortName,
+    tie.firstLegHost.team.shortName,
+  ];
+
+  it('pairs 1º×8º, 4º×5º, 2º×7º, 3º×6º of the Bloco in bracket order, as 2025 was played', () => {
+    expect(ties.map(names)).toEqual([
+      ['ASA', 'Maranhão'],
+      ['América-RN', 'Santa Cruz'],
+      ['Inter de Limeira', 'Goiatuba'],
+      ['Barra', 'Cianorte'],
+    ]);
+  });
+
+  it('renumbers seeds so the better-ranked club hosts the second leg (Art. 18 §1)', () => {
+    expect(ties.map((tie) => [tie.secondLegHost.seed, tie.firstLegHost.seed])).toEqual([
+      [1, 8],
+      [4, 5],
+      [2, 7],
+      [3, 6],
+    ]);
+  });
+
+  it('ranks entrants with an accumulated table ahead of any without one', () => {
+    const [first, second] = reseedOnAccumulatedPoints([
+      { team: buildTeam(1), seed: 1 },
+      { team: buildTeam(2), seed: 2, accumulated: standing(buildTeam(2), 3) },
+    ]);
+    expect(first.team.id).toBe('team-2');
+    expect(second.seed).toBe(2);
+  });
+});
+
+describe('resolveSecondLegHost — group-winner by better placing (REC D Art. 21 §1)', () => {
+  const at = (index: number, seed: number, groupPosition?: number): BracketEntrant => ({
+    team: buildTeam(index),
+    seed,
+    groupPosition,
+  });
+
+  it('gives 1º the second leg against 4º, whatever the seeds', () => {
+    expect(resolveSecondLegHost(at(1, 20, 4), at(2, 3, 1), 'group-winner').team.id).toBe('team-2');
+    expect(resolveSecondLegHost(at(2, 3, 1), at(1, 20, 4), 'group-winner').team.id).toBe('team-2');
+  });
+
+  it('gives 2º the second leg against 3º', () => {
+    expect(resolveSecondLegHost(at(1, 9, 3), at(2, 12, 2), 'group-winner').team.id).toBe('team-2');
+  });
+
+  it('falls back to the seed on equal or unknown placings', () => {
+    expect(resolveSecondLegHost(at(1, 7, 3), at(2, 4, 3), 'group-winner').team.id).toBe('team-2');
+    expect(resolveSecondLegHost(at(1, 2, 1), at(2, 4), 'group-winner').team.id).toBe('team-1');
   });
 });

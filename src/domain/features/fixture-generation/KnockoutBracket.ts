@@ -8,7 +8,7 @@ import Match from '../../models/Match';
 import Round from '../../models/Round';
 import Standing from '../../models/Standing';
 import { Team } from '../../models/Team';
-import { KnockoutPhase, SecondLegHost } from '../../models/ChampionshipPhase';
+import { KnockoutCrossings, KnockoutPhase, SecondLegHost } from '../../models/ChampionshipPhase';
 import { compareStandings } from '../standings/StandingsComparator';
 import { RandomProvider } from '../match-simulation/types';
 
@@ -23,6 +23,11 @@ export type BracketEntrant = {
   groupPosition?: number;
   /** Points and goals summed across every phase played so far. Drives `accumulated-points`. */
   accumulated?: Standing;
+  /**
+   * Zero-based index of the previous knockout phase's tie this club won. Only set after a knockout;
+   * `previous-ties` crossings resolve entrants by it.
+   */
+  fromTie?: number;
 };
 
 export type Tie = {
@@ -48,8 +53,12 @@ export type Tie = {
  *   of ties *2i* and *2i+1* meet (A1 Art. 20: the semifinal pairings are fixed by bracket).
  * - `draw` — the cups' public draw: the *n*-th club is paired with the *(N+1−n)*-th within the phase
  *   (Copa Anexo B). Any club may face any other; there is no bracket to protect.
+ * - `crossings` — the pairings the phase declares in `crossings`, copied from the REC's Anexo B
+ *   (Série D's 2ª and 3ª Fases, Série C's final).
+ * - `reseed` — the entrants re-ranked on accumulated points, then paired as a `table` (Série D's
+ *   quarter-final "Bloco", REC D Art. 18).
  */
-export type BracketSeeding = 'table' | 'groups' | 'bracket' | 'draw';
+export type BracketSeeding = 'table' | 'groups' | 'bracket' | 'draw' | 'crossings' | 'reseed';
 
 /**
  * Standard bracket order for `size` seeds: `[1, 8, 4, 5, 2, 7, 3, 6]` for 8. Reading it in pairs
@@ -138,6 +147,68 @@ function pairsFromGroups(entrants: BracketEntrant[]): [BracketEntrant, BracketEn
   return [...winnerFirst, ...winnerSecond];
 }
 
+/**
+ * Pairs the entrants exactly as the phase's `crossings` declare, in declared order. The repository
+ * already rejects a crossing the previous phase cannot produce; this throws too, so a malformed
+ * season can never be generated silently.
+ */
+function pairsFromCrossings(
+  entrants: BracketEntrant[],
+  crossings: KnockoutCrossings
+): [BracketEntrant, BracketEntrant][] {
+  const used = new Set<BracketEntrant>();
+
+  const take = (entrant: BracketEntrant | undefined, label: string): BracketEntrant => {
+    if (!entrant) throw new Error(`Crossing names ${label}, which no entrant holds.`);
+    if (used.has(entrant)) throw new Error(`Crossing names ${label} twice.`);
+    used.add(entrant);
+    return entrant;
+  };
+
+  if (crossings.from === 'group-position') {
+    return crossings.pairs.map(
+      (pair) =>
+        pair.map((slot) =>
+          take(
+            entrants.find(
+              (entrant) => entrant.group === slot.group && entrant.groupPosition === slot.position
+            ),
+            `group ${slot.group} position ${slot.position}`
+          )
+        ) as [BracketEntrant, BracketEntrant]
+    );
+  }
+
+  return crossings.pairs.map(
+    (pair) =>
+      pair.map((tieIndex) =>
+        take(
+          entrants.find((entrant) => entrant.fromTie === tieIndex),
+          `the winner of tie ${tieIndex}`
+        )
+      ) as [BracketEntrant, BracketEntrant]
+  );
+}
+
+/**
+ * Re-ranks the entrants on points accumulated across every phase and renumbers their seeds 1..N, so
+ * `table` pairing and `higher-seed` hosting both read the new order (REC D Art. 18 §§1–2). An
+ * entrant with no accumulated table keeps its place behind those that have one, by seed.
+ */
+export function reseedOnAccumulatedPoints(entrants: BracketEntrant[]): BracketEntrant[] {
+  return [...entrants]
+    .sort((a, b) => {
+      if (a.accumulated && b.accumulated) {
+        const comparison = compareStandings(a.accumulated, b.accumulated);
+        if (comparison !== 0) return comparison;
+      } else if (a.accumulated || b.accumulated) {
+        return a.accumulated ? -1 : 1;
+      }
+      return a.seed - b.seed;
+    })
+    .map((entrant, index) => ({ ...entrant, seed: index + 1 }));
+}
+
 /** Copa Anexo B: the n-th club meets the (N+1−n)-th. */
 function pairsFromDraw(entrants: BracketEntrant[]): [BracketEntrant, BracketEntrant][] {
   const pairs: [BracketEntrant, BracketEntrant][] = [];
@@ -173,10 +244,14 @@ export function resolveSecondLegHost(
   }
 
   if (mode === 'group-winner') {
-    const firstWon = first.groupPosition === 1;
-    const secondWon = second.groupPosition === 1;
-    if (firstWon !== secondWon) return firstWon ? first : second;
-    // Both or neither won a group — fall back to the seed, which is never ambiguous.
+    // The better group placing hosts: the winner against a runner-up (A3 Art. 18), and the 1º/2º
+    // club against the 3º/4º one (REC D Art. 21 §1).
+    const firstPlace = first.groupPosition;
+    const secondPlace = second.groupPosition;
+    if (firstPlace !== undefined && secondPlace !== undefined && firstPlace !== secondPlace) {
+      return firstPlace < secondPlace ? first : second;
+    }
+    // Equal or unknown placings — fall back to the seed, which is never ambiguous.
     return first.seed <= second.seed ? first : second;
   }
 
@@ -207,14 +282,23 @@ export function buildTies(
     );
   }
 
-  const pairs =
-    seeding === 'table'
-      ? pairsFromTable(entrants)
-      : seeding === 'groups'
-        ? pairsFromGroups(entrants)
-        : seeding === 'draw'
-          ? pairsFromDraw(entrants)
-          : pairsInBracketOrder(entrants);
+  let pairs: [BracketEntrant, BracketEntrant][];
+  if (seeding === 'crossings') {
+    if (!phase.crossings) {
+      throw new Error(`Phase '${phase.name}' is seeded by crossings but declares none.`);
+    }
+    pairs = pairsFromCrossings(entrants, phase.crossings);
+  } else if (seeding === 'reseed') {
+    pairs = pairsFromTable(reseedOnAccumulatedPoints(entrants));
+  } else if (seeding === 'table') {
+    pairs = pairsFromTable(entrants);
+  } else if (seeding === 'groups') {
+    pairs = pairsFromGroups(entrants);
+  } else if (seeding === 'draw') {
+    pairs = pairsFromDraw(entrants);
+  } else {
+    pairs = pairsInBracketOrder(entrants);
+  }
 
   return pairs.map(([first, second], index) => {
     const secondLegHost = resolveSecondLegHost(first, second, phase.secondLegHost, rng);
