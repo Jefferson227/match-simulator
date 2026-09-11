@@ -3,7 +3,7 @@ title: League type selection flow
 type: decision
 ticket: MS-101
 decided: 2026
-status: implemented
+status: implemented; flow after CoachCreator superseded by MS-105
 supersedes: docs/LeagueTypeSelectorScreen.md, docs/NewFeatures.md
 asserts:
   - file: src/domain/enums/LeagueType.ts
@@ -17,6 +17,12 @@ choice filters what `ChampionshipSelector` offers.
 
 Shipped as MS-101. The implementation is in the code; this page keeps the decisions and the
 trade-offs behind them.
+
+> **Superseded by MS-105 on the flow after the league type.** `ChampionshipSelector` and
+> `TeamSelector` no longer exist. The league type now fixes the entry division (Série D or Série A3)
+> and `TeamAssigner` draws the player's club from it. The diagram and the GO BACK row below record
+> MS-101 as shipped. The league-type step itself, and why `leagueType` is required, still stand.
+> See [[ms-105-drawn-team-start]].
 
 ```
 InitialScreen

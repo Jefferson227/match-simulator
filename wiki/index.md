@@ -53,7 +53,7 @@ Why things are the way they are — the part the code cannot state.
 | Page | Ticket | Status |
 |---|---|---|
 | [[layer-boundaries]] | — | implemented |
-| [[league-type-flow]] | MS-101 | implemented |
+| [[league-type-flow]] | MS-101 | implemented; flow after CoachCreator superseded by MS-105 |
 | [[ms-102-simplifications]] | MS-102 | superseded by MS-103 |
 | [[ms-102-cups-deferred]] | MS-102 | resolved — both cups seeded |
 | [[ms-103-a1-club-count-growth]] | MS-103 | implemented; superseded on A3's shape by MS-104 |
@@ -61,6 +61,7 @@ Why things are the way they are — the part the code cannot state.
 | [[ms-103-simulated-shootout]] | MS-103 | implemented |
 | [[ms-104-a3-group-shape-schedule]] | MS-104 | implemented; **wholly inference** |
 | [[ms-106-mens-lower-divisions]] | MS-106 | implemented; post-2025 seasons are inference |
+| [[ms-105-drawn-team-start]] | MS-105 | implemented; leaves container re-centring to MS-107 |
 
 ## Raw
 
@@ -77,10 +78,11 @@ Things named across these pages that nothing currently owns:
 - Libertadores qualification via the Copa is **not verified** — outside MS-102's brief.
 - ~~No page covers the men's competitions~~ — **closed by MS-106** for Série C and D; Série A and B
   still have none.
-- **Container re-centring after promotion or relegation**, men's and women's. The container stays
-  centred on the division the human started in, and `TeamManager` reads the human's club from
-  `playableChampionship`. So a human promoted or relegated out of that division is not followed.
-  This is a pre-existing gap and has no ticket. See [[ms-106-mens-lower-divisions]].
+- **Container re-centring after promotion or relegation**, men's and women's — **raised as
+  MS-107.** The container stays centred on the division the human started in, and `TeamManager`
+  reads the human's club from `playableChampionship`. So a human promoted or relegated out of that
+  division is not followed. Since MS-105 every game starts in the bottom division, so **every
+  promoted player hits this**. See [[ms-105-drawn-team-start]] and [[ms-106-mens-lower-divisions]].
 - **The men's Série A and B strengths overlap** (A's floor 55 is below B's ceiling 75). C and D sit
   strictly below B. No ticket. See [[invented-data]].
 - **A1 2027's club count is inference, not regulation**, and so is A2's route to 20. See

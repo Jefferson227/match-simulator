@@ -260,3 +260,26 @@ pinned expectation in the pre-existing suite changed.
 - Head-to-head and card tiebreakers; the RECs' final-classification tiers.
 - Every men's season after 2025 plays 2025 rules; CBF's 2026 formats are not modelled.
 - Série A/B strength overlap in the pre-existing seed.
+
+## [2026-09-11] ingest | MS-105 — every new game starts in a drawn bottom-division club
+
+sha 5ee3480
+
+`TeamAssigner` now draws the player's club from the league type's entry division — Série D for men,
+Série A3 for women — and `ChampionshipSelector` and `TeamSelector` are gone. No external evidence;
+this entry files a decision.
+
+- New decision: [[ms-105-drawn-team-start]] — why the start is the bottom division, why the draw
+  replaced both selector screens (and why their read APIs stay), and that starting at the bottom
+  makes the container re-centring gap the path of every promoted player. Asserts the entry-division
+  constant file and that neither entry division relegates.
+- [[league-type-flow]]: marked superseded by MS-105 on the flow after the league type; MS-101's
+  rationale left intact.
+- [[ms-106-mens-lower-divisions]]: its re-centring note now points at MS-107.
+- [[index]]: new decision row, MS-101's status amended, and the re-centring thread now names
+  MS-107.
+
+### Left open
+
+- Container re-centring after promotion or relegation — **MS-107**, drafted by MS-105 for the user
+  to file.

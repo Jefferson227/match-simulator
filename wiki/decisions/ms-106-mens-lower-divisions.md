@@ -111,7 +111,8 @@ data it decides who is relegated from Série C; see [[tiebreakers]].
 - **Container re-centring.** After the human's club is promoted or relegated, the championship
   container still centres on the division the human started in. `TeamManager` reads the human club
   from `playableChampionship`. This is a pre-existing gap and affects the women's pyramid too. It is
-  out of MS-106's scope and listed as an open thread on [[index]].
+  out of MS-106's scope and listed as an open thread on [[index]]. MS-105 made it the path of every
+  promoted player and raised it as MS-107; see [[ms-105-drawn-team-start]].
 - **Head-to-head and card tiebreakers**, and the RECs' final-classification tiers, are still not
   modelled.
 - **The men's Série A and B strengths overlap** (A's floor 55 is below B's ceiling 75). Only C and D
