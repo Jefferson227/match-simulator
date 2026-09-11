@@ -3,7 +3,8 @@
  *
  * Finishing the last round of a phase does not end the competition — it resolves that phase: rank
  * the table, take the qualifiers, zero the standings, and generate the next phase's fixtures.
- * Every phase restarts at zero points (REC A1 Art. 12 par. único, A2 Art. 11, A3 Art. 11).
+ * Every phase restarts at zero points (REC A1 Art. 12 par. único, A2 Art. 11, A3 Art. 11, Série C
+ * Art. 12, Série D Art. 13).
  */
 import { Championship } from '../../models/Championship';
 import ChampionshipPhase, {
@@ -22,6 +23,7 @@ import {
   BracketSeeding,
   buildKnockoutPhaseRounds,
 } from '../fixture-generation/KnockoutBracket';
+import { buildRoundRobinPhaseRounds } from '../fixture-generation/FixtureGenerator';
 import { groupMatchesIntoTies, resolveTie, TieOutcome } from './TieResolution';
 import { simulatePenaltyShootout } from './PenaltyShootoutSimulator';
 
@@ -231,6 +233,7 @@ function entrantsFromOutcomes(outcomes: TieOutcome[], accumulated: Standing[]): 
   return outcomes.map((outcome, index) => ({
     team: outcome.winner,
     seed: index + 1,
+    fromTie: index,
     accumulated: accumulatedFor(accumulated, outcome.winner.id),
   }));
 }
@@ -242,6 +245,9 @@ export function seedingForNextPhase(
 ): BracketSeeding {
   // The cups draw their pairings afresh at every phase, so there is no bracket to carry through.
   if (next?.kind === 'knockout' && next.secondLegHost === 'drawn') return 'draw';
+  // A regulation that prints its pairings, or re-ranks the survivors, overrides the default rules.
+  if (next?.kind === 'knockout' && next.crossings) return 'crossings';
+  if (next?.kind === 'knockout' && next.reseed) return 'reseed';
   if (completed.kind === 'knockout') return 'bracket';
   return completed.numberOfGroups > 1 ? 'groups' : 'table';
 }
@@ -279,6 +285,8 @@ export function resolveCompletedPhase(
   );
 
   const phaseMatches = matchesOfPhase(rounds, phaseIndex);
+  const standingsHistory = [...(championship.phaseStandings ?? [])];
+  standingsHistory[phaseIndex] = phaseStandings;
   const participants = [...(championship.phaseParticipants ?? [])];
   participants[phaseIndex] = phaseStandings.length
     ? phaseStandings.map((standing) => standing.team.id)
@@ -304,6 +312,7 @@ export function resolveCompletedPhase(
     ...championship,
     accumulatedStandings: accumulated,
     phaseParticipants: participants,
+    phaseStandings: standingsHistory,
     survivingTeamIds: entrants.map((entrant) => entrant.team.id),
     firstPhaseStandings:
       phaseIndex === 0 ? phaseStandings : (championship.firstPhaseStandings ?? phaseStandings),
@@ -314,12 +323,6 @@ export function resolveCompletedPhase(
   if (!nextPhase) {
     // The final is decided; the competition is over. `isChampionshipOver` reads this.
     return base;
-  }
-
-  if (nextPhase.kind !== 'knockout') {
-    throw new Error(
-      `Phase '${nextPhase.name}' is a ${nextPhase.kind} phase following phase ${phaseIndex}; only knockout phases can follow another phase.`
-    );
   }
 
   // Staggered entry: a cup's clubs join at different phases, so the next phase's field is the
@@ -335,14 +338,24 @@ export function resolveCompletedPhase(
   ];
 
   const lastRoundNumber = updatedRounds.reduce((last, round) => Math.max(last, round.number), 0);
-  const { rounds: nextRounds } = buildKnockoutPhaseRounds(
-    field,
-    nextPhase,
-    seedingForNextPhase(phase, nextPhase),
-    phaseIndex + 1,
-    lastRoundNumber + 1,
-    deps.rng
-  );
+  // A round-robin can follow another phase too — Série C's 2ª Fase groups are dealt from the 1ª Fase
+  // top 8 in rank order (REC C Art. 13). The field is already ordered best first.
+  const nextRounds =
+    nextPhase.kind === 'round-robin'
+      ? buildRoundRobinPhaseRounds(
+          field.map((entrant) => entrant.team),
+          nextPhase,
+          phaseIndex + 1,
+          lastRoundNumber + 1
+        )
+      : buildKnockoutPhaseRounds(
+          field,
+          nextPhase,
+          seedingForNextPhase(phase, nextPhase),
+          phaseIndex + 1,
+          lastRoundNumber + 1,
+          deps.rng
+        ).rounds;
 
   const allRounds = [...updatedRounds, ...nextRounds];
 
