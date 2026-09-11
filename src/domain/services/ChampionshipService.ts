@@ -343,6 +343,30 @@ function removeTeams(sourceTeams: Team[], teamsToRemove: Team[]): Team[] {
   return sourceTeams.filter((team) => !teamsToRemoveIds.has(team.id));
 }
 
+/**
+ * A division's team list for next season: the outgoing clubs leave and the incoming ones join.
+ *
+ * By default the incoming clubs are appended. A division declaring `rolloverSlotting:
+ * 'replace-in-place'` puts each incoming club, in order, at the list position an outgoing club
+ * vacated, so every other club keeps its position — and, since groups are dealt in declared order,
+ * its group. Surplus incoming clubs are appended; if fewer arrive than leave, the gaps close up.
+ * Série D keeps its 60 non-exchanged clubs in their regional groups this way; where the newcomers land
+ * is invented (`wiki/concepts/invented-data.md`).
+ */
+function exchangeTeams(championship: Championship, outgoing: Team[], incoming: Team[]): Team[] {
+  if (championship.rolloverSlotting !== 'replace-in-place') {
+    return [...removeTeams(championship.teams, outgoing), ...incoming];
+  }
+
+  const outgoingIds = new Set(outgoing.map((team) => team.id));
+  const queue = [...incoming];
+  const slotted = championship.teams
+    .map((team) => (outgoingIds.has(team.id) ? queue.shift() : team))
+    .filter((team): team is Team => team !== undefined);
+
+  return [...slotted, ...queue];
+}
+
 function resetChampionshipForNewSeason(championship: Championship, teams: Team[]): Championship {
   // The shape is chosen before the fixtures are generated, so both the new season's rounds and the
   // championship that carries them describe the same competition.
@@ -533,11 +557,11 @@ function runEndOfChampionshipActionsForAllChampionships(
         )
       : [];
 
-  const nextPlayableTeams = [
-    ...removeTeams(playableChampionship.teams, [...promotedTeams, ...relegatedTeams]),
-    ...relegatedFromPromotion,
-    ...promotedFromRelegation,
-  ];
+  const nextPlayableTeams = exchangeTeams(
+    playableChampionship,
+    [...promotedTeams, ...relegatedTeams],
+    [...relegatedFromPromotion, ...promotedFromRelegation]
+  );
 
   const updatedContainer: ChampionshipContainer = {
     ...championshipContainer,
@@ -545,16 +569,16 @@ function runEndOfChampionshipActionsForAllChampionships(
   };
 
   if (promotionChampionship && playableChampionship.isPromotable) {
-    updatedContainer.promotionChampionship = resetChampionshipForNewSeason(promotionChampionship, [
-      ...removeTeams(promotionChampionship.teams, relegatedFromPromotion),
-      ...promotedTeams,
-    ]);
+    updatedContainer.promotionChampionship = resetChampionshipForNewSeason(
+      promotionChampionship,
+      exchangeTeams(promotionChampionship, relegatedFromPromotion, promotedTeams)
+    );
   }
 
   if (relegationChampionship && playableChampionship.isRelegatable) {
     updatedContainer.relegationChampionship = resetChampionshipForNewSeason(
       relegationChampionship,
-      [...removeTeams(relegationChampionship.teams, promotedFromRelegation), ...relegatedTeams]
+      exchangeTeams(relegationChampionship, promotedFromRelegation, relegatedTeams)
     );
   }
 
