@@ -5,7 +5,7 @@ import LeagueType from '../enums/LeagueType';
 import { Team } from './Team';
 import MatchContainer from './MatchContainer';
 
-export type PromotionRule = 'table-position' | 'semifinalists';
+export type PromotionRule = 'table-position' | 'semifinalists' | 'phase-group-position';
 
 export type RelegationRule = 'table-position' | 'first-phase-table-position';
 
@@ -69,6 +69,19 @@ type BaseChampionship = {
    */
   firstPhaseStandings?: Standing[];
   /**
+   * Each completed phase's ranked table, indexed by phase, held before the standings are zeroed.
+   * Generalises `firstPhaseStandings`, which is kept for the rules already reading it. Série C
+   * promotes off its 2ª Fase groups (REC C Art. 5º).
+   */
+  phaseStandings?: Standing[][];
+  /**
+   * How a roll-over places the incoming clubs in the team list. Absent means they are appended.
+   * `replace-in-place` — each incoming club takes the list position of an outgoing one, so a
+   * division whose groups are dealt in declared order keeps every other club in its group. Série D
+   * keeps its regional groups this way.
+   */
+  rolloverSlotting?: 'replace-in-place';
+  /**
    * The clubs that played each phase, indexed by phase. `phaseParticipants[2]` for A1 is the four
    * semifinalists — which is how A2 and A3 promote, since a semifinalist need not be near the top
    * of any table (REC A2 Art. 5º, REC A3 Art. 5º).
@@ -88,9 +101,14 @@ type Promotable = {
   /**
    * How the promoted clubs are picked. Defaults to `'table-position'` when absent.
    * `'semifinalists'` — everyone who reached the semifinal goes up, whatever their table position
-   * (Brasileirão Feminino A2 and A3). Not honoured yet; MS-103.
+   * (Brasileirão Feminino A2 and A3).
+   * `'phase-group-position'` — the top `numberOfPromotableTeams / numberOfGroups` of each group of
+   * phase `promotionPhaseIndex` go up, whatever happens after it. Série C promotes the top 2 of each
+   * 2ª Fase group, so its final awards only the title (REC C Art. 5º).
    */
   promotionRule?: PromotionRule;
+  /** The grouped round-robin phase `'phase-group-position'` reads. Required by that rule only. */
+  promotionPhaseIndex?: number;
 };
 
 type Relegatable = {
@@ -100,7 +118,7 @@ type Relegatable = {
   /**
    * Which table the relegated clubs are read off. Defaults to `'table-position'` when absent.
    * `'first-phase-table-position'` — the bottom of the 1ª Fase table, not the final classification
-   * (Brasileirão Feminino A1 and A2). Not honoured yet; MS-103.
+   * (Brasileirão Feminino A1 and A2).
    */
   relegationRule?: RelegationRule;
   /**
