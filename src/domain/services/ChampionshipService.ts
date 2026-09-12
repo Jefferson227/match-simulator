@@ -582,73 +582,148 @@ function runEndOfChampionshipActionsForAllChampionships(
     );
   }
 
-  return updatedContainer;
+  // The exchange moved clubs but not the container. A human club that went up or down is now in a
+  // neighbour slot, so the container has to follow it before anything reads the playable division.
+  const humanDivision = findHumanDivision(updatedContainer);
+  const humanHasMoved =
+    humanDivision !== undefined &&
+    humanDivision.internalName !== updatedContainer.playableChampionship.internalName;
+
+  if (!humanHasMoved) return updatedContainer;
+
+  return recentreContainerOnHumanDivision(updatedContainer, humanDivision);
+}
+
+/**
+ * The one predicate for "this club is the human player's", shared by every lookup so the two
+ * definitions cannot drift apart.
+ */
+const isTeamControlledByHuman = (team: Team): boolean => team.isControlledByHuman;
+
+/**
+ * Reads a division from the seed data and initialises it the way a new game does — fixtures
+ * generated, phase state zeroed. Shared by `initChampionships` and the roll-over re-centring, so a
+ * division entering the container mid-game is indistinguishable from one seeded at kick-off.
+ *
+ * Throws the repository's plain `Error`s; both callers already run inside an `OperationResult`
+ * try/catch.
+ */
+function loadInitialisedChampionship(
+  internalName: string,
+  hasTeamControlledByHuman: boolean
+): Championship {
+  const championship = ChampionshipRepository.getChampionship(
+    internalName,
+    hasTeamControlledByHuman
+  );
+
+  return initialisePhaseState({
+    ...championship,
+    matchContainer: createMatches(
+      championship.teams,
+      championship.phases,
+      championship.phaseEntrants
+    ),
+  });
+}
+
+/**
+ * The division of `container` holding the human player's club, or `undefined` when no slot does.
+ *
+ * Called on the *post-exchange* container at roll-over, where a promoted club sits in
+ * `promotionChampionship` and a relegated one in `relegationChampionship`.
+ */
+function findHumanDivision(container: ChampionshipContainer): Championship | undefined {
+  return [
+    container.playableChampionship,
+    container.promotionChampionship,
+    container.relegationChampionship,
+  ].find((championship) => championship?.teams.some(isTeamControlledByHuman));
+}
+
+/**
+ * Rebuilds the container around the division the human's club is now in.
+ *
+ * The roll-over exchanges clubs between divisions but leaves the container where it was, so a
+ * promoted human club ends up in `promotionChampionship` and a relegated one in
+ * `relegationChampionship` — and every consumer that reads the human's club off
+ * `playableChampionship` then fails. Re-centring makes the human's new division playable and
+ * rebuilds its two neighbour slots.
+ *
+ * Divisions already in the container are carried over with the state the roll-over just produced;
+ * the one division that was outside it is seeded fresh from `championships.json`. A division that
+ * drops out loses its state and is seeded fresh if it is ever re-entered — the accepted cost of
+ * keeping the three-slot container (`wiki/decisions/ms-107-container-recentring.md`).
+ */
+function recentreContainerOnHumanDivision(
+  container: ChampionshipContainer,
+  humanDivision: Championship
+): ChampionshipContainer {
+  const existing = [
+    container.playableChampionship,
+    container.promotionChampionship,
+    container.relegationChampionship,
+  ].filter((championship): championship is Championship => Boolean(championship));
+
+  const playableChampionship: Championship = {
+    ...humanDivision,
+    hasTeamControlledByHuman: true,
+  };
+
+  // A division seeded mid-game arrives at the fixture generator's default season, which is the
+  // real-world year — behind the divisions that have been rolling over. Aligning it here keeps the
+  // season the UI shows correct the day the human moves into it.
+  const { currentSeason } = playableChampionship.matchContainer;
+
+  const takeNeighbour = (internalName: string): Championship => {
+    const carried = existing.find(
+      (championship) => championship.internalName === internalName
+    );
+    if (carried) return { ...carried, hasTeamControlledByHuman: false };
+
+    const seeded = loadInitialisedChampionship(internalName, false);
+    return { ...seeded, matchContainer: { ...seeded.matchContainer, currentSeason } };
+  };
+
+  const recentred: ChampionshipContainer = { playableChampionship };
+
+  // Narrowed before the neighbour names are read: they only exist on the promotable / relegatable
+  // arms of `Championship`, and their absence is what leaves a slot empty at a pyramid end.
+  if (playableChampionship.isPromotable) {
+    recentred.promotionChampionship = takeNeighbour(
+      playableChampionship.promotionChampionshipInternalName
+    );
+  }
+
+  if (playableChampionship.isRelegatable) {
+    recentred.relegationChampionship = takeNeighbour(
+      playableChampionship.relegationChampionshipInternalName
+    );
+  }
+
+  return recentred;
 }
 
 const initChampionships = (
   championshipInternalName: string
 ): OperationResult<ChampionshipContainer> => {
   try {
-    let championshipContainer = {} as ChampionshipContainer;
+    const playableChampionship = loadInitialisedChampionship(championshipInternalName, true);
 
-    let playableChampionship = ChampionshipRepository.getChampionship(
-      championshipInternalName,
-      true
-    );
-    playableChampionship = initialisePhaseState({
-      ...playableChampionship,
-      matchContainer: createMatches(
-        playableChampionship.teams,
-        playableChampionship.phases,
-        playableChampionship.phaseEntrants
-      ),
-    });
-
-    championshipContainer = {
-      ...championshipContainer,
-      playableChampionship,
-    };
+    const championshipContainer: ChampionshipContainer = { playableChampionship };
 
     if (playableChampionship.isPromotable) {
-      let promotionChampionship = ChampionshipRepository.getChampionship(
+      championshipContainer.promotionChampionship = loadInitialisedChampionship(
         playableChampionship.promotionChampionshipInternalName,
         false
       );
-
-      promotionChampionship = initialisePhaseState({
-        ...promotionChampionship,
-        matchContainer: createMatches(
-          promotionChampionship.teams,
-          promotionChampionship.phases,
-          promotionChampionship.phaseEntrants
-        ),
-      });
-
-      championshipContainer = {
-        ...championshipContainer,
-        promotionChampionship,
-      };
     }
 
     if (playableChampionship.isRelegatable) {
-      let relegationChampionship = ChampionshipRepository.getChampionship(
+      championshipContainer.relegationChampionship = loadInitialisedChampionship(
         playableChampionship.relegationChampionshipInternalName,
         false
       );
-
-      relegationChampionship = initialisePhaseState({
-        ...relegationChampionship,
-        matchContainer: createMatches(
-          relegationChampionship.teams,
-          relegationChampionship.phases,
-          relegationChampionship.phaseEntrants
-        ),
-      });
-
-      championshipContainer = {
-        ...championshipContainer,
-        relegationChampionship,
-      };
     }
 
     const result = new OperationResult(championshipContainer);
@@ -686,7 +761,7 @@ const getChampionships = (leagueType?: LeagueType): OperationResult<Championship
 
 const getTeamControlledByHuman = (championship: Championship): OperationResult<Team> => {
   try {
-    const team = championship.teams.find((t) => t.isControlledByHuman);
+    const team = championship.teams.find(isTeamControlledByHuman);
     if (!team) throw new Error('CHampionship has no team controlled by human.');
 
     const result = new OperationResult<Team>(team);
