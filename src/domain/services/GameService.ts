@@ -37,7 +37,28 @@ const loadGame = (): OperationResult<GameState> => {
   }
 };
 
+/**
+ * Whether a readable save exists. Cheaper than `loadGame().succeeded`, which rebuilds the whole
+ * container just to answer a boolean.
+ */
+const hasSavedGame = (): OperationResult<boolean> => {
+  try {
+    const result = new OperationResult<boolean>(GameRepository.hasSavedGame());
+    result.setSuccess();
+    return result;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    const result = new OperationResult<boolean>(false);
+    result.setError({
+      errorCode: 'exception',
+      message,
+    });
+    return result;
+  }
+};
+
 export default {
+  hasSavedGame,
   loadGame,
   saveGame,
 };

@@ -17,7 +17,8 @@ const InitialScreen: React.FC = () => {
       setBuildVersion('DEV');
     }
 
-    setHasSavedGame(GameService.loadGame().succeeded);
+    const savedGame = GameService.hasSavedGame();
+    setHasSavedGame(savedGame.succeeded && savedGame.getResult());
   }, []);
 
   return (

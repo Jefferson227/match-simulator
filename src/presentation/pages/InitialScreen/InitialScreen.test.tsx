@@ -14,6 +14,7 @@ jest.mock('../../contexts/GameEngineContext', () => ({
 jest.mock('~domain/services/GameService', () => ({
   __esModule: true,
   default: {
+    hasSavedGame: jest.fn(),
     loadGame: jest.fn(),
     saveGame: jest.fn(),
   },
@@ -27,14 +28,21 @@ const mockDispatch = jest.fn();
 const mockEngine = { dispatch: mockDispatch };
 const mockedGameService = GameService as jest.Mocked<typeof GameService>;
 
-function loadSuccessResult(): OperationResult<GameState> {
+function loadFailureResult(message: string): OperationResult<GameState> {
   const result = new OperationResult<GameState>({} as GameState);
+  result.setError({ errorCode: 'exception', message });
+  return result;
+}
+
+/** MS-108: the screen probes for a save instead of loading one. */
+function probeResult(exists: boolean): OperationResult<boolean> {
+  const result = new OperationResult<boolean>(exists);
   result.setSuccess();
   return result;
 }
 
-function loadFailureResult(message: string): OperationResult<GameState> {
-  const result = new OperationResult<GameState>({} as GameState);
+function probeFailureResult(message: string): OperationResult<boolean> {
+  const result = new OperationResult<boolean>(false);
   result.setError({ errorCode: 'exception', message });
   return result;
 }
@@ -44,6 +52,7 @@ describe('InitialScreen', () => {
     jest.clearAllMocks();
     (useGameEngine as jest.Mock).mockReturnValue(mockEngine);
     mockedGameService.loadGame.mockReturnValue(loadFailureResult('No saved game'));
+    mockedGameService.hasSavedGame.mockReturnValue(probeResult(false));
   });
 
   test('renders main elements and hides load game button when there is no save', async () => {
@@ -57,7 +66,7 @@ describe('InitialScreen', () => {
   });
 
   test('renders load game button when there is a saved game', () => {
-    mockedGameService.loadGame.mockReturnValue(loadSuccessResult());
+    mockedGameService.hasSavedGame.mockReturnValue(probeResult(true));
 
     render(<InitialScreen />);
 
@@ -76,12 +85,29 @@ describe('InitialScreen', () => {
   });
 
   test('dispatches load game when load game button is clicked', () => {
-    mockedGameService.loadGame.mockReturnValue(loadSuccessResult());
+    mockedGameService.hasSavedGame.mockReturnValue(probeResult(true));
 
     render(<InitialScreen />);
 
     fireEvent.click(screen.getByRole('button', { name: /load game/i }));
 
     expect(mockDispatch).toHaveBeenCalledWith({ type: 'LOAD_GAME' });
+  });
+
+  test('does not load the game just to decide whether to offer continue', () => {
+    mockedGameService.hasSavedGame.mockReturnValue(probeResult(true));
+
+    render(<InitialScreen />);
+
+    expect(mockedGameService.hasSavedGame).toHaveBeenCalled();
+    expect(mockedGameService.loadGame).not.toHaveBeenCalled();
+  });
+
+  test('hides load game when the probe itself fails', () => {
+    mockedGameService.hasSavedGame.mockReturnValue(probeFailureResult('localStorage unavailable'));
+
+    render(<InitialScreen />);
+
+    expect(screen.queryByRole('button', { name: /load game/i })).toBeNull();
   });
 });
