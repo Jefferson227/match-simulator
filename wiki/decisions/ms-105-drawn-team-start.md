@@ -61,8 +61,10 @@ human club, and `TeamManager` cannot find the player's team. MS-106 recorded thi
 pre-existing gap: before MS-105 a player could start in Série A or A1 and never be promoted out.
 
 MS-105 removes that escape. Every game starts at the bottom, so **every player who wins promotion
-hits the gap**. MS-105 deliberately leaves it unfixed. It is raised as **MS-107**: re-centre the
-container on the human's new division at roll-over, men's and women's, promotion and relegation.
+hits the gap**. MS-105 deliberately left it unfixed and raised it as MS-107.
+
+**Closed by MS-107** on 2026-09-12: the container is now re-centred on the human's new division at
+roll-over, men's and women's, promotion and relegation. See [[ms-107-container-recentring]].
 
 > **Not asserted.** The lint has no "file absent" or "value in a `.ts` file" form, so these stay
 > prose:
@@ -75,4 +77,5 @@ container on the human's new division at roll-over, men's and women's, promotion
 
 ## Left open
 
-- **Container re-centring after promotion or relegation — MS-107.** See section 3 and [[index]].
+- ~~Container re-centring after promotion or relegation — MS-107.~~ **Closed by MS-107.** See
+  section 3 and [[ms-107-container-recentring]].

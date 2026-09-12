@@ -283,3 +283,38 @@ this entry files a decision.
 
 - Container re-centring after promotion or relegation — **MS-107**, drafted by MS-105 for the user
   to file.
+
+## [2026-09-12] close-out | MS-107 — the container follows the human between divisions
+
+sha 1de7089
+
+At season roll-over the championship container is now rebuilt around whichever division holds the
+human's club. No external evidence; this entry files a decision and one discovered defect.
+
+- New decision: [[ms-107-container-recentring]] — the three-slot container re-centred on the human's
+  division, the two rejected shapes (whole pyramid in `GameState`; three slots plus a parked-state
+  map), and the accepted consequence that a division leaving the container loses its state and is
+  reseeded from `championships.json` if re-entered. Asserts that Série A and A1 declare no promotion
+  neighbour, which is what leaves the top slot absent.
+- [[ms-105-drawn-team-start]]: §3 and its open item now record MS-107 as closed.
+- [[ms-106-mens-lower-divisions]]: its re-centring note now records MS-107 as closed.
+- [[index]]: new decision row, MS-105's status amended, the container re-centring thread closed, and
+  a new thread opened for the `localStorage` quota.
+
+### Defect discovered, not fixed
+
+A men's saved game does not fit in `localStorage`, and did not before MS-107 either: a played Série D
+season serialises to 5,133,791 code units against a 5,000,000-unit quota, so `SAVE_GAME` throws
+`QuotaExceededError` with no MS-107 code on the path. Re-centring makes the container larger still
+(D → C reaches ~6.1M units). The bytes are in `matchContainer.rounds`, where every `Match` embeds
+full copies of both squads — Série D's fixtures are 2.34 MB against 0.16 MB of club data. MS-107's
+save/load round-trip is proven on the women's pyramid, which fits. Measurements in
+`.plans/MS-107/docs/05-MS-107-localstorage-quota-finding.md`.
+
+### Left open
+
+- A men's saved game exceeds the `localStorage` quota — **raised as MS-108**, which also covers
+  whether the backend stays `localStorage` or moves to IndexedDB / SQLite-in-wasm.
+- `UPDATE_TEAM_STATS` is a no-op on the roll-over turn, pre-existing and unchanged.
+- A division that re-enters the container is seeded from `championships.json`, so its club list can
+  diverge from the one it left with. Accepted, not a defect.

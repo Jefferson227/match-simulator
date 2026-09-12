@@ -61,7 +61,8 @@ Why things are the way they are — the part the code cannot state.
 | [[ms-103-simulated-shootout]] | MS-103 | implemented |
 | [[ms-104-a3-group-shape-schedule]] | MS-104 | implemented; **wholly inference** |
 | [[ms-106-mens-lower-divisions]] | MS-106 | implemented; post-2025 seasons are inference |
-| [[ms-105-drawn-team-start]] | MS-105 | implemented; leaves container re-centring to MS-107 |
+| [[ms-105-drawn-team-start]] | MS-105 | implemented; container re-centring closed by MS-107 |
+| [[ms-107-container-recentring]] | MS-107 | implemented; a division leaving the container loses its state |
 
 ## Raw
 
@@ -78,11 +79,16 @@ Things named across these pages that nothing currently owns:
 - Libertadores qualification via the Copa is **not verified** — outside MS-102's brief.
 - ~~No page covers the men's competitions~~ — **closed by MS-106** for Série C and D; Série A and B
   still have none.
-- **Container re-centring after promotion or relegation**, men's and women's — **raised as
-  MS-107.** The container stays centred on the division the human started in, and `TeamManager`
-  reads the human's club from `playableChampionship`. So a human promoted or relegated out of that
-  division is not followed. Since MS-105 every game starts in the bottom division, so **every
-  promoted player hits this**. See [[ms-105-drawn-team-start]] and [[ms-106-mens-lower-divisions]].
+- ~~Container re-centring after promotion or relegation~~ — **closed by MS-107.** The container is
+  now rebuilt around the human's new division at roll-over, men's and women's, promotion and
+  relegation. A division that leaves the container loses its state and is reseeded from
+  `championships.json` if re-entered — the accepted cost of keeping the three-slot container. See
+  [[ms-107-container-recentring]].
+- **A men's saved game exceeds the `localStorage` quota** — **raised as MS-108.** Pre-existing,
+  found by MS-107: a played Série D season serialises to ~5.1M code units against a 5M-unit ceiling
+  and `SAVE_GAME` throws. The bytes are in the fixtures, where every match embeds both squads in
+  full. MS-108 covers both what is stored and where — `localStorage`, IndexedDB or SQLite-in-wasm —
+  and whether `GameEngine.dispatch` can stay synchronous. See [[ms-107-container-recentring]].
 - **The men's Série A and B strengths overlap** (A's floor 55 is below B's ceiling 75). C and D sit
   strictly below B. No ticket. See [[invented-data]].
 - **A1 2027's club count is inference, not regulation**, and so is A2's route to 20. See
