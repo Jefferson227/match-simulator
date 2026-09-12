@@ -85,6 +85,11 @@ pre-MS-107 behaviour.
 
 ## Left open
 
+- ~~**A men's saved game does not fit in `localStorage`**~~ — **closed by MS-108.** The save now
+  stores club references rather than club copies, which takes a played Série D season from 5,132,127
+  code units to 400,274 and the re-centred D → C container from 6,144,347 to 712,681.
+  `localStorage` stayed; `GameRepository` stayed synchronous, so none of the asynchronous ripple
+  below was needed. See [[ms-108-saved-game-size]]. The original finding, for the record:
 - **A men's saved game does not fit in `localStorage` — raised as MS-108.** Discovered while proving MS-107's
   save/load round-trip, and **pre-existing**: a played Série D season serialises to 5,133,791 code
   units against a 5,000,000-unit quota and throws `QuotaExceededError`, with no MS-107 code on the

@@ -318,3 +318,34 @@ save/load round-trip is proven on the women's pyramid, which fits. Measurements 
 - `UPDATE_TEAM_STATS` is a no-op on the roll-over turn, pre-existing and unchanged.
 - A division that re-enters the container is seeded from `championships.json`, so its club list can
   diverge from the one it left with. Accepted, not a defect.
+
+---
+
+## [2026-09-12] close-out | MS-108 — a saved game stores club references, not club copies
+
+sha 7e9a9cd
+
+A men's saved game no longer exceeds `localStorage`'s quota. No external evidence; this entry files
+a decision and closes the defect MS-107 discovered.
+
+- New decision: [[ms-108-saved-game-size]] — dehydration at the serialisation boundary, the three
+  rejected alternatives on what is stored (change the `Match` model; persist scores and regenerate
+  fixtures; a bigger backend alone), why `localStorage` and a synchronous `GameRepository` were kept,
+  what the deferred backends would cost (IndexedDB / OPFS / SQLite-in-wasm are all asynchronous, so
+  `GameEngine.dispatch` would have to change shape), and that pre-MS-108 saves are abandoned via a
+  versioned key.
+- The equivalence rule is recorded there too: a reload does **not** preserve each played match's
+  historical squad snapshot — morale and per-player xp / strength / isStarter / isSub as they stood
+  that round — but the current round is stored whole and comes back byte-identical.
+- Measured, replacing MS-107's projections: Série D played season 5,132,127 → 400,274 code units;
+  re-centred D → C 6,144,347 → 712,681; women's A3 → A2 2,577,652 → 421,550.
+- [[ms-107-container-recentring]]: its `localStorage` open item now records MS-108 as closed and
+  links to the new page, with the original finding kept for the record.
+- [[index]]: new decision row, and the quota thread closed.
+
+### Left open
+
+- The backend is still 5 MB. Dehydration removed the binding constraint, not the ceiling; a deeper
+  pyramid or per-season history would reopen the question, and the asynchronous ripple is the real
+  cost at that point.
+- `UPDATE_TEAM_STATS` is a no-op on the roll-over turn, pre-existing and still unchanged.

@@ -63,6 +63,7 @@ Why things are the way they are — the part the code cannot state.
 | [[ms-106-mens-lower-divisions]] | MS-106 | implemented; post-2025 seasons are inference |
 | [[ms-105-drawn-team-start]] | MS-105 | implemented; container re-centring closed by MS-107 |
 | [[ms-107-container-recentring]] | MS-107 | implemented; a division leaving the container loses its state |
+| [[ms-108-saved-game-size]] | MS-108 | implemented; a reload loses each played match's historical squad snapshot |
 
 ## Raw
 
@@ -84,11 +85,13 @@ Things named across these pages that nothing currently owns:
   relegation. A division that leaves the container loses its state and is reseeded from
   `championships.json` if re-entered — the accepted cost of keeping the three-slot container. See
   [[ms-107-container-recentring]].
-- **A men's saved game exceeds the `localStorage` quota** — **raised as MS-108.** Pre-existing,
-  found by MS-107: a played Série D season serialises to ~5.1M code units against a 5M-unit ceiling
-  and `SAVE_GAME` throws. The bytes are in the fixtures, where every match embeds both squads in
-  full. MS-108 covers both what is stored and where — `localStorage`, IndexedDB or SQLite-in-wasm —
-  and whether `GameEngine.dispatch` can stay synchronous. See [[ms-107-container-recentring]].
+- ~~A men's saved game exceeds the `localStorage` quota~~ — **closed by MS-108.** The save boundary
+  now writes club, player and standing references as ids and resolves them from `championship.teams`
+  on load, cutting a played Série D season from 5,132,127 code units to 400,274. `localStorage`
+  stayed and `GameRepository` stayed synchronous, so IndexedDB and SQLite-in-wasm are recorded as
+  deferred rather than taken. Pre-MS-108 saves are abandoned via a versioned key, and a reload no
+  longer preserves each played match's historical squad snapshot — the current round is kept whole.
+  See [[ms-108-saved-game-size]].
 - **The men's Série A and B strengths overlap** (A's floor 55 is below B's ceiling 75). C and D sit
   strictly below B. No ticket. See [[invented-data]].
 - **A1 2027's club count is inference, not regulation**, and so is A2's route to 20. See
