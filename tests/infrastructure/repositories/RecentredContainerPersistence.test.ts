@@ -1,14 +1,17 @@
 /**
  * MS-107: a game saved after a re-centred roll-over has to reload into the human's new division.
  *
- * `GameRepository` is plain `JSON.stringify` over `GameState`, so nothing here needs a migration —
- * but the container the roll-over now produces is a different shape from the one saved the season
- * before, and that is worth pinning.
+ * The container the roll-over produces is a different shape from the one saved the season before,
+ * and that is worth pinning.
  *
- * Played on the women's pyramid because the men's one does not fit in `localStorage` at all: a
- * played Série D season already serialises to ~5.1M code units and throws `QuotaExceededError`
- * before MS-107 changes anything. That is a pre-existing bug with its own follow-up —
- * `.plans/MS-107/docs/05-MS-107-localstorage-quota-finding.md`.
+ * Played on the women's pyramid because when this was written the men's one did not fit in
+ * `localStorage` at all. MS-108 dehydrated the save and the men's D → C case is now covered by
+ * `SavedGameSize.test.ts`; this file stays as the women's half of that pair.
+ *
+ * The whole-state equality below still holds after MS-108 because a freshly rolled-over container
+ * has no played rounds: every fixture references the club exactly as `teams` holds it, so nothing
+ * is lost when the reference is resolved by id. A container with played rounds has to be compared
+ * with `expectEquivalent` instead — see `tests/support/savedGameEquivalence.ts`.
  */
 import { beforeAll, beforeEach, describe, expect, it } from '@jest/globals';
 import GameRepository from '../../../src/infrastructure/repositories/GameRepository';
