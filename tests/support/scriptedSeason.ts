@@ -55,6 +55,46 @@ export class ScriptedSeason {
     );
   }
 
+  /**
+   * Hands the club at `seedIndex` of the playable division to the human player.
+   *
+   * The flag has to be stamped on every reference to that club — `teams`, `standings` and the
+   * fixtures — because the roll-over picks promoted and relegated clubs off the standings, not off
+   * `teams`. Call it before any round is played.
+   */
+  assignHuman(seedIndex: number): this {
+    const championship = this.container.playableChampionship;
+    const targetId = championship.teams[seedIndex].id;
+    const mark = (team: Team): Team =>
+      team.id === targetId ? { ...team, isControlledByHuman: true } : team;
+
+    this.container = {
+      ...this.container,
+      playableChampionship: {
+        ...championship,
+        hasTeamControlledByHuman: true,
+        teams: championship.teams.map(mark),
+        standings: championship.standings.map((standing) => ({
+          ...standing,
+          team: mark(standing.team),
+        })),
+        matchContainer: {
+          ...championship.matchContainer,
+          rounds: championship.matchContainer.rounds.map((round) => ({
+            ...round,
+            matches: round.matches.map((match) => ({
+              ...match,
+              homeTeam: mark(match.homeTeam),
+              awayTeam: mark(match.awayTeam),
+            })),
+          })),
+        },
+      },
+    };
+
+    return this;
+  }
+
   get championship(): Championship {
     return this.container.playableChampionship;
   }

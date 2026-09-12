@@ -81,8 +81,11 @@ describe('ChampionshipService.runEndOfChampionshipActions', () => {
     const upperC = buildTeam('c', 'UPC');
     const upperD = buildTeam('d', 'UPD');
 
-    const playableA = buildTeam('e', 'PLA', true);
-    const playableB = buildTeam('f', 'PLB');
+    // The human's club stays put here: this test is about the exchange, and since MS-107 a human
+    // club that moves also re-centres the container. Re-centring is covered by
+    // `tests/domain/services/ContainerRecentring.test.ts`.
+    const playableA = buildTeam('e', 'PLA');
+    const playableB = buildTeam('f', 'PLB', true);
     const playableC = buildTeam('g', 'PLC');
     const playableD = buildTeam('h', 'PLD');
 
