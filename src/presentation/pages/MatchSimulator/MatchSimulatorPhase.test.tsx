@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import MatchSimulator from './MatchSimulator';
 import { useGameEngine } from '../../contexts/GameEngineContext';
@@ -130,5 +130,87 @@ describe('MatchSimulator — phase label', () => {
 
     expect(screen.getByText(/^2026 - ROUND 1 OF 1$/)).toBeInTheDocument();
     expect(screen.queryByText(/Fase/)).not.toBeInTheDocument();
+  });
+});
+
+describe('MatchSimulator — group stage', () => {
+  const groupTeams = [1, 2, 3, 4].map(buildTeam);
+
+  const groupPhase: ChampionshipPhase = {
+    kind: 'round-robin',
+    name: '1ª Fase',
+    numberOfGroups: 2,
+    teamsPerGroup: 2,
+    legs: 1,
+    advancingPerGroup: 1,
+  };
+
+  function buildGroupStageState(): GameState {
+    const state = buildState(true);
+    const championship = state.championshipContainer.playableChampionship;
+    const matchOf = (home: Team, away: Team, group: number) => ({
+      id: `match-${home.id}-${away.id}`,
+      homeTeam: home,
+      awayTeam: away,
+      homeTeamScore: 0,
+      awayTeamScore: 0,
+      scorers: [],
+      phaseIndex: 0,
+      group,
+    });
+
+    return {
+      ...state,
+      championshipContainer: {
+        playableChampionship: {
+          ...championship,
+          numberOfTeams: 4,
+          teams: groupTeams,
+          standings: groupTeams.map((team, index) => ({
+            team,
+            position: index + 1,
+            wins: 0,
+            draws: 0,
+            losses: 0,
+            goalsFor: 0,
+            goalsAgainst: 0,
+            points: 0,
+          })),
+          matchContainer: {
+            ...championship.matchContainer,
+            rounds: [
+              {
+                ...buildRound(true),
+                matches: [
+                  matchOf(groupTeams[0], groupTeams[1], 0),
+                  matchOf(groupTeams[2], groupTeams[3], 1),
+                ],
+              },
+            ],
+          },
+          phases: [groupPhase],
+        } as Championship,
+      },
+    };
+  }
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (useGameEngine as jest.Mock).mockReturnValue({ dispatch: jest.fn() });
+  });
+
+  test('shows one group per page, with the group in the title', () => {
+    (useGameState as jest.Mock).mockReturnValue(buildGroupStageState());
+    render(<MatchSimulator />);
+
+    expect(screen.getByText(/^2026 - 1ª Fase - GROUP 1$/)).toBeInTheDocument();
+    expect(screen.getByText('T1')).toBeInTheDocument();
+    expect(screen.queryByText('T3')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('>'));
+
+    expect(screen.getByText(/^2026 - 1ª Fase - GROUP 2$/)).toBeInTheDocument();
+    expect(screen.getByText('T3')).toBeInTheDocument();
+    expect(screen.queryByText('T1')).not.toBeInTheDocument();
   });
 });

@@ -134,7 +134,27 @@ const MatchSimulator: FC = () => {
     };
   }, [time, showTeamMatchDetails, detailsMatchId, state.gameConfig.clockSpeed]);
 
-  const totalPages = Math.ceil(matches.length / MATCHES_PER_PAGE);
+  // A group stage pages one group at a time, like TeamStandings; anything else pages the whole round.
+  const groups = phaseView.groups ?? [];
+  const isGroupStage = groups.length > 1;
+  const pages: { group?: number; matches: Match[] }[] = [];
+  const addPages = (pageMatches: Match[], group?: number) => {
+    for (let start = 0; start < pageMatches.length; start += MATCHES_PER_PAGE) {
+      pages.push({ group, matches: pageMatches.slice(start, start + MATCHES_PER_PAGE) });
+    }
+  };
+  if (isGroupStage) {
+    groups.forEach(({ group }) =>
+      addPages(
+        matches.filter((match) => match.group === group),
+        group
+      )
+    );
+  } else {
+    addPages(matches);
+  }
+
+  const totalPages = pages.length;
 
   const handleNextPage = () => {
     if (currentPage < totalPages - 1) {
@@ -148,8 +168,9 @@ const MatchSimulator: FC = () => {
     }
   };
 
-  const startIndex = currentPage * MATCHES_PER_PAGE;
-  const selectedMatches = matches.slice(startIndex, startIndex + MATCHES_PER_PAGE);
+  const selectedPage = pages[Math.min(currentPage, Math.max(totalPages - 1, 0))];
+  const selectedMatches = selectedPage?.matches ?? [];
+  const selectedGroup = selectedPage?.group;
 
   return (
     <MainLayout>
@@ -168,7 +189,12 @@ const MatchSimulator: FC = () => {
               !showTeamMatchDetails &&
               (phaseView.isPhased ? (
                 <>
-                  <p>{`${matchContainer.currentSeason} - ${phaseView.phaseName}`}</p>
+                  <p>
+                    {`${matchContainer.currentSeason} - ${phaseView.phaseName}`}
+                    {selectedGroup !== undefined
+                      ? ` - ${t('standings.group', { number: selectedGroup + 1 })}`
+                      : ''}
+                  </p>
                   <p>
                     {t('matchSimulator.roundOf', {
                       current: phaseView.roundInPhase,
@@ -218,7 +244,7 @@ const MatchSimulator: FC = () => {
                 ))}
               </div>
 
-              {matches.length > MATCHES_PER_PAGE && !showTeamMatchDetails && !detailsMatchId && (
+              {totalPages > 1 && !showTeamMatchDetails && !detailsMatchId && (
                 <div className="w-[320px] flex justify-between items-center mb-[48px] relative">
                   <button
                     onClick={handlePrevPage}
