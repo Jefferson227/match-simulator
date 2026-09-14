@@ -10,7 +10,7 @@ const Score: FC<ScoreProps> = ({ homeScore, guestScore, onClick }) => {
   return (
     <div
       className={
-        'flex justify-between items-center font-press-start text-[22px] text-[#e2e2e2] mx-2 w-[70px]' +
+        'flex justify-between items-center font-press-start text-[15px] text-[#e2e2e2] mx-2 w-[70px]' +
         (onClick ? ' cursor-pointer' : '')
       }
       onClick={onClick}

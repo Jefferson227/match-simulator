@@ -57,6 +57,6 @@
     "advances": "ADVANCES"
   },
   "matchSimulator": {
-    "phaseRound": "{{phase}} - ROUND {{current}} OF {{total}}"
+    "roundOf": "ROUND {{current}} OF {{total}}"
   }
 }

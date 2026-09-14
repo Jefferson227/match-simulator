@@ -13,7 +13,7 @@ import TeamRectangle from '../../components/TeamRectangle';
 import { Team } from '../../../domain/models/Team';
 import ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
 
-const MATCHES_PER_PAGE = 6;
+const MATCHES_PER_PAGE = 7;
 
 const MatchSimulator: FC = () => {
   // Game engine
@@ -45,8 +45,10 @@ const MatchSimulator: FC = () => {
 
   const championshipUseCases = new ChampionshipUseCases(state);
 
-  // Which phase is being played, so a phased season shows '1ª Fase - Round 3 of 17' rather than a
-  // round number counted across the whole competition.
+  const matchContainer = state.championshipContainer.playableChampionship.matchContainer;
+
+  // Which phase is being played, so a phased season shows the phase name and the round within that
+  // phase rather than a round number counted across the whole competition.
   const phaseView = championshipUseCases.getPhaseView(
     state.championshipContainer.playableChampionship
   );
@@ -160,23 +162,28 @@ const MatchSimulator: FC = () => {
         </div>
 
         <div className="relative">
-          <div className="mb-[18px] text-center text-white text-sm uppercase">
-            {state.championshipContainer.playableChampionship.matchContainer.currentRound &&
+          <div className="mb-[18px] text-center text-white text-[11px] uppercase">
+            {matchContainer.currentRound &&
               matches.length > 0 &&
-              !showTeamMatchDetails && (
-                <span>
-                  {phaseView.isPhased
-                    ? `${state.championshipContainer.playableChampionship.matchContainer.currentSeason} - ${t(
-                        'matchSimulator.phaseRound',
-                        {
-                          phase: phaseView.phaseName,
-                          current: phaseView.roundInPhase,
-                          total: phaseView.roundsInPhase,
-                        }
-                      )}`
-                    : `${state.championshipContainer.playableChampionship.matchContainer.currentSeason} - Round ${state.championshipContainer.playableChampionship.matchContainer.currentRound} of ${state.championshipContainer.playableChampionship.matchContainer.totalRounds}`}
-                </span>
-              )}
+              !showTeamMatchDetails &&
+              (phaseView.isPhased ? (
+                <>
+                  <p>{`${matchContainer.currentSeason} - ${phaseView.phaseName}`}</p>
+                  <p>
+                    {t('matchSimulator.roundOf', {
+                      current: phaseView.roundInPhase,
+                      total: phaseView.roundsInPhase,
+                    })}
+                  </p>
+                </>
+              ) : (
+                <p>
+                  {`${matchContainer.currentSeason} - ${t('matchSimulator.roundOf', {
+                    current: matchContainer.currentRound,
+                    total: matchContainer.totalRounds,
+                  })}`}
+                </p>
+              ))}
           </div>
 
           {!showTeamMatchDetails && !detailsMatchId ? (
@@ -184,7 +191,7 @@ const MatchSimulator: FC = () => {
               <div className="h-[579px]">
                 {selectedMatches.map((match, index) => (
                   <div
-                    className="w-[320px] flex justify-between items-center mb-[48px] relative"
+                    className="w-[320px] flex justify-between items-center mb-[40px] relative"
                     key={index}
                   >
                     <TeamRectangle
@@ -200,7 +207,7 @@ const MatchSimulator: FC = () => {
                       team={match.awayTeam}
                       runFunction={() => setParamsForTeamMatchDetails(match.awayTeam, match.id)}
                     />
-                    <div className="absolute -bottom-7 left-0 text-[14px] text-[#e2e2e2] uppercase">
+                    <div className="absolute bottom-[calc(var(--spacing)*-5.8)] left-0 text-[11px] text-[#e2e2e2] uppercase">
                       {match.scorers.length > 0
                         ? `${utils.shortenPlayerName(match.scorers[match.scorers.length - 1].player.name)} ${
                             match.scorers[match.scorers.length - 1].time

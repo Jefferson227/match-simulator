@@ -57,6 +57,6 @@
     "advances": "AVANÇA"
   },
   "matchSimulator": {
-    "phaseRound": "{{phase}} - RODADA {{current}} DE {{total}}"
+    "roundOf": "RODADA {{current}} DE {{total}}"
   }
 }
