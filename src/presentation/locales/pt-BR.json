@@ -50,11 +50,9 @@
   },
   "standings": {
     "group": "GRUPO {{number}}",
-    "aggregate": "AGREG",
-    "penalties": "PÊNAL",
+    "penalties": "PÊNALTIS",
     "legOf": "JOGO {{current}} DE {{total}}",
-    "notPlayedYet": "A JOGAR",
-    "advances": "AVANÇA"
+    "notPlayedYet": "A JOGAR"
   },
   "matchSimulator": {
     "roundOf": "RODADA {{current}} DE {{total}}"

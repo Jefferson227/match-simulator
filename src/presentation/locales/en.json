@@ -50,11 +50,9 @@
   },
   "standings": {
     "group": "GROUP {{number}}",
-    "aggregate": "AGG",
-    "penalties": "PENS",
+    "penalties": "PENALTIES",
     "legOf": "LEG {{current}} OF {{total}}",
-    "notPlayedYet": "TO PLAY",
-    "advances": "ADVANCES"
+    "notPlayedYet": "TO PLAY"
   },
   "matchSimulator": {
     "roundOf": "ROUND {{current}} OF {{total}}"

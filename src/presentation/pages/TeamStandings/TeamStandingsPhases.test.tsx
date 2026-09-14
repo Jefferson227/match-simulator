@@ -257,26 +257,33 @@ describe('TeamStandings — phased championships', () => {
 
     expect(screen.getByTestId('phase-bracket')).toBeInTheDocument();
     expect(screen.getAllByTestId('tie')).toHaveLength(1);
-    // T01 hosted the first leg and lost it 1-2; T03 won the second leg's aggregate 2-2... on away
-    // goals there is none, so the aggregate is shown as it stands.
-    expect(screen.getByText(/AGG 2-2/)).toBeInTheDocument();
-    expect(screen.getByText(/LEG 1 OF 2/)).toBeInTheDocument();
-    expect(screen.getByText(/LEG 2 OF 2/)).toBeInTheDocument();
+    // T01 hosted the first leg and lost it 1-2, then won the second 1-0 away: 2-2 on aggregate.
+    expect(screen.getByTestId('tie-aggregate')).toHaveTextContent('T01 2 x 2 T03');
+
+    // Every row reads in the tie's order, so the second leg's score is flipped to T01-first.
+    const legs = screen.getAllByTestId('tie-leg');
+    expect(legs[0]).toHaveTextContent('LEG 1 OF 2 1 x 2');
+    expect(legs[1]).toHaveTextContent('LEG 2 OF 2 1 x 0');
     expect(screen.queryByTestId('tie-shootout')).not.toBeInTheDocument();
   });
 
-  test('shows the shootout when a tie needed one', () => {
+  test('shows the shootout in the tie order when a tie needed one', () => {
     (useGameState as jest.Mock).mockReturnValue(knockoutState(true));
     render(<TeamStandings />);
 
-    expect(screen.getByTestId('tie-shootout')).toHaveTextContent('PENS 4-2');
+    // The shootout was taken at the second leg, hosted by T03, who scored 4.
+    expect(screen.getByTestId('tie-shootout')).toHaveTextContent('PENALTIES 2 x 4');
   });
 
-  test('marks the club that advanced', () => {
+  test('paints the advancing club scores yellow', () => {
     (useGameState as jest.Mock).mockReturnValue(knockoutState(true));
     render(<TeamStandings />);
 
-    expect(screen.getByText(/T03 ADVANCES/)).toBeInTheDocument();
+    expect(screen.getByTestId('tie-aggregate-away')).toHaveClass('text-yellow-300');
+    expect(screen.getByTestId('tie-aggregate-home')).not.toHaveClass('text-yellow-300');
+    expect(screen.getByTestId('tie-shootout-away')).toHaveClass('text-yellow-300');
+    expect(screen.getByTestId('tie-shootout-home')).not.toHaveClass('text-yellow-300');
+    expect(screen.queryByText(/ADVANCES/)).not.toBeInTheDocument();
   });
 
   test('renders a single table and no bracket for an unphased championship', () => {
