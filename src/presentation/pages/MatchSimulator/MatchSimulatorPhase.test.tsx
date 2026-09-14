@@ -116,18 +116,19 @@ describe('MatchSimulator — phase label', () => {
     (useGameEngine as jest.Mock).mockReturnValue({ dispatch: jest.fn() });
   });
 
-  test('names the phase alongside the round for a phased championship', () => {
+  test('shows the phase on one line and the round within it on the next for a phased championship', () => {
     (useGameState as jest.Mock).mockReturnValue(buildState(true));
     render(<MatchSimulator />);
 
-    expect(screen.getByText(/1ª Fase - ROUND 1 OF 1/)).toBeInTheDocument();
+    expect(screen.getByText(/^2026 - 1ª Fase$/)).toBeInTheDocument();
+    expect(screen.getByText(/^ROUND 1 OF 1$/)).toBeInTheDocument();
   });
 
   test('keeps the plain round line for an unphased championship', () => {
     (useGameState as jest.Mock).mockReturnValue(buildState(false));
     render(<MatchSimulator />);
 
-    expect(screen.getByText(/2026 - Round 1 of 1/)).toBeInTheDocument();
+    expect(screen.getByText(/^2026 - ROUND 1 OF 1$/)).toBeInTheDocument();
     expect(screen.queryByText(/Fase/)).not.toBeInTheDocument();
   });
 });
