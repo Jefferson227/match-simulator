@@ -55,6 +55,7 @@
     "notPlayedYet": "A JOGAR"
   },
   "matchSimulator": {
-    "roundOf": "RODADA {{current}} DE {{total}}"
+    "roundOf": "RODADA {{current}} DE {{total}}",
+    "finishMatches": "ENCERRAR JOGOS"
   }
 }

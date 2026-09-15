@@ -168,6 +168,21 @@ const MatchSimulator: FC = () => {
     }
   };
 
+  // Testing shortcut: run every remaining tick of the round at once instead of waiting for the
+  // clock. The domain keeps its own timer, so it is the one that decides when the round is over.
+  const handleFinishMatches = () => {
+    const getTimer = () =>
+      engine.getState().championshipContainer.playableChampionship.matchContainer.timer;
+
+    let ticksLeft = 90;
+    while (getTimer() < 90 && ticksLeft > 0) {
+      engine.dispatch({ type: 'RUN_MATCH_ACTIONS' });
+      ticksLeft -= 1;
+    }
+
+    setTime(90);
+  };
+
   const selectedPage = pages[Math.min(currentPage, Math.max(totalPages - 1, 0))];
   const selectedMatches = selectedPage?.matches ?? [];
   const selectedGroup = selectedPage?.group;
@@ -244,7 +259,7 @@ const MatchSimulator: FC = () => {
                 ))}
               </div>
 
-              {totalPages > 1 && !showTeamMatchDetails && !detailsMatchId && (
+              {matches.length > 0 && !showTeamMatchDetails && !detailsMatchId && (
                 <div className="w-[320px] flex justify-between items-center mb-[48px] relative">
                   <button
                     onClick={handlePrevPage}
@@ -252,6 +267,13 @@ const MatchSimulator: FC = () => {
                     className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     &lt;
+                  </button>
+                  <button
+                    onClick={handleFinishMatches}
+                    disabled={time >= 90}
+                    className="border-4 border-white flex-1 mx-[10px] h-20 flex items-center justify-center text-center leading-tight text-[9px] uppercase transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {t('matchSimulator.finishMatches')}
                   </button>
                   <button
                     onClick={handleNextPage}

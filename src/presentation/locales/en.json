@@ -55,6 +55,7 @@
     "notPlayedYet": "TO PLAY"
   },
   "matchSimulator": {
-    "roundOf": "ROUND {{current}} OF {{total}}"
+    "roundOf": "ROUND {{current}} OF {{total}}",
+    "finishMatches": "FINISH MATCHES"
   }
 }
