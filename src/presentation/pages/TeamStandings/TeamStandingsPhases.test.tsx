@@ -455,14 +455,13 @@ describe('TeamStandings — continuing between phases', () => {
     (useGameState as jest.Mock).mockReturnValue(semiFinalJustEndedState());
     render(<TeamStandings />);
 
-    expect(screen.getByText('2026 - Round 2 of 4')).toBeInTheDocument();
+    expect(screen.getByText('2026 - Semifinal')).toBeInTheDocument();
 
     fireEvent.click(continueButton());
 
     expect(dispatch).not.toHaveBeenCalled();
-    // The round the draw opens, not the round last played.
-    expect(screen.getByText('2026 - Round 3 of 4')).toBeInTheDocument();
-    expect(screen.getByText(/^Final$/)).toBeInTheDocument();
+    // The phase the draw opens, not the phase last played.
+    expect(screen.getByText('2026 - Final')).toBeInTheDocument();
     expect(screen.queryByText(/Semifinal/)).not.toBeInTheDocument();
     expect(screen.getAllByTestId('tie')).toHaveLength(1);
     expect(screen.getByTestId('tie-aggregate')).toHaveTextContent('T01 0 x 0 T03');
@@ -527,7 +526,7 @@ describe('TeamStandings — continuing between phases', () => {
     (useGameState as jest.Mock).mockReturnValue(state);
     render(<TeamStandings />);
 
-    expect(screen.getByText(/^Final$/)).toBeInTheDocument();
+    expect(screen.getByText('2026 - Final')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /new season/i }));
 
     expect(dispatch).toHaveBeenNthCalledWith(1, { type: 'RUN_END_OF_CHAMPIONSHIP_ACTIONS' });

@@ -109,27 +109,29 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
   return (
     <MainLayout>
       <div className="font-press-start min-h-screen flex flex-col items-center">
-        <div className="text-center text-[16px] text-white mt-6 mb-2 tracking-wider uppercase">
-          {championship?.name ?? 'Standings'}
-        </div>
-        {phaseView.isPhased && (
-          <div className="text-center text-[12px] text-[#e2e2e2] mb-1 uppercase">
-            {phaseView.phaseName}
-            {currentGroup !== undefined
-              ? ` - ${t('standings.group', { number: currentGroup.group + 1 })}`
-              : ''}
+        <div className="w-[350px] mx-auto text-center">
+          <div className="text-[16px] text-white mt-6 mb-2 tracking-wider uppercase">
+            {championship?.name ?? 'Standings'}
           </div>
-        )}
-        <div className="text-center text-[14px] text-white mb-2 uppercase">
-          {!isSeasonComplete && totalRounds > 0 && (
-            <>
-              {championship?.matchContainer?.currentSeason} - Round {displayedRound} of{' '}
-              {totalRounds}
-            </>
-          )}
-          {isSeasonComplete && (
-            <span className="block text-[12px] text-yellow-300">SEASON COMPLETE!</span>
-          )}
+          <div className="text-[14px] text-white mb-2 uppercase">
+            {phaseView.isPhased && (
+              <>
+                {championship?.matchContainer?.currentSeason} - {phaseView.phaseName}
+                {currentGroup !== undefined
+                  ? ` - ${t('standings.group', { number: currentGroup.group + 1 })}`
+                  : ''}
+              </>
+            )}
+            {!phaseView.isPhased && !isSeasonComplete && totalRounds > 0 && (
+              <>
+                {championship?.matchContainer?.currentSeason} - Round {displayedRound} of{' '}
+                {totalRounds}
+              </>
+            )}
+            {isSeasonComplete && (
+              <span className="block text-[12px] text-yellow-300">SEASON COMPLETE!</span>
+            )}
+          </div>
         </div>
 
         <div
