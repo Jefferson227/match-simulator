@@ -110,10 +110,10 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
     <MainLayout>
       <div className="font-press-start min-h-screen flex flex-col items-center">
         <div className="w-[350px] mx-auto text-center">
-          <div className="text-[16px] text-white mt-6 mb-2 tracking-wider uppercase">
+          <div className="text-[14px] text-white mt-6 mb-2 tracking-wider uppercase">
             {championship?.name ?? 'Standings'}
           </div>
-          <div className="text-[14px] text-white mb-2 uppercase">
+          <div className="text-[12px] text-white mb-2 uppercase">
             {phaseView.isPhased && (
               <>
                 {championship?.matchContainer?.currentSeason} - {phaseView.phaseName}
@@ -144,7 +144,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
             ) : (
               <table className="w-full border-separate border-spacing-0">
                 <thead>
-                  <tr className="text-[18px] text-white">
+                  <tr className="text-[15px] text-white">
                     <th className="font-normal w-[56px] text-center"> </th>
                     <th className="font-normal w-[56px] text-center"> </th>
                     <th className="font-normal w-[56px] text-center">W</th>
@@ -156,13 +156,13 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
                 <tbody>
                   {paginatedStandings.map((row, idx) => (
                     <React.Fragment key={row.team.id}>
-                      <tr className="text-[18px] text-white">
+                      <tr className="text-[15px] text-white">
                         <td className="w-[56px] text-center py-2">
                           {isGroupStage ? idx + 1 : page * RESULTS_PER_PAGE + idx + 1}
                         </td>
                         <td className="w-[56px] text-center py-2">
                           <div
-                            className="inline-flex min-w-[72px] justify-center border-[4px] px-2 py-1"
+                            className="inline-flex min-w-[72px] justify-center border-[3px] px-2 py-1"
                             style={{
                               borderColor: row.team.colors.outline,
                               backgroundColor: row.team.colors.background,
@@ -194,7 +194,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
 
         <div className="flex justify-between w-[350px] mt-4 mx-auto">
           <button
-            className={`border-4 w-[80px] h-[56px] flex items-center justify-center text-[18px] bg-transparent transition ${
+            className={`border-4 w-[80px] h-[56px] flex items-center justify-center text-[15px] bg-transparent transition ${
               page === 0
                 ? 'border-[#b0b0b0] text-[#b0b0b0] cursor-not-allowed'
                 : 'border-white text-white hover:bg-white hover:text-[#397a33] cursor-pointer'
@@ -206,13 +206,13 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
             {'<'}
           </button>
           <button
-            className="border-4 border-white w-[180px] h-[56px] flex items-center justify-center text-[18px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition mx-2 cursor-pointer"
+            className="border-4 border-white w-[180px] h-[56px] flex items-center justify-center text-[15px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition mx-2 cursor-pointer"
             onClick={handleContinue}
           >
             {isSeasonComplete ? 'NEW SEASON' : 'CONTINUE'}
           </button>
           <button
-            className={`border-4 w-[80px] h-[56px] flex items-center justify-center text-[18px] bg-transparent transition ${
+            className={`border-4 w-[80px] h-[56px] flex items-center justify-center text-[15px] bg-transparent transition ${
               page >= totalPages - 1 || totalPages <= 1
                 ? 'border-[#b0b0b0] text-[#b0b0b0] cursor-not-allowed'
                 : 'border-white text-white hover:bg-white hover:text-[#397a33] cursor-pointer'

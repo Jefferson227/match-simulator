@@ -17,7 +17,7 @@ const ROW_CLASS = 'grid grid-cols-[minmax(0,1fr)_112px_minmax(0,1fr)] items-cent
 
 const TeamBadge: React.FC<{ team: Team; className?: string }> = ({ team, className }) => (
   <div
-    className={`inline-flex min-w-[72px] justify-center border-[4px] px-2 py-1 ${className ?? ''}`}
+    className={`inline-flex min-w-[72px] justify-center border-[3px] px-2 py-1 ${className ?? ''}`}
     style={{
       borderColor: team.colors.outline,
       backgroundColor: team.colors.background,
