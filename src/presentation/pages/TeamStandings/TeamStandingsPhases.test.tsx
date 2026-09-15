@@ -215,6 +215,100 @@ function knockoutState(withShootout: boolean): GameState {
   });
 }
 
+/** The final's two legs, generated but not played yet. */
+function unplayedFinal(firstRoundNumber: number, home: Team, away: Team): Round[] {
+  return [1, 2].map((leg) => ({
+    id: `round-${firstRoundNumber + leg - 1}`,
+    number: firstRoundNumber + leg - 1,
+    status: 'not-started',
+    phaseIndex: 1,
+    phaseName: 'Final',
+    matches: [
+      buildMatch({
+        homeTeam: leg === 1 ? home : away,
+        awayTeam: leg === 1 ? away : home,
+        phaseIndex: 1,
+        tieId: 'p1-t0',
+        leg,
+      }),
+    ],
+  }));
+}
+
+/** The group stage has just ended: the final is generated and the standings reset to its field. */
+function groupStageJustEndedState(): GameState {
+  const state = groupStageState();
+  const championship = state.championshipContainer.playableChampionship;
+  const groupRound = championship.matchContainer.rounds[0];
+
+  return buildState({
+    teams,
+    phases: [groupPhase, knockoutPhase],
+    currentPhaseIndex: 1,
+    survivingTeamIds: [teams[0].id, teams[2].id],
+    phaseStandings: [championship.standings],
+    standings: [buildStanding(teams[0], 1, 0), buildStanding(teams[2], 2, 0)],
+    matchContainer: {
+      timer: 0,
+      currentSeason: 2026,
+      currentRound: 2,
+      totalRounds: 3,
+      rounds: [groupRound, ...unplayedFinal(2, teams[0], teams[2])],
+    },
+  });
+}
+
+const semiFinalPhase: ChampionshipPhase = { ...knockoutPhase, name: 'Semifinal', numberOfTies: 2 };
+
+/** Both semi-final legs are played — the first ends goalless — and the final is generated. */
+function semiFinalJustEndedState(): GameState {
+  const semiFinalLeg = (number: number, leg: number, scores: [number, number][]): Round => ({
+    id: `round-${number}`,
+    number,
+    status: 'ended',
+    phaseIndex: 0,
+    phaseName: 'Semifinal',
+    matches: [
+      [teams[0], teams[1]],
+      [teams[2], teams[3]],
+    ].map(([home, away], tie) =>
+      buildMatch({
+        homeTeam: leg === 1 ? home : away,
+        awayTeam: leg === 1 ? away : home,
+        phaseIndex: 0,
+        tieId: `p0-t${tie}`,
+        leg,
+        homeTeamScore: scores[tie][0],
+        awayTeamScore: scores[tie][1],
+      })
+    ),
+  });
+
+  return buildState({
+    teams,
+    phases: [semiFinalPhase, knockoutPhase],
+    currentPhaseIndex: 1,
+    survivingTeamIds: [teams[0].id, teams[2].id],
+    matchContainer: {
+      timer: 0,
+      currentSeason: 2026,
+      currentRound: 3,
+      totalRounds: 4,
+      rounds: [
+        semiFinalLeg(1, 1, [
+          [0, 0],
+          [0, 0],
+        ]),
+        semiFinalLeg(2, 2, [
+          [0, 1],
+          [0, 2],
+        ]),
+        ...unplayedFinal(3, teams[0], teams[2]),
+      ],
+    },
+  });
+}
+
 describe('TeamStandings — phased championships', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -284,6 +378,52 @@ describe('TeamStandings — phased championships', () => {
     expect(screen.getByTestId('tie-shootout-away')).toHaveClass('text-yellow-300');
     expect(screen.getByTestId('tie-shootout-home')).not.toHaveClass('text-yellow-300');
     expect(screen.queryByText(/ADVANCES/)).not.toBeInTheDocument();
+  });
+
+  test('shows a goalless leg as 0 x 0, not as a leg still to be played', () => {
+    (useGameState as jest.Mock).mockReturnValue(semiFinalJustEndedState());
+    render(<TeamStandings />);
+
+    const legs = screen.getAllByTestId('tie-leg');
+    expect(legs[0]).toHaveTextContent('LEG 1 OF 2 0 x 0');
+    expect(legs[2]).toHaveTextContent('LEG 1 OF 2 0 x 0');
+  });
+
+  test('shows the results of a knockout phase just ended, not the next phase draw', () => {
+    (useGameState as jest.Mock).mockReturnValue(semiFinalJustEndedState());
+    render(<TeamStandings />);
+
+    expect(screen.getByText(/Semifinal/)).toBeInTheDocument();
+    expect(screen.queryByText(/^Final$/)).not.toBeInTheDocument();
+    expect(screen.getAllByTestId('tie')).toHaveLength(2);
+
+    // T01 won its second leg 1-0 away, T03 won 2-0 away; both advance in yellow.
+    const aggregates = screen.getAllByTestId('tie-aggregate');
+    expect(aggregates[0]).toHaveTextContent('T01 1 x 0 T02');
+    expect(aggregates[1]).toHaveTextContent('T03 2 x 0 T04');
+    const legs = screen.getAllByTestId('tie-leg');
+    expect(legs[1]).toHaveTextContent('LEG 2 OF 2 1 x 0');
+    expect(legs[3]).toHaveTextContent('LEG 2 OF 2 2 x 0');
+    for (const home of screen.getAllByTestId('tie-aggregate-home')) {
+      expect(home).toHaveClass('text-yellow-300');
+    }
+  });
+
+  test('shows the final group tables of a group stage just ended', () => {
+    (useGameState as jest.Mock).mockReturnValue(groupStageJustEndedState());
+    render(<TeamStandings />);
+
+    expect(screen.getByText(/1ª Fase/)).toBeInTheDocument();
+    expect(screen.queryByTestId('phase-bracket')).not.toBeInTheDocument();
+    expect(screen.getByText(/GROUP 1/)).toBeInTheDocument();
+    expect(screen.getByText('T01')).toBeInTheDocument();
+    expect(screen.getByText('T02')).toBeInTheDocument();
+    expect(screen.getByText('9')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Next' }));
+
+    expect(screen.getByText(/GROUP 2/)).toBeInTheDocument();
+    expect(screen.getByText('T04')).toBeInTheDocument();
   });
 
   test('renders a single table and no bracket for an unphased championship', () => {

@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Standing from '../../../domain/models/Standing';
+import { PhaseView } from '../../../domain/features/phases/PhaseView';
 import MainLayout from '../../components/MainLayout/MainLayout';
 import PhaseBracket from '../../components/PhaseBracket/PhaseBracket';
 import ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
@@ -23,11 +24,14 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
   const championship = state.championshipContainer.playableChampionship;
 
   // A phase view is only built for the live championship — a caller that passes `standings`
-  // explicitly is rendering a plain table and wants nothing else.
-  const phaseView = useMemo(
+  // explicitly is rendering a plain table and wants nothing else. It shows the results of the round
+  // last played: once the last round of a phase ends, the current round already opens the next one.
+  const phaseView = useMemo<PhaseView>(
     () =>
       propStandings === undefined
-        ? new ChampionshipUseCases(state).getPhaseView(championship)
+        ? new ChampionshipUseCases(state).getPhaseView(championship, {
+            focus: 'last-ended-round',
+          })
         : { isPhased: false, phaseIndex: 0 },
     [championship, propStandings, state]
   );
@@ -39,10 +43,11 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
 
   const standings = useMemo<Standing[]>(() => {
     if (propStandings !== undefined) return propStandings;
+    if (phaseView.standings) return phaseView.standings;
     if (!championship?.standings?.length) return [];
 
     return championship.standings;
-  }, [championship, propStandings]);
+  }, [championship, phaseView, propStandings]);
 
   // A group stage pages one group at a time; a knockout pages through its ties.
   const totalPages = isGroupStage
