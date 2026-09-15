@@ -441,3 +441,99 @@ describe('TeamStandings — phased championships', () => {
     for (const team of teams) expect(screen.getByText(team.abbreviation)).toBeInTheDocument();
   });
 });
+
+describe('TeamStandings — continuing between phases', () => {
+  const dispatch = jest.fn();
+  const continueButton = () => screen.getByRole('button', { name: /continue/i });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (useGameEngine as jest.Mock).mockReturnValue({ dispatch });
+  });
+
+  test('shows the next knockout phase draw after the results of the phase just ended', () => {
+    (useGameState as jest.Mock).mockReturnValue(semiFinalJustEndedState());
+    render(<TeamStandings />);
+
+    expect(screen.getByText('2026 - Round 2 of 4')).toBeInTheDocument();
+
+    fireEvent.click(continueButton());
+
+    expect(dispatch).not.toHaveBeenCalled();
+    // The round the draw opens, not the round last played.
+    expect(screen.getByText('2026 - Round 3 of 4')).toBeInTheDocument();
+    expect(screen.getByText(/^Final$/)).toBeInTheDocument();
+    expect(screen.queryByText(/Semifinal/)).not.toBeInTheDocument();
+    expect(screen.getAllByTestId('tie')).toHaveLength(1);
+    expect(screen.getByTestId('tie-aggregate')).toHaveTextContent('T01 0 x 0 T03');
+    const legs = screen.getAllByTestId('tie-leg');
+    expect(legs[0]).toHaveTextContent('LEG 1 OF 2 - x -');
+    expect(legs[1]).toHaveTextContent('LEG 2 OF 2 - x -');
+  });
+
+  test('shows the knockout draw after the final tables of a group stage just ended', () => {
+    (useGameState as jest.Mock).mockReturnValue(groupStageJustEndedState());
+    render(<TeamStandings />);
+
+    fireEvent.click(continueButton());
+
+    expect(dispatch).not.toHaveBeenCalled();
+    expect(screen.queryByText(/GROUP/)).not.toBeInTheDocument();
+    expect(screen.getByTestId('phase-bracket')).toBeInTheDocument();
+    expect(screen.getByTestId('tie-aggregate')).toHaveTextContent('T01 0 x 0 T03');
+  });
+
+  test('goes back to the first page of the next phase draw', () => {
+    (useGameState as jest.Mock).mockReturnValue(groupStageJustEndedState());
+    render(<TeamStandings />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Next' }));
+    fireEvent.click(continueButton());
+
+    expect(screen.getByTestId('tie-aggregate')).toHaveTextContent('T01 0 x 0 T03');
+  });
+
+  test('goes to the team manager and saves once the next phase draw has been seen', () => {
+    (useGameState as jest.Mock).mockReturnValue(semiFinalJustEndedState());
+    render(<TeamStandings />);
+
+    fireEvent.click(continueButton());
+    fireEvent.click(continueButton());
+
+    expect(dispatch).toHaveBeenNthCalledWith(1, { type: 'UPDATE_TEAM_STATS' });
+    expect(dispatch).toHaveBeenNthCalledWith(2, {
+      type: 'SET_CURRENT_SCREEN',
+      screenName: 'TeamManager',
+    });
+    expect(dispatch).toHaveBeenNthCalledWith(3, { type: 'SAVE_GAME' });
+  });
+
+  test('goes straight to the team manager in the middle of a phase', () => {
+    (useGameState as jest.Mock).mockReturnValue(knockoutState(false));
+    render(<TeamStandings />);
+
+    fireEvent.click(continueButton());
+
+    expect(dispatch).toHaveBeenCalledWith({
+      type: 'SET_CURRENT_SCREEN',
+      screenName: 'TeamManager',
+    });
+  });
+
+  test('ends the championship and goes to the team manager once the final is played', () => {
+    const state = knockoutState(true);
+    const championship = state.championshipContainer.playableChampionship;
+    championship.matchContainer = { ...championship.matchContainer, currentRound: 4 };
+    (useGameState as jest.Mock).mockReturnValue(state);
+    render(<TeamStandings />);
+
+    expect(screen.getByText(/^Final$/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /new season/i }));
+
+    expect(dispatch).toHaveBeenNthCalledWith(1, { type: 'RUN_END_OF_CHAMPIONSHIP_ACTIONS' });
+    expect(dispatch).toHaveBeenCalledWith({
+      type: 'SET_CURRENT_SCREEN',
+      screenName: 'TeamManager',
+    });
+  });
+});

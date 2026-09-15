@@ -20,21 +20,35 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
   const state = useGameState(engine);
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
+  const [isShowingNextPhase, setIsShowingNextPhase] = useState(false);
 
   const championship = state.championshipContainer.playableChampionship;
 
   // A phase view is only built for the live championship — a caller that passes `standings`
-  // explicitly is rendering a plain table and wants nothing else. It shows the results of the round
-  // last played: once the last round of a phase ends, the current round already opens the next one.
-  const phaseView = useMemo<PhaseView>(
-    () =>
-      propStandings === undefined
-        ? new ChampionshipUseCases(state).getPhaseView(championship, {
-            focus: 'last-ended-round',
-          })
-        : { isPhased: false, phaseIndex: 0 },
-    [championship, propStandings, state]
-  );
+  // explicitly is rendering a plain table and wants nothing else. The screen first shows the results
+  // of the round last played: once the last round of a phase ends, the current round already opens
+  // the next one, whose draw is shown on continuing.
+  const { resultsView, nextPhaseView } = useMemo<{
+    resultsView: PhaseView;
+    nextPhaseView: PhaseView;
+  }>(() => {
+    if (propStandings !== undefined) {
+      const plain: PhaseView = { isPhased: false, phaseIndex: 0 };
+      return { resultsView: plain, nextPhaseView: plain };
+    }
+
+    const championshipUseCases = new ChampionshipUseCases(state);
+    return {
+      resultsView: championshipUseCases.getPhaseView(championship, { focus: 'last-ended-round' }),
+      nextPhaseView: championshipUseCases.getPhaseView(championship, { focus: 'current-round' }),
+    };
+  }, [championship, propStandings, state]);
+
+  const hasNextPhase =
+    resultsView.isPhased &&
+    nextPhaseView.isPhased &&
+    nextPhaseView.phaseIndex !== resultsView.phaseIndex;
+  const phaseView = isShowingNextPhase ? nextPhaseView : resultsView;
 
   const groups = phaseView.groups ?? [];
   const ties = phaseView.ties ?? [];
@@ -65,6 +79,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
   const totalRounds = championship?.matchContainer?.totalRounds ?? 0;
   const currentRound = championship?.matchContainer?.currentRound ?? 1;
   const completedRound = Math.min(Math.max(currentRound - 1, 1), totalRounds || 1);
+  const displayedRound = isShowingNextPhase ? currentRound : completedRound;
   const isSeasonComplete = totalRounds > 0 && currentRound > totalRounds;
 
   const handlePrevPage = () => {
@@ -76,6 +91,12 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
   };
 
   const handleContinue = () => {
+    if (hasNextPhase && !isShowingNextPhase) {
+      setIsShowingNextPhase(true);
+      setPage(0);
+      return;
+    }
+
     if (isSeasonComplete) {
       engine.dispatch({ type: 'RUN_END_OF_CHAMPIONSHIP_ACTIONS' });
     }
@@ -102,7 +123,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
         <div className="text-center text-[14px] text-white mb-2 uppercase">
           {!isSeasonComplete && totalRounds > 0 && (
             <>
-              {championship?.matchContainer?.currentSeason} - Round {completedRound} of{' '}
+              {championship?.matchContainer?.currentSeason} - Round {displayedRound} of{' '}
               {totalRounds}
             </>
           )}
