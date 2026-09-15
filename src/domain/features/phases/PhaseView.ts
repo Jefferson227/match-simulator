@@ -43,6 +43,20 @@ export type PhaseTieView = {
   winnerTeamId?: Team['id'];
 };
 
+/**
+ * Which round decides the phase shown.
+ * - `current-round` — the round about to be, or being, played.
+ * - `last-ended-round` — the round most recently played. A results screen wants this: the last round
+ *   of a phase resolves it and generates the next one, so the current round already belongs to a
+ *   phase nobody has played yet.
+ */
+export type PhaseViewFocus = 'current-round' | 'last-ended-round';
+
+export type PhaseViewOptions = {
+  /** Absent means `current-round`. */
+  focus?: PhaseViewFocus;
+};
+
 export type PhaseView = {
   isPhased: boolean;
   phaseIndex: number;
@@ -51,6 +65,11 @@ export type PhaseView = {
   /** Position of the current round within its phase, 1-based. */
   roundInPhase?: number;
   roundsInPhase?: number;
+  /**
+   * The table of a round-robin phase: the live standings while it is played, the kept table once a
+   * later phase has reset them. Absent for a knockout phase.
+   */
+  standings?: Standing[];
   /** Set for a group stage — one entry per group. */
   groups?: PhaseGroupView[];
   /** Set for a knockout phase — one entry per tie, in bracket order. */
@@ -83,7 +102,14 @@ function buildGroups(matches: Match[], standings: Standing[]): PhaseGroupView[] 
     .map(([group, groupStandings]) => ({ group, standings: rankStandings(groupStandings) }));
 }
 
-function buildTies(matches: Match[], survivors: Set<string>, resolved: boolean): PhaseTieView[] {
+function buildTies(rounds: Round[], survivors: Set<string>, resolved: boolean): PhaseTieView[] {
+  // A leg is played once its round has started. Its score cannot tell: a goalless leg has the same
+  // score as one not played yet. Match ids are not unique under test, so legs are tracked by object.
+  const playedLegs = new Set(
+    rounds.filter((round) => round.status !== 'not-started').flatMap((round) => round.matches)
+  );
+  const matches = rounds.flatMap((round) => round.matches);
+
   return [...groupMatchesIntoTies(matches).entries()].map(([tieId, legs]) => {
     const first = legs[0];
     const homeTeam = first.homeTeam;
@@ -92,7 +118,7 @@ function buildTies(matches: Match[], survivors: Set<string>, resolved: boolean):
     let home = 0;
     let away = 0;
     const legViews: PhaseLegView[] = legs.map((leg) => {
-      const played = leg.homeTeamScore > 0 || leg.awayTeamScore > 0 || leg.scorers.length > 0;
+      const played = playedLegs.has(leg);
       if (leg.homeTeam.id === homeTeam.id) {
         home += leg.homeTeamScore;
         away += leg.awayTeamScore;
@@ -132,12 +158,25 @@ function buildTies(matches: Match[], survivors: Set<string>, resolved: boolean):
   });
 }
 
-export function buildPhaseView(championship: Championship): PhaseView {
+/** The last round played, or `undefined` before any has ended. */
+function lastEndedRound(rounds: Round[]): Round | undefined {
+  return rounds.reduce<Round | undefined>(
+    (last, round) =>
+      round.status === 'ended' && (!last || round.number > last.number) ? round : last,
+    undefined
+  );
+}
+
+export function buildPhaseView(
+  championship: Championship,
+  options: PhaseViewOptions = {}
+): PhaseView {
   const phases = championship.phases;
   if (!phases?.length) return { isPhased: false, phaseIndex: 0 };
 
   const rounds = championship.matchContainer?.rounds ?? [];
-  const currentRoundNumber = championship.matchContainer?.currentRound ?? 1;
+  const focusedRound = options.focus === 'last-ended-round' ? lastEndedRound(rounds) : undefined;
+  const currentRoundNumber = focusedRound?.number ?? championship.matchContainer?.currentRound ?? 1;
   const currentRound = rounds.find((round) => round.number === currentRoundNumber);
 
   const phaseIndex =
@@ -159,14 +198,20 @@ export function buildPhaseView(championship: Championship): PhaseView {
   };
 
   if (phase.kind === 'round-robin') {
-    if (phase.numberOfGroups > 1) view.groups = buildGroups(matches, championship.standings);
+    // Once a later phase is generated the live standings hold only its field, at zero.
+    const standings =
+      phaseIndex < (championship.currentPhaseIndex ?? 0)
+        ? (championship.phaseStandings?.[phaseIndex] ?? championship.standings)
+        : championship.standings;
+    view.standings = standings;
+    if (phase.numberOfGroups > 1) view.groups = buildGroups(matches, standings);
     return view;
   }
 
   const resolved =
     (championship.currentPhaseIndex ?? 0) > phaseIndex ||
     phaseRounds.every((round) => round.status === 'ended');
-  view.ties = buildTies(matches, new Set(championship.survivingTeamIds ?? []), resolved);
+  view.ties = buildTies(phaseRounds, new Set(championship.survivingTeamIds ?? []), resolved);
   return view;
 }
 

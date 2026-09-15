@@ -16,7 +16,7 @@ import {
   isPhasedChampionshipOver,
   resolveCompletedPhase,
 } from '../features/phases/PhaseProgression';
-import { buildPhaseView, PhaseView } from '../features/phases/PhaseView';
+import { buildPhaseView, PhaseView, PhaseViewOptions } from '../features/phases/PhaseView';
 import { RandomProvider } from '../features/match-simulation/types';
 import { getRandomNumber } from '../utils/Utils';
 import { runMatchTick } from '../features/match-simulation/MatchSimulationEngine';
@@ -989,7 +989,8 @@ const runEndOfChampionshipActions = (
   }
 };
 
-const getPhaseView = (championship: Championship): PhaseView => buildPhaseView(championship);
+const getPhaseView = (championship: Championship, options?: PhaseViewOptions): PhaseView =>
+  buildPhaseView(championship, options);
 
 const getFinalClassification = (championship: Championship): OperationResult<Standing[]> => {
   try {

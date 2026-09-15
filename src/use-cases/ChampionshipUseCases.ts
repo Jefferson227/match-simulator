@@ -5,7 +5,7 @@ import ChampionshipService from '../domain/services/ChampionshipService';
 import TeamService from '../domain/services/TeamService';
 import { GameState } from '../game-engine/GameState';
 import LeagueType from '../domain/enums/LeagueType';
-import { PhaseView } from '../domain/features/phases/PhaseView';
+import { PhaseView, PhaseViewOptions } from '../domain/features/phases/PhaseView';
 import { RandomProvider } from '../domain/features/match-simulation/types';
 import { ENTRY_CHAMPIONSHIP_BY_LEAGUE_TYPE } from '../domain/constants/EntryChampionships';
 
@@ -174,9 +174,9 @@ export default class ChampionshipUseCases {
     return result.getResult();
   }
 
-  /** The phase a championship is currently playing, for the screens. Never throws. */
-  getPhaseView(championship: Championship): PhaseView {
-    return ChampionshipService.getPhaseView(championship);
+  /** The phase a championship is playing, for the screens. Never throws. */
+  getPhaseView(championship: Championship, options?: PhaseViewOptions): PhaseView {
+    return ChampionshipService.getPhaseView(championship, options);
   }
 
   getMatchesForCurrentRound(championship: Championship): Match[] {
