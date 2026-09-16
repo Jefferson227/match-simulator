@@ -1,4 +1,4 @@
-import { useState, useEffect, FC } from 'react';
+import { useState, useEffect, useRef, FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import Score from '../../components/Score';
 import MatchDetails from '../../components/MatchDetails';
@@ -26,6 +26,8 @@ const MatchSimulator: FC = () => {
   const [detailsMatchId, setDetailsMatchId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [matches, setMatches] = useState<Match[]>([]);
+
+  const hasPickedHumanPage = useRef(false);
 
   const [matchId, setMatchId] = useState<string>('');
   const [team, setTeam] = useState<Team>({} as Team);
@@ -78,6 +80,7 @@ const MatchSimulator: FC = () => {
       setTime(0);
       setDetailsMatchId(null);
       setCurrentPage(0);
+      hasPickedHumanPage.current = false;
     }
   }, [state.currentScreen]);
 
@@ -155,6 +158,30 @@ const MatchSimulator: FC = () => {
   }
 
   const totalPages = pages.length;
+
+  // The human's own match is what they came to watch, so a group stage opens on their group and a
+  // knockout on the page holding their tie instead of always on the first one. An unphased round is
+  // left alone: its pages are arbitrary slices of the whole field, not a group the player belongs
+  // to. Only the first page load picks it; paging after that is the player's.
+  const humanTeamId = state.championshipContainer.playableChampionship.teams?.find(
+    (championshipTeam) => championshipTeam.isControlledByHuman
+  )?.id;
+  const picksHumanPage = isGroupStage || phaseView.kind === 'knockout';
+  const humanPageIndex =
+    picksHumanPage && humanTeamId
+      ? pages.findIndex(({ matches: pageMatches }) =>
+          pageMatches.some(
+            (match) => match.homeTeam.id === humanTeamId || match.awayTeam.id === humanTeamId
+          )
+        )
+      : -1;
+
+  useEffect(() => {
+    if (hasPickedHumanPage.current || humanPageIndex < 0) return;
+
+    hasPickedHumanPage.current = true;
+    setCurrentPage(humanPageIndex);
+  }, [humanPageIndex]);
 
   const handleNextPage = () => {
     if (currentPage < totalPages - 1) {

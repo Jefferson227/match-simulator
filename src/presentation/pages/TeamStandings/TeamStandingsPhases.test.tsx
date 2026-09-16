@@ -309,6 +309,53 @@ function semiFinalJustEndedState(): GameState {
   });
 }
 
+/** A knockout phase of `tieCount` ties, two legs each, none played yet. */
+function wideKnockoutState(tieCount: number): GameState {
+  const knockoutTeams = Array.from({ length: tieCount * 2 }, (_, index) => buildTeam(index + 1));
+  const rounds: Round[] = [1, 2].map((leg) => ({
+    id: `round-${leg}`,
+    number: leg,
+    status: 'not-started',
+    phaseIndex: 1,
+    phaseName: 'Final',
+    matches: Array.from({ length: tieCount }, (_, tie) => {
+      const home = knockoutTeams[tie * 2];
+      const away = knockoutTeams[tie * 2 + 1];
+      return buildMatch({
+        homeTeam: leg === 1 ? home : away,
+        awayTeam: leg === 1 ? away : home,
+        phaseIndex: 1,
+        tieId: `p1-t${tie}`,
+        leg,
+      });
+    }),
+  }));
+
+  return buildState({
+    teams: knockoutTeams,
+    phases: [groupPhase, { ...knockoutPhase, numberOfTies: tieCount }],
+    currentPhaseIndex: 1,
+    standings: [],
+    matchContainer: {
+      timer: 0,
+      currentSeason: 2026,
+      currentRound: 1,
+      totalRounds: 2,
+      rounds,
+    },
+  });
+}
+
+/** The same state, with one club handed to the human player. */
+function withHumanTeam(state: GameState, humanTeam: Team): GameState {
+  const championship = state.championshipContainer.playableChampionship;
+  championship.teams = championship.teams.map((team) =>
+    team.id === humanTeam.id ? { ...team, isControlledByHuman: true } : team
+  );
+  championship.hasTeamControlledByHuman = true;
+  return state;
+}
+
 describe('TeamStandings — phased championships', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -334,6 +381,21 @@ describe('TeamStandings — phased championships', () => {
     expect(screen.queryByText('T04')).not.toBeInTheDocument();
   });
 
+  test("opens on the group of the human's club", () => {
+    // The human runs T03, in group 2.
+    (useGameState as jest.Mock).mockReturnValue(withHumanTeam(groupStageState(), teams[2]));
+    render(<TeamStandings />);
+
+    expect(screen.getByText(/GROUP 2/)).toBeInTheDocument();
+    expect(screen.getByText('T03')).toBeInTheDocument();
+    expect(screen.queryByText('T01')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Previous' }));
+
+    expect(screen.getByText(/GROUP 1/)).toBeInTheDocument();
+    expect(screen.getByText('T01')).toBeInTheDocument();
+  });
+
   test('pages to the next group', () => {
     (useGameState as jest.Mock).mockReturnValue(groupStageState());
     render(<TeamStandings />);
@@ -343,6 +405,22 @@ describe('TeamStandings — phased championships', () => {
     expect(screen.getByText(/GROUP 2/)).toBeInTheDocument();
     expect(screen.getByText('T03')).toBeInTheDocument();
     expect(screen.queryByText('T01')).not.toBeInTheDocument();
+  });
+
+  test("opens on the page holding the human's tie during a knockout", () => {
+    // Eight ties page four at a time; the human runs T15, in the last tie of the second page.
+    const state = wideKnockoutState(8);
+    const humanTeam = state.championshipContainer.playableChampionship.teams[14];
+    (useGameState as jest.Mock).mockReturnValue(withHumanTeam(state, humanTeam));
+    render(<TeamStandings />);
+
+    expect(screen.getByText('T15')).toBeInTheDocument();
+    expect(screen.queryByText('T01')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Previous' }));
+
+    expect(screen.getByText('T01')).toBeInTheDocument();
+    expect(screen.queryByText('T15')).not.toBeInTheDocument();
   });
 
   test('renders a bracket during a knockout phase, with both legs and the aggregate', () => {
@@ -518,16 +596,6 @@ describe('TeamStandings — continuing between phases', () => {
       screenName: 'TeamManager',
     });
   });
-
-  /** The same state, with one club handed to the human player. */
-  function withHumanTeam(state: GameState, humanTeam: Team): GameState {
-    const championship = state.championshipContainer.playableChampionship;
-    championship.teams = championship.teams.map((team) =>
-      team.id === humanTeam.id ? { ...team, isControlledByHuman: true } : team
-    );
-    championship.hasTeamControlledByHuman = true;
-    return state;
-  }
 
   test('skips the team manager when the human club is not in the knockout about to be played', () => {
     // The final is T01 x T03; the human runs T02, knocked out in the semi-final.

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Standing from '../../../domain/models/Standing';
 import { PhaseView } from '../../../domain/features/phases/PhaseView';
@@ -69,6 +69,40 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
     : isKnockout
       ? Math.max(1, Math.ceil(ties.length / TIES_PER_PAGE))
       : Math.max(1, Math.ceil(standings.length / RESULTS_PER_PAGE));
+
+  // The human's own group, or own tie, is what they came to read, so a group stage opens on their
+  // group and a knockout on the page holding their tie instead of always on the first one. Picked
+  // once per phase shown, so paging after that is the player's; the next phase's draw picks again.
+  const humanTeamId = championship?.teams?.find((team) => team.isControlledByHuman)?.id;
+  const humanPage = useMemo(() => {
+    if (!humanTeamId) return -1;
+
+    if (isGroupStage) {
+      return groups.findIndex((group) =>
+        group.standings.some((row) => row.team.id === humanTeamId)
+      );
+    }
+
+    if (isKnockout) {
+      const tieIndex = ties.findIndex(
+        (tie) => tie.homeTeam.id === humanTeamId || tie.awayTeam.id === humanTeamId
+      );
+      return tieIndex < 0 ? -1 : Math.floor(tieIndex / TIES_PER_PAGE);
+    }
+
+    return -1;
+  }, [groups, humanTeamId, isGroupStage, isKnockout, ties]);
+
+  const pickedPageFor = useRef<string | null>(null);
+  useEffect(() => {
+    if (humanPage < 0) return;
+
+    const phaseKey = `${isShowingNextPhase}-${phaseView.phaseIndex}`;
+    if (pickedPageFor.current === phaseKey) return;
+
+    pickedPageFor.current = phaseKey;
+    setPage(humanPage);
+  }, [humanPage, isShowingNextPhase, phaseView.phaseIndex]);
 
   const currentGroup = isGroupStage ? groups[Math.min(page, groups.length - 1)] : undefined;
   const paginatedStandings = isGroupStage

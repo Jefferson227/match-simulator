@@ -145,7 +145,7 @@ describe('MatchSimulator — group stage', () => {
     advancingPerGroup: 1,
   };
 
-  function buildGroupStageState(): GameState {
+  function buildGroupStageState(humanTeamIndex?: number): GameState {
     const state = buildState(true);
     const championship = state.championshipContainer.playableChampionship;
     const matchOf = (home: Team, away: Team, group: number) => ({
@@ -165,7 +165,9 @@ describe('MatchSimulator — group stage', () => {
         playableChampionship: {
           ...championship,
           numberOfTeams: 4,
-          teams: groupTeams,
+          teams: groupTeams.map((team, index) =>
+            index === humanTeamIndex ? { ...team, isControlledByHuman: true } : team
+          ),
           standings: groupTeams.map((team, index) => ({
             team,
             position: index + 1,
@@ -184,7 +186,21 @@ describe('MatchSimulator — group stage', () => {
                 matches: [
                   matchOf(groupTeams[0], groupTeams[1], 0),
                   matchOf(groupTeams[2], groupTeams[3], 1),
-                ],
+                ].map((match) =>
+                  humanTeamIndex === undefined
+                    ? match
+                    : {
+                        ...match,
+                        homeTeam:
+                          match.homeTeam.id === groupTeams[humanTeamIndex].id
+                            ? { ...match.homeTeam, isControlledByHuman: true }
+                            : match.homeTeam,
+                        awayTeam:
+                          match.awayTeam.id === groupTeams[humanTeamIndex].id
+                            ? { ...match.awayTeam, isControlledByHuman: true }
+                            : match.awayTeam,
+                      }
+                ),
               },
             ],
           },
@@ -212,5 +228,103 @@ describe('MatchSimulator — group stage', () => {
     expect(screen.getByText(/^2026 - 1ª Fase - GROUP 2$/)).toBeInTheDocument();
     expect(screen.getByText('T3')).toBeInTheDocument();
     expect(screen.queryByText('T1')).not.toBeInTheDocument();
+  });
+
+  test("opens on the group of the human's team", () => {
+    (useGameState as jest.Mock).mockReturnValue(buildGroupStageState(3));
+    render(<MatchSimulator />);
+
+    expect(screen.getByText(/^2026 - 1ª Fase - GROUP 2$/)).toBeInTheDocument();
+    expect(screen.getByText('T4')).toBeInTheDocument();
+    expect(screen.queryByText('T1')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('<'));
+
+    expect(screen.getByText(/^2026 - 1ª Fase - GROUP 1$/)).toBeInTheDocument();
+    expect(screen.getByText('T1')).toBeInTheDocument();
+  });
+});
+
+describe('MatchSimulator — knockout phase', () => {
+  const knockoutPhase: ChampionshipPhase = {
+    kind: 'knockout',
+    name: 'Oitavas de final',
+    numberOfTies: 8,
+    legs: 1,
+    secondLegHost: 'accumulated-points',
+    tiebreakers: ['goal-difference', 'penalties'],
+  };
+
+  /** Eight ties of one leg, paging seven matches at a time, with one club given to the human. */
+  function buildKnockoutState(humanTeamIndex: number): GameState {
+    const knockoutTeams = Array.from({ length: 16 }, (_, index) => buildTeam(index + 1)).map(
+      (team, index) => (index === humanTeamIndex ? { ...team, isControlledByHuman: true } : team)
+    );
+
+    const state = buildState(true);
+    const championship = state.championshipContainer.playableChampionship;
+
+    return {
+      ...state,
+      championshipContainer: {
+        playableChampionship: {
+          ...championship,
+          numberOfTeams: 16,
+          teams: knockoutTeams,
+          standings: [],
+          matchContainer: {
+            ...championship.matchContainer,
+            rounds: [
+              {
+                id: 'round-1',
+                number: 1,
+                status: 'in-progress',
+                phaseIndex: 0,
+                phaseName: knockoutPhase.name,
+                matches: Array.from({ length: 8 }, (_, tie) => ({
+                  id: `match-tie-${tie}`,
+                  homeTeam: knockoutTeams[tie * 2],
+                  awayTeam: knockoutTeams[tie * 2 + 1],
+                  homeTeamScore: 0,
+                  awayTeamScore: 0,
+                  scorers: [],
+                  phaseIndex: 0,
+                  tieId: `p0-t${tie}`,
+                  leg: 1,
+                })),
+              },
+            ],
+          },
+          phases: [knockoutPhase],
+        } as Championship,
+      },
+    };
+  }
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (useGameEngine as jest.Mock).mockReturnValue({ dispatch: jest.fn() });
+  });
+
+  test("opens on the page holding the human's tie", () => {
+    // The eighth tie is T15 x T16, the only one on the second page; the human runs T15.
+    (useGameState as jest.Mock).mockReturnValue(buildKnockoutState(14));
+    render(<MatchSimulator />);
+
+    expect(screen.getByText('T15')).toBeInTheDocument();
+    expect(screen.queryByText('T1')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('<'));
+
+    expect(screen.getByText('T1')).toBeInTheDocument();
+    expect(screen.queryByText('T15')).not.toBeInTheDocument();
+  });
+
+  test('stays on the first page when the human club is not in the phase', () => {
+    (useGameState as jest.Mock).mockReturnValue(buildKnockoutState(-1));
+    render(<MatchSimulator />);
+
+    expect(screen.getByText('T1')).toBeInTheDocument();
+    expect(screen.queryByText('T15')).not.toBeInTheDocument();
   });
 });
