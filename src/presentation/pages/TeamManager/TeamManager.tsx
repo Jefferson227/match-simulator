@@ -195,14 +195,12 @@ const TeamManager: React.FC = () => {
         </div>
 
         <div className="text-left text-[10px] px-4 py-3 uppercase leading-[18px]" style={rowStyle}>
+          <div>{championship?.name}</div>
           <div>
-            {championship?.name}
+            {t('teamManager.position')}: {teamPosition ? getOrdinal(teamPosition) : '-'}
             {groupOfTeam !== undefined
               ? ` (${t('standings.group', { number: groupOfTeam + 1 })})`
               : ''}
-          </div>
-          <div>
-            {t('teamManager.position')}: {teamPosition ? getOrdinal(teamPosition) : '-'}
           </div>
           {isKnockoutPhase && phaseView.phaseName && <div>{phaseView.phaseName}</div>}
           {!isKnockoutPhase && totalRounds > 0 && (

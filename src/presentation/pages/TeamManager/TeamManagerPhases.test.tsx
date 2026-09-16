@@ -180,13 +180,13 @@ describe('TeamManager — phased championships', () => {
     expect(screen.getByText(/POSITION: -/)).toBeInTheDocument();
   });
 
-  it("names the human club's group after the championship during a group stage", () => {
+  it("names the human club's group after its position during a group stage", () => {
     renderWith(groupStageState());
 
     // The club plays the second group, and the round count still applies.
-    expect(screen.getByText(/Brasileirão Série D \(GROUP 2\)/)).toBeInTheDocument();
+    expect(screen.getByText('Brasileirão Série D')).toBeInTheDocument();
+    expect(screen.getByText(/POSITION: 1st \(GROUP 2\)/)).toBeInTheDocument();
     expect(screen.getByText(/ROUND 1 OF 20/)).toBeInTheDocument();
-    expect(screen.getByText(/POSITION: 1st/)).toBeInTheDocument();
   });
 
   it('leaves an unphased championship reading the plain round count', () => {
@@ -199,6 +199,6 @@ describe('TeamManager — phased championships', () => {
 
     expect(screen.getByText('Brasileirão Série D')).toBeInTheDocument();
     expect(screen.getByText(/ROUND 1 OF 20/)).toBeInTheDocument();
-    expect(screen.getByText(/POSITION: 1st/)).toBeInTheDocument();
+    expect(screen.getByText('POSITION: 1st')).toBeInTheDocument();
   });
 });
