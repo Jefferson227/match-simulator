@@ -74,6 +74,14 @@ const TeamManager: React.FC = () => {
       engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage: state.errorMessage });
   }, [state.hasError]);
 
+  // Which phase is being played, so a knockout shows its name instead of a league position and a
+  // round number, and a group stage names the group the club is in.
+  const phaseView = championshipUseCases.getPhaseView(championship);
+  const isKnockoutPhase = phaseView.kind === 'knockout';
+  const groupOfTeam = phaseView.groups?.find((group) =>
+    group.standings.some((standing) => standing.team.id === team.id)
+  )?.group;
+
   const getStandingPosition = (teamId: string): number | null =>
     championship?.standings?.find((standing) => standing.team.id === teamId)?.position ?? null;
 
@@ -151,7 +159,7 @@ const TeamManager: React.FC = () => {
   const outlineColor = team.colors.outline;
   const nameColor = team.colors.text;
 
-  const teamPosition = getStandingPosition(team.id);
+  const teamPosition = isKnockoutPhase ? null : getStandingPosition(team.id);
   const opponentPosition = nextOpponent ? getStandingPosition(nextOpponent.id) : null;
   const currentRound = championship?.matchContainer?.currentRound ?? 0;
   const totalRounds = championship?.matchContainer?.totalRounds ?? 0;
@@ -187,11 +195,17 @@ const TeamManager: React.FC = () => {
         </div>
 
         <div className="text-left text-[10px] px-4 py-3 uppercase leading-[18px]" style={rowStyle}>
-          <div>{championship?.name}</div>
+          <div>
+            {championship?.name}
+            {groupOfTeam !== undefined
+              ? ` (${t('standings.group', { number: groupOfTeam + 1 })})`
+              : ''}
+          </div>
           <div>
             {t('teamManager.position')}: {teamPosition ? getOrdinal(teamPosition) : '-'}
           </div>
-          {totalRounds > 0 && (
+          {isKnockoutPhase && phaseView.phaseName && <div>{phaseView.phaseName}</div>}
+          {!isKnockoutPhase && totalRounds > 0 && (
             <div>{t('teamManager.roundOf', { current: currentRound, total: totalRounds })}</div>
           )}
         </div>

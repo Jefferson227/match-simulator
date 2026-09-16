@@ -82,6 +82,22 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
   const displayedRound = isShowingNextPhase ? currentRound : completedRound;
   const isSeasonComplete = totalRounds > 0 && currentRound > totalRounds;
 
+  // A knockout the human's club is not in has nothing to manage: the round is watched, not played,
+  // so TeamManager is skipped and the simulator opened straight from the results.
+  const skipsTeamManager = useMemo(() => {
+    if (isSeasonComplete || nextPhaseView.kind !== 'knockout') return false;
+
+    const nextTies = nextPhaseView.ties ?? [];
+    if (!nextTies.length) return false;
+
+    const humanTeamId = championship?.teams?.find((team) => team.isControlledByHuman)?.id;
+    if (!humanTeamId) return false;
+
+    return !nextTies.some(
+      (tie) => tie.homeTeam.id === humanTeamId || tie.awayTeam.id === humanTeamId
+    );
+  }, [championship, isSeasonComplete, nextPhaseView]);
+
   const handlePrevPage = () => {
     if (page > 0) setPage((prev) => prev - 1);
   };
@@ -102,7 +118,15 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
     }
 
     engine.dispatch({ type: 'UPDATE_TEAM_STATS' });
-    engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'TeamManager' });
+
+    if (skipsTeamManager) {
+      // What TeamManager would have done on START MATCH, minus the human lineup nobody needs here.
+      engine.dispatch({ type: 'PREPARE_TEAMS_BEFORE_MATCH' });
+      engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'MatchSimulator' });
+    } else {
+      engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'TeamManager' });
+    }
+
     engine.dispatch({ type: 'SAVE_GAME' });
   };
 

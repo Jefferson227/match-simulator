@@ -519,6 +519,62 @@ describe('TeamStandings — continuing between phases', () => {
     });
   });
 
+  /** The same state, with one club handed to the human player. */
+  function withHumanTeam(state: GameState, humanTeam: Team): GameState {
+    const championship = state.championshipContainer.playableChampionship;
+    championship.teams = championship.teams.map((team) =>
+      team.id === humanTeam.id ? { ...team, isControlledByHuman: true } : team
+    );
+    championship.hasTeamControlledByHuman = true;
+    return state;
+  }
+
+  test('skips the team manager when the human club is not in the knockout about to be played', () => {
+    // The final is T01 x T03; the human runs T02, knocked out in the semi-final.
+    (useGameState as jest.Mock).mockReturnValue(withHumanTeam(semiFinalJustEndedState(), teams[1]));
+    render(<TeamStandings />);
+
+    fireEvent.click(continueButton());
+    fireEvent.click(continueButton());
+
+    expect(dispatch).toHaveBeenNthCalledWith(1, { type: 'UPDATE_TEAM_STATS' });
+    expect(dispatch).toHaveBeenNthCalledWith(2, { type: 'PREPARE_TEAMS_BEFORE_MATCH' });
+    expect(dispatch).toHaveBeenNthCalledWith(3, {
+      type: 'SET_CURRENT_SCREEN',
+      screenName: 'MatchSimulator',
+    });
+    expect(dispatch).toHaveBeenNthCalledWith(4, { type: 'SAVE_GAME' });
+  });
+
+  test('keeps the team manager when the human club is still in the knockout', () => {
+    (useGameState as jest.Mock).mockReturnValue(withHumanTeam(semiFinalJustEndedState(), teams[0]));
+    render(<TeamStandings />);
+
+    fireEvent.click(continueButton());
+    fireEvent.click(continueButton());
+
+    expect(dispatch).toHaveBeenNthCalledWith(2, {
+      type: 'SET_CURRENT_SCREEN',
+      screenName: 'TeamManager',
+    });
+    expect(dispatch).not.toHaveBeenCalledWith({ type: 'PREPARE_TEAMS_BEFORE_MATCH' });
+  });
+
+  test('keeps the team manager once the season is over, whoever the human club is', () => {
+    const state = withHumanTeam(knockoutState(true), teams[1]);
+    const championship = state.championshipContainer.playableChampionship;
+    championship.matchContainer = { ...championship.matchContainer, currentRound: 4 };
+    (useGameState as jest.Mock).mockReturnValue(state);
+    render(<TeamStandings />);
+
+    fireEvent.click(screen.getByRole('button', { name: /new season/i }));
+
+    expect(dispatch).toHaveBeenCalledWith({
+      type: 'SET_CURRENT_SCREEN',
+      screenName: 'TeamManager',
+    });
+  });
+
   test('ends the championship and goes to the team manager once the final is played', () => {
     const state = knockoutState(true);
     const championship = state.championshipContainer.playableChampionship;
