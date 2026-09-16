@@ -160,7 +160,8 @@ const TeamManager: React.FC = () => {
   const nameColor = team.colors.text;
 
   const teamPosition = isKnockoutPhase ? null : getStandingPosition(team.id);
-  const opponentPosition = nextOpponent ? getStandingPosition(nextOpponent.id) : null;
+  const opponentPosition =
+    nextOpponent && !isKnockoutPhase ? getStandingPosition(nextOpponent.id) : null;
   const currentRound = championship?.matchContainer?.currentRound ?? 0;
   const totalRounds = championship?.matchContainer?.totalRounds ?? 0;
   const morale = Math.max(0, Math.min(100, team.morale ?? 0));

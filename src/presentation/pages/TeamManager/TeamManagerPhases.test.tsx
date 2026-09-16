@@ -180,6 +180,12 @@ describe('TeamManager — phased championships', () => {
     expect(screen.getByText(/POSITION: -/)).toBeInTheDocument();
   });
 
+  it('drops the opponent position in a knockout too', () => {
+    renderWith(knockoutState());
+
+    expect(screen.getByText('NEXT MATCH: T3')).toBeInTheDocument();
+  });
+
   it("names the human club's group after its position during a group stage", () => {
     renderWith(groupStageState());
 
