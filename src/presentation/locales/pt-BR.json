@@ -57,5 +57,15 @@
   "matchSimulator": {
     "roundOf": "RODADA {{current}} DE {{total}}",
     "finishMatches": "ENCERRAR JOGOS"
+  },
+  "seasonSummary": {
+    "seasonOver": "FIM DE TEMPORADA",
+    "champion": "CAMPEÃO",
+    "runnerUp": "VICE-CAMPEÃO",
+    "alsoPromoted": "TAMBÉM PROMOVIDOS",
+    "noPromotions": "PRIMEIRA DIVISÃO",
+    "relegated": "REBAIXADOS",
+    "noRelegations": "ÚLTIMA DIVISÃO",
+    "continue": "CONTINUAR"
   }
 }

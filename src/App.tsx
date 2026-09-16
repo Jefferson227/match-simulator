@@ -12,6 +12,7 @@ import TeamManager from './presentation/pages/TeamManager/TeamManager';
 import MatchSimulator from './presentation/pages/MatchSimulator/MatchSimulator';
 import TeamStandings from './presentation/pages/TeamStandings/TeamStandings';
 import TeamAdditionalInfo from './presentation/pages/TeamAdditionalInfo/TeamAdditionalInfo';
+import SeasonSummary from './presentation/pages/SeasonSummary/SeasonSummary';
 
 const AppContent: FC = () => {
   // Game engine
@@ -36,6 +37,8 @@ const AppContent: FC = () => {
       return <TeamAdditionalInfo />;
     case 'TeamStandings':
       return <TeamStandings />;
+    case 'SeasonSummary':
+      return <SeasonSummary />;
     default:
       return <InitialScreen />;
   }

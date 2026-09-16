@@ -57,5 +57,15 @@
   "matchSimulator": {
     "roundOf": "ROUND {{current}} OF {{total}}",
     "finishMatches": "FINISH MATCHES"
+  },
+  "seasonSummary": {
+    "seasonOver": "SEASON OVER",
+    "champion": "CHAMPION",
+    "runnerUp": "RUNNER-UP",
+    "alsoPromoted": "ALSO PROMOTED",
+    "noPromotions": "TOP DIVISION",
+    "relegated": "RELEGATED",
+    "noRelegations": "BOTTOM DIVISION",
+    "continue": "CONTINUE"
   }
 }
