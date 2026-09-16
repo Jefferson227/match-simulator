@@ -119,7 +119,7 @@ const MatchSimulator: FC = () => {
         engine.dispatch({ type: 'END_ROUND_FOR_ALL_CHAMPIONSHIPS' });
         engine.dispatch({ type: 'UPDATE_GAME_CONFIG', newClockSpeed: clockSpeed });
         engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'TeamStandings' });
-      }, 5000);
+      }, 2000);
     }
 
     // Update matches in the page
