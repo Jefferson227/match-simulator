@@ -131,6 +131,26 @@ export default class ChampionshipUseCases {
     };
   }
 
+  /**
+   * Builds the end-of-season report and parks it on the state. Dispatched when the season ends and
+   * before `RUN_END_OF_CHAMPIONSHIP_ACTIONS`, which resets the tables it reads.
+   */
+  buildSeasonSummary(): GameState {
+    const result = ChampionshipService.buildSeasonSummary(this.state.championshipContainer);
+    if (!result.succeeded) {
+      return {
+        ...this.state,
+        hasError: true,
+        errorMessage: result.error.message,
+      };
+    }
+
+    return {
+      ...this.state,
+      seasonSummary: result.getResult(),
+    };
+  }
+
   runEndOfChampionshipActions(): GameState {
     const result = ChampionshipService.runEndOfChampionshipActions(
       this.state.championshipContainer

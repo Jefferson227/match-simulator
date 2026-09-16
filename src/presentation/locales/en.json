@@ -66,6 +66,9 @@
     "noPromotions": "TOP DIVISION",
     "relegated": "RELEGATED",
     "noRelegations": "BOTTOM DIVISION",
-    "continue": "CONTINUE"
+    "nobodyElsePromoted": "NOBODY ELSE",
+    "nobodyRelegated": "NOBODY",
+    "notTracked": "NOT TRACKED",
+    "newSeason": "NEW SEASON"
   }
 }

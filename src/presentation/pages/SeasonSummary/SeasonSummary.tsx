@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import MainLayout from '../../components/MainLayout/MainLayout';
-import sampleSeasonSummary, {
+import {
   SeasonSummary as SeasonSummaryData,
+  SeasonSummaryDivision,
   SeasonSummaryTeam,
-} from './sampleSeasonSummary';
+} from '../../../domain/models/SeasonSummary';
+import { useGameEngine } from '../../contexts/GameEngineContext';
+import { useGameState } from '../../../services/useGameState';
 
 interface SeasonSummaryProps {
   summary?: SeasonSummaryData;
 }
+
+const EMPTY_SUMMARY: SeasonSummaryData = { season: 0, divisions: [] };
 
 const TeamBadge: React.FC<{ team: SeasonSummaryTeam }> = ({ team }) => (
   <div
@@ -31,6 +36,10 @@ const SectionLabel: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   <div className="text-[10px] text-[#c9e5c4] uppercase tracking-wider mb-2">{children}</div>
 );
 
+const EmptyLabel: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="text-[11px] text-[#c9e5c4] uppercase">{children}</div>
+);
+
 const TeamRow: React.FC<{ team: SeasonSummaryTeam }> = ({ team }) => (
   <div className="flex items-center gap-2">
     <TeamBadge team={team} />
@@ -38,33 +47,59 @@ const TeamRow: React.FC<{ team: SeasonSummaryTeam }> = ({ team }) => (
   </div>
 );
 
-const TeamList: React.FC<{ teams: SeasonSummaryTeam[]; emptyLabel: string }> = ({
-  teams,
-  emptyLabel,
-}) =>
-  teams.length > 0 ? (
+/**
+ * A promotion or relegation list.
+ *
+ * The three states are distinct: a list of clubs, nothing to show because the division has no
+ * neighbour on that side, and nothing to show because the container never worked that exchange out
+ * (`teams` undefined). The last one is a gap in the engine, not a result, so it says so rather than
+ * claiming the division is the top or bottom of the pyramid.
+ */
+const TeamList: React.FC<{
+  teams?: SeasonSummaryTeam[];
+  hasNeighbourDivision: boolean;
+  noNeighbourLabel: string;
+  noneLabel: string;
+  notTrackedLabel: string;
+}> = ({ teams, hasNeighbourDivision, noNeighbourLabel, noneLabel, notTrackedLabel }) => {
+  if (teams === undefined) return <EmptyLabel>{notTrackedLabel}</EmptyLabel>;
+  if (teams.length === 0) {
+    return <EmptyLabel>{hasNeighbourDivision ? noneLabel : noNeighbourLabel}</EmptyLabel>;
+  }
+
+  return (
     <div className="flex flex-col gap-2">
       {teams.map((team) => (
-        <TeamRow key={team.abbreviation} team={team} />
+        <TeamRow key={team.id} team={team} />
       ))}
     </div>
-  ) : (
-    <div className="text-[11px] text-[#c9e5c4] uppercase">{emptyLabel}</div>
   );
+};
+
+const PlacedTeam: React.FC<{ team?: SeasonSummaryTeam; emptyLabel: string }> = ({
+  team,
+  emptyLabel,
+}) => (team ? <TeamRow team={team} /> : <EmptyLabel>{emptyLabel}</EmptyLabel>);
 
 /**
  * End of a playable season: who won each division, who went up with them and who went down.
  * One division per page, paged with the arrows.
  *
- * The data is still the hand-written sample in `sampleSeasonSummary.ts` — the page takes it as a
- * prop so a real summary built from `GameState` can replace it without touching the layout.
+ * The summary is built by `BUILD_SEASON_SUMMARY` when TeamStandings ends the season, because the
+ * roll-over this page's NEW SEASON runs resets the tables it is read off. It stays a prop so a
+ * caller can render a summary of its own.
  */
-const SeasonSummary: React.FC<SeasonSummaryProps> = ({ summary = sampleSeasonSummary }) => {
+const SeasonSummary: React.FC<SeasonSummaryProps> = ({ summary: propSummary }) => {
+  const engine = useGameEngine();
+  const state = useGameState(engine);
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
 
+  const summary = propSummary ?? state.seasonSummary ?? EMPTY_SUMMARY;
+
   const totalPages = Math.max(1, summary.divisions.length);
-  const division = summary.divisions[Math.min(page, totalPages - 1)];
+  const division = summary.divisions[Math.min(page, totalPages - 1)] as
+    SeasonSummaryDivision | undefined;
 
   const handlePrevPage = () => {
     if (page > 0) setPage((prev) => prev - 1);
@@ -74,16 +109,23 @@ const SeasonSummary: React.FC<SeasonSummaryProps> = ({ summary = sampleSeasonSum
     if (page < totalPages - 1) setPage((prev) => prev + 1);
   };
 
+  // Everything TeamStandings used to do on NEW SEASON, now that the summary has been read: roll the
+  // divisions over, refresh the stats off the new squads and hand the player back to TeamManager.
+  const handleNewSeason = () => {
+    engine.dispatch({ type: 'RUN_END_OF_CHAMPIONSHIP_ACTIONS' });
+    engine.dispatch({ type: 'UPDATE_TEAM_STATS' });
+    engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'TeamManager' });
+    engine.dispatch({ type: 'SAVE_GAME' });
+  };
+
   return (
     <MainLayout>
       <div className="font-press-start min-h-screen flex flex-col items-center">
         <div className="w-[350px] mx-auto text-center">
           <div className="text-[14px] text-white mt-6 mb-2 tracking-wider uppercase">
-            {summary.championshipName}
+            {division?.divisionName ?? ''}
           </div>
-          <div className="text-[12px] text-white mb-2 uppercase">
-            {summary.season} - {division.divisionName}
-          </div>
+          <div className="text-[12px] text-white mb-2 uppercase">{summary.season}</div>
         </div>
 
         <div
@@ -98,14 +140,14 @@ const SeasonSummary: React.FC<SeasonSummaryProps> = ({ summary = sampleSeasonSum
 
           <div className="px-4 py-4">
             <SectionLabel>{t('seasonSummary.champion')}</SectionLabel>
-            <TeamRow team={division.champion} />
+            <PlacedTeam team={division?.champion} emptyLabel={t('seasonSummary.notTracked')} />
           </div>
 
           <Divider />
 
           <div className="px-4 py-4">
             <SectionLabel>{t('seasonSummary.runnerUp')}</SectionLabel>
-            <TeamRow team={division.runnerUp} />
+            <PlacedTeam team={division?.runnerUp} emptyLabel={t('seasonSummary.notTracked')} />
           </div>
 
           <Divider />
@@ -113,8 +155,11 @@ const SeasonSummary: React.FC<SeasonSummaryProps> = ({ summary = sampleSeasonSum
           <div className="px-4 py-4">
             <SectionLabel>{t('seasonSummary.alsoPromoted')}</SectionLabel>
             <TeamList
-              teams={division.otherPromotedTeams}
-              emptyLabel={t('seasonSummary.noPromotions')}
+              teams={division?.otherPromotedTeams}
+              hasNeighbourDivision={division?.isPromotable ?? false}
+              noNeighbourLabel={t('seasonSummary.noPromotions')}
+              noneLabel={t('seasonSummary.nobodyElsePromoted')}
+              notTrackedLabel={t('seasonSummary.notTracked')}
             />
           </div>
 
@@ -123,8 +168,11 @@ const SeasonSummary: React.FC<SeasonSummaryProps> = ({ summary = sampleSeasonSum
           <div className="px-4 py-4">
             <SectionLabel>{t('seasonSummary.relegated')}</SectionLabel>
             <TeamList
-              teams={division.relegatedTeams}
-              emptyLabel={t('seasonSummary.noRelegations')}
+              teams={division?.relegatedTeams}
+              hasNeighbourDivision={division?.isRelegatable ?? false}
+              noNeighbourLabel={t('seasonSummary.noRelegations')}
+              noneLabel={t('seasonSummary.nobodyRelegated')}
+              notTrackedLabel={t('seasonSummary.notTracked')}
             />
           </div>
 
@@ -150,10 +198,9 @@ const SeasonSummary: React.FC<SeasonSummaryProps> = ({ summary = sampleSeasonSum
           </button>
           <button
             className="border-4 border-white w-[180px] h-[56px] flex items-center justify-center text-[15px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition mx-2 cursor-pointer"
-            onClick={handleNextPage}
-            disabled={page >= totalPages - 1}
+            onClick={handleNewSeason}
           >
-            {t('seasonSummary.continue')}
+            {t('seasonSummary.newSeason')}
           </button>
           <button
             className={`border-4 w-[80px] h-[56px] flex items-center justify-center text-[15px] bg-transparent transition ${

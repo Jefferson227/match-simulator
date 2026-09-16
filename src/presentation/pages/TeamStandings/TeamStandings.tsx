@@ -147,8 +147,13 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
       return;
     }
 
+    // The season is not rolled over here: the summary has to be built off the tables as they ended,
+    // and the roll-over throws them away. SeasonSummary runs it on NEW SEASON.
     if (isSeasonComplete) {
-      engine.dispatch({ type: 'RUN_END_OF_CHAMPIONSHIP_ACTIONS' });
+      engine.dispatch({ type: 'BUILD_SEASON_SUMMARY' });
+      engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'SeasonSummary' });
+      engine.dispatch({ type: 'SAVE_GAME' });
+      return;
     }
 
     engine.dispatch({ type: 'UPDATE_TEAM_STATS' });
@@ -267,7 +272,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
             className="border-4 border-white w-[180px] h-[56px] flex items-center justify-center text-[15px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition mx-2 cursor-pointer"
             onClick={handleContinue}
           >
-            {isSeasonComplete ? 'NEW SEASON' : 'CONTINUE'}
+            {isSeasonComplete ? 'END SEASON' : 'CONTINUE'}
           </button>
           <button
             className={`border-4 w-[80px] h-[56px] flex items-center justify-center text-[15px] bg-transparent transition ${

@@ -120,7 +120,7 @@ describe('TeamStandings', () => {
     expect(mockDispatch).toHaveBeenNthCalledWith(3, { type: 'SAVE_GAME' });
   });
 
-  test('runs end-of-championship actions before saving on new season', () => {
+  test('opens the season summary instead of rolling the season over on end season', () => {
     (useGameState as jest.Mock).mockReturnValue(
       buildState({
         championshipContainer: {
@@ -138,16 +138,15 @@ describe('TeamStandings', () => {
 
     render(<TeamStandings />);
 
-    fireEvent.click(screen.getByRole('button', { name: /new season/i }));
+    fireEvent.click(screen.getByRole('button', { name: /end season/i }));
 
-    expect(mockDispatch).toHaveBeenNthCalledWith(1, { type: 'RUN_END_OF_CHAMPIONSHIP_ACTIONS' });
+    expect(mockDispatch).toHaveBeenNthCalledWith(1, { type: 'BUILD_SEASON_SUMMARY' });
     expect(mockDispatch).toHaveBeenNthCalledWith(2, {
-      type: 'UPDATE_TEAM_STATS',
-    });
-    expect(mockDispatch).toHaveBeenNthCalledWith(3, {
       type: 'SET_CURRENT_SCREEN',
-      screenName: 'TeamManager',
+      screenName: 'SeasonSummary',
     });
-    expect(mockDispatch).toHaveBeenNthCalledWith(4, { type: 'SAVE_GAME' });
+    expect(mockDispatch).toHaveBeenNthCalledWith(3, { type: 'SAVE_GAME' });
+    // The roll-over is SeasonSummary's job now — it would reset the tables the summary reads.
+    expect(mockDispatch).not.toHaveBeenCalledWith({ type: 'RUN_END_OF_CHAMPIONSHIP_ACTIONS' });
   });
 });

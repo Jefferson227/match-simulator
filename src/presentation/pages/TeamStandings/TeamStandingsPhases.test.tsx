@@ -628,22 +628,26 @@ describe('TeamStandings — continuing between phases', () => {
     expect(dispatch).not.toHaveBeenCalledWith({ type: 'PREPARE_TEAMS_BEFORE_MATCH' });
   });
 
-  test('keeps the team manager once the season is over, whoever the human club is', () => {
+  test('never skips to the simulator once the season is over, whoever the human club is', () => {
     const state = withHumanTeam(knockoutState(true), teams[1]);
     const championship = state.championshipContainer.playableChampionship;
     championship.matchContainer = { ...championship.matchContainer, currentRound: 4 };
     (useGameState as jest.Mock).mockReturnValue(state);
     render(<TeamStandings />);
 
-    fireEvent.click(screen.getByRole('button', { name: /new season/i }));
+    fireEvent.click(screen.getByRole('button', { name: /end season/i }));
 
     expect(dispatch).toHaveBeenCalledWith({
       type: 'SET_CURRENT_SCREEN',
-      screenName: 'TeamManager',
+      screenName: 'SeasonSummary',
+    });
+    expect(dispatch).not.toHaveBeenCalledWith({
+      type: 'SET_CURRENT_SCREEN',
+      screenName: 'MatchSimulator',
     });
   });
 
-  test('ends the championship and goes to the team manager once the final is played', () => {
+  test('builds the season summary and opens it once the final is played', () => {
     const state = knockoutState(true);
     const championship = state.championshipContainer.playableChampionship;
     championship.matchContainer = { ...championship.matchContainer, currentRound: 4 };
@@ -651,12 +655,12 @@ describe('TeamStandings — continuing between phases', () => {
     render(<TeamStandings />);
 
     expect(screen.getByText('2026 - Final')).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: /new season/i }));
+    fireEvent.click(screen.getByRole('button', { name: /end season/i }));
 
-    expect(dispatch).toHaveBeenNthCalledWith(1, { type: 'RUN_END_OF_CHAMPIONSHIP_ACTIONS' });
+    expect(dispatch).toHaveBeenNthCalledWith(1, { type: 'BUILD_SEASON_SUMMARY' });
     expect(dispatch).toHaveBeenCalledWith({
       type: 'SET_CURRENT_SCREEN',
-      screenName: 'TeamManager',
+      screenName: 'SeasonSummary',
     });
   });
 });

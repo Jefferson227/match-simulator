@@ -1,4 +1,5 @@
 import ChampionshipContainer from '../domain/models/ChampionshipContainer';
+import { SeasonSummary } from '../domain/models/SeasonSummary';
 import Player from '../domain/models/Player';
 import { Team } from '../domain/models/Team';
 import GameConfig from '../domain/models/GameConfig';
@@ -12,6 +13,11 @@ export type GameState = {
   gameConfig: GameConfig;
   leagueType: LeagueType;
   coachName: string;
+  /**
+   * The report the end-of-season page reads, built at the moment the season ends and kept until
+   * the next one does. Absent before a season has ever finished.
+   */
+  seasonSummary?: SeasonSummary;
 };
 
 export type GameAction =
@@ -35,6 +41,7 @@ export type GameAction =
     }
   | { type: 'START_ROUND_FOR_ALL_CHAMPIONSHIPS' }
   | { type: 'END_ROUND_FOR_ALL_CHAMPIONSHIPS' }
+  | { type: 'BUILD_SEASON_SUMMARY' }
   | { type: 'RUN_END_OF_CHAMPIONSHIP_ACTIONS' }
   | { type: 'RUN_MATCH_ACTIONS' }
   | { type: 'UPDATE_GAME_CONFIG'; newClockSpeed: number }

@@ -6,6 +6,7 @@ import Match from '../models/Match';
 import { Championship } from '../models/Championship';
 import ChampionshipPhase from '../models/ChampionshipPhase';
 import Standing from '../models/Standing';
+import { SeasonSummary, SeasonSummaryDivision, SeasonSummaryTeam } from '../models/SeasonSummary';
 import LeagueType from '../enums/LeagueType';
 import { createMatches } from '../features/fixture-generation/FixtureGenerator';
 import { rankStandings } from '../features/standings/StandingsComparator';
@@ -511,17 +512,32 @@ function isChampionshipOver(championship: Championship): boolean {
   return championship.matchContainer.currentRound >= championship.matchContainer.totalRounds;
 }
 
-function runEndOfChampionshipActionsForAllChampionships(
-  championshipContainer: ChampionshipContainer
-): ChampionshipContainer {
+type SeasonExchange = {
+  /** Clubs going up out of the playable division. */
+  promotedTeams: Team[];
+  /** Clubs going down out of the playable division. */
+  relegatedTeams: Team[];
+  /** Clubs coming down into the playable division from the division above. */
+  relegatedFromPromotion: Team[];
+  /** Clubs coming up into the playable division from the division below. */
+  promotedFromRelegation: Team[];
+};
+
+/**
+ * Who moves between the container's divisions at the end of the season.
+ *
+ * Each division's own counts drive its own exchange. Before MS-103 both sides of every exchange
+ * used the *playable* championship's count, which kept the club totals stable only by making A1
+ * relegate 4 when its REC says 2, and A3 promote 2 when its REC says 4.
+ *
+ * Read twice at roll-over — once by `runEndOfChampionshipActionsForAllChampionships` to move the
+ * clubs and once by `buildSeasonSummary` to report the move — so the calculation lives here rather
+ * than in either caller, where the two copies could drift apart.
+ */
+function computeSeasonExchange(championshipContainer: ChampionshipContainer): SeasonExchange {
   const { playableChampionship, promotionChampionship, relegationChampionship } =
     championshipContainer;
 
-  if (!isChampionshipOver(playableChampionship)) return championshipContainer;
-
-  // Each division's own counts drive its own exchange. Before MS-103 both sides of every exchange
-  // used the *playable* championship's count, which kept the club totals stable only by making A1
-  // relegate 4 when its REC says 2, and A3 promote 2 when its REC says 4.
   const promotesUp = playableChampionship.isPromotable && Boolean(promotionChampionship);
   const relegatesDown = playableChampionship.isRelegatable && Boolean(relegationChampionship);
 
@@ -556,6 +572,20 @@ function runEndOfChampionshipActionsForAllChampionships(
           )
         )
       : [];
+
+  return { promotedTeams, relegatedTeams, relegatedFromPromotion, promotedFromRelegation };
+}
+
+function runEndOfChampionshipActionsForAllChampionships(
+  championshipContainer: ChampionshipContainer
+): ChampionshipContainer {
+  const { playableChampionship, promotionChampionship, relegationChampionship } =
+    championshipContainer;
+
+  if (!isChampionshipOver(playableChampionship)) return championshipContainer;
+
+  const { promotedTeams, relegatedTeams, relegatedFromPromotion, promotedFromRelegation } =
+    computeSeasonExchange(championshipContainer);
 
   const nextPlayableTeams = exchangeTeams(
     playableChampionship,
@@ -676,9 +706,7 @@ function recentreContainerOnHumanDivision(
   const { currentSeason } = playableChampionship.matchContainer;
 
   const takeNeighbour = (internalName: string): Championship => {
-    const carried = existing.find(
-      (championship) => championship.internalName === internalName
-    );
+    const carried = existing.find((championship) => championship.internalName === internalName);
     if (carried) return { ...carried, hasTeamControlledByHuman: false };
 
     const seeded = loadInitialisedChampionship(internalName, false);
@@ -989,6 +1017,97 @@ const runEndOfChampionshipActions = (
   }
 };
 
+function toSeasonSummaryTeam(team: Team): SeasonSummaryTeam {
+  return {
+    id: team.id,
+    shortName: team.shortName,
+    abbreviation: team.abbreviation,
+    colors: team.colors,
+  };
+}
+
+/**
+ * One division's line in the summary. `promoted` and `relegated` are left out rather than passed
+ * empty when the container never computed that half of the division's exchange — see
+ * `SeasonSummaryDivision`. A division with no neighbour on that side is empty rather than unknown,
+ * whether the container computed it or not: the top of the pyramid promotes nobody.
+ */
+function buildSummaryDivision(
+  championship: Championship,
+  exchange: { promoted?: Team[]; relegated?: Team[] }
+): SeasonSummaryDivision {
+  const classification = buildFinalClassification(championship);
+  const champion = classification[0]?.team;
+  const runnerUp = classification[1]?.team;
+
+  // The top two are named above the list, so they come out of it: "also promoted" is the rest of
+  // the promotion, which for the men's divisions is third and fourth place.
+  const topTwoIds = new Set([champion?.id, runnerUp?.id].filter(Boolean));
+  const promoted = championship.isPromotable ? exchange.promoted : [];
+  const relegated = championship.isRelegatable ? exchange.relegated : [];
+
+  return {
+    divisionName: championship.name,
+    champion: champion && toSeasonSummaryTeam(champion),
+    runnerUp: runnerUp && toSeasonSummaryTeam(runnerUp),
+    isPromotable: championship.isPromotable,
+    isRelegatable: championship.isRelegatable,
+    otherPromotedTeams: promoted
+      ?.filter((team) => !topTwoIds.has(team.id))
+      .map(toSeasonSummaryTeam),
+    relegatedTeams: relegated?.map(toSeasonSummaryTeam),
+  };
+}
+
+/**
+ * The end-of-season report for every division the container held, top of the pyramid first.
+ *
+ * Must run *before* `runEndOfChampionshipActions`, which resets each championship and throws away
+ * the tables this reads.
+ */
+const buildSeasonSummary = (
+  championshipContainer: ChampionshipContainer
+): OperationResult<SeasonSummary> => {
+  try {
+    const { playableChampionship, promotionChampionship, relegationChampionship } =
+      championshipContainer;
+    const exchange = computeSeasonExchange(championshipContainer);
+
+    const divisions: SeasonSummaryDivision[] = [];
+
+    if (promotionChampionship && playableChampionship.isPromotable) {
+      divisions.push(
+        buildSummaryDivision(promotionChampionship, { relegated: exchange.relegatedFromPromotion })
+      );
+    }
+
+    divisions.push(
+      buildSummaryDivision(playableChampionship, {
+        promoted: exchange.promotedTeams,
+        relegated: exchange.relegatedTeams,
+      })
+    );
+
+    if (relegationChampionship && playableChampionship.isRelegatable) {
+      divisions.push(
+        buildSummaryDivision(relegationChampionship, { promoted: exchange.promotedFromRelegation })
+      );
+    }
+
+    const result = new OperationResult<SeasonSummary>({
+      season: playableChampionship.matchContainer.currentSeason,
+      divisions,
+    });
+    result.setSuccess();
+    return result;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    const result = new OperationResult<SeasonSummary>({ season: 0, divisions: [] });
+    result.setError({ errorCode: 'exception', message });
+    return result;
+  }
+};
+
 const getPhaseView = (championship: Championship, options?: PhaseViewOptions): PhaseView =>
   buildPhaseView(championship, options);
 
@@ -1016,4 +1135,5 @@ export default {
   startRoundForAllChampionships,
   endRoundForAllChampionships,
   runEndOfChampionshipActions,
+  buildSeasonSummary,
 };

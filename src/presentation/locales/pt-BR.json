@@ -66,6 +66,9 @@
     "noPromotions": "PRIMEIRA DIVISÃO",
     "relegated": "REBAIXADOS",
     "noRelegations": "ÚLTIMA DIVISÃO",
-    "continue": "CONTINUAR"
+    "nobodyElsePromoted": "MAIS NINGUÉM",
+    "nobodyRelegated": "NINGUÉM",
+    "notTracked": "SEM DADOS",
+    "newSeason": "NOVA TEMPORADA"
   }
 }

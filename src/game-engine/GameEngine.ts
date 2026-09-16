@@ -84,6 +84,9 @@ export class GameEngine {
       case 'END_ROUND_FOR_ALL_CHAMPIONSHIPS':
         this.championshipUseCases = new ChampionshipUseCases(state);
         return this.championshipUseCases.endRoundForAllChampionships();
+      case 'BUILD_SEASON_SUMMARY':
+        this.championshipUseCases = new ChampionshipUseCases(state);
+        return this.championshipUseCases.buildSeasonSummary();
       case 'RUN_END_OF_CHAMPIONSHIP_ACTIONS':
         this.championshipUseCases = new ChampionshipUseCases(state);
         return this.championshipUseCases.runEndOfChampionshipActions();
