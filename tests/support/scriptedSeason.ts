@@ -48,6 +48,7 @@ export class ScriptedSeason {
   container: ChampionshipContainer;
   private readonly rng = pinnedRng();
   private readonly seedIndex = new Map<Team['id'], number>();
+  private humanFate?: 'wins' | 'loses';
   readonly names: string[];
 
   constructor(internalName: string) {
@@ -97,6 +98,15 @@ export class ScriptedSeason {
     return this;
   }
 
+  /**
+   * Scripts the human's club to win (or lose) every match 2-0, whatever the seed order says — so it
+   * is promoted (or relegated) from any division it plays in, season after season.
+   */
+  humanAlways(fate: 'wins' | 'loses'): this {
+    this.humanFate = fate;
+    return this;
+  }
+
   get championship(): Championship {
     return getPlayableChampionship(this.container);
   }
@@ -114,6 +124,14 @@ export class ScriptedSeason {
 
   /** Earlier seed wins; a club that joined after the seed is ordered by id instead. */
   private score(match: Match): [number, number] {
+    if (
+      this.humanFate &&
+      (match.homeTeam.isControlledByHuman || match.awayTeam.isControlledByHuman)
+    ) {
+      const humanWins = match.homeTeam.isControlledByHuman === (this.humanFate === 'wins');
+      return humanWins ? [2, 0] : [0, 2];
+    }
+
     const home = this.seedIndex.get(match.homeTeam.id);
     const away = this.seedIndex.get(match.awayTeam.id);
     const homeWins =
@@ -157,11 +175,16 @@ export class ScriptedSeason {
     return this;
   }
 
+  /** Plays every round the playable division has left — phased or not. */
   playToEnd(): this {
-    for (let guard = 0; guard < 100 && !isPhasedChampionshipOver(this.championship); guard++) {
-      this.playRound();
-    }
+    for (let guard = 0; guard < 100 && this.hasRoundToPlay(); guard++) this.playRound();
     return this;
+  }
+
+  private hasRoundToPlay(): boolean {
+    if (isPhasedChampionshipOver(this.championship)) return false;
+    const { currentRound, rounds } = this.championship.matchContainer;
+    return rounds.some((round) => round.number === currentRound);
   }
 
   /** Each tie of a knockout phase as `[second-leg host, first-leg host]` names, in tie order. */

@@ -519,115 +519,113 @@ function isChampionshipOver(championship: Championship): boolean {
   return championship.matchContainer.currentRound >= championship.matchContainer.totalRounds;
 }
 
-type SeasonExchange = {
-  /** Clubs going up out of the playable division. */
-  promotedTeams: Team[];
-  /** Clubs going down out of the playable division. */
-  relegatedTeams: Team[];
-  /** Clubs coming down into the playable division from the division above. */
-  relegatedFromPromotion: Team[];
-  /** Clubs coming up into the playable division from the division below. */
-  promotedFromRelegation: Team[];
+/** Who crosses one boundary of the pyramid: a division and the one directly below it. */
+type BoundaryExchange = {
+  /** Clubs going down out of the upper division. */
+  relegatedDown: Team[];
+  /** Clubs going up out of the lower division. */
+  promotedUp: Team[];
+};
+
+/** Every boundary's exchange, keyed by the *upper* division's `internalName`. */
+type PyramidExchange = Record<string, BoundaryExchange>;
+
+/** One division's side of the roll-over, gathered from the two boundaries it touches. */
+type DivisionMoves = {
+  /** Clubs going up out of the division. */
+  promoted: Team[];
+  /** Clubs going down out of the division. */
+  relegated: Team[];
+  /** Clubs coming down into the division from the one above. */
+  relegatedFromAbove: Team[];
+  /** Clubs coming up into the division from the one below. */
+  promotedFromBelow: Team[];
 };
 
 /**
- * Who moves between the container's divisions at the end of the season.
+ * Who moves across every boundary of the pyramid at the end of the season.
  *
- * Each division's own counts drive its own exchange. Before MS-103 both sides of every exchange
- * used the *playable* championship's count, which kept the club totals stable only by making A1
- * relegate 4 when its REC says 2, and A3 promote 2 when its REC says 4.
+ * Every boundary is computed from the pre-roll-over tables before any club moves, so a middle
+ * division both loses its promoted and relegated clubs and gains the clubs coming from above and
+ * below in the same roll-over — nothing a boundary reads has been changed by another boundary.
+ *
+ * Each division's own counts drive its own side of a boundary. Before MS-103 both sides of every
+ * exchange used the *playable* championship's count, which kept the club totals stable only by
+ * making A1 relegate 4 when its REC says 2, and A3 promote 2 when its REC says 4. The promotion cap
+ * of `getSustainablePromotionCount` is applied per boundary, against the clubs coming down it.
+ *
+ * Before MS-109 only the boundaries touching the playable division were exchanged, so with the
+ * human in Série D, Série C's top clubs never reached Série B.
  *
  * Read twice at roll-over — once by `runEndOfChampionshipActionsForAllChampionships` to move the
  * clubs and once by `buildSeasonSummary` to report the move — so the calculation lives here rather
  * than in either caller, where the two copies could drift apart.
  */
-function computeSeasonExchange(championshipContainer: ChampionshipContainer): SeasonExchange {
-  const playableChampionship = getPlayableChampionship(championshipContainer);
-  const promotionChampionship = getDivisionAbove(championshipContainer, playableChampionship);
-  const relegationChampionship = getDivisionBelow(championshipContainer, playableChampionship);
+function computePyramidExchange(championshipContainer: ChampionshipContainer): PyramidExchange {
+  const exchange: PyramidExchange = {};
 
-  const promotesUp = playableChampionship.isPromotable && Boolean(promotionChampionship);
-  const relegatesDown = playableChampionship.isRelegatable && Boolean(relegationChampionship);
+  for (const upper of championshipContainer.championships) {
+    const lower = getDivisionBelow(championshipContainer, upper);
+    if (!upper.isRelegatable || !lower?.isPromotable) continue;
 
-  const relegatedFromPromotion =
-    promotesUp && promotionChampionship
-      ? getRelegatedTeams(promotionChampionship, getRelegationCount(promotionChampionship))
-      : [];
-  const promotedTeams = promotesUp
-    ? getPromotedTeams(
-        playableChampionship,
-        getSustainablePromotionCount(
-          playableChampionship,
-          playableChampionship.isPromotable ? playableChampionship.numberOfPromotableTeams : 0,
-          relegatedFromPromotion.length
-        )
-      )
-    : [];
+    const relegatedDown = getRelegatedTeams(upper, getRelegationCount(upper));
+    const promotedUp = getPromotedTeams(
+      lower,
+      getSustainablePromotionCount(lower, lower.numberOfPromotableTeams, relegatedDown.length)
+    );
 
-  const relegatedTeams = relegatesDown
-    ? getRelegatedTeams(playableChampionship, getRelegationCount(playableChampionship))
-    : [];
-  const promotedFromRelegation =
-    relegatesDown && relegationChampionship
-      ? getPromotedTeams(
-          relegationChampionship,
-          getSustainablePromotionCount(
-            relegationChampionship,
-            relegationChampionship.isPromotable
-              ? relegationChampionship.numberOfPromotableTeams
-              : 0,
-            relegatedTeams.length
-          )
-        )
-      : [];
+    exchange[upper.internalName] = { relegatedDown, promotedUp };
+  }
 
-  return { promotedTeams, relegatedTeams, relegatedFromPromotion, promotedFromRelegation };
+  return exchange;
 }
 
+/** `division`'s side of `exchange`: the boundary above it and the boundary below it. */
+function movesOfDivision(
+  championshipContainer: ChampionshipContainer,
+  exchange: PyramidExchange,
+  division: Championship
+): DivisionMoves {
+  const above = getDivisionAbove(championshipContainer, division);
+  const boundaryAbove = above ? exchange[above.internalName] : undefined;
+  const boundaryBelow = exchange[division.internalName];
+
+  return {
+    promoted: boundaryAbove?.promotedUp ?? [],
+    relegated: boundaryBelow?.relegatedDown ?? [],
+    relegatedFromAbove: boundaryAbove?.relegatedDown ?? [],
+    promotedFromBelow: boundaryBelow?.promotedUp ?? [],
+  };
+}
+
+/**
+ * Rolls the whole pyramid over into the next season once the playable division is over: every
+ * boundary's exchange is applied at once, every division is reset for the new season, and the
+ * playable pointer follows the human's club.
+ *
+ * The AI divisions are already finished by then — `endRoundForAllChampionships` plays each one to
+ * its end on the playable division's last round.
+ */
 function runEndOfChampionshipActionsForAllChampionships(
   championshipContainer: ChampionshipContainer
 ): ChampionshipContainer {
-  const playableChampionship = getPlayableChampionship(championshipContainer);
-  const promotionChampionship = getDivisionAbove(championshipContainer, playableChampionship);
-  const relegationChampionship = getDivisionBelow(championshipContainer, playableChampionship);
-
-  if (!isChampionshipOver(playableChampionship)) return championshipContainer;
-
-  const { promotedTeams, relegatedTeams, relegatedFromPromotion, promotedFromRelegation } =
-    computeSeasonExchange(championshipContainer);
-
-  const nextPlayableTeams = exchangeTeams(
-    playableChampionship,
-    [...promotedTeams, ...relegatedTeams],
-    [...relegatedFromPromotion, ...promotedFromRelegation]
-  );
-
-  let updatedContainer = replaceChampionship(
-    championshipContainer,
-    resetChampionshipForNewSeason(playableChampionship, nextPlayableTeams)
-  );
-
-  if (promotionChampionship && playableChampionship.isPromotable) {
-    updatedContainer = replaceChampionship(
-      updatedContainer,
-      resetChampionshipForNewSeason(
-        promotionChampionship,
-        exchangeTeams(promotionChampionship, relegatedFromPromotion, promotedTeams)
-      )
-    );
+  if (!isChampionshipOver(getPlayableChampionship(championshipContainer))) {
+    return championshipContainer;
   }
 
-  if (relegationChampionship && playableChampionship.isRelegatable) {
-    updatedContainer = replaceChampionship(
-      updatedContainer,
-      resetChampionshipForNewSeason(
-        relegationChampionship,
-        exchangeTeams(relegationChampionship, promotedFromRelegation, relegatedTeams)
-      )
-    );
-  }
+  const exchange = computePyramidExchange(championshipContainer);
 
-  return followHumanClub(updatedContainer);
+  const championships = championshipContainer.championships.map((division) => {
+    const moves = movesOfDivision(championshipContainer, exchange, division);
+    const teams = exchangeTeams(
+      division,
+      [...moves.promoted, ...moves.relegated],
+      [...moves.relegatedFromAbove, ...moves.promotedFromBelow]
+    );
+    return resetChampionshipForNewSeason(division, teams);
+  });
+
+  return followHumanClub({ ...championshipContainer, championships });
 }
 
 /**
@@ -1044,26 +1042,27 @@ const buildSeasonSummary = (
     const playableChampionship = getPlayableChampionship(championshipContainer);
     const promotionChampionship = getDivisionAbove(championshipContainer, playableChampionship);
     const relegationChampionship = getDivisionBelow(championshipContainer, playableChampionship);
-    const exchange = computeSeasonExchange(championshipContainer);
+    const exchange = computePyramidExchange(championshipContainer);
+    const moves = movesOfDivision(championshipContainer, exchange, playableChampionship);
 
     const divisions: SeasonSummaryDivision[] = [];
 
     if (promotionChampionship && playableChampionship.isPromotable) {
       divisions.push(
-        buildSummaryDivision(promotionChampionship, { relegated: exchange.relegatedFromPromotion })
+        buildSummaryDivision(promotionChampionship, { relegated: moves.relegatedFromAbove })
       );
     }
 
     divisions.push(
       buildSummaryDivision(playableChampionship, {
-        promoted: exchange.promotedTeams,
-        relegated: exchange.relegatedTeams,
+        promoted: moves.promoted,
+        relegated: moves.relegated,
       })
     );
 
     if (relegationChampionship && playableChampionship.isRelegatable) {
       divisions.push(
-        buildSummaryDivision(relegationChampionship, { promoted: exchange.promotedFromRelegation })
+        buildSummaryDivision(relegationChampionship, { promoted: moves.promotedFromBelow })
       );
     }
 
