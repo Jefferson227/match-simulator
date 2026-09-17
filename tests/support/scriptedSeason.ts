@@ -17,6 +17,12 @@ import {
   isPhasedChampionshipOver,
 } from '../../src/domain/features/phases/PhaseProgression';
 import championshipsJSON from '../../src/infrastructure/data/championships.json';
+import {
+  getChampionshipByInternalName,
+  getPlayableChampionship,
+  replaceChampionship,
+  updatePlayableChampionship,
+} from '../../src/domain/features/pyramid/Pyramid';
 
 /** Deterministic, but varied enough that the AI neighbours' shootouts separate. */
 export function pinnedRng(): RandomProvider {
@@ -50,7 +56,7 @@ export class ScriptedSeason {
     this.container = result.getResult();
     this.names = teamNamesOf(internalName);
     // The repository builds `teams` in `teamNames` order.
-    this.container.playableChampionship.teams.forEach((team, index) =>
+    getPlayableChampionship(this.container).teams.forEach((team, index) =>
       this.seedIndex.set(team.id, index)
     );
   }
@@ -63,40 +69,43 @@ export class ScriptedSeason {
    * `teams`. Call it before any round is played.
    */
   assignHuman(seedIndex: number): this {
-    const championship = this.container.playableChampionship;
-    const targetId = championship.teams[seedIndex].id;
+    const targetId = this.championship.teams[seedIndex].id;
     const mark = (team: Team): Team =>
       team.id === targetId ? { ...team, isControlledByHuman: true } : team;
 
-    this.container = {
-      ...this.container,
-      playableChampionship: {
-        ...championship,
-        hasTeamControlledByHuman: true,
-        teams: championship.teams.map(mark),
-        standings: championship.standings.map((standing) => ({
-          ...standing,
-          team: mark(standing.team),
-        })),
-        matchContainer: {
-          ...championship.matchContainer,
-          rounds: championship.matchContainer.rounds.map((round) => ({
-            ...round,
-            matches: round.matches.map((match) => ({
-              ...match,
-              homeTeam: mark(match.homeTeam),
-              awayTeam: mark(match.awayTeam),
-            })),
+    this.container = updatePlayableChampionship(this.container, (championship) => ({
+      ...championship,
+      hasTeamControlledByHuman: true,
+      teams: championship.teams.map(mark),
+      standings: championship.standings.map((standing) => ({
+        ...standing,
+        team: mark(standing.team),
+      })),
+      matchContainer: {
+        ...championship.matchContainer,
+        rounds: championship.matchContainer.rounds.map((round) => ({
+          ...round,
+          matches: round.matches.map((match) => ({
+            ...match,
+            homeTeam: mark(match.homeTeam),
+            awayTeam: mark(match.awayTeam),
           })),
-        },
+        })),
       },
-    };
+    }));
 
     return this;
   }
 
   get championship(): Championship {
-    return this.container.playableChampionship;
+    return getPlayableChampionship(this.container);
+  }
+
+  /** Any division of the pyramid, by `internalName`. */
+  division(internalName: string): Championship {
+    const division = getChampionshipByInternalName(this.container, internalName);
+    if (!division) throw new Error(`No division ${internalName} in the pyramid.`);
+    return division;
   }
 
   nameOf(team: Team): string {
@@ -118,7 +127,7 @@ export class ScriptedSeason {
     const started = ChampionshipService.startRoundForAllChampionships(this.container);
     if (!started.succeeded) throw new Error(started.error?.message);
 
-    const playable = started.getResult().playableChampionship;
+    const playable = getPlayableChampionship(started.getResult());
     const { currentRound } = playable.matchContainer;
     const rounds = playable.matchContainer.rounds.map((round) =>
       round.number !== currentRound
@@ -133,13 +142,10 @@ export class ScriptedSeason {
     );
 
     const ended = ChampionshipService.endRoundForAllChampionships(
-      {
-        ...started.getResult(),
-        playableChampionship: {
-          ...playable,
-          matchContainer: { ...playable.matchContainer, rounds },
-        },
-      },
+      replaceChampionship(started.getResult(), {
+        ...playable,
+        matchContainer: { ...playable.matchContainer, rounds },
+      }),
       { rng: this.rng }
     );
     if (!ended.succeeded) throw new Error(ended.error?.message);

@@ -17,6 +17,7 @@ import {
   initialisePhaseState,
 } from '../../src/domain/features/phases/PhaseProgression';
 import { RandomProvider } from '../../src/domain/features/match-simulation/types';
+import { getPlayableChampionship } from '../../src/domain/features/pyramid/Pyramid';
 
 const rng: RandomProvider = { nextInt: (min) => min };
 
@@ -81,12 +82,17 @@ export type Script = (match: Match, phaseIndex: number) => [number, number];
 export const lowerNumberWins: Script = (match) =>
   number(match.homeTeam) < number(match.awayTeam) ? [2, 0] : [0, 2];
 
+/** A container holding `championship` alone, playable. */
+const containerOf = (championship: Championship): ChampionshipContainer => ({
+  championships: [championship],
+  playableInternalName: championship.internalName,
+});
+
 export function playRound(championship: Championship, script: Script): Championship {
-  const container: ChampionshipContainer = { playableChampionship: championship };
-  const started = ChampionshipService.startRoundForAllChampionships(container);
+  const started = ChampionshipService.startRoundForAllChampionships(containerOf(championship));
   if (!started.succeeded) throw new Error(started.error?.message);
 
-  const current = started.getResult().playableChampionship;
+  const current = getPlayableChampionship(started.getResult());
   const { currentRound } = current.matchContainer;
   const rounds = current.matchContainer.rounds.map((round) =>
     round.number !== currentRound
@@ -101,11 +107,11 @@ export function playRound(championship: Championship, script: Script): Champions
   );
 
   const ended = ChampionshipService.endRoundForAllChampionships(
-    { playableChampionship: { ...current, matchContainer: { ...current.matchContainer, rounds } } },
+    containerOf({ ...current, matchContainer: { ...current.matchContainer, rounds } }),
     { rng }
   );
   if (!ended.succeeded) throw new Error(ended.error?.message);
-  return ended.getResult().playableChampionship;
+  return getPlayableChampionship(ended.getResult());
 }
 
 /** Plays until `until` holds, or the season ends. */

@@ -82,19 +82,14 @@ function resolveChampionship(championship: Championship): Championship {
 
 /** The original state with every reference resolved the way a reload resolves it. */
 export function resolveFromTeams(state: GameState): GameState {
-  const { playableChampionship, promotionChampionship, relegationChampionship } =
-    state.championshipContainer;
+  const { championships, playableInternalName, cups } = state.championshipContainer;
 
   return {
     ...state,
     championshipContainer: {
-      playableChampionship: resolveChampionship(playableChampionship),
-      ...(promotionChampionship && {
-        promotionChampionship: resolveChampionship(promotionChampionship),
-      }),
-      ...(relegationChampionship && {
-        relegationChampionship: resolveChampionship(relegationChampionship),
-      }),
+      championships: championships.map(resolveChampionship),
+      playableInternalName,
+      ...(cups && { cups: cups.map(resolveChampionship) }),
     },
   };
 }

@@ -89,13 +89,7 @@ export function finishSeason(championship: Championship): Championship {
 }
 
 export function finishAll(container: ChampionshipContainer): ChampionshipContainer {
-  return {
-    playableChampionship: finishSeason(container.playableChampionship),
-    promotionChampionship:
-      container.promotionChampionship && finishSeason(container.promotionChampionship),
-    relegationChampionship:
-      container.relegationChampionship && finishSeason(container.relegationChampionship),
-  };
+  return { ...container, championships: container.championships.map(finishSeason) };
 }
 
 export function rollOver(container: ChampionshipContainer): ChampionshipContainer {
@@ -110,12 +104,9 @@ export function init(internalName: string): ChampionshipContainer {
   return result.getResult();
 }
 
+/** Every division of the pyramid, top tier first. */
 export function divisions(container: ChampionshipContainer): Championship[] {
-  return [
-    container.playableChampionship,
-    container.promotionChampionship,
-    container.relegationChampionship,
-  ].filter((championship): championship is Championship => Boolean(championship));
+  return container.championships;
 }
 
 export function counts(container: ChampionshipContainer): Record<string, number> {

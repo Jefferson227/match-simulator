@@ -21,6 +21,13 @@ import { buildPhaseView, PhaseView, PhaseViewOptions } from '../features/phases/
 import { RandomProvider } from '../features/match-simulation/types';
 import { getRandomNumber } from '../utils/Utils';
 import { runMatchTick } from '../features/match-simulation/MatchSimulationEngine';
+import {
+  getDivisionAbove,
+  getDivisionBelow,
+  getPlayableChampionship,
+  replaceChampionship,
+  updatePlayableChampionship,
+} from '../features/pyramid/Pyramid';
 
 type ChampionshipServiceDependencies = {
   rng?: RandomProvider;
@@ -535,8 +542,9 @@ type SeasonExchange = {
  * than in either caller, where the two copies could drift apart.
  */
 function computeSeasonExchange(championshipContainer: ChampionshipContainer): SeasonExchange {
-  const { playableChampionship, promotionChampionship, relegationChampionship } =
-    championshipContainer;
+  const playableChampionship = getPlayableChampionship(championshipContainer);
+  const promotionChampionship = getDivisionAbove(championshipContainer, playableChampionship);
+  const relegationChampionship = getDivisionBelow(championshipContainer, playableChampionship);
 
   const promotesUp = playableChampionship.isPromotable && Boolean(promotionChampionship);
   const relegatesDown = playableChampionship.isRelegatable && Boolean(relegationChampionship);
@@ -579,8 +587,9 @@ function computeSeasonExchange(championshipContainer: ChampionshipContainer): Se
 function runEndOfChampionshipActionsForAllChampionships(
   championshipContainer: ChampionshipContainer
 ): ChampionshipContainer {
-  const { playableChampionship, promotionChampionship, relegationChampionship } =
-    championshipContainer;
+  const playableChampionship = getPlayableChampionship(championshipContainer);
+  const promotionChampionship = getDivisionAbove(championshipContainer, playableChampionship);
+  const relegationChampionship = getDivisionBelow(championshipContainer, playableChampionship);
 
   if (!isChampionshipOver(playableChampionship)) return championshipContainer;
 
@@ -593,35 +602,32 @@ function runEndOfChampionshipActionsForAllChampionships(
     [...relegatedFromPromotion, ...promotedFromRelegation]
   );
 
-  const updatedContainer: ChampionshipContainer = {
-    ...championshipContainer,
-    playableChampionship: resetChampionshipForNewSeason(playableChampionship, nextPlayableTeams),
-  };
+  let updatedContainer = replaceChampionship(
+    championshipContainer,
+    resetChampionshipForNewSeason(playableChampionship, nextPlayableTeams)
+  );
 
   if (promotionChampionship && playableChampionship.isPromotable) {
-    updatedContainer.promotionChampionship = resetChampionshipForNewSeason(
-      promotionChampionship,
-      exchangeTeams(promotionChampionship, relegatedFromPromotion, promotedTeams)
+    updatedContainer = replaceChampionship(
+      updatedContainer,
+      resetChampionshipForNewSeason(
+        promotionChampionship,
+        exchangeTeams(promotionChampionship, relegatedFromPromotion, promotedTeams)
+      )
     );
   }
 
   if (relegationChampionship && playableChampionship.isRelegatable) {
-    updatedContainer.relegationChampionship = resetChampionshipForNewSeason(
-      relegationChampionship,
-      exchangeTeams(relegationChampionship, promotedFromRelegation, relegatedTeams)
+    updatedContainer = replaceChampionship(
+      updatedContainer,
+      resetChampionshipForNewSeason(
+        relegationChampionship,
+        exchangeTeams(relegationChampionship, promotedFromRelegation, relegatedTeams)
+      )
     );
   }
 
-  // The exchange moved clubs but not the container. A human club that went up or down is now in a
-  // neighbour slot, so the container has to follow it before anything reads the playable division.
-  const humanDivision = findHumanDivision(updatedContainer);
-  const humanHasMoved =
-    humanDivision !== undefined &&
-    humanDivision.internalName !== updatedContainer.playableChampionship.internalName;
-
-  if (!humanHasMoved) return updatedContainer;
-
-  return recentreContainerOnHumanDivision(updatedContainer, humanDivision);
+  return followHumanClub(updatedContainer);
 }
 
 /**
@@ -631,11 +637,37 @@ function runEndOfChampionshipActionsForAllChampionships(
 const isTeamControlledByHuman = (team: Team): boolean => team.isControlledByHuman;
 
 /**
- * Reads a division from the seed data and initialises it the way a new game does — fixtures
- * generated, phase state zeroed. Shared by `initChampionships` and the roll-over re-centring, so a
- * division entering the container mid-game is indistinguishable from one seeded at kick-off.
+ * Points the container at the division now holding the human's club, and keeps every division's
+ * `hasTeamControlledByHuman` in step with that pointer.
  *
- * Throws the repository's plain `Error`s; both callers already run inside an `OperationResult`
+ * The exchange moves clubs, not the pointer: a promoted or relegated human club ends up in another
+ * division of the pyramid, which already holds its own state. Nothing is loaded or reseeded — the
+ * pointer simply follows the club. A container where no division holds the human's club keeps its
+ * pointer.
+ */
+function followHumanClub(container: ChampionshipContainer): ChampionshipContainer {
+  const humanDivision = container.championships.find((championship) =>
+    championship.teams.some(isTeamControlledByHuman)
+  );
+  const playableInternalName = humanDivision?.internalName ?? container.playableInternalName;
+
+  return {
+    ...container,
+    playableInternalName,
+    championships: container.championships.map((championship) => {
+      const hasTeamControlledByHuman = championship.internalName === playableInternalName;
+      return championship.hasTeamControlledByHuman === hasTeamControlledByHuman
+        ? championship
+        : { ...championship, hasTeamControlledByHuman };
+    }),
+  };
+}
+
+/**
+ * Reads a division from the seed data and initialises it the way a new game does — fixtures
+ * generated, phase state zeroed.
+ *
+ * Throws the repository's plain `Error`s; `initChampionships` runs it inside an `OperationResult`
  * try/catch.
  */
 function loadInitialisedChampionship(
@@ -658,101 +690,44 @@ function loadInitialisedChampionship(
 }
 
 /**
- * The division of `container` holding the human player's club, or `undefined` when no slot does.
- *
- * Called on the *post-exchange* container at roll-over, where a promoted club sits in
- * `promotionChampionship` and a relegated one in `relegationChampionship`.
+ * A new game's container: every league division of the entry division's league type, top tier
+ * first, with the entry division playable. Cups are not loaded (MS-109).
  */
-function findHumanDivision(container: ChampionshipContainer): Championship | undefined {
-  return [
-    container.playableChampionship,
-    container.promotionChampionship,
-    container.relegationChampionship,
-  ].find((championship) => championship?.teams.some(isTeamControlledByHuman));
-}
-
-/**
- * Rebuilds the container around the division the human's club is now in.
- *
- * The roll-over exchanges clubs between divisions but leaves the container where it was, so a
- * promoted human club ends up in `promotionChampionship` and a relegated one in
- * `relegationChampionship` — and every consumer that reads the human's club off
- * `playableChampionship` then fails. Re-centring makes the human's new division playable and
- * rebuilds its two neighbour slots.
- *
- * Divisions already in the container are carried over with the state the roll-over just produced;
- * the one division that was outside it is seeded fresh from `championships.json`. A division that
- * drops out loses its state and is seeded fresh if it is ever re-entered — the accepted cost of
- * keeping the three-slot container (`wiki/decisions/ms-107-container-recentring.md`).
- */
-function recentreContainerOnHumanDivision(
-  container: ChampionshipContainer,
-  humanDivision: Championship
-): ChampionshipContainer {
-  const existing = [
-    container.playableChampionship,
-    container.promotionChampionship,
-    container.relegationChampionship,
-  ].filter((championship): championship is Championship => Boolean(championship));
-
-  const playableChampionship: Championship = {
-    ...humanDivision,
-    hasTeamControlledByHuman: true,
-  };
-
-  // A division seeded mid-game arrives at the fixture generator's default season, which is the
-  // real-world year — behind the divisions that have been rolling over. Aligning it here keeps the
-  // season the UI shows correct the day the human moves into it.
-  const { currentSeason } = playableChampionship.matchContainer;
-
-  const takeNeighbour = (internalName: string): Championship => {
-    const carried = existing.find((championship) => championship.internalName === internalName);
-    if (carried) return { ...carried, hasTeamControlledByHuman: false };
-
-    const seeded = loadInitialisedChampionship(internalName, false);
-    return { ...seeded, matchContainer: { ...seeded.matchContainer, currentSeason } };
-  };
-
-  const recentred: ChampionshipContainer = { playableChampionship };
-
-  // Narrowed before the neighbour names are read: they only exist on the promotable / relegatable
-  // arms of `Championship`, and their absence is what leaves a slot empty at a pyramid end.
-  if (playableChampionship.isPromotable) {
-    recentred.promotionChampionship = takeNeighbour(
-      playableChampionship.promotionChampionshipInternalName
-    );
-  }
-
-  if (playableChampionship.isRelegatable) {
-    recentred.relegationChampionship = takeNeighbour(
-      playableChampionship.relegationChampionshipInternalName
-    );
-  }
-
-  return recentred;
-}
-
 const initChampionships = (
   championshipInternalName: string
 ): OperationResult<ChampionshipContainer> => {
   try {
-    const playableChampionship = loadInitialisedChampionship(championshipInternalName, true);
-
-    const championshipContainer: ChampionshipContainer = { playableChampionship };
-
-    if (playableChampionship.isPromotable) {
-      championshipContainer.promotionChampionship = loadInitialisedChampionship(
-        playableChampionship.promotionChampionshipInternalName,
-        false
-      );
+    const entry = ChampionshipRepository.getChampionships().find(
+      (championship) => championship.internalName === championshipInternalName
+    );
+    if (!entry) throw new Error('Championship not found.');
+    if (entry.tier === undefined) {
+      throw new Error(`${championshipInternalName} is not a league division.`);
     }
 
-    if (playableChampionship.isRelegatable) {
-      championshipContainer.relegationChampionship = loadInitialisedChampionship(
-        playableChampionship.relegationChampionshipInternalName,
-        false
+    const divisions = ChampionshipRepository.getChampionships(entry.leagueType)
+      .filter((championship) => championship.tier !== undefined)
+      .sort((a, b) => (a.tier as number) - (b.tier as number))
+      .map((championship) =>
+        loadInitialisedChampionship(
+          championship.internalName,
+          championship.internalName === championshipInternalName
+        )
       );
-    }
+
+    // Every division is generated in the same instant, but the season is aligned explicitly so the
+    // pyramid can never start straddling a new year.
+    const currentSeason = divisions.find(
+      (championship) => championship.internalName === championshipInternalName
+    )!.matchContainer.currentSeason;
+
+    const championshipContainer: ChampionshipContainer = {
+      championships: divisions.map((championship) => ({
+        ...championship,
+        matchContainer: { ...championship.matchContainer, currentSeason },
+      })),
+      playableInternalName: championshipInternalName,
+    };
 
     const result = new OperationResult(championshipContainer);
     result.setSuccess();
@@ -901,9 +876,9 @@ function simulateRoundInOnePass(championship: Championship, rng: RandomProvider)
  * early can never overflow its round lookup.
  */
 function catchUpChampionship(
-  championship: Championship | undefined,
+  championship: Championship,
   dependencies: ChampionshipServiceDependencies
-): Championship | undefined {
+): Championship {
   if (!championship?.matchContainer?.rounds) return championship;
 
   const deps = { ...defaultDependencies, ...dependencies };
@@ -931,10 +906,10 @@ const startRoundForAllChampionships = (
   championshipContainer: ChampionshipContainer
 ): OperationResult<ChampionshipContainer> => {
   try {
-    const updatedChampionshipContainer: ChampionshipContainer = {
-      ...championshipContainer,
-      playableChampionship: startRound(championshipContainer.playableChampionship),
-    };
+    const updatedChampionshipContainer = updatePlayableChampionship(
+      championshipContainer,
+      startRound
+    );
 
     const result = new OperationResult<ChampionshipContainer>(updatedChampionshipContainer);
     result.setSuccess();
@@ -961,13 +936,13 @@ const endRoundForAllChampionships = (
   dependencies: ChampionshipServiceDependencies = {}
 ): OperationResult<ChampionshipContainer> => {
   try {
-    const previousChampionship = championshipContainer.playableChampionship;
+    const previousChampionship = getPlayableChampionship(championshipContainer);
     const playableChampionship = endRound(previousChampionship, dependencies);
 
-    let updatedChampionshipContainer: ChampionshipContainer = {
-      ...championshipContainer,
-      playableChampionship,
-    };
+    let updatedChampionshipContainer = replaceChampionship(
+      championshipContainer,
+      playableChampionship
+    );
 
     const crossedPhaseBoundary =
       (previousChampionship.currentPhaseIndex ?? 0) !==
@@ -977,13 +952,10 @@ const endRoundForAllChampionships = (
     if (crossedPhaseBoundary || seasonIsOver) {
       updatedChampionshipContainer = {
         ...updatedChampionshipContainer,
-        promotionChampionship: catchUpChampionship(
-          championshipContainer.promotionChampionship,
-          dependencies
-        ),
-        relegationChampionship: catchUpChampionship(
-          championshipContainer.relegationChampionship,
-          dependencies
+        championships: updatedChampionshipContainer.championships.map((championship) =>
+          championship.internalName === playableChampionship.internalName
+            ? championship
+            : catchUpChampionship(championship, dependencies)
         ),
       };
     }
@@ -1069,8 +1041,9 @@ const buildSeasonSummary = (
   championshipContainer: ChampionshipContainer
 ): OperationResult<SeasonSummary> => {
   try {
-    const { playableChampionship, promotionChampionship, relegationChampionship } =
-      championshipContainer;
+    const playableChampionship = getPlayableChampionship(championshipContainer);
+    const promotionChampionship = getDivisionAbove(championshipContainer, playableChampionship);
+    const relegationChampionship = getDivisionBelow(championshipContainer, playableChampionship);
     const exchange = computeSeasonExchange(championshipContainer);
 
     const divisions: SeasonSummaryDivision[] = [];

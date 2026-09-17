@@ -4,6 +4,7 @@ import { Championship } from '../models/Championship';
 import { runMatchTick } from '../features/match-simulation/MatchSimulationEngine';
 import { RandomProvider } from '../features/match-simulation/types';
 import { getRandomNumber } from '../utils/Utils';
+import { updatePlayableChampionship } from '../features/pyramid/Pyramid';
 
 type MatchServiceDependencies = {
   rng?: RandomProvider;
@@ -59,36 +60,12 @@ const runMatchActions = (
       ...dependencies,
     };
 
-    let updatedContainer: ChampionshipContainer = {
-      ...championshipContainer,
-      playableChampionship: simulateChampionshipMatches(
-        championshipContainer.playableChampionship,
-        deps.rng
-      ),
-    };
-
-    if (championshipContainer.playableChampionship.isPromotable && championshipContainer.promotionChampionship) {
-      updatedContainer = {
-        ...updatedContainer,
-        promotionChampionship: simulateChampionshipMatches(
-          championshipContainer.promotionChampionship,
-          deps.rng
-        ),
-      };
-    }
-
-    if (
-      championshipContainer.playableChampionship.isRelegatable &&
-      championshipContainer.relegationChampionship
-    ) {
-      updatedContainer = {
-        ...updatedContainer,
-        relegationChampionship: simulateChampionshipMatches(
-          championshipContainer.relegationChampionship,
-          deps.rng
-        ),
-      };
-    }
+    // Only the playable division is ticked. The AI divisions are played a whole round at a time
+    // by `ChampionshipService.endRoundForAllChampionships`, so ticking them here would only replay
+    // minutes they are about to simulate for themselves.
+    const updatedContainer = updatePlayableChampionship(championshipContainer, (playable) =>
+      simulateChampionshipMatches(playable, deps.rng)
+    );
 
     const result = new OperationResult(updatedContainer);
     result.setSuccess();
