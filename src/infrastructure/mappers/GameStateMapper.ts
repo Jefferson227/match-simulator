@@ -112,20 +112,15 @@ function dehydrateChampionship(championship: Championship): SavedChampionship {
 
 export function dehydrate(state: GameState): SavedGameState {
   const { championshipContainer, ...rest } = state;
-  const { playableChampionship, promotionChampionship, relegationChampionship } =
-    championshipContainer;
+  const { championships, playableInternalName, cups } = championshipContainer;
 
   return {
     ...rest,
     saveVersion: SAVE_VERSION,
     championshipContainer: {
-      playableChampionship: dehydrateChampionship(playableChampionship),
-      ...(promotionChampionship && {
-        promotionChampionship: dehydrateChampionship(promotionChampionship),
-      }),
-      ...(relegationChampionship && {
-        relegationChampionship: dehydrateChampionship(relegationChampionship),
-      }),
+      championships: championships.map(dehydrateChampionship),
+      playableInternalName,
+      ...(cups && { cups: cups.map(dehydrateChampionship) }),
     },
   };
 }
@@ -233,17 +228,12 @@ function hydrateChampionship(saved: SavedChampionship): Championship {
 export function hydrate(saved: SavedGameState): GameState {
   // `saveVersion` is dropped: it describes the payload, not the game.
   const { saveVersion: _version, championshipContainer, ...rest } = saved;
-  const { playableChampionship, promotionChampionship, relegationChampionship } =
-    championshipContainer;
+  const { championships, playableInternalName, cups } = championshipContainer;
 
   const container: ChampionshipContainer = {
-    playableChampionship: hydrateChampionship(playableChampionship),
-    ...(promotionChampionship && {
-      promotionChampionship: hydrateChampionship(promotionChampionship),
-    }),
-    ...(relegationChampionship && {
-      relegationChampionship: hydrateChampionship(relegationChampionship),
-    }),
+    championships: championships.map(hydrateChampionship),
+    playableInternalName,
+    ...(cups && { cups: cups.map(hydrateChampionship) }),
   };
 
   return { ...rest, championshipContainer: container };

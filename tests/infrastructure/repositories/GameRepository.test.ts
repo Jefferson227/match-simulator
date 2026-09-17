@@ -8,34 +8,34 @@ import Player from '../../../src/domain/models/Player';
 import Standing from '../../../src/domain/models/Standing';
 import { Team } from '../../../src/domain/models/Team';
 import { currentRoundMatches, expectEquivalent } from '../../support/savedGameEquivalence';
+import { containerOf } from '../../support/containerOf';
+import { getPlayableChampionship } from '../../../src/domain/features/pyramid/Pyramid';
 
 const STORAGE_KEY = 'match-simulator-game-state-v2';
 const LEGACY_STORAGE_KEY = 'match-simulator-game-state';
 
 function buildState(): GameState {
   return {
-    championshipContainer: {
-      playableChampionship: {
-        id: '11111111-1111-1111-1111-111111111111',
-        name: 'Mock Championship',
-        internalName: 'mock-championship',
-        numberOfTeams: 0,
-        teams: [],
-        standings: [],
-        matchContainer: {
-          timer: 0,
-          currentSeason: 2026,
-          currentRound: 1,
-          totalRounds: 0,
-          rounds: [],
-        },
-        type: 'double-round-robin',
-        leagueType: 'mens',
-        hasTeamControlledByHuman: false,
-        isPromotable: false,
-        isRelegatable: false,
-      } as Championship,
-    },
+    championshipContainer: containerOf({
+      id: '11111111-1111-1111-1111-111111111111',
+      name: 'Mock Championship',
+      internalName: 'mock-championship',
+      numberOfTeams: 0,
+      teams: [],
+      standings: [],
+      matchContainer: {
+        timer: 0,
+        currentSeason: 2026,
+        currentRound: 1,
+        totalRounds: 0,
+        rounds: [],
+      },
+      type: 'double-round-robin',
+      leagueType: 'mens',
+      hasTeamControlledByHuman: false,
+      isPromotable: false,
+      isRelegatable: false,
+    } as Championship),
     hasError: false,
     errorMessage: '',
     leagueType: 'mens',
@@ -106,35 +106,33 @@ function buildPlayedState(): GameState {
 
   return {
     ...buildState(),
-    championshipContainer: {
-      playableChampionship: {
-        ...buildState().championshipContainer.playableChampionship,
-        numberOfTeams: 2,
-        teams: [home, away],
-        standings: [standingOf(home, 1), standingOf(away, 2)],
-        hasTeamControlledByHuman: true,
-        matchContainer: {
-          timer: 0,
-          currentSeason: 2026,
-          currentRound: 2,
-          totalRounds: 2,
-          rounds: [
-            {
-              id: uuid('r1'),
-              number: 1,
-              status: 'ended',
-              matches: [match('m1', stale(home), stale(away), true)],
-            },
-            {
-              id: uuid('r2'),
-              number: 2,
-              status: 'not-started',
-              matches: [match('m2', away, home, false)],
-            },
-          ],
-        },
-      } as Championship,
-    },
+    championshipContainer: containerOf({
+      ...getPlayableChampionship(buildState().championshipContainer),
+      numberOfTeams: 2,
+      teams: [home, away],
+      standings: [standingOf(home, 1), standingOf(away, 2)],
+      hasTeamControlledByHuman: true,
+      matchContainer: {
+        timer: 0,
+        currentSeason: 2026,
+        currentRound: 2,
+        totalRounds: 2,
+        rounds: [
+          {
+            id: uuid('r1'),
+            number: 1,
+            status: 'ended',
+            matches: [match('m1', stale(home), stale(away), true)],
+          },
+          {
+            id: uuid('r2'),
+            number: 2,
+            status: 'not-started',
+            matches: [match('m2', away, home, false)],
+          },
+        ],
+      },
+    } as Championship),
   };
 }
 
@@ -168,12 +166,14 @@ describe('GameRepository', () => {
     const raw = window.localStorage.getItem(STORAGE_KEY)!;
     const parsed = JSON.parse(raw);
 
-    expect(parsed.saveVersion).toBe(2);
+    expect(parsed.saveVersion).toBe(3);
+    expect(parsed.championshipContainer.playableInternalName).toBe('mock-championship');
     expect(
-      parsed.championshipContainer.playableChampionship.matchContainer.rounds[0].matches[0]
+      getPlayableChampionship(parsed.championshipContainer).matchContainer.rounds[0].matches[0]
     ).toMatchObject({ homeTeamId: uuid('home'), awayTeamId: uuid('away') });
     expect(
-      parsed.championshipContainer.playableChampionship.matchContainer.rounds[0].matches[0].homeTeam
+      getPlayableChampionship(parsed.championshipContainer).matchContainer.rounds[0].matches[0]
+        .homeTeam
     ).toBeUndefined();
   });
 
@@ -187,11 +187,11 @@ describe('GameRepository', () => {
 
   it('brings the current round back byte-identical', () => {
     const state = buildPlayedState();
-    const before = currentRoundMatches(state.championshipContainer.playableChampionship);
+    const before = currentRoundMatches(getPlayableChampionship(state.championshipContainer));
 
     GameRepository.saveGame(state);
     const after = currentRoundMatches(
-      GameRepository.loadGame().championshipContainer.playableChampionship
+      getPlayableChampionship(GameRepository.loadGame().championshipContainer)
     );
 
     expect(after).toEqual(before);
@@ -226,6 +226,19 @@ describe('GameRepository', () => {
 
     expect(() => GameRepository.loadGame()).toThrow('Saved game could not be found.');
     expect(GameRepository.hasSavedGame()).toBe(false);
+  });
+
+  it('abandons a version-2 save, whose container still has the three named slots (MS-109)', () => {
+    const { championshipContainer, ...rest } = GameStateMapper.dehydrate(buildPlayedState());
+    const versionTwo = {
+      ...rest,
+      saveVersion: 2,
+      championshipContainer: { playableChampionship: championshipContainer.championships[0] },
+    };
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(versionTwo));
+
+    expect(GameRepository.hasSavedGame()).toBe(false);
+    expect(() => GameRepository.loadGame()).toThrow('Saved game could not be found.');
   });
 
   describe('hasSavedGame', () => {

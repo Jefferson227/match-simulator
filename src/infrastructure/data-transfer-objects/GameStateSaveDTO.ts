@@ -20,8 +20,13 @@ import Standing from '../../domain/models/Standing';
 import { Team } from '../../domain/models/Team';
 import { GameState } from '../../game-engine/GameState';
 
-/** The save format this module describes. A payload with any other version is not readable. */
-export const SAVE_VERSION = 2;
+/**
+ * The save format this module describes. A payload with any other version is not readable.
+ *
+ * 3 (MS-109): the container holds the whole pyramid plus a playable pointer instead of three named
+ * slots. Version-2 saves are abandoned, not migrated, as MS-108 abandoned version 1.
+ */
+export const SAVE_VERSION = 3;
 
 /** A goal, with the scorer written as an id rather than a full `Player`. */
 export type SavedScorer = Omit<Scorer, 'player'> & {
@@ -82,10 +87,11 @@ export type SavedChampionship = Championship extends infer C
     : never
   : never;
 
+/** Mirrors `ChampionshipContainer`: every division dehydrated, in tier order, and the pointer. */
 export type SavedChampionshipContainer = {
-  playableChampionship: SavedChampionship;
-  promotionChampionship?: SavedChampionship;
-  relegationChampionship?: SavedChampionship;
+  championships: SavedChampionship[];
+  playableInternalName: string;
+  cups?: SavedChampionship[];
 };
 
 export type SavedGameState = Omit<GameState, 'championshipContainer'> & {

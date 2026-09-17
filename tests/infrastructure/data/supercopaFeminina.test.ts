@@ -5,6 +5,12 @@ import { Championship } from '../../../src/domain/models/Championship';
 import Round from '../../../src/domain/models/Round';
 import { RandomProvider } from '../../../src/domain/features/match-simulation/types';
 import championshipsJSON from '../../../src/infrastructure/data/championships.json';
+import {
+  getPlayableChampionship,
+  replaceChampionship,
+} from '../../../src/domain/features/pyramid/Pyramid';
+import { seededContainerOf } from '../../support/seededChampionship';
+import { containerOf } from '../../support/containerOf';
 
 beforeAll(() => {
   let counter = 0;
@@ -35,15 +41,13 @@ function stubRng(): RandomProvider {
 }
 
 function init(): ChampionshipContainer {
-  const result = ChampionshipService.initChampionships(INTERNAL_NAME);
-  if (!result.succeeded) throw new Error(result.error?.message);
-  return result.getResult();
+  return seededContainerOf(INTERNAL_NAME);
 }
 
 /** Plays the one match to the given score and ends the round. */
 function play(container: ChampionshipContainer, home: number, away: number): Championship {
   const started = ChampionshipService.startRoundForAllChampionships(container).getResult();
-  const championship = started.playableChampionship;
+  const championship = getPlayableChampionship(started);
 
   const rounds: Round[] = championship.matchContainer.rounds.map((round) =>
     round.number !== championship.matchContainer.currentRound
@@ -59,17 +63,14 @@ function play(container: ChampionshipContainer, home: number, away: number): Cha
   );
 
   const ended = ChampionshipService.endRoundForAllChampionships(
-    {
-      ...started,
-      playableChampionship: {
-        ...championship,
-        matchContainer: { ...championship.matchContainer, rounds },
-      },
-    },
+    replaceChampionship(started, {
+      ...championship,
+      matchContainer: { ...championship.matchContainer, rounds },
+    }),
     { rng: stubRng() }
   );
   if (!ended.succeeded) throw new Error(ended.error?.message);
-  return ended.getResult().playableChampionship;
+  return getPlayableChampionship(ended.getResult());
 }
 
 describe('Supercopa Feminina — seed data', () => {
@@ -107,7 +108,7 @@ describe('Supercopa Feminina — seed data', () => {
 
 describe('Supercopa Feminina — loading and playing', () => {
   it('loads without standings', () => {
-    const championship = init().playableChampionship;
+    const championship = getPlayableChampionship(init());
 
     expect(championship.hasLeagueTable).toBe(false);
     expect(championship.standings).toEqual([]);
@@ -115,7 +116,7 @@ describe('Supercopa Feminina — loading and playing', () => {
   });
 
   it('generates exactly one match', () => {
-    const { matchContainer } = init().playableChampionship;
+    const { matchContainer } = getPlayableChampionship(init());
 
     expect(matchContainer.totalRounds).toBe(1);
     expect(matchContainer.rounds).toHaveLength(1);
@@ -146,13 +147,11 @@ describe('Supercopa Feminina — loading and playing', () => {
   it('is over once its only match is played', () => {
     const championship = play(init(), 2, 1);
 
-    const rolled = ChampionshipService.runEndOfChampionshipActions({
-      playableChampionship: championship,
-    });
+    const rolled = ChampionshipService.runEndOfChampionshipActions(containerOf(championship));
 
     expect(rolled.succeeded).toBe(true);
     // A cup has nobody to promote or relegate, so the roll-over just starts a new edition.
-    expect(rolled.getResult().playableChampionship.teams).toHaveLength(2);
+    expect(getPlayableChampionship(rolled.getResult()).teams).toHaveLength(2);
   });
 
   it('is offered in the women’s championship list', () => {

@@ -16,6 +16,11 @@ import Standing from '../../../src/domain/models/Standing';
 import { Team } from '../../../src/domain/models/Team';
 import { GameState } from '../../../src/game-engine/GameState';
 import { resolveFromTeams } from '../../support/savedGameEquivalence';
+import { containerOf } from '../../support/containerOf';
+import {
+  getChampionshipByInternalName,
+  getPlayableChampionship,
+} from '../../../src/domain/features/pyramid/Pyramid';
 
 const uuid = (seed: string): Team['id'] =>
   `${seed.padEnd(8, '0')}-0000-0000-0000-000000000000` as Team['id'];
@@ -156,10 +161,7 @@ function buildState(): GameState {
   };
 
   return {
-    championshipContainer: {
-      playableChampionship: playable,
-      promotionChampionship: neighbour,
-    },
+    championshipContainer: containerOf(playable, [neighbour]),
     hasError: false,
     errorMessage: '',
     currentScreen: 'TeamManager',
@@ -168,6 +170,12 @@ function buildState(): GameState {
     coachName: 'Tester',
   };
 }
+
+/** The playable division of a saved payload, found by its pointer. */
+const savedPlayableOf = (saved: SavedGameState) =>
+  saved.championshipContainer.championships.find(
+    (championship) => championship.internalName === saved.championshipContainer.playableInternalName
+  )!;
 
 const roundTrip = (state: GameState) =>
   GameStateMapper.hydrate(JSON.parse(JSON.stringify(GameStateMapper.dehydrate(state))));
@@ -181,7 +189,7 @@ describe('GameStateMapper', () => {
 
   it('resolves match teams back to the clubs in `teams`', () => {
     const reloaded = roundTrip(buildState());
-    const playable = reloaded.championshipContainer.playableChampionship;
+    const playable = getPlayableChampionship(reloaded.championshipContainer);
     const byId = new Map(playable.teams.map((team) => [team.id, team]));
 
     const playedRound = playable.matchContainer.rounds[0];
@@ -193,7 +201,7 @@ describe('GameStateMapper', () => {
 
   it('resolves standings, including the per-phase tables', () => {
     const reloaded = roundTrip(buildState());
-    const playable = reloaded.championshipContainer.playableChampionship;
+    const playable = getPlayableChampionship(reloaded.championshipContainer);
 
     expect(playable.standings.map((standing) => standing.team.fullName)).toEqual([
       'Club alpha',
@@ -214,7 +222,7 @@ describe('GameStateMapper', () => {
 
   it('resolves scorers back to full players', () => {
     const reloaded = roundTrip(buildState());
-    const played = reloaded.championshipContainer.playableChampionship.matchContainer.rounds[0];
+    const played = getPlayableChampionship(reloaded.championshipContainer).matchContainer.rounds[0];
     const scorers = played.matches[0].scorers;
 
     expect(scorers).toHaveLength(2);
@@ -228,7 +236,10 @@ describe('GameStateMapper', () => {
 
   it('resolves `phaseEntrants` back to full clubs', () => {
     const reloaded = roundTrip(buildState());
-    const neighbour = reloaded.championshipContainer.promotionChampionship!;
+    const neighbour = getChampionshipByInternalName(
+      reloaded.championshipContainer,
+      'neighbour-division'
+    )!;
 
     expect(
       neighbour.phaseEntrants?.map((entrants) => entrants.map((team) => team.fullName))
@@ -241,7 +252,7 @@ describe('GameStateMapper', () => {
 
     const stripped = JSON.parse(JSON.stringify(saved));
     const forEachChampionship = (visit: (championship: Record<string, unknown>) => void) =>
-      Object.values(stripped.championshipContainer).forEach((championship) =>
+      (stripped.championshipContainer.championships as unknown[]).forEach((championship) =>
         visit(championship as Record<string, unknown>)
       );
     forEachChampionship((championship) => {
@@ -255,11 +266,12 @@ describe('GameStateMapper', () => {
 
   it('keeps the current round byte-identical, snapshot included', () => {
     const state = buildState();
-    const currentRound = state.championshipContainer.playableChampionship.matchContainer.rounds[1];
+    const currentRound = getPlayableChampionship(state.championshipContainer).matchContainer
+      .rounds[1];
 
     const reloaded = roundTrip(state);
-    const reloadedRound =
-      reloaded.championshipContainer.playableChampionship.matchContainer.rounds[1];
+    const reloadedRound = getPlayableChampionship(reloaded.championshipContainer).matchContainer
+      .rounds[1];
 
     expect(reloadedRound).toEqual(currentRound);
     expect(reloadedRound.matches[0].homeTeam.morale).toBe(currentRound.matches[0].homeTeam.morale);
@@ -271,13 +283,12 @@ describe('GameStateMapper', () => {
   it('drops the historical snapshot of a round already played', () => {
     // The documented cost of dehydration: a played fixture references the club as it is now.
     const state = buildState();
-    const playedBefore =
-      state.championshipContainer.playableChampionship.matchContainer.rounds[0].matches[0];
+    const playedBefore = getPlayableChampionship(state.championshipContainer).matchContainer
+      .rounds[0].matches[0];
     expect(playedBefore.homeTeam.morale).toBe(1);
 
-    const playedAfter =
-      roundTrip(state).championshipContainer.playableChampionship.matchContainer.rounds[0]
-        .matches[0];
+    const playedAfter = getPlayableChampionship(roundTrip(state).championshipContainer)
+      .matchContainer.rounds[0].matches[0];
 
     expect(playedAfter.homeTeam.morale).toBe(70);
     expect(playedAfter.homeTeam.id).toBe(playedBefore.homeTeam.id);
@@ -286,8 +297,7 @@ describe('GameStateMapper', () => {
   it('throws naming the id when a team cannot be resolved', () => {
     const saved = GameStateMapper.dehydrate(buildState()) as SavedGameState;
     const orphan = uuid('orphan');
-    saved.championshipContainer.playableChampionship.matchContainer.rounds[0].matches[0].homeTeamId =
-      orphan;
+    savedPlayableOf(saved).matchContainer.rounds[0].matches[0].homeTeamId = orphan;
 
     expect(() => GameStateMapper.hydrate(saved)).toThrow(
       `Saved game references unknown team ${orphan}.`
@@ -297,8 +307,7 @@ describe('GameStateMapper', () => {
   it('throws naming the id when a scorer cannot be resolved', () => {
     const saved = GameStateMapper.dehydrate(buildState()) as SavedGameState;
     const orphan = uuid('ghost') as Player['id'];
-    saved.championshipContainer.playableChampionship.matchContainer.rounds[0].matches[0].scorers[0].playerId =
-      orphan;
+    savedPlayableOf(saved).matchContainer.rounds[0].matches[0].scorers[0].playerId = orphan;
 
     expect(() => GameStateMapper.hydrate(saved)).toThrow(
       `Saved game references unknown player ${orphan}.`

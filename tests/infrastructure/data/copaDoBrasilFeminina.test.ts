@@ -7,6 +7,11 @@ import Round from '../../../src/domain/models/Round';
 import { Team } from '../../../src/domain/models/Team';
 import { RandomProvider } from '../../../src/domain/features/match-simulation/types';
 import championshipsJSON from '../../../src/infrastructure/data/championships.json';
+import {
+  getPlayableChampionship,
+  replaceChampionship,
+} from '../../../src/domain/features/pyramid/Pyramid';
+import { seededContainerOf } from '../../support/seededChampionship';
 
 beforeAll(() => {
   let counter = 0;
@@ -54,26 +59,24 @@ function stubRng(): RandomProvider {
 }
 
 function init(): ChampionshipContainer {
-  const result = ChampionshipService.initChampionships(INTERNAL_NAME);
-  if (!result.succeeded) throw new Error(result.error?.message);
-  return result.getResult();
+  return seededContainerOf(INTERNAL_NAME);
 }
 
 /** Plays the whole competition, home side always winning, and returns every snapshot. */
 function playCup(): { championship: Championship; snapshots: Championship[] } {
   let container = init();
   const rng = stubRng();
-  const snapshots: Championship[] = [container.playableChampionship];
+  const snapshots: Championship[] = [getPlayableChampionship(container)];
 
   for (let guard = 0; guard < 40; guard++) {
-    const matchContainer = container.playableChampionship.matchContainer;
+    const matchContainer = getPlayableChampionship(container).matchContainer;
     const hasRound = matchContainer.rounds.some(
       (round) => round.number === matchContainer.currentRound
     );
     if (!hasRound) break;
 
     const started = ChampionshipService.startRoundForAllChampionships(container).getResult();
-    const championship = started.playableChampionship;
+    const championship = getPlayableChampionship(started);
     const rounds: Round[] = championship.matchContainer.rounds.map((round) =>
       round.number !== championship.matchContainer.currentRound
         ? round
@@ -88,22 +91,19 @@ function playCup(): { championship: Championship; snapshots: Championship[] } {
     );
 
     const ended = ChampionshipService.endRoundForAllChampionships(
-      {
-        ...started,
-        playableChampionship: {
-          ...championship,
-          matchContainer: { ...championship.matchContainer, rounds },
-        },
-      },
+      replaceChampionship(started, {
+        ...championship,
+        matchContainer: { ...championship.matchContainer, rounds },
+      }),
       { rng }
     );
     if (!ended.succeeded) throw new Error(ended.error?.message);
 
     container = ended.getResult();
-    snapshots.push(container.playableChampionship);
+    snapshots.push(getPlayableChampionship(container));
   }
 
-  return { championship: container.playableChampionship, snapshots };
+  return { championship: getPlayableChampionship(container), snapshots };
 }
 
 describe('Copa do Brasil Feminina — seed data', () => {
@@ -188,7 +188,7 @@ describe('Copa do Brasil Feminina — seed data', () => {
 
 describe('Copa do Brasil Feminina — generated bracket', () => {
   it('loads with no standings and only the Preliminar generated', () => {
-    const cup = init().playableChampionship;
+    const cup = getPlayableChampionship(init());
 
     expect(cup.standings).toEqual([]);
     expect(cup.teams).toHaveLength(66);

@@ -8,7 +8,8 @@
  * boundary cuts a save by ~92%.
  *
  * These are the real containers, not fixtures — the numbers only mean something against the seeds
- * the game actually plays.
+ * the game actually plays. Since MS-109 every container holds the whole pyramid of its league type,
+ * so the men's cases carry Série A to D.
  */
 import { beforeAll, beforeEach, describe, expect, it } from '@jest/globals';
 import GameRepository from '../../../src/infrastructure/repositories/GameRepository';
@@ -20,6 +21,7 @@ import { GameState } from '../../../src/game-engine/GameState';
 import { useUniqueTeamIds } from '../../support/seasonHarness';
 import { ScriptedSeason } from '../../support/scriptedSeason';
 import { currentRoundMatches, expectEquivalent } from '../../support/savedGameEquivalence';
+import { getPlayableChampionship } from '../../../src/domain/features/pyramid/Pyramid';
 
 /** `localStorage`'s ceiling, in UTF-16 code units — the unit the quota is actually counted in. */
 const QUOTA = 5_000_000;
@@ -67,11 +69,11 @@ function itBehaves(name: string, build: () => GameState) {
     });
 
     it('brings the current round back byte-identical', () => {
-      const before = currentRoundMatches(state.championshipContainer.playableChampionship);
+      const before = currentRoundMatches(getPlayableChampionship(state.championshipContainer));
 
       GameRepository.saveGame(state);
       const after = currentRoundMatches(
-        GameRepository.loadGame().championshipContainer.playableChampionship
+        getPlayableChampionship(GameRepository.loadGame().championshipContainer)
       );
 
       expect(after).toEqual(before);
@@ -101,44 +103,50 @@ function itBehaves(name: string, build: () => GameState) {
 }
 
 describe('a saved game fits in localStorage', () => {
-  itBehaves('a played Série D season', () => {
+  itBehaves('a played Série D season, with the whole men’s pyramid played alongside', () => {
     const season = new ScriptedSeason('brasileirao-serie-d');
     season.assignHuman(0);
     season.playToEnd();
     return stateOf(season.container, 'mens');
   });
 
-  itBehaves('a re-centred men’s D → C container', () => {
+  itBehaves('a men’s pyramid rolled over after the human went up D → C', () => {
     const season = new ScriptedSeason('brasileirao-serie-d');
     season.assignHuman(0);
-    const recentred = season.playSeasonAndRollOver();
+    const rolledOver = season.playSeasonAndRollOver();
 
-    // The MS-107 shape this ticket had to make saveable: three divisions, Série D's 64 clubs among
-    // them. `expect` inside a builder would be invisible on failure, so assert it as state.
-    if (recentred.playableChampionship.internalName !== 'brasileirao-serie-c') {
+    // `expect` inside a builder would be invisible on failure, so assert it as state.
+    if (rolledOver.playableInternalName !== 'brasileirao-serie-c') {
       throw new Error(
-        `Expected the container to re-centre on Série C, got ${recentred.playableChampionship.internalName}.`
+        `Expected the pointer to move to Série C, got ${rolledOver.playableInternalName}.`
       );
     }
 
-    return stateOf(recentred, 'mens');
+    return stateOf(rolledOver, 'mens');
   });
 
-  itBehaves('a re-centred women’s A3 → A2 container', () => {
+  itBehaves('a played Série A3 season, with the whole women’s pyramid played alongside', () => {
+    const season = new ScriptedSeason('brasileirao-feminino-serie-a3');
+    season.assignHuman(0);
+    season.playToEnd();
+    return stateOf(season.container, 'womens');
+  });
+
+  itBehaves('a women’s pyramid rolled over after the human went up A3 → A2', () => {
     const season = new ScriptedSeason('brasileirao-feminino-serie-a3');
     season.assignHuman(0);
     return stateOf(season.playSeasonAndRollOver(), 'womens');
   });
 });
 
-describe('the re-centred men’s container', () => {
-  let recentred: ChampionshipContainer;
+describe('the rolled-over men’s pyramid', () => {
+  let rolledOver: ChampionshipContainer;
 
   beforeAll(() => {
     const season = new ScriptedSeason('brasileirao-serie-d');
     season.assignHuman(0);
     season.playToEnd();
-    recentred = season.rollOver();
+    rolledOver = season.rollOver();
   });
 
   beforeEach(() => {
@@ -146,31 +154,33 @@ describe('the re-centred men’s container', () => {
   });
 
   it('reloads with the human playing its new division', () => {
-    GameRepository.saveGame(stateOf(recentred, 'mens'));
+    GameRepository.saveGame(stateOf(rolledOver, 'mens'));
     const { championshipContainer } = GameRepository.loadGame();
 
-    expect(championshipContainer.playableChampionship.internalName).toBe('brasileirao-serie-c');
+    expect(championshipContainer.playableInternalName).toBe('brasileirao-serie-c');
 
     const humanTeam = ChampionshipService.getTeamControlledByHuman(
-      championshipContainer.playableChampionship
+      getPlayableChampionship(championshipContainer)
     );
     expect(humanTeam.succeeded).toBe(true);
     expect(humanTeam.getResult().id).toBe(
-      ChampionshipService.getTeamControlledByHuman(recentred.playableChampionship).getResult().id
+      ChampionshipService.getTeamControlledByHuman(getPlayableChampionship(rolledOver)).getResult()
+        .id
     );
   });
 
-  it('keeps both neighbour slots, fixtures included', () => {
-    GameRepository.saveGame(stateOf(recentred, 'mens'));
+  it('keeps every division of the pyramid, fixtures included', () => {
+    GameRepository.saveGame(stateOf(rolledOver, 'mens'));
     const { championshipContainer } = GameRepository.loadGame();
 
-    expect(championshipContainer.promotionChampionship?.internalName).toBe('brasileirao-serie-b');
-    expect(championshipContainer.relegationChampionship?.internalName).toBe('brasileirao-serie-d');
-    expect(
-      championshipContainer.promotionChampionship?.matchContainer.rounds.length
-    ).toBeGreaterThan(0);
-    expect(
-      championshipContainer.relegationChampionship?.matchContainer.rounds.length
-    ).toBeGreaterThan(0);
+    expect(championshipContainer.championships.map((division) => division.internalName)).toEqual([
+      'brasileirao-serie-a',
+      'brasileirao-serie-b',
+      'brasileirao-serie-c',
+      'brasileirao-serie-d',
+    ]);
+    championshipContainer.championships.forEach((division) =>
+      expect(division.matchContainer.rounds.length).toBeGreaterThan(0)
+    );
   });
 });

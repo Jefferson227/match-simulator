@@ -19,7 +19,11 @@ import Standing from '../../../src/domain/models/Standing';
 import { Team } from '../../../src/domain/models/Team';
 import { GameState } from '../../../src/game-engine/GameState';
 import { useUniqueTeamIds } from '../../support/seasonHarness';
-import { ScriptedSeason, pinnedRng } from '../../support/scriptedSeason';
+import { ScriptedSeason, pinnedRng, pinnedRngByDivision } from '../../support/scriptedSeason';
+import {
+  getPlayableChampionship,
+  replaceChampionship,
+} from '../../../src/domain/features/pyramid/Pyramid';
 
 beforeAll(useUniqueTeamIds);
 
@@ -43,15 +47,16 @@ const seedOf = (team: Team) => season.names.indexOf(season.nameOf(team));
 
 /**
  * One more round, scripted exactly as `ScriptedSeason` scripts one — but driven here so both sides
- * get a **freshly pinned** rng rather than sharing the harness's, which has already advanced.
+ * get **freshly pinned** streams rather than sharing the harness's, which have already advanced.
  */
 function playOneMoreRound(state: GameState): ChampionshipContainer {
   const rng = pinnedRng();
+  const rngForDivision = pinnedRngByDivision();
 
   const started = ChampionshipService.startRoundForAllChampionships(state.championshipContainer);
   if (!started.succeeded) throw new Error(started.error?.message);
 
-  const playable = started.getResult().playableChampionship;
+  const playable = getPlayableChampionship(started.getResult());
   const { currentRound } = playable.matchContainer;
   const rounds = playable.matchContainer.rounds.map((round) =>
     round.number !== currentRound
@@ -70,14 +75,11 @@ function playOneMoreRound(state: GameState): ChampionshipContainer {
   );
 
   const ended = ChampionshipService.endRoundForAllChampionships(
-    {
-      ...started.getResult(),
-      playableChampionship: {
-        ...playable,
-        matchContainer: { ...playable.matchContainer, rounds },
-      },
-    },
-    { rng }
+    replaceChampionship(started.getResult(), {
+      ...playable,
+      matchContainer: { ...playable.matchContainer, rounds },
+    }),
+    { rng, rngForDivision }
   );
   if (!ended.succeeded) throw new Error(ended.error?.message);
   return ended.getResult();
@@ -108,12 +110,7 @@ const tableOf = (standings: Standing[]) =>
     goalsAgainst: standing.goalsAgainst,
   }));
 
-const everyChampionship = (container: ChampionshipContainer) =>
-  [
-    container.playableChampionship,
-    container.promotionChampionship,
-    container.relegationChampionship,
-  ].filter((championship): championship is Championship => championship !== undefined);
+const everyChampionship = (container: ChampionshipContainer) => container.championships;
 
 describe('a reloaded game plays forward exactly as an unsaved one', () => {
   let fromMemory: ChampionshipContainer;
@@ -139,22 +136,21 @@ describe('a reloaded game plays forward exactly as an unsaved one', () => {
   });
 
   it('was stopped mid-season with rounds already played', () => {
-    const played =
-      midSeason.championshipContainer.playableChampionship.matchContainer.rounds.filter(
-        (round) => round.status === 'ended'
-      );
+    const played = getPlayableChampionship(
+      midSeason.championshipContainer
+    ).matchContainer.rounds.filter((round) => round.status === 'ended');
 
     expect(played.length).toBe(ROUNDS_BEFORE_SAVE);
     expect(played.flatMap((round) => round.matches).length).toBeGreaterThan(0);
   });
 
   it('produces the same fixtures in the playable division', () => {
-    expect(fixturesOf(fromDisk.playableChampionship)).toEqual(
-      fixturesOf(fromMemory.playableChampionship)
+    expect(fixturesOf(getPlayableChampionship(fromDisk))).toEqual(
+      fixturesOf(getPlayableChampionship(fromMemory))
     );
   });
 
-  it('produces the same fixtures in every AI neighbour', () => {
+  it('produces the same fixtures in every division of the pyramid', () => {
     expect(everyChampionship(fromDisk).map((c) => c.internalName)).toEqual(
       everyChampionship(fromMemory).map((c) => c.internalName)
     );
@@ -165,7 +161,7 @@ describe('a reloaded game plays forward exactly as an unsaved one', () => {
 
   it('produces the same scores in the round just played', () => {
     const scoresOf = (container: ChampionshipContainer) => {
-      const { rounds, currentRound } = container.playableChampionship.matchContainer;
+      const { rounds, currentRound } = getPlayableChampionship(container).matchContainer;
       return rounds
         .filter((round) => round.number === currentRound - 1)
         .flatMap((round) => round.matches)
@@ -177,8 +173,8 @@ describe('a reloaded game plays forward exactly as an unsaved one', () => {
   });
 
   it('produces the same standings', () => {
-    expect(tableOf(fromDisk.playableChampionship.standings)).toEqual(
-      tableOf(fromMemory.playableChampionship.standings)
+    expect(tableOf(getPlayableChampionship(fromDisk).standings)).toEqual(
+      tableOf(getPlayableChampionship(fromMemory).standings)
     );
     everyChampionship(fromDisk).forEach((championship, index) => {
       expect(tableOf(championship.standings)).toEqual(
