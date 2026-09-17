@@ -10,6 +10,8 @@ import Match from '../../../domain/models/Match';
 import Round from '../../../domain/models/Round';
 import Standing from '../../../domain/models/Standing';
 import { Team } from '../../../domain/models/Team';
+import { containerOf } from '../../../../tests/support/containerOf';
+import { getPlayableChampionship } from '../../../domain/features/pyramid/Pyramid';
 
 // react-i18next is not initialised under test. Resolve keys against the real en.json so these
 // assertions also prove every new string exists in the locale file.
@@ -75,29 +77,27 @@ function buildMatch(fields: Partial<Match> & { homeTeam: Team; awayTeam: Team })
 function buildState(championship: Partial<Championship>): GameState {
   return {
     coachName: '',
-    championshipContainer: {
-      playableChampionship: {
-        id: 'championship',
-        name: 'Mock Championship',
-        internalName: 'mock',
-        numberOfTeams: 4,
-        teams: [],
-        standings: [],
-        matchContainer: {
-          timer: 0,
-          currentSeason: 2026,
-          currentRound: 1,
-          totalRounds: 6,
-          rounds: [],
-        },
-        type: 'group-stage-knockout',
-        leagueType: 'womens',
-        hasTeamControlledByHuman: false,
-        isPromotable: false,
-        isRelegatable: false,
-        ...championship,
-      } as Championship,
-    },
+    championshipContainer: containerOf({
+      id: 'championship',
+      name: 'Mock Championship',
+      internalName: 'mock',
+      numberOfTeams: 4,
+      teams: [],
+      standings: [],
+      matchContainer: {
+        timer: 0,
+        currentSeason: 2026,
+        currentRound: 1,
+        totalRounds: 6,
+        rounds: [],
+      },
+      type: 'group-stage-knockout',
+      leagueType: 'womens',
+      hasTeamControlledByHuman: false,
+      isPromotable: false,
+      isRelegatable: false,
+      ...championship,
+    } as Championship),
     hasError: false,
     errorMessage: '',
     leagueType: 'womens',
@@ -238,7 +238,7 @@ function unplayedFinal(firstRoundNumber: number, home: Team, away: Team): Round[
 /** The group stage has just ended: the final is generated and the standings reset to its field. */
 function groupStageJustEndedState(): GameState {
   const state = groupStageState();
-  const championship = state.championshipContainer.playableChampionship;
+  const championship = getPlayableChampionship(state.championshipContainer);
   const groupRound = championship.matchContainer.rounds[0];
 
   return buildState({
@@ -348,7 +348,7 @@ function wideKnockoutState(tieCount: number): GameState {
 
 /** The same state, with one club handed to the human player. */
 function withHumanTeam(state: GameState, humanTeam: Team): GameState {
-  const championship = state.championshipContainer.playableChampionship;
+  const championship = getPlayableChampionship(state.championshipContainer);
   championship.teams = championship.teams.map((team) =>
     team.id === humanTeam.id ? { ...team, isControlledByHuman: true } : team
   );
@@ -410,7 +410,7 @@ describe('TeamStandings — phased championships', () => {
   test("opens on the page holding the human's tie during a knockout", () => {
     // Eight ties page four at a time; the human runs T15, in the last tie of the second page.
     const state = wideKnockoutState(8);
-    const humanTeam = state.championshipContainer.playableChampionship.teams[14];
+    const humanTeam = getPlayableChampionship(state.championshipContainer).teams[14];
     (useGameState as jest.Mock).mockReturnValue(withHumanTeam(state, humanTeam));
     render(<TeamStandings />);
 
@@ -630,7 +630,7 @@ describe('TeamStandings — continuing between phases', () => {
 
   test('never skips to the simulator once the season is over, whoever the human club is', () => {
     const state = withHumanTeam(knockoutState(true), teams[1]);
-    const championship = state.championshipContainer.playableChampionship;
+    const championship = getPlayableChampionship(state.championshipContainer);
     championship.matchContainer = { ...championship.matchContainer, currentRound: 4 };
     (useGameState as jest.Mock).mockReturnValue(state);
     render(<TeamStandings />);
@@ -649,7 +649,7 @@ describe('TeamStandings — continuing between phases', () => {
 
   test('builds the season summary and opens it once the final is played', () => {
     const state = knockoutState(true);
-    const championship = state.championshipContainer.playableChampionship;
+    const championship = getPlayableChampionship(state.championshipContainer);
     championship.matchContainer = { ...championship.matchContainer, currentRound: 4 };
     (useGameState as jest.Mock).mockReturnValue(state);
     render(<TeamStandings />);

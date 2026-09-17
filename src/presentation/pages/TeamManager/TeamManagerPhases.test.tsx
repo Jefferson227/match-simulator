@@ -13,6 +13,7 @@ import type Match from '../../../domain/models/Match';
 import type Round from '../../../domain/models/Round';
 import type Standing from '../../../domain/models/Standing';
 import type { Team } from '../../../domain/models/Team';
+import { containerOf } from '../../../../tests/support/containerOf';
 
 const buildTeam = (index: number, isControlledByHuman = false): Team => ({
   id: `team-${index}` as Team['id'],
@@ -66,29 +67,27 @@ const knockoutPhase: ChampionshipPhase = {
 
 const buildState = (championship: Partial<Championship>): GameState =>
   ({
-    championshipContainer: {
-      playableChampionship: {
-        id: 'championship',
-        name: 'Brasileirão Série D',
-        internalName: 'mock',
-        numberOfTeams: teams.length,
-        teams,
-        standings: [],
-        matchContainer: {
-          timer: 0,
-          currentSeason: 2026,
-          currentRound: 1,
-          totalRounds: 20,
-          rounds: [],
-        },
-        type: 'group-stage-knockout',
-        leagueType: 'mens',
-        hasTeamControlledByHuman: true,
-        isPromotable: false,
-        isRelegatable: false,
-        ...championship,
-      } as Championship,
-    },
+    championshipContainer: containerOf({
+      id: 'championship',
+      name: 'Brasileirão Série D',
+      internalName: 'mock',
+      numberOfTeams: teams.length,
+      teams,
+      standings: [],
+      matchContainer: {
+        timer: 0,
+        currentSeason: 2026,
+        currentRound: 1,
+        totalRounds: 20,
+        rounds: [],
+      },
+      type: 'group-stage-knockout',
+      leagueType: 'mens',
+      hasTeamControlledByHuman: true,
+      isPromotable: false,
+      isRelegatable: false,
+      ...championship,
+    } as Championship),
     hasError: false,
     errorMessage: '',
     leagueType: 'mens',

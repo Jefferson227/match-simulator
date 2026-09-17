@@ -46,14 +46,13 @@ const MatchSimulator: FC = () => {
   };
 
   const championshipUseCases = new ChampionshipUseCases(state);
+  const playable = championshipUseCases.getPlayableChampionship();
 
-  const matchContainer = state.championshipContainer.playableChampionship.matchContainer;
+  const matchContainer = playable.matchContainer;
 
   // Which phase is being played, so a phased season shows the phase name and the round within that
   // phase rather than a round number counted across the whole competition.
-  const phaseView = championshipUseCases.getPhaseView(
-    state.championshipContainer.playableChampionship
-  );
+  const phaseView = championshipUseCases.getPhaseView(playable);
 
   useEffect(() => {
     setClockSpeed(state.gameConfig.clockSpeed);
@@ -63,9 +62,7 @@ const MatchSimulator: FC = () => {
     // Get matches for current round
     let matchesToBeSet = [] as Match[];
     try {
-      matchesToBeSet = championshipUseCases.getMatchesForCurrentRound(
-        state.championshipContainer.playableChampionship
-      );
+      matchesToBeSet = championshipUseCases.getMatchesForCurrentRound(playable);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       engine.dispatch({ type: 'SET_ERROR_MESSAGE', errorMessage });
@@ -126,11 +123,7 @@ const MatchSimulator: FC = () => {
     }
 
     // Update matches in the page
-    setMatches(
-      championshipUseCases.getMatchesForCurrentRound(
-        state.championshipContainer.playableChampionship
-      )
-    );
+    setMatches(championshipUseCases.getMatchesForCurrentRound(playable));
 
     return () => {
       if (timer) clearInterval(timer);
@@ -163,7 +156,7 @@ const MatchSimulator: FC = () => {
   // knockout on the page holding their tie instead of always on the first one. An unphased round is
   // left alone: its pages are arbitrary slices of the whole field, not a group the player belongs
   // to. Only the first page load picks it; paging after that is the player's.
-  const humanTeamId = state.championshipContainer.playableChampionship.teams?.find(
+  const humanTeamId = playable.teams?.find(
     (championshipTeam) => championshipTeam.isControlledByHuman
   )?.id;
   const picksHumanPage = isGroupStage || phaseView.kind === 'knockout';
@@ -199,7 +192,7 @@ const MatchSimulator: FC = () => {
   // clock. The domain keeps its own timer, so it is the one that decides when the round is over.
   const handleFinishMatches = () => {
     const getTimer = () =>
-      engine.getState().championshipContainer.playableChampionship.matchContainer.timer;
+      new ChampionshipUseCases(engine.getState()).getPlayableChampionship().matchContainer.timer;
 
     let ticksLeft = 90;
     while (getTimer() < 90 && ticksLeft > 0) {

@@ -53,8 +53,8 @@ const TeamManager: React.FC = () => {
 
   const [team, setTeam] = useState<Team>(EMPTY_TEAM);
 
-  const championship = state.championshipContainer.playableChampionship;
   const championshipUseCases = new ChampionshipUseCases(state);
+  const championship = championshipUseCases.getPlayableChampionship();
 
   // Get team controlled by human
   useEffect(() => {

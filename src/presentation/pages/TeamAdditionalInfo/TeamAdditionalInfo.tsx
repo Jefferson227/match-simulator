@@ -4,6 +4,7 @@ import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../../services/useGameState';
 import { Team } from '../../../domain/models/Team';
 import Match from '../../../domain/models/Match';
+import ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
 
 const EMPTY_TEAM: Team = {
   id: '00000000-0000-0000-0000-000000000000',
@@ -25,9 +26,8 @@ const TeamAdditionalInfo: React.FC = () => {
   const state = useGameState(engine);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const championship = state.championshipContainer.playableChampionship;
-  const humanTeam =
-    championship?.teams?.find((team) => team.isControlledByHuman) ?? EMPTY_TEAM;
+  const championship = new ChampionshipUseCases(state).getPlayableChampionship();
+  const humanTeam = championship?.teams?.find((team) => team.isControlledByHuman) ?? EMPTY_TEAM;
   const humanStanding = championship?.standings?.find(
     (standing) => standing.team.id === humanTeam.id
   );

@@ -8,6 +8,8 @@ import { Championship } from '../../../domain/models/Championship';
 import ChampionshipPhase from '../../../domain/models/ChampionshipPhase';
 import Round from '../../../domain/models/Round';
 import { Team } from '../../../domain/models/Team';
+import { containerOf } from '../../../../tests/support/containerOf';
+import { getPlayableChampionship } from '../../../domain/features/pyramid/Pyramid';
 
 jest.mock('react-i18next', () => {
   const en = jest.requireActual('../../locales/en.json') as Record<string, Record<string, string>>;
@@ -79,29 +81,27 @@ function buildRound(phased: boolean): Round {
 function buildState(phased: boolean): GameState {
   return {
     coachName: '',
-    championshipContainer: {
-      playableChampionship: {
-        id: 'championship',
-        name: 'Mock Championship',
-        internalName: 'mock',
-        numberOfTeams: 2,
-        teams,
-        standings: [],
-        matchContainer: {
-          timer: 0,
-          currentSeason: 2026,
-          currentRound: 1,
-          totalRounds: 1,
-          rounds: [buildRound(phased)],
-        },
-        type: phased ? 'single-round-robin' : 'double-round-robin',
-        leagueType: phased ? 'womens' : 'mens',
-        hasTeamControlledByHuman: false,
-        isPromotable: false,
-        isRelegatable: false,
-        ...(phased ? { phases: [firstPhase], currentPhaseIndex: 0 } : {}),
-      } as Championship,
-    },
+    championshipContainer: containerOf({
+      id: 'championship',
+      name: 'Mock Championship',
+      internalName: 'mock',
+      numberOfTeams: 2,
+      teams,
+      standings: [],
+      matchContainer: {
+        timer: 0,
+        currentSeason: 2026,
+        currentRound: 1,
+        totalRounds: 1,
+        rounds: [buildRound(phased)],
+      },
+      type: phased ? 'single-round-robin' : 'double-round-robin',
+      leagueType: phased ? 'womens' : 'mens',
+      hasTeamControlledByHuman: false,
+      isPromotable: false,
+      isRelegatable: false,
+      ...(phased ? { phases: [firstPhase], currentPhaseIndex: 0 } : {}),
+    } as Championship),
     hasError: false,
     errorMessage: '',
     leagueType: phased ? 'womens' : 'mens',
@@ -147,7 +147,7 @@ describe('MatchSimulator — group stage', () => {
 
   function buildGroupStageState(humanTeamIndex?: number): GameState {
     const state = buildState(true);
-    const championship = state.championshipContainer.playableChampionship;
+    const championship = getPlayableChampionship(state.championshipContainer);
     const matchOf = (home: Team, away: Team, group: number) => ({
       id: `match-${home.id}-${away.id}`,
       homeTeam: home,
@@ -161,52 +161,50 @@ describe('MatchSimulator — group stage', () => {
 
     return {
       ...state,
-      championshipContainer: {
-        playableChampionship: {
-          ...championship,
-          numberOfTeams: 4,
-          teams: groupTeams.map((team, index) =>
-            index === humanTeamIndex ? { ...team, isControlledByHuman: true } : team
-          ),
-          standings: groupTeams.map((team, index) => ({
-            team,
-            position: index + 1,
-            wins: 0,
-            draws: 0,
-            losses: 0,
-            goalsFor: 0,
-            goalsAgainst: 0,
-            points: 0,
-          })),
-          matchContainer: {
-            ...championship.matchContainer,
-            rounds: [
-              {
-                ...buildRound(true),
-                matches: [
-                  matchOf(groupTeams[0], groupTeams[1], 0),
-                  matchOf(groupTeams[2], groupTeams[3], 1),
-                ].map((match) =>
-                  humanTeamIndex === undefined
-                    ? match
-                    : {
-                        ...match,
-                        homeTeam:
-                          match.homeTeam.id === groupTeams[humanTeamIndex].id
-                            ? { ...match.homeTeam, isControlledByHuman: true }
-                            : match.homeTeam,
-                        awayTeam:
-                          match.awayTeam.id === groupTeams[humanTeamIndex].id
-                            ? { ...match.awayTeam, isControlledByHuman: true }
-                            : match.awayTeam,
-                      }
-                ),
-              },
-            ],
-          },
-          phases: [groupPhase],
-        } as Championship,
-      },
+      championshipContainer: containerOf({
+        ...championship,
+        numberOfTeams: 4,
+        teams: groupTeams.map((team, index) =>
+          index === humanTeamIndex ? { ...team, isControlledByHuman: true } : team
+        ),
+        standings: groupTeams.map((team, index) => ({
+          team,
+          position: index + 1,
+          wins: 0,
+          draws: 0,
+          losses: 0,
+          goalsFor: 0,
+          goalsAgainst: 0,
+          points: 0,
+        })),
+        matchContainer: {
+          ...championship.matchContainer,
+          rounds: [
+            {
+              ...buildRound(true),
+              matches: [
+                matchOf(groupTeams[0], groupTeams[1], 0),
+                matchOf(groupTeams[2], groupTeams[3], 1),
+              ].map((match) =>
+                humanTeamIndex === undefined
+                  ? match
+                  : {
+                      ...match,
+                      homeTeam:
+                        match.homeTeam.id === groupTeams[humanTeamIndex].id
+                          ? { ...match.homeTeam, isControlledByHuman: true }
+                          : match.homeTeam,
+                      awayTeam:
+                        match.awayTeam.id === groupTeams[humanTeamIndex].id
+                          ? { ...match.awayTeam, isControlledByHuman: true }
+                          : match.awayTeam,
+                    }
+              ),
+            },
+          ],
+        },
+        phases: [groupPhase],
+      } as Championship),
     };
   }
 
@@ -262,42 +260,40 @@ describe('MatchSimulator — knockout phase', () => {
     );
 
     const state = buildState(true);
-    const championship = state.championshipContainer.playableChampionship;
+    const championship = getPlayableChampionship(state.championshipContainer);
 
     return {
       ...state,
-      championshipContainer: {
-        playableChampionship: {
-          ...championship,
-          numberOfTeams: 16,
-          teams: knockoutTeams,
-          standings: [],
-          matchContainer: {
-            ...championship.matchContainer,
-            rounds: [
-              {
-                id: 'round-1',
-                number: 1,
-                status: 'in-progress',
+      championshipContainer: containerOf({
+        ...championship,
+        numberOfTeams: 16,
+        teams: knockoutTeams,
+        standings: [],
+        matchContainer: {
+          ...championship.matchContainer,
+          rounds: [
+            {
+              id: 'round-1',
+              number: 1,
+              status: 'in-progress',
+              phaseIndex: 0,
+              phaseName: knockoutPhase.name,
+              matches: Array.from({ length: 8 }, (_, tie) => ({
+                id: `match-tie-${tie}`,
+                homeTeam: knockoutTeams[tie * 2],
+                awayTeam: knockoutTeams[tie * 2 + 1],
+                homeTeamScore: 0,
+                awayTeamScore: 0,
+                scorers: [],
                 phaseIndex: 0,
-                phaseName: knockoutPhase.name,
-                matches: Array.from({ length: 8 }, (_, tie) => ({
-                  id: `match-tie-${tie}`,
-                  homeTeam: knockoutTeams[tie * 2],
-                  awayTeam: knockoutTeams[tie * 2 + 1],
-                  homeTeamScore: 0,
-                  awayTeamScore: 0,
-                  scorers: [],
-                  phaseIndex: 0,
-                  tieId: `p0-t${tie}`,
-                  leg: 1,
-                })),
-              },
-            ],
-          },
-          phases: [knockoutPhase],
-        } as Championship,
-      },
+                tieId: `p0-t${tie}`,
+                leg: 1,
+              })),
+            },
+          ],
+        },
+        phases: [knockoutPhase],
+      } as Championship),
     };
   }
 

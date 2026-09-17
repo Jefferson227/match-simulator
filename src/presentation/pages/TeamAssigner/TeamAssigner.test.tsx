@@ -42,7 +42,10 @@ const drawnTeam = {
 };
 
 const stateBeforeDraw = {
-  championshipContainer: { playableChampionship: { teams: [] as (typeof drawnTeam)[] } },
+  championshipContainer: {
+    championships: [{ internalName: 'entry', teams: [] as (typeof drawnTeam)[] }],
+    playableInternalName: 'entry',
+  },
   leagueType: 'mens',
   hasError: false,
   errorMessage: '',
@@ -53,9 +56,13 @@ const stateBeforeDraw = {
 const stateAfterDraw = {
   ...stateBeforeDraw,
   championshipContainer: {
-    playableChampionship: {
-      teams: [{ ...drawnTeam, id: 'other', isControlledByHuman: false }, drawnTeam],
-    },
+    championships: [
+      {
+        internalName: 'entry',
+        teams: [{ ...drawnTeam, id: 'other', isControlledByHuman: false }, drawnTeam],
+      },
+    ],
+    playableInternalName: 'entry',
   },
 };
 

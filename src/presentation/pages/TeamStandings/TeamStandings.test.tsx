@@ -8,6 +8,8 @@ import { GameState } from '../../../game-engine/GameState';
 import { Championship } from '../../../domain/models/Championship';
 import Standing from '../../../domain/models/Standing';
 import { Team } from '../../../domain/models/Team';
+import { containerOf } from '../../../../tests/support/containerOf';
+import { getPlayableChampionship } from '../../../domain/features/pyramid/Pyramid';
 
 jest.mock('../../contexts/GameEngineContext', () => ({
   useGameEngine: jest.fn(),
@@ -55,28 +57,26 @@ function buildState(overrides?: Partial<GameState>): GameState {
 
   return {
     coachName: '',
-    championshipContainer: {
-      playableChampionship: {
-        id: '33333333-3333-3333-3333-333333333333',
-        name: 'Mock Championship',
-        internalName: 'mock-championship',
-        numberOfTeams: 2,
-        teams: [teamA, teamB],
-        standings: [buildStanding(1, teamA, 6), buildStanding(2, teamB, 3)],
-        matchContainer: {
-          timer: 0,
-          currentSeason: 2026,
-          currentRound: 2,
-          totalRounds: 3,
-          rounds: [],
-        },
-        type: 'double-round-robin',
-        leagueType: 'mens',
-        hasTeamControlledByHuman: false,
-        isPromotable: false,
-        isRelegatable: false,
-      } as Championship,
-    },
+    championshipContainer: containerOf({
+      id: '33333333-3333-3333-3333-333333333333',
+      name: 'Mock Championship',
+      internalName: 'mock-championship',
+      numberOfTeams: 2,
+      teams: [teamA, teamB],
+      standings: [buildStanding(1, teamA, 6), buildStanding(2, teamB, 3)],
+      matchContainer: {
+        timer: 0,
+        currentSeason: 2026,
+        currentRound: 2,
+        totalRounds: 3,
+        rounds: [],
+      },
+      type: 'double-round-robin',
+      leagueType: 'mens',
+      hasTeamControlledByHuman: false,
+      isPromotable: false,
+      isRelegatable: false,
+    } as Championship),
     hasError: false,
     errorMessage: '',
     leagueType: 'mens',
@@ -123,16 +123,14 @@ describe('TeamStandings', () => {
   test('opens the season summary instead of rolling the season over on end season', () => {
     (useGameState as jest.Mock).mockReturnValue(
       buildState({
-        championshipContainer: {
-          playableChampionship: {
-            ...buildState().championshipContainer.playableChampionship,
-            matchContainer: {
-              ...buildState().championshipContainer.playableChampionship.matchContainer,
-              currentRound: 4,
-              totalRounds: 3,
-            },
-          } as Championship,
-        },
+        championshipContainer: containerOf({
+          ...getPlayableChampionship(buildState().championshipContainer),
+          matchContainer: {
+            ...getPlayableChampionship(buildState().championshipContainer).matchContainer,
+            currentRound: 4,
+            totalRounds: 3,
+          },
+        } as Championship),
       })
     );
 

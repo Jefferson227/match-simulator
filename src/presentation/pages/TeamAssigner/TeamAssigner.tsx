@@ -4,7 +4,6 @@ import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../../services/useGameState';
 import MainLayout from '../../components/MainLayout/MainLayout';
 import ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
-import { GameState } from '../../../game-engine/GameState';
 import { Team } from '../../../domain/models/Team';
 
 const TOTAL_DOTS = 3;
@@ -39,10 +38,10 @@ const TeamAssigner: React.FC = () => {
     if (!hasDispatchedDraw || state.hasError) return;
 
     try {
-      const championshipUseCases = new ChampionshipUseCases({} as GameState);
+      const championshipUseCases = new ChampionshipUseCases(state);
       setDrawnTeam(
         championshipUseCases.getTeamControlledByHuman(
-          state.championshipContainer.playableChampionship
+          championshipUseCases.getPlayableChampionship()
         )
       );
     } catch (error) {

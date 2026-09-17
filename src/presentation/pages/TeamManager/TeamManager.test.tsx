@@ -14,6 +14,7 @@ import type { Team } from '../../../domain/models/Team';
 import type Player from '../../../domain/models/Player';
 import type Round from '../../../domain/models/Round';
 import type Standing from '../../../domain/models/Standing';
+import { containerOf } from '../../../../tests/support/containerOf';
 
 const makePlayer = (id: string, name: string, position: Player['position'], strength: number) => ({
   id: id as Player['id'],
@@ -101,9 +102,7 @@ const createChampionship = (teams: Team[], rounds: Round[], standings: Standing[
 
 const createState = (teams: Team[], rounds: Round[] = [], standings: Standing[] = []): GameState =>
   ({
-    championshipContainer: {
-      playableChampionship: createChampionship(teams, rounds, standings),
-    },
+    championshipContainer: containerOf(createChampionship(teams, rounds, standings)),
     hasError: false,
     errorMessage: '',
     leagueType: 'mens',

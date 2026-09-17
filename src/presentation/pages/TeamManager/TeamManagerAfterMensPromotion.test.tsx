@@ -22,10 +22,11 @@ import { GameEngine } from '../../../game-engine/GameEngine';
 import ChampionshipService from '../../../domain/services/ChampionshipService';
 import ChampionshipContainer from '../../../domain/models/ChampionshipContainer';
 import type { GameState } from '../../../game-engine/GameState';
+import { getPlayableChampionship } from '../../../domain/features/pyramid/Pyramid';
 import { useUniqueTeamIds } from '../../../../tests/support/seasonHarness';
 import { ScriptedSeason } from '../../../../tests/support/scriptedSeason';
 
-let recentred: ChampionshipContainer;
+let rolledOver: ChampionshipContainer;
 let humanClubName: string;
 
 beforeAll(() => {
@@ -33,14 +34,14 @@ beforeAll(() => {
   i18n.changeLanguage('en');
 
   // Série D, human on the top seed: wins every tie, so it is one of the four promoted
-  // semifinalists and the container re-centres on Série C.
+  // semifinalists and the container's pointer moves to Série C.
   const season = new ScriptedSeason('brasileirao-serie-d');
   season.assignHuman(0);
   season.playToEnd();
-  recentred = season.rollOver();
+  rolledOver = season.rollOver();
 
   humanClubName = ChampionshipService.getTeamControlledByHuman(
-    recentred.playableChampionship
+    getPlayableChampionship(rolledOver)
   ).getResult().fullName;
 });
 
@@ -59,13 +60,18 @@ describe('the men’s flow after a promoting roll-over', () => {
     window.localStorage.clear();
   });
 
-  it('re-centres on Série C, the division the human was promoted into', () => {
-    expect(recentred.playableChampionship.internalName).toBe('brasileirao-serie-c');
-    expect(recentred.relegationChampionship?.internalName).toBe('brasileirao-serie-d');
+  it('points at Série C, the division the human was promoted into, within the whole pyramid', () => {
+    expect(getPlayableChampionship(rolledOver).internalName).toBe('brasileirao-serie-c');
+    expect(rolledOver.championships.map((championship) => championship.internalName)).toEqual([
+      'brasileirao-serie-a',
+      'brasileirao-serie-b',
+      'brasileirao-serie-c',
+      'brasileirao-serie-d',
+    ]);
   });
 
   it('saves without an error — the failure MS-107 could not get past', () => {
-    const engine = new GameEngine(stateOf(recentred));
+    const engine = new GameEngine(stateOf(rolledOver));
 
     engine.dispatch({ type: 'SAVE_GAME' });
 
@@ -74,25 +80,25 @@ describe('the men’s flow after a promoting roll-over', () => {
   });
 
   it('reloads into the new division after that save', () => {
-    const engine = new GameEngine(stateOf(recentred));
+    const engine = new GameEngine(stateOf(rolledOver));
     engine.dispatch({ type: 'SAVE_GAME' });
 
     engine.dispatch({ type: 'LOAD_GAME' });
 
     const state = engine.getState();
     expect(state.hasError).toBe(false);
-    expect(state.championshipContainer.playableChampionship.internalName).toBe(
+    expect(getPlayableChampionship(state.championshipContainer).internalName).toBe(
       'brasileirao-serie-c'
     );
     expect(
       ChampionshipService.getTeamControlledByHuman(
-        state.championshipContainer.playableChampionship
+        getPlayableChampionship(state.championshipContainer)
       ).getResult().fullName
     ).toBe(humanClubName);
   });
 
   it('renders the human club and its new division after a save and a reload', () => {
-    const engine = new GameEngine(stateOf(recentred));
+    const engine = new GameEngine(stateOf(rolledOver));
     engine.dispatch({ type: 'SAVE_GAME' });
     engine.dispatch({ type: 'LOAD_GAME' });
 
@@ -106,7 +112,7 @@ describe('the men’s flow after a promoting roll-over', () => {
 
     expect(humanClubName).not.toBe('');
     expect(screen.getByText(humanClubName)).toBeTruthy();
-    expect(screen.getByText(recentred.playableChampionship.name)).toBeTruthy();
+    expect(screen.getByText(getPlayableChampionship(rolledOver).name)).toBeTruthy();
     expect(container.textContent).not.toContain('could not be found');
   });
 });

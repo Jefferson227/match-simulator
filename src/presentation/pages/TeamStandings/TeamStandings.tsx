@@ -22,7 +22,10 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
   const [page, setPage] = useState(0);
   const [isShowingNextPhase, setIsShowingNextPhase] = useState(false);
 
-  const championship = state.championshipContainer.playableChampionship;
+  const championship = useMemo(
+    () => new ChampionshipUseCases(state).getPlayableChampionship(),
+    [state]
+  );
 
   // A phase view is only built for the live championship — a caller that passes `standings`
   // explicitly is rendering a plain table and wants nothing else. The screen first shows the results

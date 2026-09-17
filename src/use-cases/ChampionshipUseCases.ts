@@ -8,7 +8,11 @@ import LeagueType from '../domain/enums/LeagueType';
 import { PhaseView, PhaseViewOptions } from '../domain/features/phases/PhaseView';
 import { RandomProvider } from '../domain/features/match-simulation/types';
 import { ENTRY_CHAMPIONSHIP_BY_LEAGUE_TYPE } from '../domain/constants/EntryChampionships';
-import { getPlayableChampionship, replaceChampionship } from '../domain/features/pyramid/Pyramid';
+import {
+  getChampionshipByInternalName,
+  getPlayableChampionship,
+  replaceChampionship,
+} from '../domain/features/pyramid/Pyramid';
 
 export default class ChampionshipUseCases {
   private state = {} as GameState;
@@ -176,6 +180,21 @@ export default class ChampionshipUseCases {
       ...this.state,
       leagueType,
     };
+  }
+
+  /**
+   * The division the human plays in, for the screens. Before a game is initialised there is none,
+   * and an empty championship is returned — the placeholder the initial state used to hold, which
+   * every screen already reads defensively. Never throws.
+   */
+  getPlayableChampionship(): Championship {
+    const container = this.state.championshipContainer;
+    if (!container?.championships) return {} as Championship;
+
+    return (
+      getChampionshipByInternalName(container, container.playableInternalName) ??
+      ({} as Championship)
+    );
   }
 
   getTeamControlledByHuman(championship: Championship): Team {
