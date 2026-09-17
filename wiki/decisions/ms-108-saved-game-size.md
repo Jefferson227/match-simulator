@@ -104,6 +104,11 @@ project needs.
 No legacy hydration branch is carried. This is a hobby project with no shipped saves worth
 migrating, and a branch that reads a format nothing writes rots unnoticed.
 
+**Version 3 (MS-109).** The saved container mirrors the pyramid container — every division, the
+playable pointer and optional cups — instead of three named slots, so the payload version moved to
+`saveVersion: 3` under the same storage key. A version-2 save is abandoned the same way: its version
+does not match, so it reads as no saved game. See [[ms-109-full-pyramid-container]].
+
 ## The equivalence rule, and what a reload loses
 
 A played match currently carries a **historical snapshot** of its two clubs — their `morale`, and
@@ -148,8 +153,9 @@ parsing it.
 
 ## Left open
 
-- **The backend is no longer the binding constraint, but it is still 5 MB.** A pyramid deeper than
-  three divisions, or per-season history, would reopen the question — and then the asynchronous
-  ripple described above is the real cost, not the storage itself.
+- **The backend is no longer the binding constraint, but it is still 5 MB.** Per-season history
+  would reopen the question — and then the asynchronous ripple described above is the real cost, not
+  the storage itself. The deeper pyramid did not: MS-109 holds all four men's divisions and saves
+  them at 850,960 code units at most ([[ms-109-full-pyramid-container]]).
 - **`UPDATE_TEAM_STATS` is a no-op on the roll-over turn**, pre-existing and untouched. Recorded on
   [[ms-107-container-recentring]].

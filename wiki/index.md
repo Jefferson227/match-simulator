@@ -57,13 +57,14 @@ Why things are the way they are — the part the code cannot state.
 | [[ms-102-simplifications]] | MS-102 | superseded by MS-103 |
 | [[ms-102-cups-deferred]] | MS-102 | resolved — both cups seeded |
 | [[ms-103-a1-club-count-growth]] | MS-103 | implemented; superseded on A3's shape by MS-104 |
-| [[ms-103-ai-championship-catch-up]] | MS-103 | implemented |
+| [[ms-103-ai-championship-catch-up]] | MS-103 | implemented; phase-boundary sync replaced by MS-109's per-round drip |
 | [[ms-103-simulated-shootout]] | MS-103 | implemented |
 | [[ms-104-a3-group-shape-schedule]] | MS-104 | implemented; **wholly inference** |
 | [[ms-106-mens-lower-divisions]] | MS-106 | implemented; post-2025 seasons are inference |
 | [[ms-105-drawn-team-start]] | MS-105 | implemented; container re-centring closed by MS-107 |
-| [[ms-107-container-recentring]] | MS-107 | implemented; a division leaving the container loses its state |
-| [[ms-108-saved-game-size]] | MS-108 | implemented; a reload loses each played match's historical squad snapshot |
+| [[ms-107-container-recentring]] | MS-107 | superseded by MS-109 |
+| [[ms-108-saved-game-size]] | MS-108 | implemented; a reload loses each played match's historical squad snapshot; save version 3 since MS-109 |
+| [[ms-109-full-pyramid-container]] | MS-109 | implemented; cups declared but not loaded |
 
 ## Raw
 
@@ -80,11 +81,13 @@ Things named across these pages that nothing currently owns:
 - Libertadores qualification via the Copa is **not verified** — outside MS-102's brief.
 - ~~No page covers the men's competitions~~ — **closed by MS-106** for Série C and D; Série A and B
   still have none.
-- ~~Container re-centring after promotion or relegation~~ — **closed by MS-107.** The container is
-  now rebuilt around the human's new division at roll-over, men's and women's, promotion and
-  relegation. A division that leaves the container loses its state and is reseeded from
-  `championships.json` if re-entered — the accepted cost of keeping the three-slot container. See
-  [[ms-107-container-recentring]].
+- ~~Container re-centring after promotion or relegation~~ — **closed by MS-107**, then
+  **superseded by MS-109.** The container now holds the whole pyramid of the human's league type
+  with a playable pointer; every tier exchanges clubs at roll-over and no division is ever reseeded,
+  so MS-107's accepted state loss is gone. The AI divisions are dripped per playable round instead of
+  caught up at phase boundaries. See [[ms-109-full-pyramid-container]].
+- **Cups are declared on the container but not loaded, simulated or shown.** No ticket. See
+  [[ms-109-full-pyramid-container]].
 - ~~A men's saved game exceeds the `localStorage` quota~~ — **closed by MS-108.** The save boundary
   now writes club, player and standing references as ids and resolves them from `championship.teams`
   on load, cutting a played Série D season from 5,132,127 code units to 400,274. `localStorage`

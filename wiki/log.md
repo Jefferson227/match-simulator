@@ -349,3 +349,44 @@ a decision and closes the defect MS-107 discovered.
   pyramid or per-season history would reopen the question, and the asynchronous ripple is the real
   cost at that point.
 - `UPDATE_TEAM_STATS` is a no-op on the roll-over turn, pre-existing and still unchanged.
+
+---
+
+## [2026-09-17] close-out | MS-109 — the container holds the whole pyramid
+
+sha ed68cf3
+
+The championship container is now every league division of the human's league type plus a playable
+pointer, and the AI divisions are dripped across the season. No external evidence; this entry files a
+decision that supersedes one and amends two.
+
+- New decision: [[ms-109-full-pyramid-container]] — the pyramid shape and `tier` seed field (asserted
+  for all seven divisions, absent on both cups); why MS-107's rejection of the whole pyramid no longer
+  held (MS-108's save sizes, the season summary needing every tier); the simulation measurements and
+  the new save sizes (men's pyramid at most 850,960 code units); every boundary exchanged from the
+  pre-roll-over tables at once; the drip pacing rule `ceil(p × N / P)` with the season-end catch-up
+  kept; per-division random streams; save version 3.
+- [[ms-107-container-recentring]]: marked superseded, with a banner pointing at MS-109.
+- [[ms-103-ai-championship-catch-up]]: amended — phase-boundary sync replaced by the per-round drip,
+  season-end sync kept.
+- [[ms-108-saved-game-size]]: version 3 noted; its "deeper pyramid would reopen the backend question"
+  item answered with the measured size.
+- [[phases-and-knockouts]]: its pointer to how AI divisions advance now also names MS-109.
+- [[index]]: new decision row, three statuses amended, the re-centring thread superseded, a cups
+  thread opened.
+
+### Behaviour change recorded
+
+With A1 playable, A2 no longer shrinks to 14: the A2 ↔ A3 boundary now exchanges, so A2 goes
+16 → 16 → 18 → 20 over three seasons.
+
+### Left open
+
+- Cups are declared on the container but not loaded, simulated or shown.
+- Other tiers' tables cannot be browsed; the standings, manager, match and info screens show only the
+  playable division.
+- An unphased playable division counts as over after round 37 of 38, so its season-end catch-up runs
+  a round early. Pre-existing.
+- `UPDATE_TEAM_STATS` is a no-op on the roll-over turn, pre-existing and still unchanged.
+- The in-app check of a full men's and women's season (MS-109 task 12) was left to the user.
+

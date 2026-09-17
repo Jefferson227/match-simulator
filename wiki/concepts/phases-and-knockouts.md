@@ -116,4 +116,5 @@ finals; the game does not model stadiums.
 The five phased divisions and both cups all run on this. What the cups needed beyond the divisions —
 optional league scaffolding, per-phase entrants, drawn hosting — is in [[ms-102-cups-deferred]].
 The AI divisions no longer advance in lockstep with the human's: see
-[[ms-103-ai-championship-catch-up]].
+[[ms-103-ai-championship-catch-up]], and [[ms-109-full-pyramid-container]] for how they are paced
+now.

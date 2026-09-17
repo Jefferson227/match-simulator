@@ -3,10 +3,17 @@ title: The playable championship is the clock
 type: decision
 ticket: MS-103
 decided: 2026-09-07
-status: implemented
+status: implemented; sync points amended by MS-109
 ---
 
 # The playable championship is the clock
+
+> **Amended by MS-109** on 2026-09-17. The playable championship is still the clock and a finished
+> division is still a no-op, but the **phase-boundary sync is gone**: every AI division is now
+> dripped the rounds it owes after each playable round, from its own random stream, keeping the same
+> fraction of its season as the playable division. The **season-end sync stays** as the guarantee
+> described below. With the whole pyramid in the container, the one-pass catch-up had become a
+> visible stall. See [[ms-109-full-pyramid-container]].
 
 **Decision.** Stop advancing the AI championships one round per human round. Only the playable
 championship moves on `END_ROUND_FOR_ALL_CHAMPIONSHIPS`; the promotion and relegation championships

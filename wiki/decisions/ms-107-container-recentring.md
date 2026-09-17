@@ -3,7 +3,7 @@ title: The championship container follows the human's club between divisions
 type: decision
 ticket: MS-107
 decided: 2026-09-12
-status: implemented
+status: superseded by MS-109
 asserts:
   - file: src/domain/services/ChampionshipService.ts
     exists: true
@@ -16,6 +16,14 @@ asserts:
 ---
 
 # The championship container follows the human's club between divisions
+
+> **Superseded by MS-109** on 2026-09-17. The container now holds the whole pyramid with a playable
+> pointer, and a human who changes division moves only the pointer, so no division is reseeded and
+> the consequence accepted below is gone. The shape this page rejected — "hold the whole pyramid in
+> `GameState` with a pointer" — is the one MS-109 took, once [[ms-108-saved-game-size]] had removed
+> the save-size objection and the season summary needed every division. See
+> [[ms-109-full-pyramid-container]]. `ContainerRecentring.test.ts`, named below, was replaced by
+> `PyramidMovement.test.ts`. Kept for the record.
 
 **Decision.** At season roll-over, once clubs have been exchanged between divisions, the
 championship container is rebuilt around whichever division now holds the human's club. That
