@@ -48,21 +48,15 @@ const TeamRow: React.FC<{ team: SeasonSummaryTeam }> = ({ team }) => (
 );
 
 /**
- * A promotion or relegation list.
- *
- * The three states are distinct: a list of clubs, nothing to show because the division has no
- * neighbour on that side, and nothing to show because the container never worked that exchange out
- * (`teams` undefined). The last one is a gap in the engine, not a result, so it says so rather than
- * claiming the division is the top or bottom of the pyramid.
+ * A promotion or relegation list: the clubs, or — when nobody moved — whether that is because the
+ * division has no neighbour on that side or because nobody else went.
  */
 const TeamList: React.FC<{
   teams?: SeasonSummaryTeam[];
   hasNeighbourDivision: boolean;
   noNeighbourLabel: string;
   noneLabel: string;
-  notTrackedLabel: string;
-}> = ({ teams, hasNeighbourDivision, noNeighbourLabel, noneLabel, notTrackedLabel }) => {
-  if (teams === undefined) return <EmptyLabel>{notTrackedLabel}</EmptyLabel>;
+}> = ({ teams = [], hasNeighbourDivision, noNeighbourLabel, noneLabel }) => {
   if (teams.length === 0) {
     return <EmptyLabel>{hasNeighbourDivision ? noneLabel : noNeighbourLabel}</EmptyLabel>;
   }
@@ -83,7 +77,7 @@ const PlacedTeam: React.FC<{ team?: SeasonSummaryTeam; emptyLabel: string }> = (
 
 /**
  * End of a playable season: who won each division, who went up with them and who went down.
- * One division per page, paged with the arrows.
+ * One division per page, top tier first, paged with the arrows — opening on the human's division.
  *
  * The summary is built by `BUILD_SEASON_SUMMARY` when TeamStandings ends the season, because the
  * roll-over this page's NEW SEASON runs resets the tables it is read off. It stays a prop so a
@@ -93,9 +87,13 @@ const SeasonSummary: React.FC<SeasonSummaryProps> = ({ summary: propSummary }) =
   const engine = useGameEngine();
   const state = useGameState(engine);
   const { t } = useTranslation();
-  const [page, setPage] = useState(0);
-
   const summary = propSummary ?? state.seasonSummary ?? EMPTY_SUMMARY;
+  const [page, setPage] = useState(() =>
+    Math.max(
+      0,
+      summary.divisions.findIndex((division) => division.isHumanDivision)
+    )
+  );
 
   const totalPages = Math.max(1, summary.divisions.length);
   const division = summary.divisions[Math.min(page, totalPages - 1)] as
@@ -159,7 +157,6 @@ const SeasonSummary: React.FC<SeasonSummaryProps> = ({ summary: propSummary }) =
               hasNeighbourDivision={division?.isPromotable ?? false}
               noNeighbourLabel={t('seasonSummary.noPromotions')}
               noneLabel={t('seasonSummary.nobodyElsePromoted')}
-              notTrackedLabel={t('seasonSummary.notTracked')}
             />
           </div>
 
@@ -172,7 +169,6 @@ const SeasonSummary: React.FC<SeasonSummaryProps> = ({ summary: propSummary }) =
               hasNeighbourDivision={division?.isRelegatable ?? false}
               noNeighbourLabel={t('seasonSummary.noRelegations')}
               noneLabel={t('seasonSummary.nobodyRelegated')}
-              notTrackedLabel={t('seasonSummary.notTracked')}
             />
           </div>
 

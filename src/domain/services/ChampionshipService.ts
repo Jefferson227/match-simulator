@@ -1032,15 +1032,11 @@ function toSeasonSummaryTeam(team: Team): SeasonSummaryTeam {
   };
 }
 
-/**
- * One division's line in the summary. `promoted` and `relegated` are left out rather than passed
- * empty when the container never computed that half of the division's exchange — see
- * `SeasonSummaryDivision`. A division with no neighbour on that side is empty rather than unknown,
- * whether the container computed it or not: the top of the pyramid promotes nobody.
- */
+/** One division's line in the summary, from its side of the pyramid's exchange. */
 function buildSummaryDivision(
   championship: Championship,
-  exchange: { promoted?: Team[]; relegated?: Team[] }
+  moves: DivisionMoves,
+  isHumanDivision: boolean
 ): SeasonSummaryDivision {
   const classification = buildFinalClassification(championship);
   const champion = classification[0]?.team;
@@ -1049,8 +1045,6 @@ function buildSummaryDivision(
   // The top two are named above the list, so they come out of it: "also promoted" is the rest of
   // the promotion, which for the men's divisions is third and fourth place.
   const topTwoIds = new Set([champion?.id, runnerUp?.id].filter(Boolean));
-  const promoted = championship.isPromotable ? exchange.promoted : [];
-  const relegated = championship.isRelegatable ? exchange.relegated : [];
 
   return {
     divisionName: championship.name,
@@ -1058,15 +1052,16 @@ function buildSummaryDivision(
     runnerUp: runnerUp && toSeasonSummaryTeam(runnerUp),
     isPromotable: championship.isPromotable,
     isRelegatable: championship.isRelegatable,
-    otherPromotedTeams: promoted
-      ?.filter((team) => !topTwoIds.has(team.id))
+    isHumanDivision,
+    otherPromotedTeams: moves.promoted
+      .filter((team) => !topTwoIds.has(team.id))
       .map(toSeasonSummaryTeam),
-    relegatedTeams: relegated?.map(toSeasonSummaryTeam),
+    relegatedTeams: moves.relegated.map(toSeasonSummaryTeam),
   };
 }
 
 /**
- * The end-of-season report for every division the container held, top of the pyramid first.
+ * The end-of-season report for every division of the pyramid, top tier first.
  *
  * Must run *before* `runEndOfChampionshipActions`, which resets each championship and throws away
  * the tables this reads.
@@ -1076,31 +1071,15 @@ const buildSeasonSummary = (
 ): OperationResult<SeasonSummary> => {
   try {
     const playableChampionship = getPlayableChampionship(championshipContainer);
-    const promotionChampionship = getDivisionAbove(championshipContainer, playableChampionship);
-    const relegationChampionship = getDivisionBelow(championshipContainer, playableChampionship);
     const exchange = computePyramidExchange(championshipContainer);
-    const moves = movesOfDivision(championshipContainer, exchange, playableChampionship);
 
-    const divisions: SeasonSummaryDivision[] = [];
-
-    if (promotionChampionship && playableChampionship.isPromotable) {
-      divisions.push(
-        buildSummaryDivision(promotionChampionship, { relegated: moves.relegatedFromAbove })
-      );
-    }
-
-    divisions.push(
-      buildSummaryDivision(playableChampionship, {
-        promoted: moves.promoted,
-        relegated: moves.relegated,
-      })
+    const divisions = championshipContainer.championships.map((championship) =>
+      buildSummaryDivision(
+        championship,
+        movesOfDivision(championshipContainer, exchange, championship),
+        championship.internalName === championshipContainer.playableInternalName
+      )
     );
-
-    if (relegationChampionship && playableChampionship.isRelegatable) {
-      divisions.push(
-        buildSummaryDivision(relegationChampionship, { promoted: moves.promotedFromBelow })
-      );
-    }
 
     const result = new OperationResult<SeasonSummary>({
       season: playableChampionship.matchContainer.currentSeason,
