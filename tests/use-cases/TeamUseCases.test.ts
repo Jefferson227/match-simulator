@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import TeamUseCases from '../../src/use-cases/TeamUseCases';
+import { getPlayableChampionship } from '../../src/domain/features/pyramid/Pyramid';
+import { containerOf } from '../support/containerOf';
 import TeamService from '../../src/domain/services/TeamService';
 import { GameState } from '../../src/game-engine/GameState';
 import { Championship } from '../../src/domain/models/Championship';
@@ -133,9 +135,7 @@ function buildChampionship(): Championship {
 
 function buildState(): GameState {
   return {
-    championshipContainer: {
-      playableChampionship: buildChampionship(),
-    },
+    championshipContainer: containerOf(buildChampionship()),
     hasError: false,
     errorMessage: '',
     leagueType: 'mens',
@@ -155,7 +155,7 @@ describe('TeamUseCases', () => {
   describe('getTeamsToSelect', () => {
     it('returns teams when service succeeds', () => {
       const state = buildState();
-      const championship = state.championshipContainer.playableChampionship;
+      const championship = getPlayableChampionship(state.championshipContainer);
       const useCases = new TeamUseCases(state);
 
       mockedTeamService.getTeamsToSelect.mockReturnValue(successResult(championship.teams));
@@ -167,7 +167,7 @@ describe('TeamUseCases', () => {
 
     it('throws when service fails', () => {
       const state = buildState();
-      const championship = state.championshipContainer.playableChampionship;
+      const championship = getPlayableChampionship(state.championshipContainer);
       const useCases = new TeamUseCases(state);
 
       mockedTeamService.getTeamsToSelect.mockReturnValue(failureResult([] as Team[], 'No teams'));
@@ -179,11 +179,11 @@ describe('TeamUseCases', () => {
   });
 
   describe('selectTeam', () => {
-    it('updates playableChampionship when service succeeds', () => {
+    it('updates the playable championship when service succeeds', () => {
       const state = buildState();
       const useCases = new TeamUseCases(state);
       const updatedChampionship = {
-        ...state.championshipContainer.playableChampionship,
+        ...getPlayableChampionship(state.championshipContainer),
         hasTeamControlledByHuman: true,
       };
 
@@ -191,7 +191,7 @@ describe('TeamUseCases', () => {
 
       const nextState = useCases.selectTeam('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa');
 
-      expect(nextState.championshipContainer.playableChampionship).toEqual(updatedChampionship);
+      expect(getPlayableChampionship(nextState.championshipContainer)).toEqual(updatedChampionship);
       expect(nextState.hasError).toBe(false);
     });
 
@@ -214,16 +214,14 @@ describe('TeamUseCases', () => {
     it('updates championshipContainer when service succeeds', () => {
       const state = buildState();
       const useCases = new TeamUseCases(state);
-      const updatedContainer = {
-        ...state.championshipContainer,
-        playableChampionship: {
-          ...state.championshipContainer.playableChampionship,
-          teams: state.championshipContainer.playableChampionship.teams.map((team, index) => ({
-            ...team,
-            morale: team.morale + index + 1,
-          })),
-        },
-      };
+      const playable = getPlayableChampionship(state.championshipContainer);
+      const updatedContainer = containerOf({
+        ...playable,
+        teams: playable.teams.map((team, index) => ({
+          ...team,
+          morale: team.morale + index + 1,
+        })),
+      });
 
       mockedTeamService.updateTeamStats.mockReturnValue(successResult(updatedContainer));
 
@@ -249,12 +247,12 @@ describe('TeamUseCases', () => {
   });
 
   describe('setStartersAndSubs', () => {
-    it('replaces updated team in playableChampionship teams when service succeeds', () => {
+    it('replaces updated team in the playable championship teams when service succeeds', () => {
       const state = buildState();
       const useCases = new TeamUseCases(state);
       const players = buildPlayers();
       const updatedTeam = {
-        ...state.championshipContainer.playableChampionship.teams[0],
+        ...getPlayableChampionship(state.championshipContainer).teams[0],
         players: [players.starter, players.sub, players.spare].map((p) => ({
           ...p,
           isStarter: p.id === players.sub.id,
@@ -271,8 +269,10 @@ describe('TeamUseCases', () => {
       );
 
       expect(nextState.hasError).toBe(false);
-      expect(nextState.championshipContainer.playableChampionship.teams).toHaveLength(2);
-      expect(nextState.championshipContainer.playableChampionship.teams[0]).toEqual(updatedTeam);
+      expect(getPlayableChampionship(nextState.championshipContainer).teams).toHaveLength(2);
+      expect(getPlayableChampionship(nextState.championshipContainer).teams[0]).toEqual(
+        updatedTeam
+      );
     });
 
     it('returns error state when service fails', () => {
@@ -295,9 +295,9 @@ describe('TeamUseCases', () => {
     it('updates match team players for the current round', () => {
       const state = buildState();
       const useCases = new TeamUseCases(state);
-      const homeTeam = state.championshipContainer.playableChampionship.teams[0];
-      const matchId =
-        state.championshipContainer.playableChampionship.matchContainer.rounds[0].matches[0].id;
+      const homeTeam = getPlayableChampionship(state.championshipContainer).teams[0];
+      const matchId = getPlayableChampionship(state.championshipContainer).matchContainer.rounds[0]
+        .matches[0].id;
 
       const nextState = useCases.substitutePlayer(
         matchId,
@@ -306,9 +306,8 @@ describe('TeamUseCases', () => {
         '22222222-2222-2222-2222-222222222222'
       );
 
-      const updatedPlayers =
-        nextState.championshipContainer.playableChampionship.matchContainer.rounds[0].matches[0]
-          .homeTeam.players;
+      const updatedPlayers = getPlayableChampionship(nextState.championshipContainer).matchContainer
+        .rounds[0].matches[0].homeTeam.players;
       const oldStarter = updatedPlayers.find(
         (player) => player.id === '11111111-1111-1111-1111-111111111111'
       );
@@ -324,7 +323,7 @@ describe('TeamUseCases', () => {
     it('returns error state when match does not exist', () => {
       const state = buildState();
       const useCases = new TeamUseCases(state);
-      const homeTeam = state.championshipContainer.playableChampionship.teams[0];
+      const homeTeam = getPlayableChampionship(state.championshipContainer).teams[0];
 
       const nextState = useCases.substitutePlayer(
         'unknown-match',
@@ -340,8 +339,8 @@ describe('TeamUseCases', () => {
     it('returns error state when team does not exist in match', () => {
       const state = buildState();
       const useCases = new TeamUseCases(state);
-      const matchId =
-        state.championshipContainer.playableChampionship.matchContainer.rounds[0].matches[0].id;
+      const matchId = getPlayableChampionship(state.championshipContainer).matchContainer.rounds[0]
+        .matches[0].id;
 
       const nextState = useCases.substitutePlayer(
         matchId,

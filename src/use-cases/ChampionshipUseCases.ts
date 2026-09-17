@@ -8,6 +8,7 @@ import LeagueType from '../domain/enums/LeagueType';
 import { PhaseView, PhaseViewOptions } from '../domain/features/phases/PhaseView';
 import { RandomProvider } from '../domain/features/match-simulation/types';
 import { ENTRY_CHAMPIONSHIP_BY_LEAGUE_TYPE } from '../domain/constants/EntryChampionships';
+import { getPlayableChampionship, replaceChampionship } from '../domain/features/pyramid/Pyramid';
 
 export default class ChampionshipUseCases {
   private state = {} as GameState;
@@ -59,10 +60,8 @@ export default class ChampionshipUseCases {
     }
 
     const container = initResult.getResult();
-    const drawResult = ChampionshipService.drawTeamForHumanPlayer(
-      container.playableChampionship,
-      dependencies
-    );
+    const entryDivision = getPlayableChampionship(container);
+    const drawResult = ChampionshipService.drawTeamForHumanPlayer(entryDivision, dependencies);
     if (!drawResult.succeeded) {
       return {
         ...this.state,
@@ -71,10 +70,7 @@ export default class ChampionshipUseCases {
       };
     }
 
-    const selectResult = TeamService.selectTeam(
-      container.playableChampionship,
-      drawResult.getResult().id
-    );
+    const selectResult = TeamService.selectTeam(entryDivision, drawResult.getResult().id);
     if (!selectResult.succeeded) {
       return {
         ...this.state,
@@ -88,10 +84,7 @@ export default class ChampionshipUseCases {
       gameConfig: {
         clockSpeed: 250,
       },
-      championshipContainer: {
-        ...container,
-        playableChampionship: selectResult.getResult(),
-      },
+      championshipContainer: replaceChampionship(container, selectResult.getResult()),
     };
   }
 

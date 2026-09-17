@@ -1,6 +1,10 @@
 import { describe, expect, it } from '@jest/globals';
 import TeamService from '../../../src/domain/services/TeamService';
-import ChampionshipContainer from '../../../src/domain/models/ChampionshipContainer';
+import {
+  getChampionshipByInternalName,
+  getPlayableChampionship,
+} from '../../../src/domain/features/pyramid/Pyramid';
+import { containerOf } from '../../support/containerOf';
 import { Championship } from '../../../src/domain/models/Championship';
 import { Team } from '../../../src/domain/models/Team';
 
@@ -97,13 +101,11 @@ describe('TeamService.updateTeamStats', () => {
 
     const championship = buildChampionship([lowMoraleWinner, mediumMoraleLoser], [[2, 1]]);
 
-    const result = TeamService.updateTeamStats({
-      playableChampionship: championship,
-    } as ChampionshipContainer);
+    const result = TeamService.updateTeamStats(containerOf(championship));
 
     expect(result.succeeded).toBe(true);
 
-    const updatedTeams = result.getResult().playableChampionship.teams;
+    const updatedTeams = getPlayableChampionship(result.getResult()).teams;
     expect(updatedTeams.find((team) => team.id === lowMoraleWinner.id)?.morale).toBe(35);
     expect(updatedTeams.find((team) => team.id === mediumMoraleLoser.id)?.morale).toBe(48);
   });
@@ -114,11 +116,9 @@ describe('TeamService.updateTeamStats', () => {
 
     const championship = buildChampionship([mediumMoraleTeam, highMoraleTeam], [[1, 1]]);
 
-    const result = TeamService.updateTeamStats({
-      playableChampionship: championship,
-    } as ChampionshipContainer);
+    const result = TeamService.updateTeamStats(containerOf(championship));
 
-    const updatedTeams = result.getResult().playableChampionship.teams;
+    const updatedTeams = getPlayableChampionship(result.getResult()).teams;
     expect(updatedTeams.find((team) => team.id === mediumMoraleTeam.id)?.morale).toBe(41);
     expect(updatedTeams.find((team) => team.id === highMoraleTeam.id)?.morale).toBe(80.5);
   });
@@ -129,11 +129,9 @@ describe('TeamService.updateTeamStats', () => {
 
     const championship = buildChampionship([highMoraleWinner, lowMoraleLoser], [[3, 0]]);
 
-    const result = TeamService.updateTeamStats({
-      playableChampionship: championship,
-    } as ChampionshipContainer);
+    const result = TeamService.updateTeamStats(containerOf(championship));
 
-    const updatedTeams = result.getResult().playableChampionship.teams;
+    const updatedTeams = getPlayableChampionship(result.getResult()).teams;
     expect(updatedTeams.find((team) => team.id === highMoraleWinner.id)?.morale).toBe(100);
     expect(updatedTeams.find((team) => team.id === lowMoraleLoser.id)?.morale).toBe(0);
   });
@@ -145,43 +143,48 @@ describe('TeamService.updateTeamStats', () => {
     const promotionAway = buildTeam('44444444-4444-4444-4444-444444444444', 'PRB', 80);
 
     const playableChampionship = buildChampionship([playableHome, playableAway], [[2, 1]]);
-    const promotionChampionship = buildChampionship([promotionHome, promotionAway], [[1, 1]]);
+    const promotionChampionship = {
+      ...buildChampionship([promotionHome, promotionAway], [[1, 1]]),
+      internalName: 'promotion-championship',
+    };
 
-    const result = TeamService.updateTeamStats({
-      playableChampionship,
-      promotionChampionship,
-    } as ChampionshipContainer);
+    const result = TeamService.updateTeamStats(
+      containerOf(playableChampionship, [promotionChampionship])
+    );
 
     const updatedContainer = result.getResult();
 
     expect(
-      updatedContainer.playableChampionship.teams.find((team) => team.id === playableHome.id)
+      getPlayableChampionship(updatedContainer).teams.find((team) => team.id === playableHome.id)
         ?.morale
     ).toBe(35);
     expect(
-      updatedContainer.playableChampionship.standings.find(
+      getPlayableChampionship(updatedContainer).standings.find(
         (standing) => standing.team.id === playableHome.id
       )?.team.morale
     ).toBe(35);
     expect(
-      updatedContainer.playableChampionship.matchContainer.rounds[0].matches[0].homeTeam.morale
+      getPlayableChampionship(updatedContainer).matchContainer.rounds[0].matches[0].homeTeam.morale
     ).toBe(33);
     expect(
-      updatedContainer.playableChampionship.matchContainer.rounds[1].matches[0].homeTeam.morale
+      getPlayableChampionship(updatedContainer).matchContainer.rounds[1].matches[0].homeTeam.morale
     ).toBe(35);
     expect(
-      updatedContainer.playableChampionship.matchContainer.rounds[1].matches[0].awayTeam.morale
+      getPlayableChampionship(updatedContainer).matchContainer.rounds[1].matches[0].awayTeam.morale
     ).toBe(48);
 
     expect(
-      updatedContainer.promotionChampionship?.teams.find((team) => team.id === promotionHome.id)
-        ?.morale
+      getChampionshipByInternalName(updatedContainer, 'promotion-championship')?.teams.find(
+        (team) => team.id === promotionHome.id
+      )?.morale
     ).toBe(41);
     expect(
-      updatedContainer.promotionChampionship?.matchContainer.rounds[0].matches[0].awayTeam.morale
+      getChampionshipByInternalName(updatedContainer, 'promotion-championship')?.matchContainer
+        .rounds[0].matches[0].awayTeam.morale
     ).toBe(80);
     expect(
-      updatedContainer.promotionChampionship?.matchContainer.rounds[1].matches[0].awayTeam.morale
+      getChampionshipByInternalName(updatedContainer, 'promotion-championship')?.matchContainer
+        .rounds[1].matches[0].awayTeam.morale
     ).toBe(80.5);
   });
 });

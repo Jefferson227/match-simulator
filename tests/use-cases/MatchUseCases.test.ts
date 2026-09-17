@@ -4,6 +4,8 @@ import MatchService from '../../src/domain/services/MatchService';
 import { GameState } from '../../src/game-engine/GameState';
 import { Championship } from '../../src/domain/models/Championship';
 import ChampionshipContainer from '../../src/domain/models/ChampionshipContainer';
+import { getPlayableChampionship } from '../../src/domain/features/pyramid/Pyramid';
+import { containerOf } from '../support/containerOf';
 import OperationResult from '../../src/domain/results/OperationResult';
 
 jest.mock('../../src/domain/services/MatchService', () => ({
@@ -29,28 +31,26 @@ function failureResult<T>(fallbackValue: T, message: string): OperationResult<T>
 
 function buildState(): GameState {
   return {
-    championshipContainer: {
-      playableChampionship: {
-        id: '11111111-1111-1111-1111-111111111111',
-        name: 'Mock Championship',
-        internalName: 'mock-championship',
-        numberOfTeams: 0,
-        teams: [],
-        standings: [],
-        matchContainer: {
-          timer: 0,
-          currentSeason: 2026,
-          currentRound: 1,
-          totalRounds: 0,
-          rounds: [],
-        },
-        type: 'double-round-robin',
-        leagueType: 'mens',
-        hasTeamControlledByHuman: false,
-        isPromotable: false,
-        isRelegatable: false,
-      } as Championship,
-    },
+    championshipContainer: containerOf({
+      id: '11111111-1111-1111-1111-111111111111',
+      name: 'Mock Championship',
+      internalName: 'mock-championship',
+      numberOfTeams: 0,
+      teams: [],
+      standings: [],
+      matchContainer: {
+        timer: 0,
+        currentSeason: 2026,
+        currentRound: 1,
+        totalRounds: 0,
+        rounds: [],
+      },
+      type: 'double-round-robin',
+      leagueType: 'mens',
+      hasTeamControlledByHuman: false,
+      isPromotable: false,
+      isRelegatable: false,
+    } as Championship),
     hasError: false,
     errorMessage: '',
     leagueType: 'mens',
@@ -70,15 +70,11 @@ describe('MatchUseCases', () => {
   it('updates championshipContainer when service succeeds', () => {
     const state = buildState();
     const useCases = new MatchUseCases(state);
-    const updatedContainer: ChampionshipContainer = {
-      playableChampionship: {
-        ...state.championshipContainer.playableChampionship,
-        matchContainer: {
-          ...state.championshipContainer.playableChampionship.matchContainer,
-          timer: 1,
-        },
-      },
-    };
+    const playable = getPlayableChampionship(state.championshipContainer);
+    const updatedContainer: ChampionshipContainer = containerOf({
+      ...playable,
+      matchContainer: { ...playable.matchContainer, timer: 1 },
+    });
 
     mockedMatchService.runMatchActions.mockReturnValue(successResult(updatedContainer));
 

@@ -4,6 +4,7 @@ import Player from '../domain/models/Player';
 import { Team } from '../domain/models/Team';
 import TeamService from '../domain/services/TeamService';
 import { GameState } from '../game-engine/GameState';
+import { getPlayableChampionship, replaceChampionship } from '../domain/features/pyramid/Pyramid';
 
 export default class TeamUseCases {
   private state = {} as GameState;
@@ -13,11 +14,10 @@ export default class TeamUseCases {
   }
 
   private getMatchesFromCurrentRound(state: GameState): Match[] {
-    const currentRound =
-      state.championshipContainer.playableChampionship.matchContainer.currentRound;
-    const round = state.championshipContainer.playableChampionship.matchContainer.rounds.find(
-      (round) => round.number === currentRound
-    );
+    const { currentRound, rounds } = getPlayableChampionship(
+      state.championshipContainer
+    ).matchContainer;
+    const round = rounds.find((round) => round.number === currentRound);
 
     if (!round) return [];
 
@@ -26,7 +26,7 @@ export default class TeamUseCases {
 
   selectTeam(teamId: string): GameState {
     const selectTeamResult = TeamService.selectTeam(
-      this.state.championshipContainer.playableChampionship,
+      getPlayableChampionship(this.state.championshipContainer),
       teamId
     );
 
@@ -40,10 +40,10 @@ export default class TeamUseCases {
 
     return {
       ...this.state,
-      championshipContainer: {
-        ...this.state.championshipContainer,
-        playableChampionship: selectTeamResult.getResult(),
-      },
+      championshipContainer: replaceChampionship(
+        this.state.championshipContainer,
+        selectTeamResult.getResult()
+      ),
     };
   }
 
@@ -65,8 +65,8 @@ export default class TeamUseCases {
   }
 
   setStartersAndSubs(teamId: string, starters: Player[], subs: Player[]): GameState {
-    const teams = this.state.championshipContainer.playableChampionship.teams;
-    const result = TeamService.setStartersAndSubs(teamId, starters, subs, teams);
+    const playable = getPlayableChampionship(this.state.championshipContainer);
+    const result = TeamService.setStartersAndSubs(teamId, starters, subs, playable.teams);
 
     if (!result.succeeded) {
       return {
@@ -78,15 +78,12 @@ export default class TeamUseCases {
 
     return {
       ...this.state,
-      championshipContainer: {
-        ...this.state.championshipContainer,
-        playableChampionship: {
-          ...this.state.championshipContainer.playableChampionship,
-          teams: this.state.championshipContainer.playableChampionship.teams.map((team) =>
-            team.id === result.getResult().id ? result.getResult() : team
-          ),
-        },
-      },
+      championshipContainer: replaceChampionship(this.state.championshipContainer, {
+        ...playable,
+        teams: playable.teams.map((team) =>
+          team.id === result.getResult().id ? result.getResult() : team
+        ),
+      }),
     };
   }
 
@@ -141,8 +138,8 @@ export default class TeamUseCases {
         ? { ...match, homeTeam: updatedTeamForSubstitution }
         : { ...match, awayTeam: updatedTeamForSubstitution };
 
-    const playableChampionship = this.state.championshipContainer.playableChampionship;
-    const matchContainer = playableChampionship.matchContainer;
+    const playable = getPlayableChampionship(this.state.championshipContainer);
+    const matchContainer = playable.matchContainer;
 
     let roundIndex = -1;
     for (let i = 0; i < matchContainer.rounds.length; i++) {
@@ -181,16 +178,13 @@ export default class TeamUseCases {
 
     return {
       ...this.state,
-      championshipContainer: {
-        ...this.state.championshipContainer,
-        playableChampionship: {
-          ...playableChampionship,
-          matchContainer: {
-            ...matchContainer,
-            rounds: updatedRounds,
-          },
+      championshipContainer: replaceChampionship(this.state.championshipContainer, {
+        ...playable,
+        matchContainer: {
+          ...matchContainer,
+          rounds: updatedRounds,
         },
-      },
+      }),
     };
   }
 

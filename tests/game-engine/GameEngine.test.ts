@@ -5,7 +5,8 @@ import ChampionshipUseCases from '../../src/use-cases/ChampionshipUseCases';
 import GameUseCases from '../../src/use-cases/GameUseCases';
 import TeamUseCases from '../../src/use-cases/TeamUseCases';
 import { Championship } from '../../src/domain/models/Championship';
-import ChampionshipContainer from '../../src/domain/models/ChampionshipContainer';
+import { getPlayableChampionship } from '../../src/domain/features/pyramid/Pyramid';
+import { containerOf } from '../support/containerOf';
 
 jest.mock('../../src/use-cases/ChampionshipUseCases');
 jest.mock('../../src/use-cases/GameUseCases');
@@ -19,28 +20,26 @@ const MockedTeamUseCases = TeamUseCases as jest.MockedClass<typeof TeamUseCases>
 
 function buildState(): GameState {
   return {
-    championshipContainer: {
-      playableChampionship: {
-        id: '11111111-1111-1111-1111-111111111111',
-        name: 'Mock Championship',
-        internalName: 'mock-championship',
-        numberOfTeams: 0,
-        teams: [],
-        standings: [],
-        matchContainer: {
-          timer: 0,
-          currentSeason: 2026,
-          currentRound: 1,
-          totalRounds: 0,
-          rounds: [],
-        },
-        type: 'double-round-robin',
-        leagueType: 'mens',
-        hasTeamControlledByHuman: false,
-        isPromotable: false,
-        isRelegatable: false,
-      } as Championship,
-    } as ChampionshipContainer,
+    championshipContainer: containerOf({
+      id: '11111111-1111-1111-1111-111111111111',
+      name: 'Mock Championship',
+      internalName: 'mock-championship',
+      numberOfTeams: 0,
+      teams: [],
+      standings: [],
+      matchContainer: {
+        timer: 0,
+        currentSeason: 2026,
+        currentRound: 1,
+        totalRounds: 0,
+        rounds: [],
+      },
+      type: 'double-round-robin',
+      leagueType: 'mens',
+      hasTeamControlledByHuman: false,
+      isPromotable: false,
+      isRelegatable: false,
+    } as Championship),
     leagueType: 'mens',
     coachName: '',
     hasError: false,
@@ -54,6 +53,7 @@ function buildState(): GameState {
 
 describe('GameEngine', () => {
   const initialState = buildState();
+  const mockChampionship = getPlayableChampionship(initialState.championshipContainer);
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -112,12 +112,10 @@ describe('GameEngine', () => {
 
   it('sets the championship container when initializing championships', () => {
     const engine = new GameEngine(initialState);
-    const mockContainer = {
-      playableChampionship: {
-        ...initialState.championshipContainer.playableChampionship,
-        internalName: 'brasileirao-serie-b',
-      },
-    } as ChampionshipContainer;
+    const mockContainer = containerOf({
+      ...mockChampionship,
+      internalName: 'brasileirao-serie-b',
+    });
 
     const updatedState: GameState = {
       ...initialState,
@@ -148,12 +146,10 @@ describe('GameEngine', () => {
     const engine = new GameEngine(initialState);
     const drawnState: GameState = {
       ...initialState,
-      championshipContainer: {
-        playableChampionship: {
-          ...initialState.championshipContainer.playableChampionship,
-          internalName: 'brasileirao-serie-d',
-        },
-      } as ChampionshipContainer,
+      championshipContainer: containerOf({
+        ...mockChampionship,
+        internalName: 'brasileirao-serie-d',
+      }),
       gameConfig: {
         clockSpeed: 250,
       },
@@ -178,12 +174,10 @@ describe('GameEngine', () => {
     const engine = new GameEngine(initialState);
     const updatedState: GameState = {
       ...initialState,
-      championshipContainer: {
-        playableChampionship: {
-          ...initialState.championshipContainer.playableChampionship,
-          name: 'Updated Championship',
-        },
-      } as ChampionshipContainer,
+      championshipContainer: containerOf({
+        ...mockChampionship,
+        name: 'Updated Championship',
+      }),
     };
     const runEndOfChampionshipActionsMock = jest.fn().mockReturnValue(updatedState);
 
@@ -244,12 +238,10 @@ describe('GameEngine', () => {
     const engine = new GameEngine(initialState);
     const updatedState: GameState = {
       ...initialState,
-      championshipContainer: {
-        playableChampionship: {
-          ...initialState.championshipContainer.playableChampionship,
-          teams: [],
-        },
-      } as ChampionshipContainer,
+      championshipContainer: containerOf({
+        ...mockChampionship,
+        teams: [],
+      }),
     };
     const updateTeamStatsMock = jest.fn().mockReturnValue(updatedState);
 

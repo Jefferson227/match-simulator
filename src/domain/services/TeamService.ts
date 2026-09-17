@@ -6,6 +6,7 @@ import Round from '../models/Round';
 import { Team } from '../models/Team';
 import OperationResult from '../results/OperationResult';
 import TeamStatsService from './TeamStatsService';
+import { getPlayableChampionship } from '../features/pyramid/Pyramid';
 
 function getTeamsToSelect(championship: Championship): OperationResult<Team[]> {
   try {
@@ -265,12 +266,11 @@ function prepareTeamsBeforeMatch(
       };
     };
 
-    const prepareChampionship = (championship?: Championship): Championship | undefined => {
-      if (!championship) return championship;
+    const humanControlledTeam = getPlayableChampionship(championshipContainer).teams.find(
+      (team) => team.isControlledByHuman
+    );
 
-      const humanControlledTeam = championshipContainer.playableChampionship.teams.find(
-        (team) => team.isControlledByHuman
-      );
+    const prepareChampionship = (championship: Championship): Championship | undefined => {
       const currentRoundNumber = championship.matchContainer.currentRound;
       const currentRoundIndex = championship.matchContainer.rounds.findIndex(
         (round) => round.number === currentRoundNumber
@@ -326,18 +326,18 @@ function prepareTeamsBeforeMatch(
       };
     };
 
-    const updatedPlayableChampionship = prepareChampionship(
-      championshipContainer.playableChampionship
-    );
-    if (!updatedPlayableChampionship) {
-      throw new Error('Playable championship is missing.');
-    }
-
     const updatedContainer: ChampionshipContainer = {
       ...championshipContainer,
-      playableChampionship: updatedPlayableChampionship,
-      promotionChampionship: prepareChampionship(championshipContainer.promotionChampionship),
-      relegationChampionship: prepareChampionship(championshipContainer.relegationChampionship),
+      championships: championshipContainer.championships.map((championship) => {
+        const prepared = prepareChampionship(championship);
+        if (prepared) return prepared;
+
+        // An AI division with no round left has nothing to prepare; the playable one always has.
+        if (championship.internalName === championshipContainer.playableInternalName) {
+          throw new Error('Playable championship is missing.');
+        }
+        return championship;
+      }),
     };
 
     const result = new OperationResult(updatedContainer);
@@ -354,10 +354,7 @@ function prepareTeamsBeforeMatch(
 function getLastFinishedRound(championship: Championship): Round | undefined {
   const lastFinishedRoundNumber = Math.max(
     1,
-    Math.min(
-      championship.matchContainer.currentRound - 1,
-      championship.matchContainer.totalRounds
-    )
+    Math.min(championship.matchContainer.currentRound - 1, championship.matchContainer.totalRounds)
   );
 
   return championship.matchContainer.rounds.find(
@@ -365,9 +362,7 @@ function getLastFinishedRound(championship: Championship): Round | undefined {
   );
 }
 
-function updateChampionshipTeamStats(championship?: Championship): Championship | undefined {
-  if (!championship) return championship;
-
+function updateChampionshipTeamStats(championship: Championship): Championship {
   const lastFinishedRound = getLastFinishedRound(championship);
   const updatedTeams = championship.teams.map((team) =>
     TeamStatsService.updateTeam(team, {
@@ -408,13 +403,7 @@ function updateTeamStats(
   try {
     const updatedContainer: ChampionshipContainer = {
       ...championshipContainer,
-      playableChampionship: updateChampionshipTeamStats(
-        championshipContainer.playableChampionship
-      ) as Championship,
-      promotionChampionship: updateChampionshipTeamStats(championshipContainer.promotionChampionship),
-      relegationChampionship: updateChampionshipTeamStats(
-        championshipContainer.relegationChampionship
-      ),
+      championships: championshipContainer.championships.map(updateChampionshipTeamStats),
     };
 
     const result = new OperationResult(updatedContainer);

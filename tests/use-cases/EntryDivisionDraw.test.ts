@@ -5,6 +5,7 @@ import { createInitialGameState } from '../../src/game-engine/initialGameState';
 import LeagueType from '../../src/domain/enums/LeagueType';
 import { useUniqueTeamIds } from '../support/seasonHarness';
 import { pinnedRng } from '../support/scriptedSeason';
+import { getPlayableChampionship } from '../../src/domain/features/pyramid/Pyramid';
 
 // Without unique ids every club is 'mocked-uuid', and flagging one flags them all.
 beforeAll(useUniqueTeamIds);
@@ -22,15 +23,24 @@ describe.each([
     leagueType: 'mens' as LeagueType,
     entry: 'brasileirao-serie-d',
     clubs: 64,
-    promotion: 'brasileirao-serie-c',
+    pyramid: [
+      'brasileirao-serie-a',
+      'brasileirao-serie-b',
+      'brasileirao-serie-c',
+      'brasileirao-serie-d',
+    ],
   },
   {
     leagueType: 'womens' as LeagueType,
     entry: 'brasileirao-feminino-serie-a3',
     clubs: 32,
-    promotion: 'brasileirao-feminino-serie-a2',
+    pyramid: [
+      'brasileirao-feminino-serie-a1',
+      'brasileirao-feminino-serie-a2',
+      'brasileirao-feminino-serie-a3',
+    ],
   },
-])('a new $leagueType game drawn from the seed', ({ leagueType, entry, clubs, promotion }) => {
+])('a new $leagueType game drawn from the seed', ({ leagueType, entry, clubs, pyramid }) => {
   let state: GameState;
 
   beforeAll(() => {
@@ -39,12 +49,12 @@ describe.each([
 
   it(`starts in ${entry}`, () => {
     expect(state.hasError).toBe(false);
-    expect(state.championshipContainer.playableChampionship.internalName).toBe(entry);
-    expect(state.championshipContainer.playableChampionship.teams).toHaveLength(clubs);
+    expect(getPlayableChampionship(state.championshipContainer).internalName).toBe(entry);
+    expect(getPlayableChampionship(state.championshipContainer).teams).toHaveLength(clubs);
   });
 
   it(`hands exactly one of the ${clubs} clubs to the human`, () => {
-    const humanClubs = state.championshipContainer.playableChampionship.teams.filter(
+    const humanClubs = getPlayableChampionship(state.championshipContainer).teams.filter(
       (team) => team.isControlledByHuman
     );
 
@@ -52,35 +62,40 @@ describe.each([
   });
 
   it('draws the club the pinned rng picks, so the draw is deterministic', () => {
-    const teams = state.championshipContainer.playableChampionship.teams;
+    const teams = getPlayableChampionship(state.championshipContainer).teams;
     const expectedIndex = pinnedRng().nextInt(0, clubs - 1);
 
     expect(teams.findIndex((team) => team.isControlledByHuman)).toBe(expectedIndex);
     expect(
-      newGame(leagueType).championshipContainer.playableChampionship.teams.findIndex(
+      getPlayableChampionship(newGame(leagueType).championshipContainer).teams.findIndex(
         (team) => team.isControlledByHuman
       )
     ).toBe(expectedIndex);
   });
 
   it('reads the drawn club back through getTeamControlledByHuman', () => {
-    const playable = state.championshipContainer.playableChampionship;
+    const playable = getPlayableChampionship(state.championshipContainer);
     const drawn = new ChampionshipUseCases(state).getTeamControlledByHuman(playable);
 
     expect(drawn.isControlledByHuman).toBe(true);
     expect(playable.teams).toContainEqual(drawn);
   });
 
-  it(`carries ${promotion} as the promotion neighbour and no relegation neighbour`, () => {
-    expect(state.championshipContainer.promotionChampionship?.internalName).toBe(promotion);
-    expect(state.championshipContainer.relegationChampionship).toBeUndefined();
+  it(`carries the whole ${leagueType} pyramid with ${entry} at the bottom`, () => {
+    const names = state.championshipContainer.championships.map(
+      (championship) => championship.internalName
+    );
+
+    expect(names).toEqual(pyramid);
+    expect(state.championshipContainer.playableInternalName).toBe(entry);
   });
 
-  it('leaves every AI neighbour club under AI control', () => {
-    expect(
-      state.championshipContainer.promotionChampionship?.teams.some(
-        (team) => team.isControlledByHuman
-      )
-    ).toBe(false);
+  it('leaves every AI division club under AI control', () => {
+    const aiClubs = state.championshipContainer.championships
+      .filter((championship) => championship.internalName !== entry)
+      .flatMap((championship) => championship.teams);
+
+    expect(aiClubs.length).toBeGreaterThan(0);
+    expect(aiClubs.some((team) => team.isControlledByHuman)).toBe(false);
   });
 });

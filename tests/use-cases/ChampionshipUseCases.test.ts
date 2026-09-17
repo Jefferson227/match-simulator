@@ -4,6 +4,8 @@ import ChampionshipService from '../../src/domain/services/ChampionshipService';
 import { GameState } from '../../src/game-engine/GameState';
 import { Championship } from '../../src/domain/models/Championship';
 import ChampionshipContainer from '../../src/domain/models/ChampionshipContainer';
+import { getPlayableChampionship } from '../../src/domain/features/pyramid/Pyramid';
+import { containerOf } from '../support/containerOf';
 import Match from '../../src/domain/models/Match';
 import OperationResult from '../../src/domain/results/OperationResult';
 import { Team } from '../../src/domain/models/Team';
@@ -61,9 +63,7 @@ function buildMockChampionship(): Championship {
 
 function buildState(): GameState {
   return {
-    championshipContainer: {
-      playableChampionship: buildMockChampionship(),
-    },
+    championshipContainer: containerOf(buildMockChampionship()),
     leagueType: 'mens',
     coachName: '',
     hasError: false,
@@ -84,9 +84,7 @@ describe('ChampionshipUseCases', () => {
     it('returns state with gameConfig and championshipContainer when service succeeds', () => {
       const initialState = buildState();
       const useCases = new ChampionshipUseCases(initialState);
-      const container: ChampionshipContainer = {
-        playableChampionship: buildMockChampionship(),
-      };
+      const container: ChampionshipContainer = containerOf(buildMockChampionship());
 
       mockedChampionshipService.initChampionships.mockReturnValue(successResult(container));
 
@@ -128,9 +126,8 @@ describe('ChampionshipUseCases', () => {
       }) as unknown as Team;
 
     const teams = [buildTeam('team-a'), buildTeam('team-b'), buildTeam('team-c')];
-    const entryContainer = (): ChampionshipContainer => ({
-      playableChampionship: { ...buildMockChampionship(), teams },
-    });
+    const entryContainer = (): ChampionshipContainer =>
+      containerOf({ ...buildMockChampionship(), teams });
 
     it.each<[GameState['leagueType'], string]>([
       ['mens', 'brasileirao-serie-d'],
@@ -155,12 +152,12 @@ describe('ChampionshipUseCases', () => {
       const nextState = useCases.drawTeamForHumanPlayer({ rng });
 
       expect(mockedChampionshipService.drawTeamForHumanPlayer).toHaveBeenCalledWith(
-        container.playableChampionship,
+        getPlayableChampionship(container),
         { rng }
       );
       expect(
-        nextState.championshipContainer.playableChampionship.teams
-          .filter((team) => team.isControlledByHuman)
+        getPlayableChampionship(nextState.championshipContainer)
+          .teams.filter((team) => team.isControlledByHuman)
           .map((team) => team.id)
       ).toEqual(['team-b']);
       expect(nextState.hasError).toBe(false);
@@ -222,22 +219,20 @@ describe('ChampionshipUseCases', () => {
     it('returns updated championshipContainer when service succeeds', () => {
       const initialState = buildState();
       const useCases = new ChampionshipUseCases(initialState);
-      const updatedContainer: ChampionshipContainer = {
-        playableChampionship: {
-          ...buildMockChampionship(),
-          matchContainer: {
-            ...buildMockChampionship().matchContainer,
-            rounds: [
-              {
-                id: 'round-1',
-                number: 1,
-                status: 'in-progress',
-                matches: [],
-              },
-            ],
-          },
+      const updatedContainer: ChampionshipContainer = containerOf({
+        ...buildMockChampionship(),
+        matchContainer: {
+          ...buildMockChampionship().matchContainer,
+          rounds: [
+            {
+              id: 'round-1',
+              number: 1,
+              status: 'in-progress',
+              matches: [],
+            },
+          ],
         },
-      };
+      });
 
       mockedChampionshipService.startRoundForAllChampionships.mockReturnValue(
         successResult(updatedContainer)
@@ -269,15 +264,13 @@ describe('ChampionshipUseCases', () => {
     it('returns updated championshipContainer when service succeeds', () => {
       const initialState = buildState();
       const useCases = new ChampionshipUseCases(initialState);
-      const updatedContainer: ChampionshipContainer = {
-        playableChampionship: {
-          ...buildMockChampionship(),
-          matchContainer: {
-            ...buildMockChampionship().matchContainer,
-            currentRound: 2,
-          },
+      const updatedContainer: ChampionshipContainer = containerOf({
+        ...buildMockChampionship(),
+        matchContainer: {
+          ...buildMockChampionship().matchContainer,
+          currentRound: 2,
         },
-      };
+      });
 
       mockedChampionshipService.endRoundForAllChampionships.mockReturnValue(
         successResult(updatedContainer)
@@ -309,16 +302,14 @@ describe('ChampionshipUseCases', () => {
     it('returns updated championshipContainer when service succeeds', () => {
       const initialState = buildState();
       const useCases = new ChampionshipUseCases(initialState);
-      const updatedContainer: ChampionshipContainer = {
-        playableChampionship: {
-          ...buildMockChampionship(),
-          matchContainer: {
-            ...buildMockChampionship().matchContainer,
-            currentRound: 1,
-            totalRounds: 2,
-          },
+      const updatedContainer: ChampionshipContainer = containerOf({
+        ...buildMockChampionship(),
+        matchContainer: {
+          ...buildMockChampionship().matchContainer,
+          currentRound: 1,
+          totalRounds: 2,
         },
-      };
+      });
 
       mockedChampionshipService.runEndOfChampionshipActions.mockReturnValue(
         successResult(updatedContainer)
@@ -329,7 +320,7 @@ describe('ChampionshipUseCases', () => {
       /**
        * TODO: This test is comparing the updatedContainer with the championshipContainer from the nextState
        * Could it be possible to validate if the promotion and relegation logic are working?
-       * For example, create a mocked playableChampionship with a promotion and relegation championships.
+       * For example, create a mocked pyramid of three championships.
        * Then, simulate the teams are promoted and relegated for all those championships.
        * Finally, validate if the teams that are supposed to be promoted and relegated were, in fact,
        * promoted and relegated.
