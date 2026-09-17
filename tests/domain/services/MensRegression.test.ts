@@ -4,6 +4,7 @@ import ChampionshipContainer from '../../../src/domain/models/ChampionshipContai
 import { Championship } from '../../../src/domain/models/Championship';
 import { Team } from '../../../src/domain/models/Team';
 import championshipsJSON from '../../../src/infrastructure/data/championships.json';
+import { belowOf, playableOf } from '../../support/pyramidSlots';
 
 // Unique club ids: `src/setupTests.ts` stubs crypto.randomUUID to a constant, and the roll-over
 // removes and re-adds clubs by id.
@@ -18,17 +19,12 @@ beforeAll(() => {
 const MENS = ['brasileirao-serie-a', 'brasileirao-serie-b'] as const;
 
 /**
- * The championships of a container that are Série A or B. Since MS-106 Série B's relegation
- * neighbour is the phased Série C, which these pre-MS-103 pins do not describe.
+ * The championships of a container that are Série A or B. Since MS-106 the pyramid continues into
+ * the phased Série C and D, which these pre-MS-103 pins do not describe.
  */
 function unphasedMens(container: ChampionshipContainer): Championship[] {
-  return [
-    container.playableChampionship,
-    container.promotionChampionship,
-    container.relegationChampionship,
-  ].filter(
-    (championship): championship is Championship =>
-      Boolean(championship) && (MENS as readonly string[]).includes(championship!.internalName)
+  return container.championships.filter((championship) =>
+    (MENS as readonly string[]).includes(championship.internalName)
   );
 }
 
@@ -107,6 +103,19 @@ function finishSeason(championship: Championship): Championship {
   };
 }
 
+/** The container with the named divisions' seasons brought to their end, and the rest untouched. */
+function finishing(
+  container: ChampionshipContainer,
+  internalNames: string[]
+): ChampionshipContainer {
+  return {
+    ...container,
+    championships: container.championships.map((championship) =>
+      internalNames.includes(championship.internalName) ? finishSeason(championship) : championship
+    ),
+  };
+}
+
 describe("the men's seed data is untouched by MS-103", () => {
   it.each(MENS)('%s declares no phases and stays a double round-robin', (internalName) => {
     const entry = record(internalName);
@@ -143,7 +152,7 @@ describe("the men's seed data is untouched by MS-103", () => {
 
 describe("the men's championships load unphased", () => {
   it.each(MENS)('%s has a table and no phase state', (internalName) => {
-    const championship = init(internalName).playableChampionship;
+    const championship = playableOf(init(internalName));
 
     expect(championship.phases).toBeUndefined();
     expect(championship.currentPhaseIndex).toBeUndefined();
@@ -184,7 +193,7 @@ describe("the men's fixtures are byte-identical to the pre-MS-103 generator", ()
   });
 
   it('tags no men’s round or match with a phase', () => {
-    const championship = init('brasileirao-serie-a').playableChampionship;
+    const championship = playableOf(init('brasileirao-serie-a'));
 
     for (const round of championship.matchContainer.rounds) {
       expect(round.phaseIndex).toBeUndefined();
@@ -203,17 +212,16 @@ describe("the men's promotion, relegation and roll-over are unchanged", () => {
   it('takes the top 4 up and the bottom 4 down, straight off the table', () => {
     const container = init('brasileirao-serie-a');
     const before = {
-      serieA: container.playableChampionship.standings.map((standing) => standing.team.id),
-      serieB: container.relegationChampionship!.standings.map((standing) => standing.team.id),
+      serieA: playableOf(container).standings.map((standing) => standing.team.id),
+      serieB: belowOf(container)!.standings.map((standing) => standing.team.id),
     };
 
-    const rolled = ChampionshipService.runEndOfChampionshipActions({
-      playableChampionship: finishSeason(container.playableChampionship),
-      relegationChampionship: finishSeason(container.relegationChampionship!),
-    }).getResult();
+    const rolled = ChampionshipService.runEndOfChampionshipActions(
+      finishing(container, [...MENS])
+    ).getResult();
 
-    const serieA = rolled.playableChampionship.teams.map((team) => team.id);
-    const serieB = rolled.relegationChampionship!.teams.map((team) => team.id);
+    const serieA = playableOf(rolled).teams.map((team) => team.id);
+    const serieB = belowOf(rolled)!.teams.map((team) => team.id);
 
     // The bottom 4 of Série A go down; the top 4 of Série B come up.
     expect(before.serieA.slice(-4).every((id) => serieB.includes(id))).toBe(true);
@@ -221,45 +229,41 @@ describe("the men's promotion, relegation and roll-over are unchanged", () => {
     expect(before.serieA.slice(-4).some((id) => serieA.includes(id))).toBe(false);
   });
 
-  it.each(MENS)('%s holds 20 clubs on both sides across three roll-overs', (internalName) => {
+  it.each(MENS)('%s keeps every division’s club count across three roll-overs', (internalName) => {
+    // Since MS-109 the whole pyramid rolls over together, so the clubs are conserved across all four
+    // divisions rather than across the playable one and its neighbours.
     let container = init(internalName);
     const initialIds = new Set(
-      [
-        container.playableChampionship,
-        container.promotionChampionship,
-        container.relegationChampionship,
-      ]
-        .filter((championship): championship is Championship => Boolean(championship))
-        .flatMap((championship) => championship.teams.map((team) => team.id))
+      container.championships.flatMap((championship) => championship.teams.map((team) => team.id))
     );
 
     for (let season = 0; season < 3; season++) {
-      const rolled = ChampionshipService.runEndOfChampionshipActions({
-        playableChampionship: finishSeason(container.playableChampionship),
-        promotionChampionship:
-          container.promotionChampionship && finishSeason(container.promotionChampionship),
-        relegationChampionship:
-          container.relegationChampionship && finishSeason(container.relegationChampionship),
-      });
+      const rolled = ChampionshipService.runEndOfChampionshipActions(
+        finishing(container, [...MENS])
+      );
       expect(rolled.succeeded).toBe(true);
       container = rolled.getResult();
 
-      const all = [
-        container.playableChampionship,
-        container.promotionChampionship,
-        container.relegationChampionship,
-      ].filter((championship): championship is Championship => Boolean(championship));
-
-      for (const championship of all) {
-        expect(championship.teams).toHaveLength(20);
-        expect(championship.numberOfTeams).toBe(20);
-      }
+      expect(
+        container.championships.map((championship) => [
+          championship.internalName,
+          championship.teams.length,
+          championship.numberOfTeams,
+        ])
+      ).toEqual([
+        ['brasileirao-serie-a', 20, 20],
+        ['brasileirao-serie-b', 20, 20],
+        ['brasileirao-serie-c', 20, 20],
+        ['brasileirao-serie-d', 64, 64],
+      ]);
       for (const championship of unphasedMens(container)) {
         expect(championship.matchContainer.totalRounds).toBe(38);
         expect(championship.phases).toBeUndefined();
       }
 
-      const ids = all.flatMap((championship) => championship.teams.map((team) => team.id));
+      const ids = container.championships.flatMap((championship) =>
+        championship.teams.map((team) => team.id)
+      );
       expect(new Set(ids).size).toBe(ids.length);
       expect(new Set(ids).size).toBe(initialIds.size);
       for (const id of ids) expect(initialIds.has(id)).toBe(true);
@@ -275,7 +279,7 @@ describe('the men’s pyramid runs A ↔ B ↔ C ↔ D (MS-106)', () => {
       'brasileirao-serie-c',
       'brasileirao-serie-d',
     ].map((internalName) => {
-      const playable = init(internalName).playableChampionship;
+      const playable = playableOf(init(internalName));
       return [
         internalName,
         playable.isPromotable ? playable.promotionChampionshipInternalName : null,
@@ -293,21 +297,17 @@ describe('the men’s pyramid runs A ↔ B ↔ C ↔ D (MS-106)', () => {
 
   it('sends Série B’s bottom 4 to Série C and takes 4 back when Série B is played', () => {
     const container = init('brasileirao-serie-b');
-    const bottomOfB = container.playableChampionship.standings
-      .slice(-4)
+    const bottomOfB = playableOf(container)
+      .standings.slice(-4)
       .map((standing) => standing.team.id);
 
-    const rolled = ChampionshipService.runEndOfChampionshipActions({
-      playableChampionship: finishSeason(container.playableChampionship),
-      promotionChampionship: finishSeason(container.promotionChampionship!),
-      relegationChampionship: container.relegationChampionship,
-    }).getResult();
+    const rolled = ChampionshipService.runEndOfChampionshipActions(
+      finishing(container, [...MENS])
+    ).getResult();
 
-    const serieB = rolled.playableChampionship.teams.map((team) => team.id);
-    const serieC = rolled.relegationChampionship!.teams.map((team) => team.id);
-    const cameUp = serieB.filter((id) =>
-      container.relegationChampionship!.teams.some((team) => team.id === id)
-    );
+    const serieB = playableOf(rolled).teams.map((team) => team.id);
+    const serieC = belowOf(rolled)!.teams.map((team) => team.id);
+    const cameUp = serieB.filter((id) => belowOf(container)!.teams.some((team) => team.id === id));
 
     expect(bottomOfB.every((id) => serieC.includes(id))).toBe(true);
     expect(bottomOfB.some((id) => serieB.includes(id))).toBe(false);
@@ -315,6 +315,6 @@ describe('the men’s pyramid runs A ↔ B ↔ C ↔ D (MS-106)', () => {
     expect(serieB).toHaveLength(20);
     expect(serieC).toHaveLength(20);
     // Série C's next season is its real format again, not Série B's round-robin.
-    expect(rolled.relegationChampionship!.phases).toHaveLength(3);
+    expect(belowOf(rolled)!.phases).toHaveLength(3);
   });
 });

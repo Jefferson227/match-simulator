@@ -7,6 +7,7 @@ import Round from '../../../src/domain/models/Round';
 import RoundStatus from '../../../src/domain/enums/RoundStatus';
 import Standing from '../../../src/domain/models/Standing';
 import { Team } from '../../../src/domain/models/Team';
+import { aboveOf, playableOf } from '../../support/pyramidSlots';
 
 function buildTeam(prefix: string, index: number): Team {
   return {
@@ -155,6 +156,12 @@ function buildUpperDivision(overrides: Partial<Championship> = {}): Championship
   } as Championship;
 }
 
+/** The two-tier pyramid under test, with the lower division playable. */
+const pyramidOf = (lower: Championship, upper: Championship): ChampionshipContainer => ({
+  championships: [upper, lower],
+  playableInternalName: lower.internalName,
+});
+
 function rollOver(container: ChampionshipContainer): ChampionshipContainer {
   const result = ChampionshipService.runEndOfChampionshipActions(container);
   if (!result.succeeded) throw new Error(result.error?.message);
@@ -163,13 +170,10 @@ function rollOver(container: ChampionshipContainer): ChampionshipContainer {
 
 describe("promotionRule: 'semifinalists'", () => {
   it('promotes the four semifinalists even though they are the bottom four on every table', () => {
-    const rolled = rollOver({
-      playableChampionship: buildLowerDivision(),
-      promotionChampionship: buildUpperDivision(),
-    });
+    const rolled = rollOver(pyramidOf(buildLowerDivision(), buildUpperDivision()));
 
-    const promoted = rolled
-      .promotionChampionship!.teams.filter((team) => team.id.startsWith('LOW'))
+    const promoted = aboveOf(rolled)!
+      .teams.filter((team) => team.id.startsWith('LOW'))
       .map((team) => team.id);
 
     expect(promoted.sort()).toEqual(['LOW-05', 'LOW-06', 'LOW-07', 'LOW-08']);
@@ -178,25 +182,19 @@ describe("promotionRule: 'semifinalists'", () => {
   });
 
   it('leaves the promoted clubs out of the lower division the next season', () => {
-    const rolled = rollOver({
-      playableChampionship: buildLowerDivision(),
-      promotionChampionship: buildUpperDivision(),
-    });
+    const rolled = rollOver(pyramidOf(buildLowerDivision(), buildUpperDivision()));
 
-    const remaining = rolled.playableChampionship.teams.map((team) => team.id);
+    const remaining = playableOf(rolled).teams.map((team) => team.id);
     expect(remaining).not.toContain('LOW-05');
     expect(remaining).toContain('LOW-01');
   });
 
   it('falls back to the table when no semifinal has been recorded', () => {
     const withoutRecord = buildLowerDivision({ phaseParticipants: [] });
-    const rolled = rollOver({
-      playableChampionship: withoutRecord,
-      promotionChampionship: buildUpperDivision(),
-    });
+    const rolled = rollOver(pyramidOf(withoutRecord, buildUpperDivision()));
 
-    const promoted = rolled
-      .promotionChampionship!.teams.filter((team) => team.id.startsWith('LOW'))
+    const promoted = aboveOf(rolled)!
+      .teams.filter((team) => team.id.startsWith('LOW'))
       .map((team) => team.id);
 
     // The final classification still forces the champion to 1st (REC A1 Art. 27), so the fallback
@@ -207,13 +205,10 @@ describe("promotionRule: 'semifinalists'", () => {
 
 describe("relegationRule: 'first-phase-table-position'", () => {
   it('relegates the bottom of the 1ª Fase table, not of the final classification', () => {
-    const rolled = rollOver({
-      playableChampionship: buildLowerDivision(),
-      promotionChampionship: buildUpperDivision(),
-    });
+    const rolled = rollOver(pyramidOf(buildLowerDivision(), buildUpperDivision()));
 
-    const relegated = rolled.playableChampionship.teams
-      .filter((team) => team.id.startsWith('UPP'))
+    const relegated = playableOf(rolled)
+      .teams.filter((team) => team.id.startsWith('UPP'))
       .map((team) => team.id);
 
     // firstPhaseStandings is reversed, so its bottom four are UPP04..UPP01.
@@ -223,13 +218,12 @@ describe("relegationRule: 'first-phase-table-position'", () => {
   });
 
   it('falls back to the final classification when no 1ª Fase table was kept', () => {
-    const rolled = rollOver({
-      playableChampionship: buildLowerDivision(),
-      promotionChampionship: buildUpperDivision({ firstPhaseStandings: undefined }),
-    });
+    const rolled = rollOver(
+      pyramidOf(buildLowerDivision(), buildUpperDivision({ firstPhaseStandings: undefined }))
+    );
 
-    const relegated = rolled.playableChampionship.teams
-      .filter((team) => team.id.startsWith('UPP'))
+    const relegated = playableOf(rolled)
+      .teams.filter((team) => team.id.startsWith('UPP'))
       .map((team) => team.id);
 
     expect(relegated.sort()).toEqual(['UPP-05', 'UPP-06', 'UPP-07', 'UPP-08']);
@@ -238,17 +232,19 @@ describe("relegationRule: 'first-phase-table-position'", () => {
 
 describe("'table-position' — the default", () => {
   it('is used when a championship declares no rule, and reads the final classification', () => {
-    const rolled = rollOver({
-      playableChampionship: buildLowerDivision({ promotionRule: undefined }),
-      promotionChampionship: buildUpperDivision({ relegationRule: undefined }),
-    });
+    const rolled = rollOver(
+      pyramidOf(
+        buildLowerDivision({ promotionRule: undefined }),
+        buildUpperDivision({ relegationRule: undefined })
+      )
+    );
 
-    const promoted = rolled
-      .promotionChampionship!.teams.filter((team) => team.id.startsWith('LOW'))
+    const promoted = aboveOf(rolled)!
+      .teams.filter((team) => team.id.startsWith('LOW'))
       .map((team) => team.id)
       .sort();
-    const relegated = rolled.playableChampionship.teams
-      .filter((team) => team.id.startsWith('UPP'))
+    const relegated = playableOf(rolled)
+      .teams.filter((team) => team.id.startsWith('UPP'))
       .map((team) => team.id)
       .sort();
 
@@ -276,20 +272,17 @@ describe("'table-position' — the default", () => {
       phaseParticipants: undefined,
     });
 
-    const rolled = rollOver({
-      playableChampionship: unphasedLower,
-      promotionChampionship: unphasedUpper,
-    });
+    const rolled = rollOver(pyramidOf(unphasedLower, unphasedUpper));
 
     expect(
-      rolled
-        .promotionChampionship!.teams.filter((team) => team.id.startsWith('LOW'))
+      aboveOf(rolled)!
+        .teams.filter((team) => team.id.startsWith('LOW'))
         .map((team) => team.id)
         .sort()
     ).toEqual(['LOW-01', 'LOW-02', 'LOW-03', 'LOW-04']);
     expect(
-      rolled.playableChampionship.teams
-        .filter((team) => team.id.startsWith('UPP'))
+      playableOf(rolled)
+        .teams.filter((team) => team.id.startsWith('UPP'))
         .map((team) => team.id)
         .sort()
     ).toEqual(['UPP-05', 'UPP-06', 'UPP-07', 'UPP-08']);

@@ -10,6 +10,11 @@ import { createMatches } from '../../../../src/domain/features/fixture-generatio
 import { initialisePhaseState } from '../../../../src/domain/features/phases/PhaseProgression';
 import championshipsJSON from '../../../../src/infrastructure/data/championships.json';
 import { RandomProvider } from '../../../../src/domain/features/match-simulation/types';
+import {
+  getPlayableChampionship,
+  replaceChampionship,
+} from '../../../../src/domain/features/pyramid/Pyramid';
+import { containerOf } from '../../../support/containerOf';
 
 /**
  * A deterministic pseudo-random provider — reproducible across runs, but varied enough that a
@@ -102,7 +107,7 @@ function playCurrentRound(container: ChampionshipContainer, level = false): Cham
   const started = ChampionshipService.startRoundForAllChampionships(container);
   if (!started.succeeded) throw new Error(started.error?.message);
 
-  const championship = started.getResult().playableChampionship;
+  const championship = getPlayableChampionship(started.getResult());
   const round = currentRound(championship);
   if (!round) throw new Error(`No round ${championship.matchContainer.currentRound}`);
 
@@ -123,13 +128,10 @@ function playCurrentRound(container: ChampionshipContainer, level = false): Cham
         }
   );
 
-  const withScores: ChampionshipContainer = {
-    ...started.getResult(),
-    playableChampionship: {
-      ...championship,
-      matchContainer: { ...championship.matchContainer, rounds },
-    },
-  };
+  const withScores = replaceChampionship(started.getResult(), {
+    ...championship,
+    matchContainer: { ...championship.matchContainer, rounds },
+  });
 
   const ended = ChampionshipService.endRoundForAllChampionships(withScores, { rng: stubRng() });
   if (!ended.succeeded) throw new Error(ended.error?.message);
@@ -137,19 +139,19 @@ function playCurrentRound(container: ChampionshipContainer, level = false): Cham
 }
 
 function playSeason(internalName: string, teamCount: number, level = false) {
-  let container: ChampionshipContainer = {
-    playableChampionship: buildPhasedChampionship(internalName, teamCount),
-  };
+  let container: ChampionshipContainer = containerOf(
+    buildPhasedChampionship(internalName, teamCount)
+  );
 
-  const snapshots: Championship[] = [container.playableChampionship];
+  const snapshots: Championship[] = [getPlayableChampionship(container)];
   for (let guard = 0; guard < 200; guard++) {
-    const matchContainer = container.playableChampionship.matchContainer;
+    const matchContainer = getPlayableChampionship(container).matchContainer;
     if (matchContainer.currentRound > matchContainer.totalRounds) break;
     container = playCurrentRound(container, level);
-    snapshots.push(container.playableChampionship);
+    snapshots.push(getPlayableChampionship(container));
   }
 
-  return { championship: container.playableChampionship, snapshots };
+  return { championship: getPlayableChampionship(container), snapshots };
 }
 
 describe('phase progression — Brasileirão Feminino A1 (18 clubs, 4 phases)', () => {

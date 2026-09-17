@@ -6,6 +6,7 @@ import { bracketSeedOrder } from '../../../src/domain/features/fixture-generatio
 import { rankStandings } from '../../../src/domain/features/standings/StandingsComparator';
 import { useUniqueTeamIds } from '../../support/seasonHarness';
 import { ScriptedSeason } from '../../support/scriptedSeason';
+import { aboveOf, belowOf, playableOf } from '../../support/pyramidSlots';
 
 beforeAll(useUniqueTeamIds);
 
@@ -53,7 +54,7 @@ describe('Série C 2025 replayed from the seed (REC C Arts. 12–22)', () => {
   });
 
   it('promotes the top 2 of each 2ª Fase group into Série B', () => {
-    const serieB = teamIds(next.promotionChampionship);
+    const serieB = teamIds(aboveOf(next));
     const [first, second, third, fourth] = season.names;
 
     for (const name of [first, fourth, second, third])
@@ -62,18 +63,18 @@ describe('Série C 2025 replayed from the seed (REC C Arts. 12–22)', () => {
   });
 
   it('relegates the bottom 4 of the 1ª Fase into Série D', () => {
-    const serieD = teamIds(next.relegationChampionship);
+    const serieD = teamIds(belowOf(next));
 
     for (const name of season.names.slice(16)) expect(serieD.has(byName(name).id)).toBe(true);
     for (const name of season.names.slice(16)) {
-      expect(teamIds(next.playableChampionship).has(byName(name).id)).toBe(false);
+      expect(teamIds(playableOf(next)).has(byName(name).id)).toBe(false);
     }
   });
 
   it('stays at 20, with Série B at 20 and Série D at 64', () => {
-    expect(next.playableChampionship.teams).toHaveLength(20);
-    expect(next.promotionChampionship!.teams).toHaveLength(20);
-    expect(next.relegationChampionship!.teams).toHaveLength(64);
+    expect(playableOf(next).teams).toHaveLength(20);
+    expect(aboveOf(next)!.teams).toHaveLength(20);
+    expect(belowOf(next)!.teams).toHaveLength(64);
   });
 });
 
@@ -191,14 +192,14 @@ describe('Série D 2025 replayed from the seed (REC D Arts. 13–21, Anexo B)', 
   it('promotes its 4 semifinalists into Série C, which drops 4 back to keep D at 64', () => {
     const semifinalists = season.ties(4).flat();
     const next = season.rollOver();
-    const serieC = teamIds(next.promotionChampionship);
+    const serieC = teamIds(aboveOf(next));
 
     for (const name of semifinalists) expect(serieC.has(byName(name).id)).toBe(true);
     for (const name of semifinalists) {
-      expect(teamIds(next.playableChampionship).has(byName(name).id)).toBe(false);
+      expect(teamIds(playableOf(next)).has(byName(name).id)).toBe(false);
     }
-    expect(next.playableChampionship.teams).toHaveLength(64);
-    expect(next.promotionChampionship!.teams).toHaveLength(20);
-    expect(next.relegationChampionship).toBeUndefined();
+    expect(playableOf(next).teams).toHaveLength(64);
+    expect(aboveOf(next)!.teams).toHaveLength(20);
+    expect(belowOf(next)).toBeUndefined();
   });
 });

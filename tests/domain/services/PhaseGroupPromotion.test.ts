@@ -14,6 +14,8 @@ import {
   playUntil,
   Script,
 } from '../../support/phasedSeasonHarness';
+import { containerOf } from '../../support/containerOf';
+import { aboveOf, playableOf } from '../../support/pyramidSlots';
 
 /** Série C 2025's shape (REC C Arts. 12–22). */
 const serieCShape: ChampionshipPhase[] = [
@@ -123,18 +125,15 @@ const caxiasCollapses =
   };
 
 function rollOver(playable: Championship): ChampionshipContainer {
-  const container: ChampionshipContainer = {
-    playableChampionship: playable,
-    promotionChampionship: upperDivision(),
-  };
+  const container: ChampionshipContainer = containerOf(playable, [upperDivision()]);
   const result = ChampionshipService.runEndOfChampionshipActions(container);
   if (!result.succeeded) throw new Error(result.error?.message);
   return result.getResult();
 }
 
 const promotedInto = (container: ChampionshipContainer) =>
-  container
-    .promotionChampionship!.teams.map(number)
+  aboveOf(container)!
+    .teams.map(number)
     .filter((club) => club < 100)
     .sort((a, b) => a - b);
 
@@ -153,7 +152,7 @@ describe("promotionRule: 'phase-group-position' (REC C Art. 5º)", () => {
     const next = rollOver(groupFourWinsFinal);
 
     expect(promotedInto(next)).not.toContain(1);
-    expect(next.playableChampionship.teams.map(number)).toContain(1);
+    expect(playableOf(next).teams.map(number)).toContain(1);
   });
 
   it('is not changed by the final — the final only awards the title', () => {
@@ -167,10 +166,10 @@ describe("promotionRule: 'phase-group-position' (REC C Art. 5º)", () => {
   it('replaces the promoted clubs with the relegated ones, keeping the division at 20', () => {
     const next = rollOver(groupFourWinsFinal);
 
-    expect(next.playableChampionship.teams).toHaveLength(20);
+    expect(playableOf(next).teams).toHaveLength(20);
     expect(
-      next.playableChampionship.teams
-        .map(number)
+      playableOf(next)
+        .teams.map(number)
         .filter((club) => club > 100)
         .sort()
     ).toEqual([105, 106, 107, 108]);

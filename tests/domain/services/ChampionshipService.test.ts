@@ -3,6 +3,8 @@ import ChampionshipService from '../../../src/domain/services/ChampionshipServic
 import ChampionshipContainer from '../../../src/domain/models/ChampionshipContainer';
 import { Championship } from '../../../src/domain/models/Championship';
 import { Team } from '../../../src/domain/models/Team';
+import { containerOf } from '../../support/containerOf';
+import { aboveOf, belowOf, playableOf } from '../../support/pyramidSlots';
 
 function buildTeam(id: string, abbreviation: string, isControlledByHuman = false): Team {
   return {
@@ -96,7 +98,7 @@ describe('ChampionshipService.runEndOfChampionshipActions', () => {
 
     // Each division declares its own exchange counts: since MS-103 the upper division's own
     // relegation count decides how many clubs come down, not the playable division's.
-    const promotionChampionship = buildChampionship({
+    const upperDivision = buildChampionship({
       id: 'promotion',
       name: 'Upper Division',
       internalName: 'upper',
@@ -109,7 +111,7 @@ describe('ChampionshipService.runEndOfChampionshipActions', () => {
       relegationChampionshipInternalName: 'playable',
     });
 
-    const playableChampionship = buildChampionship({
+    const playableDivision = buildChampionship({
       id: 'playable',
       name: 'Playable Division',
       internalName: 'playable',
@@ -125,7 +127,7 @@ describe('ChampionshipService.runEndOfChampionshipActions', () => {
       relegationChampionshipInternalName: 'lower',
     });
 
-    const relegationChampionship = buildChampionship({
+    const lowerDivision = buildChampionship({
       id: 'relegation',
       name: 'Lower Division',
       internalName: 'lower',
@@ -139,9 +141,8 @@ describe('ChampionshipService.runEndOfChampionshipActions', () => {
     });
 
     const championshipContainer: ChampionshipContainer = {
-      playableChampionship,
-      promotionChampionship,
-      relegationChampionship,
+      championships: [upperDivision, playableDivision, lowerDivision],
+      playableInternalName: 'playable',
     };
 
     const result = ChampionshipService.runEndOfChampionshipActions(championshipContainer);
@@ -150,43 +151,44 @@ describe('ChampionshipService.runEndOfChampionshipActions', () => {
 
     const updatedContainer = result.getResult();
 
-    expect(updatedContainer.playableChampionship.teams.map((team) => team.abbreviation)).toEqual([
+    expect(playableOf(updatedContainer).teams.map((team) => team.abbreviation)).toEqual([
       'PLB',
       'PLC',
       'UPD',
       'LWA',
     ]);
-    expect(updatedContainer.promotionChampionship?.teams.map((team) => team.abbreviation)).toEqual([
+    expect(aboveOf(updatedContainer)?.teams.map((team) => team.abbreviation)).toEqual([
       'UPA',
       'UPB',
       'UPC',
       'PLA',
     ]);
-    expect(updatedContainer.relegationChampionship?.teams.map((team) => team.abbreviation)).toEqual(
-      ['LWB', 'LWC', 'LWD', 'PLD']
-    );
+    expect(belowOf(updatedContainer)?.teams.map((team) => team.abbreviation)).toEqual([
+      'LWB',
+      'LWC',
+      'LWD',
+      'PLD',
+    ]);
 
-    expect(updatedContainer.playableChampionship.matchContainer.currentRound).toBe(1);
-    expect(updatedContainer.playableChampionship.matchContainer.timer).toBe(0);
-    expect(updatedContainer.playableChampionship.matchContainer.currentSeason).toBe(2027);
-    expect(
-      updatedContainer.playableChampionship.standings.every((standing) => standing.points === 0)
-    ).toBe(true);
+    expect(playableOf(updatedContainer).matchContainer.currentRound).toBe(1);
+    expect(playableOf(updatedContainer).matchContainer.timer).toBe(0);
+    expect(playableOf(updatedContainer).matchContainer.currentSeason).toBe(2027);
+    expect(playableOf(updatedContainer).standings.every((standing) => standing.points === 0)).toBe(
+      true
+    );
   });
 
   it('returns the same championship container when the championship is not over yet', () => {
-    const playableChampionship = buildChampionship({
-      id: 'playable',
-      name: 'Playable Division',
-      internalName: 'playable',
-      teams: [buildTeam('m', 'AAA'), buildTeam('n', 'BBB')],
-      currentRound: 3,
-      totalRounds: 6,
-    });
-
-    const championshipContainer: ChampionshipContainer = {
-      playableChampionship,
-    };
+    const championshipContainer = containerOf(
+      buildChampionship({
+        id: 'playable',
+        name: 'Playable Division',
+        internalName: 'playable',
+        teams: [buildTeam('m', 'AAA'), buildTeam('n', 'BBB')],
+        currentRound: 3,
+        totalRounds: 6,
+      })
+    );
 
     const result = ChampionshipService.runEndOfChampionshipActions(championshipContainer);
 

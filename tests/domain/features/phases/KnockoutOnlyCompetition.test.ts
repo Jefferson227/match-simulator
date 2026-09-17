@@ -18,6 +18,7 @@ import {
 import { resolveTie } from '../../../../src/domain/features/phases/TieResolution';
 import { simulatePenaltyShootout } from '../../../../src/domain/features/phases/PenaltyShootoutSimulator';
 import { RandomProvider } from '../../../../src/domain/features/match-simulation/types';
+import { getPlayableChampionship } from '../../../../src/domain/features/pyramid/Pyramid';
 
 beforeAll(() => {
   let counter = 0;
@@ -305,7 +306,7 @@ describe('the league championships are unaffected', () => {
     '%s still has a table and no per-phase entrants',
     (internalName) => {
       const container = ChampionshipService.initChampionships(internalName).getResult();
-      const championship = container.playableChampionship;
+      const championship = getPlayableChampionship(container);
 
       expect(championship.hasLeagueTable).toBe(true);
       expect(championship.phaseEntrants).toBeUndefined();

@@ -10,6 +10,8 @@ import {
 } from '../../../../src/domain/features/phases/PhaseProgression';
 import Round from '../../../../src/domain/models/Round';
 import RoundStatus from '../../../../src/domain/enums/RoundStatus';
+import { getPlayableChampionship } from '../../../../src/domain/features/pyramid/Pyramid';
+import { containerOf } from '../../../support/containerOf';
 
 function buildTeam(index: number): Team {
   return {
@@ -146,14 +148,13 @@ describe('isChampionshipOver — unphased', () => {
     });
 
     // `runEndOfChampionshipActions` is the only public reader of `isChampionshipOver`.
-    expect(
-      ChampionshipService.runEndOfChampionshipActions({ playableChampionship: notOver }).getResult()
-        .playableChampionship.matchContainer.currentSeason
-    ).toBe(2026);
-    expect(
-      ChampionshipService.runEndOfChampionshipActions({ playableChampionship: over }).getResult()
-        .playableChampionship.matchContainer.currentSeason
-    ).toBe(2027);
+    const seasonAfterRollOver = (championship: Championship) =>
+      getPlayableChampionship(
+        ChampionshipService.runEndOfChampionshipActions(containerOf(championship)).getResult()
+      ).matchContainer.currentSeason;
+
+    expect(seasonAfterRollOver(notOver)).toBe(2026);
+    expect(seasonAfterRollOver(over)).toBe(2027);
   });
 
   it('does not roll a phased championship over until its final is decided', () => {
@@ -168,11 +169,9 @@ describe('isChampionshipOver — unphased', () => {
       },
     });
 
-    const result = ChampionshipService.runEndOfChampionshipActions({
-      playableChampionship: championship,
-    });
+    const result = ChampionshipService.runEndOfChampionshipActions(containerOf(championship));
 
-    expect(result.getResult().playableChampionship.matchContainer.currentSeason).toBe(2026);
+    expect(getPlayableChampionship(result.getResult()).matchContainer.currentSeason).toBe(2026);
   });
 });
 

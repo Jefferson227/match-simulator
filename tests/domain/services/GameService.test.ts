@@ -3,6 +3,7 @@ import { Championship } from '~domain/models/Championship';
 import GameService from '~domain/services/GameService';
 import { GameState } from '~game-engine/GameState';
 import GameRepository from '~infrastructure/repositories/GameRepository';
+import { containerOf } from '../../support/containerOf';
 
 jest.mock('~infrastructure/repositories/GameRepository', () => ({
   __esModule: true,
@@ -16,28 +17,26 @@ const mockedGameRepository = GameRepository as jest.Mocked<typeof GameRepository
 
 function buildState(): GameState {
   return {
-    championshipContainer: {
-      playableChampionship: {
-        id: '11111111-1111-1111-1111-111111111111',
-        name: 'Mock Championship',
-        internalName: 'mock-championship',
-        numberOfTeams: 0,
-        teams: [],
-        standings: [],
-        matchContainer: {
-          timer: 0,
-          currentSeason: 2026,
-          currentRound: 1,
-          totalRounds: 0,
-          rounds: [],
-        },
-        type: 'double-round-robin',
-        leagueType: 'mens',
-        hasTeamControlledByHuman: false,
-        isPromotable: false,
-        isRelegatable: false,
-      } as Championship,
-    },
+    championshipContainer: containerOf({
+      id: '11111111-1111-1111-1111-111111111111',
+      name: 'Mock Championship',
+      internalName: 'mock-championship',
+      numberOfTeams: 0,
+      teams: [],
+      standings: [],
+      matchContainer: {
+        timer: 0,
+        currentSeason: 2026,
+        currentRound: 1,
+        totalRounds: 0,
+        rounds: [],
+      },
+      type: 'double-round-robin',
+      leagueType: 'mens',
+      hasTeamControlledByHuman: false,
+      isPromotable: false,
+      isRelegatable: false,
+    } as Championship),
     hasError: false,
     errorMessage: '',
     leagueType: 'mens',

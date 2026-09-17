@@ -142,15 +142,13 @@ describe('TeamService.updateTeamStats', () => {
     const promotionHome = buildTeam('33333333-3333-3333-3333-333333333333', 'PRA', 40);
     const promotionAway = buildTeam('44444444-4444-4444-4444-444444444444', 'PRB', 80);
 
-    const playableChampionship = buildChampionship([playableHome, playableAway], [[2, 1]]);
-    const promotionChampionship = {
+    const playableDivision = buildChampionship([playableHome, playableAway], [[2, 1]]);
+    const upperDivision = {
       ...buildChampionship([promotionHome, promotionAway], [[1, 1]]),
       internalName: 'promotion-championship',
     };
 
-    const result = TeamService.updateTeamStats(
-      containerOf(playableChampionship, [promotionChampionship])
-    );
+    const result = TeamService.updateTeamStats(containerOf(playableDivision, [upperDivision]));
 
     const updatedContainer = result.getResult();
 

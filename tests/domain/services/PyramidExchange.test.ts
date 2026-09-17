@@ -27,7 +27,8 @@ const A3 = 'brasileirao-feminino-serie-a3';
 const division = (container: ChampionshipContainer, internalName: string): Championship =>
   getChampionshipByInternalName(container, internalName)!;
 
-const idsOf = (championship: Championship) => new Set(championship.teams.map((team) => team.id));
+const idsOf = (championship: Championship) =>
+  new Set<string>(championship.teams.map((team) => team.id));
 
 const minus = (left: Set<string>, right: Set<string>) =>
   new Set([...left].filter((id) => !right.has(id)));

@@ -972,23 +972,20 @@ const endRoundForAllChampionships = (
 ): OperationResult<ChampionshipContainer> => {
   try {
     const previousChampionship = getPlayableChampionship(championshipContainer);
-    const playableChampionship = endRound(previousChampionship, dependencies);
+    const playable = endRound(previousChampionship, dependencies);
 
-    let updatedChampionshipContainer = replaceChampionship(
-      championshipContainer,
-      playableChampionship
-    );
+    let updatedChampionshipContainer = replaceChampionship(championshipContainer, playable);
 
-    const seasonIsOver = isChampionshipOver(playableChampionship);
+    const seasonIsOver = isChampionshipOver(playable);
 
     updatedChampionshipContainer = {
       ...updatedChampionshipContainer,
       championships: updatedChampionshipContainer.championships.map((championship) =>
-        championship.internalName === playableChampionship.internalName
+        championship.internalName === playable.internalName
           ? championship
           : playRoundsOwed(
               championship,
-              seasonIsOver ? Infinity : paceTarget(playableChampionship, championship),
+              seasonIsOver ? Infinity : paceTarget(playable, championship),
               dependencies
             )
       ),
@@ -1070,7 +1067,7 @@ const buildSeasonSummary = (
   championshipContainer: ChampionshipContainer
 ): OperationResult<SeasonSummary> => {
   try {
-    const playableChampionship = getPlayableChampionship(championshipContainer);
+    const playable = getPlayableChampionship(championshipContainer);
     const exchange = computePyramidExchange(championshipContainer);
 
     const divisions = championshipContainer.championships.map((championship) =>
@@ -1082,7 +1079,7 @@ const buildSeasonSummary = (
     );
 
     const result = new OperationResult<SeasonSummary>({
-      season: playableChampionship.matchContainer.currentSeason,
+      season: playable.matchContainer.currentSeason,
       divisions,
     });
     result.setSuccess();

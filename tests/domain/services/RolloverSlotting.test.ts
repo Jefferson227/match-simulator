@@ -4,6 +4,7 @@ import ChampionshipContainer from '../../../src/domain/models/ChampionshipContai
 import { Championship } from '../../../src/domain/models/Championship';
 import { Team } from '../../../src/domain/models/Team';
 import { buildTeam, number } from '../../support/phasedSeasonHarness';
+import { belowOf, playableOf } from '../../support/pyramidSlots';
 
 /**
  * An unphased, finished division of clubs `first…first+7`. `ranking` lists list indexes best first,
@@ -81,22 +82,25 @@ function container(
 ): ChampionshipContainer {
   const flag = (on?: boolean) => (on ? { rolloverSlotting: 'replace-in-place' as const } : {});
   return {
-    promotionChampionship: division('upper', 101, upperRanking, relegates(2, 'middle')),
-    playableChampionship: division('middle', 1, middleRanking, {
-      ...promotes(2, 'upper'),
-      ...relegates(middleRelegates, 'lower'),
-      ...flag(slotting.middle),
-    }),
-    relegationChampionship: division('lower', 201, lowerRanking, {
-      ...promotes(lowerPromotes, 'middle'),
-      ...flag(slotting.lower),
-    }),
+    championships: [
+      division('upper', 101, upperRanking, relegates(2, 'middle')),
+      division('middle', 1, middleRanking, {
+        ...promotes(2, 'upper'),
+        ...relegates(middleRelegates, 'lower'),
+        ...flag(slotting.middle),
+      }),
+      division('lower', 201, lowerRanking, {
+        ...promotes(lowerPromotes, 'middle'),
+        ...flag(slotting.lower),
+      }),
+    ],
+    playableInternalName: 'middle',
   };
 }
 
 describe("rolloverSlotting: 'replace-in-place' — the playable division", () => {
   it('puts each newcomer at an index an outgoing club vacated, in order', () => {
-    const next = rollOver(container({ middle: true })).playableChampionship;
+    const next = playableOf(rollOver(container({ middle: true })));
 
     // Out, in list order: 1 (idx 0), 4 (idx 3), 6 (idx 5), 7 (idx 6).
     // In, in order: relegated from upper 107, 108, then promoted from lower 203, 206.
@@ -104,21 +108,21 @@ describe("rolloverSlotting: 'replace-in-place' — the playable division", () =>
   });
 
   it('keeps every non-exchanged club at its index', () => {
-    const before = container({ middle: true }).playableChampionship.teams;
-    const after = rollOver(container({ middle: true })).playableChampionship.teams;
+    const before = playableOf(container({ middle: true })).teams;
+    const after = playableOf(rollOver(container({ middle: true }))).teams;
 
     for (const index of [1, 2, 4, 7]) expect(after[index].id).toBe(before[index].id);
   });
 
   it('appends to the end without the flag, exactly as before', () => {
-    const next = rollOver(container({})).playableChampionship;
+    const next = playableOf(rollOver(container({})));
     expect(clubs(next.teams)).toEqual([2, 3, 5, 8, 107, 108, 203, 206]);
   });
 });
 
 describe("rolloverSlotting: 'replace-in-place' — the relegation neighbour", () => {
   it('slots the clubs relegated from the playable division into the vacated indexes', () => {
-    const next = rollOver(container({ lower: true })).relegationChampionship!;
+    const next = belowOf(rollOver(container({ lower: true })))!;
 
     // Out of lower: 203 (idx 2) and 206 (idx 5). In: the playable's bottom two, 6 then 1.
     expect(clubs(next.teams)).toEqual([201, 202, 6, 204, 205, 1, 207, 208]);
@@ -126,18 +130,18 @@ describe("rolloverSlotting: 'replace-in-place' — the relegation neighbour", ()
 
   it('appends surplus newcomers when more arrive than leave', () => {
     // The playable relegates 3 (6, 8, 1), the lower division promotes only 2.
-    const next = rollOver(container({ lower: true }, 3, 2)).relegationChampionship!;
+    const next = belowOf(rollOver(container({ lower: true }, 3, 2)))!;
     expect(clubs(next.teams)).toEqual([201, 202, 8, 204, 205, 6, 207, 208, 1]);
   });
 
   it('closes the gaps, keeping the remaining order, when fewer arrive than leave', () => {
     // The playable relegates 1 (club 1), the lower division promotes 2 (203, 206).
-    const next = rollOver(container({ lower: true }, 1, 2)).relegationChampionship!;
+    const next = belowOf(rollOver(container({ lower: true }, 1, 2)))!;
     expect(clubs(next.teams)).toEqual([201, 202, 1, 204, 205, 207, 208]);
   });
 
   it('appends to the end without the flag, exactly as before', () => {
-    const next = rollOver(container({})).relegationChampionship!;
+    const next = belowOf(rollOver(container({})))!;
     expect(clubs(next.teams)).toEqual([201, 202, 204, 205, 207, 208, 6, 1]);
   });
 });

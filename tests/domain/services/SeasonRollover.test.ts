@@ -2,6 +2,7 @@ import { beforeAll, describe, expect, it } from '@jest/globals';
 import { Team } from '../../../src/domain/models/Team';
 import { allTeamIds, counts, init, rollOver, useUniqueTeamIds } from '../../support/seasonHarness';
 import { ScriptedSeason } from '../../support/scriptedSeason';
+import { aboveOf, belowOf, playableOf } from '../../support/pyramidSlots';
 
 beforeAll(useUniqueTeamIds);
 
@@ -53,9 +54,9 @@ describe('season roll-over — the women’s pyramid, playing A2', () => {
       container = rollOver(container);
 
       for (const championship of [
-        container.playableChampionship,
-        container.promotionChampionship!,
-        container.relegationChampionship!,
+        playableOf(container),
+        aboveOf(container)!,
+        belowOf(container)!,
       ]) {
         expect(championship.numberOfTeams).toBe(championship.teams.length);
         expect(championship.standings).toHaveLength(championship.teams.length);
@@ -77,46 +78,55 @@ describe('season roll-over — the women’s pyramid, playing A2', () => {
     // 4 up, 2 back down each season until A2 reaches its own target.
     expect(sizes).toEqual([30, 28, 26]);
     // ...but its group stage is still generated, one round-robin per group.
-    expect(container.relegationChampionship!.matchContainer.rounds.length).toBeGreaterThan(0);
+    expect(belowOf(container)!.matchContainer.rounds.length).toBeGreaterThan(0);
   });
 });
 
 describe('season roll-over — the women’s pyramid, playing A1', () => {
-  it('grows A1 to 20 and stops, at the cost of A2, whose lower border is not modelled', () => {
+  it('grows A1 to 20 and stops, with A2 refilled from A3 now that the pyramid is whole', () => {
     let container = init('brasileirao-feminino-serie-a1');
 
     expect(counts(container)).toEqual({
       'brasileirao-feminino-serie-a1': 18,
       'brasileirao-feminino-serie-a2': 16,
+      'brasileirao-feminino-serie-a3': 32,
     });
 
-    container = rollOver(container);
-    expect(counts(container)['brasileirao-feminino-serie-a1']).toBe(20);
-    // A2's lower border does not exist in this container — A3 is not loaded when A1 is playable —
-    // so the four clubs it sends up are replaced by only the two A1 relegates. It loses 2 clubs
-    // once, then stabilises, because A1 switches to 4 down / 4 up at its target.
-    expect(counts(container)['brasileirao-feminino-serie-a2']).toBe(14);
+    // Before MS-109 A3 was not loaded while A1 was playable, so A2 lost the 4 it sent up and got
+    // only A1's relegated clubs back, settling at 14. The A2 ↔ A3 boundary now exchanges too, so
+    // A2 is refilled with A3's 4 semifinalists and grows exactly as it does with A2 playable.
+    const seasons = [counts(container)];
+    for (let season = 0; season < 3; season++) {
+      container = rollOver(container);
+      seasons.push(counts(container));
+    }
 
-    container = rollOver(container);
-    expect(counts(container)['brasileirao-feminino-serie-a1']).toBe(20);
-    expect(counts(container)['brasileirao-feminino-serie-a2']).toBe(14);
-
-    container = rollOver(container);
-    expect(counts(container)['brasileirao-feminino-serie-a1']).toBe(20);
-    expect(counts(container)['brasileirao-feminino-serie-a2']).toBe(14);
+    expect(seasons.map((season) => season['brasileirao-feminino-serie-a1'])).toEqual([
+      18, 20, 20, 20,
+    ]);
+    expect(seasons.map((season) => season['brasileirao-feminino-serie-a2'])).toEqual([
+      16, 16, 18, 20,
+    ]);
+    expect(seasons.map((season) => season['brasileirao-feminino-serie-a3'])).toEqual([
+      32, 30, 28, 26,
+    ]);
   });
 });
 
+const MENS_COUNTS = {
+  'brasileirao-serie-a': 20,
+  'brasileirao-serie-b': 20,
+  'brasileirao-serie-c': 20,
+  'brasileirao-serie-d': 64,
+};
+
 describe('season roll-over — the men’s divisions are untouched', () => {
-  // Série B's relegation neighbour is Série C since MS-106, so its container holds three divisions.
+  // Since MS-109 every men's container holds the whole pyramid, whichever division is playable.
   it.each([
-    ['brasileirao-serie-a', { 'brasileirao-serie-a': 20, 'brasileirao-serie-b': 20 }],
-    [
-      'brasileirao-serie-b',
-      { 'brasileirao-serie-a': 20, 'brasileirao-serie-b': 20, 'brasileirao-serie-c': 20 },
-    ],
+    ['brasileirao-serie-a', MENS_COUNTS],
+    ['brasileirao-serie-b', MENS_COUNTS],
   ])(
-    'keeps %s and its neighbours at 20 clubs over three roll-overs',
+    'keeps %s and the rest of the pyramid at their club counts over three roll-overs',
     (internalName, expectedCounts) => {
       let container = init(internalName);
       const initialIds = new Set(allTeamIds(container));
@@ -135,15 +145,15 @@ describe('season roll-over — the men’s divisions are untouched', () => {
 
   it('exchanges exactly 4 clubs a season between Série A and Série B', () => {
     const before = init('brasileirao-serie-a');
-    const beforeTop = new Set(before.playableChampionship.teams.map((team) => team.id));
+    const beforeTop = new Set(playableOf(before).teams.map((team) => team.id));
 
     const after = rollOver(before);
-    const afterTop = after.playableChampionship.teams.map((team) => team.id);
+    const afterTop = playableOf(after).teams.map((team) => team.id);
 
     expect(afterTop.filter((id) => !beforeTop.has(id))).toHaveLength(4);
-    expect(after.playableChampionship.phases).toBeUndefined();
-    expect(after.playableChampionship.type).toBe('double-round-robin');
-    expect(after.playableChampionship.matchContainer.totalRounds).toBe(38);
+    expect(playableOf(after).phases).toBeUndefined();
+    expect(playableOf(after).type).toBe('double-round-robin');
+    expect(playableOf(after).matchContainer.totalRounds).toBe(38);
   });
 });
 
@@ -151,8 +161,8 @@ describe('the men’s containers load their real neighbours (MS-106)', () => {
   const neighbours = (internalName: string) => {
     const container = init(internalName);
     return {
-      promotion: container.promotionChampionship?.internalName,
-      relegation: container.relegationChampionship?.internalName,
+      promotion: aboveOf(container)?.internalName,
+      relegation: belowOf(container)?.internalName,
     };
   };
 
@@ -194,7 +204,7 @@ function keptSlots(before: Team['id'][], after: Team['id'][]): number {
 }
 
 describe('season roll-over — the men’s lower divisions, played for three seasons', () => {
-  describe('with the human in Série D (D plays, C is its promotion neighbour)', () => {
+  describe('with the human in Série D (D plays, A to C are AI divisions)', () => {
     const sizes: Record<string, number>[] = [];
     const slotsKept: number[] = [];
     const exchanged: number[] = [];
@@ -204,7 +214,7 @@ describe('season roll-over — the men’s lower divisions, played for three sea
       for (let year = 0; year < 3; year++) {
         const before = season.championship.teams.map((team) => team.id);
         const next = season.playSeasonAndRollOver();
-        const after = next.playableChampionship.teams.map((team) => team.id);
+        const after = playableOf(next).teams.map((team) => team.id);
 
         sizes.push(counts(next));
         slotsKept.push(keptSlots(before, after));
@@ -212,10 +222,8 @@ describe('season roll-over — the men’s lower divisions, played for three sea
       }
     });
 
-    it('keeps D at 64 and C at 20 every season', () => {
-      expect(sizes).toEqual(
-        Array(3).fill({ 'brasileirao-serie-d': 64, 'brasileirao-serie-c': 20 })
-      );
+    it('keeps D at 64 and every division above it at 20 every season', () => {
+      expect(sizes).toEqual(Array(3).fill(MENS_COUNTS));
     });
 
     it('exchanges 4 clubs and keeps the other 60 in their group slots', () => {
@@ -224,7 +232,7 @@ describe('season roll-over — the men’s lower divisions, played for three sea
     });
   });
 
-  describe('with the human in Série C (C plays; B above, D below as an AI division)', () => {
+  describe('with the human in Série C (C plays; A, B and D are AI divisions)', () => {
     const sizes: Record<string, number>[] = [];
     const slotsKept: number[] = [];
     const idsPerSeason: string[][] = [];
@@ -233,9 +241,9 @@ describe('season roll-over — the men’s lower divisions, played for three sea
       const season = new ScriptedSeason('brasileirao-serie-c');
       idsPerSeason.push(allTeamIds(season.container));
       for (let year = 0; year < 3; year++) {
-        const before = season.container.relegationChampionship!.teams.map((team) => team.id);
+        const before = belowOf(season.container)!.teams.map((team) => team.id);
         const next = season.playSeasonAndRollOver();
-        const after = next.relegationChampionship!.teams.map((team) => team.id);
+        const after = belowOf(next)!.teams.map((team) => team.id);
 
         sizes.push(counts(next));
         slotsKept.push(keptSlots(before, after));
@@ -244,23 +252,17 @@ describe('season roll-over — the men’s lower divisions, played for three sea
     });
 
     it('keeps C at 20, B at 20 and D at 64 every season', () => {
-      expect(sizes).toEqual(
-        Array(3).fill({
-          'brasileirao-serie-c': 20,
-          'brasileirao-serie-b': 20,
-          'brasileirao-serie-d': 64,
-        })
-      );
+      expect(sizes).toEqual(Array(3).fill(MENS_COUNTS));
     });
 
     it('keeps D’s 60 non-exchanged clubs in their group slots while D is the AI neighbour', () => {
       expect(slotsKept).toEqual([60, 60, 60]);
     });
 
-    it('never duplicates or loses a club across the three divisions', () => {
+    it('never duplicates or loses a club across the pyramid', () => {
       const initial = new Set(idsPerSeason[0]);
       for (const ids of idsPerSeason) {
-        expect(new Set(ids).size).toBe(20 + 20 + 64);
+        expect(new Set(ids).size).toBe(20 + 20 + 20 + 64);
         for (const id of ids) expect(initial.has(id)).toBe(true);
       }
     });
