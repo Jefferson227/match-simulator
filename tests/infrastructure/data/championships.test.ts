@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import championshipsJSON from '../../../src/infrastructure/data/championships.json';
 import mensTeamsJSON from '../../../src/infrastructure/data/teams.json';
 import womensTeamsJSON from '../../../src/infrastructure/data/teams-womens.json';
@@ -22,6 +23,8 @@ type Phase =
 
 type ChampionshipEntry = {
   internalName: string;
+  /** The division's place in its pyramid, 1 = top. Absent for a cup. */
+  tier?: number;
   leagueType: string;
   type: string;
   numberOfTeams: number;
@@ -507,6 +510,108 @@ describe('championships.json data integrity', () => {
 
       expect(serieD.promotionRule).toBe('semifinalists');
       expect(serieD.rolloverSlotting).toBe('replace-in-place');
+    });
+  });
+
+  describe('tiers', () => {
+    test('every league division declares its place in the pyramid, top first', () => {
+      const tiers = Object.fromEntries(
+        championships
+          .filter((championship) => championship.hasLeagueTable !== false)
+          .map((championship) => [championship.internalName, championship.tier])
+      );
+
+      expect(tiers).toEqual({
+        'brasileirao-serie-a': 1,
+        'brasileirao-serie-b': 2,
+        'brasileirao-serie-c': 3,
+        'brasileirao-serie-d': 4,
+        'brasileirao-feminino-serie-a1': 1,
+        'brasileirao-feminino-serie-a2': 2,
+        'brasileirao-feminino-serie-a3': 3,
+      });
+    });
+
+    test('the cups carry no tier', () => {
+      expect(findByInternalName('supercopa-feminina')!.tier).toBeUndefined();
+      expect(findByInternalName('copa-do-brasil-feminina')!.tier).toBeUndefined();
+    });
+
+    test('the repository carries the tier onto the championship', () => {
+      jest.isolateModules(() => {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const repository = require('../../../src/infrastructure/repositories/ChampionshipRepository');
+
+        expect(repository.getChampionship('brasileirao-serie-c', false).tier).toBe(3);
+        expect(repository.getChampionship('copa-do-brasil-feminina', false).tier).toBeUndefined();
+        expect(
+          repository
+            .getChampionships('womens')
+            .map((championship: { tier?: number }) => championship.tier)
+        ).toEqual([1, 2, 3, undefined, undefined]);
+      });
+    });
+
+    describe('rejects a pyramid the container cannot be built from', () => {
+      const mens = () =>
+        championships
+          .filter((championship) => championship.leagueType === 'mens')
+          .map((championship) => ({ ...championship }));
+
+      /** Loads Série C against a seed file swapped for `seed`, in an isolated registry. */
+      function loadSerieCWithSeed(seed: ChampionshipEntry[]): void {
+        jest.isolateModules(() => {
+          jest.doMock('../../../src/infrastructure/data/championships.json', () => seed);
+          // eslint-disable-next-line @typescript-eslint/no-require-imports
+          const repository = require('../../../src/infrastructure/repositories/ChampionshipRepository');
+          repository.getChampionship('brasileirao-serie-c', false);
+        });
+      }
+
+      test('loads the seeded pyramid unchanged', () => {
+        expect(() => loadSerieCWithSeed(mens())).not.toThrow();
+      });
+
+      test('a duplicated tier', () => {
+        const seed = mens();
+        seed[3].tier = 3;
+
+        expect(() => loadSerieCWithSeed(seed)).toThrow(/unique and contiguous from 1/);
+      });
+
+      test('a gap in the tiers', () => {
+        const seed = mens();
+        seed[3].tier = 5;
+
+        expect(() => loadSerieCWithSeed(seed)).toThrow(/declares tier 5 where 4 was expected/);
+      });
+
+      test('a tier that does not start at 1', () => {
+        const seed = mens().map((championship) => ({
+          ...championship,
+          tier: (championship.tier as number) + 1,
+        }));
+
+        expect(() => loadSerieCWithSeed(seed)).toThrow(/declares tier 2 where 1 was expected/);
+      });
+
+      test('a relegation chain that skips a tier', () => {
+        const seed = mens();
+        seed[1].relegationChampionshipInternalName = 'brasileirao-serie-d';
+
+        expect(() => loadSerieCWithSeed(seed)).toThrow(
+          /brasileirao-serie-b \(tier 2\) relegates into brasileirao-serie-d, but tier 3 is brasileirao-serie-c/
+        );
+      });
+
+      test('a promotion chain that skips a tier', () => {
+        const seed = mens();
+        seed[2].promotionChampionshipInternalName = 'brasileirao-serie-a';
+
+        expect(() => loadSerieCWithSeed(seed)).toThrow(
+          /brasileirao-serie-c \(tier 3\) promotes into brasileirao-serie-a, but tier 2 is brasileirao-serie-b/
+        );
+      });
     });
   });
 });

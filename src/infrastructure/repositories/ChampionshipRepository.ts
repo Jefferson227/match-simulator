@@ -140,6 +140,44 @@ function validatePromotionRule(championship: ChampionshipJSONDTO): void {
   }
 }
 
+/**
+ * Rejects a pyramid the container cannot be built from. Within `leagueType`, the tiered entries must
+ * number 1, 2, 3… with no duplicate or gap, and the promotion / relegation chain must walk them in
+ * that order: tier n relegates into tier n+1 and tier n+1 promotes into tier n. The top tier
+ * promotes into nothing and the bottom tier relegates into nothing. An untiered entry is outside the
+ * pyramid — a cup — and a division left untiered by mistake breaks its neighbours' chain check.
+ */
+function validateTiers(championships: ChampionshipJSONDTO[], leagueType: LeagueType): void {
+  const league = championships.filter((championship) => championship.leagueType === leagueType);
+
+  const divisions = league
+    .filter((championship) => championship.tier !== undefined)
+    .sort((a, b) => (a.tier as number) - (b.tier as number));
+
+  divisions.forEach((division, index) => {
+    if (division.tier !== index + 1) {
+      throw new Error(
+        `Tiers of the ${leagueType} pyramid must be unique and contiguous from 1; ${division.internalName} declares tier ${division.tier} where ${index + 1} was expected.`
+      );
+    }
+
+    const above = divisions[index - 1];
+    const below = divisions[index + 1];
+
+    if (division.promotionChampionshipInternalName !== above?.internalName) {
+      throw new Error(
+        `${division.internalName} (tier ${division.tier}) promotes into ${division.promotionChampionshipInternalName ?? 'nothing'}, but tier ${index} is ${above?.internalName ?? 'nothing'}.`
+      );
+    }
+
+    if (division.relegationChampionshipInternalName !== below?.internalName) {
+      throw new Error(
+        `${division.internalName} (tier ${division.tier}) relegates into ${division.relegationChampionshipInternalName ?? 'nothing'}, but tier ${index + 2} is ${below?.internalName ?? 'nothing'}.`
+      );
+    }
+  });
+}
+
 export function getChampionship(
   championshipInternalName: string,
   hasTeamControlledByHuman: boolean
@@ -157,11 +195,13 @@ export function getChampionship(
     validateCrossings(championshipJSONDTO.internalName, variant.phases)
   );
   validatePromotionRule(championshipJSONDTO);
+  validateTiers(championshipsJSONDTO, championshipJSONDTO.leagueType);
 
   let mappedChampionship = {
     id: crypto.randomUUID(),
     name: championshipJSONDTO.name,
     internalName: championshipJSONDTO.internalName,
+    tier: championshipJSONDTO.tier,
     numberOfTeams: championshipJSONDTO.numberOfTeams,
     targetNumberOfTeams: championshipJSONDTO.targetNumberOfTeams,
     teams: [],
@@ -291,6 +331,7 @@ export function getChampionships(leagueType?: LeagueType): Championship[] {
     .map((json) => {
       return {
         internalName: json.internalName,
+        tier: json.tier,
         name: json.name,
         leagueType: json.leagueType,
       } as Championship;

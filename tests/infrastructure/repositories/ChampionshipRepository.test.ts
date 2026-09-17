@@ -46,11 +46,12 @@ describe('ChampionshipRepository', () => {
       });
     });
 
-    test('projects only internalName, name and leagueType', () => {
+    test('projects only internalName, tier, name and leagueType', () => {
       const [serieA] = getChampionships('mens');
 
       expect(serieA).toEqual({
         internalName: 'brasileirao-serie-a',
+        tier: 1,
         name: 'BRASILEIRÃO SÉRIE A',
         leagueType: 'mens',
       });

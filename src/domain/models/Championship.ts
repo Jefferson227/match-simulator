@@ -13,6 +13,12 @@ type BaseChampionship = {
   id: string;
   name: string;
   internalName: string;
+  /**
+   * The division's position in its league type's pyramid, 1 = top (Série A 1 … Série D 4; A1 1 …
+   * A3 3). The container orders its divisions by it. Absent for a cup, which sits outside the
+   * pyramid.
+   */
+  tier?: number;
   numberOfTeams: number;
   /**
    * The club count the division is growing towards, when it is growing. A1 is being expanded

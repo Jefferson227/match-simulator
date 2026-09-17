@@ -6,6 +6,8 @@ import { PromotionRule, RelegationRule } from '../../domain/models/Championship'
 type ChampionshipJSONDTO = {
   name: string;
   internalName: string;
+  /** Position in the league type's pyramid, 1 = top. Absent for a cup. */
+  tier?: number;
   numberOfTeams: number;
   /** The club count the division is growing towards. Absent means it is stable. */
   targetNumberOfTeams?: number;
