@@ -21,6 +21,7 @@ import { buildPhaseView, PhaseView, PhaseViewOptions } from '../features/phases/
 import { RandomProvider } from '../features/match-simulation/types';
 import { getRandomNumber } from '../utils/Utils';
 import { runMatchTick } from '../features/match-simulation/MatchSimulationEngine';
+import { getSeasonRoundCount } from '../features/phases/SeasonRoundCount';
 import {
   getDivisionAbove,
   getDivisionBelow,
@@ -873,20 +874,22 @@ function simulateRoundInOnePass(championship: Championship, rng: RandomProvider)
   };
 }
 
+/** How many of a championship's rounds have been played to the whistle and ended. */
+function countCompletedRounds(championship: Championship): number {
+  return championship.matchContainer.rounds.filter((round) => round.status === 'ended').length;
+}
+
 /**
- * Brings an AI championship up to date in a single execution: every round it still owes, and every
- * phase it completes on the way.
- *
- * The playable championship is the clock, and the AI divisions no longer have matching round counts
- * — A1 plays 23, A2 21, A3 14 — so they cannot be stepped in pairs with it. They are caught up at
- * the playable championship's phase boundaries and at the end of its season, which is the last
- * point before promotion and relegation read their semifinalists and 1ª Fase tables.
+ * Plays an AI division's rounds, one whole round at a time, until it has completed
+ * `targetCompletedRounds` of them or has none left — every phase it completes on the way is resolved.
+ * `Infinity` plays it to the end of its season.
  *
  * A championship with no round left to play is returned untouched, so a division that finished
- * early can never overflow its round lookup.
+ * early can never overflow its round lookup (MS-103).
  */
-function catchUpChampionship(
+function playRoundsOwed(
   championship: Championship,
+  targetCompletedRounds: number,
   dependencies: ChampionshipServiceDependencies
 ): Championship {
   if (!championship?.matchContainer?.rounds) return championship;
@@ -897,6 +900,8 @@ function catchUpChampionship(
   let current = championship;
 
   for (let guard = 0; guard < MAX_CATCH_UP_ROUNDS; guard++) {
+    if (countCompletedRounds(current) >= targetCompletedRounds) break;
+
     const matchContainer = current.matchContainer;
     const hasRoundToPlay = matchContainer.rounds.some(
       (round) => round.number === matchContainer.currentRound
@@ -910,9 +915,24 @@ function catchUpChampionship(
 }
 
 /**
- * Starts the playable championship's round. The AI championships are **not** started here — they are
- * played in one pass at the sync points in `endRoundForAllChampionships`, so starting a round for
- * them would only reset scores they are about to play for themselves.
+ * The rounds an AI division should have completed to keep pace with the playable one: the same
+ * fraction of its own season, rounded up, so it is never behind. A1 plays 23 rounds to A3's 14, so
+ * with the human in A3 it plays two rounds on some A3 rounds and one on others.
+ */
+function paceTarget(playable: Championship, division: Championship): number {
+  const playableSeason = getSeasonRoundCount(playable);
+  const divisionSeason = getSeasonRoundCount(division);
+  if (playableSeason <= 0) return divisionSeason;
+
+  // Multiplied before dividing, so a round that lands exactly on the pace is an exact integer and
+  // is not pushed up a round by floating-point error.
+  return Math.ceil((countCompletedRounds(playable) * divisionSeason) / playableSeason);
+}
+
+/**
+ * Starts the playable championship's round. The AI championships are **not** started here — each
+ * round of theirs is started, played and ended in one pass by `endRoundForAllChampionships`, so
+ * starting one here would only reset scores they are about to play for themselves.
  */
 const startRoundForAllChampionships = (
   championshipContainer: ChampionshipContainer
@@ -935,13 +955,16 @@ const startRoundForAllChampionships = (
 };
 
 /**
- * Advances the playable championship by one round, and brings the AI championships up to date at
- * the sync points: the end of each of the playable championship's phases, and the end of its
- * season.
+ * Ends the playable championship's round, then plays each AI division the rounds it owes to keep
+ * pace with it (`paceTarget`), each from its own random stream. When the playable season is over,
+ * every AI division is played to its end instead — the guarantee that promotion, relegation and the
+ * season summary never read an unfinished table.
  *
- * Before MS-103 this stepped all three round for round, which only worked because Série A and B
- * both play 38 rounds. The women's divisions do not — A1 plays 23 rounds, A2 21, A3 14 — and the
- * pairing threw `Championship couldn't be found.` as soon as the shorter one ran out.
+ * Before MS-103 this stepped the divisions round for round, which only worked because Série A and B
+ * both play 38 rounds; the women's divisions do not, and the pairing threw `Championship couldn't be
+ * found.` as soon as the shorter one ran out. MS-103 then caught the AI divisions up in one pass at
+ * the playable division's phase boundaries and season end. MS-109 holds the whole pyramid, so that
+ * pass became a visible stall, and the rounds are dripped across the season instead.
  */
 const endRoundForAllChampionships = (
   championshipContainer: ChampionshipContainer,
@@ -956,21 +979,20 @@ const endRoundForAllChampionships = (
       playableChampionship
     );
 
-    const crossedPhaseBoundary =
-      (previousChampionship.currentPhaseIndex ?? 0) !==
-      (playableChampionship.currentPhaseIndex ?? 0);
     const seasonIsOver = isChampionshipOver(playableChampionship);
 
-    if (crossedPhaseBoundary || seasonIsOver) {
-      updatedChampionshipContainer = {
-        ...updatedChampionshipContainer,
-        championships: updatedChampionshipContainer.championships.map((championship) =>
-          championship.internalName === playableChampionship.internalName
-            ? championship
-            : catchUpChampionship(championship, dependencies)
-        ),
-      };
-    }
+    updatedChampionshipContainer = {
+      ...updatedChampionshipContainer,
+      championships: updatedChampionshipContainer.championships.map((championship) =>
+        championship.internalName === playableChampionship.internalName
+          ? championship
+          : playRoundsOwed(
+              championship,
+              seasonIsOver ? Infinity : paceTarget(playableChampionship, championship),
+              dependencies
+            )
+      ),
+    };
 
     const result = new OperationResult<ChampionshipContainer>(updatedChampionshipContainer);
     result.setSuccess();

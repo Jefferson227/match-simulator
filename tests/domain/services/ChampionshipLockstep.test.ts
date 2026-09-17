@@ -3,6 +3,10 @@ import ChampionshipService from '../../../src/domain/services/ChampionshipServic
 import ChampionshipContainer from '../../../src/domain/models/ChampionshipContainer';
 import { Championship } from '../../../src/domain/models/Championship';
 import { RandomProvider } from '../../../src/domain/features/match-simulation/types';
+import {
+  getChampionshipByInternalName,
+  getPlayableChampionship,
+} from '../../../src/domain/features/pyramid/Pyramid';
 
 // Unique club ids; see the note in SeasonRollover.test.ts.
 beforeAll(() => {
@@ -38,7 +42,7 @@ function playSeason(internalName: string) {
   let roundsPlayed = 0;
 
   for (let guard = 0; guard < 200; guard++) {
-    const matchContainer = container.playableChampionship.matchContainer;
+    const matchContainer = getPlayableChampionship(container).matchContainer;
     const hasRound = matchContainer.rounds.some(
       (round) => round.number === matchContainer.currentRound
     );
@@ -64,10 +68,20 @@ function playSeason(internalName: string) {
 }
 
 function aiChampionships(container: ChampionshipContainer): Championship[] {
-  return [container.promotionChampionship, container.relegationChampionship].filter(
-    (championship): championship is Championship => Boolean(championship)
+  return container.championships.filter(
+    (championship) => championship.internalName !== container.playableInternalName
   );
 }
+
+const A1 = 'brasileirao-feminino-serie-a1';
+const A2 = 'brasileirao-feminino-serie-a2';
+const A3 = 'brasileirao-feminino-serie-a3';
+
+const division = (container: ChampionshipContainer, internalName: string): Championship =>
+  getChampionshipByInternalName(container, internalName)!;
+
+const completedRounds = (championship: Championship) =>
+  championship.matchContainer.rounds.filter((round) => round.status === 'ended').length;
 
 describe('the pre-existing lockstep overflow', () => {
   it('no longer throws when the AI championship runs out of rounds before the playable one', () => {
@@ -76,53 +90,60 @@ describe('the pre-existing lockstep overflow', () => {
     const { errors, container } = playSeason('brasileirao-feminino-serie-a1');
 
     expect(errors).toEqual([]);
-    expect(container.playableChampionship.matchContainer.totalRounds).toBe(23);
-    expect(container.relegationChampionship!.matchContainer.totalRounds).toBe(21);
+    expect(getPlayableChampionship(container).matchContainer.totalRounds).toBe(23);
+    expect(division(container, A2).matchContainer.totalRounds).toBe(21);
   });
 });
 
 describe('the playable championship is the clock', () => {
-  it('advances only the playable championship for a round in the middle of a phase', () => {
-    const container = init('brasileirao-feminino-serie-a1');
+  it('advances the playable championship one round and each AI division one pace step', () => {
+    const container = init(A1);
     const started = ChampionshipService.startRoundForAllChampionships(container).getResult();
     const ended = ChampionshipService.endRoundForAllChampionships(started, {
       rng: stubRng(),
     }).getResult();
 
-    expect(ended.playableChampionship.matchContainer.currentRound).toBe(2);
-    // The AI division has not been touched: still on round 1, nothing played.
-    expect(ended.relegationChampionship!.matchContainer.currentRound).toBe(1);
-    expect(ended.relegationChampionship!.standings.every((standing) => standing.points === 0)).toBe(
-      true
-    );
+    expect(getPlayableChampionship(ended).matchContainer.currentRound).toBe(2);
+    // One of A1's 23 rounds is ceil(21 / 23) = 1 of A2's and ceil(14 / 23) = 1 of A3's.
+    expect(completedRounds(division(ended, A2))).toBe(1);
+    expect(completedRounds(division(ended, A3))).toBe(1);
+    expect(division(ended, A2).standings.some((standing) => standing.points > 0)).toBe(true);
   });
 
   it('does not start a round on the AI championships', () => {
-    const container = init('brasileirao-feminino-serie-a1');
+    const container = init(A1);
     const started = ChampionshipService.startRoundForAllChampionships(container).getResult();
 
-    expect(started.playableChampionship.matchContainer.rounds[0].status).toBe('in-progress');
-    expect(started.relegationChampionship!.matchContainer.rounds[0].status).toBe('not-started');
+    expect(getPlayableChampionship(started).matchContainer.rounds[0].status).toBe('in-progress');
+    expect(division(started, A2).matchContainer.rounds[0].status).toBe('not-started');
+    expect(division(started, A3).matchContainer.rounds[0].status).toBe('not-started');
   });
 
-  it('catches the AI championships up in one execution at the first phase boundary', () => {
-    let container = init('brasileirao-feminino-serie-a1');
+  it('drips the AI championships across the first phase instead of catching them up at its end', () => {
+    let container = init(A1);
     const rng = stubRng();
 
-    // A1's 1ª Fase is 17 rounds; the boundary is crossed when the 17th ends.
+    // A1's 1ª Fase is 17 rounds; MS-103 caught A2 up in one pass when the 17th ended.
     for (let round = 1; round <= 17; round++) {
       const started = ChampionshipService.startRoundForAllChampionships(container).getResult();
       container = ChampionshipService.endRoundForAllChampionships(started, { rng }).getResult();
 
-      const a2 = container.relegationChampionship!;
-      if (round < 17) {
-        expect(a2.matchContainer.currentRound).toBe(1);
-      } else {
-        // A2 played its whole 15-round first phase and its knockouts in a single pass.
-        expect(a2.currentPhaseIndex).toBeGreaterThan(0);
-        expect(a2.firstPhaseStandings).toHaveLength(16);
-      }
+      expect([round, completedRounds(division(container, A2))]).toEqual([
+        round,
+        Math.ceil((round * 21) / 23),
+      ]);
+      expect([round, completedRounds(division(container, A3))]).toEqual([
+        round,
+        Math.ceil((round * 14) / 23),
+      ]);
     }
+
+    // At the boundary A2 has played 16 of its 21 rounds: its 15-round first phase and one
+    // quarter-final leg — not its whole season.
+    const a2 = division(container, A2);
+    expect(a2.currentPhaseIndex).toBe(1);
+    expect(a2.firstPhaseStandings).toHaveLength(16);
+    expect(a2.survivingTeamIds).toHaveLength(8);
   });
 });
 
@@ -148,7 +169,7 @@ describe.each([
   });
 
   it('plays the playable championship to its final', () => {
-    const playable = container.playableChampionship;
+    const playable = getPlayableChampionship(container);
 
     expect(playable.matchContainer.totalRounds).toBe(expectedRounds);
     expect(playable.currentPhaseIndex).toBe(playable.phases!.length - 1);
@@ -169,8 +190,8 @@ describe.each([
     const rolled = ChampionshipService.runEndOfChampionshipActions(container);
 
     expect(rolled.succeeded).toBe(true);
-    expect(rolled.getResult().playableChampionship.matchContainer.currentSeason).toBe(
-      container.playableChampionship.matchContainer.currentSeason + 1
+    expect(getPlayableChampionship(rolled.getResult()).matchContainer.currentSeason).toBe(
+      getPlayableChampionship(container).matchContainer.currentSeason + 1
     );
   });
 
@@ -184,8 +205,8 @@ describe.each([
 
 describe('Série A3 plays its real format', () => {
   it('is 6 group rounds plus four knockout phases, not 62 rounds', () => {
-    const container = init('brasileirao-feminino-serie-a3');
-    const a3 = container.playableChampionship;
+    const container = init(A3);
+    const a3 = getPlayableChampionship(container);
 
     expect(a3.type).toBe('group-stage-knockout');
     expect(a3.matchContainer.rounds).toHaveLength(6);
@@ -195,24 +216,30 @@ describe('Série A3 plays its real format', () => {
 });
 
 describe('the men’s divisions still run round for round', () => {
-  it('plays 38 rounds and ends with both divisions fully played', () => {
+  it('plays 38 rounds and ends with every division fully played', () => {
     const { container, errors, roundsPlayed } = playSeason('brasileirao-serie-a');
 
     expect(errors).toEqual([]);
     expect(roundsPlayed).toBe(38);
-    expect(container.playableChampionship.matchContainer.totalRounds).toBe(38);
-    expect(container.playableChampionship.phases).toBeUndefined();
+    expect(getPlayableChampionship(container).matchContainer.totalRounds).toBe(38);
+    expect(getPlayableChampionship(container).phases).toBeUndefined();
 
-    const serieB = container.relegationChampionship!;
+    const serieB = division(container, 'brasileirao-serie-b');
     expect(serieB.matchContainer.currentRound).toBeGreaterThan(serieB.matchContainer.totalRounds);
     expect(serieB.standings.some((standing) => standing.points > 0)).toBe(true);
+
+    for (const internalName of ['brasileirao-serie-c', 'brasileirao-serie-d']) {
+      const { currentRound, rounds } = division(container, internalName).matchContainer;
+      expect(rounds.some((round) => round.number === currentRound)).toBe(false);
+    }
   });
 
-  it('rolls over into a new season with 20 clubs each', () => {
+  it('rolls over into a new season with every division keeping its club count', () => {
     const { container } = playSeason('brasileirao-serie-a');
     const rolled = ChampionshipService.runEndOfChampionshipActions(container).getResult();
 
-    expect(rolled.playableChampionship.teams).toHaveLength(20);
-    expect(rolled.relegationChampionship!.teams).toHaveLength(20);
+    expect(rolled.championships.map((championship) => championship.teams.length)).toEqual([
+      20, 20, 20, 64,
+    ]);
   });
 });

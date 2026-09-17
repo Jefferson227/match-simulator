@@ -11,6 +11,10 @@ import {
 import { buildPhaseView } from '../../../../src/domain/features/phases/PhaseView';
 import { RandomProvider } from '../../../../src/domain/features/match-simulation/types';
 import {
+  getChampionshipByInternalName,
+  getPlayableChampionship,
+} from '../../../../src/domain/features/pyramid/Pyramid';
+import {
   buildChampionship,
   groupMembers,
   inPhase,
@@ -273,8 +277,8 @@ describe('MS-106 audit — the code around a round-robin at phase index > 0', ()
     expect(isPhasedChampionshipOver(finished)).toBe(true);
   });
 
-  it('the AI catch-up plays a Série C-shaped division through its later round-robin to a champion', () => {
-    // A 4-club, 2-phase playable division: its phase boundary after round 3 is a sync point.
+  it('the AI drip plays a Série C-shaped division through its later round-robin to a champion', () => {
+    // A 4-club, 2-phase playable division of 3 + 2 rounds, against a 19 + 6 + 2-round AI division.
     const playable = buildChampionship(4, [
       {
         kind: 'round-robin',
@@ -294,33 +298,44 @@ describe('MS-106 audit — the code around a round-robin at phase index > 0', ()
       },
     ]);
     let container: ChampionshipContainer = {
-      playableChampionship: playable,
-      relegationChampionship: buildChampionship(20, serieCShape),
+      championships: [{ ...buildChampionship(20, serieCShape), internalName: 'ai' }, playable],
+      playableInternalName: playable.internalName,
     };
 
     let seed = 0;
     const varied: RandomProvider = {
       nextInt: (min, max) => min + ((((seed += 1) * 7919 + 104729) % 10007) % (max - min + 1)),
     };
-    for (let round = 0; round < 3; round++) {
+    const playRound = () => {
       const started = ChampionshipService.startRoundForAllChampionships(container);
       const ended = ChampionshipService.endRoundForAllChampionships(started.getResult(), {
         rng: varied,
       });
       if (!ended.succeeded) throw new Error(ended.error?.message);
       container = ended.getResult();
-    }
+    };
+    const ai = () => getChampionshipByInternalName(container, 'ai')!;
+    const ended = () => ai().matchContainer.rounds.filter((round) => round.status === 'ended');
 
-    const ai = container.relegationChampionship!;
-    expect(container.playableChampionship.currentPhaseIndex).toBe(1);
-    expect(isPhasedChampionshipOver(ai)).toBe(true);
-    expect(ai.matchContainer.rounds.map((round) => round.phaseIndex)).toEqual([
+    for (let round = 0; round < 3; round++) playRound();
+
+    // The playable phase boundary is no longer a sync point: 3 of 5 playable rounds is
+    // ceil(3 × 27 / 5) = 17 of the AI division's, still inside its 1ª Fase.
+    expect(getPlayableChampionship(container).currentPhaseIndex).toBe(1);
+    expect(ended()).toHaveLength(17);
+    expect(ai().currentPhaseIndex).toBe(0);
+
+    for (let round = 3; round < 5; round++) playRound();
+
+    expect(isPhasedChampionshipOver(getPlayableChampionship(container))).toBe(true);
+    expect(isPhasedChampionshipOver(ai())).toBe(true);
+    expect(ai().matchContainer.rounds.map((round) => round.phaseIndex)).toEqual([
       ...Array(19).fill(0),
       ...Array(6).fill(1),
       2,
       2,
     ]);
-    expect(ai.survivingTeamIds).toHaveLength(1);
-    expect(ai.phaseStandings?.[1]).toHaveLength(8);
+    expect(ai().survivingTeamIds).toHaveLength(1);
+    expect(ai().phaseStandings?.[1]).toHaveLength(8);
   });
 });

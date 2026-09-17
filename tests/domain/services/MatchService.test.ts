@@ -4,6 +4,10 @@ import ChampionshipContainer from '../../../src/domain/models/ChampionshipContai
 import { Championship } from '../../../src/domain/models/Championship';
 import { Team } from '../../../src/domain/models/Team';
 import { RandomProvider } from '../../../src/domain/features/match-simulation/types';
+import {
+  getChampionshipByInternalName,
+  getPlayableChampionship,
+} from '../../../src/domain/features/pyramid/Pyramid';
 
 function buildTeam(params: {
   id: `${string}-${string}-${string}-${string}-${string}`;
@@ -112,8 +116,12 @@ function buildContainer(roundStatus: 'in-progress' | 'not-started' = 'in-progres
     isRelegatable: false,
   };
 
+  // An AI division alongside, with the same round in progress, to prove it is not ticked.
+  const aiDivision: Championship = { ...championship, internalName: 'ai-championship' };
+
   const container: ChampionshipContainer = {
-    playableChampionship: championship,
+    championships: [aiDivision, championship],
+    playableInternalName: championship.internalName,
   };
 
   return container;
@@ -141,9 +149,10 @@ describe('MatchService.runMatchActions', () => {
 
     expect(result.succeeded).toBe(true);
     const updatedContainer = result.getResult();
-    const updatedMatch = updatedContainer.playableChampionship.matchContainer.rounds[0].matches[0];
+    const updatedMatch =
+      getPlayableChampionship(updatedContainer).matchContainer.rounds[0].matches[0];
 
-    expect(updatedContainer.playableChampionship.matchContainer.timer).toBe(1);
+    expect(getPlayableChampionship(updatedContainer).matchContainer.timer).toBe(1);
     expect(updatedMatch.homeTeamScore).toBe(1);
     expect(updatedMatch.awayTeamScore).toBe(0);
     expect(updatedMatch.scorers).toHaveLength(1);
@@ -153,6 +162,18 @@ describe('MatchService.runMatchActions', () => {
     expect(updatedMatch.simulation?.possessionTeam).toBe('away');
   });
 
+  it('ticks only the playable division, leaving the AI divisions to be played a round at a time', () => {
+    const container = buildContainer('in-progress');
+    const aiBefore = getChampionshipByInternalName(container, 'ai-championship');
+
+    const updatedContainer = MatchService.runMatchActions(container, {
+      rng: queuedRng([0, 100, 0, 90, 1]),
+    }).getResult();
+
+    expect(getChampionshipByInternalName(updatedContainer, 'ai-championship')).toBe(aiBefore);
+    expect(updatedContainer.playableInternalName).toBe('mock-championship');
+  });
+
   it('does not simulate when round is not in progress', () => {
     const container = buildContainer('not-started');
 
@@ -160,9 +181,10 @@ describe('MatchService.runMatchActions', () => {
 
     expect(result.succeeded).toBe(true);
     const updatedContainer = result.getResult();
-    const updatedMatch = updatedContainer.playableChampionship.matchContainer.rounds[0].matches[0];
+    const updatedMatch =
+      getPlayableChampionship(updatedContainer).matchContainer.rounds[0].matches[0];
 
-    expect(updatedContainer.playableChampionship.matchContainer.timer).toBe(0);
+    expect(getPlayableChampionship(updatedContainer).matchContainer.timer).toBe(0);
     expect(updatedMatch.homeTeamScore).toBe(0);
     expect(updatedMatch.awayTeamScore).toBe(0);
     expect(updatedMatch.scorers).toHaveLength(0);
