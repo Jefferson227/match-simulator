@@ -380,6 +380,15 @@ decision that supersedes one and amends two.
 With A1 playable, A2 no longer shrinks to 14: the A2 ↔ A3 boundary now exchanges, so A2 goes
 16 → 16 → 18 → 20 over three seasons.
 
+### Verified in the running app
+
+Both pyramids were played through a full season in the browser: the men's summary opens on Série D
+with four pages, the women's on A3 with three, each roll-over keeps every division's club count, and
+the version-3 save reloads into the same division. No stall at a round, a phase boundary or the
+season end — the season end renders in about 38 ms, where MS-103's one-pass catch-up used to run.
+Measurements in `.plans/MS-109/docs/12-MS-109-app-verification-results.md` (that folder is
+gitignored).
+
 ### Left open
 
 - Cups are declared on the container but not loaded, simulated or shown.
@@ -388,5 +397,4 @@ With A1 playable, A2 no longer shrinks to 14: the A2 ↔ A3 boundary now exchang
 - An unphased playable division counts as over after round 37 of 38, so its season-end catch-up runs
   a round early. Pre-existing.
 - `UPDATE_TEAM_STATS` is a no-op on the roll-over turn, pre-existing and still unchanged.
-- The in-app check of a full men's and women's season (MS-109 task 12) was left to the user.
 
