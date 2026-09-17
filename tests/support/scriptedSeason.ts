@@ -1,7 +1,8 @@
 /**
  * Plays a seeded division through `ChampionshipService` with scripted results: the club listed earlier
  * in the seed's `teamNames` wins every match 2-0, so every table and every tie is known in advance.
- * The AI neighbours are caught up by the service itself, under a pinned rng.
+ * The AI divisions are played by the service itself, each under its own pinned stream
+ * (`pinnedRngByDivision`).
  *
  * Not a test file — `tests/support` is outside Jest's `*.test.ts` pattern. Build seeded containers in
  * `beforeAll`, after `useUniqueTeamIds`: at collection time every club id is the stubbed 'mocked-uuid'.
@@ -35,6 +36,42 @@ export function pinnedRng(): RandomProvider {
   };
 }
 
+/** A stable, non-negative seed for `text`. */
+function seedOf(text: string): number {
+  let hash = 0;
+  for (let index = 0; index < text.length; index++) {
+    hash = (hash * 31 + text.charCodeAt(index)) % 10007;
+  }
+  return hash;
+}
+
+/**
+ * One deterministic stream per division, in the style of `pinnedRng`, offset by a seed derived from
+ * the division's `internalName`. Memoised: asking for a division twice returns the same stream, so
+ * its draws continue rather than restart. A fresh factory restarts every stream.
+ *
+ * Pass as `rngForDivision`, so an AI division's results depend only on how many draws *it* has made.
+ */
+export function pinnedRngByDivision(): (internalName: string) => RandomProvider {
+  const streams = new Map<string, RandomProvider>();
+
+  return (internalName) => {
+    let stream = streams.get(internalName);
+    if (!stream) {
+      const seed = seedOf(internalName);
+      let index = 0;
+      stream = {
+        nextInt: (min: number, max: number) => {
+          index += 1;
+          return min + (((index * 7919 + 104729 + seed) % 10007) % (max - min + 1));
+        },
+      };
+      streams.set(internalName, stream);
+    }
+    return stream;
+  };
+}
+
 export const teamNamesOf = (internalName: string) =>
   (championshipsJSON as { internalName: string; teamNames: string[] }[]).find(
     (entry) => entry.internalName === internalName
@@ -47,6 +84,7 @@ export const teamNamesOf = (internalName: string) =>
 export class ScriptedSeason {
   container: ChampionshipContainer;
   private readonly rng = pinnedRng();
+  private readonly rngForDivision = pinnedRngByDivision();
   private readonly seedIndex = new Map<Team['id'], number>();
   private humanFate?: 'wins' | 'loses';
   readonly names: string[];
@@ -164,7 +202,7 @@ export class ScriptedSeason {
         ...playable,
         matchContainer: { ...playable.matchContainer, rounds },
       }),
-      { rng: this.rng }
+      { rng: this.rng, rngForDivision: this.rngForDivision }
     );
     if (!ended.succeeded) throw new Error(ended.error?.message);
     this.container = ended.getResult();

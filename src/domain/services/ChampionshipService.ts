@@ -30,12 +30,25 @@ import {
 } from '../features/pyramid/Pyramid';
 
 type ChampionshipServiceDependencies = {
+  /** The playable division's draws: its shootouts, and the human's club draw. */
   rng?: RandomProvider;
+  /**
+   * Each AI division's own stream, by `internalName`. Every AI match minute and shootout draws from
+   * its division's stream alone, so how the AI rounds are spread across the season — dripped per
+   * playable round or played in one pass — cannot change any division's results under an injected
+   * rng. Defaults to `rng` for every division, which in production is the unseeded shared provider.
+   */
+  rngForDivision?: (internalName: string) => RandomProvider;
 };
 
-const defaultDependencies: Required<ChampionshipServiceDependencies> = {
-  rng: { nextInt: getRandomNumber },
-};
+const defaultRng: RandomProvider = { nextInt: getRandomNumber };
+
+function resolveDependencies(
+  dependencies: ChampionshipServiceDependencies
+): Required<ChampionshipServiceDependencies> {
+  const rng = dependencies.rng ?? defaultRng;
+  return { rng, rngForDivision: dependencies.rngForDivision ?? (() => rng) };
+}
 
 /**
  * True when a championship has simply run out of rounds — its season is finished.
@@ -177,8 +190,7 @@ function withPhaseResolution(
 ): Championship {
   if (!championship.phases?.length) return championship;
 
-  const deps = { ...defaultDependencies, ...dependencies };
-  return resolveCompletedPhase(championship, { rng: deps.rng });
+  return resolveCompletedPhase(championship, { rng: resolveDependencies(dependencies).rng });
 }
 
 function updateStandings(currentStandings: Standing[], matches: Match[]): Standing[] {
@@ -786,7 +798,7 @@ const drawTeamForHumanPlayer = (
   dependencies: ChampionshipServiceDependencies = {}
 ): OperationResult<Team> => {
   try {
-    const { rng } = { ...defaultDependencies, ...dependencies };
+    const { rng } = resolveDependencies(dependencies);
     const { teams } = championship;
     if (teams.length === 0) throw new Error('Championship has no teams to draw from.');
 
@@ -879,7 +891,9 @@ function catchUpChampionship(
 ): Championship {
   if (!championship?.matchContainer?.rounds) return championship;
 
-  const deps = { ...defaultDependencies, ...dependencies };
+  // The division's own stream plays its matches *and* resolves its phases, so a shootout draw
+  // cannot leak into another division's results.
+  const rng = resolveDependencies(dependencies).rngForDivision(championship.internalName);
   let current = championship;
 
   for (let guard = 0; guard < MAX_CATCH_UP_ROUNDS; guard++) {
@@ -889,7 +903,7 @@ function catchUpChampionship(
     );
     if (!hasRoundToPlay) break;
 
-    current = endRound(simulateRoundInOnePass(startRound(current), deps.rng), dependencies);
+    current = endRound(simulateRoundInOnePass(startRound(current), rng), { rng });
   }
 
   return current;
