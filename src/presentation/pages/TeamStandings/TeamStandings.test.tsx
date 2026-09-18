@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import TeamStandings from './TeamStandings';
+import i18n from '../../../i18n';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../../services/useGameState';
 import { GameState } from '../../../game-engine/GameState';
@@ -89,7 +90,8 @@ function buildState(overrides?: Partial<GameState>): GameState {
 }
 
 describe('TeamStandings', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
+    await i18n.changeLanguage('en');
     jest.clearAllMocks();
     (useGameEngine as jest.Mock).mockReturnValue({ dispatch: mockDispatch });
     (useGameState as jest.Mock).mockReturnValue(buildState());
@@ -146,5 +148,48 @@ describe('TeamStandings', () => {
     expect(mockDispatch).toHaveBeenNthCalledWith(3, { type: 'SAVE_GAME' });
     // The roll-over is SeasonSummary's job now — it would reset the tables the summary reads.
     expect(mockDispatch).not.toHaveBeenCalledWith({ type: 'RUN_END_OF_CHAMPIONSHIP_ACTIONS' });
+  });
+
+  test('renders the round, table headers and navigation in English', () => {
+    render(<TeamStandings />);
+
+    expect(screen.getByText(/2026 - ROUND 1 OF 3/)).toBeTruthy();
+    ['W', 'D', 'L', 'PTS'].forEach((header) =>
+      expect(screen.getByRole('columnheader', { name: header })).toBeTruthy()
+    );
+    expect(screen.getByRole('button', { name: 'Previous' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Next' })).toBeTruthy();
+  });
+
+  test('renders every label in Brazilian Portuguese', async () => {
+    await i18n.changeLanguage('pt-BR');
+
+    const { unmount } = render(<TeamStandings />);
+
+    expect(screen.getByText(/2026 - RODADA 1 DE 3/)).toBeTruthy();
+    ['V', 'E', 'D', 'PTS'].forEach((header) =>
+      expect(screen.getByRole('columnheader', { name: header })).toBeTruthy()
+    );
+    expect(screen.getByRole('button', { name: 'CONTINUAR' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Anterior' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Próximo' })).toBeTruthy();
+    unmount();
+
+    jest.mocked(useGameState).mockReturnValue(
+      buildState({
+        championshipContainer: containerOf({
+          ...getPlayableChampionship(buildState().championshipContainer),
+          matchContainer: {
+            ...getPlayableChampionship(buildState().championshipContainer).matchContainer,
+            currentRound: 4,
+            totalRounds: 3,
+          },
+        } as Championship),
+      })
+    );
+    render(<TeamStandings />);
+
+    expect(screen.getByText('TEMPORADA ENCERRADA!')).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'ENCERRAR' })).toBeTruthy();
   });
 });

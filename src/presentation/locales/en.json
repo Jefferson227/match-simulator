@@ -32,7 +32,11 @@
     "contracts": "CONTRACTS",
     "calendar": "CALENDAR",
     "campaigns": "CAMPAIGNS",
-    "position": "POSITION"
+    "position": "POSITION",
+    "place_ordinal_one": "{{count}}st",
+    "place_ordinal_two": "{{count}}nd",
+    "place_ordinal_few": "{{count}}rd",
+    "place_ordinal_other": "{{count}}th"
   },
   "leagueTypeSelector": {
     "selectLeagueType": "SELECT LEAGUE TYPE",
@@ -52,7 +56,16 @@
     "group": "GROUP {{number}}",
     "penalties": "PENALTIES",
     "legOf": "LEG {{current}} OF {{total}}",
-    "notPlayedYet": "TO PLAY"
+    "notPlayedYet": "TO PLAY",
+    "title": "STANDINGS",
+    "roundOf": "ROUND {{current}} OF {{total}}",
+    "seasonComplete": "SEASON COMPLETE!",
+    "winsShort": "W",
+    "drawsShort": "D",
+    "lossesShort": "L",
+    "pointsShort": "PTS",
+    "continue": "CONTINUE",
+    "endSeason": "END SEASON"
   },
   "matchSimulator": {
     "roundOf": "ROUND {{current}} OF {{total}}",
@@ -109,5 +122,12 @@
     "message": "Sorry, but an error has occurred and the game needs to be reset.",
     "errorMessage": "Error message: {{message}}",
     "resetGame": "Reset Game"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "clock": {
+    "speed": "Clock Speed: {{speed}}"
   }
 }

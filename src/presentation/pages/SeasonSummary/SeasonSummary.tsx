@@ -188,7 +188,7 @@ const SeasonSummary: React.FC<SeasonSummaryProps> = ({ summary: propSummary }) =
             }`}
             onClick={handlePrevPage}
             disabled={page === 0}
-            aria-label="Previous"
+            aria-label={t('pagination.previous')}
           >
             {'<'}
           </button>
@@ -206,7 +206,7 @@ const SeasonSummary: React.FC<SeasonSummaryProps> = ({ summary: propSummary }) =
             }`}
             onClick={handleNextPage}
             disabled={page >= totalPages - 1}
-            aria-label="Next"
+            aria-label={t('pagination.next')}
           >
             {'>'}
           </button>

@@ -177,7 +177,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
       <div className="font-press-start min-h-screen flex flex-col items-center">
         <div className="w-[350px] mx-auto text-center">
           <div className="text-[14px] text-white mt-6 mb-2 tracking-wider uppercase">
-            {championship?.name ?? 'Standings'}
+            {championship?.name ?? t('standings.title')}
           </div>
           <div className="text-[12px] text-white mb-2 uppercase">
             {phaseView.isPhased && (
@@ -190,12 +190,14 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
             )}
             {!phaseView.isPhased && !isSeasonComplete && totalRounds > 0 && (
               <>
-                {championship?.matchContainer?.currentSeason} - Round {displayedRound} of{' '}
-                {totalRounds}
+                {championship?.matchContainer?.currentSeason} -{' '}
+                {t('standings.roundOf', { current: displayedRound, total: totalRounds })}
               </>
             )}
             {isSeasonComplete && (
-              <span className="block text-[12px] text-yellow-300">SEASON COMPLETE!</span>
+              <span className="block text-[12px] text-yellow-300">
+                {t('standings.seasonComplete')}
+              </span>
             )}
           </div>
         </div>
@@ -213,10 +215,16 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
                   <tr className="text-[15px] text-white">
                     <th className="font-normal w-[56px] text-center"> </th>
                     <th className="font-normal w-[56px] text-center"> </th>
-                    <th className="font-normal w-[56px] text-center">W</th>
-                    <th className="font-normal w-[56px] text-center">D</th>
-                    <th className="font-normal w-[56px] text-center">L</th>
-                    <th className="font-normal w-[56px] text-center pr-3">PTS</th>
+                    <th className="font-normal w-[56px] text-center">{t('standings.winsShort')}</th>
+                    <th className="font-normal w-[56px] text-center">
+                      {t('standings.drawsShort')}
+                    </th>
+                    <th className="font-normal w-[56px] text-center">
+                      {t('standings.lossesShort')}
+                    </th>
+                    <th className="font-normal w-[56px] text-center pr-3">
+                      {t('standings.pointsShort')}
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -267,7 +275,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
             }`}
             onClick={handlePrevPage}
             disabled={page === 0}
-            aria-label="Previous"
+            aria-label={t('pagination.previous')}
           >
             {'<'}
           </button>
@@ -275,7 +283,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
             className="border-4 border-white w-[180px] h-[56px] flex items-center justify-center text-[15px] text-white bg-transparent hover:bg-white hover:text-[#397a33] transition mx-2 cursor-pointer"
             onClick={handleContinue}
           >
-            {isSeasonComplete ? 'END SEASON' : 'CONTINUE'}
+            {isSeasonComplete ? t('standings.endSeason') : t('standings.continue')}
           </button>
           <button
             className={`border-4 w-[80px] h-[56px] flex items-center justify-center text-[15px] bg-transparent transition ${
@@ -285,7 +293,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
             }`}
             onClick={handleNextPage}
             disabled={page >= totalPages - 1 || totalPages <= 1}
-            aria-label="Next"
+            aria-label={t('pagination.next')}
           >
             {'>'}
           </button>

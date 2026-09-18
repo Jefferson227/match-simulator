@@ -32,7 +32,11 @@
     "contracts": "CONTRATOS",
     "calendar": "CALENDÁRIO",
     "campaigns": "CAMPANHAS",
-    "position": "POSIÇÃO"
+    "position": "POSIÇÃO",
+    "place_ordinal_one": "{{count}}º",
+    "place_ordinal_two": "{{count}}º",
+    "place_ordinal_few": "{{count}}º",
+    "place_ordinal_other": "{{count}}º"
   },
   "leagueTypeSelector": {
     "selectLeagueType": "SELECIONE O TIPO DE LIGA",
@@ -52,7 +56,16 @@
     "group": "GRUPO {{number}}",
     "penalties": "PÊNALTIS",
     "legOf": "JOGO {{current}} DE {{total}}",
-    "notPlayedYet": "A JOGAR"
+    "notPlayedYet": "A JOGAR",
+    "title": "CLASSIFICAÇÃO",
+    "roundOf": "RODADA {{current}} DE {{total}}",
+    "seasonComplete": "TEMPORADA ENCERRADA!",
+    "winsShort": "V",
+    "drawsShort": "E",
+    "lossesShort": "D",
+    "pointsShort": "PTS",
+    "continue": "CONTINUAR",
+    "endSeason": "ENCERRAR"
   },
   "matchSimulator": {
     "roundOf": "RODADA {{current}} DE {{total}}",
@@ -109,5 +122,12 @@
     "message": "Desculpe, ocorreu um erro e o jogo precisa ser reiniciado.",
     "errorMessage": "Mensagem de erro: {{message}}",
     "resetGame": "Reiniciar Jogo"
+  },
+  "pagination": {
+    "previous": "Anterior",
+    "next": "Próximo"
+  },
+  "clock": {
+    "speed": "Velocidade do relógio: {{speed}}"
   }
 }

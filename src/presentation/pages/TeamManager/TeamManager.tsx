@@ -28,24 +28,10 @@ const MAX_SUBS_PER_POSITION = 2;
 // TODO: replace with the real team budget once it exists in the domain model
 const PLACEHOLDER_BUDGET = 'R$ 12.6M';
 
-function getOrdinal(position: number): string {
-  const lastTwoDigits = position % 100;
-  if (lastTwoDigits >= 11 && lastTwoDigits <= 13) return `${position}th`;
-
-  switch (position % 10) {
-    case 1:
-      return `${position}st`;
-    case 2:
-      return `${position}nd`;
-    case 3:
-      return `${position}rd`;
-    default:
-      return `${position}th`;
-  }
-}
-
 const TeamManager: React.FC = () => {
   const { t } = useTranslation();
+  const getOrdinal = (position: number) =>
+    t('teamManager.place', { count: position, ordinal: true });
 
   // Game engine
   const engine = useGameEngine();

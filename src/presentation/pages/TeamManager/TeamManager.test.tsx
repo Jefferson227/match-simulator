@@ -174,6 +174,34 @@ describe('TeamManager', () => {
     expect(screen.getByText(/NEXT MATCH: Novorizontino - 2nd/)).toBeTruthy();
   });
 
+  it('renders ordinal positions in Brazilian Portuguese', async () => {
+    await i18n.changeLanguage('pt-BR');
+    const team = createTeam(basePlayers);
+    const opponent = createOpponent();
+    const rounds: Round[] = [
+      {
+        id: 'round-13',
+        number: 13,
+        status: 'not-started',
+        matches: [
+          {
+            id: 'match-1',
+            homeTeam: team,
+            homeTeamScore: 0,
+            awayTeam: opponent,
+            awayTeamScore: 0,
+            scorers: [],
+          },
+        ],
+      } as Round,
+    ];
+
+    renderTeamManager([team, opponent], rounds, createStandings([team, opponent]));
+
+    expect(screen.getByText(/POSIÇÃO: 1º/)).toBeTruthy();
+    expect(screen.getByText(/PRÓXIMO JOGO: Novorizontino - 2º/)).toBeTruthy();
+  });
+
   it('renders the morale progress bar and the budget', () => {
     const team = createTeam(basePlayers, { morale: 75 });
     renderTeamManager([team]);

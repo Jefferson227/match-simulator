@@ -101,16 +101,16 @@ describe('SeasonSummary', () => {
     expect(screen.getByText('Division D')).toBeInTheDocument();
     expect(screen.getByText('2031')).toBeInTheDocument();
     expect(screen.getByText('4 / 4')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'pagination.next' })).toBeDisabled();
 
     for (const name of ['Division C', 'Division B', 'Division A']) {
-      fireEvent.click(screen.getByRole('button', { name: 'Previous' }));
+      fireEvent.click(screen.getByRole('button', { name: 'pagination.previous' }));
       expect(screen.getByText(name)).toBeInTheDocument();
     }
     expect(screen.getByText('1 / 4')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Previous' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'pagination.previous' })).toBeDisabled();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }));
+    fireEvent.click(screen.getByRole('button', { name: 'pagination.next' }));
     expect(screen.getByText('Division B')).toBeInTheDocument();
   });
 
@@ -144,8 +144,8 @@ describe('SeasonSummary', () => {
 
   it('shows the champion, runner-up and both exchange lists of the division on screen', () => {
     render(<SeasonSummary />);
-    fireEvent.click(screen.getByRole('button', { name: 'Previous' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Previous' }));
+    fireEvent.click(screen.getByRole('button', { name: 'pagination.previous' }));
+    fireEvent.click(screen.getByRole('button', { name: 'pagination.previous' }));
 
     expect(screen.getByText('Division B')).toBeInTheDocument();
     expect(screen.getByText('B1 Short')).toBeInTheDocument();
@@ -163,7 +163,7 @@ describe('SeasonSummary', () => {
     expect(screen.queryByText('seasonSummary.notTracked')).not.toBeInTheDocument();
 
     for (let page = 0; page < 3; page++) {
-      fireEvent.click(screen.getByRole('button', { name: 'Previous' }));
+      fireEvent.click(screen.getByRole('button', { name: 'pagination.previous' }));
     }
 
     // Série A, the top: no division to promote into.
