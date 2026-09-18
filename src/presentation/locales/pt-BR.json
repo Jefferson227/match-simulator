@@ -133,5 +133,9 @@
   "pixelFlag": {
     "us": "Bandeira dos Estados Unidos",
     "br": "Bandeira do Brasil"
+  },
+  "languageSelector": {
+    "title": "SELECIONE O IDIOMA",
+    "back": "VOLTAR"
   }
 }

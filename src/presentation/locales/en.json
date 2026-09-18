@@ -133,5 +133,9 @@
   "pixelFlag": {
     "us": "United States flag",
     "br": "Brazil flag"
+  },
+  "languageSelector": {
+    "title": "SELECT LANGUAGE",
+    "back": "BACK"
   }
 }

@@ -13,6 +13,7 @@ import MatchSimulator from './presentation/pages/MatchSimulator/MatchSimulator';
 import TeamStandings from './presentation/pages/TeamStandings/TeamStandings';
 import TeamAdditionalInfo from './presentation/pages/TeamAdditionalInfo/TeamAdditionalInfo';
 import SeasonSummary from './presentation/pages/SeasonSummary/SeasonSummary';
+import LanguageSelector from './presentation/pages/LanguageSelector/LanguageSelector';
 
 const AppContent: FC = () => {
   // Game engine
@@ -39,6 +40,8 @@ const AppContent: FC = () => {
       return <TeamStandings />;
     case 'SeasonSummary':
       return <SeasonSummary />;
+    case 'LanguageSelector':
+      return <LanguageSelector />;
     default:
       return <InitialScreen />;
   }
