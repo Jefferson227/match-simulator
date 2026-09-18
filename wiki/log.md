@@ -398,3 +398,22 @@ gitignored).
   a round early. Pre-existing.
 - `UPDATE_TEAM_STATS` is a no-op on the roll-over turn, pre-existing and still unchanged.
 
+
+## [2026-09-17] close-out | MS-110 — the player's language lives outside the game state
+
+sha 716f641
+
+Filed [[ms-110-language-selection]]. The language is a presentation concern with its own
+`localStorage` key, not in `GameState`, the save or a `GameAction`. First launch now reads the
+device locale where `src/i18n.ts` used to hardcode `en`. The ticket assumed that detection already
+existed. Domain error messages and seed names stay untranslated.
+
+- [[index]]: new decision row.
+
+### Left open
+
+- The manual browser run was waived. pt-BR label widths on fixed-width pixel buttons are unseen,
+  including "PRÓXIMO ADVERSÁRIO" and the pre-existing "NOVA TEMPORADA".
+- Found, not fixed: `domain/services/GameService.ts` and `ChampionshipService.ts` import
+  `infrastructure` repositories, contradicting [[layer-boundaries]]' "`domain` depends on nothing
+  outside itself". Pre-existing. No ticket.
