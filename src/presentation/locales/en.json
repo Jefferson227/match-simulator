@@ -70,5 +70,44 @@
     "nobodyRelegated": "NOBODY",
     "notTracked": "NOT TRACKED",
     "newSeason": "NEW SEASON"
+  },
+  "initialScreen": {
+    "newGame": "New Game",
+    "loadGame": "Load Game",
+    "language": "Language",
+    "buildVersion": "BUILD VERSION"
+  },
+  "teamAdditionalInfo": {
+    "teamName": "TEAM NAME",
+    "morale": "MORALE",
+    "championship": "CHAMPIONSHIP",
+    "season": "SEASON",
+    "round": "ROUND",
+    "roundOf": "{{current}} OF {{total}}",
+    "position": "POSITION",
+    "place_ordinal_one": "{{count}}ST PLACE",
+    "place_ordinal_two": "{{count}}ND PLACE",
+    "place_ordinal_few": "{{count}}RD PLACE",
+    "place_ordinal_other": "{{count}}TH PLACE",
+    "nextMatch": "NEXT MATCH",
+    "location": "LOCATION",
+    "home": "HOME",
+    "away": "AWAY",
+    "teamPerformance": "TEAM PERFORMANCE",
+    "wins": "WINS",
+    "draws": "DRAWS",
+    "losses": "LOSSES",
+    "points": "POINTS",
+    "goalsFor": "GOALS FOR",
+    "goalsAgainst": "GOALS AGAINST",
+    "nextOpponent": "NEXT OPPONENT",
+    "team": "TEAM",
+    "notAvailable": "N/A",
+    "back": "BACK"
+  },
+  "errorScreen": {
+    "message": "Sorry, but an error has occurred and the game needs to be reset.",
+    "errorMessage": "Error message: {{message}}",
+    "resetGame": "Reset Game"
   }
 }

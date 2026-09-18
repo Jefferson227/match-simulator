@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import buildVersionData from '../../assets/build-version.json';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import MainLayout from '../../components/MainLayout/MainLayout';
@@ -9,6 +10,7 @@ const InitialScreen: React.FC = () => {
   const [buildVersion, setBuildVersion] = useState('');
   const [hasSavedGame, setHasSavedGame] = useState(false);
   const engine = useGameEngine();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (buildVersionData && buildVersionData.buildVersion) {
@@ -63,7 +65,7 @@ const InitialScreen: React.FC = () => {
             className="w-full max-w-xs border-4 border-white py-4 text-lg uppercase transition hover:bg-white hover:text-[#3d7a33] [text-shadow:-3px_3px_0_#2a5624] hover:[text-shadow:none]"
             style={{ boxShadow: '-6px 6px 0 #2a5624' }}
           >
-            New Game
+            {t('initialScreen.newGame')}
           </button>
 
           {hasSavedGame ? (
@@ -72,13 +74,13 @@ const InitialScreen: React.FC = () => {
               className="w-full max-w-xs border-4 py-4 text-lg uppercase transition border-white hover:bg-white hover:text-[#3d7a33] [text-shadow:-3px_3px_0_#2a5624] hover:[text-shadow:none]"
               style={{ boxShadow: '-6px 6px 0 #2a5624' }}
             >
-              Load Game
+              {t('initialScreen.loadGame')}
             </button>
           ) : null}
         </div>
 
         <div className="mt-16 text-center" style={{ textShadow: '-3px 3px 0 #2a5624' }}>
-          <p>BUILD VERSION</p>
+          <p>{t('initialScreen.buildVersion')}</p>
           <p>{buildVersion}</p>
         </div>
       </div>

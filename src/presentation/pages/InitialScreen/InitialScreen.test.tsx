@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import InitialScreen from './InitialScreen';
+import i18n from '../../../i18n';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import GameService from '~domain/services/GameService';
 import OperationResult from '~domain/results/OperationResult';
@@ -48,7 +49,8 @@ function probeFailureResult(message: string): OperationResult<boolean> {
 }
 
 describe('InitialScreen', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
+    await i18n.changeLanguage('en');
     jest.clearAllMocks();
     (useGameEngine as jest.Mock).mockReturnValue(mockEngine);
     mockedGameService.loadGame.mockReturnValue(loadFailureResult('No saved game'));
@@ -109,5 +111,16 @@ describe('InitialScreen', () => {
     render(<InitialScreen />);
 
     expect(screen.queryByRole('button', { name: /load game/i })).toBeNull();
+  });
+
+  test('renders the menu and build label in Brazilian Portuguese', async () => {
+    mockedGameService.hasSavedGame.mockReturnValue(probeResult(true));
+    await i18n.changeLanguage('pt-BR');
+
+    render(<InitialScreen />);
+
+    expect(screen.getByRole('button', { name: 'Novo Jogo' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Carregar Jogo' })).toBeTruthy();
+    expect(screen.getByText('VERSÃO')).toBeTruthy();
   });
 });

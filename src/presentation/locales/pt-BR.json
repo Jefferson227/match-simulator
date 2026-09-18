@@ -70,5 +70,44 @@
     "nobodyRelegated": "NINGUÉM",
     "notTracked": "SEM DADOS",
     "newSeason": "NOVA TEMPORADA"
+  },
+  "initialScreen": {
+    "newGame": "Novo Jogo",
+    "loadGame": "Carregar Jogo",
+    "language": "Idioma",
+    "buildVersion": "VERSÃO"
+  },
+  "teamAdditionalInfo": {
+    "teamName": "NOME DO TIME",
+    "morale": "MORAL",
+    "championship": "CAMPEONATO",
+    "season": "TEMPORADA",
+    "round": "RODADA",
+    "roundOf": "{{current}} DE {{total}}",
+    "position": "POSIÇÃO",
+    "place_ordinal_one": "{{count}}º LUGAR",
+    "place_ordinal_two": "{{count}}º LUGAR",
+    "place_ordinal_few": "{{count}}º LUGAR",
+    "place_ordinal_other": "{{count}}º LUGAR",
+    "nextMatch": "PRÓXIMO JOGO",
+    "location": "LOCAL",
+    "home": "CASA",
+    "away": "FORA",
+    "teamPerformance": "DESEMPENHO",
+    "wins": "VITÓRIAS",
+    "draws": "EMPATES",
+    "losses": "DERROTAS",
+    "points": "PONTOS",
+    "goalsFor": "GOLS PRÓ",
+    "goalsAgainst": "GOLS CONTRA",
+    "nextOpponent": "PRÓXIMO ADVERSÁRIO",
+    "team": "TIME",
+    "notAvailable": "N/D",
+    "back": "VOLTAR"
+  },
+  "errorScreen": {
+    "message": "Desculpe, ocorreu um erro e o jogo precisa ser reiniciado.",
+    "errorMessage": "Mensagem de erro: {{message}}",
+    "resetGame": "Reiniciar Jogo"
   }
 }

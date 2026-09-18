@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import MainLayout from '../../components/MainLayout/MainLayout';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../../services/useGameState';
@@ -24,6 +25,7 @@ const EMPTY_TEAM: Team = {
 const TeamAdditionalInfo: React.FC = () => {
   const engine = useGameEngine();
   const state = useGameState(engine);
+  const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
 
   const championship = new ChampionshipUseCases(state).getPlayableChampionship();
@@ -55,21 +57,19 @@ const TeamAdditionalInfo: React.FC = () => {
     (standing) => standing.team.id === opponentTeam?.id
   );
 
-  const getOrdinalSuffix = (num: number): string => {
-    const j = num % 10;
-    const k = num % 100;
-    if (j === 1 && k !== 11) return 'ST';
-    if (j === 2 && k !== 12) return 'ND';
-    if (j === 3 && k !== 13) return 'RD';
-    return 'TH';
-  };
+  const notAvailable = t('teamAdditionalInfo.notAvailable');
+  const placeText = (position: number) =>
+    t('teamAdditionalInfo.place', { count: position, ordinal: true });
 
-  const positionText = humanStanding
-    ? `${humanStanding.position}${getOrdinalSuffix(humanStanding.position)} PLACE`
-    : 'N/A';
+  const positionText = humanStanding ? placeText(humanStanding.position) : notAvailable;
   const opponentPositionText = opponentStanding
-    ? `${opponentStanding.position}${getOrdinalSuffix(opponentStanding.position)} PLACE`
-    : 'N/A';
+    ? placeText(opponentStanding.position)
+    : notAvailable;
+  const locationText = nextMatch
+    ? nextMatch.homeTeam.id === humanTeam.id
+      ? t('teamAdditionalInfo.home')
+      : t('teamAdditionalInfo.away')
+    : notAvailable;
 
   const moraleBarColor =
     humanTeam.morale <= 35 ? '#ef4444' : humanTeam.morale < 65 ? '#eab308' : '#22c55e';
@@ -81,7 +81,7 @@ const TeamAdditionalInfo: React.FC = () => {
   const renderFirstPage = () => (
     <div className="h-[31rem] flex flex-col justify-between">
       <div className="p-3 bg-black/20 border-4 border-white">
-        <div className="mb-2 text-[17px]">MORALE</div>
+        <div className="mb-2 text-[17px]">{t('teamAdditionalInfo.morale')}</div>
         <div className="w-full h-8 bg-[#316229] border-4 border-white my-2 overflow-hidden">
           <div
             className="h-full transition-all duration-300"
@@ -98,19 +98,23 @@ const TeamAdditionalInfo: React.FC = () => {
         onClick={() => engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'TeamStandings' })}
       >
         <div className="grid grid-cols-2 gap-3 text-sm">
-          <div>CHAMPIONSHIP</div>
-          <div className="text-right">{championship?.name ?? 'N/A'}</div>
-          <div>SEASON</div>
-          <div className="text-right">{championship?.matchContainer?.currentSeason ?? 'N/A'}</div>
-          <div>ROUND</div>
-          <div className="text-right">{`${currentRound} OF ${totalRounds}`}</div>
-          <div>POSITION</div>
+          <div>{t('teamAdditionalInfo.championship')}</div>
+          <div className="text-right">{championship?.name ?? notAvailable}</div>
+          <div>{t('teamAdditionalInfo.season')}</div>
+          <div className="text-right">
+            {championship?.matchContainer?.currentSeason ?? notAvailable}
+          </div>
+          <div>{t('teamAdditionalInfo.round')}</div>
+          <div className="text-right">
+            {t('teamAdditionalInfo.roundOf', { current: currentRound, total: totalRounds })}
+          </div>
+          <div>{t('teamAdditionalInfo.position')}</div>
           <div className="text-right">{positionText}</div>
         </div>
       </button>
 
       <div className="p-3 bg-black/20 border-4 border-white">
-        <div className="mb-2 text-[17px]">NEXT MATCH</div>
+        <div className="mb-2 text-[17px]">{t('teamAdditionalInfo.nextMatch')}</div>
         <div className="flex flex-col items-center">
           <div
             className="border-4 w-full mx-auto text-[17px] mb-2 flex justify-center items-center h-12 uppercase"
@@ -120,14 +124,12 @@ const TeamAdditionalInfo: React.FC = () => {
               color: opponentTeam?.colors.text ?? '#e2e2e2',
             }}
           >
-            {opponentTeam?.shortName || opponentTeam?.abbreviation || 'N/A'}
+            {opponentTeam?.shortName || opponentTeam?.abbreviation || notAvailable}
           </div>
           <div className="grid grid-cols-2 gap-3 text-xs opacity-80 w-full">
-            <div>LOCATION</div>
-            <div className="text-right">
-              {nextMatch ? (nextMatch.homeTeam.id === humanTeam.id ? 'HOME' : 'AWAY') : 'N/A'}
-            </div>
-            <div>POSITION</div>
+            <div>{t('teamAdditionalInfo.location')}</div>
+            <div className="text-right">{locationText}</div>
+            <div>{t('teamAdditionalInfo.position')}</div>
             <div className="text-right">{opponentPositionText}</div>
           </div>
         </div>
@@ -138,36 +140,34 @@ const TeamAdditionalInfo: React.FC = () => {
   const renderSecondPage = () => (
     <div className="h-[31rem] flex flex-col justify-between">
       <div className="p-3 bg-black/20 border-4 border-white">
-        <div className="mb-3 text-[17px]">TEAM PERFORMANCE</div>
+        <div className="mb-3 text-[17px]">{t('teamAdditionalInfo.teamPerformance')}</div>
         <div className="grid grid-cols-2 gap-3 text-sm">
-          <div>WINS</div>
+          <div>{t('teamAdditionalInfo.wins')}</div>
           <div className="text-right">{humanStanding?.wins ?? 0}</div>
-          <div>DRAWS</div>
+          <div>{t('teamAdditionalInfo.draws')}</div>
           <div className="text-right">{humanStanding?.draws ?? 0}</div>
-          <div>LOSSES</div>
+          <div>{t('teamAdditionalInfo.losses')}</div>
           <div className="text-right">{humanStanding?.losses ?? 0}</div>
-          <div>POINTS</div>
+          <div>{t('teamAdditionalInfo.points')}</div>
           <div className="text-right">{humanStanding?.points ?? 0}</div>
-          <div>GOALS FOR</div>
+          <div>{t('teamAdditionalInfo.goalsFor')}</div>
           <div className="text-right">{humanStanding?.goalsFor ?? 0}</div>
-          <div>GOALS AGAINST</div>
+          <div>{t('teamAdditionalInfo.goalsAgainst')}</div>
           <div className="text-right">{humanStanding?.goalsAgainst ?? 0}</div>
         </div>
       </div>
 
       <div className="p-3 bg-black/20 border-4 border-white">
-        <div className="mb-3 text-[17px]">NEXT OPPONENT</div>
+        <div className="mb-3 text-[17px]">{t('teamAdditionalInfo.nextOpponent')}</div>
         <div className="grid grid-cols-2 gap-3 text-sm">
-          <div>TEAM</div>
+          <div>{t('teamAdditionalInfo.team')}</div>
           <div className="text-right uppercase">
-            {opponentTeam?.shortName || opponentTeam?.abbreviation || 'N/A'}
+            {opponentTeam?.shortName || opponentTeam?.abbreviation || notAvailable}
           </div>
-          <div>POSITION</div>
+          <div>{t('teamAdditionalInfo.position')}</div>
           <div className="text-right">{opponentPositionText}</div>
-          <div>LOCATION</div>
-          <div className="text-right">
-            {nextMatch ? (nextMatch.homeTeam.id === humanTeam.id ? 'HOME' : 'AWAY') : 'N/A'}
-          </div>
+          <div>{t('teamAdditionalInfo.location')}</div>
+          <div className="text-right">{locationText}</div>
         </div>
       </div>
     </div>
@@ -184,7 +184,7 @@ const TeamAdditionalInfo: React.FC = () => {
         }}
       >
         <h2 className="m-0 text-[17px] uppercase tracking-wider">
-          {humanTeam.fullName || 'TEAM NAME'}
+          {humanTeam.fullName || t('teamAdditionalInfo.teamName')}
         </h2>
       </div>
 
@@ -204,7 +204,7 @@ const TeamAdditionalInfo: React.FC = () => {
           className="h-[70px] w-1/3 bg-transparent border-4 border-white text-white px-4 py-2 mx-2 font-press-start text-[16px] transition-all hover:bg-white/20 active:translate-y-px"
           onClick={handleBack}
         >
-          BACK
+          {t('teamAdditionalInfo.back')}
         </button>
         <button
           className={`h-[70px] w-1/3 bg-transparent border-4 border-white text-white px-4 py-2 ms-2 font-press-start text-[16px] transition-all ${
