@@ -3,8 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import MainLayout from '../../components/MainLayout/MainLayout';
 import PixelFlag, { FlagCountry } from '../../components/PixelFlag/PixelFlag';
-import { changeGameLanguage } from '../../../i18n';
-import { Language } from '../../../infrastructure/repositories/LanguageRepository';
+import { Language, changeGameLanguage } from '../../../i18n';
 
 // Each option is labelled in its own language, so a player can find theirs whatever is active.
 // Labels are 12px: the pixel font is ~1em per glyph, and "Português (Brasil)" beside a flag would

@@ -9,6 +9,8 @@ import {
   saveLanguage,
 } from './infrastructure/repositories/LanguageRepository';
 
+export type { Language };
+
 const initialLanguage: Language = getStoredLanguage() ?? detectDeviceLanguage();
 
 i18n.use(initReactI18next).init({
