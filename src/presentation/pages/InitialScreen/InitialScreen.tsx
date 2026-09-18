@@ -77,6 +77,16 @@ const InitialScreen: React.FC = () => {
               {t('initialScreen.loadGame')}
             </button>
           ) : null}
+
+          <button
+            onClick={() =>
+              engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'LanguageSelector' })
+            }
+            className="w-full max-w-xs border-4 py-4 text-lg uppercase transition border-white hover:bg-white hover:text-[#3d7a33] [text-shadow:-3px_3px_0_#2a5624] hover:[text-shadow:none]"
+            style={{ boxShadow: '-6px 6px 0 #2a5624' }}
+          >
+            {t('initialScreen.language')}
+          </button>
         </div>
 
         <div className="mt-16 text-center" style={{ textShadow: '-3px 3px 0 #2a5624' }}>

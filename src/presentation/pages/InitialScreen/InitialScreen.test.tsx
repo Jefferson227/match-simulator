@@ -123,4 +123,34 @@ describe('InitialScreen', () => {
     expect(screen.getByRole('button', { name: 'Carregar Jogo' })).toBeTruthy();
     expect(screen.getByText('VERSÃO')).toBeTruthy();
   });
+
+  test.each([
+    ['without a saved game', false, ['New Game', 'Language']],
+    ['with a saved game', true, ['New Game', 'Load Game', 'Language']],
+  ])('lists the language button last %s', (_, hasSave, labels) => {
+    mockedGameService.hasSavedGame.mockReturnValue(probeResult(hasSave));
+
+    render(<InitialScreen />);
+
+    expect(screen.getAllByRole('button').map((button) => button.textContent)).toEqual(labels);
+  });
+
+  test('dispatches set current screen when language button is clicked', () => {
+    render(<InitialScreen />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Language' }));
+
+    expect(mockDispatch).toHaveBeenCalledWith({
+      type: 'SET_CURRENT_SCREEN',
+      screenName: 'LanguageSelector',
+    });
+  });
+
+  test('labels the language button Idioma in Brazilian Portuguese', async () => {
+    await i18n.changeLanguage('pt-BR');
+
+    render(<InitialScreen />);
+
+    expect(screen.getByRole('button', { name: 'Idioma' })).toBeTruthy();
+  });
 });
