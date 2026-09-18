@@ -98,8 +98,8 @@ const TeamAdditionalInfo: React.FC = () => {
         onClick={() => engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'TeamStandings' })}
       >
         <div className="grid grid-cols-2 gap-3 text-sm">
-          <div>{t('teamAdditionalInfo.championship')}</div>
-          <div className="text-right">{championship?.name ?? notAvailable}</div>
+          <div className="col-span-2">{t('teamAdditionalInfo.championship')}</div>
+          <div className="col-span-2 text-right">{championship?.name ?? notAvailable}</div>
           <div>{t('teamAdditionalInfo.season')}</div>
           <div className="text-right">
             {championship?.matchContainer?.currentSeason ?? notAvailable}
@@ -192,7 +192,7 @@ const TeamAdditionalInfo: React.FC = () => {
 
       <div className="flex justify-between mt-5">
         <button
-          className={`h-[70px] w-1/3 bg-transparent border-4 border-white text-white px-4 py-2 me-2 font-press-start text-[16px] transition-all ${
+          className={`h-[70px] w-1/4 bg-transparent border-4 border-white text-white px-4 py-2 me-2 font-press-start text-[16px] transition-all ${
             currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-white/20 active:translate-y-px'
           }`}
           onClick={() => currentPage > 1 && setCurrentPage((prev) => prev - 1)}
@@ -201,13 +201,13 @@ const TeamAdditionalInfo: React.FC = () => {
           &lt;
         </button>
         <button
-          className="h-[70px] w-1/3 bg-transparent border-4 border-white text-white px-4 py-2 mx-2 font-press-start text-[16px] transition-all hover:bg-white/20 active:translate-y-px"
+          className="h-[70px] w-1/2 bg-transparent border-4 border-white text-white px-4 py-2 mx-2 font-press-start text-[16px] transition-all hover:bg-white/20 active:translate-y-px"
           onClick={handleBack}
         >
           {t('teamAdditionalInfo.back')}
         </button>
         <button
-          className={`h-[70px] w-1/3 bg-transparent border-4 border-white text-white px-4 py-2 ms-2 font-press-start text-[16px] transition-all ${
+          className={`h-[70px] w-1/4 bg-transparent border-4 border-white text-white px-4 py-2 ms-2 font-press-start text-[16px] transition-all ${
             currentPage === 2 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-white/20 active:translate-y-px'
           }`}
           onClick={() => currentPage < 2 && setCurrentPage((prev) => prev + 1)}
