@@ -129,5 +129,9 @@
   },
   "clock": {
     "speed": "Clock Speed: {{speed}}"
+  },
+  "pixelFlag": {
+    "us": "United States flag",
+    "br": "Brazil flag"
   }
 }

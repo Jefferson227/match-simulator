@@ -129,5 +129,9 @@
   },
   "clock": {
     "speed": "Velocidade do relógio: {{speed}}"
+  },
+  "pixelFlag": {
+    "us": "Bandeira dos Estados Unidos",
+    "br": "Bandeira do Brasil"
   }
 }
