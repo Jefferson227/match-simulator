@@ -417,3 +417,16 @@ existed. Domain error messages and seed names stay untranslated.
 - Found, not fixed: `domain/services/GameService.ts` and `ChampionshipService.ts` import
   `infrastructure` repositories, contradicting [[layer-boundaries]]' "`domain` depends on nothing
   outside itself". Pre-existing. No ticket.
+
+## [2026-09-17] correct | MS-110 — verified in the running app after all
+
+sha d1a53b3
+
+The manual run was done in Chrome after all. [[ms-110-language-selection]]'s verification section
+and its [[index]] status were amended. The run found "VOLTAR" and "CAMPEONATO" overflowing on
+`TeamAdditionalInfo`; "CHAMPIONSHIP" already overlapped there in English. Both were fixed. The
+width item under the previous entry's "Left open" is closed.
+
+### Left open
+
+- `TeamAdditionalInfo` has no entry point in the UI. Pre-existing. No ticket.

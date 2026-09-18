@@ -65,7 +65,7 @@ Why things are the way they are — the part the code cannot state.
 | [[ms-107-container-recentring]] | MS-107 | superseded by MS-109 |
 | [[ms-108-saved-game-size]] | MS-108 | implemented; a reload loses each played match's historical squad snapshot; save version 3 since MS-109 |
 | [[ms-109-full-pyramid-container]] | MS-109 | implemented; cups declared but not loaded |
-| [[ms-110-language-selection]] | MS-110 | implemented; manual browser run waived |
+| [[ms-110-language-selection]] | MS-110 | implemented; verified in the running app |
 
 ## Raw
 

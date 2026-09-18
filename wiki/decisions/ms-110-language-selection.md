@@ -62,5 +62,7 @@ lookups the game does not want, and its own storage key. The in-repo helper is a
 
 ## Verification
 
-Automated only. The user waived the manual browser run for MS-110. Label widths in pt-BR on the
-fixed-width pixel buttons were checked by reasoning, not seen in a browser.
+Tests, plus a manual run in Chrome: first launch both ways, switching, persistence across reload,
+Load Game and New Game, and a full women's season walked in pt-BR. That run found two overflowing
+labels on `TeamAdditionalInfo`, fixed in the same ticket. Longer Portuguese labels elsewhere wrap
+to two lines but stay inside their boxes.
