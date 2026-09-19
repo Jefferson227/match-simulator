@@ -18,6 +18,7 @@
   "teamManager": {
     "chooseFormation": "ESCOLHER FORMAÇÃO",
     "startMatch": "INICIAR JOGO",
+    "chooseStrategy": "ESCOLHER ESTRATÉGIA",
     "goBack": "VOLTAR",
     "bestPlayers": "MELHORES JOGADORES",
     "selectedCount": "{{count}} SELECIONADO(S)",

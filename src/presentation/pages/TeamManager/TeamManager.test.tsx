@@ -211,12 +211,15 @@ describe('TeamManager', () => {
     expect(screen.getByText(/BUDGET: R\$ 12.6M/)).toBeTruthy();
   });
 
-  it('renders the action buttons and no squad list', () => {
+  it('renders Start Match and Choose Strategy, and no squad list', () => {
     const team = createTeam(basePlayers);
     renderTeamManager([team]);
 
-    ['START MATCH', 'STADIUM', 'MARKET', 'STATS', 'CONTRACTS', 'CALENDAR', 'CAMPAIGNS'].forEach(
-      (label) => expect(screen.getByText(label)).toBeTruthy()
+    expect(screen.getByText('START MATCH')).toBeTruthy();
+    expect(screen.getByText('CHOOSE STRATEGY')).toBeTruthy();
+
+    ['STADIUM', 'MARKET', 'STATS', 'CONTRACTS', 'CALENDAR', 'CAMPAIGNS'].forEach((label) =>
+      expect(screen.queryByText(label)).toBeNull()
     );
 
     expect(screen.queryByText('CHOOSE FORMATION')).toBeNull();
@@ -224,6 +227,25 @@ describe('TeamManager', () => {
     expect(screen.queryByText('<')).toBeNull();
     expect(screen.queryByText('>')).toBeNull();
     expect(screen.queryByText('Player 1')).toBeNull();
+  });
+
+  it('shows the squad list when Choose Strategy is clicked and hides it on Go Back', () => {
+    const team = createTeam(basePlayers);
+    renderTeamManager([team]);
+
+    fireEvent.click(screen.getByText('CHOOSE STRATEGY'));
+
+    expect(screen.getByText('Player 1')).toBeTruthy();
+    expect(screen.getByText('Player 11')).toBeTruthy();
+    expect(screen.getByText('CHOOSE FORMATION')).toBeTruthy();
+    // The best available lineup is preselected
+    expect(screen.getByText('4-4-2')).toBeTruthy();
+    expect(screen.queryByText('START MATCH')).toBeNull();
+
+    fireEvent.click(screen.getByText('GO BACK'));
+
+    expect(screen.queryByText('Player 1')).toBeNull();
+    expect(screen.getByText('START MATCH')).toBeTruthy();
   });
 
   it('picks the best lineup and navigates to the match when Start Match is clicked', () => {

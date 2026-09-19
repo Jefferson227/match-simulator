@@ -4,9 +4,13 @@ import MainLayout from '../../components/MainLayout/MainLayout';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../../services/useGameState';
 import ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
-import Player from '../../../domain/models/Player';
 import { Team } from '../../../domain/models/Team';
-import Formations, { FORMATIONS } from '../../../domain/enums/Formations';
+import SquadSelection, {
+  PlayerSelectionState,
+  PlayerStates,
+  countStarters,
+  selectBestLineup,
+} from './SquadSelection';
 
 const EMPTY_TEAM: Team = {
   id: '00000000-0000-0000-0000-000000000000',
@@ -23,8 +27,6 @@ const EMPTY_TEAM: Team = {
   isControlledByHuman: false,
 };
 
-const MAX_SUBS_PER_POSITION = 2;
-
 // TODO: replace with the real team budget once it exists in the domain model
 const PLACEHOLDER_BUDGET = 'R$ 12.6M';
 
@@ -38,6 +40,9 @@ const TeamManager: React.FC = () => {
   const state = useGameState(engine);
 
   const [team, setTeam] = useState<Team>(EMPTY_TEAM);
+  const [showSquad, setShowSquad] = useState(false);
+  // Starts as the best available lineup; Choose Strategy lets the coach change it
+  const [playerStates, setPlayerStates] = useState<PlayerStates>({});
 
   const championshipUseCases = new ChampionshipUseCases(state);
   const championship = championshipUseCases.getPlayableChampionship();
@@ -53,6 +58,7 @@ const TeamManager: React.FC = () => {
     }
 
     setTeam(teamToBeSet);
+    setPlayerStates(selectBestLineup(teamToBeSet.players ?? []));
   }, []);
 
   useEffect(() => {
@@ -91,57 +97,20 @@ const TeamManager: React.FC = () => {
     }
   }, [championship, team.id]);
 
-  // Best available lineup, used until a squad selection screen exists again
-  const buildBestLineup = (): { starters: Player[]; subs: Player[] } => {
-    const players = team.players ?? [];
-    if (!players.length) return { starters: [], subs: [] };
-
-    const isFormationAvailable = (formation: Formations) => {
-      const [df, mf, fw] = formation.split('-').map(Number);
-      return (
-        players.filter((p) => p.position === 'GK').length >= 1 &&
-        players.filter((p) => p.position === 'DF').length >= df &&
-        players.filter((p) => p.position === 'MF').length >= mf &&
-        players.filter((p) => p.position === 'FW').length >= fw
-      );
-    };
-
-    const formation = FORMATIONS.find(isFormationAvailable);
-    const strongestFirst = (a: Player, b: Player) => b.strength - a.strength;
-    const byPosition = (position: Player['position'], count: number, pool: Player[]) =>
-      pool
-        .filter((p) => p.position === position)
-        .sort(strongestFirst)
-        .slice(0, count);
-
-    let starters: Player[] = [];
-    if (formation) {
-      const [df, mf, fw] = formation.split('-').map(Number);
-      starters = [
-        ...byPosition('GK', 1, players),
-        ...byPosition('DF', df, players),
-        ...byPosition('MF', mf, players),
-        ...byPosition('FW', fw, players),
-      ];
-    } else {
-      starters = [...players].sort(strongestFirst).slice(0, 11);
-    }
-
-    const starterIds = new Set(starters.map((player) => player.id));
-    const availablePlayers = players.filter((player) => !starterIds.has(player.id));
-    const subs = [
-      ...byPosition('GK', 1, availablePlayers),
-      ...byPosition('DF', MAX_SUBS_PER_POSITION, availablePlayers),
-      ...byPosition('MF', MAX_SUBS_PER_POSITION, availablePlayers),
-      ...byPosition('FW', MAX_SUBS_PER_POSITION, availablePlayers),
-    ];
-
-    return { starters, subs };
-  };
+  const players = team.players ?? [];
+  const isLineupComplete =
+    players.length > 0 && countStarters(playerStates) === Math.min(11, players.length);
 
   const handleStartMatch = () => {
-    const { starters, subs } = buildBestLineup();
-    engine.dispatch({ type: 'SET_STARTERS_AND_SUBS', team, starters, subs });
+    if (!isLineupComplete) return;
+    const withState = (selectionState: PlayerSelectionState) =>
+      players.filter((player) => playerStates[player.id] === selectionState);
+    engine.dispatch({
+      type: 'SET_STARTERS_AND_SUBS',
+      team,
+      starters: withState(PlayerSelectionState.Selected),
+      subs: withState(PlayerSelectionState.Substitute),
+    });
     engine.dispatch({ type: 'PREPARE_TEAMS_BEFORE_MATCH' });
     engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'MatchSimulator' });
   };
@@ -169,12 +138,18 @@ const TeamManager: React.FC = () => {
     color: nameColor,
   };
 
-  // TODO: wire these up once the corresponding screens exist
-  const secondaryButtons: string[][] = [
-    ['teamManager.stadium', 'teamManager.market'],
-    ['teamManager.stats', 'teamManager.contracts'],
-    ['teamManager.calendar', 'teamManager.campaigns'],
-  ];
+  if (showSquad) {
+    return (
+      <MainLayout>
+        <SquadSelection
+          team={team}
+          playerStates={playerStates}
+          onPlayerStatesChange={setPlayerStates}
+          onGoBack={() => setShowSquad(false)}
+        />
+      </MainLayout>
+    );
+  }
 
   return (
     <MainLayout>
@@ -237,25 +212,24 @@ const TeamManager: React.FC = () => {
         <div className="flex flex-col items-center gap-2 py-[17px]">
           <button
             className="w-[90%] border-[4px] py-[17px] text-[16px]"
-            style={shortButtonStyle}
+            style={{
+              ...shortButtonStyle,
+              opacity: isLineupComplete ? 1 : 0.5,
+              cursor: isLineupComplete ? 'pointer' : 'not-allowed',
+            }}
             onClick={handleStartMatch}
+            disabled={!isLineupComplete}
           >
             {t('teamManager.startMatch')}
           </button>
 
-          {secondaryButtons.map((row) => (
-            <div key={row.join('-')} className="w-[90%] flex justify-between gap-2">
-              {row.map((labelKey) => (
-                <button
-                  key={labelKey}
-                  className="w-1/2 border-[4px] py-[17px] text-[10px]"
-                  style={shortButtonStyle}
-                >
-                  {t(labelKey)}
-                </button>
-              ))}
-            </div>
-          ))}
+          <button
+            className="w-[90%] border-[4px] py-[17px] text-[16px]"
+            style={shortButtonStyle}
+            onClick={() => setShowSquad(true)}
+          >
+            {t('teamManager.chooseStrategy')}
+          </button>
         </div>
       </div>
     </MainLayout>
