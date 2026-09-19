@@ -37,7 +37,24 @@
     "place_ordinal_one": "{{count}}st",
     "place_ordinal_two": "{{count}}nd",
     "place_ordinal_few": "{{count}}rd",
-    "place_ordinal_other": "{{count}}th"
+    "place_ordinal_other": "{{count}}th",
+    "listView": "LIST",
+    "playerView": "PLAYER",
+    "starter": "STARTER",
+    "substitute": "SUB",
+    "none": "NONE",
+    "playerStats": {
+      "strength": "STRENGTH",
+      "xp": "XP",
+      "age": "AGE",
+      "matches": "MATCHES",
+      "goals": "GOALS",
+      "yellowCards": "YELLOW CARDS",
+      "redCards": "RED CARDS",
+      "injuries": "INJURIES",
+      "mood": "MOOD",
+      "stamina": "STAMINA"
+    }
   },
   "leagueTypeSelector": {
     "selectLeagueType": "SELECT LEAGUE TYPE",

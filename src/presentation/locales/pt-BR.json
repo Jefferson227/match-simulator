@@ -37,7 +37,24 @@
     "place_ordinal_one": "{{count}}º",
     "place_ordinal_two": "{{count}}º",
     "place_ordinal_few": "{{count}}º",
-    "place_ordinal_other": "{{count}}º"
+    "place_ordinal_other": "{{count}}º",
+    "listView": "LISTA",
+    "playerView": "JOGADOR",
+    "starter": "TITULAR",
+    "substitute": "RESERVA",
+    "none": "NENHUM",
+    "playerStats": {
+      "strength": "FORÇA",
+      "xp": "XP",
+      "age": "IDADE",
+      "matches": "JOGOS",
+      "goals": "GOLS",
+      "yellowCards": "AMARELOS",
+      "redCards": "VERMELHOS",
+      "injuries": "LESÕES",
+      "mood": "HUMOR",
+      "stamina": "FÔLEGO"
+    }
   },
   "leagueTypeSelector": {
     "selectLeagueType": "SELECIONE O TIPO DE LIGA",
