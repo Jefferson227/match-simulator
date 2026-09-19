@@ -106,11 +106,13 @@ const renderWith = (state: GameState) =>
   );
 
 /** The human's club plays the second group of a live group stage. */
-const groupStageState = (): GameState =>
+const groupStageState = (
+  standings: Standing[] = teams.map((team, index) => buildStanding(team, index + 1))
+): GameState =>
   buildState({
     phases: [groupPhase, knockoutPhase],
     currentPhaseIndex: 0,
-    standings: teams.map((team, index) => buildStanding(team, index + 1)),
+    standings,
     matchContainer: {
       timer: 0,
       currentSeason: 2026,
@@ -192,6 +194,20 @@ describe('TeamManager — phased championships', () => {
     expect(screen.getByText('Brasileirão Série D')).toBeInTheDocument();
     expect(screen.getByText(/POSITION: 1st \(GROUP 2\)/)).toBeInTheDocument();
     expect(screen.getByText(/ROUND 1 OF 20/)).toBeInTheDocument();
+  });
+
+  it('ranks the club and its opponent within their group, not across the division', () => {
+    // Division-wide: T2 9pts, T3 6pts, T4 3pts, T1 0pts. Group 2 holds only T1 and T4.
+    const points = [0, 9, 6, 3];
+    const standings = teams
+      .map((team, index) => ({ ...buildStanding(team, 0), points: points[index] }))
+      .sort((a, b) => b.points - a.points)
+      .map((standing, index) => ({ ...standing, position: index + 1 }));
+
+    renderWith(groupStageState(standings));
+
+    expect(screen.getByText(/POSITION: 2nd \(GROUP 2\)/)).toBeInTheDocument();
+    expect(screen.getByText('NEXT MATCH: T4 - 1st')).toBeInTheDocument();
   });
 
   it('leaves an unphased championship reading the plain round count', () => {

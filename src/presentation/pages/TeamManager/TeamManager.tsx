@@ -68,8 +68,13 @@ const TeamManager: React.FC = () => {
     group.standings.some((standing) => standing.team.id === team.id)
   )?.group;
 
-  const getStandingPosition = (teamId: string): number | null =>
-    championship?.standings?.find((standing) => standing.team.id === teamId)?.position ?? null;
+  // A group stage ranks each club within its own group, not across the whole division.
+  const getStandingPosition = (teamId: string): number | null => {
+    const standings = phaseView.groups?.length
+      ? phaseView.groups.flatMap((group) => group.standings)
+      : championship?.standings;
+    return standings?.find((standing) => standing.team.id === teamId)?.position ?? null;
+  };
 
   // Opponent for the current round, if the round is still available
   const nextOpponent = useMemo<Team | null>(() => {
