@@ -207,34 +207,31 @@ const SquadSelection: React.FC<SquadSelectionProps> = ({
     color: nameColor,
   };
 
-  const navButtonStyle = {
-    borderColor: '#e2e2e2',
-    backgroundColor: '#3c7a33',
-    color: '#e2e2e2',
-  };
-
   const isFirstPage = currentPage === 0;
   const isLastPage = currentPage === totalPages - 1 || totalPages === 0;
 
   return (
-    <>
-      <div
-        className="w-[350px] mx-auto"
-        style={{ backgroundColor, border: `4px solid ${outlineColor}` }}
-      >
-        <div className="text-center text-[20px] py-2 uppercase" style={rowStyle}>
-          {team.fullName}
-        </div>
-        <div className="text-center text-[18px] py-2" style={rowStyle}>
-          {showFormationGrid
-            ? t('teamManager.chooseFormation')
-            : selectedCount < MAX_STARTERS
-              ? t('teamManager.selectedCount', { count: selectedCount })
-              : calculateFormation()}
-        </div>
+    <div
+      className="w-[350px] h-[700px] mx-auto flex flex-col"
+      style={{ backgroundColor, border: `4px solid ${outlineColor}` }}
+    >
+      <div className="text-center text-[20px] py-2 uppercase" style={rowStyle}>
+        {team.fullName}
+      </div>
+      <div className="text-center text-[18px] py-2" style={rowStyle}>
+        {showFormationGrid
+          ? t('teamManager.chooseFormation')
+          : selectedCount < MAX_STARTERS
+            ? t('teamManager.selectedCount', { count: selectedCount })
+            : calculateFormation()}
+      </div>
 
-        {showFormationGrid ? (
-          <div className="py-2 mx-2 mb-[50px] grid grid-cols-2 gap-4" style={{ backgroundColor }}>
+      {showFormationGrid ? (
+        <>
+          <div
+            className="flex-1 py-2 mx-2 grid grid-cols-2 gap-4 content-center"
+            style={{ backgroundColor }}
+          >
             {FORMATIONS.map((formation) => {
               const isAvailable = isFormationAvailable(formation, players);
               return (
@@ -259,105 +256,99 @@ const SquadSelection: React.FC<SquadSelectionProps> = ({
               {t('teamManager.bestPlayers')}
             </button>
           </div>
-        ) : (
-          <>
-            <div className="py-2 mx-2 h-[307.5px]" style={{ backgroundColor }}>
-              {paginatedPlayers.map((player) => {
-                const selState = playerStates[player.id] ?? PlayerSelectionState.Unselected;
-                const isStarter = selState === PlayerSelectionState.Selected;
-                const isSub = selState === PlayerSelectionState.Substitute;
-                return (
-                  <div
-                    key={player.id}
-                    className="flex justify-between items-center px-2 text-[15px] cursor-pointer"
-                    onClick={() => handlePlayerClick(player.id)}
-                  >
-                    <span
-                      className="px-2 my-[2px] mr-2 min-w-[36px] text-center"
-                      style={{
-                        backgroundColor: isStarter ? outlineColor : 'transparent',
-                        color: isStarter ? backgroundColor : nameColor,
-                        transition: 'background 0.2s, color 0.2s',
-                      }}
-                    >
-                      {player.position}
-                    </span>
-                    <span
-                      className={`flex-1 uppercase text-left ${
-                        isSub ? 'underline decoration-2 underline-offset-2' : ''
-                      }`}
-                      style={{ color: nameColor, textDecorationColor: outlineColor }}
-                    >
-                      {player.name.length > 14 ? utils.shortenPlayerName(player.name) : player.name}
-                    </span>
-                    <span className="ml-2" style={{ color: nameColor }}>
-                      {player.strength}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="flex flex-col items-center gap-2 py-[17px]">
-              <button
-                className="w-[90%] border-[4px] py-[17px] text-[16px]"
-                style={teamButtonStyle}
-                onClick={() => setShowFormationGrid(true)}
-              >
-                {t('teamManager.chooseFormation')}
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-
-      <div className="mt-[10px]">
-        {showFormationGrid ? (
-          <div className="flex flex-col items-center gap-2">
+          <div className="flex flex-col items-center py-[17px]">
             <button
-              className="w-[350px] border-4 py-4 text-[16px]"
-              style={navButtonStyle}
+              className="w-[90%] border-[4px] py-[17px] text-[16px]"
+              style={teamButtonStyle}
               onClick={() => setShowFormationGrid(false)}
             >
               {t('teamManager.goBack')}
             </button>
           </div>
-        ) : (
-          <div className="flex w-[350px] justify-between gap-2 mx-auto">
-            <button
-              className="w-1/3 h-[70px] border-4 py-2 px-3 leading-[19px] text-[16px]"
-              style={{
-                ...navButtonStyle,
-                opacity: isFirstPage ? 0.5 : 1,
-                cursor: isFirstPage ? 'not-allowed' : 'pointer',
-              }}
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
-              disabled={isFirstPage}
-            >
-              {'<'}
-            </button>
-            <button
-              className="w-1/3 h-[70px] border-4 py-2 px-3 leading-[19px] text-[16px]"
-              style={navButtonStyle}
-              onClick={onGoBack}
-            >
-              {t('teamManager.goBack')}
-            </button>
-            <button
-              className="w-1/3 h-[70px] border-4 py-2 px-3 leading-[19px] text-[16px]"
-              style={{
-                ...navButtonStyle,
-                opacity: isLastPage ? 0.5 : 1,
-                cursor: isLastPage ? 'not-allowed' : 'pointer',
-              }}
-              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1))}
-              disabled={isLastPage}
-            >
-              {'>'}
-            </button>
+        </>
+      ) : (
+        <>
+          <div className="flex-1 py-2 mx-2" style={{ backgroundColor }}>
+            {paginatedPlayers.map((player) => {
+              const selState = playerStates[player.id] ?? PlayerSelectionState.Unselected;
+              const isStarter = selState === PlayerSelectionState.Selected;
+              const isSub = selState === PlayerSelectionState.Substitute;
+              return (
+                <div
+                  key={player.id}
+                  className="flex justify-between items-center px-2 text-[12px] cursor-pointer"
+                  onClick={() => handlePlayerClick(player.id)}
+                >
+                  <span
+                    className="px-2 my-[2px] mr-2 min-w-[36px] text-center"
+                    style={{
+                      backgroundColor: isStarter ? outlineColor : 'transparent',
+                      color: isStarter ? backgroundColor : nameColor,
+                      transition: 'background 0.2s, color 0.2s',
+                    }}
+                  >
+                    {player.position}
+                  </span>
+                  <span
+                    className={`flex-1 uppercase text-left ${
+                      isSub ? 'underline decoration-2 underline-offset-2' : ''
+                    }`}
+                    style={{ color: nameColor, textDecorationColor: outlineColor }}
+                  >
+                    {player.name.length > 14 ? utils.shortenPlayerName(player.name) : player.name}
+                  </span>
+                  <span className="ml-2" style={{ color: nameColor }}>
+                    {player.strength}
+                  </span>
+                </div>
+              );
+            })}
           </div>
-        )}
-      </div>
-    </>
+          <div className="flex flex-col items-center gap-2 py-[17px]">
+            <button
+              className="w-[90%] border-[4px] py-[17px] text-[16px]"
+              style={teamButtonStyle}
+              onClick={() => setShowFormationGrid(true)}
+            >
+              {t('teamManager.chooseFormation')}
+            </button>
+            <div className="w-[90%] flex justify-between gap-2">
+              <button
+                className="w-1/3 border-[4px] py-[17px] text-[16px]"
+                style={{
+                  ...teamButtonStyle,
+                  opacity: isFirstPage ? 0.5 : 1,
+                  cursor: isFirstPage ? 'not-allowed' : 'pointer',
+                }}
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
+                disabled={isFirstPage}
+              >
+                {'<'}
+              </button>
+              <button
+                className="w-1/3 border-[4px] py-[17px] text-[10px]"
+                style={teamButtonStyle}
+                onClick={onGoBack}
+              >
+                {t('teamManager.goBack')}
+              </button>
+              <button
+                className="w-1/3 border-[4px] py-[17px] text-[16px]"
+                style={{
+                  ...teamButtonStyle,
+                  opacity: isLastPage ? 0.5 : 1,
+                  cursor: isLastPage ? 'not-allowed' : 'pointer',
+                }}
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1))}
+                disabled={isLastPage}
+              >
+                {'>'}
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
   );
 };
 

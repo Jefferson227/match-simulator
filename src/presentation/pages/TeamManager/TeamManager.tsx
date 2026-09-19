@@ -154,7 +154,7 @@ const TeamManager: React.FC = () => {
   return (
     <MainLayout>
       <div
-        className="w-[350px] mx-auto"
+        className="w-[350px] h-[700px] mx-auto flex flex-col"
         style={{ backgroundColor, border: `4px solid ${outlineColor}` }}
       >
         <div className="text-center text-[20px] py-2 uppercase" style={rowStyle}>
@@ -209,7 +209,7 @@ const TeamManager: React.FC = () => {
           {t('teamManager.budget')}: {PLACEHOLDER_BUDGET}
         </div>
 
-        <div className="flex flex-col items-center gap-2 py-[17px]">
+        <div className="flex-1 flex flex-col items-center justify-center gap-2 py-[17px]">
           <button
             className="w-[90%] border-[4px] py-[17px] text-[16px]"
             style={{
