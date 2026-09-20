@@ -8,7 +8,7 @@ import ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import { useGameState } from '../../../services/useGameState';
 
-const RESULTS_PER_PAGE = 12;
+const RESULTS_PER_PAGE = 10;
 const TIES_PER_PAGE = 4;
 
 interface TeamStandingsProps {
