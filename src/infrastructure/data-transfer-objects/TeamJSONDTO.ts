@@ -7,6 +7,7 @@ type ColorDTO = {
 type PlayerDTO = {
   position: string;
   name: string;
+  age: number;
 };
 
 type TeamJSONDTO = {
