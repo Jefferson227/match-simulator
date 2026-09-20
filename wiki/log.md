@@ -430,3 +430,34 @@ width item under the previous entry's "Left open" is closed.
 ### Left open
 
 - `TeamAdditionalInfo` has no entry point in the UI. Pre-existing. No ticket.
+
+## [2026-09-20] ingest | Match simulation written down as a spec
+
+sha 1dc502c
+
+Filed [[match-simulation]]. The tick engine had no written contract, so the tuning numbers — the
+per-area action probabilities, the two-roll dispute, the ±30% morale band, the one-shooter-against-a-
+summed-back-line shot — existed only as literals in
+`src/domain/features/match-simulation/`. Drafted by reading the implementation and promoted to a
+spec: from this date the numbers are the contract, and a change to one is a change to the page.
+
+Per the wiki's one rule this page sits at the edge of what belongs here, since the mechanics are
+readable in the code. It earns its place by recording intent and consequence the code cannot state,
+not control flow. Prose restating `reduce` or strategy dispatch was left out.
+
+- [[index]]: new spec row.
+
+### Recorded, not fixed
+
+- **Strengths are summed, so squad shape outweighs player quality.** Four DFs at 50 beat three at 60.
+  Falls out of the model; no ticket.
+- `nextInt(min, max)` is inclusive at both ends, so `nextInt(0, 100)` has 101 outcomes and every
+  action-selection bucket is out of 101, not 100. The page's percentages are computed that way.
+- A shot from `defense` or `midfield` is taken by a DF or MF, never a forward. Deliberate under the
+  current model; noted in case it reads as a bug later.
+- A missed shot is exactly a turnover plus a counter increment — no save, post or shot-on-target.
+
+### Left open
+
+- Nothing in the simulation produces the fouls or cards [[tiebreakers]] records as unmodelled.
+- No home advantage, fatigue, substitutions or score-aware behaviour. No ticket.

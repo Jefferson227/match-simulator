@@ -45,6 +45,7 @@ Contracts the code is judged against. The user owns these.
 | Page | Implemented by |
 |---|---|
 | [[player-xp]] | `src/domain/services/PlayerProgressionService.ts` |
+| [[match-simulation]] | `src/domain/features/match-simulation/`, `src/domain/services/MatchService.ts` |
 
 ## Decisions
 
