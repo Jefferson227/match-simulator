@@ -7,7 +7,7 @@ import { Language, changeGameLanguage } from '../../../i18n';
 
 // Each option is labelled in its own language, so a player can find theirs whatever is active.
 // Labels are 12px: the pixel font is ~1em per glyph, and "Português (Brasil)" beside a flag would
-// overflow the 342px button at the sibling screens' text-lg.
+// overflow the 342px button at the sibling screens' text-base.
 const LANGUAGE_OPTIONS: { language: Language; country: FlagCountry; label: string }[] = [
   { language: 'en', country: 'us', label: 'English' },
   { language: 'pt-BR', country: 'br', label: 'Português (Brasil)' },
@@ -30,7 +30,7 @@ const LanguageSelector: React.FC = () => {
         style={{ backgroundColor: '#3d7a33', color: 'white' }}
       >
         <h1
-          className="text-lg mb-8 w-[342px] max-w-full text-center"
+          className="text-base mb-8 w-[342px] max-w-full text-center"
           style={{ textShadow: '-3px 3px 0 #2a5624' }}
         >
           {t('languageSelector.title')}
@@ -61,7 +61,7 @@ const LanguageSelector: React.FC = () => {
             onClick={() =>
               engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'InitialScreen' })
             }
-            className={`${BUTTON_CLASS} ${IDLE_CLASS} text-lg mt-8`}
+            className={`${BUTTON_CLASS} ${IDLE_CLASS} text-base mt-8`}
             style={{ boxShadow: '-6px 6px 0 #2a5624' }}
           >
             {t('languageSelector.back')}

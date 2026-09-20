@@ -18,7 +18,7 @@ const ErrorScreen: React.FC = () => {
 
       <button
         onClick={() => window.location.reload()}
-        className={`w-full max-w-xs mt-8 border-4 py-4 text-lg uppercase transition border-white hover:bg-white hover:text-[#3d7a33]`}
+        className={`w-full max-w-xs mt-8 border-4 py-4 text-base uppercase transition border-white hover:bg-white hover:text-[#3d7a33]`}
       >
         {t('errorScreen.resetGame')}
       </button>

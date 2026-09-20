@@ -83,7 +83,7 @@ const TeamAssigner: React.FC = () => {
           {isDrawRevealed ? (
             <div
               data-testid="drawn-team"
-              className="w-[342px] min-h-[80px] px-4 py-4 flex items-center justify-center border-4 text-lg uppercase text-center"
+              className="w-[342px] min-h-[80px] px-4 py-4 flex items-center justify-center border-4 text-base uppercase text-center"
               style={{
                 borderColor: drawnTeam.colors.outline,
                 backgroundColor: drawnTeam.colors.background,
@@ -98,7 +98,7 @@ const TeamAssigner: React.FC = () => {
               role="status"
               aria-live="polite"
               aria-label={t('teamAssigner.assigningTeam')}
-              className="w-[342px] min-h-[80px] flex items-center justify-center text-lg"
+              className="w-[342px] min-h-[80px] flex items-center justify-center text-base"
               style={{ textShadow: '-3px 3px 0 #2a5624' }}
             >
               {'.'.repeat(visibleDots)}
@@ -108,7 +108,7 @@ const TeamAssigner: React.FC = () => {
           <button
             onClick={startGame}
             disabled={!isDrawRevealed}
-            className="w-[342px] h-[80px] px-4 border-4 border-white text-lg uppercase transition hover:bg-white hover:text-[#3d7a33] [text-shadow:-3px_3px_0_#2a5624] hover:[text-shadow:none] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-[342px] h-[80px] px-4 border-4 border-white text-base uppercase transition hover:bg-white hover:text-[#3d7a33] [text-shadow:-3px_3px_0_#2a5624] hover:[text-shadow:none] disabled:opacity-50 disabled:cursor-not-allowed"
             style={{ boxShadow: '-6px 6px 0 #2a5624' }}
           >
             {t('teamAssigner.startGame')}

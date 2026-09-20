@@ -284,7 +284,7 @@ const MatchSimulator: FC = () => {
                   <button
                     onClick={handlePrevPage}
                     disabled={currentPage === 0}
-                    className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="border-4 border-white w-20 h-20 flex items-center justify-center text-base transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     &lt;
                   </button>
@@ -298,7 +298,7 @@ const MatchSimulator: FC = () => {
                   <button
                     onClick={handleNextPage}
                     disabled={currentPage >= totalPages - 1}
-                    className="border-4 border-white w-20 h-20 flex items-center justify-center text-lg transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="border-4 border-white w-20 h-20 flex items-center justify-center text-base transition hover:bg-white hover:text-[#3d7a33] text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     &gt;
                   </button>

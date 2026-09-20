@@ -407,10 +407,10 @@ const SquadSelection: React.FC<SquadSelectionProps> = ({
       className="w-[350px] h-[700px] mx-auto flex flex-col"
       style={{ backgroundColor, border: `4px solid ${outlineColor}` }}
     >
-      <div className="text-center text-[20px] py-2 uppercase" style={rowStyle}>
+      <div className="text-center text-[16px] py-2 uppercase" style={rowStyle}>
         {team.fullName}
       </div>
-      <div className="text-center text-[18px] py-2" style={rowStyle}>
+      <div className="text-center text-[16px] py-2" style={rowStyle}>
         {showFormationGrid
           ? t('teamManager.chooseFormation')
           : selectedCount < MAX_STARTERS
@@ -429,7 +429,7 @@ const SquadSelection: React.FC<SquadSelectionProps> = ({
               return (
                 <button
                   key={formation}
-                  className={`border-4 py-4 text-[18px] font-press-start ${
+                  className={`border-4 py-4 text-[16px] font-press-start ${
                     isAvailable ? '' : 'cursor-not-allowed'
                   }`}
                   style={{ ...teamButtonStyle, color: isAvailable ? nameColor : '#888' }}
@@ -441,7 +441,7 @@ const SquadSelection: React.FC<SquadSelectionProps> = ({
               );
             })}
             <button
-              className="col-span-2 border-4 py-4 text-[18px] font-press-start mt-4"
+              className="col-span-2 border-4 py-4 text-[16px] font-press-start mt-4"
               style={teamButtonStyle}
               onClick={() => setShowFormationGrid(false)}
             >

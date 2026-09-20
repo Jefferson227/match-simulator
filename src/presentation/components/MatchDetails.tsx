@@ -65,7 +65,7 @@ const MatchDetails: FC<MatchDetailsProps> = ({ match, scorers, onBack }) => {
         )}
       </div>
       <button
-        className="w-full h-[58px] text-[18px] border-0 outline outline-4 outline-white bg-transparent text-white mb-2"
+        className="w-full h-[58px] text-[16px] border-0 outline outline-4 outline-white bg-transparent text-white mb-2"
         onClick={onBack}
       >
         {t('matchDetails.backToMatch')}

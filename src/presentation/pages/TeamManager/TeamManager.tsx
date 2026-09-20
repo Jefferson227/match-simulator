@@ -157,7 +157,7 @@ const TeamManager: React.FC = () => {
         className="w-[350px] h-[700px] mx-auto flex flex-col"
         style={{ backgroundColor, border: `4px solid ${outlineColor}` }}
       >
-        <div className="text-center text-[20px] py-2 uppercase" style={rowStyle}>
+        <div className="text-center text-[16px] py-2 uppercase" style={rowStyle}>
           {team.fullName}
         </div>
 
