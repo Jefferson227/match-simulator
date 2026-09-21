@@ -10,6 +10,7 @@ function buildPlayer(id: Player['id'], strength: number, xp: number): Player {
     position: 'MF',
     name: id,
     strength,
+    age: 26,
     xp,
     isStarter: true,
     isSub: false,

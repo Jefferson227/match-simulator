@@ -55,6 +55,7 @@ const playerOf = (teamSeed: string, index: number): Player => ({
   position: index === 0 ? 'GK' : 'FW',
   name: `Player ${teamSeed}-${index}`,
   strength: 60 + index,
+  age: 26,
   xp: index,
   isStarter: index < 2,
   isSub: index >= 2,

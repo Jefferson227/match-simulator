@@ -21,6 +21,7 @@ const makePlayer = (id: string, name: string, position: Player['position'], stre
   name,
   position,
   strength,
+  age: 26,
   xp: 0,
   isStarter: false,
   isSub: false,

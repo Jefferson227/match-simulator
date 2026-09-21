@@ -35,6 +35,7 @@ export function buildTeam(index: number): Team {
       position,
       name: `Player ${index}-${playerIndex}`,
       strength: 50,
+      age: 26,
       xp: 0,
       isStarter: true,
       isSub: false,

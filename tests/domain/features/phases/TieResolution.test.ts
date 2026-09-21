@@ -15,6 +15,7 @@ function buildPlayer(index: number, strength: number, position: Player['position
     position,
     name: `Player ${index}`,
     strength,
+    age: 26,
     xp: 0,
     isStarter: true,
     isSub: false,
