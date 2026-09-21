@@ -133,6 +133,14 @@ the four big choices are on [[ms-106-mens-lower-divisions]].
   Art. 42), and Série D grows to 96 clubs with 6 promoted (REC D 2026 Arts. 2º, 6º, 13). The game
   applies the 2025 rules to every season. That is a claim about no real season after 2025.
 
+## Invented by MS-111
+
+**Every player's `age`.** CBF publishes no birth date on any endpoint, and no reachable third party
+covers these squads, so all 4270 ages in the two seed files are generated. They join
+`initialOverallStrength`, `colors`, `abbreviation` and player positions above — invented for
+playability, not evidence of anything. The failed sources, the measured coverage and the generation
+method are on [[player-ages]]; what the ages are *for* is on [[player-stamina]].
+
 ---
 
 ## Provenance detail

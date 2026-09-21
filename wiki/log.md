@@ -461,3 +461,46 @@ not control flow. Prose restating `reduce` or strategy dispatch was left out.
 
 - Nothing in the simulation produces the fouls or cards [[tiebreakers]] records as unmodelled.
 - No home advantage, fatigue, substitutions or score-aware behaviour. No ticket.
+
+## [2026-09-20] ingest | Stamina specified; player ages recorded as invented
+
+sha b1d50c8
+
+MS-111 gave players an age and made match strength fall with stamina. Two pages filed and two
+corrected.
+
+Filed [[player-stamina]] as a spec. It records what the code cannot: that stamina is derived from
+the tick rather than accumulated (idempotent, so a resumed save cannot drift), that the multiplier
+lands per player before aggregation and ahead of morale, and that penalty shootouts are exempt by
+choice. It also resolves a contradiction **inside the source spec**:
+`.plans/MS-111/input/PlayerStaminaLogic.md` carries a ratio column and a per-match column that
+disagree from age 29 up. The ratios win; the
+per-match figures on the page are derived from them, so the two agree here and did not in the source.
+
+Filed [[player-ages]]. Four sources were tried for real birth dates and all four failed, so this is
+external evidence of an absence — the kind that otherwise gets re-litigated every year. CBF
+publishes no date field about a person on either endpoint. Club-scoped Wikidata matched 6 of 182
+players over 8 clubs, and 0 of 92 in the women's seed, because Wikidata's club item is the men's
+club. Name-only matching was rejected after it aged two ABC starters to 49 and 53 by colliding with
+other footballers sharing their apelido. ogol and Transfermarkt answer 403 and a bot challenge.
+
+- [[match-simulation]]: **corrected.** It listed fatigue among the things the model deliberately
+  does not have. It does now. Added the stamina step to the strength order and an assert on
+  `StaminaPolicy.ts`.
+- [[invented-data]]: new MS-111 section. All 4270 ages are generated.
+- [[index]]: new concept row, new spec row, three new open threads.
+
+### Recorded, not fixed
+
+- **A generated age has no reference date.** Real ages are only true relative to one. The seed does
+  not age with the calendar either, since season-to-season ageing is not implemented.
+- The generated distribution puts 0.2% of players in the `> 38` band and 6.1% at 20 or under. Every
+  band is populated, so no branch of the table is dead — but the *shape* of fatigue across the
+  league is invented, not observed.
+- Bench players never tire. That is free rather than designed: the engine has no substitutions.
+
+### Left open
+
+- Nothing renders stamina or age, so a player fading through a match is invisible to the user.
+- Driving a real browser at Transfermarkt is the one untried route to real ages. The apelido
+  ambiguity would remain, and its squads are current rather than the seed's 2025 ones.

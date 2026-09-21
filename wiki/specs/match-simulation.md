@@ -12,6 +12,8 @@ asserts:
     exists: true
   - file: src/domain/features/match-simulation/StrengthResolver.ts
     exists: true
+  - file: src/domain/features/match-simulation/StaminaPolicy.ts
+    exists: true
   - file: src/domain/services/MatchService.ts
     exists: true
 ---
@@ -115,6 +117,11 @@ moralePercentage = morale >= 50 ?  round(30 * (morale - 50) / 50)
 
 Morale 100 → +30%. Morale 50 → 0%. Morale 0 → −30%. Result floored at 1.
 
+**Stamina** scales each player's strength *before* the sum, so the order is stamina → sum → morale →
+round → floor. A player at full stamina, or with none set, contributes their raw strength and the
+formulas above are unchanged. See [[player-stamina]]; penalty shootouts opt out and are contested at
+full strength.
+
 > **Consequence, and it is a known tension.** Because strengths are **summed**, squad shape is worth
 > more than player quality. Four defenders of strength 50 (sum 200) beat three of strength 60
 > (sum 180). A formation with an extra body in an area wins that area. This falls out of the model
@@ -167,8 +174,9 @@ counted.
 Absent by design, not by oversight. Adding any of them is a spec change:
 
 - no half-time, added time, or any event tied to a specific minute
-- no fouls, cards, injuries, substitutions or fatigue — so nothing here feeds [[tiebreakers]]'
-  unmodelled card criteria
+- no fouls, cards, injuries or substitutions — so nothing here feeds [[tiebreakers]]' unmodelled
+  card criteria. **Fatigue was on this list until MS-111**; it is now modelled, and specified
+  separately in [[player-stamina]].
 - no home advantage
 - no in-match tactics, formation changes or score-aware behaviour: a side 3–0 down plays exactly as
   it did at 0–0

@@ -37,6 +37,7 @@ against them.
 | [[known-contradictions]] | Where CBF's own documents disagree, which side the seed data follows, and the gaps CBF leaves open. |
 | [[invented-data]] | Everything in the seed that CBF does not publish: MS-102's women's clubs, MS-106's men's Série C/D clubs, and every invented schedule. |
 | [[cbf-data-sources]] | How to fetch from CBF without repeating a wasted pass. Read before any new extraction. |
+| [[player-ages]] | Why every seed age is generated: no source publishes them, with the coverage measurements. Read before attempting a fifth harvest. |
 
 ## Specs
 
@@ -46,6 +47,7 @@ Contracts the code is judged against. The user owns these.
 |---|---|
 | [[player-xp]] | `src/domain/services/PlayerProgressionService.ts` |
 | [[match-simulation]] | `src/domain/features/match-simulation/`, `src/domain/services/MatchService.ts` |
+| [[player-stamina]] | `src/domain/features/match-simulation/StaminaPolicy.ts`, `StrengthResolver.ts` |
 
 ## Decisions
 
@@ -97,6 +99,12 @@ Things named across these pages that nothing currently owns:
   deferred rather than taken. Pre-MS-108 saves are abandoned via a versioned key, and a reload no
   longer preserves each played match's historical squad snapshot — the current round is kept whole.
   See [[ms-108-saved-game-size]].
+- **Nothing renders stamina or age.** MS-111 put both on the player and neither on screen, so a
+  player fading through a match is invisible. No ticket. See [[player-stamina]].
+- **Players never age between seasons.** A squad's ages are fixed for the life of a save, so the
+  league cannot get older or younger. Out of MS-111's scope; no ticket.
+- **Real player ages have never been obtained.** Four sources failed; driving a real browser at
+  Transfermarkt is the one untried route. No ticket. See [[player-ages]].
 - **The men's Série A and B strengths overlap** (A's floor 55 is below B's ceiling 75). C and D sit
   strictly below B. No ticket. See [[invented-data]].
 - **A1 2027's club count is inference, not regulation**, and so is A2's route to 20. See
