@@ -176,6 +176,43 @@ describe('resolveTie — penalties', () => {
 describe('simulatePenaltyShootout', () => {
   const legs = [leg(1, away, home, 1, 1), leg(2, home, away, 1, 1)];
 
+  it('contests a shootout at full strength, however drained the squads are', () => {
+    // A shootout is explicitly exempt from stamina: 90 minutes of fatigue does
+    // not carry into it. See wiki/specs/player-stamina.md.
+    const drain = (team: Team): Team => ({
+      ...team,
+      players: team.players.map((player) => ({ ...player, stamina: 1 })),
+    });
+
+    // The dispute rolls are nextInt(1, strength), so the ceiling asked for is
+    // the strength actually being used. The order-of-kicks coin flip is
+    // nextInt(0, 1), so `min` tells the two apart.
+    const disputeCeilings: number[] = [];
+    const recordingRng: RandomProvider = {
+      nextInt: (min, max) => {
+        if (min === 1) disputeCeilings.push(max);
+        return min;
+      },
+    };
+
+    // The shootout reads its two sides off the deciding leg, not off the
+    // contenders argument, so the drained squads have to go into the legs.
+    const drainedHome = drain(home);
+    const drainedAway = drain(away);
+    const drainedLegs = [
+      leg(1, drainedAway, drainedHome, 1, 1),
+      leg(2, drainedHome, drainedAway, 1, 1),
+    ];
+
+    simulatePenaltyShootout(drainedLegs, [drainedHome, drainedAway], { rng: recordingRng });
+
+    // Every player is strength 50 at morale 50, so a full-strength taker rolls
+    // out of 50 and the lone keeper out of 50 too. Had stamina applied, both
+    // would have collapsed to 1.
+    expect(disputeCeilings.length).toBeGreaterThan(0);
+    expect(disputeCeilings.every((ceiling) => ceiling === 50)).toBe(true);
+  });
+
   it('treats the deciding leg’s host as the shootout’s home side', () => {
     const { shootout } = simulatePenaltyShootout(legs, [away, home], {
       rng: alternatingRng([true, false]),
