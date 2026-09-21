@@ -6,6 +6,8 @@ type Player = {
   name: string;
   strength: number;
   age: number;
+  // Match-scoped: set at kickoff, recomputed each tick, never persisted.
+  stamina?: number;
   xp: number;
   isStarter: boolean;
   isSub: boolean;
