@@ -46,8 +46,14 @@ function kickIsScored(
   goalkeeperTeam: Team,
   deps: TieResolutionDependencies
 ): boolean {
-  const takerStrength = taker ? getShooterStrengthForDispute(taker, takerTeam) : 1;
-  const goalkeeperStrength = getTeamStrengthForDispute(goalkeeperTeam, 'GK');
+  // A shootout is contested at full strength: 90 minutes of fatigue does not
+  // carry into it. See wiki/specs/player-stamina.md.
+  const takerStrength = taker
+    ? getShooterStrengthForDispute(taker, takerTeam, { applyStamina: false })
+    : 1;
+  const goalkeeperStrength = getTeamStrengthForDispute(goalkeeperTeam, 'GK', {
+    applyStamina: false,
+  });
 
   const takerRoll = deps.rng.nextInt(1, Math.max(1, takerStrength));
   const goalkeeperRoll = deps.rng.nextInt(1, Math.max(1, goalkeeperStrength));

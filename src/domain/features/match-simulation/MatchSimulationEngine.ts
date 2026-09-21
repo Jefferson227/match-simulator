@@ -7,6 +7,8 @@ import {
   passToPreviousAreaAction,
   shootAction,
 } from './ActionStrategies';
+import { Team } from '../../models/Team';
+import { FULL_STAMINA, getStaminaAtMinute } from './StaminaPolicy';
 import { MatchAction, MatchActionStrategy, RandomProvider } from './types';
 
 const ACTION_STRATEGIES: Record<MatchAction, MatchActionStrategy> = {
@@ -33,11 +35,37 @@ function ensureSimulationState(match: Match, rng: RandomProvider): MatchSimulati
   return kickoff(match, rng);
 }
 
+// Only the players the dispute resolver will actually read tire. That is the
+// starters, or the whole squad when none is flagged — the same fallback
+// `getStarters` applies, so the pitch and the tiring set cannot diverge.
+function applyStaminaForMinute(team: Team, minute: number): Team {
+  const hasStarters = team.players.some((player) => player.isStarter);
+
+  return {
+    ...team,
+    players: team.players.map((player) => {
+      const isOnPitch = hasStarters ? player.isStarter : true;
+
+      return {
+        ...player,
+        stamina: isOnPitch ? getStaminaAtMinute(player.age, minute) : FULL_STAMINA,
+      };
+    }),
+  };
+}
+
 export function runMatchTick(match: Match, minute: number, rng: RandomProvider): Match {
   const currentSimulation = ensureSimulationState(match, rng);
+  // Recomputed from the minute every tick, so kickoff needs no reset of its own:
+  // at minute 0 every band still floors to a full 100.
+  const matchWithStamina: Match = {
+    ...match,
+    homeTeam: applyStaminaForMinute(match.homeTeam, minute),
+    awayTeam: applyStaminaForMinute(match.awayTeam, minute),
+  };
   const action = decideAction(currentSimulation.fieldArea, rng);
   const strategy = ACTION_STRATEGIES[action];
-  const result = strategy(match, currentSimulation, { minute, rng });
+  const result = strategy(matchWithStamina, currentSimulation, { minute, rng });
 
   return {
     ...result.match,

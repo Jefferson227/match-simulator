@@ -2,6 +2,11 @@ import PlayerPosition from '../../enums/PlayerPosition';
 import Player from '../../models/Player';
 import { Team } from '../../models/Team';
 import FieldArea from '../../enums/FieldArea';
+import { FULL_STAMINA } from './StaminaPolicy';
+
+type StrengthOptions = {
+  applyStamina?: boolean;
+};
 
 function getTeamMoralePercentage(team: Team): number {
   if (team.morale >= 50) {
@@ -16,8 +21,19 @@ export function getStarters(team: Team): Player[] {
   return starters.length ? starters : team.players;
 }
 
-function sumStrength(players: Player[]): number {
-  return players.reduce((acc, player) => acc + player.strength, 0);
+// Left unrounded: the multiplier applies per player before aggregation, so
+// rounding here would compound across a lineup.
+export function getEffectiveStrength(player: Player): number {
+  return player.strength * ((player.stamina ?? FULL_STAMINA) / FULL_STAMINA);
+}
+
+function sumStrength(players: Player[], options?: StrengthOptions): number {
+  const useStamina = options?.applyStamina ?? true;
+
+  return players.reduce(
+    (acc, player) => acc + (useStamina ? getEffectiveStrength(player) : player.strength),
+    0
+  );
 }
 
 function applyMorale(baseStrength: number, team: Team): number {
@@ -49,20 +65,24 @@ export function getPreviousFieldArea(fieldArea: FieldArea): FieldArea {
   return 'defense';
 }
 
-export function getTeamStrengthForDispute(team: Team, position: PlayerPosition): number {
+export function getTeamStrengthForDispute(
+  team: Team,
+  position: PlayerPosition,
+  options?: StrengthOptions
+): number {
   const starters = getStarters(team);
   const playersOnPosition = starters.filter((player) => player.position === position);
   const players = playersOnPosition.length ? playersOnPosition : starters;
-  return applyMorale(sumStrength(players), team);
+  return applyMorale(sumStrength(players, options), team);
 }
 
-export function getDefenseStrengthForDispute(team: Team): number {
+export function getDefenseStrengthForDispute(team: Team, options?: StrengthOptions): number {
   const starters = getStarters(team);
   const defenders = starters.filter(
     (player) => player.position === 'GK' || player.position === 'DF'
   );
   const players = defenders.length ? defenders : starters;
-  return applyMorale(sumStrength(players), team);
+  return applyMorale(sumStrength(players, options), team);
 }
 
 export function getShooterCandidates(team: Team, fieldArea: FieldArea): Player[] {
@@ -72,6 +92,12 @@ export function getShooterCandidates(team: Team, fieldArea: FieldArea): Player[]
   return playersOnPosition.length ? playersOnPosition : starters;
 }
 
-export function getShooterStrengthForDispute(player: Player, team: Team): number {
-  return applyMorale(player.strength, team);
+export function getShooterStrengthForDispute(
+  player: Player,
+  team: Team,
+  options?: StrengthOptions
+): number {
+  const baseStrength =
+    (options?.applyStamina ?? true) ? getEffectiveStrength(player) : player.strength;
+  return applyMorale(baseStrength, team);
 }

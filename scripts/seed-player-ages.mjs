@@ -15,7 +15,13 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
-const DATA_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'src', 'infrastructure', 'data');
+const DATA_DIR = join(
+  dirname(fileURLToPath(import.meta.url)),
+  '..',
+  'src',
+  'infrastructure',
+  'data'
+);
 const FILES = ['teams.json', 'teams-womens.json'];
 
 // FNV-1a. Any stable hash would do; this one is short and has no dependencies.

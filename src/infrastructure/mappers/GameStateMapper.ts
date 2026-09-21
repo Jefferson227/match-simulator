@@ -58,6 +58,18 @@ const dehydrateRound = (round: Round): SavedRound => ({
 });
 
 /**
+ * `stamina` is match-scoped: it is recomputed from the minute on every tick, so a value caught
+ * mid-match in a save is stale the instant it is read back. Dropped here rather than on load, so
+ * it never reaches the disk at all.
+ */
+function withoutStamina(team: Team): Team {
+  return {
+    ...team,
+    players: team.players.map(({ stamina: _stamina, ...player }) => player),
+  };
+}
+
+/**
  * The clubs of the round about to be or being played, taken from the fixtures themselves rather
  * than from `teams`, so the lineup on screen survives the round-trip byte-identically.
  */
@@ -73,7 +85,7 @@ function currentRoundTeamsOf(championship: Championship): Team[] {
       byId.set(match.awayTeam.id, match.awayTeam);
     });
 
-  return [...byId.values()];
+  return [...byId.values()].map(withoutStamina);
 }
 
 function dehydrateChampionship(championship: Championship): SavedChampionship {
@@ -89,6 +101,7 @@ function dehydrateChampionship(championship: Championship): SavedChampionship {
 
   const saved = {
     ...rest,
+    teams: rest.teams.map(withoutStamina),
     standings: standings.map(dehydrateStanding),
     matchContainer: { ...matchContainer, rounds: matchContainer.rounds.map(dehydrateRound) },
     currentRoundTeams: currentRoundTeamsOf(championship),
