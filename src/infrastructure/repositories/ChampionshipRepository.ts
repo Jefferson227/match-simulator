@@ -116,6 +116,24 @@ function validateCrossings(name: string, phases: ChampionshipPhase[] | undefined
 }
 
 /**
+ * Rejects a `seed` tiebreaker under any hosting rule but `higher-seed`: tie resolution reads the
+ * better seed off the last leg's host, which only `higher-seed` guarantees.
+ */
+function validateSeedTiebreakers(name: string, phases: ChampionshipPhase[] | undefined): void {
+  phases?.forEach((phase) => {
+    if (phase.kind !== 'knockout') return;
+
+    for (const ties of [phase, phase.playoff]) {
+      if (ties?.tiebreakers.includes('seed') && ties.secondLegHost !== 'higher-seed') {
+        throw new Error(
+          `${name} '${ties.name}' breaks ties on seed, which needs 'higher-seed' hosting; it declares '${ties.secondLegHost}'.`
+        );
+      }
+    }
+  });
+}
+
+/**
  * Rejects a `'phase-group-position'` promotion that cannot be read: it needs a grouped round-robin
  * phase to read, and a promotable count every group can contribute equally to (REC C Art. 5º).
  */
@@ -194,6 +212,7 @@ export function getChampionship(
   championshipJSONDTO.phaseVariants?.forEach((variant) =>
     validateCrossings(championshipJSONDTO.internalName, variant.phases)
   );
+  validateSeedTiebreakers(championshipJSONDTO.internalName, championshipJSONDTO.phases);
   validatePromotionRule(championshipJSONDTO);
   validateTiers(championshipsJSONDTO, championshipJSONDTO.leagueType);
 

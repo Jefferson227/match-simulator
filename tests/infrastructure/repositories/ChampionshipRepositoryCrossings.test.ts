@@ -266,6 +266,25 @@ describe('ChampionshipRepository — crossings it refuses to load', () => {
   });
 });
 
+describe('ChampionshipRepository — seed tiebreakers it refuses to load (MS-112)', () => {
+  it('rejects a seed tiebreaker without higher-seed hosting', () => {
+    const phases = withPhase(2, { tiebreakers: ['goal-difference', 'seed'] });
+
+    expect(() => loadWithSeed([seedEntry({ phases })])).toThrow(
+      /fixture-division 'Semifinal' breaks ties on seed, which needs 'higher-seed' hosting; it declares 'accumulated-points'/
+    );
+  });
+
+  it('accepts a seed tiebreaker under higher-seed hosting', () => {
+    const phases = withPhase(2, {
+      secondLegHost: 'higher-seed',
+      tiebreakers: ['goal-difference', 'seed'],
+    });
+
+    expect(() => loadWithSeed([seedEntry({ phases })])).not.toThrow();
+  });
+});
+
 describe('ChampionshipRepository — group-position promotion it refuses to load', () => {
   it('rejects the rule without a promotionPhaseIndex', () => {
     expect(() => loadWithSeed([seedEntry({ promotionPhaseIndex: undefined })])).toThrow(

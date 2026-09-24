@@ -57,8 +57,16 @@ export type KnockoutCrossings =
  */
 export type SecondLegHost = 'higher-seed' | 'group-winner' | 'accumulated-points' | 'drawn';
 
-/** A knockout tie. Ties are level on points, so these decide them, in order. */
-export type KnockoutTiebreaker = 'goal-difference' | 'penalties';
+/**
+ * What separates a knockout tie level on points across its legs, in declared order. Points always
+ * decide first, so they are not listed.
+ * - `goal-difference` — aggregate over the legs; no away goals.
+ * - `penalties` — a shootout. A phase that does not list it never shoots out.
+ * - `seed` — the better seed goes through: the club hosting the last leg, which `higher-seed`
+ *   hosting gives to the better seed. Série D's playoff falls back on the "melhor posicionamento"
+ *   of REC D 2026 Art. 21 §5, read as the Bloco II rank. Only valid with `higher-seed` hosting.
+ */
+export type KnockoutTiebreaker = 'goal-difference' | 'penalties' | 'seed';
 
 /**
  * A playoff played **alongside** a knockout phase, in that phase's rounds, among the clubs the

@@ -174,6 +174,65 @@ describe('resolveTie — penalties', () => {
   });
 });
 
+describe('resolveTie — declared tiebreakers (REC D 2026 Art. 21 §§4–5)', () => {
+  const playoffBreakers: ('goal-difference' | 'seed')[] = ['goal-difference', 'seed'];
+  const shootoutSpy = jest.fn(simulatePenaltyShootout);
+
+  it('decides on points before any declared tiebreaker', () => {
+    const outcome = resolveTie(
+      [leg(1, away, home, 1, 0), leg(2, home, away, 0, 0)],
+      { rng: neverCalled },
+      shootoutSpy,
+      playoffBreakers
+    );
+
+    // Away: a win and a draw, 4 points to 1, although home hosts the last leg.
+    expect(outcome.winner.id).toBe(away.id);
+  });
+
+  it('decides a playoff level on points on goal difference', () => {
+    const outcome = resolveTie(
+      [leg(1, away, home, 2, 0), leg(2, home, away, 1, 0)],
+      { rng: neverCalled },
+      shootoutSpy,
+      playoffBreakers
+    );
+
+    expect(outcome.winner.id).toBe(away.id);
+    expect(outcome.shootout).toBeUndefined();
+  });
+
+  it('gives a fully level playoff to the better seed, the second-leg host, with no shootout', () => {
+    shootoutSpy.mockClear();
+    // Goiatuba 2026: 0×0 away at São José, 1×1 at home; the better Bloco II rank goes up.
+    const outcome = resolveTie(
+      [leg(1, away, home, 0, 0), leg(2, home, away, 1, 1)],
+      { rng: neverCalled },
+      shootoutSpy,
+      playoffBreakers
+    );
+
+    expect(outcome.winner.id).toBe(home.id);
+    expect(outcome.loser.id).toBe(away.id);
+    expect(outcome.shootout).toBeUndefined();
+    expect(shootoutSpy).not.toHaveBeenCalled();
+  });
+
+  it('never shoots out when the phase does not list penalties', () => {
+    shootoutSpy.mockClear();
+
+    expect(() =>
+      resolveTie(
+        [leg(1, home, away, 1, 1), leg(2, away, home, 1, 1)],
+        { rng: neverCalled },
+        shootoutSpy,
+        ['goal-difference']
+      )
+    ).toThrow('is still level after every tiebreaker its phase declares');
+    expect(shootoutSpy).not.toHaveBeenCalled();
+  });
+});
+
 describe('simulatePenaltyShootout', () => {
   const legs = [leg(1, away, home, 1, 1), leg(2, home, away, 1, 1)];
 

@@ -9,6 +9,9 @@
  *    straight from a draw to penalties (Copa Art. 13 §1, Supercopa Art. 10);
  * 3. a penalty shootout.
  *
+ * Steps 2 and 3 are the phase's declared `tiebreakers`. Série D 2026's playoff declares goal
+ * difference then `seed` instead, and never shoots out (REC D 2026 Art. 21 §§4–5).
+ *
  * **No away goals and no extra time** — neither appears in any REC.
  */
 import Match from '../../models/Match';
@@ -108,33 +111,38 @@ export function resolveTie(
   }
 
   const [a, b] = tallies;
+  const aWins = { tieId, winner: a.team, loser: b.team };
+  const bWins = { tieId, winner: b.team, loser: a.team };
 
   const byPoints = b.points - a.points;
-  if (byPoints !== 0) {
-    return byPoints < 0
-      ? { tieId, winner: a.team, loser: b.team }
-      : { tieId, winner: b.team, loser: a.team };
-  }
+  if (byPoints !== 0) return byPoints < 0 ? aWins : bWins;
 
-  // A single-legged tie has no goal-difference step — a drawn match goes straight to penalties
-  // (Copa Art. 13 §1, Supercopa Art. 10). The phase declares which steps it uses.
-  if (tiebreakers.includes('goal-difference')) {
-    const differenceA = a.goalsFor - a.goalsAgainst;
-    const differenceB = b.goalsFor - b.goalsAgainst;
-    if (differenceA !== differenceB) {
-      return differenceA > differenceB
-        ? { tieId, winner: a.team, loser: b.team }
-        : { tieId, winner: b.team, loser: a.team };
+  // The phase declares which steps it uses, in order. A single-legged tie has no goal-difference
+  // step — a drawn match goes straight to penalties (Copa Art. 13 §1, Supercopa Art. 10).
+  for (const tiebreaker of tiebreakers) {
+    if (tiebreaker === 'goal-difference') {
+      const differenceA = a.goalsFor - a.goalsAgainst;
+      const differenceB = b.goalsFor - b.goalsAgainst;
+      if (differenceA !== differenceB) return differenceA > differenceB ? aWins : bWins;
+      continue;
     }
+
+    if (tiebreaker === 'seed') {
+      // `higher-seed` hosting gives the last leg to the better seed (the repository rejects `seed`
+      // under any other hosting rule), so the last leg's home club is the better seed.
+      return legs[legs.length - 1].homeTeam.id === a.team.id ? aWins : bWins;
+    }
+
+    if (!shootout) {
+      throw new Error(
+        `Tie ${tieId} is level on points and goal difference and no shootout was supplied.`
+      );
+    }
+
+    const result = shootout(legs, [a.team, b.team], deps);
+    const loser = result.winner.id === a.team.id ? b.team : a.team;
+    return { tieId, winner: result.winner, loser, shootout: result.shootout };
   }
 
-  if (!shootout) {
-    throw new Error(
-      `Tie ${tieId} is level on points and goal difference and no shootout was supplied.`
-    );
-  }
-
-  const result = shootout(legs, [a.team, b.team], deps);
-  const loser = result.winner.id === a.team.id ? b.team : a.team;
-  return { tieId, winner: result.winner, loser, shootout: result.shootout };
+  throw new Error(`Tie ${tieId} is still level after every tiebreaker its phase declares.`);
 }
