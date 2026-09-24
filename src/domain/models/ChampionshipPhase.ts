@@ -60,6 +60,28 @@ export type SecondLegHost = 'higher-seed' | 'group-winner' | 'accumulated-points
 /** A knockout tie. Ties are level on points, so these decide them, in order. */
 export type KnockoutTiebreaker = 'goal-difference' | 'penalties';
 
+/**
+ * A playoff played **alongside** a knockout phase, in that phase's rounds, among the clubs the
+ * previous phase knocked out. Its winners advance nowhere; the championship reads them off
+ * `Championship.playoffWinnerIds`.
+ *
+ * Série D 2026's "Playoffs" (REC D 2026 Art. 21): the 4 quarter-final losers are re-ranked on
+ * accumulated points ("Bloco II", §2), paired 1º×4º and 2º×3º, the 1º/2º club hosts the second leg
+ * (§3), and each winner is promoted (§4). Its matches carry `Match.bracket = 'playoff'`.
+ */
+export type KnockoutPlayoff = {
+  /** Display name, e.g. 'Playoffs'. */
+  name: string;
+  from: 'previous-phase-losers';
+  /**
+   * Pairings by 1-based seed after the losers are re-ranked on accumulated points, e.g.
+   * `[[1, 4], [2, 3]]`. Every seed 1..2×pairs appears exactly once.
+   */
+  pairs: [number, number][];
+  secondLegHost: SecondLegHost;
+  tiebreakers: KnockoutTiebreaker[];
+};
+
 export type KnockoutPhase = {
   kind: 'knockout';
   /** Display name as the regulation spells it, e.g. 'Quartas de Final'. */
@@ -84,6 +106,8 @@ export type KnockoutPhase = {
    * "Bloco" (REC D Art. 18).
    */
   reseed?: 'accumulated-points';
+  /** A playoff among the previous phase's losers, played in this phase's rounds. */
+  playoff?: KnockoutPlayoff;
 };
 
 export type ChampionshipPhase = RoundRobinPhase | KnockoutPhase;

@@ -22,6 +22,11 @@ type Match = {
   tieId?: string;
   /** Which leg of the tie this is: 1 or 2. Absent for a league match. */
   leg?: number;
+  /**
+   * `'playoff'` marks a tie of the phase's `playoff`, played in the same rounds as the phase's own
+   * ties but outside its bracket. Absent for every other match.
+   */
+  bracket?: 'playoff';
   /** Set only when this match's tie went to penalties. */
   penaltyShootout?: PenaltyShootout;
 };

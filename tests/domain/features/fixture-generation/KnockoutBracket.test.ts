@@ -3,11 +3,18 @@ import {
   BracketEntrant,
   bracketSeedOrder,
   buildKnockoutPhaseRounds,
+  buildPlayoffTies,
   buildTies,
+  pairsFromSeeds,
   reseedOnAccumulatedPoints,
+  withPlayoffLegs,
   resolveSecondLegHost,
 } from '../../../../src/domain/features/fixture-generation/KnockoutBracket';
-import { GroupSlot, KnockoutPhase } from '../../../../src/domain/models/ChampionshipPhase';
+import {
+  GroupSlot,
+  KnockoutPhase,
+  KnockoutPlayoff,
+} from '../../../../src/domain/models/ChampionshipPhase';
 import Standing from '../../../../src/domain/models/Standing';
 import { Team } from '../../../../src/domain/models/Team';
 
@@ -557,5 +564,114 @@ describe('resolveSecondLegHost — group-winner by better placing (REC D Art. 21
   it('falls back to the seed on equal or unknown placings', () => {
     expect(resolveSecondLegHost(at(1, 7, 3), at(2, 4, 3), 'group-winner').team.id).toBe('team-2');
     expect(resolveSecondLegHost(at(1, 2, 1), at(2, 4), 'group-winner').team.id).toBe('team-1');
+  });
+});
+
+describe('buildPlayoffTies — Bloco II (REC D 2026 Art. 21 §§2–3)', () => {
+  // The 2026 quarter-final losers in tie order (E01..E04), with their accumulated points.
+  const losers: [string, number][] = [
+    ['São José', 23],
+    ['Goiatuba', 34],
+    ['Nacional', 29],
+    ['CSA', 32],
+  ];
+  const entrants: BracketEntrant[] = losers.map(([name, points], index) => {
+    const team = { ...buildTeam(300 + index), shortName: name };
+    return { team, seed: index + 1, fromTie: index, accumulated: standing(team, points) };
+  });
+  const playoff: KnockoutPlayoff = {
+    name: 'Playoffs',
+    from: 'previous-phase-losers',
+    pairs: [
+      [1, 4],
+      [2, 3],
+    ],
+    secondLegHost: 'higher-seed',
+    tiebreakers: ['goal-difference', 'penalties'],
+  };
+  const ties = buildPlayoffTies(entrants, playoff, 5);
+
+  it('pairs Bloco II 1º×4º and 2º×3º, as 2026 was played (F03, F04)', () => {
+    expect(
+      ties.map((tie) => [tie.secondLegHost.team.shortName, tie.firstLegHost.team.shortName])
+    ).toEqual([
+      ['Goiatuba', 'São José'],
+      ['CSA', 'Nacional'],
+    ]);
+  });
+
+  it('gives the second leg to the 1º and 2º of the Bloco (Art. 21 §3)', () => {
+    expect(ties.map((tie) => [tie.secondLegHost.seed, tie.firstLegHost.seed])).toEqual([
+      [1, 4],
+      [2, 3],
+    ]);
+  });
+
+  it('ids its ties apart from the host phase’s own', () => {
+    expect(ties.map((tie) => tie.id)).toEqual(['p5-playoff-t0', 'p5-playoff-t1']);
+  });
+
+  it('rejects a field that does not fill the declared pairs', () => {
+    expect(() => buildPlayoffTies(entrants.slice(0, 3), playoff, 5)).toThrow(
+      "Playoff 'Playoffs' expects 4 clubs for 2 ties; received 3."
+    );
+  });
+
+  it('throws when a seed is named twice or is missing', () => {
+    expect(() => pairsFromSeeds(entrants, [[1, 1]])).toThrow('names seed 1 twice');
+    expect(() => pairsFromSeeds(entrants, [[1, 9]])).toThrow('names seed 9, which no entrant');
+  });
+});
+
+describe('withPlayoffLegs', () => {
+  const semifinal: KnockoutPhase = {
+    kind: 'knockout',
+    name: 'Semifinal',
+    numberOfTies: 2,
+    legs: 2,
+    secondLegHost: 'higher-seed',
+    tiebreakers: ['goal-difference', 'penalties'],
+  };
+  const { rounds } = buildKnockoutPhaseRounds(tableEntrants(4), semifinal, 'table', 5, 11);
+  const playoffTies = buildPlayoffTies(
+    [5, 6, 7, 8].map((index, position) => ({ team: buildTeam(index), seed: position + 1 })),
+    {
+      name: 'Playoffs',
+      from: 'previous-phase-losers',
+      pairs: [
+        [1, 4],
+        [2, 3],
+      ],
+      secondLegHost: 'higher-seed',
+      tiebreakers: ['goal-difference', 'penalties'],
+    },
+    5
+  );
+  const merged = withPlayoffLegs(rounds, playoffTies, 5);
+
+  it('plays both playoff legs in the host phase’s two rounds, adding no round', () => {
+    expect(merged.map((round) => round.number)).toEqual([11, 12]);
+    expect(merged.map((round) => round.matches.length)).toEqual([4, 4]);
+  });
+
+  it('tags only the playoff matches, with their leg and tie', () => {
+    const playoffMatches = merged.flatMap((round) =>
+      round.matches.filter((match) => match.bracket === 'playoff')
+    );
+    expect(playoffMatches.map((match) => [match.tieId, match.leg])).toEqual([
+      ['p5-playoff-t0', 1],
+      ['p5-playoff-t1', 1],
+      ['p5-playoff-t0', 2],
+      ['p5-playoff-t1', 2],
+    ]);
+    expect(merged[0].matches.filter((match) => !match.bracket)).toHaveLength(2);
+  });
+
+  it('gives the better seed the second leg', () => {
+    const secondLegs = merged[1].matches.filter((match) => match.bracket === 'playoff');
+    expect(secondLegs.map((match) => [match.homeTeam.id, match.awayTeam.id])).toEqual([
+      ['team-5', 'team-8'],
+      ['team-6', 'team-7'],
+    ]);
   });
 });

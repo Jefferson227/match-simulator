@@ -8,7 +8,12 @@ import Match from '../../models/Match';
 import Round from '../../models/Round';
 import Standing from '../../models/Standing';
 import { Team } from '../../models/Team';
-import { KnockoutCrossings, KnockoutPhase, SecondLegHost } from '../../models/ChampionshipPhase';
+import {
+  KnockoutCrossings,
+  KnockoutPhase,
+  KnockoutPlayoff,
+  SecondLegHost,
+} from '../../models/ChampionshipPhase';
 import { compareStandings } from '../standings/StandingsComparator';
 import { RandomProvider } from '../match-simulation/types';
 
@@ -209,6 +214,29 @@ export function reseedOnAccumulatedPoints(entrants: BracketEntrant[]): BracketEn
     .map((entrant, index) => ({ ...entrant, seed: index + 1 }));
 }
 
+/**
+ * Pairs entrants by 1-based seed, exactly as `pairs` names them — Série D's Bloco II, 1º×4º and
+ * 2º×3º (REC D 2026 Art. 21 §2). Throws when a seed is missing or named twice.
+ */
+export function pairsFromSeeds(
+  entrants: BracketEntrant[],
+  pairs: [number, number][]
+): [BracketEntrant, BracketEntrant][] {
+  const bySeed = new Map(entrants.map((entrant) => [entrant.seed, entrant]));
+  const used = new Set<number>();
+
+  return pairs.map(
+    (pair) =>
+      pair.map((seed) => {
+        const entrant = bySeed.get(seed);
+        if (!entrant) throw new Error(`Seed pairing names seed ${seed}, which no entrant holds.`);
+        if (used.has(seed)) throw new Error(`Seed pairing names seed ${seed} twice.`);
+        used.add(seed);
+        return entrant;
+      }) as [BracketEntrant, BracketEntrant]
+  );
+}
+
 /** Copa Anexo B: the n-th club meets the (N+1−n)-th. */
 function pairsFromDraw(entrants: BracketEntrant[]): [BracketEntrant, BracketEntrant][] {
   const pairs: [BracketEntrant, BracketEntrant][] = [];
@@ -307,6 +335,33 @@ export function buildTies(
   });
 }
 
+/**
+ * The ties of a phase's `playoff`: the previous phase's losers, re-ranked on accumulated points and
+ * paired by the seeds the playoff declares. Ids are `p<phaseIndex>-playoff-t<tieIndex>`, so they
+ * never collide with the host phase's own `p<phaseIndex>-t<tieIndex>`.
+ */
+export function buildPlayoffTies(
+  losers: BracketEntrant[],
+  playoff: KnockoutPlayoff,
+  phaseIndex: number,
+  rng?: RandomProvider
+): Tie[] {
+  const expected = playoff.pairs.length * 2;
+  if (losers.length !== expected) {
+    throw new Error(
+      `Playoff '${playoff.name}' expects ${expected} clubs for ${playoff.pairs.length} ties; received ${losers.length}.`
+    );
+  }
+
+  return pairsFromSeeds(reseedOnAccumulatedPoints(losers), playoff.pairs).map(
+    ([first, second], index) => {
+      const secondLegHost = resolveSecondLegHost(first, second, playoff.secondLegHost, rng);
+      const firstLegHost = secondLegHost === first ? second : first;
+      return { id: `p${phaseIndex}-playoff-t${index}`, firstLegHost, secondLegHost };
+    }
+  );
+}
+
 function createMatch(home: Team, away: Team, fields: Partial<Match>): Match {
   return {
     id: crypto.randomUUID(),
@@ -353,6 +408,34 @@ export function buildKnockoutRounds(
   }
 
   return rounds;
+}
+
+/**
+ * Adds a playoff's legs to the host phase's rounds: leg *n* of every playoff tie is played in the
+ * host phase's *n*-th round, so the playoff costs no extra round and the phase index stays linear.
+ * The last leg goes to each tie's `secondLegHost`, as the host phase's own ties do.
+ */
+export function withPlayoffLegs(rounds: Round[], ties: Tie[], phaseIndex: number): Round[] {
+  const hostRounds = rounds.filter((round) => round.phaseIndex === phaseIndex);
+  const legs = hostRounds.length;
+
+  return rounds.map((round) => {
+    const leg = hostRounds.indexOf(round) + 1;
+    if (leg === 0) return round;
+
+    const playoffMatches = ties.map((tie) => {
+      const host = leg === legs ? tie.secondLegHost : tie.firstLegHost;
+      const visitor = host === tie.secondLegHost ? tie.firstLegHost : tie.secondLegHost;
+      return createMatch(host.team, visitor.team, {
+        phaseIndex,
+        tieId: tie.id,
+        leg,
+        bracket: 'playoff',
+      });
+    });
+
+    return { ...round, matches: [...round.matches, ...playoffMatches] };
+  });
 }
 
 /** Convenience: seed the bracket and generate its rounds in one call. */
