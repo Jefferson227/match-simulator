@@ -22,6 +22,8 @@ fetch rec-serie-d-2025   "$CDN/REC%20-%20Brasileiro%20S%C3%A9rie%20D%202025.pdf"
 fetch rec-serie-b-2026   "$CDN/REC_Brasileiro_Serie_B_2026_dc12c977f7.pdf"
 fetch rec-serie-c-2026   "$CDN/REC_Brasileiro_Serie_C_2026_d2552ddc00.pdf"
 fetch rec-serie-d-2026   "$CDN/REC_Brasileiro_Serie_D_2026_df281f18b7.pdf"
+# Série D 2026 Tabela Básica (MS-112): crossings and dates only; the 1ª Fase is "A definir".
+fetch tabela-serie-d-2026 "$CDN/Tabela_Basica_Serie_D_2026_f4f0adbc2b.pdf"
 
 # The division RECs are addressed indirectly; resolve each slug through the CMS.
 # NOTE: &populate=* is mandatory — without it every document comes back with url: null.
