@@ -133,10 +133,10 @@ const MatchSimulator: FC = () => {
   // A group stage pages one group at a time, like TeamStandings; anything else pages the whole round.
   const groups = phaseView.groups ?? [];
   const isGroupStage = groups.length > 1;
-  const pages: { group?: number; matches: Match[] }[] = [];
-  const addPages = (pageMatches: Match[], group?: number) => {
+  const pages: { group?: number; isPlayoff?: boolean; matches: Match[] }[] = [];
+  const addPages = (pageMatches: Match[], group?: number, isPlayoff?: boolean) => {
     for (let start = 0; start < pageMatches.length; start += MATCHES_PER_PAGE) {
-      pages.push({ group, matches: pageMatches.slice(start, start + MATCHES_PER_PAGE) });
+      pages.push({ group, isPlayoff, matches: pageMatches.slice(start, start + MATCHES_PER_PAGE) });
     }
   };
   if (isGroupStage) {
@@ -147,7 +147,13 @@ const MatchSimulator: FC = () => {
       )
     );
   } else {
-    addPages(matches);
+    // A playoff played in the phase's rounds gets pages of its own, so it never reads as the phase.
+    addPages(matches.filter((match) => match.bracket !== 'playoff'));
+    addPages(
+      matches.filter((match) => match.bracket === 'playoff'),
+      undefined,
+      true
+    );
   }
 
   const totalPages = pages.length;
@@ -225,7 +231,9 @@ const MatchSimulator: FC = () => {
               (phaseView.isPhased ? (
                 <>
                   <p>
-                    {`${matchContainer.currentSeason} - ${phaseView.phaseName}`}
+                    {`${matchContainer.currentSeason} - ${
+                      selectedPage?.isPlayoff ? t('standings.playoff') : phaseView.phaseName
+                    }`}
                     {selectedGroup !== undefined
                       ? ` - ${t('standings.group', { number: selectedGroup + 1 })}`
                       : ''}

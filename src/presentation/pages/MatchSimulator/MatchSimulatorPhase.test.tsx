@@ -324,3 +324,96 @@ describe('MatchSimulator — knockout phase', () => {
     expect(screen.queryByText('T15')).not.toBeInTheDocument();
   });
 });
+
+describe('MatchSimulator — a semifinal hosting a playoff (Série D 2026)', () => {
+  const semifinal: ChampionshipPhase = {
+    kind: 'knockout',
+    name: 'Semifinal',
+    numberOfTies: 2,
+    legs: 1,
+    secondLegHost: 'accumulated-points',
+    tiebreakers: ['goal-difference', 'penalties'],
+    playoff: {
+      name: 'Playoffs',
+      from: 'previous-phase-losers',
+      pairs: [
+        [1, 4],
+        [2, 3],
+      ],
+      secondLegHost: 'higher-seed',
+      tiebreakers: ['goal-difference', 'seed'],
+    },
+  };
+
+  /** Two semifinals and two playoff ties in the same round; the human runs `humanTeamIndex`. */
+  function buildPlayoffState(humanTeamIndex: number): GameState {
+    const clubs = Array.from({ length: 8 }, (_, index) => buildTeam(index + 1)).map(
+      (team, index) => (index === humanTeamIndex ? { ...team, isControlledByHuman: true } : team)
+    );
+    const state = buildState(true);
+    const championship = getPlayableChampionship(state.championshipContainer);
+    const match = (tie: number, playoff: boolean) => ({
+      id: `match-${playoff ? 'playoff' : 'semi'}-${tie}`,
+      homeTeam: clubs[(playoff ? 4 : 0) + tie * 2],
+      awayTeam: clubs[(playoff ? 4 : 0) + tie * 2 + 1],
+      homeTeamScore: 0,
+      awayTeamScore: 0,
+      scorers: [],
+      phaseIndex: 0,
+      tieId: playoff ? `p0-playoff-t${tie}` : `p0-t${tie}`,
+      leg: 1,
+      ...(playoff && { bracket: 'playoff' as const }),
+    });
+
+    return {
+      ...state,
+      championshipContainer: containerOf({
+        ...championship,
+        numberOfTeams: 8,
+        teams: clubs,
+        standings: [],
+        matchContainer: {
+          ...championship.matchContainer,
+          rounds: [
+            {
+              id: 'round-1',
+              number: 1,
+              status: 'in-progress',
+              phaseIndex: 0,
+              phaseName: semifinal.name,
+              matches: [match(0, false), match(1, false), match(0, true), match(1, true)],
+            },
+          ],
+        },
+        phases: [semifinal],
+      } as Championship),
+    };
+  }
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (useGameEngine as jest.Mock).mockReturnValue({ dispatch: jest.fn() });
+  });
+
+  test('pages the playoff apart from the semifinals, under its own label', () => {
+    (useGameState as jest.Mock).mockReturnValue(buildPlayoffState(-1));
+    render(<MatchSimulator />);
+
+    expect(screen.getByText(/Semifinal/)).toBeInTheDocument();
+    expect(screen.queryByText('T5')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('>'));
+
+    expect(screen.getByText(/PROMOTION PLAYOFF/)).toBeInTheDocument();
+    expect(screen.getByText('T5')).toBeInTheDocument();
+    expect(screen.queryByText('T1')).not.toBeInTheDocument();
+  });
+
+  test("opens on the playoff page when the human's club plays it", () => {
+    (useGameState as jest.Mock).mockReturnValue(buildPlayoffState(6));
+    render(<MatchSimulator />);
+
+    expect(screen.getByText(/PROMOTION PLAYOFF/)).toBeInTheDocument();
+    expect(screen.getByText('T7')).toBeInTheDocument();
+  });
+});

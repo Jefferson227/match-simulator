@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Standing from '../../../domain/models/Standing';
-import { PhaseView } from '../../../domain/features/phases/PhaseView';
+import { PhaseTieView, PhaseView } from '../../../domain/features/phases/PhaseView';
 import MainLayout from '../../components/MainLayout/MainLayout';
 import PhaseBracket from '../../components/PhaseBracket/PhaseBracket';
 import ChampionshipUseCases from '../../../use-cases/ChampionshipUseCases';
@@ -55,8 +55,12 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
 
   const groups = phaseView.groups ?? [];
   const ties = phaseView.ties ?? [];
+  // A playoff played alongside the phase gets pages of its own after the phase's ties, so its ties
+  // never read as extra semifinals.
+  const playoffTies = phaseView.playoff?.ties ?? [];
   const isGroupStage = groups.length > 1;
   const isKnockout = ties.length > 0;
+  const tiePages = Math.max(1, Math.ceil(ties.length / TIES_PER_PAGE));
 
   const standings = useMemo<Standing[]>(() => {
     if (propStandings !== undefined) return propStandings;
@@ -70,7 +74,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
   const totalPages = isGroupStage
     ? Math.max(1, groups.length)
     : isKnockout
-      ? Math.max(1, Math.ceil(ties.length / TIES_PER_PAGE))
+      ? tiePages + Math.ceil(playoffTies.length / TIES_PER_PAGE)
       : Math.max(1, Math.ceil(standings.length / RESULTS_PER_PAGE));
 
   // The human's own group, or own tie, is what they came to read, so a group stage opens on their
@@ -87,14 +91,16 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
     }
 
     if (isKnockout) {
-      const tieIndex = ties.findIndex(
-        (tie) => tie.homeTeam.id === humanTeamId || tie.awayTeam.id === humanTeamId
-      );
-      return tieIndex < 0 ? -1 : Math.floor(tieIndex / TIES_PER_PAGE);
+      const inTie = (tie: PhaseTieView) =>
+        tie.homeTeam.id === humanTeamId || tie.awayTeam.id === humanTeamId;
+      const tieIndex = ties.findIndex(inTie);
+      if (tieIndex >= 0) return Math.floor(tieIndex / TIES_PER_PAGE);
+      const playoffIndex = playoffTies.findIndex(inTie);
+      return playoffIndex < 0 ? -1 : tiePages + Math.floor(playoffIndex / TIES_PER_PAGE);
     }
 
     return -1;
-  }, [groups, humanTeamId, isGroupStage, isKnockout, ties]);
+  }, [groups, humanTeamId, isGroupStage, isKnockout, playoffTies, tiePages, ties]);
 
   const pickedPageFor = useRef<string | null>(null);
   useEffect(() => {
@@ -111,7 +117,10 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
   const paginatedStandings = isGroupStage
     ? (currentGroup?.standings ?? [])
     : standings.slice(page * RESULTS_PER_PAGE, (page + 1) * RESULTS_PER_PAGE);
-  const paginatedTies = ties.slice(page * TIES_PER_PAGE, (page + 1) * TIES_PER_PAGE);
+  const isPlayoffPage = isKnockout && page >= tiePages;
+  const paginatedTies = isPlayoffPage
+    ? playoffTies.slice((page - tiePages) * TIES_PER_PAGE, (page - tiePages + 1) * TIES_PER_PAGE)
+    : ties.slice(page * TIES_PER_PAGE, (page + 1) * TIES_PER_PAGE);
 
   const totalRounds = championship?.matchContainer?.totalRounds ?? 0;
   const currentRound = championship?.matchContainer?.currentRound ?? 1;
@@ -124,7 +133,7 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
   const skipsTeamManager = useMemo(() => {
     if (isSeasonComplete || nextPhaseView.kind !== 'knockout') return false;
 
-    const nextTies = nextPhaseView.ties ?? [];
+    const nextTies = [...(nextPhaseView.ties ?? []), ...(nextPhaseView.playoff?.ties ?? [])];
     if (!nextTies.length) return false;
 
     const humanTeamId = championship?.teams?.find((team) => team.isControlledByHuman)?.id;
@@ -208,7 +217,10 @@ const TeamStandings: React.FC<TeamStandingsProps> = ({ standings: propStandings 
         >
           <div className="w-full h-[587px] mt-[14px] overflow-hidden">
             {isKnockout ? (
-              <PhaseBracket ties={paginatedTies} />
+              <PhaseBracket
+                ties={paginatedTies}
+                title={isPlayoffPage ? t('standings.playoff') : undefined}
+              />
             ) : (
               <table className="w-full border-separate border-spacing-0">
                 <thead>

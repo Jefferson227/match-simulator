@@ -73,6 +73,7 @@
   "standings": {
     "group": "GROUP {{number}}",
     "penalties": "PENALTIES",
+    "playoff": "PROMOTION PLAYOFF",
     "legOf": "LEG {{current}} OF {{total}}",
     "notPlayedYet": "TO PLAY",
     "title": "STANDINGS",

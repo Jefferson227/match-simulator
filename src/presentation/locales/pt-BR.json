@@ -73,6 +73,7 @@
   "standings": {
     "group": "GRUPO {{number}}",
     "penalties": "PÊNALTIS",
+    "playoff": "PLAYOFF DE ACESSO",
     "legOf": "JOGO {{current}} DE {{total}}",
     "notPlayedYet": "A JOGAR",
     "title": "CLASSIFICAÇÃO",

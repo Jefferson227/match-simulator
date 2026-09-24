@@ -167,6 +167,59 @@ const knockoutState = (): GameState =>
     },
   });
 
+/** A semifinal round whose playoff (Série D 2026) the human's club plays, not the semifinal. */
+const playoffState = (): GameState =>
+  buildState({
+    phases: [
+      groupPhase,
+      {
+        ...knockoutPhase,
+        name: 'Semifinal',
+        playoff: {
+          name: 'Playoffs',
+          from: 'previous-phase-losers',
+          pairs: [[1, 2]],
+          secondLegHost: 'higher-seed',
+          tiebreakers: ['goal-difference', 'seed'],
+        },
+      },
+    ],
+    currentPhaseIndex: 1,
+    standings: teams.map((team, index) => buildStanding(team, index + 1)),
+    matchContainer: {
+      timer: 0,
+      currentSeason: 2026,
+      currentRound: 19,
+      totalRounds: 20,
+      rounds: [
+        {
+          id: 'round-19',
+          number: 19,
+          status: 'not-started',
+          phaseIndex: 1,
+          phaseName: 'Semifinal',
+          matches: [
+            buildMatch({
+              homeTeam: teams[1],
+              awayTeam: teams[2],
+              phaseIndex: 1,
+              tieId: 'p1-t0',
+              leg: 1,
+            }),
+            buildMatch({
+              homeTeam: teams[3],
+              awayTeam: teams[0],
+              phaseIndex: 1,
+              tieId: 'p1-playoff-t0',
+              leg: 1,
+              bracket: 'playoff',
+            }),
+          ],
+        } as Round,
+      ],
+    },
+  });
+
 describe('TeamManager — phased championships', () => {
   beforeEach(() => {
     i18n.changeLanguage('en');
@@ -179,6 +232,13 @@ describe('TeamManager — phased championships', () => {
     expect(screen.getByText('Quartas de Final')).toBeInTheDocument();
     expect(screen.queryByText(/ROUND 19 OF 20/)).not.toBeInTheDocument();
     expect(screen.getByText(/POSITION: -/)).toBeInTheDocument();
+  });
+
+  it('names the playoff, not the semifinal, when the human club plays the playoff', () => {
+    renderWith(playoffState());
+
+    expect(screen.getByText('PROMOTION PLAYOFF')).toBeInTheDocument();
+    expect(screen.queryByText('Semifinal')).not.toBeInTheDocument();
   });
 
   it('drops the opponent position in a knockout too', () => {

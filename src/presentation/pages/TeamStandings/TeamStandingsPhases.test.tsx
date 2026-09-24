@@ -664,3 +664,115 @@ describe('TeamStandings — continuing between phases', () => {
     });
   });
 });
+
+describe('TeamStandings — a semifinal hosting a playoff (Série D 2026)', () => {
+  const dispatch = jest.fn();
+  const eight = [1, 2, 3, 4, 5, 6, 7, 8].map(buildTeam);
+  const semifinal: ChampionshipPhase = {
+    kind: 'knockout',
+    name: 'Semifinal',
+    numberOfTies: 2,
+    legs: 2,
+    secondLegHost: 'accumulated-points',
+    tiebreakers: ['goal-difference', 'penalties'],
+    playoff: {
+      name: 'Playoffs',
+      from: 'previous-phase-losers',
+      pairs: [
+        [1, 4],
+        [2, 3],
+      ],
+      secondLegHost: 'higher-seed',
+      tiebreakers: ['goal-difference', 'seed'],
+    },
+  };
+
+  /** The first leg of the semifinal just played; the playoff's first legs shared its round. */
+  function playoffState(): GameState {
+    const tie = (home: number, away: number, tieId: string, playoff = false) =>
+      buildMatch({
+        homeTeam: eight[home - 1],
+        awayTeam: eight[away - 1],
+        phaseIndex: 0,
+        tieId,
+        leg: 1,
+        ...(playoff && { bracket: 'playoff' as const }),
+      });
+    const legOf = (number: number, status: Round['status']): Round => ({
+      id: `round-${number}`,
+      number,
+      status,
+      phaseIndex: 0,
+      phaseName: 'Semifinal',
+      matches: [
+        tie(4, 1, 'p0-t0'),
+        tie(3, 2, 'p0-t1'),
+        tie(8, 5, 'p0-playoff-t0', true),
+        tie(7, 6, 'p0-playoff-t1', true),
+      ].map((match) => ({ ...match, leg: number })),
+    });
+
+    return buildState({
+      teams: eight,
+      numberOfTeams: 8,
+      phases: [semifinal, knockoutPhase],
+      currentPhaseIndex: 0,
+      survivingTeamIds: eight.slice(0, 4).map((team) => team.id),
+      standings: eight.map((team, index) => buildStanding(team, index + 1, 0)),
+      matchContainer: {
+        timer: 0,
+        currentSeason: 2026,
+        currentRound: 2,
+        totalRounds: 2,
+        rounds: [legOf(1, 'ended'), legOf(2, 'not-started')],
+      },
+    });
+  }
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (useGameEngine as jest.Mock).mockReturnValue({ dispatch });
+  });
+
+  test('shows only the semifinals on the semifinal’s own page', () => {
+    (useGameState as jest.Mock).mockReturnValue(playoffState());
+    render(<TeamStandings />);
+
+    expect(screen.getAllByTestId('tie')).toHaveLength(2);
+    expect(screen.queryByTestId('bracket-title')).not.toBeInTheDocument();
+    expect(screen.queryByText('T05')).not.toBeInTheDocument();
+  });
+
+  test('pages on to the playoff as its own labelled block', () => {
+    (useGameState as jest.Mock).mockReturnValue(playoffState());
+    render(<TeamStandings />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Next' }));
+
+    expect(screen.getByTestId('bracket-title')).toHaveTextContent('PROMOTION PLAYOFF');
+    expect(screen.getAllByTestId('tie')).toHaveLength(2);
+    expect(screen.getByText('T05')).toBeInTheDocument();
+    expect(screen.queryByText('T01')).not.toBeInTheDocument();
+  });
+
+  test("opens on the playoff page when the human's club is in the playoff", () => {
+    (useGameState as jest.Mock).mockReturnValue(withHumanTeam(playoffState(), eight[5]));
+    render(<TeamStandings />);
+
+    expect(screen.getByTestId('bracket-title')).toBeInTheDocument();
+    expect(screen.getByText('T06')).toBeInTheDocument();
+  });
+
+  test('keeps the team manager for a club still playing the playoff', () => {
+    (useGameState as jest.Mock).mockReturnValue(withHumanTeam(playoffState(), eight[5]));
+    render(<TeamStandings />);
+
+    fireEvent.click(screen.getByRole('button', { name: /continue/i }));
+
+    expect(dispatch).toHaveBeenCalledWith({
+      type: 'SET_CURRENT_SCREEN',
+      screenName: 'TeamManager',
+    });
+    expect(dispatch).not.toHaveBeenCalledWith({ type: 'PREPARE_TEAMS_BEFORE_MATCH' });
+  });
+});

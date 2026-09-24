@@ -70,6 +70,10 @@ const TeamManager: React.FC = () => {
   // round number, and a group stage names the group the club is in.
   const phaseView = championshipUseCases.getPhaseView(championship);
   const isKnockoutPhase = phaseView.kind === 'knockout';
+  // A club in the playoff played alongside the phase is not playing the phase itself.
+  const isInPlayoff = !!phaseView.playoff?.ties.some(
+    (tie) => tie.homeTeam.id === team.id || tie.awayTeam.id === team.id
+  );
   const groupOfTeam = phaseView.groups?.find((group) =>
     group.standings.some((standing) => standing.team.id === team.id)
   )?.group;
@@ -169,7 +173,9 @@ const TeamManager: React.FC = () => {
               ? ` (${t('standings.group', { number: groupOfTeam + 1 })})`
               : ''}
           </div>
-          {isKnockoutPhase && phaseView.phaseName && <div>{phaseView.phaseName}</div>}
+          {isKnockoutPhase && phaseView.phaseName && (
+            <div>{isInPlayoff ? t('standings.playoff') : phaseView.phaseName}</div>
+          )}
           {!isKnockoutPhase && totalRounds > 0 && (
             <div>{t('teamManager.roundOf', { current: currentRound, total: totalRounds })}</div>
           )}

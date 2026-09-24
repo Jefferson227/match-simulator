@@ -72,8 +72,13 @@ export type PhaseView = {
   standings?: Standing[];
   /** Set for a group stage — one entry per group. */
   groups?: PhaseGroupView[];
-  /** Set for a knockout phase — one entry per tie, in bracket order. */
+  /** Set for a knockout phase — one entry per tie of its own bracket, in bracket order. */
   ties?: PhaseTieView[];
+  /**
+   * The playoff played in this phase's rounds, kept apart from its bracket: Série D's promotion
+   * playoff is not a semifinal (REC D 2026 Art. 21). Absent when the phase hosts none.
+   */
+  playoff?: { name: string; ties: PhaseTieView[] };
 };
 
 function roundsOfPhase(rounds: Round[], phaseIndex: number): Round[] {
@@ -102,13 +107,20 @@ function buildGroups(matches: Match[], standings: Standing[]): PhaseGroupView[] 
     .map(([group, groupStandings]) => ({ group, standings: rankStandings(groupStandings) }));
 }
 
-function buildTies(rounds: Round[], survivors: Set<string>, resolved: boolean): PhaseTieView[] {
+function buildTies(
+  rounds: Round[],
+  survivors: Set<string>,
+  resolved: boolean,
+  bracket?: Match['bracket']
+): PhaseTieView[] {
   // A leg is played once its round has started. Its score cannot tell: a goalless leg has the same
   // score as one not played yet. Match ids are not unique under test, so legs are tracked by object.
   const playedLegs = new Set(
     rounds.filter((round) => round.status !== 'not-started').flatMap((round) => round.matches)
   );
-  const matches = rounds.flatMap((round) => round.matches);
+  const matches = rounds
+    .flatMap((round) => round.matches)
+    .filter((match) => match.bracket === bracket);
 
   return [...groupMatchesIntoTies(matches).entries()].map(([tieId, legs]) => {
     const first = legs[0];
@@ -212,6 +224,15 @@ export function buildPhaseView(
     (championship.currentPhaseIndex ?? 0) > phaseIndex ||
     phaseRounds.every((round) => round.status === 'ended');
   view.ties = buildTies(phaseRounds, new Set(championship.survivingTeamIds ?? []), resolved);
+
+  if (phase.playoff && matches.some((match) => match.bracket === 'playoff')) {
+    // Playoff winners advance nowhere, so they are never survivors; they are kept apart.
+    const playoffWinners = new Set(championship.playoffWinnerIds ?? []);
+    view.playoff = {
+      name: phase.playoff.name,
+      ties: buildTies(phaseRounds, playoffWinners, resolved, 'playoff'),
+    };
+  }
   return view;
 }
 

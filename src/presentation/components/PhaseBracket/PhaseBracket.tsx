@@ -5,6 +5,8 @@ import { Team } from '../../../domain/models/Team';
 
 interface PhaseBracketProps {
   ties: PhaseTieView[];
+  /** Heads the ties when they are not the phase's own — Série D's promotion playoff. */
+  title?: string;
 }
 
 const WINNER_CLASS = 'text-yellow-300';
@@ -57,11 +59,16 @@ const Score: React.FC<ScoreProps> = ({ home, away, homeClassName, awayClassName,
  * Ties are keyed by `tieId`, never by `Match.id` — match ids are not unique under test, where
  * `crypto.randomUUID` is stubbed to a constant.
  */
-const PhaseBracket: React.FC<PhaseBracketProps> = ({ ties }) => {
+const PhaseBracket: React.FC<PhaseBracketProps> = ({ ties, title }) => {
   const { t } = useTranslation();
 
   return (
     <div className="w-full px-2" data-testid="phase-bracket">
+      {title && (
+        <div className="mb-3 text-center text-[12px] text-yellow-300" data-testid="bracket-title">
+          {title}
+        </div>
+      )}
       {ties.map((tie) => {
         const homeClassName = tie.winnerTeamId === tie.homeTeam.id ? WINNER_CLASS : undefined;
         const awayClassName = tie.winnerTeamId === tie.awayTeam.id ? WINNER_CLASS : undefined;
