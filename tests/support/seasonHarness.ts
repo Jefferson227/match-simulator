@@ -27,7 +27,8 @@ export function useUniqueTeamIds(): void {
  * A phased championship is only over once its **last** phase has been played, so this fabricates
  * the state a played season would have left behind: an ended final, a preserved 1ª Fase table, an
  * accumulated table, and a record of who reached each phase. The semifinalists are deliberately the
- * clubs ranked 5th–8th, so a roll-over that promotes the top four instead cannot pass.
+ * clubs ranked 5th–8th, so a roll-over that promotes the top four instead cannot pass. A semifinal
+ * that hosts a playoff (Série D 2026) gets its winners too: the clubs ranked 9th onwards.
  */
 export function finishSeason(championship: Championship): Championship {
   const endedRounds = championship.matchContainer.rounds.map((round) => ({
@@ -60,10 +61,17 @@ export function finishSeason(championship: Championship): Championship {
   phaseParticipants[semifinalIndex] = semifinalists;
   phaseParticipants[lastPhaseIndex] = finalists;
 
+  const semifinal = championship.phases[semifinalIndex];
+  const playoffWinnerIds =
+    semifinal?.kind === 'knockout' && semifinal.playoff
+      ? ids.slice(8, 8 + semifinal.playoff.pairs.length)
+      : undefined;
+
   const lastRoundNumber = endedRounds.reduce((last, round) => Math.max(last, round.number), 0);
 
   return {
     ...championship,
+    ...(playoffWinnerIds && { playoffWinnerIds }),
     currentPhaseIndex: lastPhaseIndex,
     firstPhaseStandings: ranked,
     accumulatedStandings: ranked,

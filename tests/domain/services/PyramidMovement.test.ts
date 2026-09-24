@@ -173,7 +173,7 @@ describe('D → C → B → C keeps every division’s own state (the MS-107 los
       (total, championship) => total + championship.teams.length,
       0
     );
-    expect(clubCount).toBe(20 + 20 + 20 + 64);
+    expect(clubCount).toBe(20 + 20 + 20 + 96);
     expect(everyClubEverSeen.size).toBe(clubCount);
   });
 });

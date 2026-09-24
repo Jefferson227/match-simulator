@@ -19,6 +19,15 @@ type Phase =
       legs: number;
       secondLegHost: string;
       tiebreakers: string[];
+      reseed?: string;
+      crossings?: { from: string; pairs: unknown[] };
+      playoff?: {
+        name: string;
+        from: string;
+        pairs: number[][];
+        secondLegHost: string;
+        tiebreakers: string[];
+      };
     };
 
 type ChampionshipEntry = {
@@ -364,14 +373,14 @@ describe('championships.json data integrity', () => {
       ).toEqual(PYRAMID);
     });
 
-    test('Série C seeds 20 clubs and Série D 64, every one a seeded men’s club', () => {
+    test('Série C seeds 20 clubs and Série D 96, every one a seeded men’s club', () => {
       const serieC = findByInternalName('brasileirao-serie-c')!;
       const serieD = findByInternalName('brasileirao-serie-d')!;
 
       expect(serieC.teamNames).toHaveLength(20);
       expect(serieC.numberOfTeams).toBe(20);
-      expect(serieD.teamNames).toHaveLength(64);
-      expect(serieD.numberOfTeams).toBe(64);
+      expect(serieD.teamNames).toHaveLength(96);
+      expect(serieD.numberOfTeams).toBe(96);
       [...serieC.teamNames, ...serieD.teamNames].forEach((teamName) =>
         expect(mensTeams.has(teamName)).toBe(true)
       );
@@ -382,98 +391,117 @@ describe('championships.json data integrity', () => {
         (internalName) => findByInternalName(internalName)!.teamNames
       );
 
-      expect(everyName).toHaveLength(20 + 20 + 20 + 64);
+      expect(everyName).toHaveLength(20 + 20 + 20 + 96);
       expect(new Set(everyName).size).toBe(everyName.length);
     });
 
-    test('Série D’s teamNames, dealt in eights, are the 8 groups of REC D 2025 Anexo B', () => {
-      const teamNames = findByInternalName('brasileirao-serie-d')!.teamNames;
-      const groups = Array.from({ length: 8 }, (_, group) =>
-        teamNames.slice(group * 8, group * 8 + 8)
-      );
+    describe('Série D 2026 (REC D 2026)', () => {
+      const serieD = findByInternalName('brasileirao-serie-d')!;
+      const phases = serieD.phases as Phase[];
+      const knockout = (index: number) => phases[index] as Extract<Phase, { kind: 'knockout' }>;
 
-      expect(groups).toEqual([
-        [
-          'independencia',
-          'humaita',
-          'manaus',
+      test('deals its 96 clubs into 16 regional groups of 6, in CBF’s A01–A16 order', () => {
+        const groups = Array.from({ length: 16 }, (_, group) =>
+          serieD.teamNames.slice(group * 6, group * 6 + 6)
+        );
+
+        expect(phases[0]).toMatchObject({
+          kind: 'round-robin',
+          numberOfGroups: 16,
+          teamsPerGroup: 6,
+          legs: 2,
+          advancingPerGroup: 4,
+        });
+        expect(new Set(serieD.teamNames).size).toBe(96);
+        expect(groups[0]).toEqual([
           'manauara',
-          'tuna-luso',
-          'aguia-de-maraba',
+          'nacional-am',
+          'sao-raimundo-rr',
+          'monte-roraima',
+          'manaus',
           'gremio-sampaio',
-          'trem',
-        ],
-        [
-          'maracana',
-          'iguatu',
-          'sampaio-correa',
-          'maranhao',
-          'altos',
-          'parnahyba',
-          'tocantinopolis',
-          'imperatriz',
-        ],
-        [
-          'ferroviario-ce',
-          'horizonte',
-          'sousa',
-          'treze',
-          'santa-cruz',
-          'central',
-          'america-rn',
-          'santa-cruz-rn',
-        ],
-        [
-          'asa',
-          'penedense',
-          'sergipe',
-          'lagarto',
-          'barcelona-de-ilheus',
-          'jequie',
-          'juazeirense',
-          'uniao-araguainense',
-        ],
-        [
-          'ceilandia',
-          'capital-df',
-          'aparecidense',
-          'goiania',
-          'mixto',
-          'luverdense',
-          'porto-velho',
-          'goianesia',
-        ],
-        [
-          'rio-branco-es',
-          'porto-vitoria',
-          'nova-iguacu',
-          'boavista',
-          'pouso-alegre',
-          'marica',
-          'portuguesa',
-          'agua-santa',
-        ],
-        [
-          'goiatuba',
-          'itabirito',
-          'inter-de-limeira',
-          'monte-azul',
-          'operario-ms',
-          'uberlandia',
-          'cascavel',
-          'cianorte',
-        ],
-        [
-          'azuriz',
-          'joinville',
-          'barra',
+        ]);
+        expect(groups[15]).toEqual([
+          'blumenau',
           'marcilio-dias',
+          'sao-joseense',
           'sao-jose-rs',
-          'sao-luiz',
-          'guarany-de-bage',
           'brasil-de-pelotas',
-        ],
-      ]);
+          'azuriz',
+        ]);
+      });
+
+      test('crosses group pairs into 32 2ª Fase ties: 1ºx×4ºy, 2ºy×3ºx, 1ºy×4ºx, 2ºx×3ºy', () => {
+        const crossings = knockout(1).crossings;
+        const expected = Array.from({ length: 8 }, (_, pair) => {
+          const [x, y] = [pair * 2, pair * 2 + 1];
+          return [
+            [
+              { group: x, position: 1 },
+              { group: y, position: 4 },
+            ],
+            [
+              { group: y, position: 2 },
+              { group: x, position: 3 },
+            ],
+            [
+              { group: y, position: 1 },
+              { group: x, position: 4 },
+            ],
+            [
+              { group: x, position: 2 },
+              { group: y, position: 3 },
+            ],
+          ];
+        }).flat();
+
+        expect(knockout(1)).toMatchObject({ numberOfTies: 32, secondLegHost: 'group-winner' });
+        expect(crossings).toEqual({ from: 'group-position', pairs: expected });
+      });
+
+      test('crosses the 3ª and 4ª Fase across each block of 8 ties, as Anexo B prints', () => {
+        const block = (base: number) => [
+          [base, base + 5],
+          [base + 1, base + 4],
+          [base + 2, base + 7],
+          [base + 3, base + 6],
+        ];
+
+        expect(knockout(2).crossings).toEqual({
+          from: 'previous-ties',
+          pairs: [...block(0), ...block(8), ...block(16), ...block(24)],
+        });
+        expect(knockout(3).crossings).toEqual({
+          from: 'previous-ties',
+          pairs: [...block(0), ...block(8)],
+        });
+      });
+
+      test('re-seeds the quarter-finals and plays the playoff alongside the semifinal', () => {
+        expect(knockout(4)).toMatchObject({
+          reseed: 'accumulated-points',
+          secondLegHost: 'higher-seed',
+        });
+        expect(knockout(5).playoff).toEqual({
+          name: 'Playoffs',
+          from: 'previous-phase-losers',
+          pairs: [
+            [1, 4],
+            [2, 3],
+          ],
+          secondLegHost: 'higher-seed',
+          tiebreakers: ['goal-difference', 'seed'],
+        });
+        expect(phases.map((phase) => phase.name)).toEqual([
+          '1ª Fase',
+          '2ª Fase',
+          '3ª Fase',
+          '4ª Fase',
+          'Quartas de Final',
+          'Semifinal',
+          'Final',
+        ]);
+      });
     });
 
     test('every promotion and relegation link between neighbours is mirrored, with matching counts', () => {
@@ -483,8 +511,9 @@ describe('championships.json data integrity', () => {
 
         expect(upper.relegationChampionshipInternalName).toBe(lower.internalName);
         expect(lower.promotionChampionshipInternalName).toBe(upper.internalName);
-        // 4 down, 4 up at every step: the divisions hold their size.
-        expect(upper.numberOfRelegatableTeams).toBe(4);
+        // As many down as up at every step, so the divisions hold their size: 4 ↔ 4 above Série C,
+        // and the balanced 6 ↔ 6 MS-112 chose between C and D (REC C 2026 Art. 42 relegates 2).
+        expect(upper.numberOfRelegatableTeams).toBe(tier === 2 ? 6 : 4);
         expect(lower.numberOfPromotableTeams).toBe(upper.numberOfRelegatableTeams);
       }
 
@@ -505,10 +534,11 @@ describe('championships.json data integrity', () => {
       expect(serieC.relegationRule).toBe('first-phase-table-position');
     });
 
-    test('Série D promotes its semifinalists and keeps its groups across roll-overs', () => {
+    test('Série D promotes its semifinalists and playoff winners and keeps its groups', () => {
       const serieD = findByInternalName('brasileirao-serie-d')!;
 
-      expect(serieD.promotionRule).toBe('semifinalists');
+      expect(serieD.promotionRule).toBe('semifinalists-and-playoff-winners');
+      expect(serieD.numberOfPromotableTeams).toBe(6);
       expect(serieD.rolloverSlotting).toBe('replace-in-place');
     });
   });

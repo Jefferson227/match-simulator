@@ -1,7 +1,7 @@
 import womensTeamsJSON from '../../../src/infrastructure/data/teams-womens.json';
 import championshipsJSON from '../../../src/infrastructure/data/championships.json';
 
-type Player = { position: string; name: string };
+type Player = { position: string; name: string; age: number; nationalities: string[] };
 
 type TeamEntry = {
   name: string;
@@ -10,12 +10,14 @@ type TeamEntry = {
   abbreviation: string;
   colors: { outline: string; background: string; name: string };
   initialOverallStrength: number;
+  coach?: { name: string; age: number; nationalities?: string[] };
   players: Player[];
 };
 
 const teams = womensTeamsJSON as TeamEntry[];
 
 const HEX = /^#[0-9a-fA-F]{6}$/;
+const ISO_ALPHA_3 = /^[A-Z]{3}$/;
 
 const strengthsOf = (internalNames: string[]) =>
   internalNames.map(
@@ -62,12 +64,34 @@ describe('teams-womens.json data integrity', () => {
     });
   });
 
-  test('every club fields at least 18 players, including at least 2 goalkeepers', () => {
+  test('every squad is the sourced roster: at least 11 players and a goalkeeper', () => {
+    // Squads are the 2026 input as-is (MS-112), 17 to 53 players; the thinnest, women's
+    // varzea-grande, has 17 and a single goalkeeper.
     teams.forEach((team) => {
-      expect(team.players.length).toBeGreaterThanOrEqual(18);
-      expect(
-        team.players.filter((player) => player.position === 'GK').length
-      ).toBeGreaterThanOrEqual(2);
+      expect({ club: team.internalName, enough: team.players.length >= 11 }).toEqual({
+        club: team.internalName,
+        enough: true,
+      });
+      expect(team.players.some((player) => player.position === 'GK')).toBe(true);
+    });
+  });
+
+  test('every player has an integer age and ISO alpha-3 nationalities, primary first', () => {
+    teams.forEach((team) => {
+      team.players.forEach((player) => {
+        expect(Number.isInteger(player.age)).toBe(true);
+        expect(player.nationalities.length).toBeGreaterThanOrEqual(1);
+        player.nationalities.forEach((code) => expect(code).toMatch(ISO_ALPHA_3));
+      });
+    });
+  });
+
+  test('a coach, when present, has a name, an age and ISO nationalities', () => {
+    teams.forEach((team) => {
+      if (!team.coach) return;
+      expect(team.coach.name.trim().length).toBeGreaterThan(0);
+      expect(Number.isInteger(team.coach.age)).toBe(true);
+      team.coach.nationalities?.forEach((code) => expect(code).toMatch(ISO_ALPHA_3));
     });
   });
 

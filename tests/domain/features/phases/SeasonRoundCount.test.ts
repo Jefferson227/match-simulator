@@ -28,7 +28,7 @@ describe('getSeasonRoundCount', () => {
     ['brasileirao-serie-a', 38],
     ['brasileirao-serie-b', 38],
     ['brasileirao-serie-c', 27],
-    ['brasileirao-serie-d', 24],
+    ['brasileirao-serie-d', 22],
     ['brasileirao-feminino-serie-a1', 23],
     ['brasileirao-feminino-serie-a2', 21],
     ['brasileirao-feminino-serie-a3', 14],

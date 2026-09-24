@@ -3,9 +3,6 @@ title: Player ages
 type: concept
 verified: 2026-09-20
 sources: [atletas-api, jogos-api]
-asserts:
-  - file: scripts/seed-player-ages.mjs
-    exists: true
 ---
 
 # Player ages

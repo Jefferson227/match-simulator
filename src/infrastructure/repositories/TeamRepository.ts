@@ -55,7 +55,7 @@ function getTeam(internalName: string, leagueType: LeagueType = 'mens'): Team {
       name: player.name,
       strength: getRandomPlayerStrength(teamJSONDTO.initialOverallStrength),
       age: player.age,
-      nationalities: [...(player.nationalities ?? [])],
+      nationalities: [...player.nationalities],
       xp: 0,
       isStarter: false,
       isSub: false,

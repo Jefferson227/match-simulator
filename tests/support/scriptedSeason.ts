@@ -87,6 +87,7 @@ export class ScriptedSeason {
   private readonly rngForDivision = pinnedRngByDivision();
   private readonly seedIndex = new Map<Team['id'], number>();
   private humanFate?: 'wins' | 'loses';
+  private results?: (home: string, away: string, phaseIndex: number) => [number, number];
   readonly names: string[];
 
   constructor(internalName: string) {
@@ -145,6 +146,15 @@ export class ScriptedSeason {
     return this;
   }
 
+  /**
+   * Scores the playable division's matches with `results` instead of seed order — a real season's
+   * results, looked up by the clubs' seed names.
+   */
+  withResults(results: (home: string, away: string, phaseIndex: number) => [number, number]): this {
+    this.results = results;
+    return this;
+  }
+
   get championship(): Championship {
     return getPlayableChampionship(this.container);
   }
@@ -161,7 +171,11 @@ export class ScriptedSeason {
   }
 
   /** Earlier seed wins; a club that joined after the seed is ordered by id instead. */
-  private score(match: Match): [number, number] {
+  private score(match: Match, phaseIndex: number): [number, number] {
+    if (this.results) {
+      return this.results(this.nameOf(match.homeTeam), this.nameOf(match.awayTeam), phaseIndex);
+    }
+
     if (
       this.humanFate &&
       (match.homeTeam.isControlledByHuman || match.awayTeam.isControlledByHuman)
@@ -191,7 +205,7 @@ export class ScriptedSeason {
         : {
             ...round,
             matches: round.matches.map((match) => {
-              const [homeTeamScore, awayTeamScore] = this.score(match);
+              const [homeTeamScore, awayTeamScore] = this.score(match, round.phaseIndex ?? 0);
               return { ...match, homeTeamScore, awayTeamScore };
             }),
           }
@@ -227,10 +241,19 @@ export class ScriptedSeason {
 
   /** Each tie of a knockout phase as `[second-leg host, first-leg host]` names, in tie order. */
   ties(phaseIndex: number): [string, string][] {
+    return this.secondLegs(phaseIndex, (match) => match.bracket !== 'playoff');
+  }
+
+  /** The ties of the playoff played alongside a knockout phase, as `ties` gives them. */
+  playoffTies(phaseIndex: number): [string, string][] {
+    return this.secondLegs(phaseIndex, (match) => match.bracket === 'playoff');
+  }
+
+  private secondLegs(phaseIndex: number, keep: (match: Match) => boolean): [string, string][] {
     return this.championship.matchContainer.rounds
       .filter((round) => round.phaseIndex === phaseIndex)
       .flatMap((round) => round.matches)
-      .filter((match) => match.leg === 2)
+      .filter((match) => match.leg === 2 && keep(match))
       .map((match) => [this.nameOf(match.homeTeam), this.nameOf(match.awayTeam)]);
   }
 

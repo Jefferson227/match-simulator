@@ -239,7 +239,7 @@ describe('the men’s divisions still run round for round', () => {
     const rolled = ChampionshipService.runEndOfChampionshipActions(container).getResult();
 
     expect(rolled.championships.map((championship) => championship.teams.length)).toEqual([
-      20, 20, 20, 64,
+      20, 20, 20, 96,
     ]);
   });
 });

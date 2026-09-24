@@ -22,7 +22,7 @@ describe.each([
   {
     leagueType: 'mens' as LeagueType,
     entry: 'brasileirao-serie-d',
-    clubs: 64,
+    clubs: 96,
     pyramid: [
       'brasileirao-serie-a',
       'brasileirao-serie-b',

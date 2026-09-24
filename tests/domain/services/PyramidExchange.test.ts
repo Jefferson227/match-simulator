@@ -81,15 +81,15 @@ describe('with the human in Série D, the divisions above it still exchange', ()
     const left = minus(serieCBefore, serieCAfter);
     const arrived = minus(serieCAfter, serieCBefore);
 
-    // Out: 4 promoted into B and 4 relegated into D.
-    expect(left.size).toBe(8);
+    // Out: 4 promoted into B and 6 relegated into D (MS-112's balanced 6 ↔ 6).
+    expect(left.size).toBe(10);
     expect([...left].filter((id) => idsOf(division(after, B)).has(id))).toHaveLength(4);
-    expect([...left].filter((id) => idsOf(division(after, D)).has(id))).toHaveLength(4);
+    expect([...left].filter((id) => idsOf(division(after, D)).has(id))).toHaveLength(6);
 
-    // In: 4 relegated from B and 4 promoted from D.
-    expect(arrived.size).toBe(8);
+    // In: 4 relegated from B and 6 promoted from D — its semifinalists and playoff winners.
+    expect(arrived.size).toBe(10);
     expect([...arrived].filter((id) => idsOf(division(before, B)).has(id))).toHaveLength(4);
-    expect([...arrived].filter((id) => idsOf(division(before, D)).has(id))).toHaveLength(4);
+    expect([...arrived].filter((id) => idsOf(division(before, D)).has(id))).toHaveLength(6);
   });
 
   it('computes every boundary off the pre-roll-over tables', () => {
@@ -128,8 +128,8 @@ describe('club counts follow each division’s rules across three seasons', () =
     return seen;
   }
 
-  it('keeps the men’s pyramid at 20 / 20 / 20 / 64', () => {
-    const stable = { [A]: 20, [B]: 20, [C]: 20, [D]: 64 };
+  it('keeps the men’s pyramid at 20 / 20 / 20 / 96', () => {
+    const stable = { [A]: 20, [B]: 20, [C]: 20, [D]: 96 };
     expect(countsOverSeasons(D, 9)).toEqual([stable, stable, stable, stable]);
   });
 

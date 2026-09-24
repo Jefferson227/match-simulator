@@ -76,7 +76,7 @@ describe('ChampionshipRepository', () => {
       expect(championship.teams).toHaveLength(numberOfTeams);
       expect(championship.standings).toHaveLength(numberOfTeams);
       championship.teams.forEach((team) => {
-        expect(team.players).toHaveLength(23);
+        expect(team.players.length).toBeGreaterThanOrEqual(11);
         expect(team.players[0].strength).toBeGreaterThan(0);
       });
     });

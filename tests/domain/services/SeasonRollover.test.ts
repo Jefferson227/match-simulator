@@ -1,5 +1,6 @@
 import { beforeAll, describe, expect, it } from '@jest/globals';
 import { Team } from '../../../src/domain/models/Team';
+import { groupsOfPhase } from '../../../src/domain/features/phases/PhaseProgression';
 import { allTeamIds, counts, init, rollOver, useUniqueTeamIds } from '../../support/seasonHarness';
 import { ScriptedSeason } from '../../support/scriptedSeason';
 import { aboveOf, belowOf, playableOf } from '../../support/pyramidSlots';
@@ -117,7 +118,7 @@ const MENS_COUNTS = {
   'brasileirao-serie-a': 20,
   'brasileirao-serie-b': 20,
   'brasileirao-serie-c': 20,
-  'brasileirao-serie-d': 64,
+  'brasileirao-serie-d': 96,
 };
 
 describe('season roll-over — the men’s divisions are untouched', () => {
@@ -208,6 +209,7 @@ describe('season roll-over — the men’s lower divisions, played for three sea
     const sizes: Record<string, number>[] = [];
     const slotsKept: number[] = [];
     const exchanged: number[] = [];
+    const groupSizes: number[][] = [];
 
     beforeAll(() => {
       const season = new ScriptedSeason('brasileirao-serie-d');
@@ -219,16 +221,25 @@ describe('season roll-over — the men’s lower divisions, played for three sea
         sizes.push(counts(next));
         slotsKept.push(keptSlots(before, after));
         exchanged.push(after.filter((id) => !before.includes(id)).length);
+        const groups = [...groupsOfPhase(playableOf(next).matchContainer.rounds, 0).values()];
+        groupSizes.push(
+          Array.from({ length: 16 }, (_, group) => groups.filter((g) => g === group).length)
+        );
       }
     });
 
-    it('keeps D at 64 and every division above it at 20 every season', () => {
+    it('keeps D at 96 and every division above it at 20 every season', () => {
       expect(sizes).toEqual(Array(3).fill(MENS_COUNTS));
     });
 
-    it('exchanges 4 clubs and keeps the other 60 in their group slots', () => {
-      expect(exchanged).toEqual([4, 4, 4]);
-      expect(slotsKept).toEqual([60, 60, 60]);
+    it('deals D into 16 groups of 6 every season', () => {
+      expect(groupSizes).toEqual(Array(3).fill(Array(16).fill(6)));
+    });
+
+    it('exchanges 6 clubs and keeps the other 90 in their group slots', () => {
+      // 6 up to Série C (4 semifinalists + 2 playoff winners), 6 down from it into their slots.
+      expect(exchanged).toEqual([6, 6, 6]);
+      expect(slotsKept).toEqual([90, 90, 90]);
     });
   });
 
@@ -251,18 +262,18 @@ describe('season roll-over — the men’s lower divisions, played for three sea
       }
     });
 
-    it('keeps C at 20, B at 20 and D at 64 every season', () => {
+    it('keeps C at 20, B at 20 and D at 96 every season', () => {
       expect(sizes).toEqual(Array(3).fill(MENS_COUNTS));
     });
 
-    it('keeps D’s 60 non-exchanged clubs in their group slots while D is the AI neighbour', () => {
-      expect(slotsKept).toEqual([60, 60, 60]);
+    it('keeps D’s 90 non-exchanged clubs in their group slots while D is the AI neighbour', () => {
+      expect(slotsKept).toEqual([90, 90, 90]);
     });
 
     it('never duplicates or loses a club across the pyramid', () => {
       const initial = new Set(idsPerSeason[0]);
       for (const ids of idsPerSeason) {
-        expect(new Set(ids).size).toBe(20 + 20 + 20 + 64);
+        expect(new Set(ids).size).toBe(20 + 20 + 20 + 96);
         for (const id of ids) expect(initial.has(id)).toBe(true);
       }
     });

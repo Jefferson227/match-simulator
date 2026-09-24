@@ -9,24 +9,24 @@
     "type": "double-round-robin",
     "leagueType": "mens",
     "teamNames": [
+      "athletico-paranaense",
       "atletico-mg",
       "bahia",
       "botafogo",
-      "ceara",
+      "chapecoense",
       "corinthians",
+      "coritiba",
       "cruzeiro",
       "flamengo",
       "fluminense",
-      "fortaleza",
       "gremio",
       "internacional",
-      "juventude",
       "mirassol",
       "palmeiras",
       "rb-bragantino",
+      "remo",
       "santos",
       "sao-paulo",
-      "sport-recife",
       "vasco",
       "vitoria"
     ]
@@ -43,26 +43,26 @@
     "type": "double-round-robin",
     "leagueType": "mens",
     "teamNames": [
-      "amazonas",
       "america-mg",
       "athletic",
-      "athletico-paranaense",
       "atletico-go",
       "avai",
       "botafogo-sp",
-      "chapecoense",
-      "coritiba",
+      "ceara",
       "crb",
       "criciuma",
       "cuiaba",
-      "ferroviaria",
+      "fortaleza",
       "goias",
+      "juventude",
+      "londrina",
+      "nautico",
       "novorizontino",
       "operario-pr",
-      "paysandu",
-      "remo",
-      "vila-nova",
-      "volta-redonda"
+      "ponte-preta",
+      "sao-bernardo",
+      "sport-recife",
+      "vila-nova"
     ]
   },
   {
@@ -74,32 +74,32 @@
     "promotionChampionshipInternalName": "brasileirao-serie-b",
     "promotionRule": "phase-group-position",
     "promotionPhaseIndex": 1,
-    "numberOfRelegatableTeams": 4,
+    "numberOfRelegatableTeams": 6,
     "relegationChampionshipInternalName": "brasileirao-serie-d",
     "relegationRule": "first-phase-table-position",
     "type": "single-round-robin",
     "leagueType": "mens",
     "teamNames": [
-      "ponte-preta",
-      "ituano",
-      "brusque",
-      "guarani",
-      "botafogo-pb",
-      "sao-bernardo",
-      "ypiranga",
-      "londrina",
-      "nautico",
-      "csa",
-      "figueirense",
-      "tombense",
-      "confianca",
-      "abc",
-      "caxias",
-      "floresta",
-      "retro",
+      "amazonas",
       "anapolis",
+      "barra",
+      "botafogo-pb",
+      "brusque",
+      "caxias",
+      "confianca",
+      "ferroviaria",
+      "figueirense",
+      "floresta",
+      "guarani",
+      "inter-de-limeira",
+      "itabaiana",
+      "ituano",
+      "maranhao",
       "maringa",
-      "itabaiana"
+      "paysandu",
+      "santa-cruz",
+      "volta-redonda",
+      "ypiranga"
     ],
     "phases": [
       {
@@ -151,92 +151,124 @@
     "name": "BRASILEIRÃO SÉRIE D",
     "internalName": "brasileirao-serie-d",
     "tier": 4,
-    "numberOfTeams": 64,
-    "numberOfPromotableTeams": 4,
+    "numberOfTeams": 96,
+    "numberOfPromotableTeams": 6,
     "promotionChampionshipInternalName": "brasileirao-serie-c",
-    "promotionRule": "semifinalists",
+    "promotionRule": "semifinalists-and-playoff-winners",
     "type": "group-stage-knockout",
     "leagueType": "mens",
     "rolloverSlotting": "replace-in-place",
     "teamNames": [
-      "independencia",
-      "humaita",
-      "manaus",
       "manauara",
-      "tuna-luso",
-      "aguia-de-maraba",
+      "nacional-am",
+      "sao-raimundo-rr",
+      "monte-roraima",
+      "manaus",
       "gremio-sampaio",
-      "trem",
-      "maracana",
-      "iguatu",
-      "sampaio-correa",
-      "maranhao",
-      "altos",
-      "parnahyba",
-      "tocantinopolis",
-      "imperatriz",
-      "ferroviario-ce",
-      "horizonte",
-      "sousa",
-      "treze",
-      "santa-cruz",
-      "central",
-      "america-rn",
-      "santa-cruz-rn",
-      "asa",
-      "penedense",
-      "sergipe",
-      "lagarto",
-      "barcelona-de-ilheus",
-      "jequie",
-      "juazeirense",
-      "uniao-araguainense",
-      "ceilandia",
-      "capital-df",
-      "aparecidense",
-      "goiania",
-      "mixto",
-      "luverdense",
+      "guapore",
       "porto-velho",
-      "goianesia",
+      "araguaina",
+      "independencia",
+      "galvez-ec",
+      "humaita",
+      "gama",
+      "luverdense",
+      "brasiliense",
+      "aparecidense",
+      "primavera-ac",
+      "inhumas",
+      "capital-df",
+      "goiatuba",
+      "ceilandia",
+      "mixto",
+      "uniao-rondonopolis",
+      "ceov-operario",
+      "trem",
+      "aguia-de-maraba",
+      "imperatriz",
+      "tuna-luso",
+      "tocantinopolis",
+      "oratorio",
+      "iguatu",
+      "maracana",
+      "parnahyba",
+      "sampaio-correa",
+      "moto-club",
+      "iape",
+      "ferroviario-ce",
+      "piaui",
+      "fluminense-pi",
+      "altos",
+      "tirol",
+      "atletico-cearense",
+      "abc",
+      "america-rn",
+      "maguary-pe",
+      "central",
+      "sousa",
+      "laguna",
+      "treze",
+      "sergipe",
+      "serra-branca-pb",
+      "lagarto",
+      "retro",
+      "decisao",
+      "csa",
+      "juazeirense",
+      "asa",
+      "jacuipense",
+      "cse",
+      "atletico-ba",
+      "uberlandia",
+      "betim-futebol",
+      "crac",
+      "ivinhema",
+      "abecat-ouvidorense",
+      "operario-ms",
+      "democrata-gv",
+      "tombense",
+      "vitoria-es",
       "rio-branco-es",
-      "porto-vitoria",
-      "nova-iguacu",
-      "boavista",
-      "pouso-alegre",
-      "marica",
+      "porto-ba",
+      "real-noroeste",
       "portuguesa",
       "agua-santa",
-      "goiatuba",
-      "itabirito",
-      "inter-de-limeira",
-      "monte-azul",
-      "operario-ms",
-      "uberlandia",
-      "cascavel",
+      "portuguesa-rj",
+      "america-rj",
+      "madureira",
+      "pouso-alegre",
+      "xv-de-piracicaba",
+      "noroeste",
+      "velo-clube",
+      "sampaio-correa-rj",
+      "nova-iguacu",
+      "marica",
+      "santa-catarina",
       "cianorte",
-      "azuriz",
-      "joinville",
-      "barra",
-      "marcilio-dias",
-      "sao-jose-rs",
+      "cascavel",
       "sao-luiz",
+      "joinville",
       "guarany-de-bage",
-      "brasil-de-pelotas"
+      "blumenau",
+      "marcilio-dias",
+      "sao-joseense",
+      "sao-jose-rs",
+      "brasil-de-pelotas",
+      "azuriz"
     ],
     "phases": [
       {
         "kind": "round-robin",
         "name": "1ª Fase",
-        "numberOfGroups": 8,
-        "teamsPerGroup": 8,
+        "numberOfGroups": 16,
+        "teamsPerGroup": 6,
         "legs": 2,
         "advancingPerGroup": 4
       },
       {
         "kind": "knockout",
         "name": "2ª Fase",
-        "numberOfTies": 16,
+        "numberOfTies": 32,
         "legs": 2,
         "secondLegHost": "group-winner",
         "tiebreakers": [
@@ -405,6 +437,166 @@
                 "group": 7,
                 "position": 3
               }
+            ],
+            [
+              {
+                "group": 8,
+                "position": 1
+              },
+              {
+                "group": 9,
+                "position": 4
+              }
+            ],
+            [
+              {
+                "group": 9,
+                "position": 2
+              },
+              {
+                "group": 8,
+                "position": 3
+              }
+            ],
+            [
+              {
+                "group": 9,
+                "position": 1
+              },
+              {
+                "group": 8,
+                "position": 4
+              }
+            ],
+            [
+              {
+                "group": 8,
+                "position": 2
+              },
+              {
+                "group": 9,
+                "position": 3
+              }
+            ],
+            [
+              {
+                "group": 10,
+                "position": 1
+              },
+              {
+                "group": 11,
+                "position": 4
+              }
+            ],
+            [
+              {
+                "group": 11,
+                "position": 2
+              },
+              {
+                "group": 10,
+                "position": 3
+              }
+            ],
+            [
+              {
+                "group": 11,
+                "position": 1
+              },
+              {
+                "group": 10,
+                "position": 4
+              }
+            ],
+            [
+              {
+                "group": 10,
+                "position": 2
+              },
+              {
+                "group": 11,
+                "position": 3
+              }
+            ],
+            [
+              {
+                "group": 12,
+                "position": 1
+              },
+              {
+                "group": 13,
+                "position": 4
+              }
+            ],
+            [
+              {
+                "group": 13,
+                "position": 2
+              },
+              {
+                "group": 12,
+                "position": 3
+              }
+            ],
+            [
+              {
+                "group": 13,
+                "position": 1
+              },
+              {
+                "group": 12,
+                "position": 4
+              }
+            ],
+            [
+              {
+                "group": 12,
+                "position": 2
+              },
+              {
+                "group": 13,
+                "position": 3
+              }
+            ],
+            [
+              {
+                "group": 14,
+                "position": 1
+              },
+              {
+                "group": 15,
+                "position": 4
+              }
+            ],
+            [
+              {
+                "group": 15,
+                "position": 2
+              },
+              {
+                "group": 14,
+                "position": 3
+              }
+            ],
+            [
+              {
+                "group": 15,
+                "position": 1
+              },
+              {
+                "group": 14,
+                "position": 4
+              }
+            ],
+            [
+              {
+                "group": 14,
+                "position": 2
+              },
+              {
+                "group": 15,
+                "position": 3
+              }
             ]
           ]
         }
@@ -412,6 +604,86 @@
       {
         "kind": "knockout",
         "name": "3ª Fase",
+        "numberOfTies": 16,
+        "legs": 2,
+        "secondLegHost": "accumulated-points",
+        "tiebreakers": [
+          "goal-difference",
+          "penalties"
+        ],
+        "crossings": {
+          "from": "previous-ties",
+          "pairs": [
+            [
+              0,
+              5
+            ],
+            [
+              1,
+              4
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              8,
+              13
+            ],
+            [
+              9,
+              12
+            ],
+            [
+              10,
+              15
+            ],
+            [
+              11,
+              14
+            ],
+            [
+              16,
+              21
+            ],
+            [
+              17,
+              20
+            ],
+            [
+              18,
+              23
+            ],
+            [
+              19,
+              22
+            ],
+            [
+              24,
+              29
+            ],
+            [
+              25,
+              28
+            ],
+            [
+              26,
+              31
+            ],
+            [
+              27,
+              30
+            ]
+          ]
+        }
+      },
+      {
+        "kind": "knockout",
+        "name": "4ª Fase",
         "numberOfTies": 8,
         "legs": 2,
         "secondLegHost": "accumulated-points",
@@ -478,7 +750,26 @@
         "tiebreakers": [
           "goal-difference",
           "penalties"
-        ]
+        ],
+        "playoff": {
+          "name": "Playoffs",
+          "from": "previous-phase-losers",
+          "pairs": [
+            [
+              1,
+              4
+            ],
+            [
+              2,
+              3
+            ]
+          ],
+          "secondLegHost": "higher-seed",
+          "tiebreakers": [
+            "goal-difference",
+            "seed"
+          ]
+        }
       },
       {
         "kind": "knockout",

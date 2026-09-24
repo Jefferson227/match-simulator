@@ -7,7 +7,7 @@ describe('TeamRepository', () => {
       const team = TeamRepository.getTeam('corinthians', 'womens');
 
       expect(team.fullName).toBe('Sport Club Corinthians Paulista');
-      expect(team.players).toHaveLength(23);
+      expect(team.players.length).toBeGreaterThanOrEqual(11);
     });
 
     test("reads the men's seed file when the league type is 'mens'", () => {

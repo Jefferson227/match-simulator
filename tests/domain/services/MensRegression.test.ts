@@ -254,7 +254,7 @@ describe("the men's promotion, relegation and roll-over are unchanged", () => {
         ['brasileirao-serie-a', 20, 20],
         ['brasileirao-serie-b', 20, 20],
         ['brasileirao-serie-c', 20, 20],
-        ['brasileirao-serie-d', 64, 64],
+        ['brasileirao-serie-d', 96, 96],
       ]);
       for (const championship of unphasedMens(container)) {
         expect(championship.matchContainer.totalRounds).toBe(38);
