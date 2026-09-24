@@ -2,9 +2,9 @@
 title: Brasileirão Série C
 type: competition
 internalName: brasileirao-serie-c
-season: 2025
-verified: 2026-09-10
-sources: [rec-serie-c-2025, rec-serie-b-2026, rec-serie-c-2026, rec-serie-d-2026, times-serie-c-2025, tabelas-serie-c-2025, jogos-api, news-serie-c-2025-final, news-serie-c-2025-acesso]
+season: 2026
+verified: 2026-09-23
+sources: [rec-serie-c-2025, rec-serie-b-2026, rec-serie-c-2026, rec-serie-d-2026, times-serie-c-2025, tabelas-serie-c-2025, jogos-api, news-serie-c-2025-final, news-serie-c-2025-acesso, news-conselho-serie-c-2026]
 asserts:
   - file: src/infrastructure/data/championships.json
     select: internalName=brasileirao-serie-c
@@ -37,7 +37,7 @@ asserts:
   - file: src/infrastructure/data/championships.json
     select: internalName=brasileirao-serie-c
     path: numberOfRelegatableTeams
-    equals: 4
+    equals: 6
   - file: src/infrastructure/data/championships.json
     select: internalName=brasileirao-serie-c
     path: relegationRule
@@ -52,12 +52,13 @@ asserts:
     equals: 4
 ---
 
-# Brasileirão Série C — 2025
+# Brasileirão Série C
 
-Third men's tier. 20 clubs: a league, then two groups of four, then a final. `competitionId`
-`12616`. The seed plays the **2025 regulation**. It was chosen over 2026 because the men's Série A
-and B seed is 2025, and a 2026 C would put clubs in two divisions at once; see
-[[ms-106-mens-lower-divisions]].
+Third men's tier. 20 clubs: a league, then two groups of four, then a final. Since MS-112 the seed
+holds the **2026 membership** (the 20 clubs of Série C 2026), and every men's division moved to 2026
+together; see [[ms-112-2026-rosters-and-serie-d]]. The **format is the same in 2025 and 2026**: REC C
+2026 keeps the 2025 shape, and only its relegation count changed (see below). The articles cited
+here are REC C 2025's (`competitionId` `12616`), as MS-106 read them.
 
 Played in **3 phases** (REC C Art. 12):
 
@@ -92,8 +93,10 @@ Played in **3 phases** (REC C Art. 12):
     [[tiebreakers]].
 - **Promotion: 4 clubs, the top 2 of each 2ª Fase group** (Art. 5º). The final does **not** decide
   promotion: both finalists are already up, and it only awards the title (Art. 24).
-- **Relegation: the bottom 4 of the 1ª Fase table** go to Série D (Art. 6º). It reads the 1ª Fase
-  table, not the final classification. See [[promotion-and-relegation]].
+- **Relegation: the bottom of the 1ª Fase table** goes to Série D. It reads the 1ª Fase table, not
+  the final classification. REC C 2025 Art. 6º sent **4** down; REC C 2026 Art. 42 sends **2**.
+  **The game sends 6**, invented to balance Série D's 6 promoted; see below and
+  [[promotion-and-relegation]].
 - **Final classification** (Arts. 24–26): 1º the champion, 2º the runner-up. 3º/4º are the two 2ª
   Fase runners-up, by their summed 1ª + 2ª Fase campaign. 5º–8º are the other four 2ª Fase clubs,
   by summed campaign. 9º–20º follow the 1ª Fase table.
@@ -129,14 +132,20 @@ so it stayed down. São Bernardo, 5º in the 1ª Fase, went up. A "top of the ta
 Itabaiana had 6 wins and a goal difference of −4; CSA had 5 wins and −2. The REC ranks wins first,
 so CSA went down. See [[tiebreakers]].
 
-## Later seasons
+## The game's deviation: 6 down, not 2
 
-CBF changed the format for 2026: Série C now relegates **2**, not 4 (REC C 2026 Art. 42), while
-still promoting 4 (Art. 5º). The game applies the 2025 rules to every season, so it drifts from
-reality from 2026 on. That is recorded as invented; see [[ms-106-mens-lower-divisions]] and
-[[invented-data]].
+REC C 2026 relegates **2** (Art. 42) while Série D promotes **6** (REC D 2026 Art. 6º), so the real
+Série C grows: 20 − 4 up − 2 down + 4 from B + 6 from D = **24** in 2027, and 28 in 2028
+(`news-conselho-serie-c-2026`). Série D is rebuilt from the state championships every year, so it
+does not shrink. The game has no source for state champions and cannot refill D. With 2 down and 6
+up, a closed D would lose 4 clubs a season and its 16 groups of 6 would break.
+
+The game relegates **6** instead. C stays at 20 and D at 96 = 16×6 every season. This is invented,
+not regulation; it is a design decision recorded in [[ms-112-2026-rosters-and-serie-d]] and
+[[invented-data]]. It supersedes MS-106's choice to keep 2025's 4 ↔ 4.
 
 ## Feeds
 
 - Promotes 4 clubs (the top 2 of each 2ª Fase group) to Série B, and receives Série B's bottom 4.
-- Relegates its 1ª Fase bottom 4 to [[brasileirao-serie-d]], and receives Série D's 4 semifinalists.
+- Relegates its 1ª Fase bottom 6 to [[brasileirao-serie-d]], and receives Série D's 4 semifinalists
+  and 2 playoff winners.

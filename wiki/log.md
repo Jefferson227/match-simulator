@@ -504,3 +504,53 @@ other footballers sharing their apelido. ogol and Transfermarkt answer 403 and a
 - Nothing renders stamina or age, so a player fading through a match is invisible to the user.
 - Driving a real browser at Transfermarkt is the one untried route to real ages. The apelido
   ambiguity would remain, and its squads are current rather than the seed's 2025 ones.
+
+## [2026-09-23] ingest + close-out | MS-112 — 2026 rosters, 2026 pyramid, Série D 2026
+
+sha c4fd61d
+
+**Ingested.** `tabela-serie-d-2026` (the Tabela Básica PDF, added to `fetch.sh`), the 2026 Série D
+endpoints `times-serie-d-2026` and `tabelas-serie-d-2026`, all 610 Série D 2026 matches from
+`jogos-api` (scores committed as `tests/support/data/serie-d-2026-results.json`), five CBF news
+articles (`news-serie-d-2026-*`, `news-conselho-serie-c-2026`, `news-calendario-2026`), and the
+provenance of the MS-112 input, `ogol-rosters-2026` and the unused
+`transfermarkt-free-coaches-2026`. The input itself was not committed.
+
+**Filed [[ms-112-2026-rosters-and-serie-d]].** The seed takes names, squads, ages, nationalities
+(ISO alpha-3, FIFA's ENG) and coaches from the 2026 rosters, keeping every `internalName`. The men's
+pyramid moves to 2026, and Série D plays REC D 2026 with its playoff inside the semifinal phase. C/D
+is a balanced 6 ↔ 6 instead of CBF's 2 down / C growing to 24. Twelve orphans are removed, not the
+planned 11: Araguaína FR (CBF 21745) is not União Araguainense (CBF 20389). The page also holds the
+44 new clubs' colour sources.
+
+- [[brasileirao-serie-d]]: rewritten for REC D 2026, including Bloco I/II, the playoff, the
+  truncated Art. 21 §5 assumption and the 2026 outcome. 2025 kept as history. Asserts: 96 clubs,
+  7 phases, 32/16/8 crossings, the playoff, the new rule, 6 promoted.
+- [[brasileirao-serie-c]]: 2026 membership; relegates 6 in the game vs 2 in REC C 2026 Art. 42.
+- [[player-ages]]: ages are real (ogol, as of 2026-09-22); the generator is retired and kept as
+  history.
+- [[invented-data]]: new MS-112 section (new clubs' strengths, overlap, colours, 6 ↔ 6, group
+  order, classification bands not modelled); the MS-111 age entry removed.
+- [[known-contradictions]]: items 11–14 (truncated Art. 21 §5 vs CBF's preview saying penalties,
+  Série D 2026 phase names, roster names vs CBF, a REC C typo). The "Série C 2027 size" gap is
+  now stated by CBF news.
+- [[phases-and-knockouts]]: the `playoff` descriptor, why it lives inside the semifinal, and the
+  `seed` tiebreaker; shootouts are opt-in.
+- [[promotion-and-relegation]]: `semifinalists-and-playoff-winners` and the 6 ↔ 6.
+- [[ms-106-mens-lower-divisions]]: superseded on choices 1, 2 and 4; stale asserts removed.
+- [[sources]], [[index]]: new rows, two open threads closed or reworded, three added.
+
+### Recorded, not fixed
+
+- **Série D's order within each group is not official.** The Tabela Básica prints the 1ª Fase as "A
+  definir"; the seed uses each group's final 2026 order.
+- **Final-classification bands** (REC D 2026 Art. 20) are not modelled; nothing reads past the
+  podium.
+- `npx tsc --noEmit` carries 24 more instances of the pre-existing jest-dom / `jest.Mock` typing
+  class, from new `.test.tsx` cases written like their neighbours. Wiring jest-dom's types into
+  tsconfig would clear the whole class. No ticket.
+
+### Left open
+
+- The running-app check of the playoff screens was waived by the user; component tests only.
+- Coaches and nationalities are on no screen. `free-coaches.json` is deferred.

@@ -3,20 +3,12 @@ title: The men's Série C and D are seeded from 2025, and stay 2025
 type: decision
 ticket: MS-106
 decided: 2026-09-10
-status: implemented
+status: implemented; superseded by MS-112 on the season, club names, Série D's shape and membership, and the C/D exchange
 asserts:
   - file: src/infrastructure/data/championships.json
     select: internalName=brasileirao-serie-c
     path: numberOfTeams
     equals: 20
-  - file: src/infrastructure/data/championships.json
-    select: internalName=brasileirao-serie-d
-    path: numberOfTeams
-    equals: 64
-  - file: src/infrastructure/data/championships.json
-    select: internalName=brasileirao-serie-c
-    path: numberOfRelegatableTeams
-    equals: 4
   - file: src/infrastructure/data/championships.json
     select: internalName=brasileirao-serie-d
     path: rolloverSlotting
@@ -36,6 +28,13 @@ asserts:
 **Decision.** The men's pyramid gains [[brasileirao-serie-c]] and [[brasileirao-serie-d]], with
 every real club and its real mechanics, so it runs A ↔ B ↔ C ↔ D. Four choices shaped that seed.
 None of them can be read off the code.
+
+> **Superseded by MS-112** on 2026-09-23, on choices 1, 2 and 4. The whole men's pyramid moved to its
+> 2026 membership together, which removes choice 1's reason. Every club's name now comes from the
+> 2026 rosters (choice 2). Série D plays REC D 2026, with 96 clubs, the playoff and 6 promoted, and
+> Série C relegates 6 to balance it (choice 4). **Choice 3 stands**: newcomers still take the
+> promoted clubs' slots, now 6 at a time. The engine mechanisms below all remain. See
+> [[ms-112-2026-rosters-and-serie-d]].
 
 ## 1. The 2025 season, not 2026
 

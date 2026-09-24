@@ -47,10 +47,31 @@ Men's 2025 editorial, retrieved 2026-09-10 (URLs recorded):
 | `news-serie-c-2025-acesso` | CBF news, "Ponte Preta e Londrina decidirão a Série C. Náutico e São Bernardo também conquistam acesso" | the 4 promoted clubs | `https://www.cbf.com.br/futebol-brasileiro/noticias/campeonato-brasileiro/serie-c/ponte-preta-e-londrina-decidirao-a-serie-c-nautico-e-sao-bernardo-conquistam-acesso` |
 | `news-serie-d-2025-final` | CBF news, "É campeão! Barra conquista o título da Série D 2025" | Barra champion | `https://www.cbf.com.br/futebol-brasileiro/noticias/campeonato-brasileiro/serie-b/e-campeao-barra-conquista-o-titulo-da-serie-d-2025` |
 
+Men's 2026 editorial, retrieved 2026-09-23 (MS-112). News, not regulation:
+
+| id | Kind | Says | URL |
+|---|---|---|---|
+| `news-serie-d-2026-goiatuba` | CBF news, "Goiatuba garante acesso à Série C de 2027" | Goiatuba promoted "por ter tido melhor campanha" in the playoff; ASA, Gama, Uberlândia and ABC already promoted | `https://www.cbf.com.br/futebol-brasileiro/noticias/campeonato-brasileiro-serie-d/a/goiatuba-garante-acesso-a-serie-c-de-2027` |
+| `news-serie-d-2026-f03-report` | CBF match report, São José 0×0 Goiatuba (playoff first leg) | "Caso haja novo empate, o Goiatuba será beneficiado por ter melhor campanha" | `https://www.cbf.com.br/futebol-brasileiro/noticias/campeonato-brasileiro/campeonato-brasileiro-serie-d/sao-jose-e-goiatuba-empatam-sem-gols-pelo-play-off-de-acesso-da-serie-d` |
+| `news-serie-d-2026-f03-preview` | CBF preview, "São José x Goiatuba inaugura play-offs de acesso nesta quarta-feira" | A level aggregate goes to **penalties**, contradicting REC D 2026 Art. 21 §5 and what was applied | `https://www.cbf.com.br/futebol-brasileiro/noticias/campeonato-brasileiro-serie-d/a/sao-jose-x-goiatuba-inaugura-play-offs-de-acesso-nesta-quarta-feira` |
+| `news-conselho-serie-c-2026` | CBF news, Conselho Técnico da Série C 2026 | "Esta será a última edição com 20 times, antes da adoção do formato com 24 equipes em 2027 e com 28 em 2028" | `https://www.cbf.com.br/futebol-brasileiro/noticias/serie-a/a/cbf-realiza-conselho-tecnico-da-serie-c-de-2026` |
+| `news-calendario-2026` | CBF news, new men's professional calendar | Série D "saltará de 64 para 96"; clubs reaching the 16-tie phase keep their Série D place | `https://www.cbf.com.br/a-cbf/noticias/informes-cbf/a/cbf-anuncia-novo-calendario-do-futebol-profissional-masculino` |
+
 > **URLs were not recorded** when these were read on 2026-09-07, and are deliberately not
 > reconstructed here — a guessed URL is worse than none. Both are findable from
 > `https://www.cbf.com.br/futebol-feminino/noticias` by date. Capture the URL on the next pass that
 > touches them.
+
+## Squad rosters — **secondary**, not CBF
+
+| id | Kind | Retrieved | Where |
+|---|---|---|---|
+| `ogol-rosters-2026` | One JSON per club from **ogol.com.br**, for the 222 clubs of both seed files: `teamFullName`, `teamShortName`, the coach (name, age; nationalities for the women's), and every player's name, `positionCode`, age and nationalities, 6,558 players. The source of every name, squad, age, nationality and coach in the seed since MS-112 | 2026-09-22 (the files carry no date; this is their timestamp) | Supplied as MS-112 input, collected outside the repository. **Not committed**: it lived in the gitignored `.plans/MS-112/input/teams/`. `scripts/merge-ms112-rosters.mjs <input-dir>` rebuilds the seed from it. |
+| `transfermarkt-free-coaches-2026` | 27 unattached coaches from **transfermarkt.com** (`retrievedAt` 2026-09-22) | 2026-09-22 | Same input folder, `mens/free-coaches.json`. **Not used**; deferred by MS-112. |
+
+ogol and Transfermarkt refuse scripted access (403 / bot challenge; see [[player-ages]]). These
+files were collected outside the repository, and their provenance is recorded here because the
+input itself was not kept.
 
 ## CBF live endpoints
 
@@ -67,7 +88,9 @@ Men's 2025 editorial, retrieved 2026-09-10 (URLs recorded):
 | `times-serie-d-2025` | Série D 2025 club list (65 records, 64 clubs); competitionId `12617` | `https://www.cbf.com.br/futebol-brasileiro/times/campeonato-brasileiro/serie-d/2025` |
 | `tabelas-serie-c-2025` | Série C ids in `competitionData`: phases `1899` 1ª Fase, `1969` 2ª Fase, `1983` 3ª Fase | `https://www.cbf.com.br/futebol-brasileiro/tabelas/campeonato-brasileiro/serie-c/2025` |
 | `tabelas-serie-d-2025` | Série D ids in `competitionData`: phases `1900` 1ª Fase, `1951` 2ª Fase, `1957` 3ª Fase, `1965` Quartas de Final, `1971` Semi Finais, `1976` Final | `https://www.cbf.com.br/futebol-brasileiro/tabelas/campeonato-brasileiro/serie-d/2025` |
-| `jogos-api` | Results **and match-sheet lineups** per round and phase: 216 Série C and 510 Série D matches, 2025. Source of the MS-106 squads | `https://www.cbf.com.br/api/cbf/jogos/campeonato/<competitionId>/rodada/<n>/fase/<fase_id>` |
+| `jogos-api` | Results **and match-sheet lineups** per round and phase: 216 Série C and 510 Série D matches, 2025 (source of the MS-106 squads). Série D 2026: all **610** matches, retrieved 2026-09-23; their scores are committed as `tests/support/data/serie-d-2026-results.json` (MS-112) | `https://www.cbf.com.br/api/cbf/jogos/campeonato/<competitionId>/rodada/<n>/fase/<fase_id>` |
+| `times-serie-d-2026` | Série D 2026 club list (96 records: `time_id`, `nome_completo`, `time_uf`); competitionId `1260635` | `https://www.cbf.com.br/futebol-brasileiro/times/campeonato-brasileiro/serie-d/2026` |
+| `tabelas-serie-d-2026` | Série D 2026 ids in `competitionData`: phases `2040` 1ª Fase, `2066` 2ª Fase, `2068` 3ª Fase, `2075` 4ª fase, `2080` Quartas de Final, `2089` Semifinais, `2090` Playoff de Acesso, `2099` Final. `.../2026/2040` serves the final 1ª Fase group tables, the only source of the group composition | `https://www.cbf.com.br/futebol-brasileiro/tabelas/campeonato-brasileiro/serie-d/2026` |
 
 Retrieval mechanics — the `populate=*` trap, the TLS failure, the Next.js flight payloads — are on
 [[cbf-data-sources]]. Read that page before fetching anything new.

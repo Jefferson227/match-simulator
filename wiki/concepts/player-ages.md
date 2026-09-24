@@ -1,88 +1,65 @@
 ---
 title: Player ages
 type: concept
-verified: 2026-09-20
-sources: [atletas-api, jogos-api]
+verified: 2026-09-23
+sources: [ogol-rosters-2026, atletas-api, jogos-api]
 ---
 
 # Player ages
 
-Every player in both seed files carries an `age`, added by MS-111 because [[player-stamina]] needs
-one to pick a decay rate. **None of them is real.** This page records why, so nobody spends another
-pass trying to harvest them.
+Every player in both seed files carries an `age`, which [[player-stamina]] needs to pick a decay
+rate. MS-111 added the field with **generated** ages, because no scriptable source published real
+ones. Since MS-112 the ages are **real**: they come with the 2026 squads the seed was rebuilt from.
+This page records where they come from, and why earlier attempts failed, so nobody repeats them.
 
-## No source publishes them
+## Where the ages come from now
 
-Four were tried. All four failed, for different reasons.
+The 2026 rosters from **ogol.com.br** (`ogol-rosters-2026` on [[sources]]): one file per club for
+all 222 clubs of both seed files, with name, position, age and nationalities for 6,558 players.
+They were collected outside the repository and handed to MS-112 as input. `scripts/merge-ms112-rosters.mjs`
+copies each age as-is.
 
-**CBF publishes no birth date anywhere.** Neither endpoint in [[cbf-data-sources]] carries one —
-not a date of birth, not an age, not any date field about a person:
+- **Reference date: 2026-09-22.** An age is only true relative to a date. The team files carry no
+  retrieval date of their own; 2026-09-22 is the date of the files, and of the `retrievedAt` on
+  the Transfermarkt coach list collected with them. Every age in the seed is as of that date.
+- **The seed still does not age.** Season-to-season ageing is not implemented, so a save started
+  in any later season plays with the 2026-09-22 ages.
+- **The squads are the ones the ages belong to.** Unlike MS-111, which aged the MS-106 lineups, the
+  whole roster was replaced from the same source, so there is no name-matching step to get wrong.
+- **MS-111's generator is retired.** `scripts/seed-player-ages.mjs` was deleted by MS-112.
+
+## Why CBF could not supply them (MS-111)
+
+Four scripted sources were tried in MS-111. All four failed, for different reasons.
+
+**CBF publishes no birth date anywhere.** Neither endpoint in [[cbf-data-sources]] carries one:
+not a date of birth, not an age, not any date field about a person.
 
 - athlete API → `atleta_nome`, `atleta_apelido`, `clube_nome_completo`, `clube_nome_popular`,
   `clube_uf`, `clube_escudo`
 - match API, per athlete → `id`, `nome`, `apelido`, `numero_camisa`, `reserva`, `entrou_jogando`,
   `goleiro`, `foto`
 
-Age therefore joins position, strength and colours on the list of things CBF does not give us. See
-[[invented-data]].
+**Wikidata covers 3% of the seed.** Club-scoped SPARQL over 8 sample clubs matched 6 of 182
+players. Three causes, each fatal on its own:
 
-**Wikidata covers 3% of the seed.** Measured with club-scoped SPARQL
-(`?club rdfs:label "<name>"@pt . ?p wdt:P54 ?club ; wdt:P569 ?dob`) over a sample of 8 clubs: 6 of
-182 players matched. Three independent causes, each fatal on its own:
+- The women's seed matches nothing (0 of 92): Wikidata's club item is the men's club.
+- Lower-division men's clubs are barely modelled.
+- Coverage is historical (ABC's 227 players are mostly from the 1980s to the 2000s).
 
-- **The women's seed matches nothing** — 0 of 92. Wikidata's club item is the *men's* club, so `P54`
-  returns the men's squad history. The women's teams are separate items whose players are largely
-  unmodelled.
-- **Lower-division men's clubs are not covered.** Amazonas has exactly one player with a birth date
-  in all of Wikidata, and Séries C and D are where most of the men's seed lives.
-- **Coverage is historical.** ABC returns 227 players, overwhelmingly from the 1980s to the 2000s;
-  the seed is its 2025 squad.
+**Matching on name alone is worse than no data.** An unscoped label search aged two ABC starters to
+49 and 53 by colliding with other footballers sharing their apelido. It was rejected outright.
 
-**Matching on name alone is worse than having no data.** Most of the seed is apelidos — "Felipe",
-"Bento", "Cacá", "Bibi", "Papel". An unscoped label search resolved ABC's *Felipe* to a
-footballer born 1977 and its *Pedro Paulo* to one born 1973, ages 49 and 53. They are different
-people who share a nickname. A wrong age is indistinguishable from a right one downstream, so
-this approach was rejected outright rather than used as a fallback.
+**ogol and Transfermarkt refuse scripted access.** `ogol.com.br` and `zerozero.pt` answer **403**
+(Cloudflare); `transfermarkt.com.br` answers **202** with a bot-challenge stub. These are JS
+challenges, so full browser headers change nothing. MS-111 noted that a real browser was the one
+untried route. The MS-112 input is that route: the rosters were collected from ogol outside the
+repository, not by a script in it.
 
-**Transfermarkt and ogol refuse scripted access**, at the edge, before serving anything.
-`ogol.com.br` and `zerozero.pt` answer **403** (Cloudflare); `transfermarkt.com.br` answers
-**202** with a bot-challenge stub instead of the page. Full browser headers change nothing, because
-these are JS challenges rather than header checks.
+## History: the generated ages (MS-111 → MS-112)
 
-> **The one untried route.** Driving a real browser would likely pass both challenges. MS-111 could
-> not attempt it — no browser was connected to the session. Anyone picking this up should know the
-> apelido ambiguity above is unchanged by it, and that Transfermarkt shows *current* squads against
-> the seed's 2025 ones.
-
-## What the seed carries instead
-
-`scripts/seed-player-ages.mjs`, re-runnable and idempotent. An age is a pure function of
-`internalName|name|position` (FNV-1a, shaped by a triangular inverse CDF), so re-running it
-reproduces the committed files exactly and a re-seed never reshuffles ages already in play.
-
-| Position | min | peak | max |
-|---|---|---|---|
-| GK | 19 | 28 | 41 |
-| DF | 17 | 27 | 39 |
-| MF | 17 | 26 | 38 |
-| FW | 17 | 25 | 38 |
-
-Resulting spread over all 4270 players, which is what decides how much of the stamina table the game
-ever exercises:
-
-| Stamina band | Players | Share |
-|---|---|---|
-| ≤ 20 | 261 | 6.1% |
-| 21–25 | 1285 | 30.1% |
-| 26–28 | 1096 | 25.7% |
-| 29–32 | 1004 | 23.5% |
-| 33–35 | 448 | 10.5% |
-| 36–38 | 169 | 4.0% |
-| > 38 | 7 | 0.2% |
-
-Every band is populated, so no branch of the decay table is dead in practice. The bands overlap
-heavily on purpose: a squad where every forward was younger than every keeper would read as
-obviously synthetic.
-
-**No reference date applies.** A real age is only true relative to one; a generated age is not true
-at all, and the seed does not age with the calendar. Season-to-season ageing is not implemented.
+From MS-111 until MS-112, every age was a pure function of `internalName|name|position` (FNV-1a
+shaped by a triangular distribution per position, e.g. GK 19–41 peaking at 28). The ages were
+deterministic but invented, and had no reference date. The spread over the 4,270 players of that
+seed populated every stamina band. That is no longer a design goal: the real distribution now
+decides it.

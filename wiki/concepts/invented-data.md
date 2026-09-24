@@ -1,8 +1,8 @@
 ---
 title: Invented data
 type: concept
-verified: 2026-09-10
-sources: [atletas-api, rec-a3-2026, rec-copa-2026, jogos-api, rec-serie-c-2025, rec-serie-d-2025, rec-serie-c-2026, rec-serie-d-2026]
+verified: 2026-09-23
+sources: [atletas-api, rec-a3-2026, rec-copa-2026, jogos-api, rec-serie-c-2025, rec-serie-d-2025, rec-serie-c-2026, rec-serie-d-2026, ogol-rosters-2026, tabelas-serie-d-2026, tabela-serie-d-2026]
 ---
 
 # Invented data
@@ -10,6 +10,13 @@ sources: [atletas-api, rec-a3-2026, rec-copa-2026, jogos-api, rec-serie-c-2025, 
 CBF publishes none of the following, so MS-102 invents them. Everything on this page is **not
 evidence** — it is a deliberate fabrication needed to make the game playable, recorded here so no
 future pass mistakes it for CBF data.
+
+> **Squads are real since MS-112.** Every club's `name`, `shortName` and whole squad (player names,
+> positions, ages, nationalities) and its coach now come from the 2026 ogol rosters; see
+> [[player-ages]] and the MS-112 section below. The MS-102 and MS-106 notes on invented
+> **positions**, **squad padding**, **which 23** and **name cleaning** describe squads that are no
+> longer in the seed; they stay as history. Strengths, most colours and abbreviations are still
+> invented.
 
 CBF publishes none of the following, so MS-102 invents them:
 
@@ -125,21 +132,72 @@ the four big choices are on [[ms-106-mens-lower-divisions]].
   invented; this one is the least disruptive.
 - **Série D's field recycles.** CBF rebuilds ~56 of its 64 clubs every year from 27 state
   championships (Arts. 2º–3º). The game does not invent state champions — the A3 precedent above —
-  so D keeps its clubs and stays at 64 on 4 in / 4 out.
+  so D keeps its clubs and stays at 64 on 4 in / 4 out. *(MS-112: now 96 on 6 in / 6 out.)*
 - **Série C's home order.** REC C fixes a 10/9 home split per club in the 1ª Fase (Art. 14) and
   leaves the 2ª Fase home order to the tabela (Art. 18). The game uses its round-robin rotation for
   both.
 - **The 2025 rules, every season.** CBF's 2026 formats differ: Série C relegates 2 (REC C 2026
   Art. 42), and Série D grows to 96 clubs with 6 promoted (REC D 2026 Arts. 2º, 6º, 13). The game
   applies the 2025 rules to every season. That is a claim about no real season after 2025.
+  *(Superseded by MS-112: the seed plays the 2026 membership and REC D 2026 format, with an invented
+  6 ↔ 6 C/D exchange.)*
 
 ## Invented by MS-111
 
-**Every player's `age`.** CBF publishes no birth date on any endpoint, and no reachable third party
-covers these squads, so all 4270 ages in the two seed files are generated. They join
-`initialOverallStrength`, `colors`, `abbreviation` and player positions above — invented for
-playability, not evidence of anything. The failed sources, the measured coverage and the generation
-method are on [[player-ages]]; what the ages are *for* is on [[player-stamina]].
+~~Every player's `age`~~ — **removed by MS-112.** MS-111 generated all 4270 ages because no
+reachable source published them. The 2026 rosters carry real ages, so nothing about age is invented
+any more. The history is on [[player-ages]].
+
+## Invented by MS-112
+
+MS-112 moved the men's pyramid to its 2026 membership and rebuilt both seed files from the 2026 ogol
+rosters. The reasons are on [[ms-112-2026-rosters-and-serie-d]]. Invented:
+
+- **The 44 new Série D clubs' strengths.** Clubs new to the seed are spread over Série D's
+  **43 → 28** band by their **2026 1ª Fase record**: group position, then points, wins, goal
+  difference and goals for (from `tabelas-serie-d-2026` phase `2040`), evenly spaced and rounded.
+  Guaporé and Gama get 43; Laguna and Inhumas get 28. The merge script holds each club's record, so
+  the order is reproducible. It is invented because a first-phase record is not a strength.
+- **Every other strength stays where MS-102/MS-106 put it, even across a division change.** A
+  club relegated from B keeps its B strength and a club promoted from C its C one. So neighbouring
+  divisions now **overlap**: B's weakest is 52 against C's strongest 61, and C's weakest 43 against
+  D's strongest 45. Only the divisions' averages are ordered (A 81.2 > B 62.6 > C 49.1 > D 36.1).
+- **Colours.** The 44 new clubs wear **researched** real colours, one cited source each: 31 from
+  pt.wikipedia kit fields and 13 read off the CBF crest (`crests`). Sources disagreed on six, and
+  the choice is recorded per club in the MS-112 research:
+  - `abecat-ouvidorense`: CBF crest orange/black vs Wikipedia's green/gold after a rename. Crest used.
+  - `sao-raimundo-rr`: Wikipedia navy/white vs a purple crest. Wikipedia used.
+  - `oratorio`: Wikipedia sky blue vs a navy crest. Wikipedia used.
+  - `tirol`: crest blue/black/white used.
+  - `real-noroeste`: white/red kit used; the crest's green and gold dropped.
+  - `velo-clube`: red kit used; the crest's green dropped.
+
+  Ten clubs fall back to black text for contrast. **42 clubs still wear MS-106's palette
+  colour** (the 53 below minus the 11 removed): `brusque`, `floresta`, `maringa`, `anapolis`,
+  `itabaiana`, `retro`, `tombense`, `independencia`, `humaita`, `manaus`, `manauara`, `tuna-luso`,
+  `aguia-de-maraba`, `gremio-sampaio`, `trem`, `maracana`, `iguatu`, `maranhao`, `altos`,
+  `parnahyba`, `tocantinopolis`, `imperatriz`, `sousa`, `asa`, `lagarto`, `juazeirense`,
+  `ceilandia`, `capital-df`, `aparecidense`, `porto-velho`, `rio-branco-es`, `pouso-alegre`,
+  `marica`, `agua-santa`, `goiatuba`, `cascavel`, `cianorte`, `azuriz`, `barra`, `marcilio-dias`,
+  `sao-jose-rs`, `sao-luiz`.
+- **Abbreviations** of the 44 new clubs, derived by the MS-106 rule from `shortName`, handed out in
+  Série D group order.
+- **The balanced 6 ↔ 6.** Série C relegates **6** in the game; REC C 2026 Art. 42 relegates 2 and C
+  grows to 24 in 2027. The game keeps C at 20 and D at 96 = 16×6 every season. See
+  [[brasileirao-serie-c]].
+- **Série D's order within each group.** Membership is CBF's live data, but no CBF document gives
+  an order: the REC prints empty boxes (Anexo B p. 19) and the Tabela Básica prints every 1ª Fase
+  match as "A definir". The seed lists each group in its **final 2026 1ª Fase order**. Only the
+  fixture order depends on it.
+- **The playoff's last tiebreaker** reads REC D 2026 Art. 21 §5's truncated "melhor posicionamento"
+  as the Bloco II rank. See [[known-contradictions]].
+- **Série D's final-classification bands are not modelled.** REC D 2026 Art. 20 places the playoff
+  winners 5º–6º and the losers 7º–8º. The engine orders everyone below the podium by accumulated
+  points, and nothing in the game reads that order.
+- **Série D's field still recycles.** CBF rebuilds the 96 every year (REC D 2026 Art. 2º); the game
+  keeps its clubs, with 6 in and 6 out.
+- **Not invented: squad sizes.** Squads are the sourced rosters at their real size, 17 to 53. There
+  is no padding. `varzea-grande` (women's A3) has 17 players and one goalkeeper, as sourced.
 
 ---
 

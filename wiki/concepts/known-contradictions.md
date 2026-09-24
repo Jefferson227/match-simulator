@@ -1,8 +1,8 @@
 ---
 title: Known contradictions
 type: concept
-verified: 2026-09-10
-sources: [rec-a1-2026, rec-a2-2026, rec-a3-2026, times-a1-2026, news-expansao-2025, news-calendario-2025, rec-serie-b-2026, rec-serie-c-2025, rec-serie-d-2025, rec-serie-c-2026, times-serie-c-2025, times-serie-d-2025, tabelas-serie-d-2025]
+verified: 2026-09-23
+sources: [rec-a1-2026, rec-a2-2026, rec-a3-2026, times-a1-2026, news-expansao-2025, news-calendario-2025, rec-serie-b-2026, rec-serie-c-2025, rec-serie-d-2025, rec-serie-c-2026, times-serie-c-2025, times-serie-d-2025, tabelas-serie-d-2025, rec-serie-d-2026, tabela-serie-d-2026, tabelas-serie-d-2026, times-serie-d-2026, jogos-api, news-serie-d-2026-f03-preview, news-serie-d-2026-f03-report, news-serie-d-2026-goiatuba, news-conselho-serie-c-2026, ogol-rosters-2026]
 ---
 
 # Known contradictions
@@ -50,7 +50,8 @@ every ingest.
 3. **Club name spellings differ between endpoints.** For roughly 7 A1 clubs, the `times` endpoint's
    `nome_completo` disagrees with REC Anexo A's spelling. **The `times` endpoint is canonical** for
    `name` in `teams-womens.json`. The men's Série C and D seed deliberately does the opposite; see
-   item 8.
+   item 8. *Superseded by MS-112 (item 13): both seed files now take their names from the 2026 ogol
+   rosters.*
 4. **Squad pagination is lossy.** The athlete API reported 32 registered athletes for one club but
    returned only 29 across its pages. The reachable set is accepted; the remainder is not fabricated
    beyond position padding (see below).
@@ -82,7 +83,7 @@ every ingest.
    Série A/B style. This deliberately diverges from item 3's rule for the women's seed; the reason
    is on [[ms-106-mens-lower-divisions]]. The one pre-existing clash was `caxias`: the seed said
    "Caxias Futebol Clube", which is in neither source. CBF's Série C club is "Sociedade Esportiva e
-   Recreativa Caxias do Sul", and the seed now says so.
+   Recreativa Caxias do Sul", and the seed now says so. *Superseded by MS-112 (item 13).*
 9. **Série D phase names: REC vs tabela.** REC D 2025 Art. 13 names the knockouts "4ª Fase",
    "5ª Fase (Semifinal)" and "6ª Fase (Final)". The tabela's `fase_nome` says "Quartas de Final",
    "Semi Finais" and "Final" (`tabelas-serie-d-2025`). Série C's REC likewise says "3ª Fase
@@ -94,6 +95,40 @@ every ingest.
     Fase. This is a copy-paste slip; the intent is 1ª–3ª. **No effect on the game**, which does not
     model the REC's final-classification tiers.
 
+11. **Série D 2026's playoff tiebreak: the REC is truncated and CBF contradicted itself.** REC D 2026
+    Art. 21 §4 decides the playoff on points over the two legs, and §5 breaks a level tie on goal
+    difference, then "Melhor posicionamento na Classificação Final do CAMPEONATO…". **The sentence
+    is cut off at the page break** (p. 11 ends mid-sentence; p. 12 opens Capítulo 5), so what
+    "Classificação Final" means is not stated. Then:
+    - CBF's **preview** of F03 said a level aggregate would go to **penalties**
+      (`news-serie-d-2026-f03-preview`).
+    - CBF's **report** of the first leg said "Caso haja novo empate, o Goiatuba será beneficiado por
+      ter melhor campanha" (`news-serie-d-2026-f03-report`).
+    - What happened: F03 ended 0×0 and 1×1, level on points and goal difference. `panaltis` is 0–0 in
+      both legs (`jogos-api` phase `2090`), and **Goiatuba was promoted "por ter tido melhor
+      campanha"** (`news-serie-d-2026-goiatuba`).
+
+    **The REC's rule is what was applied, and the seed follows it: no penalties.** The truncated
+    criterion is read as the **Bloco II rank** (Art. 21 §2), the `seed` tiebreaker. The only other
+    reading, the Art. 20 accumulated criteria, also puts Goiatuba ahead, so the one real case cannot
+    tell them apart. Recorded as an assumption on [[brasileirao-serie-d]].
+12. **Série D 2026's phase count and names.** REC D 2026 Art. 13 announces "6 (seis) fases" and
+    then lists **eight stages** (1ª–7ª Fase plus Playoffs). REC and tabela also name them
+    differently: "4ª Fase" vs `fase_nome` "4ª fase", "6ª Fase (Semifinal)" vs "Semifinais",
+    "Playoffs" vs "Playoff de Acesso", "7ª Fase (Final)" vs "Final". **The seed has 7 phases**,
+    '1ª Fase', '2ª Fase', '3ª Fase', '4ª Fase', 'Quartas de Final', 'Semifinal', 'Final', with the
+    playoff inside the Semifinal. Only names differ; the format agrees with both.
+13. **Club names: the 2026 rosters vs CBF.** Since MS-112, `name` and `shortName` in **both** seed
+    files are the 2026 ogol rosters' `teamFullName` / `teamShortName` (`ogol-rosters-2026`). That
+    overrides item 3 (women's: CBF `times`) and item 8 (men's: REC Anexo A). The two sources often
+    differ: ogol abbreviates the SAF suffix ("Clube Laguna SAF" vs CBF's "Clube Laguna Sociedade
+    Anônima do Futebol"), sometimes names another entity ("Capital Clube de Futebol" vs CBF's
+    "Capital Sociedade Anônima do Futebol"), and uses its own short forms ("Nacional-AM", "GAS"). **The seed follows the rosters**, because the squads come from them, and it keeps every
+    `internalName` so saves and fixtures do not move. Two real clubs share each of "América Futebol
+    Clube" (MG, RN) and "Botafogo Futebol Clube" (SP, PB), so full names are not unique; short names
+    are. The reason is on [[ms-112-2026-rosters-and-serie-d]].
+14. **REC C 2026 Art. 5º says "Série B 2026".** It means 2027 (Art. 25 says so). A typo; no effect.
+
 ## Open gaps
 
 Not contradictions — places where CBF states an outcome and publishes no mechanism for it.
@@ -103,10 +138,13 @@ Not contradictions — places where CBF states an outcome and publishes no mecha
   would grow it. The game reaches 20 only as a **consequence of MS-103's inferred A1 rule** — once A1
   is at its target and relegating 4, A2 grows — which is inference stacked on inference. See
   [[ms-103-a1-club-count-growth]]. **Do not invent a mechanism for this.**
-- **Série C 2027's size is unstated.** REC C 2026 still promotes 4 (Art. 5º) but relegates only 2
-  (Art. 42). REC D 2026 promotes 6 (Art. 6º), and REC B 2026 relegates 4 (Art. 5). That arithmetic
-  suggests a **24-club** Série C 2027, but no CBF document found says so. The game applies the 2025
-  rules to every season and never meets this; see [[ms-106-mens-lower-divisions]].
+- ~~**Série C 2027's size is unstated.**~~ **Stated since:** CBF's Conselho Técnico article says
+  2026 is "a última edição com 20 times", with 24 in 2027 and 28 in 2028
+  (`news-conselho-serie-c-2026`). That is news, not regulation; no REC C 2027 exists yet. The game
+  does not follow it: it relegates 6 from C to keep C at 20 and D at 96. See
+  [[ms-112-2026-rosters-and-serie-d]].
+- **Série D 2027's size is unstated.** REC D 2026 fixes 96 for 2026 only (Art. 2º), and CBF
+  publishes no D 2027 field. The game keeps 96.
 
 Referenced by: [[brasileirao-feminino-a1]], [[brasileirao-feminino-a2]],
 [[brasileirao-feminino-a3]], [[brasileirao-serie-c]], [[brasileirao-serie-d]], [[cbf-data-sources]],

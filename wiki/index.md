@@ -17,12 +17,13 @@ Real formats and rules, cited to CBF's *Regulamento Específico da Competição*
 | [[brasileirao-feminino-a3]] | yes | 32 | 8 groups of 4 then knockouts, reshaping to 4 groups as it shrinks. Promotes 4 semifinalists; no relegation. |
 | [[copa-do-brasil-feminina]] | yes | 66 | 8-phase knockout with staggered entry. 72 matches. |
 | [[supercopa-feminina]] | yes | 2 | A single match, decided on penalties if drawn. |
-| [[brasileirao-serie-c]] | yes | 20 | Men. League → 2 serpentine groups of 4 → final. Promotes the top 2 of each 2ª Fase group; relegates 4 off the 1ª Fase. 2025 rules. |
-| [[brasileirao-serie-d]] | yes | 64 | Men. 8 regional groups → Anexo B crossings → re-seeded quarter-finals. Promotes 4 semifinalists; no relegation. 2025 rules. |
+| [[brasileirao-serie-c]] | yes | 20 | Men. League → 2 serpentine groups of 4 → final. Promotes the top 2 of each 2ª Fase group; relegates 6 off the 1ª Fase (REC C 2026: 2, so the 6 is invented). 2026 clubs. |
+| [[brasileirao-serie-d]] | yes | 96 | Men. REC D 2026: 16 regional groups of 6 → Anexo B crossings → Bloco I quarter-finals → semifinal with a Bloco II promotion playoff alongside → final. Promotes 6 (4 semifinalists + 2 playoff winners); no relegation. |
 
 All seven are seeded and played by the engine. The men's Série A and B have no pages — nothing about
-them is known beyond what `championships.json` already states (they were not re-researched; only
-their exchange with Série C is confirmed by CBF's 2026 RECs).
+them is known beyond what `championships.json` already states. Their 2026 membership comes from
+the MS-112 rosters; their format was not re-researched, and only their exchange with Série C is
+confirmed by CBF's 2026 RECs.
 
 ## Concepts
 
@@ -35,9 +36,9 @@ against them.
 | [[promotion-and-relegation]] | Why promotion is semifinalist- or group-position-based below the top tiers, and why relegation reads the 1ª Fase table. |
 | [[phases-and-knockouts]] | The `phases` descriptor — serpentine groups, Anexo B crossings, re-seeding — what the engine does with it, and why second-leg hosting cannot be a constant. |
 | [[known-contradictions]] | Where CBF's own documents disagree, which side the seed data follows, and the gaps CBF leaves open. |
-| [[invented-data]] | Everything in the seed that CBF does not publish: MS-102's women's clubs, MS-106's men's Série C/D clubs, and every invented schedule. |
+| [[invented-data]] | Everything in the seed that no source publishes: strengths, most colours, abbreviations, the 6 ↔ 6 C/D exchange, Série D's group order, and every invented schedule. Squads are real since MS-112. |
 | [[cbf-data-sources]] | How to fetch from CBF without repeating a wasted pass. Read before any new extraction. |
-| [[player-ages]] | Why every seed age is generated: no source publishes them, with the coverage measurements. Read before attempting a fifth harvest. |
+| [[player-ages]] | Where the real ages come from since MS-112 (ogol 2026 rosters, as of 2026-09-22), and why CBF, Wikidata and scripted scraping could not supply them before. |
 
 ## Specs
 
@@ -63,12 +64,13 @@ Why things are the way they are — the part the code cannot state.
 | [[ms-103-ai-championship-catch-up]] | MS-103 | implemented; phase-boundary sync replaced by MS-109's per-round drip |
 | [[ms-103-simulated-shootout]] | MS-103 | implemented |
 | [[ms-104-a3-group-shape-schedule]] | MS-104 | implemented; **wholly inference** |
-| [[ms-106-mens-lower-divisions]] | MS-106 | implemented; post-2025 seasons are inference |
+| [[ms-106-mens-lower-divisions]] | MS-106 | implemented; superseded by MS-112 on season, names, Série D's shape and the C/D exchange |
 | [[ms-105-drawn-team-start]] | MS-105 | implemented; container re-centring closed by MS-107 |
 | [[ms-107-container-recentring]] | MS-107 | superseded by MS-109 |
 | [[ms-108-saved-game-size]] | MS-108 | implemented; a reload loses each played match's historical squad snapshot; save version 3 since MS-109 |
 | [[ms-109-full-pyramid-container]] | MS-109 | implemented; cups declared but not loaded |
 | [[ms-110-language-selection]] | MS-110 | implemented; verified in the running app |
+| [[ms-112-2026-rosters-and-serie-d]] | MS-112 | implemented; playoff screens covered by component tests only (running-app check waived) |
 
 ## Raw
 
@@ -103,10 +105,17 @@ Things named across these pages that nothing currently owns:
   player fading through a match is invisible. No ticket. See [[player-stamina]].
 - **Players never age between seasons.** A squad's ages are fixed for the life of a save, so the
   league cannot get older or younger. Out of MS-111's scope; no ticket.
-- **Real player ages have never been obtained.** Four sources failed; driving a real browser at
-  Transfermarkt is the one untried route. No ticket. See [[player-ages]].
-- **The men's Série A and B strengths overlap** (A's floor 55 is below B's ceiling 75). C and D sit
-  strictly below B. No ticket. See [[invented-data]].
+- ~~**Real player ages have never been obtained.**~~ — **closed by MS-112.** Every age now comes
+  from the 2026 ogol rosters, as of 2026-09-22. See [[player-ages]].
+- **Neighbouring men's divisions' strengths overlap.** Since MS-112 clubs keep their strength when
+  they change division, so B/C and C/D overlap as A/B always did; only the averages are ordered. No
+  ticket. See [[invented-data]].
+- **Coaches and nationalities are not shown.** MS-112 added both to the seed and neither to any
+  screen. No ticket. See [[ms-112-2026-rosters-and-serie-d]].
+- **Série C and D stop tracking reality from 2027.** The game's 6 ↔ 6 keeps both sizes fixed, while
+  CBF grows C to 24 and 28. No ticket. See [[brasileirao-serie-c]].
+- **Unattached coaches were collected but not used.** `free-coaches.json` (Transfermarkt) needs a
+  coach market that does not exist. No ticket.
 - **A1 2027's club count is inference, not regulation**, and so is A2's route to 20. See
   [[ms-103-a1-club-count-growth]] and the open gap on [[known-contradictions]].
 - **URLs for the two CBF news articles were never recorded.** See [[sources]].
