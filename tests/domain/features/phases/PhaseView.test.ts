@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import ChampionshipPhase from '../../../../src/domain/models/ChampionshipPhase';
-import { buildPhaseView } from '../../../../src/domain/features/phases/PhaseView';
+import { buildPhaseView, PhaseTieView } from '../../../../src/domain/features/phases/PhaseView';
 import {
   buildChampionship,
   inPhase,
@@ -158,5 +158,76 @@ describe('buildPhaseView — a finished group stage', () => {
 
   it('exposes no standings for a knockout phase', () => {
     expect(buildPhaseView(atFinal).standings).toBeUndefined();
+  });
+});
+
+describe('buildPhaseView — a semifinal hosting a playoff (REC D 2026 Art. 21)', () => {
+  // Quartas among 8 → a semifinal whose playoff takes the 4 losers → final. Under
+  // `lowerNumberWins` the Quartas send 1, 4, 2, 3 on, and 5, 6, 7, 8 into the playoff.
+  const withPlayoff: ChampionshipPhase[] = [
+    {
+      kind: 'knockout',
+      name: 'Quartas',
+      numberOfTies: 4,
+      legs: 2,
+      secondLegHost: 'higher-seed',
+      tiebreakers: ['goal-difference', 'penalties'],
+    },
+    {
+      kind: 'knockout',
+      name: 'Semifinal',
+      numberOfTies: 2,
+      legs: 2,
+      secondLegHost: 'higher-seed',
+      tiebreakers: ['goal-difference', 'penalties'],
+      playoff: {
+        name: 'Playoffs',
+        from: 'previous-phase-losers',
+        pairs: [
+          [1, 4],
+          [2, 3],
+        ],
+        secondLegHost: 'higher-seed',
+        tiebreakers: ['goal-difference', 'seed'],
+      },
+    },
+    final,
+  ];
+  const inSemifinal = playUntil(buildChampionship(8, withPlayoff), lowerNumberWins, inPhase(1));
+  const clubsOf = (ties: PhaseTieView[]) =>
+    ties.map((tie) => [number(tie.homeTeam), number(tie.awayTeam)].sort());
+
+  it('keeps the playoff out of the semifinal’s ties', () => {
+    const view = buildPhaseView(inSemifinal);
+
+    expect(view.phaseName).toBe('Semifinal');
+    expect(clubsOf(view.ties!)).toEqual([
+      [1, 4],
+      [2, 3],
+    ]);
+  });
+
+  it('shows the playoff as its own named block', () => {
+    const view = buildPhaseView(inSemifinal);
+
+    expect(view.playoff?.name).toBe('Playoffs');
+    expect(clubsOf(view.playoff!.ties)).toEqual([
+      [5, 8],
+      [6, 7],
+    ]);
+  });
+
+  it('marks the playoff winners once the semifinal is resolved', () => {
+    const resolved = playUntil(inSemifinal, lowerNumberWins, inPhase(2));
+    const view = buildPhaseView(resolved, { focus: 'last-ended-round' });
+
+    expect(view.playoff!.ties.map((tie) => tie.winnerTeamId)).toEqual(['team-005', 'team-006']);
+    expect(view.ties!.map((tie) => tie.winnerTeamId)).toEqual(['team-001', 'team-002']);
+  });
+
+  it('shows no playoff block for a phase that hosts none', () => {
+    expect(buildPhaseView(playUntil(inSemifinal, lowerNumberWins, inPhase(2))).playoff).toBe(
+      undefined
+    );
   });
 });
