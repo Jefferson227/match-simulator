@@ -315,6 +315,14 @@ describe('ChampionshipRepository — playoffs it refuses to load (MS-112)', () =
     );
   });
 
+  it('rejects the playoff-winners promotion rule when the semifinal hosts no playoff', () => {
+    expect(() =>
+      loadWithSeed([seedEntry({ promotionRule: 'semifinalists-and-playoff-winners' })])
+    ).toThrow(
+      /Promotion of fixture-division reads playoff winners, but its semifinal declares no playoff/
+    );
+  });
+
   it('rejects a playoff after a round-robin', () => {
     const phases = withPhase(1, { playoff: playoff([[1, 2]]) });
 

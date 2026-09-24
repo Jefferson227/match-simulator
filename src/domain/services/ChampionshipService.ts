@@ -308,6 +308,8 @@ function getPhaseGroupPositionPromoted(championship: Championship): Team[] {
  * - `'semifinalists'` — everyone who reached the semifinal goes up, whatever their table position.
  *   A club can finish 8th in the league phase, win a quarter-final and be promoted ahead of the
  *   club that finished 1st (REC A2 Art. 5º, REC A3 Art. 5º).
+ * - `'semifinalists-and-playoff-winners'` — the semifinalists, then the winners of the playoff the
+ *   semifinal hosts, in playoff tie order (Série D 2026, REC D 2026 Art. 6º and Art. 21 §4).
  * - `'phase-group-position'` — the top of each group of a chosen phase (Série C, REC C Art. 5º).
  * - `'table-position'` — the top of the table, the default and the men's divisions' behaviour.
  *
@@ -329,6 +331,15 @@ function getPromotedTeams(championship: Championship, amount: number): Team[] {
     // `amount` is `numberOfPromotableTeams`, which is 4 for both A2 and A3 — exactly the number of
     // semifinalists. It is applied so a mismatched count can never inflate the promoted field.
     if (semifinalists.length) return semifinalists.slice(0, amount);
+  }
+
+  if (rule === 'semifinalists-and-playoff-winners') {
+    const semifinalists = getSemifinalists(championship);
+    const playoffWinners = (championship.playoffWinnerIds ?? [])
+      .map((teamId) => championship.teams.find((team) => team.id === teamId))
+      .filter((team): team is Team => Boolean(team));
+    // Capped like `'semifinalists'`: Série D's 6 is exactly 4 semifinalists and 2 playoff winners.
+    if (semifinalists.length) return [...semifinalists, ...playoffWinners].slice(0, amount);
   }
 
   return buildFinalClassification(championship)

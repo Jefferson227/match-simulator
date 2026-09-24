@@ -161,9 +161,21 @@ function validateSeedTiebreakers(name: string, phases: ChampionshipPhase[] | und
  * phase to read, and a promotable count every group can contribute equally to (REC C Art. 5º).
  */
 function validatePromotionRule(championship: ChampionshipJSONDTO): void {
+  const name = championship.internalName;
+
+  if (championship.promotionRule === 'semifinalists-and-playoff-winners') {
+    const phases = championship.phases ?? [];
+    const semifinal = phases[phases.length - 2];
+    if (semifinal?.kind !== 'knockout' || !semifinal.playoff) {
+      throw new Error(
+        `Promotion of ${name} reads playoff winners, but its semifinal declares no playoff.`
+      );
+    }
+    return;
+  }
+
   if (championship.promotionRule !== 'phase-group-position') return;
 
-  const name = championship.internalName;
   const index = championship.promotionPhaseIndex;
   const phase = index === undefined ? undefined : championship.phases?.[index];
 

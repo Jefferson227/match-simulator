@@ -5,7 +5,11 @@ import LeagueType from '../enums/LeagueType';
 import { Team } from './Team';
 import MatchContainer from './MatchContainer';
 
-export type PromotionRule = 'table-position' | 'semifinalists' | 'phase-group-position';
+export type PromotionRule =
+  | 'table-position'
+  | 'semifinalists'
+  | 'semifinalists-and-playoff-winners'
+  | 'phase-group-position';
 
 export type RelegationRule = 'table-position' | 'first-phase-table-position';
 
@@ -113,6 +117,8 @@ type Promotable = {
    * How the promoted clubs are picked. Defaults to `'table-position'` when absent.
    * `'semifinalists'` — everyone who reached the semifinal goes up, whatever their table position
    * (Brasileirão Feminino A2 and A3).
+   * `'semifinalists-and-playoff-winners'` — the semifinalists, then the winners of the playoff
+   * played alongside the semifinal (Série D 2026: 4 + 2, REC D 2026 Art. 6º).
    * `'phase-group-position'` — the top `numberOfPromotableTeams / numberOfGroups` of each group of
    * phase `promotionPhaseIndex` go up, whatever happens after it. Série C promotes the top 2 of each
    * 2ª Fase group, so its final awards only the title (REC C Art. 5º).

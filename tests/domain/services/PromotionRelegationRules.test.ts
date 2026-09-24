@@ -203,6 +203,51 @@ describe("promotionRule: 'semifinalists'", () => {
   });
 });
 
+describe("promotionRule: 'semifinalists-and-playoff-winners' (Série D 2026)", () => {
+  // Série D's playoff winners are two quarter-final losers; LOW-01 and LOW-04 are the playoff losers.
+  const serieD = (overrides: Partial<Championship> = {}) =>
+    buildLowerDivision({
+      promotionRule: 'semifinalists-and-playoff-winners',
+      numberOfPromotableTeams: 6,
+      playoffWinnerIds: [lower[1].id, lower[2].id],
+      ...overrides,
+    } as Partial<Championship>);
+  const promotedFrom = (container: ChampionshipContainer) =>
+    aboveOf(container)!
+      .teams.filter((team) => team.id.startsWith('LOW'))
+      .map((team) => team.id)
+      .sort();
+
+  it('promotes the four semifinalists and the two playoff winners, and no playoff loser', () => {
+    const rolled = rollOver(
+      pyramidOf(
+        serieD(),
+        buildUpperDivision({ numberOfRelegatableTeams: 6 } as Partial<Championship>)
+      )
+    );
+
+    expect(promotedFrom(rolled)).toEqual([
+      'LOW-02',
+      'LOW-03',
+      'LOW-05',
+      'LOW-06',
+      'LOW-07',
+      'LOW-08',
+    ]);
+  });
+
+  it('caps the list at numberOfPromotableTeams, semifinalists first', () => {
+    const rolled = rollOver(
+      pyramidOf(
+        serieD({ numberOfPromotableTeams: 4 } as Partial<Championship>),
+        buildUpperDivision()
+      )
+    );
+
+    expect(promotedFrom(rolled)).toEqual(['LOW-05', 'LOW-06', 'LOW-07', 'LOW-08']);
+  });
+});
+
 describe("relegationRule: 'first-phase-table-position'", () => {
   it('relegates the bottom of the 1ª Fase table, not of the final classification', () => {
     const rolled = rollOver(pyramidOf(buildLowerDivision(), buildUpperDivision()));
