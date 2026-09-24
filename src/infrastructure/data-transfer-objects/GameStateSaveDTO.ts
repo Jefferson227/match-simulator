@@ -25,8 +25,10 @@ import { GameState } from '../../game-engine/GameState';
  *
  * 3 (MS-109): the container holds the whole pyramid plus a playable pointer instead of three named
  * slots. Version-2 saves are abandoned, not migrated, as MS-108 abandoned version 1.
+ * 4 (MS-112): teams carry an optional `coach`, players carry `nationalities`, and Série D's
+ * descriptor gains a playoff. Version-3 saves are abandoned, not migrated.
  */
-export const SAVE_VERSION = 3;
+export const SAVE_VERSION = 4;
 
 /** A goal, with the scorer written as an id rather than a full `Player`. */
 export type SavedScorer = Omit<Scorer, 'player'> & {

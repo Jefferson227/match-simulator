@@ -8,6 +8,13 @@ type PlayerDTO = {
   position: string;
   name: string;
   age: number;
+  nationalities: string[];
+};
+
+type CoachDTO = {
+  name: string;
+  age: number;
+  nationalities?: string[];
 };
 
 type TeamJSONDTO = {
@@ -18,6 +25,7 @@ type TeamJSONDTO = {
   colors: ColorDTO;
   initialOverallStrength: number;
   players: PlayerDTO[];
+  coach?: CoachDTO;
 };
 
 export default TeamJSONDTO;

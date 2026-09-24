@@ -1,5 +1,6 @@
 import TeamColors from './TeamColors';
 import Player from './Player';
+import Coach from './Coach';
 
 export type Team = {
   id: `${string}-${string}-${string}-${string}-${string}`;
@@ -8,6 +9,7 @@ export type Team = {
   abbreviation: string;
   colors: TeamColors;
   players: Player[];
+  coach?: Coach;
   morale: number;
   isControlledByHuman: boolean;
 };

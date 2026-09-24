@@ -1,4 +1,5 @@
 import TeamRepository from '../../../src/infrastructure/repositories/TeamRepository';
+import TeamJSONDTO from '../../../src/infrastructure/data-transfer-objects/TeamJSONDTO';
 
 describe('TeamRepository', () => {
   describe('getTeam', () => {
@@ -53,6 +54,60 @@ describe('TeamRepository', () => {
         expect(player.xp).toBe(0);
         expect(player.isStarter).toBe(false);
       });
+    });
+  });
+
+  describe('coach and nationalities (MS-112)', () => {
+    const seedTeam = (overrides: Partial<TeamJSONDTO>): TeamJSONDTO => ({
+      name: 'Seed Club',
+      internalName: 'seed-club',
+      shortName: 'Seed',
+      abbreviation: 'SEE',
+      colors: { outline: '#000000', background: '#ffffff', name: '#000000' },
+      initialOverallStrength: 50,
+      players: [{ position: 'GK', name: 'Keeper', age: 30, nationalities: ['PRY', 'BRA'] }],
+      ...overrides,
+    });
+
+    function getTeamFromSeed(seed: TeamJSONDTO[], internalName: string) {
+      let team: ReturnType<typeof TeamRepository.getTeam> | undefined;
+      jest.isolateModules(() => {
+        jest.doMock('../../../src/infrastructure/data/teams.json', () => seed);
+        const isolated = require('../../../src/infrastructure/repositories/TeamRepository');
+        team = isolated.default.getTeam(internalName, 'mens');
+      });
+      return team!;
+    }
+
+    afterEach(() => {
+      jest.dontMock('../../../src/infrastructure/data/teams.json');
+    });
+
+    test('maps player nationalities in source order', () => {
+      const team = getTeamFromSeed([seedTeam({})], 'seed-club');
+
+      expect(team.players[0].nationalities).toEqual(['PRY', 'BRA']);
+    });
+
+    test('maps the coach, keeping nationalities only when the source has them', () => {
+      const team = getTeamFromSeed(
+        [seedTeam({ coach: { name: 'With', age: 45, nationalities: ['ARG'] } })],
+        'seed-club'
+      );
+      const withoutNationality = getTeamFromSeed(
+        [seedTeam({ internalName: 'no-nationality', coach: { name: 'Without', age: 60 } })],
+        'no-nationality'
+      );
+
+      expect(team.coach).toEqual({ name: 'With', age: 45, nationalities: ['ARG'] });
+      expect(withoutNationality.coach).toEqual({ name: 'Without', age: 60 });
+      expect(withoutNationality.coach).not.toHaveProperty('nationalities');
+    });
+
+    test('omits the coach field when the seed has none', () => {
+      const team = getTeamFromSeed([seedTeam({})], 'seed-club');
+
+      expect(team).not.toHaveProperty('coach');
     });
   });
 });

@@ -47,6 +47,7 @@ function buildTeam(index: number): Team {
       name: `Player ${index}-${playerIndex}`,
       strength: 40 + ((index + playerIndex) % 20),
       age: 26,
+      nationalities: ['BRA'],
       xp: 0,
       isStarter: true,
       isSub: false,

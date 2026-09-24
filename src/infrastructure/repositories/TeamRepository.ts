@@ -1,6 +1,7 @@
 import TeamJSONDTO from '../data-transfer-objects/TeamJSONDTO';
 import PlayerPosition from '../../domain/enums/PlayerPosition';
 import { Team } from '../../domain/models/Team';
+import Coach from '../../domain/models/Coach';
 import { getRandomPlayerStrength } from '../../domain/utils/Utils';
 import LeagueType from '../../domain/enums/LeagueType';
 import mensTeamsData from '../data/teams.json';
@@ -22,6 +23,14 @@ function initTeams(leagueType: LeagueType): Record<string, TeamJSONDTO> {
 
   teamsByLeagueType[leagueType] = nextTeamsByInternalName;
   return nextTeamsByInternalName;
+}
+
+function mapCoach(coach: NonNullable<TeamJSONDTO['coach']>): Coach {
+  return {
+    name: coach.name,
+    age: coach.age,
+    ...(coach.nationalities && { nationalities: [...coach.nationalities] }),
+  };
 }
 
 function getTeam(internalName: string, leagueType: LeagueType = 'mens'): Team {
@@ -46,12 +55,14 @@ function getTeam(internalName: string, leagueType: LeagueType = 'mens'): Team {
       name: player.name,
       strength: getRandomPlayerStrength(teamJSONDTO.initialOverallStrength),
       age: player.age,
+      nationalities: [...(player.nationalities ?? [])],
       xp: 0,
       isStarter: false,
       isSub: false,
     })),
     morale: 50,
     isControlledByHuman: false,
+    ...(teamJSONDTO.coach && { coach: mapCoach(teamJSONDTO.coach) }),
   };
 
   return mappedTeam;

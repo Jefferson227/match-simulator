@@ -56,6 +56,7 @@ const playerOf = (teamSeed: string, index: number): Player => ({
   name: `Player ${teamSeed}-${index}`,
   strength: 60 + index,
   age: 26,
+  nationalities: ['BRA'],
   xp: index,
   isStarter: index < 2,
   isSub: index >= 2,
@@ -167,7 +168,7 @@ describe('GameRepository', () => {
     const raw = window.localStorage.getItem(STORAGE_KEY)!;
     const parsed = JSON.parse(raw);
 
-    expect(parsed.saveVersion).toBe(3);
+    expect(parsed.saveVersion).toBe(4);
     expect(parsed.championshipContainer.playableInternalName).toBe('mock-championship');
     expect(
       getPlayableChampionship(parsed.championshipContainer).matchContainer.rounds[0].matches[0]
@@ -196,6 +197,24 @@ describe('GameRepository', () => {
     );
 
     expect(after).toEqual(before);
+  });
+
+  it('keeps the coach and player nationalities across save and load (MS-112)', () => {
+    const state = buildPlayedState();
+    const championship = getPlayableChampionship(state.championshipContainer);
+    const [home, away] = championship.teams;
+    home.coach = { name: 'Coach Home', age: 51, nationalities: ['POR'] };
+    home.players[1].nationalities = ['ITA', 'BRA'];
+
+    GameRepository.saveGame(state);
+    const [loadedHome, loadedAway] = getPlayableChampionship(
+      GameRepository.loadGame().championshipContainer
+    ).teams;
+
+    expect(loadedHome.coach).toEqual({ name: 'Coach Home', age: 51, nationalities: ['POR'] });
+    expect(loadedHome.players[1].nationalities).toEqual(['ITA', 'BRA']);
+    expect(away.coach).toBeUndefined();
+    expect(loadedAway).not.toHaveProperty('coach');
   });
 
   describe('pre-MS-108 saves', () => {
