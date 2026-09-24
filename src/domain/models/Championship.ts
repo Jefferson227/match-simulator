@@ -98,6 +98,11 @@ type BaseChampionship = {
    * hosting and the final classification (REC A1 Art. 27, REC A3 Art. 21).
    */
   accumulatedStandings?: Standing[];
+  /**
+   * The winners of a phase's `playoff`, set when that phase is resolved. They advance nowhere; a
+   * promotion rule reads them (Série D 2026, REC D 2026 Art. 21 §4).
+   */
+  playoffWinnerIds?: Team['id'][];
 };
 
 type Promotable = {

@@ -285,6 +285,45 @@ describe('ChampionshipRepository — seed tiebreakers it refuses to load (MS-112
   });
 });
 
+describe('ChampionshipRepository — playoffs it refuses to load (MS-112)', () => {
+  const playoff = (pairs: [number, number][]) => ({
+    name: 'Playoffs',
+    from: 'previous-phase-losers',
+    pairs,
+    secondLegHost: 'higher-seed',
+    tiebreakers: ['goal-difference', 'seed'],
+  });
+
+  it('loads a playoff fed by the previous knockout’s losers', () => {
+    const phases = withPhase(3, { playoff: playoff([[1, 2]]) });
+
+    expect(loadWithSeed([seedEntry({ phases })]).phases![3]).toMatchObject({
+      playoff: { pairs: [[1, 2]] },
+    });
+  });
+
+  it('rejects a playoff whose seeds the previous knockout cannot produce', () => {
+    const phases = withPhase(2, {
+      playoff: playoff([
+        [1, 4],
+        [2, 5],
+      ]),
+    });
+
+    expect(() => loadWithSeed([seedEntry({ phases })])).toThrow(
+      /Playoff of fixture-division phase 'Semifinal' pairs seeds 1, 2, 4, 5, but '2ª Fase' knocks out 4 clubs/
+    );
+  });
+
+  it('rejects a playoff after a round-robin', () => {
+    const phases = withPhase(1, { playoff: playoff([[1, 2]]) });
+
+    expect(() => loadWithSeed([seedEntry({ phases })])).toThrow(
+      /Playoff of fixture-division phase '2ª Fase' takes the previous phase's losers, but it is not a knockout/
+    );
+  });
+});
+
 describe('ChampionshipRepository — group-position promotion it refuses to load', () => {
   it('rejects the rule without a promotionPhaseIndex', () => {
     expect(() => loadWithSeed([seedEntry({ promotionPhaseIndex: undefined })])).toThrow(

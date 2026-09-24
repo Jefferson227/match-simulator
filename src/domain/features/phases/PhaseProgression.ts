@@ -22,6 +22,8 @@ import {
   BracketEntrant,
   BracketSeeding,
   buildKnockoutPhaseRounds,
+  buildPlayoffTies,
+  withPlayoffLegs,
 } from '../fixture-generation/KnockoutBracket';
 import { buildRoundRobinPhaseRounds } from '../fixture-generation/FixtureGenerator';
 import { groupMatchesIntoTies, resolveTie, TieOutcome } from './TieResolution';
@@ -229,13 +231,25 @@ function withShootoutsRecorded(
   });
 }
 
-function entrantsFromOutcomes(outcomes: TieOutcome[], accumulated: Standing[]): BracketEntrant[] {
+function entrantsFromOutcomes(
+  outcomes: TieOutcome[],
+  accumulated: Standing[],
+  side: 'winner' | 'loser' = 'winner'
+): BracketEntrant[] {
   return outcomes.map((outcome, index) => ({
-    team: outcome.winner,
+    team: outcome[side],
     seed: index + 1,
     fromTie: index,
-    accumulated: accumulatedFor(accumulated, outcome.winner.id),
+    accumulated: accumulatedFor(accumulated, outcome[side].id),
   }));
+}
+
+/** A phase's matches split into its own bracket and its `playoff`, which share the rounds. */
+function splitPlayoff(matches: Match[]): { main: Match[]; playoff: Match[] } {
+  return {
+    main: matches.filter((match) => match.bracket !== 'playoff'),
+    playoff: matches.filter((match) => match.bracket === 'playoff'),
+  };
 }
 
 /** How the next phase pairs its entrants, given the phase they came out of and the one they enter. */
@@ -284,16 +298,23 @@ export function resolveCompletedPhase(
     phaseStandings
   );
 
-  const phaseMatches = matchesOfPhase(rounds, phaseIndex);
+  // A phase hosting a playoff shares its rounds and its table with it, but the playoff clubs did not
+  // play the phase itself — Série D's semifinalists are the four clubs of the main bracket.
+  const { main: phaseMatches, playoff: playoffMatches } = splitPlayoff(
+    matchesOfPhase(rounds, phaseIndex)
+  );
   const standingsHistory = [...(championship.phaseStandings ?? [])];
   standingsHistory[phaseIndex] = phaseStandings;
   const participants = [...(championship.phaseParticipants ?? [])];
-  participants[phaseIndex] = phaseStandings.length
-    ? phaseStandings.map((standing) => standing.team.id)
-    : participantsOfPhase(phaseMatches);
+  participants[phaseIndex] =
+    phaseStandings.length && !playoffMatches.length
+      ? phaseStandings.map((standing) => standing.team.id)
+      : participantsOfPhase(phaseMatches);
 
   let updatedRounds = rounds;
   let entrants: BracketEntrant[];
+  let losers: BracketEntrant[] = [];
+  let playoffWinnerIds = championship.playoffWinnerIds;
 
   if (phase.kind === 'round-robin') {
     entrants = qualifiersFromRoundRobin(
@@ -306,6 +327,13 @@ export function resolveCompletedPhase(
     const resolution = resolveKnockoutPhase(phaseMatches, deps, phase.tiebreakers);
     updatedRounds = withShootoutsRecorded(rounds, phaseIndex, resolution);
     entrants = entrantsFromOutcomes(resolution.outcomes, accumulated);
+    losers = entrantsFromOutcomes(resolution.outcomes, accumulated, 'loser');
+
+    if (phase.playoff && playoffMatches.length) {
+      const playoff = resolveKnockoutPhase(playoffMatches, deps, phase.playoff.tiebreakers);
+      updatedRounds = withShootoutsRecorded(updatedRounds, phaseIndex, playoff);
+      playoffWinnerIds = playoff.outcomes.map((outcome) => outcome.winner.id);
+    }
   }
 
   const base: Championship = {
@@ -314,6 +342,7 @@ export function resolveCompletedPhase(
     phaseParticipants: participants,
     phaseStandings: standingsHistory,
     survivingTeamIds: entrants.map((entrant) => entrant.team.id),
+    playoffWinnerIds,
     firstPhaseStandings:
       phaseIndex === 0 ? phaseStandings : (championship.firstPhaseStandings ?? phaseStandings),
     matchContainer: { ...championship.matchContainer, rounds: updatedRounds },
@@ -340,7 +369,7 @@ export function resolveCompletedPhase(
   const lastRoundNumber = updatedRounds.reduce((last, round) => Math.max(last, round.number), 0);
   // A round-robin can follow another phase too — Série C's 2ª Fase groups are dealt from the 1ª Fase
   // top 8 in rank order (REC C Art. 13). The field is already ordered best first.
-  const nextRounds =
+  let nextRounds =
     nextPhase.kind === 'round-robin'
       ? buildRoundRobinPhaseRounds(
           field.map((entrant) => entrant.team),
@@ -357,6 +386,16 @@ export function resolveCompletedPhase(
           deps.rng
         ).rounds;
 
+  // The clubs this phase knocked out play the next phase's playoff in its rounds (REC D 2026 Art.
+  // 21). They are not survivors — the playoff leads nowhere — but they share the phase's table, so
+  // their legs count towards the accumulated points like every other match.
+  const playoffField =
+    nextPhase.kind === 'knockout' && nextPhase.playoff ? losers.map((loser) => loser.team) : [];
+  if (nextPhase.kind === 'knockout' && nextPhase.playoff) {
+    const ties = buildPlayoffTies(losers, nextPhase.playoff, phaseIndex + 1, deps.rng);
+    nextRounds = withPlayoffLegs(nextRounds, ties, phaseIndex + 1);
+  }
+
   const allRounds = [...updatedRounds, ...nextRounds];
 
   return {
@@ -368,7 +407,7 @@ export function resolveCompletedPhase(
     standings:
       championship.hasLeagueTable === false
         ? []
-        : buildEmptyStandings(field.map((entrant) => entrant.team)),
+        : buildEmptyStandings([...field.map((entrant) => entrant.team), ...playoffField]),
     matchContainer: {
       ...championship.matchContainer,
       rounds: allRounds,
@@ -440,5 +479,6 @@ export function initialisePhaseState(championship: Championship): Championship {
     accumulatedStandings: [],
     firstPhaseStandings: undefined,
     phaseStandings: [],
+    playoffWinnerIds: undefined,
   };
 }

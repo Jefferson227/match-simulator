@@ -116,6 +116,29 @@ function validateCrossings(name: string, phases: ChampionshipPhase[] | undefined
 }
 
 /**
+ * Rejects a playoff the previous phase cannot feed: it takes that knockout's losers, so the phase
+ * before must be a knockout and the playoff's seeds must be exactly 1..its number of ties.
+ */
+function validatePlayoffs(name: string, phases: ChampionshipPhase[] | undefined): void {
+  phases?.forEach((phase, index) => {
+    if (phase.kind !== 'knockout' || !phase.playoff) return;
+
+    const previous = phases[index - 1];
+    const where = `Playoff of ${name} phase '${phase.name}'`;
+    if (previous?.kind !== 'knockout') {
+      throw new Error(`${where} takes the previous phase's losers, but it is not a knockout.`);
+    }
+
+    const seeds = phase.playoff.pairs.flat().sort((a, b) => a - b);
+    if (seeds.length !== previous.numberOfTies || seeds.some((seed, i) => seed !== i + 1)) {
+      throw new Error(
+        `${where} pairs seeds ${seeds.join(', ')}, but '${previous.name}' knocks out ${previous.numberOfTies} clubs.`
+      );
+    }
+  });
+}
+
+/**
  * Rejects a `seed` tiebreaker under any hosting rule but `higher-seed`: tie resolution reads the
  * better seed off the last leg's host, which only `higher-seed` guarantees.
  */
@@ -212,6 +235,7 @@ export function getChampionship(
   championshipJSONDTO.phaseVariants?.forEach((variant) =>
     validateCrossings(championshipJSONDTO.internalName, variant.phases)
   );
+  validatePlayoffs(championshipJSONDTO.internalName, championshipJSONDTO.phases);
   validateSeedTiebreakers(championshipJSONDTO.internalName, championshipJSONDTO.phases);
   validatePromotionRule(championshipJSONDTO);
   validateTiers(championshipsJSONDTO, championshipJSONDTO.leagueType);
