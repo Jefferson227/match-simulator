@@ -332,7 +332,7 @@ const SquadSelection: React.FC<SquadSelectionProps> = ({
     const stats: [string, string | number][] = [
       ['teamManager.playerStats.strength', detailPlayer.strength],
       ['teamManager.playerStats.xp', detailPlayer.xp],
-      ['teamManager.playerStats.age', NOT_TRACKED],
+      ['teamManager.playerStats.age', detailPlayer.age],
       ['teamManager.playerStats.matches', NOT_TRACKED],
       ['teamManager.playerStats.goals', NOT_TRACKED],
       ['teamManager.playerStats.yellowCards', NOT_TRACKED],

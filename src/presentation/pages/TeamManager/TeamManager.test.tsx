@@ -250,6 +250,18 @@ describe('TeamManager', () => {
     expect(screen.getByText('START MATCH')).toBeTruthy();
   });
 
+  it("shows the player's age in the player view", () => {
+    const players = basePlayers.map((player, index) => ({ ...player, age: 18 + index }));
+    renderTeamManager([createTeam(players)]);
+
+    fireEvent.click(screen.getByText('CHOOSE STRATEGY'));
+    fireEvent.click(screen.getByText('PLAYER'));
+
+    const shown = players.find((player) => screen.queryByText(player.name))!;
+    const ageRow = screen.getByText('AGE').parentElement!;
+    expect(ageRow.textContent).toBe(`AGE${shown.age}`);
+  });
+
   it('picks the best lineup and navigates to the match when Start Match is clicked', () => {
     const team = createTeam(basePlayers);
     const opponent = createOpponent();
