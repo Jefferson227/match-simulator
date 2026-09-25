@@ -554,3 +554,16 @@ planned 11: Araguaína FR (CBF 21745) is not União Araguainense (CBF 20389). Th
 
 - The running-app check of the playoff screens was waived by the user; component tests only.
 - Coaches and nationalities are on no screen. `free-coaches.json` is deferred.
+
+## [2026-09-24] correct | Player stamina after MS-112's real ages
+
+sha 9d986e1
+
+MS-111's close-out was re-checked against MS-112, which replaced the generated ages with real ones
+and put age on the squad player view. The stamina code and its tests needed nothing: the ages ride
+the same field, and every seed age is an integer the band table accepts.
+
+- [[player-stamina]]: "seed ages are invented" replaced with real-but-frozen; the "no UI" note now
+  covers stamina only; the youngest band's note names the real under-17s instead of "implausibly
+  young". `verified` bumped.
+- [[index]]: the open thread "Nothing renders stamina or age" narrowed to stamina.

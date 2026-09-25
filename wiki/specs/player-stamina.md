@@ -1,7 +1,7 @@
 ---
 title: Player stamina
 type: spec
-verified: 2026-09-20
+verified: 2026-09-24
 owner: user
 asserts:
   - file: src/domain/features/match-simulation/StaminaPolicy.ts
@@ -50,8 +50,8 @@ Unrounded. Strength 43 at stamina 99 is 42.57, not 43.
 | 36–38    | 3                   | 30                 |
 | > 38     | 2                   | 45                 |
 
-The youngest band is open at the bottom, so an implausibly young age cannot fall through it; the
-oldest is open at the top. A 39-year-old finishes a match at 55% of their strength while a
+The youngest band is open at the bottom, so the seed's real under-17s (as young as 14 in the
+women's squads) fall into it rather than through it; the oldest is open at the top. A 39-year-old finishes a match at 55% of their strength while a
 23-year-old finishes at 94%.
 
 ### The ratio column wins, and that is a resolution, not a transcription
@@ -109,10 +109,11 @@ smallest `N` is 2, so `floor(1 / N)` is 0 at minute 0 and every band already eva
 
 ## Consequences worth knowing
 
-- **Age is now a balance lever with no UI.** Nothing renders stamina or age yet, so a player fading
-  is invisible to the user; only the result moves.
+- **Stamina is a balance lever with no UI.** Age is shown in the squad player view since MS-112, but
+  nothing renders stamina, so a player fading is invisible to the user; only the result moves.
 - **The AI divisions get it for free.** They run the same `runMatchTick`, so their matches tire too.
 - **It interacts with the summed-strength tension** already recorded in [[match-simulation]]: an
   extra body in an area is worth more than quality, and now also more than freshness.
-- **Seed ages are invented**, so the *distribution* of fatigue across the league is not a claim
-  about real squads. See [[player-ages]].
+- **Seed ages are real but frozen.** Since MS-112 they come from the 2026 rosters, so the
+  distribution of fatigue across the league matches real squads as of the ages' reference date.
+  Players never age, so that stops being true one season into a save. See [[player-ages]].
