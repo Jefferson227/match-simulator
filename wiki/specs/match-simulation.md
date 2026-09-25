@@ -1,7 +1,7 @@
 ---
 title: Match simulation
 type: spec
-verified: 2026-09-20
+verified: 2026-09-24
 owner: user
 asserts:
   - file: src/domain/features/match-simulation/MatchSimulationEngine.ts
@@ -174,8 +174,9 @@ counted.
 Absent by design, not by oversight. Adding any of them is a spec change:
 
 - no half-time, added time, or any event tied to a specific minute
-- no fouls, cards, injuries or substitutions — so nothing here feeds [[tiebreakers]]' unmodelled
-  card criteria. **Fatigue was on this list until MS-111**; it is now modelled, and specified
+- no fouls, cards or injuries — so nothing here feeds [[tiebreakers]]' unmodelled card criteria.
+  Nor does the engine make substitutions; only the human does, with the clock paused. This page
+  said "no substitutions" until 2026-09-24, which was never true of the game. **Fatigue was on this list until MS-111**; it is now modelled, and specified
   separately in [[player-stamina]].
 - no home advantage
 - no in-match tactics, formation changes or score-aware behaviour: a side 3–0 down plays exactly as

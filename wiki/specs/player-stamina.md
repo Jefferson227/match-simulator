@@ -27,7 +27,8 @@ not have.
 ## The rule
 
 Stamina is a number in `[1, 100]`. Every player starts every match at 100 and loses 1 point every
-`N` ticks, where `N` is set by the player's age. Wherever a player's strength is read **during a
+`N` ticks, where `N` is set by the player's age. A substitute starts at 100 on the minute he comes on
+and tires from there, not from kickoff. Wherever a player's strength is read **during a
 match**, the value used is:
 
 ```
@@ -83,8 +84,9 @@ Three deliberate exclusions:
 - **Penalty shootouts are contested at full strength.** 90 minutes of fatigue does not carry into
   the shootout. This is a choice, not an oversight, and it is why the dispute functions take an
   `applyStamina` flag at all.
-- **Only players on the pitch tire.** Bench players stay at 100. This is free rather than designed:
-  the engine has no substitutions, so nobody on the bench ever plays.
+- **Only players on the pitch tire.** Bench players stay at 100, and so does a player the human has
+  subbed off. He cannot come back on and nothing reads his stamina, so the value he left with is not
+  kept (the user's choice, 2026-09-24).
 - **Players do not age between seasons.** A squad's ages are fixed for the life of a save.
 
 ## Derived, not accumulated
@@ -92,12 +94,13 @@ Three deliberate exclusions:
 Stamina at a given tick is computed **from the minute**, not decremented from the previous value:
 
 ```
-stamina(age, minute) = max(1, 100 - floor((minute + 1) / N))
+stamina(age, minute) = max(1, 100 - floor((minute - entered + 1) / N))
 ```
 
-This is the load-bearing design decision. It makes a tick idempotent — replaying minute 45 twice
-yields the same stamina — so a match resumed from a save cannot drift or double-count, and no
-bookkeeping has to survive the save boundary. It is also why nothing resets stamina at kickoff: the
+`entered` is 0 for a starter and the minute a substitute came on for him. This is the load-bearing
+design decision. It makes a tick idempotent — replaying minute 45 twice yields the same stamina — so
+a match resumed from a save cannot drift or double-count. The one fact that has to survive the save
+boundary is a substitute's entry minute, and it is a fixed fact, not a running total. It is also why nothing resets stamina at kickoff: the
 smallest `N` is 2, so `floor(1 / N)` is 0 at minute 0 and every band already evaluates to 100.
 
 > **Not asserted.** The lint pass can only check that the files exist. The table, the multiplier

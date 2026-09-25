@@ -567,3 +567,19 @@ the same field, and every seed age is an integer the band table accepts.
   covers stamina only; the youngest band's note names the real under-17s instead of "implausibly
   young". `verified` bumped.
 - [[index]]: the open thread "Nothing renders stamina or age" narrowed to stamina.
+
+## [2026-09-24] correct | Substitutes tire from their entry minute
+
+sha f93e6c8
+
+Found by an engine-level check on the real seed after MS-112. [[match-simulation]] and
+[[player-stamina]] both said the game has no substitutions. That was never true: the human can
+substitute mid-match with the clock paused. Because stamina was derived from the match minute alone,
+a substitute came on as tired as if he had played since kickoff. For example, a 29-year-old on at
+minute 70 entered at 89.
+
+- [[player-stamina]]: a substitute tires from the minute he comes on (`entered` in the formula); a
+  player subbed off goes back to 100 (the user's choice); the entry minute is the one fact that
+  crosses the save boundary. The rule was approved by the spec's owner on 2026-09-24.
+- [[match-simulation]]: the "no substitutions" claim is corrected. The engine makes none; the human
+  can. `verified` bumped.
