@@ -282,6 +282,54 @@ describe('GameStateMapper', () => {
     );
   });
 
+  it("keeps a substitute's entry minute through a mid-match save and drops stamina", () => {
+    const state = buildState();
+    const playable = getPlayableChampionship(state.championshipContainer);
+    const [m3, m4] = playable.matchContainer.rounds[1].matches;
+    const tired = (team: Team): Team => ({
+      ...team,
+      players: team.players.map((player, index) => ({
+        ...player,
+        stamina: 80,
+        ...(index === 1 ? { enteredAtMinute: 70 } : {}),
+      })),
+    });
+    const midMatch: GameState = {
+      ...state,
+      championshipContainer: {
+        ...state.championshipContainer,
+        championships: state.championshipContainer.championships.map((championship) =>
+          championship.internalName !== playable.internalName
+            ? championship
+            : {
+                ...championship,
+                teams: championship.teams.map(tired),
+                matchContainer: {
+                  ...championship.matchContainer,
+                  rounds: [
+                    championship.matchContainer.rounds[0],
+                    {
+                      ...championship.matchContainer.rounds[1],
+                      matches: [{ ...m3, homeTeam: tired(m3.homeTeam) }, m4],
+                    },
+                  ],
+                },
+              }
+        ),
+      },
+    };
+
+    const reloaded = getPlayableChampionship(roundTrip(midMatch).championshipContainer);
+    const players = reloaded.matchContainer.rounds[1].matches[0].homeTeam.players;
+
+    expect(players[1].enteredAtMinute).toBe(70);
+    expect(players[0].enteredAtMinute).toBeUndefined();
+    expect(players.every((player) => player.stamina === undefined)).toBe(true);
+    expect(
+      reloaded.teams.flatMap((team) => team.players).every((p) => p.stamina === undefined)
+    ).toBe(true);
+  });
+
   it('drops the historical snapshot of a round already played', () => {
     // The documented cost of dehydration: a played fixture references the club as it is now.
     const state = buildState();

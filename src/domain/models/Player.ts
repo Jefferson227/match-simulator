@@ -10,6 +10,8 @@ type Player = {
   nationalities: string[];
   // Match-scoped: set at kickoff, recomputed each tick, never persisted.
   stamina?: number;
+  // Match-scoped: the minute a substitute came on. Absent means on the pitch since kickoff.
+  enteredAtMinute?: number;
   xp: number;
   isStarter: boolean;
   isSub: boolean;

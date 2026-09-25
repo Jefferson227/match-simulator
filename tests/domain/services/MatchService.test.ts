@@ -244,6 +244,67 @@ describe('MatchService.runMatchActions', () => {
       expect(match.awayTeam.players.every((player) => player.stamina === 100)).toBe(true);
     });
 
+    it('tires a substitute from the minute he came on, not from kickoff', () => {
+      let current = buildContainer('in-progress', { home: OLD_AGE, away: YOUNG_AGE });
+      for (let minute = 0; minute < 70; minute++) {
+        current = MatchService.runMatchActions(current, { rng: queuedRng([0]) }).getResult();
+      }
+
+      // What SUBSTITUTE_PLAYER leaves behind: the incoming player flagged on, stamped with the
+      // timer. The use case is covered in TeamUseCases.test.ts.
+      const playable = getPlayableChampionship(current);
+      const substituted: ChampionshipContainer = {
+        ...current,
+        championships: current.championships.map((championship) => {
+          if (championship !== playable) return championship;
+          const round = championship.matchContainer.rounds[0];
+          const match = round.matches[0];
+          return {
+            ...championship,
+            matchContainer: {
+              ...championship.matchContainer,
+              rounds: [
+                {
+                  ...round,
+                  matches: [
+                    {
+                      ...match,
+                      homeTeam: {
+                        ...match.homeTeam,
+                        players: match.homeTeam.players.map((player, index) =>
+                          index === 3
+                            ? { ...player, enteredAtMinute: championship.matchContainer.timer }
+                            : player
+                        ),
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          };
+        }),
+      };
+      expect(getPlayableChampionship(substituted).matchContainer.timer).toBe(70);
+
+      const onEntry = matchOf(
+        MatchService.runMatchActions(substituted, { rng: queuedRng([0]) }).getResult()
+      );
+      expect(onEntry.homeTeam.players[3].stamina).toBe(100);
+
+      let rest = substituted;
+      for (let minute = 70; minute < 90; minute++) {
+        rest = MatchService.runMatchActions(rest, { rng: queuedRng([0]) }).getResult();
+      }
+      const final = matchOf(rest);
+
+      // Age 39 loses 1 point per 2 ticks: 20 minutes on the pitch (70-89) cost 10.
+      expect(final.homeTeam.players[3].stamina).toBe(90);
+      expect(final.homeTeam.players.slice(0, 3).map((player) => player.stamina)).toEqual([
+        55, 55, 55,
+      ]);
+    });
+
     it('resets to full stamina when the next match kicks off', () => {
       const drained = matchOf(
         playFullMatch(buildContainer('in-progress', { home: OLD_AGE, away: YOUNG_AGE }))

@@ -118,6 +118,9 @@ export default class TeamUseCases {
       };
     }
 
+    const playable = getPlayableChampionship(this.state.championshipContainer);
+    const matchContainer = playable.matchContainer;
+
     const updatedTeamForSubstitution = {
       ...teamToUpdate,
       players: teamToUpdate.players.map((player) => {
@@ -126,7 +129,13 @@ export default class TeamUseCases {
         }
 
         if (player.id === subId) {
-          return { ...player, isStarter: true, isSub: false };
+          // The timer is the next minute to be played, so the sub is fresh on that tick.
+          return {
+            ...player,
+            isStarter: true,
+            isSub: false,
+            enteredAtMinute: matchContainer.timer,
+          };
         }
 
         return player;
@@ -137,9 +146,6 @@ export default class TeamUseCases {
       match.homeTeam.id === updatedTeamForSubstitution.id
         ? { ...match, homeTeam: updatedTeamForSubstitution }
         : { ...match, awayTeam: updatedTeamForSubstitution };
-
-    const playable = getPlayableChampionship(this.state.championshipContainer);
-    const matchContainer = playable.matchContainer;
 
     let roundIndex = -1;
     for (let i = 0; i < matchContainer.rounds.length; i++) {

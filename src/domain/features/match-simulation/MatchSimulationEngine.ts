@@ -48,7 +48,10 @@ function applyStaminaForMinute(team: Team, minute: number): Team {
 
       return {
         ...player,
-        stamina: isOnPitch ? getStaminaAtMinute(player.age, minute) : FULL_STAMINA,
+        // A substitute tires from the minute he came on, not from kickoff.
+        stamina: isOnPitch
+          ? getStaminaAtMinute(player.age, minute - (player.enteredAtMinute ?? 0))
+          : FULL_STAMINA,
       };
     }),
   };
