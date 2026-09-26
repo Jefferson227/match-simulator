@@ -51,7 +51,7 @@ const TeamMatchDetails: FC<TeamPlayersProps> = ({ team, matchId, engine, runFunc
             .filter((player) => player.isStarter)
             .map((starter) => (
               <div
-                className="text-[12px] flex justify-between py-0.5 px-6 uppercase cursor-pointer"
+                className="text-[12px] flex items-center justify-between py-0.5 px-6 uppercase cursor-pointer"
                 key={starter.id}
                 style={{
                   color:
@@ -66,11 +66,11 @@ const TeamMatchDetails: FC<TeamPlayersProps> = ({ team, matchId, engine, runFunc
                 }
               >
                 <div className="w-8">{t(`teamPlayers.positions.${starter.position}`)}</div>
-                <div className="w-[200px] text-left">
+                <div className="flex-1 ml-2 mr-3 text-left">
                   {utils.shortenPlayerName(starter.name)}
-                  <StaminaBar stamina={starter.stamina} />
                 </div>
-                <div className="w-8">{starter.strength}</div>
+                <StaminaBar stamina={starter.stamina} />
+                <div className="w-8 ml-3">{starter.strength}</div>
               </div>
             ))}
         </div>

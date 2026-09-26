@@ -23,7 +23,7 @@ const StaminaBar: FC<StaminaBarProps> = ({ stamina }) => {
       aria-valuemin={0}
       aria-valuemax={FULL_STAMINA}
       aria-valuenow={value}
-      className={`relative h-[3px] w-full mt-[3px] mb-[2px] ${isLow ? 'animate-blink' : ''}`}
+      className={`relative shrink-0 w-[36px] h-[6px] ${isLow ? 'animate-blink' : ''}`}
     >
       <div className="absolute inset-0 bg-current opacity-25" />
       <div
