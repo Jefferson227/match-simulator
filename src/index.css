@@ -5,6 +5,16 @@
   --font-press-start: 'Press Start 2P', cursive, system-ui;
 }
 
+@theme {
+  --animate-blink: blink 1s steps(1, end) infinite;
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+}
+
 @layer base {
   html,
   body,

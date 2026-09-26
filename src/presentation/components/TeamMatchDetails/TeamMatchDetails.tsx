@@ -4,6 +4,7 @@ import utils from '../../../utils/utils';
 import { Team } from '../../../domain/models/Team';
 import Player from '../../../domain/models/Player';
 import { GameEngine } from '../../../game-engine/GameEngine';
+import StaminaBar from '../StaminaBar/StaminaBar';
 
 interface TeamPlayersProps {
   team: Team;
@@ -65,7 +66,10 @@ const TeamMatchDetails: FC<TeamPlayersProps> = ({ team, matchId, engine, runFunc
                 }
               >
                 <div className="w-8">{t(`teamPlayers.positions.${starter.position}`)}</div>
-                <div className="w-[200px] text-left">{utils.shortenPlayerName(starter.name)}</div>
+                <div className="w-[200px] text-left">
+                  {utils.shortenPlayerName(starter.name)}
+                  <StaminaBar stamina={starter.stamina} />
+                </div>
                 <div className="w-8">{starter.strength}</div>
               </div>
             ))}
