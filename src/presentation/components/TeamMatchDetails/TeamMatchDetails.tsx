@@ -28,7 +28,7 @@ const TeamMatchDetails: FC<TeamPlayersProps> = ({ team, matchId, engine, runFunc
         }}
       >
         <div
-          className="max-h-[80px] border-b-3 text-[17px] py-[10px] px-[22px] text-center uppercase"
+          className="max-h-[80px] border-b-3 text-[16px] py-[10px] px-[22px] text-center uppercase"
           style={{
             color: team.colors.text,
             borderColor: team.colors.outline,
@@ -50,7 +50,7 @@ const TeamMatchDetails: FC<TeamPlayersProps> = ({ team, matchId, engine, runFunc
             .filter((player) => player.isStarter)
             .map((starter) => (
               <div
-                className="text-[14px] flex justify-between py-0.5 px-6 uppercase cursor-pointer"
+                className="text-[12px] flex justify-between py-0.5 px-6 uppercase cursor-pointer"
                 key={starter.id}
                 style={{
                   color:
@@ -81,7 +81,7 @@ const TeamMatchDetails: FC<TeamPlayersProps> = ({ team, matchId, engine, runFunc
             .filter((player) => player.isSub)
             .map((substitute) => (
               <div
-                className="text-[14px] flex justify-between py-0.5 px-6 uppercase cursor-pointer"
+                className="text-[12px] flex justify-between py-0.5 px-6 uppercase cursor-pointer"
                 key={substitute.id}
                 style={{
                   color:
