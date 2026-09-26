@@ -101,9 +101,11 @@ Things named across these pages that nothing currently owns:
   deferred rather than taken. Pre-MS-108 saves are abandoned via a versioned key, and a reload no
   longer preserves each played match's historical squad snapshot — the current round is kept whole.
   See [[ms-108-saved-game-size]].
-- **Nothing renders stamina.** MS-111 put it on the player and not on screen, so a player fading
-  through a match is invisible. Age has been shown in the squad player view since MS-112. No
-  ticket. See [[player-stamina]].
+- ~~**Nothing renders stamina.**~~ — **closed 2026-09-26, no ticket.** The team match details panel
+  shows a bar beside each starter's name. See [[player-stamina]].
+- **Stamina's low-stamina blink threshold is a placeholder.** At 70, only players over 38 ever
+  blink. The user kept it deliberately and will add more logic in a later session; no ticket. See
+  [[player-stamina]].
 - **Players never age between seasons.** A squad's ages are fixed for the life of a save, so the
   league cannot get older or younger. Out of MS-111's scope; no ticket.
 - ~~**Real player ages have never been obtained.**~~ — **closed by MS-112.** Every age now comes

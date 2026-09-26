@@ -1,7 +1,7 @@
 ---
 title: Player stamina
 type: spec
-verified: 2026-09-24
+verified: 2026-09-26
 owner: user
 asserts:
   - file: src/domain/features/match-simulation/StaminaPolicy.ts
@@ -9,6 +9,8 @@ asserts:
   - file: src/domain/features/match-simulation/StrengthResolver.ts
     exists: true
   - file: src/domain/features/phases/PenaltyShootoutSimulator.ts
+    exists: true
+  - file: src/presentation/components/StaminaBar/StaminaBar.tsx
     exists: true
 ---
 
@@ -110,10 +112,32 @@ smallest `N` is 2, so `floor(1 / N)` is 0 at minute 0 and every band already eva
 > `tests/domain/services/MatchService.test.ts` and
 > `tests/domain/features/phases/TieResolution.test.ts` instead.
 
+## On screen
+
+Since 2026-09-26 (no ticket) the team match details panel shows a short bar beside each starter's
+name, between the name and the strength. It is the only place stamina is shown. The choices behind
+it, which the component cannot state:
+
+- **Starters only.** A bench player is always at 100, so a bar on the substitutes list would carry
+  no information.
+- **Drawn in the row's text colour, not green/amber/red.** Team palettes include backgrounds a
+  fixed traffic-light colour would clash with, and a selected row swaps its text and background
+  colours, so the bar has to swap with it. For the same reason the low-stamina warning is a blink
+  rather than a colour.
+- **Beside the name, not under it.** A full-width bar under the name was prototyped and showed
+  small drops better, but cost height on every row. A segmented bar (five 20-point blocks) was
+  also prototyped and dropped: players under 29 never lose a whole block in a match. The user chose
+  the short continuous bar. Its cost is resolution — a young player's 6-point fade is about 2px.
+- **The blink threshold of 70 is a placeholder, kept on purpose.** Against the age table only a
+  player over 38 ever drops below 70 (a 36–38-year-old finishes on exactly 70), so the bar almost
+  never blinks. The user kept it on 2026-09-26, declining 80, and plans to add more logic in a later
+  session. Do not change it without asking.
+
+> **Not asserted.** The threshold, the starters-only rule and the colour choice live in
+> `StaminaBar.tsx` and `TeamMatchDetails.tsx` and are pinned by `StaminaBar.test.tsx`.
+
 ## Consequences worth knowing
 
-- **Stamina is a balance lever with no UI.** Age is shown in the squad player view since MS-112, but
-  nothing renders stamina, so a player fading is invisible to the user; only the result moves.
 - **The AI divisions get it for free.** They run the same `runMatchTick`, so their matches tire too.
 - **It interacts with the summed-strength tension** already recorded in [[match-simulation]]: an
   extra body in an area is worth more than quality, and now also more than freshness.

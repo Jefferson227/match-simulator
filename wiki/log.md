@@ -583,3 +583,18 @@ minute 70 entered at 89.
   crosses the save boundary. The rule was approved by the spec's owner on 2026-09-24.
 - [[match-simulation]]: the "no substitutions" claim is corrected. The engine makes none; the human
   can. `verified` bumped.
+
+## [2026-09-26] correct | Stamina on screen
+
+sha 41836a5
+
+Stamina is now shown on the team match details panel as a short bar beside each starter's name,
+after three prototypes (a full-width bar under the name, a segmented bar, and the one kept). The
+wiki said nothing rendered it.
+
+- [[player-stamina]]: the "no UI" consequence replaced by an "On screen" section recording why it
+  shows starters only, why it uses the row's text colour and blinks instead of turning red, why it
+  sits beside the name, and that the blink threshold of 70 is a placeholder the user kept. New
+  `exists` assert on `StaminaBar.tsx`. `verified` bumped.
+- [[index]]: the open thread "Nothing renders stamina" closed; a new one records the placeholder
+  threshold.
