@@ -49,6 +49,7 @@ Contracts the code is judged against. The user owns these.
 | [[player-xp]] | `src/domain/services/PlayerProgressionService.ts` |
 | [[match-simulation]] | `src/domain/features/match-simulation/`, `src/domain/services/MatchService.ts` |
 | [[player-stamina]] | `src/domain/features/match-simulation/StaminaPolicy.ts`, `StrengthResolver.ts` |
+| [[player-retirement]] | `src/domain/services/SeasonAgeingService.ts`, `src/domain/features/retirement/` |
 
 ## Decisions
 
@@ -71,6 +72,7 @@ Why things are the way they are — the part the code cannot state.
 | [[ms-109-full-pyramid-container]] | MS-109 | implemented; cups declared but not loaded |
 | [[ms-110-language-selection]] | MS-110 | implemented; verified in the running app |
 | [[ms-112-2026-rosters-and-serie-d]] | MS-112 | implemented; playoff screens covered by component tests only (running-app check waived) |
+| [[ms-113-ageing-and-retirement]] | MS-113 | implemented; verified in the running app |
 
 ## Raw
 
@@ -106,8 +108,12 @@ Things named across these pages that nothing currently owns:
 - **Stamina's low-stamina blink threshold is a placeholder.** At 70, only players over 38 ever
   blink. The user kept it deliberately and will add more logic in a later session; no ticket. See
   [[player-stamina]].
-- **Players never age between seasons.** A squad's ages are fixed for the life of a save, so the
-  league cannot get older or younger. Out of MS-111's scope; no ticket.
+- ~~**Players never age between seasons.**~~ — **closed by MS-113.** Every player and coach ages a
+  year at each roll-over and may retire; retired players are replaced by generated teenagers. See
+  [[player-retirement]].
+- **Retirees are kept but nothing shows them.** MS-113 keeps every retired player and coach for a
+  records feature that does not exist, and the list only grows (about 62,000 code units of a men's
+  save a season). No ticket. See [[ms-113-ageing-and-retirement]].
 - ~~**Real player ages have never been obtained.**~~ — **closed by MS-112.** Every age now comes
   from the 2026 ogol rosters, as of 2026-09-22. See [[player-ages]].
 - **Neighbouring men's divisions' strengths overlap.** Since MS-112 clubs keep their strength when
@@ -118,7 +124,9 @@ Things named across these pages that nothing currently owns:
 - **Série C and D stop tracking reality from 2027.** The game's 6 ↔ 6 keeps both sizes fixed, while
   CBF grows C to 24 and 28. No ticket. See [[brasileirao-serie-c]].
 - **Unattached coaches were collected but not used.** `free-coaches.json` (Transfermarkt) needs a
-  coach market that does not exist. No ticket.
+  coach market that does not exist. Since MS-113 a coach pool exists, fed only by retiring players
+  who become coaches, but nothing hires from it and `free-coaches.json` is not in it. No ticket. See
+  [[ms-113-ageing-and-retirement]].
 - **A1 2027's club count is inference, not regulation**, and so is A2's route to 20. See
   [[ms-103-a1-club-count-growth]] and the open gap on [[known-contradictions]].
 - **URLs for the two CBF news articles were never recorded.** See [[sources]].

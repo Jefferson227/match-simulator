@@ -22,8 +22,10 @@ copies each age as-is.
 - **Reference date: 2026-09-22.** An age is only true relative to a date. The team files carry no
   retrieval date of their own; 2026-09-22 is the date of the files, and of the `retrievedAt` on
   the Transfermarkt coach list collected with them. Every age in the seed is as of that date.
-- **The seed still does not age.** Season-to-season ageing is not implemented, so a save started
-  in any later season plays with the 2026-09-22 ages.
+- **The seed does not age; a save does.** A new game always starts with the 2026-09-22 ages.
+  Since MS-113 every player in a save is a year older at each roll-over, and retirees are replaced
+  by generated teenagers, so real ages hold only for a save's first season. See
+  [[player-retirement]].
 - **The squads are the ones the ages belong to.** Unlike MS-111, which aged the MS-106 lineups, the
   whole roster was replaced from the same source, so there is no name-matching step to get wrong.
 - **MS-111's generator is retired.** `scripts/seed-player-ages.mjs` was deleted by MS-112.

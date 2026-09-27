@@ -201,6 +201,21 @@ rosters. The reasons are on [[ms-112-2026-rosters-and-serie-d]]. Invented:
 
 ---
 
+## Invented by MS-113
+
+Everyone generated when a player or coach retires ([[player-retirement]],
+[[ms-113-ageing-and-retirement]]) is invented. The ages, bands and chances come from the user's
+spec; these do not:
+
+- **A youth replacement is 10 weaker than the squad around them.** Their strength is a seed-loader
+  roll around the rest of the squad's average (±5), less 10, never below 1. The 10 has no source.
+- **Every generated player and coach is Brazilian** (`BRA`).
+- **The names.** `src/domain/constants/GeneratedNames.ts` holds 60 men's and 60 women's first names,
+  80 surnames shared by both, and 30 nicknames for each. They are common Brazilian names chosen for
+  the game, not drawn from any roster, so a generated player can share a name with a real person.
+- **A fifth of generated players go by a nickname alone**, and a women's club's generated coach is a
+  woman half the time. Both are the user's choices, not observed rates.
+
 ## Provenance detail
 
 Rescued from `.plans/MS-102/docs/03-MS-102-extraction-notes.md` (task 03, extraction dated

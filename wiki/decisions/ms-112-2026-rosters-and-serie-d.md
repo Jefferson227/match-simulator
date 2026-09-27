@@ -142,8 +142,9 @@ scope; no ticket.
 ## Left open
 
 - **The coach and the nationalities are data only.** No screen shows them yet.
-- **Players still do not age.** Every age is as of the rosters' 2026-09-22 reference date
-  ([[player-ages]]).
+- ~~**Players still do not age.**~~ — **closed by MS-113.** Every seed age is as of the rosters'
+  2026-09-22 reference date ([[player-ages]]); a save ages them once a season
+  ([[ms-113-ageing-and-retirement]]).
 - **Série D's order within each group is not official.** No CBF document gives it ([[invented-data]]).
 - **Séries C and D drift from reality from 2027.** The 6 ↔ 6 is a choice, and REC C 2027 / REC D 2027
   do not exist yet.

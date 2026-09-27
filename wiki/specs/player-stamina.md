@@ -1,7 +1,7 @@
 ---
 title: Player stamina
 type: spec
-verified: 2026-09-26
+verified: 2026-09-27
 owner: user
 asserts:
   - file: src/domain/features/match-simulation/StaminaPolicy.ts
@@ -89,7 +89,8 @@ Three deliberate exclusions:
 - **Only players on the pitch tire.** Bench players stay at 100, and so does a player the human has
   subbed off. He cannot come back on and nothing reads his stamina, so the value he left with is not
   kept (the user's choice, 2026-09-24).
-- **Players do not age between seasons.** A squad's ages are fixed for the life of a save.
+- **Age changes only between seasons.** Since MS-113 every player is a year older at each
+  roll-over ([[player-retirement]]); within a season, and within a match, age is fixed.
 
 ## Derived, not accumulated
 
@@ -145,6 +146,7 @@ which the component cannot state:
 - **The AI divisions get it for free.** They run the same `runMatchTick`, so their matches tire too.
 - **It interacts with the summed-strength tension** already recorded in [[match-simulation]]: an
   extra body in an area is worth more than quality, and now also more than freshness.
-- **Seed ages are real but frozen.** Since MS-112 they come from the 2026 rosters, so the
+- **Seed ages are real, then drift.** Since MS-112 they come from the 2026 rosters, so the
   distribution of fatigue across the league matches real squads as of the ages' reference date.
-  Players never age, so that stops being true one season into a save. See [[player-ages]].
+  Since MS-113 players age and retire at each roll-over, so that stops being true one season into a
+  save. See [[player-ages]] and [[player-retirement]].

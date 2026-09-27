@@ -610,3 +610,28 @@ faint dividers between rows, and removed them.
   tried and the dividers tried and removed. The other choices (starters only, text colour, blink
   threshold of 70) are unchanged.
 - [[index]]: the closed "Nothing renders stamina" thread now says the bar sits under the name.
+
+## [2026-09-27] close-out | MS-113 — squads age and retire at every season roll-over
+
+sha e63f0eb
+
+**Filed [[player-retirement]]** (spec) and **[[ms-113-ageing-and-retirement]]** (decision). Every
+player and coach in the pyramid and the coach pool ages a year at the roll-over, before clubs change
+division, then rolls for retirement against contiguous age bands (the source's gaps at players 43–44
+and coach 71 closed upwards). Retired players are replaced by generated 17–20-year-olds and 3%
+join a new coach pool that nothing hires from yet; retired club coaches are replaced by generated
+45–50-year-olds; the human's own coach is exempt. Retirees are kept in `GameState` lists for a
+future records feature, saved under version 5 (version-4 saves abandoned). Save growth measured at
+about 62,000 code units a men's season. Checked in the running app, including a reload.
+
+The decision page also records one change the plan did not foresee: clubs crossing a division
+boundary are now resolved by id against `championship.teams`, because the exchange read them off
+table rows holding stale copies and would have carried un-aged squads into their new division.
+
+- [[invented-data]]: new MS-113 section (the −10 youth strength penalty, `BRA` for everyone
+  generated, the name lists, the nickname and women's-coach splits).
+- [[player-stamina]]: "players do not age" corrected in two places. `verified` bumped.
+- [[player-ages]]: "the seed still does not age" corrected; a save ages it.
+- [[ms-112-2026-rosters-and-serie-d]]: "players still do not age" marked closed by MS-113.
+- [[index]]: both pages added; "Players never age between seasons" closed; new thread for retirees
+  nobody shows; "Unattached coaches" updated for the pool.
