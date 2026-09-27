@@ -77,6 +77,9 @@ function buildMatch(fields: Partial<Match> & { homeTeam: Team; awayTeam: Team })
 function buildState(championship: Partial<Championship>): GameState {
   return {
     coachName: '',
+    coachPool: [],
+    retiredPlayers: [],
+    retiredCoaches: [],
     championshipContainer: containerOf({
       id: 'championship',
       name: 'Mock Championship',

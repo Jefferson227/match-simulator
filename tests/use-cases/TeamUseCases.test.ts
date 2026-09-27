@@ -146,6 +146,9 @@ function buildState(): GameState {
     errorMessage: '',
     leagueType: 'mens',
     coachName: '',
+    coachPool: [],
+    retiredPlayers: [],
+    retiredCoaches: [],
     currentScreen: 'team-selector',
     gameConfig: {
       clockSpeed: 500,

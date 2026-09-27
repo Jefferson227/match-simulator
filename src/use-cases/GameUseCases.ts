@@ -68,6 +68,9 @@ export default class GameUseCases {
       ...loaded,
       leagueType: loaded.leagueType ?? 'mens',
       coachName: loaded.coachName ?? '',
+      coachPool: loaded.coachPool ?? [],
+      retiredPlayers: loaded.retiredPlayers ?? [],
+      retiredCoaches: loaded.retiredCoaches ?? [],
     };
   }
 }

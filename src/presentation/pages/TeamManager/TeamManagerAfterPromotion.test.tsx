@@ -51,6 +51,9 @@ const stateOf = (championshipContainer: ChampionshipContainer): GameState => ({
   errorMessage: '',
   leagueType: 'womens',
   coachName: 'Tester',
+  coachPool: [],
+  retiredPlayers: [],
+  retiredCoaches: [],
   currentScreen: 'TeamManager',
   gameConfig: { clockSpeed: 250 },
 });

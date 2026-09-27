@@ -58,6 +58,9 @@ function buildState(overrides?: Partial<GameState>): GameState {
 
   return {
     coachName: '',
+    coachPool: [],
+    retiredPlayers: [],
+    retiredCoaches: [],
     championshipContainer: containerOf({
       id: '33333333-3333-3333-3333-333333333333',
       name: 'Mock Championship',

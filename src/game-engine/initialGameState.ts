@@ -8,5 +8,8 @@ export function createInitialGameState(): GameState {
     },
     leagueType: 'mens',
     coachName: '',
+    coachPool: [],
+    retiredPlayers: [],
+    retiredCoaches: [],
   };
 }

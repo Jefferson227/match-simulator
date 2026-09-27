@@ -66,6 +66,9 @@ function buildState(): GameState {
     championshipContainer: containerOf(buildMockChampionship()),
     leagueType: 'mens',
     coachName: '',
+    coachPool: [],
+    retiredPlayers: [],
+    retiredCoaches: [],
     hasError: false,
     errorMessage: '',
     currentScreen: 'home',
@@ -171,6 +174,25 @@ describe('ChampionshipUseCases', () => {
       const nextState = useCases.drawTeamForHumanPlayer();
 
       expect(nextState.gameConfig).toEqual({ clockSpeed: 250 });
+    });
+
+    it('starts with no coach pool, retirees or retirement report', () => {
+      const useCases = new ChampionshipUseCases({
+        ...buildState(),
+        coachPool: [{ name: 'Old Pool Coach', age: 60 }],
+        retiredPlayers: [{ name: 'Old Retiree' } as GameState['retiredPlayers'][number]],
+        retiredCoaches: [{ name: 'Old Coach' } as GameState['retiredCoaches'][number]],
+        lastSeasonRetirements: { season: 2026, teamId: 'x-x-x-x-x', entries: [] },
+      });
+      mockedChampionshipService.initChampionships.mockReturnValue(successResult(entryContainer()));
+      mockedChampionshipService.drawTeamForHumanPlayer.mockReturnValue(successResult(teams[0]));
+
+      const nextState = useCases.drawTeamForHumanPlayer();
+
+      expect(nextState.coachPool).toEqual([]);
+      expect(nextState.retiredPlayers).toEqual([]);
+      expect(nextState.retiredCoaches).toEqual([]);
+      expect(nextState.lastSeasonRetirements).toBeUndefined();
     });
 
     it('returns error state when the entry division cannot be initialised', () => {

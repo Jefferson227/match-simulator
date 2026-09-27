@@ -55,6 +55,9 @@ function buildState(): GameState {
     errorMessage: '',
     leagueType: 'mens',
     coachName: '',
+    coachPool: [],
+    retiredPlayers: [],
+    retiredCoaches: [],
     currentScreen: 'MatchSimulator',
     gameConfig: {
       clockSpeed: 500,

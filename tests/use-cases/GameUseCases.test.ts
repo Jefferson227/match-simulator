@@ -46,6 +46,9 @@ function buildState(): GameState {
     },
     leagueType: 'mens',
     coachName: '',
+    coachPool: [],
+    retiredPlayers: [],
+    retiredCoaches: [],
   };
 }
 
@@ -139,6 +142,24 @@ describe('GameUseCases', () => {
 
       expect(mockedGameService.loadGame).toHaveBeenCalled();
       expect(nextState).toEqual(loadedState);
+    });
+
+    it('defaults the coach pool and retired lists when the save has none', () => {
+      const state = buildState();
+      const useCases = new GameUseCases(state);
+      const saved: Partial<GameState> = { ...state };
+      delete saved.coachPool;
+      delete saved.retiredPlayers;
+      delete saved.retiredCoaches;
+      const result = new OperationResult<GameState>(saved as GameState);
+      result.setSuccess();
+      mockedGameService.loadGame.mockReturnValue(result);
+
+      const nextState = useCases.loadGame();
+
+      expect(nextState.coachPool).toEqual([]);
+      expect(nextState.retiredPlayers).toEqual([]);
+      expect(nextState.retiredCoaches).toEqual([]);
     });
 
     it('returns error state when service fails', () => {

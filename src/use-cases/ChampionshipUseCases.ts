@@ -14,6 +14,17 @@ import {
   replaceChampionship,
 } from '../domain/features/pyramid/Pyramid';
 
+/** A new game starts with no coach pool, no retirees and no retirement report (MS-113). */
+const NO_RETIREMENTS: Pick<
+  GameState,
+  'coachPool' | 'retiredPlayers' | 'retiredCoaches' | 'lastSeasonRetirements'
+> = {
+  coachPool: [],
+  retiredPlayers: [],
+  retiredCoaches: [],
+  lastSeasonRetirements: undefined,
+};
+
 export default class ChampionshipUseCases {
   private state = {} as GameState;
 
@@ -33,6 +44,7 @@ export default class ChampionshipUseCases {
 
     return {
       ...this.state,
+      ...NO_RETIREMENTS,
       gameConfig: {
         clockSpeed: 250,
       },
@@ -85,6 +97,7 @@ export default class ChampionshipUseCases {
 
     return {
       ...this.state,
+      ...NO_RETIREMENTS,
       gameConfig: {
         clockSpeed: 250,
       },

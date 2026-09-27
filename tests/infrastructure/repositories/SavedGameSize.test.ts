@@ -37,6 +37,9 @@ const stateOf = (
   errorMessage: '',
   leagueType,
   coachName: 'Tester',
+  coachPool: [],
+  retiredPlayers: [],
+  retiredCoaches: [],
   currentScreen: 'TeamManager',
   gameConfig: { clockSpeed: 250 },
 });

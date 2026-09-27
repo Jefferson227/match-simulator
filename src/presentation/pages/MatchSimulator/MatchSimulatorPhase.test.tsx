@@ -81,6 +81,9 @@ function buildRound(phased: boolean): Round {
 function buildState(phased: boolean): GameState {
   return {
     coachName: '',
+    coachPool: [],
+    retiredPlayers: [],
+    retiredCoaches: [],
     championshipContainer: containerOf({
       id: 'championship',
       name: 'Mock Championship',

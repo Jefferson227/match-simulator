@@ -170,6 +170,9 @@ function buildState(): GameState {
     gameConfig: { clockSpeed: 250 },
     leagueType: 'mens',
     coachName: 'Tester',
+    coachPool: [],
+    retiredPlayers: [],
+    retiredCoaches: [],
   };
 }
 

@@ -4,6 +4,10 @@ import Player from '../domain/models/Player';
 import { Team } from '../domain/models/Team';
 import GameConfig from '../domain/models/GameConfig';
 import LeagueType from '../domain/enums/LeagueType';
+import Coach from '../domain/models/Coach';
+import RetiredPlayer from '../domain/models/RetiredPlayer';
+import RetiredCoach from '../domain/models/RetiredCoach';
+import RetirementReport from '../domain/models/RetirementReport';
 
 export type GameState = {
   championshipContainer: ChampionshipContainer;
@@ -18,6 +22,20 @@ export type GameState = {
    * the next one does. Absent before a season has ever finished.
    */
   seasonSummary?: SeasonSummary;
+  /**
+   * Coaches without a club: retired players who took up coaching (MS-113). Nothing hires from it
+   * yet.
+   */
+  coachPool: Coach[];
+  /** Every player who has retired, kept for the records feature. */
+  retiredPlayers: RetiredPlayer[];
+  /** Every coach who has retired, kept for the records feature. */
+  retiredCoaches: RetiredCoach[];
+  /**
+   * The human club's retirements at the last roll-over, which the Retirements page shows. Absent
+   * before a season has ever rolled over.
+   */
+  lastSeasonRetirements?: RetirementReport;
 };
 
 export type GameAction =
