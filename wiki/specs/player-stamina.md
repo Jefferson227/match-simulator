@@ -114,9 +114,9 @@ smallest `N` is 2, so `floor(1 / N)` is 0 at minute 0 and every band already eva
 
 ## On screen
 
-Since 2026-09-26 (no ticket) the team match details panel shows a short bar beside each starter's
-name, between the name and the strength. It is the only place stamina is shown. The choices behind
-it, which the component cannot state:
+Since 2026-09-26 (no ticket) the team match details panel shows a thin bar under each starter's
+name, as wide as the name column. It is the only place stamina is shown. The choices behind it,
+which the component cannot state:
 
 - **Starters only.** A bench player is always at 100, so a bar on the substitutes list would carry
   no information.
@@ -124,10 +124,14 @@ it, which the component cannot state:
   fixed traffic-light colour would clash with, and a selected row swaps its text and background
   colours, so the bar has to swap with it. For the same reason the low-stamina warning is a blink
   rather than a colour.
-- **Beside the name, not under it.** A full-width bar under the name was prototyped and showed
-  small drops better, but cost height on every row. A segmented bar (five 20-point blocks) was
-  also prototyped and dropped: players under 29 never lose a whole block in a match. The user chose
-  the short continuous bar. Its cost is resolution — a young player's 6-point fade is about 2px.
+- **Under the name, full width.** Three layouts were prototyped on 2026-09-26 and the user chose
+  this one. At 200px each stamina point is about 2px, so even a young player's 6-point fade shows.
+  A segmented bar beside the name (five 20-point blocks) was dropped: players under 29 never lose a
+  whole block in a match. A short continuous bar beside the name was committed and then reverted;
+  at 36px a 6-point fade is about 2px in total. The cost of the full-width bar is height: every
+  starter row is taller.
+- **No divider lines between rows.** Faint dividers were prototyped so a bar could not be read as
+  belonging to the name below it, and removed at the user's request after seeing them.
 - **The blink threshold of 70 is a placeholder, kept on purpose.** Against the age table only a
   player over 38 ever drops below 70 (a 36–38-year-old finishes on exactly 70), so the bar almost
   never blinks. The user kept it on 2026-09-26, declining 80, and plans to add more logic in a later

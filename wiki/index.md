@@ -102,7 +102,7 @@ Things named across these pages that nothing currently owns:
   longer preserves each played match's historical squad snapshot — the current round is kept whole.
   See [[ms-108-saved-game-size]].
 - ~~**Nothing renders stamina.**~~ — **closed 2026-09-26, no ticket.** The team match details panel
-  shows a bar beside each starter's name. See [[player-stamina]].
+  shows a bar under each starter's name. See [[player-stamina]].
 - **Stamina's low-stamina blink threshold is a placeholder.** At 70, only players over 38 ever
   blink. The user kept it deliberately and will add more logic in a later session; no ticket. See
   [[player-stamina]].

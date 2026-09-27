@@ -598,3 +598,15 @@ wiki said nothing rendered it.
   `exists` assert on `StaminaBar.tsx`. `verified` bumped.
 - [[index]]: the open thread "Nothing renders stamina" closed; a new one records the placeholder
   threshold.
+
+## [2026-09-26] correct | Stamina bar back under the name
+
+sha bceef51
+
+The user switched from the short bar beside the name back to the full-width bar under it, tried
+faint dividers between rows, and removed them.
+
+- [[player-stamina]]: "On screen" now describes the bar under the name, records all three layouts
+  tried and the dividers tried and removed. The other choices (starters only, text colour, blink
+  threshold of 70) are unchanged.
+- [[index]]: the closed "Nothing renders stamina" thread now says the bar sits under the name.
