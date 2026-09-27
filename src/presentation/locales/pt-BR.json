@@ -103,6 +103,15 @@
     "notTracked": "SEM DADOS",
     "newSeason": "NOVA TEMPORADA"
   },
+  "retirements": {
+    "title": "APOSENTADORIAS",
+    "retired": "SE APOSENTA",
+    "replacedBy": "EM SEU LUGAR",
+    "becameCoach": "VIROU TÉCNICO",
+    "becameCoach_female": "VIROU TÉCNICA",
+    "age": "({{age}})",
+    "continue": "CONTINUAR"
+  },
   "initialScreen": {
     "newGame": "Novo Jogo",
     "loadGame": "Carregar Jogo",

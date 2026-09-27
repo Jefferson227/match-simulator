@@ -14,6 +14,7 @@ import TeamStandings from './presentation/pages/TeamStandings/TeamStandings';
 import TeamAdditionalInfo from './presentation/pages/TeamAdditionalInfo/TeamAdditionalInfo';
 import SeasonSummary from './presentation/pages/SeasonSummary/SeasonSummary';
 import LanguageSelector from './presentation/pages/LanguageSelector/LanguageSelector';
+import Retirements from './presentation/pages/Retirements/Retirements';
 
 const AppContent: FC = () => {
   // Game engine
@@ -40,6 +41,8 @@ const AppContent: FC = () => {
       return <TeamStandings />;
     case 'SeasonSummary':
       return <SeasonSummary />;
+    case 'Retirements':
+      return <Retirements />;
     case 'LanguageSelector':
       return <LanguageSelector />;
     default:

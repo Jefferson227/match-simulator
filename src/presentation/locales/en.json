@@ -103,6 +103,15 @@
     "notTracked": "NOT TRACKED",
     "newSeason": "NEW SEASON"
   },
+  "retirements": {
+    "title": "RETIREMENTS",
+    "retired": "RETIRED",
+    "replacedBy": "REPLACED BY",
+    "becameCoach": "BECAME A COACH",
+    "becameCoach_female": "BECAME A COACH",
+    "age": "({{age}})",
+    "continue": "CONTINUE"
+  },
   "initialScreen": {
     "newGame": "New Game",
     "loadGame": "Load Game",
