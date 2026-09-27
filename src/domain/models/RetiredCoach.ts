@@ -12,6 +12,11 @@ type RetiredCoach = Coach & {
   /** The club they left. Absent for a coach who retired out of the coach pool. */
   lastTeamId?: Team['id'];
   lastTeamShortName?: string;
+  /**
+   * `internalName` of the division their club played the season in. Absent for a pool coach, and
+   * for a club coach retired before it was recorded (early MS-113 saves).
+   */
+  lastChampionshipInternalName?: string;
 };
 
 export default RetiredCoach;

@@ -17,6 +17,10 @@ import {
 import { getPlayableChampionship } from '../features/pyramid/Pyramid';
 import { PLAYER_TO_COACH_CHANCE } from '../constants/RetirementConstants';
 import { getRandomNumber } from '../utils/Utils';
+import {
+  SeasonRetirements,
+  buildSeasonRetirements,
+} from '../features/retirement/SeasonRetirements';
 
 /**
  * Season ageing and retirement (MS-113). The rules are `wiki/specs/player-retirement.md`.
@@ -67,7 +71,13 @@ function collectTakenNames(container: ChampionshipContainer, coachPool: Coach[])
   return names;
 }
 
-function toRetiredPlayer(player: Player, team: Team, season: number): RetiredPlayer {
+function toRetiredPlayer(
+  player: Player,
+  team: Team,
+  championship: Championship,
+  season: number,
+  becameCoach: boolean
+): RetiredPlayer {
   // The match-scoped fields are left behind: a retiree never plays again.
   const { stamina, enteredAtMinute, isStarter, isSub, ...career } = player;
   return {
@@ -76,6 +86,8 @@ function toRetiredPlayer(player: Player, team: Team, season: number): RetiredPla
     retiredInSeason: season,
     lastTeamId: team.id,
     lastTeamShortName: team.shortName,
+    lastChampionshipInternalName: championship.internalName,
+    becameCoach,
   };
 }
 
@@ -99,11 +111,11 @@ function ageSquad(team: Team, championship: Championship, run: AgeingRun): Team 
   for (const player of [...aged.players]) {
     if (!shouldRetire(player.age, 'player', run.rng)) continue;
 
-    const retired = toRetiredPlayer(player, team, run.season);
-    run.retiredPlayers.push(retired);
-
     const becameCoach = rollChance(PLAYER_TO_COACH_CHANCE, run.rng);
     if (becameCoach) run.newPoolCoaches.push(toPoolCoach(player));
+
+    const retired = toRetiredPlayer(player, team, championship, run.season, becameCoach);
+    run.retiredPlayers.push(retired);
 
     const replacement = createYouthPlayer(player, aged, gender, run.takenNames, run.rng);
     run.takenNames.add(replacement.name);
@@ -140,6 +152,7 @@ function ageCoach(team: Team, championship: Championship, run: AgeingRun): Team 
     retiredInSeason: run.season,
     lastTeamId: team.id,
     lastTeamShortName: team.shortName,
+    lastChampionshipInternalName: championship.internalName,
   });
 
   const replacement = createReplacementCoach(
@@ -244,6 +257,31 @@ const runSeasonAgeing = (
   }
 };
 
+/** Everyone who retired in `season`, grouped by division for the Retirements screen. */
+const getSeasonRetirements = (
+  input: Omit<SeasonAgeingInput, 'coachPool'>,
+  season: number
+): OperationResult<SeasonRetirements> => {
+  try {
+    const result = new OperationResult<SeasonRetirements>(
+      buildSeasonRetirements(
+        input.championshipContainer,
+        input.retiredPlayers,
+        input.retiredCoaches,
+        season
+      )
+    );
+    result.setSuccess();
+    return result;
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const result = new OperationResult<SeasonRetirements>({} as SeasonRetirements);
+    result.setError({ errorCode: 'exception', message: errorMessage });
+    return result;
+  }
+};
+
 export default {
   runSeasonAgeing,
+  getSeasonRetirements,
 };

@@ -146,6 +146,23 @@ describe('ChampionshipUseCases.runEndOfChampionshipActions — season ageing', (
     );
   });
 
+  it('groups every retiree under the division their club played the season in', () => {
+    const season = getPlayableChampionship(finished).matchContainer.currentSeason;
+    const view = new ChampionshipUseCases(next).getSeasonRetirements(season);
+
+    expect(view.unplaced.players).toEqual([]);
+    expect(view.divisions.flatMap((division) => division.players)).toHaveLength(before.size);
+    for (const division of view.divisions) {
+      const clubsThatSeason = new Set(
+        getChampionshipByInternalName(finished, division.internalName)!.teams.map((t) => t.id)
+      );
+      for (const player of division.players)
+        expect(clubsThatSeason.has(player.lastTeamId)).toBe(true);
+      for (const coach of division.coaches)
+        expect(clubsThatSeason.has(coach.lastTeamId!)).toBe(true);
+    }
+  });
+
   it('does nothing before the season is over', () => {
     const running = mensPyramid(0);
     const state = stateOf(running);

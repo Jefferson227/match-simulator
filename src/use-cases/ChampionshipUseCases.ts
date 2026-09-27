@@ -4,6 +4,7 @@ import { Team } from '../domain/models/Team';
 import ChampionshipService from '../domain/services/ChampionshipService';
 import TeamService from '../domain/services/TeamService';
 import SeasonAgeingService, { SeasonAgeingOutput } from '../domain/services/SeasonAgeingService';
+import { SeasonRetirements } from '../domain/features/retirement/SeasonRetirements';
 import { GameState } from '../game-engine/GameState';
 import LeagueType from '../domain/enums/LeagueType';
 import { PhaseView, PhaseViewOptions } from '../domain/features/phases/PhaseView';
@@ -256,6 +257,26 @@ export default class ChampionshipUseCases {
     const result = ChampionshipService.getTeamControlledByHuman(championship);
     if (!result.succeeded) {
       throw new Error('Team controlled by human player could not be found.');
+    }
+
+    return result.getResult();
+  }
+
+  /**
+   * Everyone who retired in `season`, grouped by division, for the Retirements screen. Never
+   * throws: a failure reads as a season in which nobody retired.
+   */
+  getSeasonRetirements(season: number): SeasonRetirements {
+    const result = SeasonAgeingService.getSeasonRetirements(
+      {
+        championshipContainer: this.state.championshipContainer,
+        retiredPlayers: this.state.retiredPlayers ?? [],
+        retiredCoaches: this.state.retiredCoaches ?? [],
+      },
+      season
+    );
+    if (!result.succeeded) {
+      return { season, divisions: [], poolCoaches: [], unplaced: { players: [], coaches: [] } };
     }
 
     return result.getResult();

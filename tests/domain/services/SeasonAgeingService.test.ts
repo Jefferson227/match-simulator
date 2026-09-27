@@ -158,6 +158,8 @@ describe('SeasonAgeingService.runSeasonAgeing', () => {
         retiredInSeason: SEASON,
         lastTeamId: club.id,
         lastTeamShortName: 'Club',
+        lastChampionshipInternalName: 'd',
+        becameCoach: false,
       },
     ]);
   });
@@ -167,7 +169,10 @@ describe('SeasonAgeingService.runSeasonAgeing', () => {
     // Joins: retire, 3.0 → coach. Does not: retire, 3.1 → no coach.
     const output = run(input([division('d', [club])]), percentRng([RETIRE, 30, STAY, RETIRE, 31]));
 
-    expect(output.retiredPlayers.map((p) => p.name)).toEqual(['Joins', 'Does not']);
+    expect(output.retiredPlayers.map((p) => [p.name, p.becameCoach])).toEqual([
+      ['Joins', true],
+      ['Does not', false],
+    ]);
     expect(output.coachPool).toEqual([{ name: 'Joins', age: 41, nationalities: ['URU'] }]);
   });
 
@@ -213,6 +218,7 @@ describe('SeasonAgeingService.runSeasonAgeing', () => {
         retiredInSeason: SEASON,
         lastTeamId: club.id,
         lastTeamShortName: 'Club',
+        lastChampionshipInternalName: 'd',
       },
     ]);
     expect(output.coachPool).toEqual([]);
@@ -245,7 +251,10 @@ describe('SeasonAgeingService.runSeasonAgeing', () => {
     const other = team('Other', [player('O1', 40)]);
     const output = run(input([division('a', [other]), division('b', [human])]), alwaysRng());
 
-    expect(output.retiredPlayers.map((p) => p.name)).toEqual(['O1', 'H1']);
+    expect(output.retiredPlayers.map((p) => [p.name, p.lastChampionshipInternalName])).toEqual([
+      ['O1', 'a'],
+      ['H1', 'b'],
+    ]);
     expect(output.report?.season).toBe(SEASON);
     expect(output.report?.teamId).toBe(human.id);
     expect(output.report?.entries).toHaveLength(1);

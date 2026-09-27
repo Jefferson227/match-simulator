@@ -13,6 +13,13 @@ type RetiredPlayer = Omit<Player, 'stamina' | 'enteredAtMinute' | 'isStarter' | 
   retiredInSeason: number;
   lastTeamId: Team['id'];
   lastTeamShortName: string;
+  /**
+   * `internalName` of the division their club played the season in. Absent for a player retired
+   * before it was recorded (early MS-113 saves).
+   */
+  lastChampionshipInternalName?: string;
+  /** Whether they went into the coach pool. Absent for a player retired before it was recorded. */
+  becameCoach?: boolean;
 };
 
 export default RetiredPlayer;
