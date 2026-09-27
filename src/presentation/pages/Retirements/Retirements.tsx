@@ -10,8 +10,16 @@ const Divider: React.FC = () => (
 );
 
 const PositionBadge: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="inline-flex w-[40px] justify-center border-[3px] border-[#e2e2e2] py-1 text-[11px] text-white">
+  <div className="inline-flex self-start shrink-0 w-[40px] justify-center border-[3px] border-[#e2e2e2] py-1 text-[11px] text-white">
     {children}
+  </div>
+);
+
+/** A long name is cut short, never its age. */
+const NameWithAge: React.FC<{ name: string; age: string }> = ({ name, age }) => (
+  <div className="flex gap-2 text-[12px] text-white uppercase">
+    <span className="truncate">{name}</span>
+    <span className="shrink-0">{age}</span>
   </div>
 );
 
@@ -41,17 +49,13 @@ const Retirements: React.FC = () => {
         <div className="flex-1 min-w-0 flex flex-col gap-2">
           <div>
             <div className="text-[10px] text-[#c9e5c4] uppercase">{t('retirements.retired')}</div>
-            <div className="text-[12px] text-white uppercase truncate">
-              {retired.name} {age(retired.age)}
-            </div>
+            <NameWithAge name={retired.name} age={age(retired.age)} />
           </div>
           <div>
             <div className="text-[10px] text-[#c9e5c4] uppercase">
               {t('retirements.replacedBy')}
             </div>
-            <div className="text-[12px] text-white uppercase truncate">
-              {replacement.name} {age(replacement.age)}
-            </div>
+            <NameWithAge name={replacement.name} age={age(replacement.age)} />
           </div>
           {becameCoach && (
             <div className="text-[10px] text-yellow-300 uppercase">

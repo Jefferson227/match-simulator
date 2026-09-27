@@ -114,11 +114,11 @@ describe('Retirements', () => {
     expect(entries).toHaveLength(2);
 
     expect(entries[0].textContent).toContain('teamPlayers.positions.GK');
-    expect(entries[0].textContent).toContain('Old Keeper (39)');
-    expect(entries[0].textContent).toContain('Kid Keeper (18)');
+    expect(entries[0].textContent).toContain('Old Keeper(39)');
+    expect(entries[0].textContent).toContain('Kid Keeper(18)');
     expect(entries[1].textContent).toContain('teamPlayers.positions.FW');
-    expect(entries[1].textContent).toContain('Old Striker (36)');
-    expect(entries[1].textContent).toContain('Kid Striker (17)');
+    expect(entries[1].textContent).toContain('Old Striker(36)');
+    expect(entries[1].textContent).toContain('Kid Striker(17)');
   });
 
   it('marks only the retirees who became coaches', () => {
