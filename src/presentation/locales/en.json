@@ -110,6 +110,11 @@
     "becameCoach": "BECAME A COACH",
     "becameCoach_female": "BECAME A COACH",
     "age": "({{age}})",
+    "nobodyRetired": "NOBODY RETIRED",
+    "players": "PLAYERS",
+    "coaches": "COACHES",
+    "coachPool": "COACH POOL",
+    "divisionNotRecorded": "DIVISION NOT RECORDED",
     "continue": "CONTINUE"
   },
   "initialScreen": {

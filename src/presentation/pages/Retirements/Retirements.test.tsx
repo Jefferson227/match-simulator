@@ -7,6 +7,8 @@ import { GameState } from '../../../game-engine/GameState';
 import Player from '../../../domain/models/Player';
 import RetiredPlayer from '../../../domain/models/RetiredPlayer';
 import RetirementReport from '../../../domain/models/RetirementReport';
+import RetiredCoach from '../../../domain/models/RetiredCoach';
+import { Championship } from '../../../domain/models/Championship';
 
 jest.mock('../../contexts/GameEngineContext', () => ({
   useGameEngine: jest.fn(),
@@ -159,5 +161,130 @@ describe('Retirements', () => {
     expect(
       screen.getByRole('button', { name: 'retirements.continue' }).hasAttribute('disabled')
     ).toBe(false);
+  });
+
+  describe('league-wide pages', () => {
+    const container = {
+      championships: [
+        {
+          internalName: 'top',
+          name: 'Top Division',
+          teams: [],
+        },
+        {
+          internalName: 'bottom',
+          name: 'Bottom Division',
+          teams: [{ id: 'h-u-m-a-n', shortName: 'Human FC', players: [] }],
+        },
+      ] as unknown as Championship[],
+      playableInternalName: 'bottom',
+    };
+
+    const leagueRetiree = (name: string, division: string, becameCoach = false): RetiredPlayer => ({
+      ...retired(name, 37, 'DF'),
+      lastTeamShortName: 'Rival FC',
+      lastChampionshipInternalName: division,
+      becameCoach,
+    });
+
+    const coach = (name: string, club?: string, division?: string): RetiredCoach => ({
+      name,
+      age: 70,
+      isRetired: true,
+      retiredInSeason: 2026,
+      ...(club && { lastTeamId: 'r-i-v-a-l', lastTeamShortName: club }),
+      ...(division && { lastChampionshipInternalName: division }),
+    });
+
+    const leagueState = (overrides?: Partial<GameState>) =>
+      buildState({
+        championshipContainer: container as unknown as GameState['championshipContainer'],
+        retiredPlayers: [
+          leagueRetiree('Top Veteran', 'top', true),
+          leagueRetiree('Bottom Veteran', 'bottom'),
+          { ...leagueRetiree('Last Year', 'top'), retiredInSeason: 2025 },
+        ],
+        retiredCoaches: [coach('Club Coach', 'Rival FC', 'top'), coach('Pool Coach')],
+        ...overrides,
+      });
+
+    const heading = () => screen.getByTestId('retirements-page-heading').textContent;
+    const next = () => fireEvent.click(screen.getByRole('button', { name: 'pagination.next' }));
+
+    it('opens on the human club, then pages through every division and the coach pool', () => {
+      jest.mocked(useGameState).mockReturnValue(leagueState());
+      render(<Retirements />);
+
+      expect(heading()).toBe('Human FC');
+      expect(screen.getByText('1 / 4')).toBeTruthy();
+
+      next();
+      expect(heading()).toBe('Top Division');
+      expect(screen.getAllByTestId('league-retired-player').map((row) => row.textContent)).toEqual([
+        expect.stringContaining('Top Veteran'),
+      ]);
+      expect(screen.getByTestId('league-retired-player').textContent).toContain('Rival FC');
+      expect(screen.getByTestId('league-retired-player').textContent).toContain(
+        'retirements.becameCoach'
+      );
+      expect(screen.getByTestId('league-retired-coach').textContent).toContain('Club Coach');
+
+      next();
+      expect(heading()).toBe('Bottom Division');
+      expect(screen.getByTestId('league-retired-player').textContent).toContain('Bottom Veteran');
+      expect(screen.getByTestId('league-retired-player').textContent).not.toContain(
+        'retirements.becameCoach'
+      );
+      expect(screen.queryAllByTestId('league-retired-coach')).toHaveLength(0);
+
+      next();
+      expect(heading()).toBe('retirements.coachPool');
+      expect(screen.getByTestId('league-retired-coach').textContent).toContain('Pool Coach');
+      expect(screen.getByRole('button', { name: 'pagination.next' }).hasAttribute('disabled')).toBe(
+        true
+      );
+    });
+
+    it('says nobody retired on a division page with no retirees', () => {
+      jest
+        .mocked(useGameState)
+        .mockReturnValue(leagueState({ retiredPlayers: [], retiredCoaches: [] }));
+      render(<Retirements />);
+
+      next();
+      expect(heading()).toBe('Top Division');
+      expect(screen.getByText('retirements.nobodyRetired')).toBeTruthy();
+      expect(screen.getByText('2 / 3')).toBeTruthy();
+    });
+
+    it('says nobody retired on the club page when the club lost nobody', () => {
+      jest.mocked(useGameState).mockReturnValue(
+        leagueState({
+          lastSeasonRetirements: { season: 2026, teamId: 'h-u-m-a-n', entries: [] },
+        })
+      );
+      render(<Retirements />);
+
+      expect(heading()).toBe('Human FC');
+      expect(screen.getByText('retirements.nobodyRetired')).toBeTruthy();
+      expect(screen.queryAllByTestId('retirement-entry')).toHaveLength(0);
+    });
+
+    it('gives retirees with no recorded division a page of their own', () => {
+      const { lastChampionshipInternalName, ...early } = leagueRetiree('Early', 'top');
+      jest
+        .mocked(useGameState)
+        .mockReturnValue(
+          leagueState({ retiredPlayers: [early as RetiredPlayer], retiredCoaches: [] })
+        );
+      render(<Retirements />);
+
+      next();
+      next();
+      next();
+      expect(heading()).toBe('retirements.divisionNotRecorded');
+      expect(screen.getByTestId('league-retired-player').textContent).toContain('Early');
+      expect(lastChampionshipInternalName).toBe('top');
+    });
   });
 });

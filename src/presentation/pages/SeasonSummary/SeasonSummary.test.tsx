@@ -216,7 +216,7 @@ describe('SeasonSummary', () => {
     const withReport = (season: number, entries: (typeof entry)[]) =>
       buildState({ lastSeasonRetirements: { season, teamId: 'h-u-m-a-n', entries } });
 
-    it('saves on TeamManager, then shows the retirements when the club lost anyone', () => {
+    it('saves on TeamManager, then shows the retirements', () => {
       mockGetState.mockReturnValue(withReport(summary.season, [entry]));
       render(<SeasonSummary />);
 
@@ -231,8 +231,20 @@ describe('SeasonSummary', () => {
       ]);
     });
 
-    it('stays on TeamManager when the club lost nobody', () => {
+    it('shows the retirements even when the club lost nobody, for the league pages', () => {
       mockGetState.mockReturnValue(withReport(summary.season, []));
+      render(<SeasonSummary />);
+
+      fireEvent.click(screen.getByRole('button', { name: 'seasonSummary.newSeason' }));
+
+      expect(mockDispatch).toHaveBeenCalledTimes(5);
+      expect(mockDispatch).toHaveBeenLastCalledWith({
+        type: 'SET_CURRENT_SCREEN',
+        screenName: 'Retirements',
+      });
+    });
+
+    it('stays on TeamManager when the roll-over produced no report', () => {
       render(<SeasonSummary />);
 
       fireEvent.click(screen.getByRole('button', { name: 'seasonSummary.newSeason' }));

@@ -110,6 +110,11 @@
     "becameCoach": "VIROU TÉCNICO",
     "becameCoach_female": "VIROU TÉCNICA",
     "age": "({{age}})",
+    "nobodyRetired": "NINGUÉM SE APOSENTOU",
+    "players": "JOGADORES",
+    "coaches": "TÉCNICOS",
+    "coachPool": "TÉCNICOS SEM CLUBE",
+    "divisionNotRecorded": "DIVISÃO NÃO REGISTRADA",
     "continue": "CONTINUAR"
   },
   "initialScreen": {
