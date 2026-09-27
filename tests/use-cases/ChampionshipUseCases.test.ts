@@ -16,6 +16,7 @@ jest.mock('../../src/domain/services/ChampionshipService', () => ({
     initChampionships: jest.fn(),
     startRoundForAllChampionships: jest.fn(),
     endRoundForAllChampionships: jest.fn(),
+    isSeasonOver: jest.fn(),
     runEndOfChampionshipActions: jest.fn(),
     getChampionships: jest.fn(),
     getTeamControlledByHuman: jest.fn(),
@@ -321,6 +322,10 @@ describe('ChampionshipUseCases', () => {
   });
 
   describe('runEndOfChampionshipActions', () => {
+    beforeEach(() => {
+      mockedChampionshipService.isSeasonOver.mockReturnValue(successResult(false));
+    });
+
     it('returns updated championshipContainer when service succeeds', () => {
       const initialState = buildState();
       const useCases = new ChampionshipUseCases(initialState);
@@ -364,6 +369,36 @@ describe('ChampionshipUseCases', () => {
       expect(nextState.hasError).toBe(true);
       expect(nextState.errorMessage).toBe('End of championship actions failed');
       expect(nextState.championshipContainer).toBe(initialState.championshipContainer);
+    });
+
+    it('does not age anyone while the season is still running', () => {
+      const initialState = buildState();
+      const useCases = new ChampionshipUseCases(initialState);
+      mockedChampionshipService.runEndOfChampionshipActions.mockReturnValue(
+        successResult(initialState.championshipContainer)
+      );
+
+      const nextState = useCases.runEndOfChampionshipActions();
+
+      expect(mockedChampionshipService.runEndOfChampionshipActions).toHaveBeenCalledWith(
+        initialState.championshipContainer
+      );
+      expect(nextState.retiredPlayers).toBe(initialState.retiredPlayers);
+      expect(nextState.lastSeasonRetirements).toBeUndefined();
+    });
+
+    it('returns error state when the season state cannot be read', () => {
+      const initialState = buildState();
+      const useCases = new ChampionshipUseCases(initialState);
+      mockedChampionshipService.isSeasonOver.mockReturnValue(
+        failureResult(false, 'Playable championship not found.')
+      );
+
+      const nextState = useCases.runEndOfChampionshipActions();
+
+      expect(nextState.hasError).toBe(true);
+      expect(nextState.errorMessage).toBe('Playable championship not found.');
+      expect(mockedChampionshipService.runEndOfChampionshipActions).not.toHaveBeenCalled();
     });
   });
 

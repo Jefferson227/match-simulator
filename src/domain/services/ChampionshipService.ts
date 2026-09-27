@@ -592,16 +592,32 @@ function computePyramidExchange(championshipContainer: ChampionshipContainer): P
     const lower = getDivisionBelow(championshipContainer, upper);
     if (!upper.isRelegatable || !lower?.isPromotable) continue;
 
-    const relegatedDown = getRelegatedTeams(upper, getRelegationCount(upper));
-    const promotedUp = getPromotedTeams(
+    const relegatedDown = currentTeams(upper, getRelegatedTeams(upper, getRelegationCount(upper)));
+    const promotedUp = currentTeams(
       lower,
-      getSustainablePromotionCount(lower, lower.numberOfPromotableTeams, relegatedDown.length)
+      getPromotedTeams(
+        lower,
+        getSustainablePromotionCount(lower, lower.numberOfPromotableTeams, relegatedDown.length)
+      )
     );
 
     exchange[upper.internalName] = { relegatedDown, promotedUp };
   }
 
   return exchange;
+}
+
+/**
+ * `teams` as `championship.teams` holds them now.
+ *
+ * The promoted and relegated clubs are read off the tables, whose `team` is a copy taken when the
+ * row was last written. Season ageing (MS-113) rewrites `championship.teams` after the last table
+ * write, so a club crossing a boundary must be resolved by id or it would carry last season's squad
+ * — retirees included — into its new division. The save boundary resolves table rows the same way.
+ */
+function currentTeams(championship: Championship, teams: Team[]): Team[] {
+  const byId = new Map(championship.teams.map((team) => [team.id, team]));
+  return teams.map((team) => byId.get(team.id) ?? team);
 }
 
 /** `division`'s side of `exchange`: the boundary above it and the boundary below it. */
@@ -1013,6 +1029,25 @@ const endRoundForAllChampionships = (
   }
 };
 
+/**
+ * Whether the playable division's season is over — exactly when `runEndOfChampionshipActions` rolls
+ * the pyramid over rather than leaving it alone.
+ */
+const isSeasonOver = (championshipContainer: ChampionshipContainer): OperationResult<boolean> => {
+  try {
+    const result = new OperationResult<boolean>(
+      isChampionshipOver(getPlayableChampionship(championshipContainer))
+    );
+    result.setSuccess();
+    return result;
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const result = new OperationResult<boolean>(false);
+    result.setError({ errorCode: 'exception', message: errorMessage });
+    return result;
+  }
+};
+
 const runEndOfChampionshipActions = (
   championshipContainer: ChampionshipContainer
 ): OperationResult<ChampionshipContainer> => {
@@ -1129,6 +1164,7 @@ export default {
   getMatchesForCurrentRound,
   startRoundForAllChampionships,
   endRoundForAllChampionships,
+  isSeasonOver,
   runEndOfChampionshipActions,
   buildSeasonSummary,
 };
