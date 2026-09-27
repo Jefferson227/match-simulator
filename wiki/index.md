@@ -111,9 +111,10 @@ Things named across these pages that nothing currently owns:
 - ~~**Players never age between seasons.**~~ — **closed by MS-113.** Every player and coach ages a
   year at each roll-over and may retire; retired players are replaced by generated teenagers. See
   [[player-retirement]].
-- **Retirees are kept but nothing shows them.** MS-113 keeps every retired player and coach for a
-  records feature that does not exist, and the list only grows (about 62,000 code units of a men's
-  save a season). No ticket. See [[ms-113-ageing-and-retirement]].
+- **Only the last season's retirees are shown.** MS-113 shows every club's retirements once, after
+  NEW SEASON, and keeps all of them for a records feature that does not exist; the list only grows
+  (about 62,000 code units of a men's save a season). No ticket. See
+  [[ms-113-ageing-and-retirement]].
 - ~~**Real player ages have never been obtained.**~~ — **closed by MS-112.** Every age now comes
   from the 2026 ogol rosters, as of 2026-09-22. See [[player-ages]].
 - **Neighbouring men's divisions' strengths overlap.** Since MS-112 clubs keep their strength when

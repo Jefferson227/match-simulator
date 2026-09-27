@@ -74,6 +74,25 @@ choices were made while executing it and are marked as such.
 - **The save is written on TeamManager, then the Retirements page is shown.** A load resumes on the
   saved `currentScreen`, and the page is a one-off report, not somewhere to resume.
 
+## League-wide retirements (added after close-out)
+
+The first version showed only the human's club and skipped the page when the club lost nobody. The
+user asked for every club's retirements the same day; the choices, all the user's:
+
+- **Pages on the same screen, always shown.** The human's club first, then one page per division.
+  With about 350 retirements a men's season the league pages almost always have something to show,
+  so the page no longer skips when the human's club lost nobody.
+- **Grouped by the division at retirement, recorded on the retiree.** A retiree now carries the
+  division their club played the season in (and whether they became a coach). The alternative, the
+  club's division now, would list a promoted club's retirees under the division it had just joined.
+  The fields are optional, so version-5 saves from before this change still load; their retirees
+  fall into a "division not recorded" page.
+- **Retirees only outside the human's club.** Recording every club's replacements would add about
+  one `Player` per retiree to the save, roughly doubling the growth measured below.
+- **Coaches included**, in their own section per division, and pool-coach retirements on their own
+  page.
+- **Only the season just ended.** Not asked; history is left for the records feature.
+
 ## Save growth
 
 Measured by `tests/infrastructure/repositories/RetirementPersistence.test.ts` over five men's
@@ -95,8 +114,8 @@ matches add. The test fails if a season adds 100,000 or more.
 ## Left open
 
 - **Nothing hires from the coach pool**, and a club whose seed has no coach never gets one.
-- **Nothing shows retirees** beyond the human's own club's page after each season; the records
-  feature they are kept for does not exist.
+- **Only the season just ended is shown**, once, after NEW SEASON. Earlier seasons' retirees are
+  kept but not shown; the records feature they are kept for does not exist.
 - **`retiredPlayers` grows without bound** in the save.
 - **Real ages drift.** After one roll-over a squad mixes 2026-09-22 ages plus a year with generated
   teenagers ([[player-ages]]).

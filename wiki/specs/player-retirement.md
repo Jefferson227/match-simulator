@@ -99,10 +99,21 @@ Filled only by the 3% of retiring players who become coaches. Nothing hires from
 
 ## On screen
 
-After NEW SEASON, the Retirements page lists the human's club's retirements: position, the
-retiree's name and age, their replacement's name and age, and whether they became a coach.
-CONTINUE goes to TeamManager. When the club lost nobody, the page is skipped. The game is saved
-before the page is shown, on TeamManager, so a reload never resumes on it.
+After every NEW SEASON, the Retirements page shows that season's retirements in pages, paged with
+`<` / `>`:
+
+1. **The human's club.** Each retiree's position, name and age, their replacement's name and age,
+   and whether they became a coach. "Nobody retired" when the club lost nobody.
+2. **One page per division**, top tier first, including divisions where nobody retired. Each lists
+   its retired players (position, name, age, club, a mark if they became a coach) by club, then its
+   retired club coaches. A retiree is listed under the division their club played the season in,
+   even if the club was promoted or relegated at the same roll-over. Replacements are not shown
+   here.
+3. **The coach pool**, only when a pool coach retired.
+
+CONTINUE goes to TeamManager. The game is saved before the page is shown, on TeamManager, so a
+reload never resumes on it. Only the season just ended is shown; earlier seasons' retirees are
+kept but not shown.
 
 > **Not asserted.** The lint pass can only check that the files exist. The bands, the order, the
 > exemptions, the ranges and the navigation are pinned by

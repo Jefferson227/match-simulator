@@ -635,3 +635,18 @@ table rows holding stale copies and would have carried un-aged squads into their
 - [[ms-112-2026-rosters-and-serie-d]]: "players still do not age" marked closed by MS-113.
 - [[index]]: both pages added; "Players never age between seasons" closed; new thread for retirees
   nobody shows; "Unattached coaches" updated for the pool.
+
+## [2026-09-27] spec | MS-113 — league-wide retirements
+
+sha baa51d7
+
+The Retirements page now pages through every division's retirements after the human's club's, and
+is shown after every NEW SEASON. Requested by the user after close-out (MS-113 task 16).
+
+- [[player-retirement]]: "On screen" rewritten for the pages, the grouping by division at
+  retirement, and the always-shown rule.
+- [[ms-113-ageing-and-retirement]]: new section recording the user's choices (pages on the same
+  screen, grouping recorded on the retiree, retirees only outside the human's club, coaches
+  included, season just ended only) and the rejected alternatives; "Nothing shows retirees" narrowed
+  to "only the season just ended".
+- [[index]]: the retirees thread narrowed the same way.
