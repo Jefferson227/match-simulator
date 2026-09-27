@@ -108,12 +108,20 @@ const SeasonSummary: React.FC<SeasonSummaryProps> = ({ summary: propSummary }) =
   };
 
   // Everything TeamStandings used to do on NEW SEASON, now that the summary has been read: roll the
-  // divisions over, refresh the stats off the new squads and hand the player back to TeamManager.
+  // divisions over (ageing every squad first), refresh the stats off the new squads, save, and hand
+  // the player back to TeamManager — by way of the Retirements page when their club lost anyone.
   const handleNewSeason = () => {
     engine.dispatch({ type: 'RUN_END_OF_CHAMPIONSHIP_ACTIONS' });
     engine.dispatch({ type: 'UPDATE_TEAM_STATS' });
+    // Saved on TeamManager, which a load resumes on: the Retirements page is a one-off report.
     engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'TeamManager' });
     engine.dispatch({ type: 'SAVE_GAME' });
+
+    // Only this roll-over's report counts; a stale one would describe a season already shown.
+    const retirements = engine.getState().lastSeasonRetirements;
+    if (retirements?.season === summary.season && retirements.entries.length > 0) {
+      engine.dispatch({ type: 'SET_CURRENT_SCREEN', screenName: 'Retirements' });
+    }
   };
 
   return (

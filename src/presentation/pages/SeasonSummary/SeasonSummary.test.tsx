@@ -23,6 +23,7 @@ jest.mock('react-i18next', () => ({
 }));
 
 const mockDispatch = jest.fn();
+const mockGetState = jest.fn();
 
 function buildTeam(abbreviation: string): SeasonSummaryTeam {
   return {
@@ -90,7 +91,9 @@ function buildState(overrides?: Partial<GameState>): GameState {
 
 beforeEach(() => {
   mockDispatch.mockClear();
-  (useGameEngine as jest.Mock).mockReturnValue({ dispatch: mockDispatch });
+  mockGetState.mockReset();
+  mockGetState.mockReturnValue(buildState());
+  (useGameEngine as jest.Mock).mockReturnValue({ dispatch: mockDispatch, getState: mockGetState });
   (useGameState as jest.Mock).mockReturnValue(buildState());
 });
 
@@ -200,6 +203,52 @@ describe('SeasonSummary', () => {
       screenName: 'TeamManager',
     });
     expect(mockDispatch).toHaveBeenNthCalledWith(4, { type: 'SAVE_GAME' });
+    expect(mockDispatch).toHaveBeenCalledTimes(4);
+  });
+
+  describe('after the roll-over', () => {
+    const entry = {
+      retired: { id: 'r-e-t-i-r', name: 'Old', age: 38 },
+      replacement: { id: 'y-o-u-t-h', name: 'Kid', age: 18 },
+      becameCoach: false,
+    } as unknown as NonNullable<GameState['lastSeasonRetirements']>['entries'][number];
+
+    const withReport = (season: number, entries: (typeof entry)[]) =>
+      buildState({ lastSeasonRetirements: { season, teamId: 'h-u-m-a-n', entries } });
+
+    it('saves on TeamManager, then shows the retirements when the club lost anyone', () => {
+      mockGetState.mockReturnValue(withReport(summary.season, [entry]));
+      render(<SeasonSummary />);
+
+      fireEvent.click(screen.getByRole('button', { name: 'seasonSummary.newSeason' }));
+
+      expect(mockDispatch.mock.calls.map(([action]) => action)).toEqual([
+        { type: 'RUN_END_OF_CHAMPIONSHIP_ACTIONS' },
+        { type: 'UPDATE_TEAM_STATS' },
+        { type: 'SET_CURRENT_SCREEN', screenName: 'TeamManager' },
+        { type: 'SAVE_GAME' },
+        { type: 'SET_CURRENT_SCREEN', screenName: 'Retirements' },
+      ]);
+    });
+
+    it('stays on TeamManager when the club lost nobody', () => {
+      mockGetState.mockReturnValue(withReport(summary.season, []));
+      render(<SeasonSummary />);
+
+      fireEvent.click(screen.getByRole('button', { name: 'seasonSummary.newSeason' }));
+
+      expect(mockDispatch).toHaveBeenCalledTimes(4);
+      expect(mockDispatch).toHaveBeenLastCalledWith({ type: 'SAVE_GAME' });
+    });
+
+    it('ignores a report left over from an earlier season', () => {
+      mockGetState.mockReturnValue(withReport(summary.season - 1, [entry]));
+      render(<SeasonSummary />);
+
+      fireEvent.click(screen.getByRole('button', { name: 'seasonSummary.newSeason' }));
+
+      expect(mockDispatch).toHaveBeenCalledTimes(4);
+    });
   });
 
   it('renders without a summary on the state', () => {
