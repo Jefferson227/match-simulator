@@ -18,6 +18,11 @@ import {
   getPlayableChampionship,
 } from '../../src/domain/features/pyramid/Pyramid';
 import { finishAll, init, useUniqueTeamIds } from '../support/seasonHarness';
+import TeamUseCases from '../../src/use-cases/TeamUseCases';
+import {
+  PlayerSelectionState,
+  selectBestLineup,
+} from '../../src/presentation/pages/TeamManager/SquadSelection';
 
 beforeAll(useUniqueTeamIds);
 
@@ -166,5 +171,60 @@ describe('ChampionshipUseCases.runEndOfChampionshipActions — season ageing', (
     expect(failed.errorMessage).toBe('Ageing failed');
     expect(failed.championshipContainer).toBe(finished);
     spy.mockRestore();
+  });
+});
+
+/**
+ * A retired starter's replacement joins the squad as neither starter nor sub. Every club must still
+ * kick off with 11: AI lineups are drawn afresh from the whole squad before every match, and the
+ * human's is re-picked by TeamManager's best-lineup selection when the page opens.
+ */
+describe('lineups after a season of retirements', () => {
+  let rolled: GameState;
+
+  beforeAll(() => {
+    rolled = new ChampionshipUseCases(
+      stateOf(finishAll(mensPyramid(0)))
+    ).runEndOfChampionshipActions({ rng: everyoneRetires });
+  });
+
+  const startersOf = (team: Team) => team.players.filter((player) => player.isStarter).length;
+
+  it('leaves the replaced squads with no flagged starters', () => {
+    for (const team of allTeams(rolled.championshipContainer)) expect(startersOf(team)).toBe(0);
+  });
+
+  it('fields 11 starters for the human and every AI club in the next round', () => {
+    // TeamManager's handleStartMatch: best lineup, SET_STARTERS_AND_SUBS, PREPARE_TEAMS_BEFORE_MATCH.
+    const playable = getPlayableChampionship(rolled.championshipContainer);
+    const human = playable.teams.find((team) => team.isControlledByHuman)!;
+    const lineup = selectBestLineup(human.players);
+    const withState = (state: PlayerSelectionState) =>
+      human.players.filter((player) => lineup[player.id] === state);
+
+    const picked = new TeamUseCases(rolled).setStartersAndSubs(
+      human.id,
+      withState(PlayerSelectionState.Selected),
+      withState(PlayerSelectionState.Substitute)
+    );
+    const prepared = new TeamUseCases(picked).prepareTeamsBeforeMatch();
+
+    let clubsChecked = 0;
+    for (const division of prepared.championshipContainer.championships) {
+      const round = division.matchContainer.rounds.find(
+        (candidate) => candidate.number === division.matchContainer.currentRound
+      );
+      for (const match of round?.matches ?? []) {
+        expect(startersOf(match.homeTeam)).toBe(11);
+        expect(startersOf(match.awayTeam)).toBe(11);
+        clubsChecked += 2;
+      }
+    }
+    expect(clubsChecked).toBeGreaterThan(0);
+
+    const humanNext = getPlayableChampionship(prepared.championshipContainer).teams.find(
+      (team) => team.isControlledByHuman
+    )!;
+    expect(startersOf(humanNext)).toBe(11);
   });
 });
