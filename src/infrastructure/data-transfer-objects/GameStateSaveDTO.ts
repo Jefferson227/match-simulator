@@ -27,8 +27,11 @@ import { GameState } from '../../game-engine/GameState';
  * slots. Version-2 saves are abandoned, not migrated, as MS-108 abandoned version 1.
  * 4 (MS-112): teams carry an optional `coach`, players carry `nationalities`, and Série D's
  * descriptor gains a playoff. Version-3 saves are abandoned, not migrated.
+ * 5 (MS-113): the game carries a coach pool, the retired players and coaches, and the human club's
+ * last retirement report, and squads age between seasons. Version-4 saves are abandoned, not
+ * migrated.
  */
-export const SAVE_VERSION = 4;
+export const SAVE_VERSION = 5;
 
 /** A goal, with the scorer written as an id rather than a full `Player`. */
 export type SavedScorer = Omit<Scorer, 'player'> & {

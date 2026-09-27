@@ -171,7 +171,7 @@ describe('GameRepository', () => {
     const raw = window.localStorage.getItem(STORAGE_KEY)!;
     const parsed = JSON.parse(raw);
 
-    expect(parsed.saveVersion).toBe(4);
+    expect(parsed.saveVersion).toBe(5);
     expect(parsed.championshipContainer.playableInternalName).toBe('mock-championship');
     expect(
       getPlayableChampionship(parsed.championshipContainer).matchContainer.rounds[0].matches[0]
