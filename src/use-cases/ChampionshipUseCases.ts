@@ -5,6 +5,7 @@ import ChampionshipService from '../domain/services/ChampionshipService';
 import TeamService from '../domain/services/TeamService';
 import SeasonAgeingService, { SeasonAgeingOutput } from '../domain/services/SeasonAgeingService';
 import { SeasonRetirements } from '../domain/features/retirement/SeasonRetirements';
+import { resetSeasonStats } from '../domain/features/player-stats/SeasonStats';
 import { GameState } from '../game-engine/GameState';
 import LeagueType from '../domain/enums/LeagueType';
 import { PhaseView, PhaseViewOptions } from '../domain/features/phases/PhaseView';
@@ -199,8 +200,9 @@ export default class ChampionshipUseCases {
       ageing = ageingResult.getResult();
     }
 
+    // Season counters start again from 0 after ageing, on the squads ageing just produced.
     const result = ChampionshipService.runEndOfChampionshipActions(
-      ageing?.championshipContainer ?? this.state.championshipContainer
+      ageing ? resetSeasonStats(ageing.championshipContainer) : this.state.championshipContainer
     );
     if (!result.succeeded) {
       return {

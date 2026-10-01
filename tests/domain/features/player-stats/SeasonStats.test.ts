@@ -3,13 +3,14 @@ import {
   applyMatchStats,
   goalsByPlayer,
   playersWhoAppeared,
+  resetSeasonStats,
 } from '../../../../src/domain/features/player-stats/SeasonStats';
 import Match from '../../../../src/domain/models/Match';
 import Player from '../../../../src/domain/models/Player';
 import { Team } from '../../../../src/domain/models/Team';
+import { Championship } from '../../../../src/domain/models/Championship';
 
-const uuid = (seed: string) =>
-  `${seed.padEnd(8, '0')}-0000-0000-0000-000000000000` as Player['id'];
+const uuid = (seed: string) => `${seed.padEnd(8, '0')}-0000-0000-0000-000000000000` as Player['id'];
 
 const playerOf = (seed: string, overrides: Partial<Player> = {}): Player => ({
   id: uuid(seed),
@@ -194,6 +195,36 @@ describe('SeasonStats', () => {
       applyMatchStats(teams, [match]);
 
       expect(JSON.stringify({ teams, match })).toBe(snapshot);
+    });
+  });
+
+  describe('resetSeasonStats', () => {
+    it('zeroes the clubs, table rows and phase entrants of every division and cup', () => {
+      const counted = (team: Team): Team => ({
+        ...team,
+        players: team.players.map((player) => ({ ...player, seasonGames: 9, seasonGoals: 4 })),
+      });
+      const division = {
+        internalName: 'division',
+        teams: [counted(home)],
+        standings: [{ team: counted(home) }],
+        phaseEntrants: [[counted(away)]],
+      } as unknown as Championship;
+      const cup = { ...division, internalName: 'cup' } as Championship;
+
+      const reset = resetSeasonStats({
+        championships: [division],
+        playableInternalName: 'division',
+        cups: [cup],
+      });
+      const players = [...reset.championships, ...reset.cups!].flatMap((championship) => [
+        ...championship.teams.flatMap((team) => team.players),
+        ...championship.standings.flatMap((standing) => standing.team.players),
+        ...championship.phaseEntrants!.flat().flatMap((team) => team.players),
+      ]);
+
+      expect(players).toHaveLength(22);
+      expect(players.every((p) => p.seasonGames === 0 && p.seasonGoals === 0)).toBe(true);
     });
   });
 });

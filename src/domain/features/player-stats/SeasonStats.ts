@@ -1,3 +1,5 @@
+import { Championship } from '../../models/Championship';
+import ChampionshipContainer from '../../models/ChampionshipContainer';
 import Match from '../../models/Match';
 import Player from '../../models/Player';
 import { Team } from '../../models/Team';
@@ -63,4 +65,39 @@ export function applyMatchStats(teams: Team[], matches: Match[]): Team[] {
       ),
     };
   });
+}
+
+function withCountersReset(team: Team): Team {
+  return {
+    ...team,
+    players: team.players.map((player) => ({ ...player, seasonGames: 0, seasonGoals: 0 })),
+  };
+}
+
+function resetChampionship(championship: Championship): Championship {
+  return {
+    ...championship,
+    teams: championship.teams.map(withCountersReset),
+    standings: championship.standings.map((standing) => ({
+      ...standing,
+      team: withCountersReset(standing.team),
+    })),
+    ...(championship.phaseEntrants && {
+      phaseEntrants: championship.phaseEntrants.map((entrants) => entrants.map(withCountersReset)),
+    }),
+  };
+}
+
+/**
+ * Every player of every division back to 0 games and 0 goals, for the NEW SEASON roll-over.
+ *
+ * Resets the copies a new season is built from: `teams`, the table rows the pyramid exchange reads,
+ * and `phaseEntrants`. The old fixtures are replaced by the roll-over, so they are left as they are.
+ */
+export function resetSeasonStats(container: ChampionshipContainer): ChampionshipContainer {
+  return {
+    ...container,
+    championships: container.championships.map(resetChampionship),
+    ...(container.cups && { cups: container.cups.map(resetChampionship) }),
+  };
 }

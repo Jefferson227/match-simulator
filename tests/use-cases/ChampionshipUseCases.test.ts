@@ -9,6 +9,8 @@ import { containerOf } from '../support/containerOf';
 import Match from '../../src/domain/models/Match';
 import OperationResult from '../../src/domain/results/OperationResult';
 import { Team } from '../../src/domain/models/Team';
+import Player from '../../src/domain/models/Player';
+import { neverRng, scriptedRng } from '../support/retirementRng';
 
 jest.mock('../../src/domain/services/ChampionshipService', () => ({
   __esModule: true,
@@ -385,6 +387,110 @@ describe('ChampionshipUseCases', () => {
       );
       expect(nextState.retiredPlayers).toBe(initialState.retiredPlayers);
       expect(nextState.lastSeasonRetirements).toBeUndefined();
+    });
+
+    describe('season counters at the NEW SEASON roll-over (MS-114)', () => {
+      const playerOf = (seed: string, age: number): Player => ({
+        id: `${seed.padEnd(8, '0')}-0000-0000-0000-000000000000` as Player['id'],
+        position: 'MF',
+        name: `Player ${seed}`,
+        strength: 50,
+        age,
+        nationalities: ['BRA'],
+        xp: 0,
+        seasonGames: 30,
+        seasonGoals: 12,
+        isStarter: true,
+        isSub: false,
+      });
+
+      const teamOf = (seed: string): Team => ({
+        id: `${seed.padEnd(8, '0')}-1111-1111-1111-111111111111` as Team['id'],
+        fullName: `Club ${seed}`,
+        shortName: `C${seed}`,
+        abbreviation: seed.toUpperCase(),
+        colors: { outline: '#000', background: '#fff', text: '#000' },
+        players: [playerOf(`${seed}young`, 24), playerOf(`${seed}old`, 41)],
+        morale: 50,
+        isControlledByHuman: false,
+      });
+
+      const divisionOf = (internalName: string, teams: Team[]): Championship => ({
+        ...buildMockChampionship(),
+        internalName,
+        teams,
+        standings: teams.map((team, index) => ({
+          team,
+          position: index + 1,
+          wins: 0,
+          draws: 0,
+          losses: 0,
+          goalsFor: 0,
+          goalsAgainst: 0,
+          points: 0,
+        })),
+      });
+
+      const seasonOverState = (): GameState => ({
+        ...buildState(),
+        championshipContainer: containerOf(divisionOf('upper', [teamOf('aa'), teamOf('bb')]), [
+          divisionOf('lower', [teamOf('cc'), teamOf('dd')]),
+        ]),
+      });
+
+      /** Every player copy the new season is built from, in every division. */
+      const rolledOverPlayers = (container: ChampionshipContainer): Player[] =>
+        container.championships.flatMap((championship) => [
+          ...championship.teams.flatMap((team) => team.players),
+          ...championship.standings.flatMap((standing) => standing.team.players),
+        ]);
+
+      beforeEach(() => {
+        mockedChampionshipService.isSeasonOver.mockReturnValue(successResult(true));
+        mockedChampionshipService.runEndOfChampionshipActions.mockImplementation((container) =>
+          successResult(container)
+        );
+      });
+
+      it('starts every player of every division on 0 games and 0 goals, after ageing', () => {
+        const useCases = new ChampionshipUseCases(seasonOverState());
+
+        const nextState = useCases.runEndOfChampionshipActions({ rng: neverRng });
+        const players = rolledOverPlayers(nextState.championshipContainer);
+
+        expect(players).toHaveLength(16);
+        players.forEach((player) => {
+          expect(player.seasonGames).toBe(0);
+          expect(player.seasonGoals).toBe(0);
+        });
+        // Aged before the reset, not instead of it.
+        const squads = nextState.championshipContainer.championships.flatMap((championship) =>
+          championship.teams.flatMap((team) => team.players)
+        );
+        expect(squads.map((player) => player.age).sort()).toEqual([25, 25, 25, 25, 42, 42, 42, 42]);
+      });
+
+      it('leaves retirements and replacements to ageing', () => {
+        const useCases = new ChampionshipUseCases(seasonOverState());
+
+        // Every roll succeeds, so every player retires and is replaced by a generated youngster.
+        const nextState = useCases.runEndOfChampionshipActions({ rng: scriptedRng([]) });
+        const players = rolledOverPlayers(nextState.championshipContainer);
+
+        expect(nextState.retiredPlayers).toHaveLength(8);
+        nextState.retiredPlayers.forEach((retiree) => {
+          expect(retiree).not.toHaveProperty('seasonGames');
+          expect(retiree).not.toHaveProperty('seasonGoals');
+        });
+        const squads = nextState.championshipContainer.championships.flatMap((championship) =>
+          championship.teams.flatMap((team) => team.players)
+        );
+        expect(squads.some((player) => player.name.startsWith('Player '))).toBe(false);
+        players.forEach((player) => {
+          expect(player.seasonGames).toBe(0);
+          expect(player.seasonGoals).toBe(0);
+        });
+      });
     });
 
     it('returns error state when the season state cannot be read', () => {
