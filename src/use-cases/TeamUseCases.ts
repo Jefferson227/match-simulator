@@ -125,7 +125,8 @@ export default class TeamUseCases {
       ...teamToUpdate,
       players: teamToUpdate.players.map((player) => {
         if (player.id === playerId) {
-          return { ...player, isStarter: false, isSub: false };
+          // Still played this match: the season-games count reads this marker after the whistle.
+          return { ...player, isStarter: false, isSub: false, leftAtMinute: matchContainer.timer };
         }
 
         if (player.id === subId) {

@@ -370,6 +370,47 @@ describe('TeamUseCases', () => {
       ).toBeUndefined();
     });
 
+    it('marks the outgoing player with the minute they went off, so they still count as played', () => {
+      const state = buildState();
+      const playable = getPlayableChampionship(state.championshipContainer);
+      const midMatchState: GameState = {
+        ...state,
+        championshipContainer: {
+          ...state.championshipContainer,
+          championships: state.championshipContainer.championships.map((championship) =>
+            championship === playable
+              ? { ...championship, matchContainer: { ...championship.matchContainer, timer: 63 } }
+              : championship
+          ),
+        },
+      };
+      const useCases = new TeamUseCases(midMatchState);
+
+      const nextState = useCases.substitutePlayer(
+        playable.matchContainer.rounds[0].matches[0].id,
+        playable.teams[0].id,
+        '11111111-1111-1111-1111-111111111111',
+        '22222222-2222-2222-2222-222222222222'
+      );
+
+      const nextPlayable = getPlayableChampionship(nextState.championshipContainer);
+      const updatedPlayers = nextPlayable.matchContainer.rounds[0].matches[0].homeTeam.players;
+      const outgoing = updatedPlayers.find(
+        (player) => player.id === '11111111-1111-1111-1111-111111111111'
+      );
+      const incoming = updatedPlayers.find(
+        (player) => player.id === '22222222-2222-2222-2222-222222222222'
+      );
+
+      expect(outgoing?.leftAtMinute).toBe(63);
+      expect(incoming?.enteredAtMinute).toBe(63);
+      expect(incoming?.leftAtMinute).toBeUndefined();
+      // Match-scoped: the club's canonical squad never receives the marker.
+      expect(
+        nextPlayable.teams.flatMap((team) => team.players).some((p) => p.leftAtMinute !== undefined)
+      ).toBe(false);
+    });
+
     it('returns error state when match does not exist', () => {
       const state = buildState();
       const useCases = new TeamUseCases(state);

@@ -7,6 +7,7 @@ import {
 import { containerOf } from '../../support/containerOf';
 import { Championship } from '../../../src/domain/models/Championship';
 import { Team } from '../../../src/domain/models/Team';
+import Player from '../../../src/domain/models/Player';
 
 function buildTeam(id: Team['id'], abbreviation: string, morale: number): Team {
   return {
@@ -184,5 +185,57 @@ describe('TeamService.updateTeamStats', () => {
       getChampionshipByInternalName(updatedContainer, 'promotion-championship')?.matchContainer
         .rounds[1].matches[0].awayTeam.morale
     ).toBe(80.5);
+  });
+});
+
+describe('TeamService match-scoped substitution markers', () => {
+  it("never carry a human club's markers from one match into the next fixture", () => {
+    const player: Player = {
+      id: '55555555-5555-5555-5555-555555555555',
+      position: 'MF',
+      name: 'Subbed Off',
+      strength: 50,
+      age: 25,
+      nationalities: ['BRA'],
+      xp: 0,
+      seasonGames: 1,
+      seasonGoals: 0,
+      isStarter: true,
+      isSub: false,
+    };
+    const human: Team = {
+      ...buildTeam('11111111-1111-1111-1111-111111111111', 'HUM', 50),
+      isControlledByHuman: true,
+      players: [player],
+    };
+    const ai = buildTeam('22222222-2222-2222-2222-222222222222', 'CPU', 50);
+    const marked: Team = {
+      ...human,
+      players: [{ ...player, isStarter: false, leftAtMinute: 60, enteredAtMinute: 10 }],
+    };
+
+    const base = buildChampionship([human, ai], [[1, 0]]);
+    // Both fixtures hold the marked match copy: the played one, and a next fixture built from it
+    // (as a phase generated from the last round's matches could).
+    const championship: Championship = {
+      ...base,
+      hasTeamControlledByHuman: true,
+      matchContainer: {
+        ...base.matchContainer,
+        rounds: base.matchContainer.rounds.map((round) => ({
+          ...round,
+          matches: round.matches.map((match) => ({ ...match, homeTeam: marked })),
+        })),
+      },
+    };
+
+    const updated = TeamService.updateTeamStats(containerOf(championship, [])).getResult();
+    const prepared = TeamService.prepareTeamsBeforeMatch(updated).getResult();
+    const playable = getPlayableChampionship(prepared);
+    const nextHome = playable.matchContainer.rounds[1].matches[0].homeTeam;
+
+    expect(nextHome.players[0].leftAtMinute).toBeUndefined();
+    expect(nextHome.players[0].enteredAtMinute).toBeUndefined();
+    expect(playable.teams[0].players[0].leftAtMinute).toBeUndefined();
   });
 });
