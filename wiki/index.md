@@ -50,6 +50,7 @@ Contracts the code is judged against. The user owns these.
 | [[match-simulation]] | `src/domain/features/match-simulation/`, `src/domain/services/MatchService.ts` |
 | [[player-stamina]] | `src/domain/features/match-simulation/StaminaPolicy.ts`, `StrengthResolver.ts` |
 | [[player-retirement]] | `src/domain/services/SeasonAgeingService.ts`, `src/domain/features/retirement/` |
+| [[player-season-stats]] | `src/domain/features/player-stats/SeasonStats.ts`, `ChampionshipService.endRound` |
 
 ## Decisions
 
@@ -115,6 +116,9 @@ Things named across these pages that nothing currently owns:
   NEW SEASON, and keeps all of them for a records feature that does not exist; the list only grows
   (about 62,000 code units of a men's save a season). No ticket. See
   [[ms-113-ageing-and-retirement]].
+- **A finished season's games and goals are never shown.** MS-114 counts them per player and
+  resets them at NEW SEASON; the season summary does not show them first. No ticket. See
+  [[player-season-stats]].
 - ~~**Real player ages have never been obtained.**~~ — **closed by MS-112.** Every age now comes
   from the 2026 ogol rosters, as of 2026-09-22. See [[player-ages]].
 - **Neighbouring men's divisions' strengths overlap.** Since MS-112 clubs keep their strength when

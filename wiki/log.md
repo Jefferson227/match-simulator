@@ -650,3 +650,16 @@ is shown after every NEW SEASON. Requested by the user after close-out (MS-113 t
   included, season just ended only) and the rejected alternatives; "Nothing shows retirees" narrowed
   to "only the season just ended".
 - [[index]]: the retirees thread narrowed the same way.
+
+## [2026-09-30] spec | MS-114 — player season games and goals
+
+sha 348cc90
+
+Every player now counts the games and goals of the current season, shown as MATCHES and GOALS in
+the PLAYER view. Checked in the running app over two rounds with a substitution.
+
+- [[player-season-stats]]: new spec. Covers what counts as a game and a goal (shootout kicks
+  excluded), every phase of the club's division, every club, reset at NEW SEASON, and old saves
+  starting at 0. Records why counting happens when a round ends rather than in `UPDATE_TEAM_STATS`,
+  why a substituted-off starter needs a marker, and why AI catch-up rounds now get a real lineup.
+- [[index]]: spec added; new thread for the season totals nothing shows.
