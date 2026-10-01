@@ -22,6 +22,7 @@ import { RandomProvider } from '../features/match-simulation/types';
 import { getRandomNumber } from '../utils/Utils';
 import { runMatchTick } from '../features/match-simulation/MatchSimulationEngine';
 import { getSeasonRoundCount } from '../features/phases/SeasonRoundCount';
+import { applyMatchStats } from '../features/player-stats/SeasonStats';
 import {
   getDivisionAbove,
   getDivisionBelow,
@@ -155,14 +156,17 @@ function endRound(
     status: 'ended',
   };
 
-  const withRoundEnded: Championship = {
-    ...championship,
-    standings: updatedStandings,
-    matchContainer: {
-      ...matchContainer,
-      rounds: updatedRounds,
+  const withRoundEnded: Championship = withSeasonStats(
+    {
+      ...championship,
+      standings: updatedStandings,
+      matchContainer: {
+        ...matchContainer,
+        rounds: updatedRounds,
+      },
     },
-  };
+    round.matches
+  );
 
   // A phased championship does not end when its rounds run out — it resolves the phase and
   // generates the next one, which appends rounds and grows `totalRounds`. So the phase is resolved
@@ -181,6 +185,66 @@ function endRound(
       ...resolvedContainer,
       currentRound: nextRoundNumber,
       timer: 0,
+    },
+  };
+}
+
+/**
+ * Counts `matches` into every player's season games and goals (MS-114).
+ *
+ * Counted here rather than in `UPDATE_TEAM_STATS`, which reads only the last finished round: an AI
+ * division can end several rounds in one `endRoundForAllChampionships` call, and that action also
+ * runs after the NEW SEASON roll-over. This is the one place every round of every division ends
+ * exactly once.
+ *
+ * The counters go to `teams`, then by player id to the copies the next fixtures and phases are built
+ * from: the table rows and every fixture not yet started. Only the counters are copied, so a
+ * fixture keeps its lineup and a table row its snapshot. Called before the phase is resolved, so the
+ * rounds a new phase generates start from the updated clubs.
+ */
+function withSeasonStats(championship: Championship, matches: Match[]): Championship {
+  const teams = applyMatchStats(championship.teams, matches);
+  const counted = teams.filter((team, index) => team !== championship.teams[index]);
+  if (counted.length === 0) return championship;
+
+  const countedTeamIds = new Set(counted.map((team) => team.id));
+  const counters = new Map(
+    counted.flatMap((team) =>
+      team.players.map((player) => [
+        player.id,
+        { seasonGames: player.seasonGames, seasonGoals: player.seasonGoals },
+      ])
+    )
+  );
+  const withCounters = (team: Team): Team =>
+    countedTeamIds.has(team.id)
+      ? {
+          ...team,
+          players: team.players.map((player) => ({ ...player, ...counters.get(player.id) })),
+        }
+      : team;
+
+  return {
+    ...championship,
+    teams,
+    standings: championship.standings.map((standing) => ({
+      ...standing,
+      team: withCounters(standing.team),
+    })),
+    matchContainer: {
+      ...championship.matchContainer,
+      rounds: championship.matchContainer.rounds.map((round) =>
+        round.status === 'not-started'
+          ? {
+              ...round,
+              matches: round.matches.map((match) => ({
+                ...match,
+                homeTeam: withCounters(match.homeTeam),
+                awayTeam: withCounters(match.awayTeam),
+              })),
+            }
+          : round
+      ),
     },
   };
 }

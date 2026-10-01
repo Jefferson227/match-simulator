@@ -5,6 +5,15 @@ import { Championship } from '../../../src/domain/models/Championship';
 import { Team } from '../../../src/domain/models/Team';
 import { containerOf } from '../../support/containerOf';
 import { aboveOf, belowOf, playableOf } from '../../support/pyramidSlots';
+import { buildTeam as buildSquadTeam } from '../../support/phasedSeasonHarness';
+import Match from '../../../src/domain/models/Match';
+import Player from '../../../src/domain/models/Player';
+import Round from '../../../src/domain/models/Round';
+import { RandomProvider } from '../../../src/domain/features/match-simulation/types';
+import {
+  getChampionshipByInternalName,
+  getPlayableChampionship,
+} from '../../../src/domain/features/pyramid/Pyramid';
 
 function buildTeam(id: string, abbreviation: string, isControlledByHuman = false): Team {
   return {
@@ -274,5 +283,221 @@ describe('ChampionshipService.drawTeamForHumanPlayer', () => {
 
     expect(result.succeeded).toBe(false);
     expect(result.error.errorCode).toBe('exception');
+  });
+});
+
+describe('ChampionshipService season stats (MS-114)', () => {
+  const fixture = (
+    id: string,
+    homeTeam: Team,
+    awayTeam: Team,
+    extra: Partial<Match> = {}
+  ): Match => ({
+    id,
+    homeTeam,
+    homeTeamScore: 0,
+    awayTeamScore: 0,
+    awayTeam,
+    scorers: [],
+    ...extra,
+  });
+
+  const roundOf = (number: number, status: Round['status'], matches: Match[]): Round => ({
+    id: `round-${number}`,
+    number,
+    status,
+    matches,
+  });
+
+  const leagueOf = (internalName: string, teams: Team[], rounds: Round[]): Championship =>
+    ({
+      id: internalName,
+      name: internalName,
+      internalName,
+      numberOfTeams: teams.length,
+      teams,
+      standings: teams.map((team, index) => ({
+        team,
+        position: index + 1,
+        wins: 0,
+        draws: 0,
+        losses: 0,
+        goalsFor: 0,
+        goalsAgainst: 0,
+        points: 0,
+      })),
+      matchContainer: {
+        timer: 0,
+        currentSeason: 2026,
+        currentRound: 1,
+        totalRounds: rounds.length,
+        rounds,
+      },
+      type: 'double-round-robin',
+      leagueType: 'mens',
+      hasTeamControlledByHuman: false,
+      isPromotable: false,
+      isRelegatable: false,
+    }) as Championship;
+
+  const playerOf = (team: Team, index: number): Player => team.players[index];
+  const findPlayer = (teams: Team[], player: Player): Player =>
+    teams.flatMap((team) => team.players).find((candidate) => candidate.id === player.id)!;
+
+  /**
+   * The playable division has just played round 1 (2–1): starter 7 of the home side scored twice,
+   * player 0 of the away side was substituted off for player 10. Its round 2 is still to play.
+   */
+  function playableAfterRoundOne(status: Round['status'] = 'in-progress') {
+    const home = buildSquadTeam(1);
+    const away = buildSquadTeam(2);
+    const awayLineup: Team = {
+      ...away,
+      players: away.players.map((player, index) => {
+        if (index === 0) return { ...player, isStarter: false, leftAtMinute: 60 };
+        if (index === 10) return { ...player, enteredAtMinute: 60 };
+        return player;
+      }),
+    };
+    const awayInRoundOne: Team = {
+      ...awayLineup,
+      // An unused substitute on the bench: they did not play.
+      players: [
+        ...awayLineup.players,
+        { ...away.players[1], id: 'player-2-bench' as Player['id'], isStarter: false, isSub: true },
+      ],
+    };
+    const awayCanonical: Team = {
+      ...away,
+      players: [
+        ...away.players,
+        { ...away.players[1], id: 'player-2-bench' as Player['id'], isStarter: false, isSub: true },
+      ],
+    };
+
+    const championship = leagueOf(
+      'playable',
+      [home, awayCanonical],
+      [
+        roundOf(1, status, [
+          fixture('m1', home, awayInRoundOne, {
+            homeTeamScore: 2,
+            awayTeamScore: 1,
+            scorers: [
+              { player: playerOf(home, 7), scorerTeam: 'home', time: 10 },
+              { player: playerOf(home, 7), scorerTeam: 'home', time: 50 },
+              { player: playerOf(awayInRoundOne, 8), scorerTeam: 'away', time: 70 },
+            ],
+          }),
+        ]),
+        roundOf(2, 'not-started', [fixture('m2', awayCanonical, home)]),
+      ]
+    );
+
+    return { championship, home, away: awayCanonical };
+  }
+
+  const endAll = (container: ChampionshipContainer, rng?: RandomProvider) => {
+    const result = ChampionshipService.endRoundForAllChampionships(container, rng ? { rng } : {});
+    expect(result.succeeded).toBe(true);
+    return result.getResult();
+  };
+
+  it('counts a round once: appearances for everyone who played, goals for the scorers', () => {
+    const { championship, home, away } = playableAfterRoundOne();
+
+    const ended = getPlayableChampionship(endAll(containerOf(championship)));
+
+    expect(findPlayer(ended.teams, playerOf(home, 7))).toMatchObject({
+      seasonGames: 1,
+      seasonGoals: 2,
+    });
+    expect(findPlayer(ended.teams, playerOf(home, 0))).toMatchObject({
+      seasonGames: 1,
+      seasonGoals: 0,
+    });
+    expect(findPlayer(ended.teams, playerOf(away, 8)).seasonGoals).toBe(1);
+    // Substituted off and the substitute who came on both played.
+    expect(findPlayer(ended.teams, playerOf(away, 0)).seasonGames).toBe(1);
+    expect(findPlayer(ended.teams, playerOf(away, 10)).seasonGames).toBe(1);
+    // The unused substitute did not.
+    expect(findPlayer(ended.teams, playerOf(away, 11)).seasonGames).toBe(0);
+  });
+
+  it('carries the counters to the table rows and the fixtures still to play', () => {
+    const { championship, home } = playableAfterRoundOne();
+
+    const ended = getPlayableChampionship(endAll(containerOf(championship)));
+    const scorer = playerOf(home, 7);
+
+    expect(
+      findPlayer(
+        ended.standings.map((standing) => standing.team),
+        scorer
+      ).seasonGoals
+    ).toBe(2);
+    const nextFixture = ended.matchContainer.rounds[1].matches[0];
+    expect(findPlayer([nextFixture.homeTeam, nextFixture.awayTeam], scorer).seasonGoals).toBe(2);
+    // The played round keeps its own snapshot.
+    const played = ended.matchContainer.rounds[0].matches[0];
+    expect(findPlayer([played.homeTeam], scorer).seasonGoals).toBe(0);
+  });
+
+  it('carries no match-scoped field into the clubs', () => {
+    const { championship } = playableAfterRoundOne();
+
+    const ended = getPlayableChampionship(endAll(containerOf(championship)));
+    const players = ended.teams.flatMap((team) => team.players);
+
+    expect(players.some((player) => player.leftAtMinute !== undefined)).toBe(false);
+    expect(players.some((player) => player.enteredAtMinute !== undefined)).toBe(false);
+  });
+
+  it('does not count a round that has already ended a second time', () => {
+    const { championship, home } = playableAfterRoundOne('ended');
+
+    const ended = getPlayableChampionship(endAll(containerOf(championship)));
+
+    expect(findPlayer(ended.teams, playerOf(home, 7)).seasonGames).toBe(0);
+  });
+
+  it('counts every round an AI division catches up in one call, each exactly once', () => {
+    const { championship } = playableAfterRoundOne();
+    const aiHome = buildSquadTeam(3);
+    const aiAway = buildSquadTeam(4);
+    // Four rounds to the playable division's two, so one playable round owes several AI rounds.
+    const ai = leagueOf(
+      'ai',
+      [aiHome, aiAway],
+      [
+        roundOf(1, 'not-started', [fixture('a1', aiHome, aiAway)]),
+        roundOf(2, 'not-started', [fixture('a2', aiAway, aiHome)]),
+        roundOf(3, 'not-started', [fixture('a3', aiHome, aiAway)]),
+        roundOf(4, 'not-started', [fixture('a4', aiAway, aiHome)]),
+      ]
+    );
+    let seed = 0;
+    const rng: RandomProvider = {
+      nextInt: (min, max) =>
+        min + ((seed = (seed * 1103515245 + 12345) % 2147483648) % (max - min + 1)),
+    };
+
+    const container = endAll(containerOf(championship, [ai]), rng);
+    const caughtUp = getChampionshipByInternalName(container, 'ai')!;
+
+    const roundsPlayed = caughtUp.matchContainer.rounds.filter(
+      (round) => round.status === 'ended'
+    ).length;
+    expect(roundsPlayed).toBeGreaterThan(1);
+    caughtUp.teams.forEach((team) => {
+      const standing = caughtUp.standings.find((row) => row.team.id === team.id)!;
+      const appeared = team.players.filter((player) => player.seasonGames > 0);
+
+      expect(appeared.length).toBeGreaterThan(0);
+      appeared.forEach((player) => expect(player.seasonGames).toBe(roundsPlayed));
+      expect(team.players.reduce((goals, player) => goals + player.seasonGoals, 0)).toBe(
+        standing.goalsFor
+      );
+    });
   });
 });
