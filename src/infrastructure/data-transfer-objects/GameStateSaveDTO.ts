@@ -30,6 +30,9 @@ import { GameState } from '../../game-engine/GameState';
  * 5 (MS-113): the game carries a coach pool, the retired players and coaches, and the human club's
  * last retirement report, and squads age between seasons. Version-4 saves are abandoned, not
  * migrated.
+ *
+ * MS-114 added `seasonGames` / `seasonGoals` to players without a new version: a version-5 save
+ * without them still loads, its players starting at 0 (see `GameStateMapper.hydrate`).
  */
 export const SAVE_VERSION = 5;
 

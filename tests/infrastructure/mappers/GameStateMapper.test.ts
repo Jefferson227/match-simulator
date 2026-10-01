@@ -349,6 +349,89 @@ describe('GameStateMapper', () => {
     expect(playedAfter.homeTeam.id).toBe(playedBefore.homeTeam.id);
   });
 
+  describe('season counters (MS-114)', () => {
+    /** Every copy of every player a hydrated championship holds. */
+    const allPlayersOf = (championship: Championship): Player[] => [
+      ...championship.teams.flatMap((team) => team.players),
+      ...championship.standings.flatMap((standing) => standing.team.players),
+      ...championship.matchContainer.rounds.flatMap((round) =>
+        round.matches.flatMap((match) => [
+          ...match.homeTeam.players,
+          ...match.awayTeam.players,
+          ...match.scorers.map((scorer) => scorer.player),
+        ])
+      ),
+    ];
+
+    it('loads a save written before the counters with 0 games and 0 goals for every player', () => {
+      const saved = JSON.parse(JSON.stringify(GameStateMapper.dehydrate(buildState())));
+      saved.championshipContainer.championships.forEach(
+        (championship: { teams: Team[]; currentRoundTeams: Team[] }) =>
+          [...championship.teams, ...championship.currentRoundTeams].forEach((team) =>
+            team.players.forEach((player: Partial<Player>) => {
+              delete player.seasonGames;
+              delete player.seasonGoals;
+            })
+          )
+      );
+
+      const reloaded = GameStateMapper.hydrate(saved);
+      const players = reloaded.championshipContainer.championships.flatMap(allPlayersOf);
+
+      expect(players.length).toBeGreaterThan(0);
+      players.forEach((player) => {
+        expect(player.seasonGames).toBe(0);
+        expect(player.seasonGoals).toBe(0);
+      });
+    });
+
+    it('keeps the counters of a save that has them', () => {
+      const state = buildState();
+      const counted = (team: Team): Team => ({
+        ...team,
+        players: team.players.map((player, index) => ({
+          ...player,
+          seasonGames: 10 + index,
+          seasonGoals: index,
+        })),
+      });
+      const playable = getPlayableChampionship(state.championshipContainer);
+      const withCounters: GameState = {
+        ...state,
+        championshipContainer: {
+          ...state.championshipContainer,
+          championships: state.championshipContainer.championships.map((championship) =>
+            championship.internalName !== playable.internalName
+              ? championship
+              : {
+                  ...championship,
+                  teams: championship.teams.map(counted),
+                  matchContainer: {
+                    ...championship.matchContainer,
+                    rounds: championship.matchContainer.rounds.map((round) => ({
+                      ...round,
+                      matches: round.matches.map((match) => ({
+                        ...match,
+                        homeTeam: counted(match.homeTeam),
+                        awayTeam: counted(match.awayTeam),
+                      })),
+                    })),
+                  },
+                }
+          ),
+        },
+      };
+
+      const reloaded = getPlayableChampionship(roundTrip(withCounters).championshipContainer);
+
+      allPlayersOf(reloaded).forEach((player) => {
+        const index = Number(player.name.split('-').pop());
+        expect(player.seasonGames).toBe(10 + index);
+        expect(player.seasonGoals).toBe(index);
+      });
+    });
+  });
+
   it('throws naming the id when a team cannot be resolved', () => {
     const saved = GameStateMapper.dehydrate(buildState()) as SavedGameState;
     const orphan = uuid('orphan');

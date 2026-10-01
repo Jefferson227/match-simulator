@@ -138,6 +138,21 @@ export function dehydrate(state: GameState): SavedGameState {
   };
 }
 
+/**
+ * A save written before MS-114 has no season counters. Its players start at 0 and count from the
+ * next match; past rounds are not replayed to rebuild them.
+ */
+function withSeasonCounters(team: Team): Team {
+  return {
+    ...team,
+    players: team.players.map((player) => ({
+      ...player,
+      seasonGames: player.seasonGames ?? 0,
+      seasonGoals: player.seasonGoals ?? 0,
+    })),
+  };
+}
+
 /** Resolution tables for one saved championship. `currentRoundTeams` wins over `teams`. */
 type Resolver = {
   team: (id: Team['id']) => Team;
@@ -191,7 +206,13 @@ const hydrateMatch = (match: SavedMatch, resolve: Resolver): Match => {
   };
 };
 
-function hydrateChampionship(saved: SavedChampionship): Championship {
+function hydrateChampionship(stored: SavedChampionship): Championship {
+  // Every other copy of a club is resolved from these two, so defaulting here covers them all.
+  const saved: SavedChampionship = {
+    ...stored,
+    teams: stored.teams.map(withSeasonCounters),
+    currentRoundTeams: stored.currentRoundTeams.map(withSeasonCounters),
+  };
   const resolve = resolverFor(saved);
   const {
     standings,
