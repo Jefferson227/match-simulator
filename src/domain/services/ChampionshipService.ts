@@ -23,6 +23,7 @@ import { getRandomNumber } from '../utils/Utils';
 import { runMatchTick } from '../features/match-simulation/MatchSimulationEngine';
 import { getSeasonRoundCount } from '../features/phases/SeasonRoundCount';
 import { applyMatchStats } from '../features/player-stats/SeasonStats';
+import { pickRandomLineup } from '../features/lineup/RandomLineup';
 import {
   getDivisionAbove,
   getDivisionBelow,
@@ -942,6 +943,48 @@ const getMatchesForCurrentRound = (championship: Championship): OperationResult<
  */
 const MAX_CATCH_UP_ROUNDS = 500;
 
+/**
+ * The current round with a fresh starting 11 and bench for every AI club, as
+ * `PREPARE_TEAMS_BEFORE_MATCH` gives the clubs of the round played alongside the human's. Without it
+ * a catch-up round plays whatever lineup its fixture last carried, or the whole squad if none.
+ *
+ * Each lineup is picked from the club as `teams` holds it, so it carries the season counters the
+ * previous round just added. The human's club is never in an AI division, but is left alone anyway.
+ */
+function withAiLineups(championship: Championship, rng: RandomProvider): Championship {
+  const matchContainer = championship.matchContainer;
+  const roundIndex = matchContainer.rounds.findIndex(
+    (round) => round.number === matchContainer.currentRound
+  );
+  if (roundIndex === -1) return championship;
+
+  const teamsById = new Map(championship.teams.map((team) => [team.id, team]));
+  const lineups = new Map<Team['id'], Team>();
+  const lineupOf = (team: Team): Team => {
+    if (team.isControlledByHuman) return team;
+
+    let lineup = lineups.get(team.id);
+    if (!lineup) {
+      lineup = pickRandomLineup(teamsById.get(team.id) ?? team, rng);
+      lineups.set(team.id, lineup);
+    }
+    return lineup;
+  };
+
+  const round = matchContainer.rounds[roundIndex];
+  const rounds = matchContainer.rounds.slice();
+  rounds[roundIndex] = {
+    ...round,
+    matches: round.matches.map((match) => ({
+      ...match,
+      homeTeam: lineupOf(match.homeTeam),
+      awayTeam: lineupOf(match.awayTeam),
+    })),
+  };
+
+  return { ...championship, matchContainer: { ...matchContainer, rounds } };
+}
+
 /** Plays a whole round of an AI championship in one pass, 90 minutes at a time. */
 function simulateRoundInOnePass(championship: Championship, rng: RandomProvider): Championship {
   const matchContainer = championship.matchContainer;
@@ -999,7 +1042,9 @@ function playRoundsOwed(
     );
     if (!hasRoundToPlay) break;
 
-    current = endRound(simulateRoundInOnePass(startRound(current), rng), { rng });
+    current = endRound(simulateRoundInOnePass(withAiLineups(startRound(current), rng), rng), {
+      rng,
+    });
   }
 
   return current;

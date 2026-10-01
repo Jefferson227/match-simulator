@@ -1,4 +1,3 @@
-import { FORMATIONS } from '../enums/Formations';
 import { Championship } from '../models/Championship';
 import ChampionshipContainer from '../models/ChampionshipContainer';
 import Player from '../models/Player';
@@ -7,6 +6,11 @@ import { Team } from '../models/Team';
 import OperationResult from '../results/OperationResult';
 import TeamStatsService from './TeamStatsService';
 import { getPlayableChampionship } from '../features/pyramid/Pyramid';
+import { pickRandomLineup } from '../features/lineup/RandomLineup';
+import { RandomProvider } from '../features/match-simulation/types';
+import { getRandomNumber } from '../utils/Utils';
+
+const defaultRng: RandomProvider = { nextInt: getRandomNumber };
 
 function getTeamsToSelect(championship: Championship): OperationResult<Team[]> {
   try {
@@ -171,101 +175,6 @@ function prepareTeamsBeforeMatch(
   championshipContainer: ChampionshipContainer
 ): OperationResult<ChampionshipContainer> {
   try {
-    const formationRequirements = FORMATIONS.map((formation) => {
-      const [defenders, midfielders, forwards] = formation.split('-').map(Number);
-      return { formation, defenders, midfielders, forwards };
-    });
-
-    const pickRandomPlayers = (players: Player[], count: number): Player[] => {
-      if (count <= 0 || players.length === 0) return [];
-
-      const pickedCount = Math.min(count, players.length);
-      const cloned = players.slice();
-
-      for (let i = 0; i < pickedCount; i++) {
-        const randomIndex = i + Math.floor(Math.random() * (cloned.length - i));
-        const temp = cloned[i];
-        cloned[i] = cloned[randomIndex];
-        cloned[randomIndex] = temp;
-      }
-
-      return cloned.slice(0, pickedCount);
-    };
-
-    const buildRandomLineup = (team: Team): Team => {
-      const goalkeepers: Player[] = [];
-      const defenders: Player[] = [];
-      const midfielders: Player[] = [];
-      const forwards: Player[] = [];
-
-      for (let i = 0; i < team.players.length; i++) {
-        const player = team.players[i];
-        if (player.position === 'GK') {
-          goalkeepers.push(player);
-        } else if (player.position === 'DF') {
-          defenders.push(player);
-        } else if (player.position === 'MF') {
-          midfielders.push(player);
-        } else if (player.position === 'FW') {
-          forwards.push(player);
-        }
-      }
-
-      const availableFormations = formationRequirements.filter(
-        (formation) =>
-          goalkeepers.length >= 1 &&
-          defenders.length >= formation.defenders &&
-          midfielders.length >= formation.midfielders &&
-          forwards.length >= formation.forwards
-      );
-
-      const starterIds = new Set<string>();
-      if (availableFormations.length > 0) {
-        const selectedFormation =
-          availableFormations[Math.floor(Math.random() * availableFormations.length)];
-
-        pickRandomPlayers(goalkeepers, 1).forEach((player) => starterIds.add(player.id));
-        pickRandomPlayers(defenders, selectedFormation.defenders).forEach((player) =>
-          starterIds.add(player.id)
-        );
-        pickRandomPlayers(midfielders, selectedFormation.midfielders).forEach((player) =>
-          starterIds.add(player.id)
-        );
-        pickRandomPlayers(forwards, selectedFormation.forwards).forEach((player) =>
-          starterIds.add(player.id)
-        );
-      } else {
-        const gkStarter = pickRandomPlayers(goalkeepers, 1);
-        const gkStarterIds = new Set(gkStarter.map((player) => player.id));
-
-        const availableOutfieldPlayers = team.players.filter(
-          (player) => player.position !== 'GK' && !gkStarterIds.has(player.id)
-        );
-        const outfieldStarters = pickRandomPlayers(availableOutfieldPlayers, 10);
-
-        gkStarter.forEach((player) => starterIds.add(player.id));
-        outfieldStarters.forEach((player) => starterIds.add(player.id));
-      }
-
-      if (starterIds.size === 0) {
-        const fallbackStarters = pickRandomPlayers(team.players, 11);
-        fallbackStarters.forEach((player) => starterIds.add(player.id));
-      }
-
-      const availableSubs = team.players.filter((player) => !starterIds.has(player.id));
-      const subs = pickRandomPlayers(availableSubs, 6);
-      const subIds = new Set(subs.map((player) => player.id));
-
-      return {
-        ...team,
-        players: team.players.map((player) => ({
-          ...player,
-          isStarter: starterIds.has(player.id),
-          isSub: subIds.has(player.id),
-        })),
-      };
-    };
-
     const humanControlledTeam = getPlayableChampionship(championshipContainer).teams.find(
       (team) => team.isControlledByHuman
     );
@@ -288,7 +197,7 @@ function prepareTeamsBeforeMatch(
             match.homeTeam.id,
             match.homeTeam.isControlledByHuman && humanControlledTeam
               ? humanControlledTeam
-              : buildRandomLineup(match.homeTeam)
+              : pickRandomLineup(match.homeTeam, defaultRng)
           );
         }
 
@@ -297,7 +206,7 @@ function prepareTeamsBeforeMatch(
             match.awayTeam.id,
             match.awayTeam.isControlledByHuman && humanControlledTeam
               ? humanControlledTeam
-              : buildRandomLineup(match.awayTeam)
+              : pickRandomLineup(match.awayTeam, defaultRng)
           );
         }
       }

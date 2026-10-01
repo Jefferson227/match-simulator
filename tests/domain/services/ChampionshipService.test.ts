@@ -500,4 +500,88 @@ describe('ChampionshipService season stats (MS-114)', () => {
       );
     });
   });
+
+  describe('AI catch-up lineups', () => {
+    const EXTRA_POSITIONS = ['GK', 'DF', 'DF', 'DF', 'MF', 'MF', 'MF', 'FW', 'FW'] as const;
+
+    /** A 20-player squad with every player flagged as a starter: a fixture with no real lineup. */
+    const wholeSquadTeam = (index: number): Team => {
+      const team = buildSquadTeam(index);
+      const extras = EXTRA_POSITIONS.map((position, extra) => ({
+        ...team.players[0],
+        id: `player-${index}-x${extra}` as Player['id'],
+        name: `Extra ${index}-${extra}`,
+        position,
+      }));
+      return { ...team, players: [...team.players, ...extras] };
+    };
+
+    const seededRng = (): RandomProvider => {
+      let seed = 42;
+      return {
+        nextInt: (min, max) =>
+          min + ((seed = (seed * 1103515245 + 12345) % 2147483648) % (max - min + 1)),
+      };
+    };
+
+    const aiDivisionOf = (home: Team, away: Team) =>
+      leagueOf(
+        'ai',
+        [home, away],
+        [
+          roundOf(1, 'not-started', [fixture('a1', home, away)]),
+          roundOf(2, 'not-started', [fixture('a2', away, home)]),
+          roundOf(3, 'not-started', [fixture('a3', home, away)]),
+          roundOf(4, 'not-started', [fixture('a4', away, home)]),
+        ]
+      );
+
+    const catchUp = (ai: Championship) => {
+      const { championship } = playableAfterRoundOne();
+      return getChampionshipByInternalName(
+        endAll(containerOf(championship, [ai]), seededRng()),
+        'ai'
+      )!;
+    };
+
+    it('plays every catch-up round with 11 starters per club, not the whole squad', () => {
+      const caughtUp = catchUp(aiDivisionOf(wholeSquadTeam(3), wholeSquadTeam(4)));
+      const played = caughtUp.matchContainer.rounds.filter((round) => round.status === 'ended');
+
+      expect(played.length).toBeGreaterThan(1);
+      played
+        .flatMap((round) => round.matches)
+        .forEach((match) => {
+          [match.homeTeam, match.awayTeam].forEach((team) => {
+            expect(team.players.filter((player) => player.isStarter)).toHaveLength(11);
+            expect(team.players.filter((player) => player.isSub)).toHaveLength(6);
+          });
+        });
+      caughtUp.teams.forEach((team) => {
+        const games = team.players.reduce((total, player) => total + player.seasonGames, 0);
+        expect(games).toBe(11 * played.length);
+      });
+    });
+
+    it('is deterministic under an injected rng', () => {
+      const first = catchUp(aiDivisionOf(wholeSquadTeam(3), wholeSquadTeam(4)));
+      const second = catchUp(aiDivisionOf(wholeSquadTeam(3), wholeSquadTeam(4)));
+
+      expect(second).toEqual(first);
+    });
+
+    it("never touches a human club's lineup", () => {
+      const human: Team = { ...wholeSquadTeam(3), isControlledByHuman: true };
+      const caughtUp = catchUp(aiDivisionOf(human, wholeSquadTeam(4)));
+      const played = caughtUp.matchContainer.rounds.filter((round) => round.status === 'ended');
+
+      expect(played.length).toBeGreaterThan(1);
+      played
+        .flatMap((round) => round.matches)
+        .forEach((match) => {
+          const humanCopy = match.homeTeam.id === human.id ? match.homeTeam : match.awayTeam;
+          expect(humanCopy.players.every((player) => player.isStarter)).toBe(true);
+        });
+    });
+  });
 });
