@@ -82,7 +82,7 @@ export const selectBestLineup = (players: Player[]): PlayerStates =>
 
 type ViewMode = 'list' | 'detail';
 
-// TODO: only strength and XP exist on Player; the rest are placeholders until the domain tracks them
+// TODO: cards, injuries and mood are placeholders until the domain tracks them
 const NOT_TRACKED = '-';
 
 // Whether a player can be put straight into the given state, without cycling through the others
@@ -333,8 +333,8 @@ const SquadSelection: React.FC<SquadSelectionProps> = ({
       ['teamManager.playerStats.strength', detailPlayer.strength],
       ['teamManager.playerStats.xp', detailPlayer.xp],
       ['teamManager.playerStats.age', detailPlayer.age],
-      ['teamManager.playerStats.matches', NOT_TRACKED],
-      ['teamManager.playerStats.goals', NOT_TRACKED],
+      ['teamManager.playerStats.matches', detailPlayer.seasonGames ?? 0],
+      ['teamManager.playerStats.goals', detailPlayer.seasonGoals ?? 0],
       ['teamManager.playerStats.yellowCards', NOT_TRACKED],
       ['teamManager.playerStats.redCards', NOT_TRACKED],
       ['teamManager.playerStats.injuries', NOT_TRACKED],

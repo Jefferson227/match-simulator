@@ -264,6 +264,26 @@ describe('TeamManager', () => {
     expect(ageRow.textContent).toBe(`AGE${shown.age}`);
   });
 
+  it("shows the player's season games and goals in the player view, and no stamina", () => {
+    const players = basePlayers.map((player, index) => ({
+      ...player,
+      seasonGames: 10 + index,
+      seasonGoals: 3 + index,
+    }));
+    renderTeamManager([createTeam(players)]);
+
+    fireEvent.click(screen.getByText('CHOOSE STRATEGY'));
+    fireEvent.click(screen.getByText('PLAYER'));
+
+    const shown = players.find((player) => screen.queryByText(player.name))!;
+    expect(screen.getByText('MATCHES').parentElement!.textContent).toBe(
+      `MATCHES${shown.seasonGames}`
+    );
+    expect(screen.getByText('GOALS').parentElement!.textContent).toBe(`GOALS${shown.seasonGoals}`);
+    expect(screen.getByText('YELLOW CARDS').parentElement!.textContent).toBe('YELLOW CARDS-');
+    expect(screen.queryByText('STAMINA')).toBeNull();
+  });
+
   it('picks the best lineup and navigates to the match when Start Match is clicked', () => {
     const team = createTeam(basePlayers);
     const opponent = createOpponent();
