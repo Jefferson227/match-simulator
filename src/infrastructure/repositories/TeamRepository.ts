@@ -57,6 +57,8 @@ function getTeam(internalName: string, leagueType: LeagueType = 'mens'): Team {
       age: player.age,
       nationalities: [...player.nationalities],
       xp: 0,
+      seasonGames: 0,
+      seasonGoals: 0,
       isStarter: false,
       isSub: false,
     })),

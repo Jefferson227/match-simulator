@@ -78,8 +78,17 @@ function toRetiredPlayer(
   season: number,
   becameCoach: boolean
 ): RetiredPlayer {
-  // The match-scoped fields are left behind: a retiree never plays again.
-  const { stamina, enteredAtMinute, isStarter, isSub, ...career } = player;
+  // The match- and season-scoped fields are left behind: a retiree never plays again.
+  const {
+    stamina,
+    enteredAtMinute,
+    leftAtMinute,
+    isStarter,
+    isSub,
+    seasonGames,
+    seasonGoals,
+    ...career
+  } = player;
   return {
     ...career,
     isRetired: true,

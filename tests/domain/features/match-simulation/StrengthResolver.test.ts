@@ -20,6 +20,8 @@ function buildPlayer(overrides: Partial<Player> & Pick<Player, 'strength'>): Pla
     age: 26,
     nationalities: ['BRA'],
     xp: 0,
+    seasonGames: 0,
+    seasonGoals: 0,
     isStarter: true,
     isSub: false,
     ...overrides,

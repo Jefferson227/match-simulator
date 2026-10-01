@@ -58,6 +58,8 @@ export function createYouthPlayer(
     age,
     nationalities: [REPLACEMENT_NATIONALITY],
     xp: 0,
+    seasonGames: 0,
+    seasonGoals: 0,
     isStarter: false,
     isSub: false,
   };

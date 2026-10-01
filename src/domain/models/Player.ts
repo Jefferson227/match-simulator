@@ -12,7 +12,13 @@ type Player = {
   stamina?: number;
   // Match-scoped: the minute a substitute came on. Absent means on the pitch since kickoff.
   enteredAtMinute?: number;
+  // Match-scoped: the minute a player was substituted off. Absent means not substituted off.
+  leftAtMinute?: number;
   xp: number;
+  // Season-scoped: matches played this season, counted when each round ends. Reset on NEW SEASON.
+  seasonGames: number;
+  // Season-scoped: goals scored this season, shootout kicks excluded. Reset on NEW SEASON.
+  seasonGoals: number;
   isStarter: boolean;
   isSub: boolean;
 };

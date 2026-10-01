@@ -30,6 +30,8 @@ function player(name: string, age: number, overrides: Partial<Player> = {}): Pla
     age,
     nationalities: ['URU'],
     xp: 7,
+    seasonGames: 0,
+    seasonGoals: 0,
     isStarter: true,
     isSub: false,
     stamina: 80,

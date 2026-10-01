@@ -5,9 +5,18 @@ import { Team } from './Team';
  * A player who retired at a season roll-over, kept for the records feature that will show them.
  *
  * A snapshot of the player on the day they retired, without the match-scoped fields a player off
- * the pitch never carries.
+ * the pitch never carries, nor the season-scoped counters of the season they retired after.
  */
-type RetiredPlayer = Omit<Player, 'stamina' | 'enteredAtMinute' | 'isStarter' | 'isSub'> & {
+type RetiredPlayer = Omit<
+  Player,
+  | 'stamina'
+  | 'enteredAtMinute'
+  | 'leftAtMinute'
+  | 'isStarter'
+  | 'isSub'
+  | 'seasonGames'
+  | 'seasonGoals'
+> & {
   isRetired: true;
   /** The season that had just ended when they retired. */
   retiredInSeason: number;

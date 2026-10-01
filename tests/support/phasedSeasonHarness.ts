@@ -38,6 +38,8 @@ export function buildTeam(index: number): Team {
       age: 26,
       nationalities: ['BRA'],
       xp: 0,
+      seasonGames: 0,
+      seasonGoals: 0,
       isStarter: true,
       isSub: false,
     })),

@@ -24,6 +24,8 @@ function player(overrides: Partial<Player>): Player {
     age: 30,
     nationalities: ['ARG'],
     xp: 12,
+    seasonGames: 0,
+    seasonGoals: 0,
     isStarter: true,
     isSub: false,
     ...overrides,

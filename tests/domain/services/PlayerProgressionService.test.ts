@@ -13,6 +13,8 @@ function buildPlayer(id: Player['id'], strength: number, xp: number): Player {
     age: 26,
     nationalities: ['BRA'],
     xp,
+    seasonGames: 0,
+    seasonGoals: 0,
     isStarter: true,
     isSub: false,
   };

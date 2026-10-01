@@ -54,6 +54,8 @@ function youth(name: string, age: number, position: Player['position']): Player 
     age,
     nationalities: ['BRA'],
     xp: 0,
+    seasonGames: 0,
+    seasonGoals: 0,
     isStarter: false,
     isSub: false,
   };
