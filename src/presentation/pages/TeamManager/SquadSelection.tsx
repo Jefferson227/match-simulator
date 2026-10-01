@@ -339,7 +339,6 @@ const SquadSelection: React.FC<SquadSelectionProps> = ({
       ['teamManager.playerStats.redCards', NOT_TRACKED],
       ['teamManager.playerStats.injuries', NOT_TRACKED],
       ['teamManager.playerStats.mood', NOT_TRACKED],
-      ['teamManager.playerStats.stamina', NOT_TRACKED],
     ];
 
     return (

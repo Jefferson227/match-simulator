@@ -52,8 +52,7 @@
       "yellowCards": "YELLOW CARDS",
       "redCards": "RED CARDS",
       "injuries": "INJURIES",
-      "mood": "MOOD",
-      "stamina": "STAMINA"
+      "mood": "MOOD"
     }
   },
   "leagueTypeSelector": {

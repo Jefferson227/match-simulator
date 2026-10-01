@@ -52,8 +52,7 @@
       "yellowCards": "AMARELOS",
       "redCards": "VERMELHOS",
       "injuries": "LESÕES",
-      "mood": "HUMOR",
-      "stamina": "FÔLEGO"
+      "mood": "HUMOR"
     }
   },
   "leagueTypeSelector": {
