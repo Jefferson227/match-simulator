@@ -73,3 +73,8 @@ export function updatePlayableChampionship(
 ): ChampionshipContainer {
   return replaceChampionship(container, update(getPlayableChampionship(container)));
 }
+
+/** How many tiers the pyramid has. Cups have no tier and are not counted. */
+export function getTierCount(container: ChampionshipContainer): number {
+  return container.championships.filter((championship) => championship.tier !== undefined).length;
+}
