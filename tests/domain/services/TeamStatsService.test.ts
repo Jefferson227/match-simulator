@@ -2,6 +2,7 @@ import { describe, expect, it } from '@jest/globals';
 import TeamStatsService from '../../../src/domain/services/TeamStatsService';
 import { Team } from '../../../src/domain/models/Team';
 import Round from '../../../src/domain/models/Round';
+import Player from '../../../src/domain/models/Player';
 function buildTeam(id: Team['id'], morale: number, players: Player[] = []): Team {
   return {
     id,
@@ -50,8 +51,6 @@ describe('TeamStatsService.updateTeam', () => {
 
     const updatedTeam = TeamStatsService.updateTeam(homeTeam, {
       latestRound: round,
-      rounds: [round],
-      randomProvider: () => 0.5,
     });
 
     expect(updatedTeam.morale).toBe(35);
@@ -64,8 +63,6 @@ describe('TeamStatsService.updateTeam', () => {
 
     const updatedTeam = TeamStatsService.updateTeam(homeTeam, {
       latestRound: round,
-      rounds: [round],
-      randomProvider: () => 0.5,
     });
 
     expect(updatedTeam.morale).toBe(80.5);
@@ -80,16 +77,25 @@ describe('TeamStatsService.updateTeam', () => {
     expect(
       TeamStatsService.updateTeam(homeTeam, {
         latestRound: lossRound,
-        rounds: [lossRound],
-        randomProvider: () => 0.5,
       }).morale
     ).toBe(0);
     expect(
       TeamStatsService.updateTeam(awayTeam, {
         latestRound: winRound,
-        rounds: [winRound],
-        randomProvider: () => 0.5,
       }).morale
     ).toBe(100);
+  });
+
+  it('leaves every player as they were', () => {
+    const players = [{ id: 'p1', strength: 40, strengthProgressGames: 2 }] as unknown as Player[];
+    const homeTeam = buildTeam('11111111-1111-1111-1111-111111111111', 90, players);
+    const awayTeam = buildTeam('22222222-2222-2222-2222-222222222222', 50);
+
+    const updatedTeam = TeamStatsService.updateTeam(homeTeam, {
+      latestRound: buildRound(homeTeam, awayTeam, 3, 0),
+    });
+
+    expect(updatedTeam.morale).toBe(91);
+    expect(updatedTeam.players).toBe(players);
   });
 });

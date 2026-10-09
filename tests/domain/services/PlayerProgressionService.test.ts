@@ -1,125 +1,88 @@
 import { describe, expect, it } from '@jest/globals';
 import PlayerProgressionService from '../../../src/domain/services/PlayerProgressionService';
 import Player from '../../../src/domain/models/Player';
-import Round from '../../../src/domain/models/Round';
 import { Team } from '../../../src/domain/models/Team';
 
-function buildPlayer(id: Player['id'], strength: number, xp: number): Player {
+const range = { min: 25, max: 49 };
+
+function buildPlayer(index: number, age: number, strength: number): Player {
   return {
-    id,
+    id: `${index}0000000-0000-0000-0000-000000000000` as Player['id'],
     position: 'MF',
-    name: id,
+    name: `Player ${index}`,
     strength,
-    age: 26,
+    age,
     nationalities: ['BRA'],
-    xp,
-    strengthProgressGames: 0,
+    xp: 0,
     seasonGames: 0,
     seasonGoals: 0,
-    isStarter: true,
+    strengthProgressGames: 0,
+    isStarter: index === 0,
     isSub: false,
   };
 }
 
-function buildTeam(id: Team['id'], morale: number): Team {
+function buildTeam(morale: number, players: Player[]): Team {
   return {
-    id,
-    fullName: id,
-    shortName: id,
-    abbreviation: id.slice(0, 3),
-    colors: {
-      outline: '#111111',
-      background: '#222222',
-      text: '#ffffff',
-    },
-    players: [],
+    id: '11111111-1111-1111-1111-111111111111',
+    fullName: 'Club',
+    shortName: 'Club',
+    abbreviation: 'CLU',
+    colors: { outline: '#000', background: '#fff', text: '#000' },
+    players,
     morale,
     isControlledByHuman: false,
   };
 }
 
-function buildRound(
-  homeTeam: Team,
-  awayTeam: Team,
-  homeTeamScore: number,
-  awayTeamScore: number
-): Round {
-  return {
-    id: 'round-1',
-    number: 1,
-    status: 'ended',
-    matches: [
-      {
-        id: 'match-1',
-        homeTeam,
-        homeTeamScore,
-        awayTeamScore,
-        awayTeam,
-        scorers: [],
-      },
-    ],
-  };
-}
+describe('PlayerProgressionService.progressTeamPlayers', () => {
+  const squad = [buildPlayer(0, 20, 30), buildPlayer(1, 30, 30), buildPlayer(2, 38, 30)];
 
-describe('PlayerProgressionService', () => {
-  it('returns the last five finished results in reverse chronological order', () => {
-    const homeTeam = buildTeam('11111111-1111-1111-1111-111111111111', 50);
-    const awayTeam = buildTeam('22222222-2222-2222-2222-222222222222', 50);
-    const rounds = [
-      { ...buildRound(homeTeam, awayTeam, 1, 0), id: 'round-1', number: 1 },
-      { ...buildRound(homeTeam, awayTeam, 1, 1), id: 'round-2', number: 2 },
-      { ...buildRound(homeTeam, awayTeam, 0, 1), id: 'round-3', number: 3 },
-      { ...buildRound(homeTeam, awayTeam, 2, 1), id: 'round-4', number: 4 },
-      { ...buildRound(homeTeam, awayTeam, 3, 0), id: 'round-5', number: 5 },
-      { ...buildRound(homeTeam, awayTeam, 0, 2), id: 'round-6', number: 6 },
-    ];
-
-    const results = PlayerProgressionService.getLastFiveResults(homeTeam, rounds);
-
-    expect(results).toEqual(['loss', 'win', 'win', 'loss', 'draw']);
+  it('returns the club untouched when it played no games', () => {
+    const team = buildTeam(50, squad);
+    expect(PlayerProgressionService.progressTeamPlayers(team, 0, range)).toBe(team);
   });
 
-  it('updates players using the team recent form', () => {
-    const player = buildPlayer('55555555-5555-5555-5555-555555555555', 50, 239);
-    const homeTeam = buildTeam('11111111-1111-1111-1111-111111111111', 50);
-    const awayTeam = buildTeam('22222222-2222-2222-2222-222222222222', 50);
-    const rounds = [
-      buildRound(homeTeam, awayTeam, 1, 0),
-      buildRound(homeTeam, awayTeam, 2, 1),
-      buildRound(homeTeam, awayTeam, 3, 2),
-      buildRound(homeTeam, awayTeam, 1, 0),
-      buildRound(homeTeam, awayTeam, 2, 0),
-    ].map((round, index) => ({ ...round, id: `round-${index + 1}`, number: index + 1 }));
-
-    const updatedPlayers = PlayerProgressionService.updatePlayers(
-      [player],
-      53,
-      homeTeam,
-      rounds,
-      () => 0.5
+  it('counts one game for every player, starters or not', () => {
+    const progressed = PlayerProgressionService.progressTeamPlayers(
+      buildTeam(50, squad),
+      1,
+      range
     );
 
-    expect(updatedPlayers[0].strength).toBe(51);
-    expect(updatedPlayers[0].xp).toBeCloseTo(2.989304, 6);
+    expect(progressed.players.map((player) => player.strengthProgressGames)).toEqual([1, 1, 1]);
+    expect(progressed.players.map((player) => player.strength)).toEqual([30, 30, 30]);
   });
 
-  it('defaults missing xp to zero before applying progression', () => {
-    const playerWithoutXp = {
-      ...buildPlayer('55555555-5555-5555-5555-555555555555', 50, 0),
-      xp: undefined,
-    } as unknown as Player;
-    const homeTeam = buildTeam('11111111-1111-1111-1111-111111111111', 50);
-    const awayTeam = buildTeam('22222222-2222-2222-2222-222222222222', 50);
-    const rounds = [buildRound(homeTeam, awayTeam, 1, 0)];
-
-    const updatedPlayers = PlayerProgressionService.updatePlayers(
-      [playerWithoutXp],
-      52,
-      homeTeam,
-      rounds,
-      () => 0.5
+  it('advances once per game played, each player at their own interval', () => {
+    const progressed = PlayerProgressionService.progressTeamPlayers(
+      buildTeam(50, squad),
+      5,
+      range
     );
 
-    expect(Number.isNaN(updatedPlayers[0].xp)).toBe(false);
+    // Mid morale: every 3 games under 26, every 4 at 26–35, every 5 from 36.
+    expect(progressed.players.map((player) => player.strength)).toEqual([31, 31, 31]);
+    expect(progressed.players.map((player) => player.strengthProgressGames)).toEqual([2, 1, 0]);
+  });
+
+  it("reads the club's morale, decreasing the squad when it is low", () => {
+    const progressed = PlayerProgressionService.progressTeamPlayers(
+      buildTeam(30, squad),
+      3,
+      range
+    );
+
+    expect(progressed.players.map((player) => player.strength)).toEqual([29, 30, 30]);
+  });
+
+  it('pulls a squad outside the range back toward it', () => {
+    const progressed = PlayerProgressionService.progressTeamPlayers(
+      buildTeam(80, [buildPlayer(0, 20, 10)]),
+      3,
+      range
+    );
+
+    expect(progressed.players[0].strength).toBe(16);
   });
 });

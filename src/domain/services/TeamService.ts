@@ -274,10 +274,7 @@ function getLastFinishedRound(championship: Championship): Round | undefined {
 function updateChampionshipTeamStats(championship: Championship): Championship {
   const lastFinishedRound = getLastFinishedRound(championship);
   const updatedTeams = championship.teams.map((team) =>
-    TeamStatsService.updateTeam(team, {
-      latestRound: lastFinishedRound,
-      rounds: championship.matchContainer.rounds,
-    })
+    TeamStatsService.updateTeam(team, { latestRound: lastFinishedRound })
   );
   const updatedTeamsById = new Map(updatedTeams.map((team) => [team.id, team]));
   const updatedRounds = championship.matchContainer.rounds.map((round) => ({

@@ -2,7 +2,6 @@ import { MATCH_RESULT } from '../constants/MatchResultConstants';
 import MatchResult from '../enums/MatchResult';
 import Round from '../models/Round';
 import { Team } from '../models/Team';
-import PlayerProgressionService from './PlayerProgressionService';
 import type { UpdateTeamContext } from './types';
 
 function getTeamResult(team: Team, round?: Round): MatchResult | null {
@@ -51,19 +50,12 @@ function updateTeamMorale(team: Team, round?: Round): Team {
   };
 }
 
+/**
+ * `team` after its last finished round. Only morale moves here: strength progresses when each round
+ * ends, in `ChampionshipService.endRound` (MS-115).
+ */
 function updateTeam(team: Team, context: UpdateTeamContext = {}): Team {
-  const updatedTeam = updateTeamMorale(team, context.latestRound);
-
-  return {
-    ...updatedTeam,
-    players: PlayerProgressionService.updatePlayers(
-      updatedTeam.players,
-      updatedTeam.morale,
-      team,
-      context.rounds,
-      context.randomProvider
-    ),
-  };
+  return updateTeamMorale(team, context.latestRound);
 }
 
 export default {
