@@ -33,8 +33,10 @@ import { GameState } from '../../game-engine/GameState';
  *
  * MS-114 added `seasonGames` / `seasonGoals` to players without a new version: a version-5 save
  * without them still loads, its players starting at 0 (see `GameStateMapper.hydrate`).
+ * 6 (MS-115): MS-115 replaced xp with strengthProgressGames, written as `spg` (see `SavedPlayer`);
+ * version-5 saves are abandoned, not migrated.
  */
-export const SAVE_VERSION = 5;
+export const SAVE_VERSION = 6;
 
 /**
  * A player as written to disk. `strengthProgressGames` is written as `spg`: every saved player

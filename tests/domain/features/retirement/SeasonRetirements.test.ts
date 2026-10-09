@@ -28,7 +28,6 @@ function retiredPlayer(
     strength: 50,
     age: 36,
     nationalities: ['BRA'],
-    xp: 0,
     isRetired: true,
     retiredInSeason: season,
     lastTeamId: `${club}-t-e-a-m`,

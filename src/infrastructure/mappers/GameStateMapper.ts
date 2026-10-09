@@ -7,9 +7,9 @@
  * by ~92%. Nothing in the in-memory model changes.
  *
  * What is deliberately lost: a played match carries a *historical snapshot* of its clubs — morale,
- * and each player's xp / strength / isStarter / isSub as they stood that round — because
- * `TeamStatsService.updateChampionshipTeamStats` only refreshes fixtures in rounds that have not
- * started. After a reload every past match references the club as it is now. Nothing reads those
+ * and each player's strength / progress counter / isStarter / isSub as they stood that round —
+ * because `TeamStatsService.updateChampionshipTeamStats` only refreshes fixtures in rounds that have
+ * not started. After a reload every past match references the club as it is now. Nothing reads those
  * snapshots; the one that matters, the current round's lineup, is kept whole in
  * `currentRoundTeams`. See `wiki/decisions/ms-108-saved-game-size.md`.
  */

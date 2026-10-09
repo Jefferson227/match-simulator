@@ -13,7 +13,6 @@ function buildPlayer(index: number, age: number, strength: number): Player {
     strength,
     age,
     nationalities: ['BRA'],
-    xp: 0,
     seasonGames: 0,
     seasonGoals: 0,
     strengthProgressGames: 0,

@@ -397,7 +397,6 @@ describe('ChampionshipUseCases', () => {
         strength: 50,
         age,
         nationalities: ['BRA'],
-        xp: 0,
         seasonGames: 30,
         seasonGoals: 12,
         strengthProgressGames: 0,

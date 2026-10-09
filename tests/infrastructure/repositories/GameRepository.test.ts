@@ -60,7 +60,6 @@ const playerOf = (teamSeed: string, index: number): Player => ({
   strength: 60 + index,
   age: 26,
   nationalities: ['BRA'],
-  xp: index,
   seasonGames: 0,
   seasonGoals: 0,
   strengthProgressGames: 0,
@@ -100,7 +99,7 @@ function buildPlayedState(): GameState {
   const stale = (team: Team): Team => ({
     ...team,
     morale: 5,
-    players: team.players.map((player) => ({ ...player, xp: 0, strength: 1 })),
+    players: team.players.map((player) => ({ ...player, strength: 1 })),
   });
 
   const match = (id: string, homeTeam: Team, awayTeam: Team, played: boolean): Match => ({
@@ -174,7 +173,7 @@ describe('GameRepository', () => {
     const raw = window.localStorage.getItem(STORAGE_KEY)!;
     const parsed = JSON.parse(raw);
 
-    expect(parsed.saveVersion).toBe(5);
+    expect(parsed.saveVersion).toBe(6);
     expect(parsed.championshipContainer.playableInternalName).toBe('mock-championship');
     expect(
       getPlayableChampionship(parsed.championshipContainer).matchContainer.rounds[0].matches[0]
@@ -262,6 +261,28 @@ describe('GameRepository', () => {
       championshipContainer: { playableChampionship: championshipContainer.championships[0] },
     };
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(versionTwo));
+
+    expect(GameRepository.hasSavedGame()).toBe(false);
+    expect(() => GameRepository.loadGame()).toThrow('Saved game could not be found.');
+  });
+
+  it('abandons a version-5 save, whose players still carry xp (MS-115)', () => {
+    const saved = GameStateMapper.dehydrate(buildPlayedState());
+    const versionFive = {
+      ...saved,
+      saveVersion: 5,
+      championshipContainer: {
+        ...saved.championshipContainer,
+        championships: saved.championshipContainer.championships.map((championship) => ({
+          ...championship,
+          teams: championship.teams.map((team) => ({
+            ...team,
+            players: team.players.map(({ spg: _spg, ...player }) => ({ ...player, xp: 0 })),
+          })),
+        })),
+      },
+    };
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(versionFive));
 
     expect(GameRepository.hasSavedGame()).toBe(false);
     expect(() => GameRepository.loadGame()).toThrow('Saved game could not be found.');

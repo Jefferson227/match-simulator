@@ -51,7 +51,7 @@ describe('TeamRepository', () => {
 
       team.players.forEach((player) => {
         expect(player.strength).toBeGreaterThan(0);
-        expect(player.xp).toBe(0);
+        expect(player.strengthProgressGames).toBe(0);
         expect(player.isStarter).toBe(false);
       });
     });

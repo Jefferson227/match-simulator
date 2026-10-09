@@ -2,10 +2,10 @@
  * The MS-108 equivalence rule, as the requirements state it.
  *
  * A dehydrated save does not preserve the *historical snapshot* a played fixture carries — the
- * clubs' morale and their players' xp / strength / isStarter / isSub as they stood that round. On
- * reload every past match references the club as it is now, resolved from `championship.teams` by
- * id. The round about to be or being played is the exception: it is stored whole and must come back
- * byte-identical.
+ * clubs' morale and their players' strength / progress counter / isStarter / isSub as they stood
+ * that round. On reload every past match references the club as it is now, resolved from
+ * `championship.teams` by id. The round about to be or being played is the exception: it is stored
+ * whole and must come back byte-identical.
  *
  * So "the reloaded state equals the original" means: equal after the *original* has had the same
  * resolution applied to it. `expectEquivalent` is that comparison.

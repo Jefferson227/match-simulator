@@ -32,7 +32,6 @@ const playerOf = (teamSeed: string, index: number): Player => ({
   strength: 50 + index,
   age: 26,
   nationalities: ['BRA'],
-  xp: index * 10,
   seasonGames: 0,
   seasonGoals: 0,
   strengthProgressGames: 0,
@@ -78,7 +77,7 @@ const matchOf = (id: string, homeTeam: Team, awayTeam: Team, played: boolean): M
 
 /**
  * Two divisions. The playable one is on round 2 of 2: round 1 is played and its fixtures carry a
- * *historical* snapshot of both clubs (lower morale, less xp) that is deliberately not preserved;
+ * *historical* snapshot of both clubs (lower morale, weaker players) that is deliberately not preserved;
  * round 2 is the current round and must survive byte-identically.
  */
 function buildState(): GameState {
@@ -90,7 +89,7 @@ function buildState(): GameState {
   const stale = (team: Team): Team => ({
     ...team,
     morale: 1,
-    players: team.players.map((player) => ({ ...player, xp: 0, strength: 1 })),
+    players: team.players.map((player) => ({ ...player, strength: 1 })),
   });
 
   const playable: Championship = {

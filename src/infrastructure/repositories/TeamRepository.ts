@@ -87,7 +87,6 @@ function getTeam(
         : clampToScale(getRandomPlayerStrength(teamJSONDTO.initialOverallStrength)),
       age: player.age,
       nationalities: [...player.nationalities],
-      xp: 0,
       seasonGames: 0,
       seasonGoals: 0,
       strengthProgressGames: 0,

@@ -197,7 +197,6 @@ describe('TeamService match-scoped substitution markers', () => {
       strength: 50,
       age: 25,
       nationalities: ['BRA'],
-      xp: 0,
       seasonGames: 1,
       seasonGoals: 0,
       strengthProgressGames: 0,

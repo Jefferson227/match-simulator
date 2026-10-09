@@ -22,7 +22,6 @@ const squadOf = (positions: Player['position'][]): Team => ({
     strength: 50,
     age: 25,
     nationalities: ['BRA'],
-    xp: 0,
     seasonGames: 0,
     seasonGoals: 0,
     strengthProgressGames: 0,

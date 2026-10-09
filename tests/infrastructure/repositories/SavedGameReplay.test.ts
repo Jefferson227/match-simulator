@@ -2,10 +2,10 @@
  * MS-108: what a dehydrated save drops has to be provably rebuildable.
  *
  * A save no longer stores the *historical snapshot* a played fixture carries — the clubs' morale
- * and their players' xp / strength / isStarter / isSub as they stood that round. The claim is that
- * nothing reads those: `TeamStatsService` reads `match.homeTeam.id` and the scores, and the screens
- * render the current round. If the claim is wrong, a reloaded game plays forward differently from
- * one that was never saved.
+ * and their players' strength / progress counter / isStarter / isSub as they stood that round. The
+ * claim is that nothing reads those: `TeamStatsService` reads `match.homeTeam.id` and the scores,
+ * and the screens render the current round. If the claim is wrong, a reloaded game plays forward
+ * differently from one that was never saved.
  *
  * So this plays the *same next round* on both, under the same pinned rng, and demands the same
  * fixtures, the same scores and the same standings.

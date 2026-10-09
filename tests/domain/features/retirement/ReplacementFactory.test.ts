@@ -23,7 +23,6 @@ function player(overrides: Partial<Player>): Player {
     strength: 50,
     age: 30,
     nationalities: ['ARG'],
-    xp: 12,
     seasonGames: 0,
     seasonGoals: 0,
     strengthProgressGames: 0,
@@ -54,11 +53,10 @@ describe('createYouthPlayer', () => {
     player({ id: 'p-2-2-2-2', strength: 71 }),
   ]);
 
-  it('keeps the position and starts fresh: BRA, no xp, neither starter nor sub', () => {
+  it('keeps the position and starts fresh: BRA, no progress, neither starter nor sub', () => {
     const youth = createYouthPlayer(retiree, squad, 'male', new Set(), scriptedRng([17]));
     expect(youth.position).toBe('DF');
     expect(youth.nationalities).toEqual(['BRA']);
-    expect(youth.xp).toBe(0);
     expect(youth.strengthProgressGames).toBe(0);
     expect(youth.isStarter).toBe(false);
     expect(youth.isSub).toBe(false);
