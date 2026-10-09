@@ -13,8 +13,7 @@ import {
   YOUTH_AGE_RANGE,
   YOUTH_STRENGTH_PENALTY,
 } from '../../constants/RetirementConstants';
-
-const MINIMUM_STRENGTH = 1;
+import { MAX_STRENGTH, MIN_STRENGTH } from '../../constants/StrengthConstants';
 
 /** The gender of a league's players: a men's league fields men, a women's league women. */
 export function getPlayerGender(leagueType: LeagueType): Gender {
@@ -32,7 +31,8 @@ function getRemainingSquadStrength(team: Team, retiree: Player): number {
 
 /**
  * The generated player who takes `retiree`'s place in `team`: same position, 17–20 years old, and
- * `YOUTH_STRENGTH_PENALTY` weaker than a player the seed loader would give the rest of the squad.
+ * `YOUTH_STRENGTH_PENALTY` weaker than a ±5 roll around the rest of the squad, kept within 1–99 —
+ * not within the division's range, which the progression pulls them toward (MS-115).
  *
  * Draws, in order: the age, the strength, then the name.
  */
@@ -45,8 +45,12 @@ export function createYouthPlayer(
 ): Player {
   const age = rng.nextInt(YOUTH_AGE_RANGE[0], YOUTH_AGE_RANGE[1]);
   const strength = Math.max(
-    MINIMUM_STRENGTH,
-    getRandomPlayerStrength(getRemainingSquadStrength(team, retiree), rng) - YOUTH_STRENGTH_PENALTY
+    MIN_STRENGTH,
+    Math.min(
+      MAX_STRENGTH,
+      getRandomPlayerStrength(getRemainingSquadStrength(team, retiree), rng) -
+        YOUTH_STRENGTH_PENALTY
+    )
   );
   const name = generateName({ gender, kind: 'player', takenNames, avoidName: retiree.name, rng });
 

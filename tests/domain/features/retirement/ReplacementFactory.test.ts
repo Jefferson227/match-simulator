@@ -59,6 +59,7 @@ describe('createYouthPlayer', () => {
     expect(youth.position).toBe('DF');
     expect(youth.nationalities).toEqual(['BRA']);
     expect(youth.xp).toBe(0);
+    expect(youth.strengthProgressGames).toBe(0);
     expect(youth.isStarter).toBe(false);
     expect(youth.isSub).toBe(false);
     expect(youth.stamina).toBeUndefined();
@@ -85,6 +86,15 @@ describe('createYouthPlayer', () => {
     expect(() =>
       createYouthPlayer(retiree, squad, 'male', new Set(), scriptedRng([18, 72]))
     ).toThrow();
+  });
+
+  it('never rises above strength 99', () => {
+    // Only a squad already past the scale could get there; the clamp is MS-115's 1–99, not the
+    // division's range.
+    const overScale = team([retiree, player({ id: 'p-1-1-1-1', strength: 115 })]);
+    expect(
+      createYouthPlayer(retiree, overScale, 'male', new Set(), scriptedRng([18, 120])).strength
+    ).toBe(99);
   });
 
   it('never drops below strength 1', () => {
