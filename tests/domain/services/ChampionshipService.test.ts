@@ -5,7 +5,15 @@ import { Championship } from '../../../src/domain/models/Championship';
 import { Team } from '../../../src/domain/models/Team';
 import { containerOf } from '../../support/containerOf';
 import { aboveOf, belowOf, playableOf } from '../../support/pyramidSlots';
-import { buildTeam as buildSquadTeam } from '../../support/phasedSeasonHarness';
+import {
+  buildChampionship as buildPhasedChampionship,
+  buildTeam as buildSquadTeam,
+  lowerNumberWins,
+  playRound,
+} from '../../support/phasedSeasonHarness';
+import ChampionshipPhase from '../../../src/domain/models/ChampionshipPhase';
+import { initialisePhaseState } from '../../../src/domain/features/phases/PhaseProgression';
+import { createMatches } from '../../../src/domain/features/fixture-generation/FixtureGenerator';
 import Match from '../../../src/domain/models/Match';
 import Player from '../../../src/domain/models/Player';
 import Round from '../../../src/domain/models/Round';
@@ -785,6 +793,73 @@ describe('ChampionshipService strength progression (MS-115)', () => {
     caughtUp.teams.forEach((team) => {
       expect(strengths(team)).toEqual([60 + Math.floor(roundsPlayed / 4)]);
       expect(counters(team)).toEqual([roundsPlayed % 4]);
+    });
+  });
+});
+
+describe('ChampionshipService next-phase squads (MS-115)', () => {
+  /**
+   * Two single-leg knockouts. A knockout deals the next one its winners as they stood in the tie it
+   * played — before that round moved them — which is the copy the sync has to bring up to date.
+   */
+  const semifinalThenFinal: ChampionshipPhase[] = [
+    {
+      kind: 'knockout',
+      name: 'Semifinal',
+      numberOfTies: 2,
+      legs: 1,
+      secondLegHost: 'drawn',
+      tiebreakers: ['penalties'],
+    },
+    {
+      kind: 'knockout',
+      name: 'Final',
+      numberOfTies: 1,
+      legs: 1,
+      secondLegHost: 'drawn',
+      tiebreakers: ['penalties'],
+    },
+  ];
+
+  it('deals the new phase its fixtures with the squads as they stand after the round', () => {
+    // Young squads at high morale move every game, so a stale copy shows at once.
+    const fresh = buildPhasedChampionship(4, semifinalThenFinal);
+    let championship: Championship = {
+      ...fresh,
+      tier: 1,
+      hasLeagueTable: false,
+      standings: [],
+      teams: fresh.teams.map((team) => ({
+        ...team,
+        morale: 80,
+        players: team.players.map((player) => ({ ...player, age: 20 })),
+      })),
+    };
+    championship = initialisePhaseState({
+      ...championship,
+      matchContainer: createMatches(championship.teams, championship.phases),
+    });
+
+    championship = playRound(championship, lowerNumberWins);
+
+    expect(championship.currentPhaseIndex).toBe(1);
+    const finalists = championship.matchContainer.rounds
+      .filter((round) => round.phaseIndex === 1)
+      .flatMap((round) => round.matches.flatMap((match) => [match.homeTeam, match.awayTeam]));
+    expect(finalists).toHaveLength(2);
+
+    finalists.forEach((copy) => {
+      const club = championship.teams.find((team) => team.id === copy.id)!;
+      copy.players.forEach((player) => {
+        const canonical = club.players.find((candidate) => candidate.id === player.id)!;
+        expect(player.strength).toBe(51);
+        expect(player).toMatchObject({
+          strength: canonical.strength,
+          strengthProgressGames: canonical.strengthProgressGames,
+          seasonGames: canonical.seasonGames,
+          seasonGoals: canonical.seasonGoals,
+        });
+      });
     });
   });
 });

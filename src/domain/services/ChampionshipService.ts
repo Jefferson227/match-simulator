@@ -187,7 +187,11 @@ function endRound(
   // A phased championship does not end when its rounds run out — it resolves the phase and
   // generates the next one, which appends rounds and grows `totalRounds`. So the phase is resolved
   // before the next round number is worked out.
-  const resolved = withPhaseResolution(withRoundEnded, dependencies);
+  const phaseResolved = withPhaseResolution(withRoundEnded, dependencies);
+  // A new phase deals its fixtures and table from the clubs as the last phase's tables and ties
+  // held them, not from `teams`, so they start from older squads; bring them up to date.
+  const resolved =
+    phaseResolved === withRoundEnded ? phaseResolved : withNextCopiesSynced(phaseResolved);
   const resolvedContainer = resolved.matchContainer;
 
   const nextRoundNumber =
@@ -256,11 +260,9 @@ function withStrengthProgression(
 }
 
 /**
- * `championship` with `teams` swapped in, and `pick`'s fields copied by player id from every club
- * that changed to the copies the next fixtures and phases are built from: the table rows and every
- * fixture not yet started. Only the picked fields are copied, so a fixture keeps its lineup and a
- * table row its snapshot. `teams` must be `championship.teams` mapped, unchanged clubs by
- * reference.
+ * `championship` with `teams` swapped in, and `pick`'s fields of every club that changed copied to
+ * the copies the next fixtures and phases are built from (see `withPickedFieldsCopied`). `teams`
+ * must be `championship.teams` mapped, unchanged clubs by reference.
  */
 function withUpdatedSquads(
   championship: Championship,
@@ -270,12 +272,42 @@ function withUpdatedSquads(
   const changed = teams.filter((team, index) => team !== championship.teams[index]);
   if (changed.length === 0) return championship;
 
-  const changedTeamIds = new Set(changed.map((team) => team.id));
+  return withPickedFieldsCopied({ ...championship, teams }, changed, pick);
+}
+
+/**
+ * Every persisted per-player field the round end moves — season counters (MS-114), strength and its
+ * counter (MS-115) — copied from `teams` to the table rows and every fixture not yet started.
+ */
+function withNextCopiesSynced(championship: Championship): Championship {
+  return withPickedFieldsCopied(
+    championship,
+    championship.teams,
+    ({ seasonGames, seasonGoals, strength, strengthProgressGames }) => ({
+      seasonGames,
+      seasonGoals,
+      strength,
+      strengthProgressGames,
+    })
+  );
+}
+
+/**
+ * `pick`'s fields of every player of `sources`, copied by player id onto those clubs' table rows and
+ * fixtures not yet started. Only the picked fields are copied, so a fixture keeps its lineup and a
+ * table row its snapshot.
+ */
+function withPickedFieldsCopied(
+  championship: Championship,
+  sources: Team[],
+  pick: (player: Player) => Partial<Player>
+): Championship {
+  const sourceTeamIds = new Set(sources.map((team) => team.id));
   const fields = new Map(
-    changed.flatMap((team) => team.players.map((player) => [player.id, pick(player)]))
+    sources.flatMap((team) => team.players.map((player) => [player.id, pick(player)]))
   );
   const withPickedFields = (team: Team): Team =>
-    changedTeamIds.has(team.id)
+    sourceTeamIds.has(team.id)
       ? {
           ...team,
           players: team.players.map((player) => ({ ...player, ...fields.get(player.id) })),
@@ -284,7 +316,6 @@ function withUpdatedSquads(
 
   return {
     ...championship,
-    teams,
     standings: championship.standings.map((standing) => ({
       ...standing,
       team: withPickedFields(standing.team),
