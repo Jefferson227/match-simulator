@@ -68,8 +68,9 @@ The bands are contiguous. The source left gaps (players 43–44, coach 71) and p
 - They leave the squad and are kept, marked retired, with the season they retired in and their
   last club. Their records must stay visible to the records feature, which does not exist yet.
 - A generated player takes their place in the same club: same position, aged 17–20, Brazilian,
-  no XP, neither a starter nor a substitute. Their strength is a seed-loader roll around the rest of
-  the squad's average (±5), less 10, and never below 1.
+  a strength progress counter of 0, neither a starter nor a substitute. Their strength is a roll
+  around the rest of the squad's average (±5), less 10, kept within 1–99 since MS-115 (see
+  [[player-strength-progression]]).
 - The new player's name comes from the name lists, and differs from the retiree's and from every
   active player's and coach's in the pyramid (see *Names*).
 - **3%** of retirees also become coaches: a coach with the retiree's name, age and nationalities

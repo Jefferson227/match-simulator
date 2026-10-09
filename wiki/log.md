@@ -663,3 +663,27 @@ the PLAYER view. Checked in the running app over two rounds with a substitution.
   starting at 0. Records why counting happens when a round ends rather than in `UPDATE_TEAM_STATS`,
   why a substituted-off starter needs a marker, and why AI catch-up rounds now get a real lineup.
 - [[index]]: spec added; new thread for the season totals nothing shows.
+
+## [2026-10-08] spec | MS-115 — division strength ranges replace XP
+
+sha 9066f0d
+
+Player strength now moves on a rubber band: each league division owns a slice of 1–99, squads start
+in it, and every few team games each player steps by morale and age, pulled toward the slice when
+outside it. XP is gone and the save version is 6. Verified by a scripted three-season run of both
+pyramids, not in the running app.
+
+- [[player-strength-progression]]: new spec, replacing `specs/player-xp.md` (moved, then rewritten).
+  Amended on 2026-10-08 to a two-way pull outside the range after the scripted run showed relegated
+  squads never came down.
+- [[ms-115-strength-ranges]]: new decision. Why XP went, counting at round end, new phases dealt
+  the squads as they stand (a staleness bug the run found, which also affected MS-114's counters),
+  the two-way pull with its numbers, band edges, tier count, youth clamp, abandoned saves and the
+  `spg` save key.
+- [[invented-data]]: "Invented by MS-115" (floor rule, linear remap, ±2 spread); MS-106/MS-112
+  strength notes marked superseded; the MS-113 youth clamp now 1–99.
+- [[player-retirement]], [[player-season-stats]], [[match-simulation]], [[ms-108-saved-game-size]]:
+  XP mentions brought up to date; save version 6 noted.
+- [[index]]: spec and decision rows; "Neighbouring men's divisions' strengths overlap" closed; new
+  thread for squads saturating at the top of their range.
+- `CLAUDE.md`: the knowledge-base pointer now names the new spec.

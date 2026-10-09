@@ -99,7 +99,8 @@ reasoning behind past decisions, and the specs the code must satisfy. It replace
 - **Start at `wiki/index.md`** — it catalogs every page. Read it before answering a domain question.
 - `wiki/CLAUDE.md` is its schema: how to ingest sources, what gets a page, how to lint. Read it
   before writing anything under `wiki/`.
-- `wiki/specs/player-xp.md` is the contract for `PlayerProgressionService.ts`.
+- `wiki/specs/player-strength-progression.md` is the contract for `PlayerProgressionService.ts` and
+  `src/domain/features/strength-progression/`.
 
 **Its one rule:** a fact you can get by reading the repo does not get a wiki page. Code, seed JSON
 and git history are the truth for those.

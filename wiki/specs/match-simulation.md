@@ -22,11 +22,12 @@ asserts:
 > If the code and this page disagree, the code is wrong until the user says otherwise. The user owns
 > this page; Claude keeps it in sync and drafts changes, but does not change the rules unilaterally.
 
-> **Provenance.** Unlike [[player-xp]], this page was drafted on 2026-09-20 by reading the
-> implementation, because no written spec existed for it. Every number below was a tuning constant
-> someone chose; from this page's date onward they are the contract, and a change to one is a change
-> to this page. Prose that only restates control flow was deliberately left out — the code is the
-> truth for that, per the wiki's one rule in [[CLAUDE]].
+> **Provenance.** Unlike the user's XP spec (since replaced by [[player-strength-progression]]),
+> this page was drafted on 2026-09-20 by reading the implementation, because no written spec existed
+> for it. Every number below was a tuning constant someone chose; from this page's date onward they
+> are the contract, and a change to one is a change to this page. Prose that only restates control
+> flow was deliberately left out — the code is the truth for that, per the wiki's one rule in
+> [[CLAUDE]].
 
 # Match simulation
 

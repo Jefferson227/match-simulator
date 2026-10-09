@@ -61,7 +61,8 @@ numbers are low until the next NEW SEASON. The save version did not change.
 
 ## Why counting happens when a round ends
 
-The obvious place was `UPDATE_TEAM_STATS`, which already updates XP and morale after every round.
+The obvious place was `UPDATE_TEAM_STATS`, which then updated XP and morale after every round (morale
+only since MS-115).
 It was rejected for two reasons:
 
 - it reads only the **last** finished round, and an AI division can end several rounds in one

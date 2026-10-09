@@ -46,7 +46,7 @@ Contracts the code is judged against. The user owns these.
 
 | Page | Implemented by |
 |---|---|
-| [[player-xp]] | `src/domain/services/PlayerProgressionService.ts` |
+| [[player-strength-progression]] | `src/domain/services/PlayerProgressionService.ts`, `src/domain/features/strength-progression/`, `ChampionshipService.endRound` |
 | [[match-simulation]] | `src/domain/features/match-simulation/`, `src/domain/services/MatchService.ts` |
 | [[player-stamina]] | `src/domain/features/match-simulation/StaminaPolicy.ts`, `StrengthResolver.ts` |
 | [[player-retirement]] | `src/domain/services/SeasonAgeingService.ts`, `src/domain/features/retirement/` |
@@ -74,6 +74,7 @@ Why things are the way they are — the part the code cannot state.
 | [[ms-110-language-selection]] | MS-110 | implemented; verified in the running app |
 | [[ms-112-2026-rosters-and-serie-d]] | MS-112 | implemented; playoff screens covered by component tests only (running-app check waived) |
 | [[ms-113-ageing-and-retirement]] | MS-113 | implemented; verified in the running app |
+| [[ms-115-strength-ranges]] | MS-115 | implemented; spec amended to a two-way pull; verified by a scripted engine run, not the running app |
 
 ## Raw
 
@@ -121,9 +122,12 @@ Things named across these pages that nothing currently owns:
   [[player-season-stats]].
 - ~~**Real player ages have never been obtained.**~~ — **closed by MS-112.** Every age now comes
   from the 2026 ogol rosters, as of 2026-09-22. See [[player-ages]].
-- **Neighbouring men's divisions' strengths overlap.** Since MS-112 clubs keep their strength when
-  they change division, so B/C and C/D overlap as A/B always did; only the averages are ordered. No
-  ticket. See [[invented-data]].
+- ~~**Neighbouring men's divisions' strengths overlap.**~~ — **closed by MS-115.** Every division
+  owns a slice of 1–99, squads start in it, and a promoted or relegated squad is pulled into its new
+  slice. See [[player-strength-progression]].
+- **Squads saturate at the top of their range.** Inside the range mid and high morale both
+  increase, and morale drifts up, so by season 3 of a scripted run 84% of Série A players were at
+  99. Strength stops telling a division's clubs apart. No ticket. See [[ms-115-strength-ranges]].
 - **Coaches and nationalities are not shown.** MS-112 added both to the seed and neither to any
   screen. No ticket. See [[ms-112-2026-rosters-and-serie-d]].
 - **Série C and D stop tracking reality from 2027.** The game's 6 ↔ 6 keeps both sizes fixed, while

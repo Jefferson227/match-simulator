@@ -1,7 +1,7 @@
 ---
 title: Invented data
 type: concept
-verified: 2026-09-23
+verified: 2026-10-08
 sources: [atletas-api, rec-a3-2026, rec-copa-2026, jogos-api, rec-serie-c-2025, rec-serie-d-2025, rec-serie-c-2026, rec-serie-d-2026, ogol-rosters-2026, tabelas-serie-d-2026, tabela-serie-d-2026]
 ---
 
@@ -103,7 +103,8 @@ the four big choices are on [[ms-106-mens-lower-divisions]].
   Fase table. For D it is REC D Art. 22's order derived from the match API: elimination round first,
   then accumulated points, wins, goal difference and goals for; 1º–4º match REC C 2026 Anexo B. D
   sits below the seed's old 41 floor on purpose. The engine's only floor is a player strength of 1,
-  and players are drawn at team strength ± 5.
+  and players are drawn at team strength ± 5. *Since MS-115 the seed strength only orders a
+  division's clubs; players start inside the division's range (see below).*
   - The pre-existing Série A and B strengths **overlap**: A's floor is 55 and B's ceiling is 75.
     Only their averages are ordered. MS-106 left them alone.
 - **Colours.** 31 clubs wear their real colours:
@@ -158,10 +159,12 @@ rosters. The reasons are on [[ms-112-2026-rosters-and-serie-d]]. Invented:
   difference and goals for (from `tabelas-serie-d-2026` phase `2040`), evenly spaced and rounded.
   Guaporé and Gama get 43; Laguna and Inhumas get 28. The merge script holds each club's record, so
   the order is reproducible. It is invented because a first-phase record is not a strength.
-- **Every other strength stays where MS-102/MS-106 put it, even across a division change.** A
-  club relegated from B keeps its B strength and a club promoted from C its C one. So neighbouring
-  divisions now **overlap**: B's weakest is 52 against C's strongest 61, and C's weakest 43 against
-  D's strongest 45. Only the divisions' averages are ordered (A 81.2 > B 62.6 > C 49.1 > D 36.1).
+- ~~**Every other strength stays where MS-102/MS-106 put it, even across a division change.**~~
+  *Superseded by MS-115:* the seed strength now only orders a division's clubs, and squads start in
+  the division's range. Until then a club relegated from B kept its B strength and a club promoted
+  from C its C one, so neighbouring divisions **overlapped**: B's weakest was 52 against C's
+  strongest 61, and C's weakest 43 against D's strongest 45. Only the divisions' averages were
+  ordered (A 81.2 > B 62.6 > C 49.1 > D 36.1). The seed values are unchanged.
 - **Colours.** The 44 new clubs wear **researched** real colours, one cited source each: 31 from
   pt.wikipedia kit fields and 13 read off the CBF crest (`crests`). Sources disagreed on six, and
   the choice is recorded per club in the MS-112 research:
@@ -208,13 +211,31 @@ Everyone generated when a player or coach retires ([[player-retirement]],
 spec; these do not:
 
 - **A youth replacement is 10 weaker than the squad around them.** Their strength is a seed-loader
-  roll around the rest of the squad's average (±5), less 10, never below 1. The 10 has no source.
+  roll around the rest of the squad's average (±5), less 10, kept within 1–99 (1–100 before
+  MS-115). The 10 has no source.
 - **Every generated player and coach is Brazilian** (`BRA`).
 - **The names.** `src/domain/constants/GeneratedNames.ts` holds 60 men's and 60 women's first names,
   80 surnames shared by both, and 30 nicknames for each. They are common Brazilian names chosen for
   the game, not drawn from any roster, so a generated player can share a name with a real person.
 - **A fifth of generated players go by a nickname alone**, and a women's club's generated coach is a
   woman half the time. Both are the user's choices, not observed rates.
+
+## Invented by MS-115
+
+The rules of [[player-strength-progression]] — the morale and age bands, the games-per-change
+table and the steps — are the user's spec. These are not, and nothing publishes them:
+
+- **The floor rule.** The brief gave Série D as "1 to 24" and asked for 1–99 "divided by 4 (with
+  zero decimal places)"; `floor(99 × k / N)` for the k-th tier from the bottom reproduces that and
+  generalises to the women's 3 tiers (33 / 66 / 99). The rounding is a choice.
+- **The linear remap.** A club's starting target is its `initialOverallStrength` mapped linearly
+  from its division's seed min..max onto the division's range, rounded; a division whose clubs
+  share one strength takes the midpoint. Any monotone map would keep the seed order.
+- **The ±2 spread.** Players start at the club target ± 2, kept inside the range. The old seed
+  loader used ± 5 on a 1–100 scale; 2 keeps a squad near its club's place in a 24-point range.
+
+The seed's `initialOverallStrength` values themselves stay as MS-102/MS-106/MS-112 invented them;
+they now decide only the order of a division's clubs, not their level.
 
 ## Provenance detail
 

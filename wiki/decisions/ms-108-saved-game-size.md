@@ -109,13 +109,17 @@ playable pointer and optional cups — instead of three named slots, so the payl
 `saveVersion: 3` under the same storage key. A version-2 save is abandoned the same way: its version
 does not match, so it reads as no saved game. See [[ms-109-full-pyramid-container]].
 
+**Version 6 (MS-115).** Players lost `xp` and gained a strength progress counter, saved under the
+short key `spg`. Version-5 saves are abandoned the same way. See [[ms-115-strength-ranges]].
+
 ## The equivalence rule, and what a reload loses
 
 A played match currently carries a **historical snapshot** of its two clubs — their `morale`, and
-each player's `xp` / `strength` / `isStarter` / `isSub` as they stood when that match was played —
-because `TeamStatsService.updateChampionshipTeamStats` only refreshes fixtures in rounds whose
-`status` is `not-started`. Those snapshots are **not preserved** across a save: after a reload, every
-past match references the club as it is now.
+each player's `xp` (since MS-115, the strength progress counter) / `strength` / `isStarter` /
+`isSub` as they stood when that match was played — because
+`TeamStatsService.updateChampionshipTeamStats` only refreshes fixtures in rounds whose `status` is
+`not-started`. Those snapshots are **not preserved** across a save: after a reload, every past match
+references the club as it is now.
 
 This is a deliberate loss, and it is bounded:
 
