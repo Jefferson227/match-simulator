@@ -25,6 +25,12 @@ import { getSeasonRoundCount } from '../features/phases/SeasonRoundCount';
 import { applyMatchStats } from '../features/player-stats/SeasonStats';
 import { pickRandomLineup } from '../features/lineup/RandomLineup';
 import {
+  getDivisionStrengthRange,
+  StrengthRange,
+} from '../features/strength-progression/StrengthRange';
+import PlayerProgressionService from './PlayerProgressionService';
+import Player from '../models/Player';
+import {
   getDivisionAbove,
   getDivisionBelow,
   getPlayableChampionship,
@@ -122,9 +128,14 @@ function startRound(championship: Championship): Championship {
   };
 }
 
+/**
+ * Ends the current round. `range` is the division's strength range; when given, every club that
+ * played moves its squad's strength (MS-115). A cup has none.
+ */
 function endRound(
   championship: Championship,
-  dependencies: ChampionshipServiceDependencies = {}
+  dependencies: ChampionshipServiceDependencies = {},
+  range?: StrengthRange
 ): Championship {
   if (!championship?.matchContainer?.rounds) {
     throw new Error("Championship couldn't be found.");
@@ -157,16 +168,20 @@ function endRound(
     status: 'ended',
   };
 
-  const withRoundEnded: Championship = withSeasonStats(
-    {
-      ...championship,
-      standings: updatedStandings,
-      matchContainer: {
-        ...matchContainer,
-        rounds: updatedRounds,
+  const withRoundEnded: Championship = withStrengthProgression(
+    withSeasonStats(
+      {
+        ...championship,
+        standings: updatedStandings,
+        matchContainer: {
+          ...matchContainer,
+          rounds: updatedRounds,
+        },
       },
-    },
-    round.matches
+      round.matches
+    ),
+    round.matches,
+    range
   );
 
   // A phased championship does not end when its rounds run out — it resolves the phase and
@@ -204,24 +219,66 @@ function endRound(
  * rounds a new phase generates start from the updated clubs.
  */
 function withSeasonStats(championship: Championship, matches: Match[]): Championship {
-  const teams = applyMatchStats(championship.teams, matches);
-  const counted = teams.filter((team, index) => team !== championship.teams[index]);
-  if (counted.length === 0) return championship;
-
-  const countedTeamIds = new Set(counted.map((team) => team.id));
-  const counters = new Map(
-    counted.flatMap((team) =>
-      team.players.map((player) => [
-        player.id,
-        { seasonGames: player.seasonGames, seasonGoals: player.seasonGoals },
-      ])
-    )
+  return withUpdatedSquads(
+    championship,
+    applyMatchStats(championship.teams, matches),
+    ({ seasonGames, seasonGoals }) => ({ seasonGames, seasonGoals })
   );
-  const withCounters = (team: Team): Team =>
-    countedTeamIds.has(team.id)
+}
+
+/**
+ * Advances the strength of every player of every club in `matches`, once per match the club
+ * played (MS-115). Counted here for the reason `withSeasonStats` is: every round of every division
+ * ends here exactly once. Morale is the club's as it stands, before `UPDATE_TEAM_STATS` applies
+ * the round's result. Clubs that did not play — knocked out, or a bye — are left alone, and so is
+ * a division with no `range`.
+ */
+function withStrengthProgression(
+  championship: Championship,
+  matches: Match[],
+  range: StrengthRange | undefined
+): Championship {
+  if (!range) return championship;
+
+  const gamesPlayed = new Map<Team['id'], number>();
+  matches.forEach(({ homeTeam, awayTeam }) => {
+    gamesPlayed.set(homeTeam.id, (gamesPlayed.get(homeTeam.id) ?? 0) + 1);
+    gamesPlayed.set(awayTeam.id, (gamesPlayed.get(awayTeam.id) ?? 0) + 1);
+  });
+
+  return withUpdatedSquads(
+    championship,
+    championship.teams.map((team) =>
+      PlayerProgressionService.progressTeamPlayers(team, gamesPlayed.get(team.id) ?? 0, range)
+    ),
+    ({ strength, strengthProgressGames }) => ({ strength, strengthProgressGames })
+  );
+}
+
+/**
+ * `championship` with `teams` swapped in, and `pick`'s fields copied by player id from every club
+ * that changed to the copies the next fixtures and phases are built from: the table rows and every
+ * fixture not yet started. Only the picked fields are copied, so a fixture keeps its lineup and a
+ * table row its snapshot. `teams` must be `championship.teams` mapped, unchanged clubs by
+ * reference.
+ */
+function withUpdatedSquads(
+  championship: Championship,
+  teams: Team[],
+  pick: (player: Player) => Partial<Player>
+): Championship {
+  const changed = teams.filter((team, index) => team !== championship.teams[index]);
+  if (changed.length === 0) return championship;
+
+  const changedTeamIds = new Set(changed.map((team) => team.id));
+  const fields = new Map(
+    changed.flatMap((team) => team.players.map((player) => [player.id, pick(player)]))
+  );
+  const withPickedFields = (team: Team): Team =>
+    changedTeamIds.has(team.id)
       ? {
           ...team,
-          players: team.players.map((player) => ({ ...player, ...counters.get(player.id) })),
+          players: team.players.map((player) => ({ ...player, ...fields.get(player.id) })),
         }
       : team;
 
@@ -230,7 +287,7 @@ function withSeasonStats(championship: Championship, matches: Match[]): Champion
     teams,
     standings: championship.standings.map((standing) => ({
       ...standing,
-      team: withCounters(standing.team),
+      team: withPickedFields(standing.team),
     })),
     matchContainer: {
       ...championship.matchContainer,
@@ -240,8 +297,8 @@ function withSeasonStats(championship: Championship, matches: Match[]): Champion
               ...round,
               matches: round.matches.map((match) => ({
                 ...match,
-                homeTeam: withCounters(match.homeTeam),
-                awayTeam: withCounters(match.awayTeam),
+                homeTeam: withPickedFields(match.homeTeam),
+                awayTeam: withPickedFields(match.awayTeam),
               })),
             }
           : round
@@ -1024,7 +1081,8 @@ function countCompletedRounds(championship: Championship): number {
 function playRoundsOwed(
   championship: Championship,
   targetCompletedRounds: number,
-  dependencies: ChampionshipServiceDependencies
+  dependencies: ChampionshipServiceDependencies,
+  range?: StrengthRange
 ): Championship {
   if (!championship?.matchContainer?.rounds) return championship;
 
@@ -1042,9 +1100,11 @@ function playRoundsOwed(
     );
     if (!hasRoundToPlay) break;
 
-    current = endRound(simulateRoundInOnePass(withAiLineups(startRound(current), rng), rng), {
-      rng,
-    });
+    current = endRound(
+      simulateRoundInOnePass(withAiLineups(startRound(current), rng), rng),
+      { rng },
+      range
+    );
   }
 
   return current;
@@ -1108,7 +1168,11 @@ const endRoundForAllChampionships = (
 ): OperationResult<ChampionshipContainer> => {
   try {
     const previousChampionship = getPlayableChampionship(championshipContainer);
-    const playable = endRound(previousChampionship, dependencies);
+    const playable = endRound(
+      previousChampionship,
+      dependencies,
+      getDivisionStrengthRange(championshipContainer, previousChampionship)
+    );
 
     let updatedChampionshipContainer = replaceChampionship(championshipContainer, playable);
 
@@ -1122,7 +1186,8 @@ const endRoundForAllChampionships = (
           : playRoundsOwed(
               championship,
               seasonIsOver ? Infinity : paceTarget(playable, championship),
-              dependencies
+              dependencies,
+              getDivisionStrengthRange(championshipContainer, championship)
             )
       ),
     };

@@ -585,3 +585,206 @@ describe('ChampionshipService season stats (MS-114)', () => {
     });
   });
 });
+
+describe('ChampionshipService strength progression (MS-115)', () => {
+  const fixture = (id: string, homeTeam: Team, awayTeam: Team): Match => ({
+    id,
+    homeTeam,
+    homeTeamScore: 1,
+    awayTeamScore: 0,
+    awayTeam,
+    scorers: [],
+  });
+
+  const roundOf = (number: number, status: Round['status'], matches: Match[]): Round => ({
+    id: `round-${number}`,
+    number,
+    status,
+    matches,
+  });
+
+  const leagueOf = (
+    internalName: string,
+    tier: number | undefined,
+    teams: Team[],
+    rounds: Round[]
+  ): Championship =>
+    ({
+      id: internalName,
+      name: internalName,
+      internalName,
+      ...(tier !== undefined && { tier }),
+      numberOfTeams: teams.length,
+      teams,
+      standings: teams.map((team, index) => ({
+        team,
+        position: index + 1,
+        wins: 0,
+        draws: 0,
+        losses: 0,
+        goalsFor: 0,
+        goalsAgainst: 0,
+        points: 0,
+      })),
+      matchContainer: {
+        timer: 0,
+        currentSeason: 2026,
+        currentRound: 1,
+        totalRounds: rounds.length,
+        rounds,
+      },
+      type: 'double-round-robin',
+      leagueType: 'mens',
+      hasTeamControlledByHuman: false,
+      isPromotable: false,
+      isRelegatable: false,
+    }) as Championship;
+
+  /** A squad of `buildSquadTeam(index)` at one morale, age, strength and counter. */
+  const squad = (
+    index: number,
+    morale: number,
+    player: Pick<Player, 'age' | 'strength' | 'strengthProgressGames'>
+  ): Team => {
+    const team = buildSquadTeam(index);
+    return { ...team, morale, players: team.players.map((p) => ({ ...p, ...player })) };
+  };
+
+  const endAll = (container: ChampionshipContainer, rng?: RandomProvider) => {
+    const result = ChampionshipService.endRoundForAllChampionships(container, rng ? { rng } : {});
+    expect(result.succeeded).toBe(true);
+    return result.getResult();
+  };
+
+  const strengths = (team: Team) => [...new Set(team.players.map((player) => player.strength))];
+  const counters = (team: Team) => [
+    ...new Set(team.players.map((player) => player.strengthProgressGames)),
+  ];
+
+  /**
+   * A two-tier pyramid: the playable division is the bottom tier (range 1–49) with three clubs.
+   * `home` (high morale, 20-year-olds: every game) beats `away` (low morale, 26-year-olds one game
+   * short of their 4) in round 1; `idle` plays nobody. A bench player sits outside the lineup.
+   */
+  function bottomTierAfterRoundOne(status: Round['status'] = 'in-progress', tier = 2) {
+    const homeCanonical = squad(1, 80, { age: 20, strength: 30, strengthProgressGames: 0 });
+    const bench: Player = {
+      ...homeCanonical.players[1],
+      id: 'player-1-bench' as Player['id'],
+      isStarter: false,
+      isSub: false,
+    };
+    const home = { ...homeCanonical, players: [...homeCanonical.players, bench] };
+    const away = squad(2, 30, { age: 26, strength: 30, strengthProgressGames: 3 });
+    const idle = squad(3, 80, { age: 20, strength: 30, strengthProgressGames: 0 });
+    const homeInRoundOne = { ...home, players: homeCanonical.players };
+
+    const playable = leagueOf(
+      'playable',
+      tier === 0 ? undefined : tier,
+      [home, away, idle],
+      [
+        roundOf(1, status, [fixture('m1', homeInRoundOne, away)]),
+        roundOf(2, 'not-started', [fixture('m2', away, home)]),
+      ]
+    );
+    const top = leagueOf('top', 1, [], []);
+
+    return { container: containerOf(playable, [top]), home, away, idle };
+  }
+
+  it('moves every player of every club that played, bench included', () => {
+    const { container, home, away } = bottomTierAfterRoundOne();
+
+    const ended = getPlayableChampionship(endAll(container));
+    const endedHome = ended.teams.find((team) => team.id === home.id)!;
+    const endedAway = ended.teams.find((team) => team.id === away.id)!;
+
+    expect(endedHome.players).toHaveLength(home.players.length);
+    expect(strengths(endedHome)).toEqual([31]);
+    expect(counters(endedHome)).toEqual([0]);
+    expect(strengths(endedAway)).toEqual([29]);
+    expect(counters(endedAway)).toEqual([0]);
+  });
+
+  it('leaves a club that did not play untouched', () => {
+    const { container, idle } = bottomTierAfterRoundOne();
+
+    const ended = getPlayableChampionship(endAll(container));
+
+    expect(ended.teams.find((team) => team.id === idle.id)).toBe(idle);
+  });
+
+  it('carries strength and counter to the table rows and the fixtures still to play', () => {
+    const { container, home } = bottomTierAfterRoundOne();
+
+    const ended = getPlayableChampionship(endAll(container));
+    const row = ended.standings.find((standing) => standing.team.id === home.id)!;
+    const next = ended.matchContainer.rounds[1].matches[0].awayTeam;
+    const played = ended.matchContainer.rounds[0].matches[0].homeTeam;
+
+    expect(strengths(row.team)).toEqual([31]);
+    expect(strengths(next)).toEqual([31]);
+    expect(counters(next)).toEqual([0]);
+    // Only the two fields are copied: the fixture keeps its lineup.
+    expect(next.players.map((player) => player.isStarter)).toEqual(
+      home.players.map((player) => player.isStarter)
+    );
+    // The played round keeps its own snapshot.
+    expect(strengths(played)).toEqual([30]);
+  });
+
+  it('does not move anyone for a round that has already ended', () => {
+    const { container, home } = bottomTierAfterRoundOne('ended');
+
+    const ended = getPlayableChampionship(endAll(container));
+
+    expect(strengths(ended.teams.find((team) => team.id === home.id)!)).toEqual([30]);
+  });
+
+  it('leaves a tierless competition alone', () => {
+    const { container, home } = bottomTierAfterRoundOne('in-progress', 0);
+
+    const ended = getPlayableChampionship(endAll(container));
+    const endedHome = ended.teams.find((team) => team.id === home.id)!;
+
+    expect(strengths(endedHome)).toEqual([30]);
+    expect(counters(endedHome)).toEqual([0]);
+  });
+
+  it('counts every round an AI division catches up in one call, each exactly once', () => {
+    const { container } = bottomTierAfterRoundOne();
+    // Mid morale, 26-year-olds: one step every 4 games, inside the top tier's 50–99.
+    const aiHome = squad(4, 50, { age: 26, strength: 60, strengthProgressGames: 0 });
+    const aiAway = squad(5, 50, { age: 26, strength: 60, strengthProgressGames: 0 });
+    const ai = leagueOf(
+      'top',
+      1,
+      [aiHome, aiAway],
+      Array.from({ length: 8 }, (_, i) =>
+        roundOf(i + 1, 'not-started', [
+          i % 2 === 0 ? fixture(`a${i}`, aiHome, aiAway) : fixture(`a${i}`, aiAway, aiHome),
+        ])
+      )
+    );
+    let seed = 0;
+    const rng: RandomProvider = {
+      nextInt: (min, max) =>
+        min + ((seed = (seed * 1103515245 + 12345) % 2147483648) % (max - min + 1)),
+    };
+
+    const caughtUp = getChampionshipByInternalName(
+      endAll({ ...container, championships: [ai, container.championships[1]] }, rng),
+      'top'
+    )!;
+
+    const roundsPlayed = caughtUp.matchContainer.rounds.filter(
+      (round) => round.status === 'ended'
+    ).length;
+    expect(roundsPlayed).toBeGreaterThan(4);
+    caughtUp.teams.forEach((team) => {
+      expect(strengths(team)).toEqual([60 + Math.floor(roundsPlayed / 4)]);
+      expect(counters(team)).toEqual([roundsPlayed % 4]);
+    });
+  });
+});
