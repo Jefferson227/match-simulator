@@ -125,10 +125,7 @@
         "numberOfTies": 1,
         "legs": 2,
         "secondLegHost": "accumulated-points",
-        "tiebreakers": [
-          "goal-difference",
-          "penalties"
-        ],
+        "tiebreakers": ["goal-difference", "penalties"],
         "crossings": {
           "from": "group-position",
           "pairs": [
@@ -271,10 +268,7 @@
         "numberOfTies": 32,
         "legs": 2,
         "secondLegHost": "group-winner",
-        "tiebreakers": [
-          "goal-difference",
-          "penalties"
-        ],
+        "tiebreakers": ["goal-difference", "penalties"],
         "crossings": {
           "from": "group-position",
           "pairs": [
@@ -607,77 +601,26 @@
         "numberOfTies": 16,
         "legs": 2,
         "secondLegHost": "accumulated-points",
-        "tiebreakers": [
-          "goal-difference",
-          "penalties"
-        ],
+        "tiebreakers": ["goal-difference", "penalties"],
         "crossings": {
           "from": "previous-ties",
           "pairs": [
-            [
-              0,
-              5
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              2,
-              7
-            ],
-            [
-              3,
-              6
-            ],
-            [
-              8,
-              13
-            ],
-            [
-              9,
-              12
-            ],
-            [
-              10,
-              15
-            ],
-            [
-              11,
-              14
-            ],
-            [
-              16,
-              21
-            ],
-            [
-              17,
-              20
-            ],
-            [
-              18,
-              23
-            ],
-            [
-              19,
-              22
-            ],
-            [
-              24,
-              29
-            ],
-            [
-              25,
-              28
-            ],
-            [
-              26,
-              31
-            ],
-            [
-              27,
-              30
-            ]
+            [0, 5],
+            [1, 4],
+            [2, 7],
+            [3, 6],
+            [8, 13],
+            [9, 12],
+            [10, 15],
+            [11, 14],
+            [16, 21],
+            [17, 20],
+            [18, 23],
+            [19, 22],
+            [24, 29],
+            [25, 28],
+            [26, 31],
+            [27, 30]
           ]
         }
       },
@@ -687,45 +630,18 @@
         "numberOfTies": 8,
         "legs": 2,
         "secondLegHost": "accumulated-points",
-        "tiebreakers": [
-          "goal-difference",
-          "penalties"
-        ],
+        "tiebreakers": ["goal-difference", "penalties"],
         "crossings": {
           "from": "previous-ties",
           "pairs": [
-            [
-              0,
-              5
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              2,
-              7
-            ],
-            [
-              3,
-              6
-            ],
-            [
-              8,
-              13
-            ],
-            [
-              9,
-              12
-            ],
-            [
-              10,
-              15
-            ],
-            [
-              11,
-              14
-            ]
+            [0, 5],
+            [1, 4],
+            [2, 7],
+            [3, 6],
+            [8, 13],
+            [9, 12],
+            [10, 15],
+            [11, 14]
           ]
         }
       },
@@ -735,10 +651,7 @@
         "numberOfTies": 4,
         "legs": 2,
         "secondLegHost": "higher-seed",
-        "tiebreakers": [
-          "goal-difference",
-          "penalties"
-        ],
+        "tiebreakers": ["goal-difference", "penalties"],
         "reseed": "accumulated-points"
       },
       {
@@ -747,28 +660,16 @@
         "numberOfTies": 2,
         "legs": 2,
         "secondLegHost": "accumulated-points",
-        "tiebreakers": [
-          "goal-difference",
-          "penalties"
-        ],
+        "tiebreakers": ["goal-difference", "penalties"],
         "playoff": {
           "name": "Playoffs",
           "from": "previous-phase-losers",
           "pairs": [
-            [
-              1,
-              4
-            ],
-            [
-              2,
-              3
-            ]
+            [1, 4],
+            [2, 3]
           ],
           "secondLegHost": "higher-seed",
-          "tiebreakers": [
-            "goal-difference",
-            "seed"
-          ]
+          "tiebreakers": ["goal-difference", "seed"]
         }
       },
       {
@@ -777,10 +678,7 @@
         "numberOfTies": 1,
         "legs": 2,
         "secondLegHost": "accumulated-points",
-        "tiebreakers": [
-          "goal-difference",
-          "penalties"
-        ]
+        "tiebreakers": ["goal-difference", "penalties"]
       }
     ]
   },
@@ -811,10 +709,7 @@
         "numberOfTies": 4,
         "legs": 2,
         "secondLegHost": "higher-seed",
-        "tiebreakers": [
-          "goal-difference",
-          "penalties"
-        ]
+        "tiebreakers": ["goal-difference", "penalties"]
       },
       {
         "kind": "knockout",
@@ -822,10 +717,7 @@
         "numberOfTies": 2,
         "legs": 2,
         "secondLegHost": "accumulated-points",
-        "tiebreakers": [
-          "goal-difference",
-          "penalties"
-        ]
+        "tiebreakers": ["goal-difference", "penalties"]
       },
       {
         "kind": "knockout",
@@ -833,10 +725,7 @@
         "numberOfTies": 1,
         "legs": 2,
         "secondLegHost": "accumulated-points",
-        "tiebreakers": [
-          "goal-difference",
-          "penalties"
-        ]
+        "tiebreakers": ["goal-difference", "penalties"]
       }
     ],
     "teamNames": [
@@ -890,10 +779,7 @@
         "numberOfTies": 4,
         "legs": 2,
         "secondLegHost": "higher-seed",
-        "tiebreakers": [
-          "goal-difference",
-          "penalties"
-        ]
+        "tiebreakers": ["goal-difference", "penalties"]
       },
       {
         "kind": "knockout",
@@ -901,10 +787,7 @@
         "numberOfTies": 2,
         "legs": 2,
         "secondLegHost": "accumulated-points",
-        "tiebreakers": [
-          "goal-difference",
-          "penalties"
-        ]
+        "tiebreakers": ["goal-difference", "penalties"]
       },
       {
         "kind": "knockout",
@@ -912,10 +795,7 @@
         "numberOfTies": 1,
         "legs": 2,
         "secondLegHost": "accumulated-points",
-        "tiebreakers": [
-          "goal-difference",
-          "penalties"
-        ]
+        "tiebreakers": ["goal-difference", "penalties"]
       }
     ],
     "teamNames": [
@@ -962,10 +842,7 @@
         "numberOfTies": 8,
         "legs": 2,
         "secondLegHost": "group-winner",
-        "tiebreakers": [
-          "goal-difference",
-          "penalties"
-        ]
+        "tiebreakers": ["goal-difference", "penalties"]
       },
       {
         "kind": "knockout",
@@ -973,10 +850,7 @@
         "numberOfTies": 4,
         "legs": 2,
         "secondLegHost": "accumulated-points",
-        "tiebreakers": [
-          "goal-difference",
-          "penalties"
-        ]
+        "tiebreakers": ["goal-difference", "penalties"]
       },
       {
         "kind": "knockout",
@@ -984,10 +858,7 @@
         "numberOfTies": 2,
         "legs": 2,
         "secondLegHost": "accumulated-points",
-        "tiebreakers": [
-          "goal-difference",
-          "penalties"
-        ]
+        "tiebreakers": ["goal-difference", "penalties"]
       },
       {
         "kind": "knockout",
@@ -995,10 +866,7 @@
         "numberOfTies": 1,
         "legs": 2,
         "secondLegHost": "accumulated-points",
-        "tiebreakers": [
-          "goal-difference",
-          "penalties"
-        ]
+        "tiebreakers": ["goal-difference", "penalties"]
       }
     ],
     "phaseVariants": [
@@ -1019,10 +887,7 @@
             "numberOfTies": 8,
             "legs": 2,
             "secondLegHost": "group-winner",
-            "tiebreakers": [
-              "goal-difference",
-              "penalties"
-            ]
+            "tiebreakers": ["goal-difference", "penalties"]
           },
           {
             "kind": "knockout",
@@ -1030,10 +895,7 @@
             "numberOfTies": 4,
             "legs": 2,
             "secondLegHost": "accumulated-points",
-            "tiebreakers": [
-              "goal-difference",
-              "penalties"
-            ]
+            "tiebreakers": ["goal-difference", "penalties"]
           },
           {
             "kind": "knockout",
@@ -1041,10 +903,7 @@
             "numberOfTies": 2,
             "legs": 2,
             "secondLegHost": "accumulated-points",
-            "tiebreakers": [
-              "goal-difference",
-              "penalties"
-            ]
+            "tiebreakers": ["goal-difference", "penalties"]
           },
           {
             "kind": "knockout",
@@ -1052,10 +911,7 @@
             "numberOfTies": 1,
             "legs": 2,
             "secondLegHost": "accumulated-points",
-            "tiebreakers": [
-              "goal-difference",
-              "penalties"
-            ]
+            "tiebreakers": ["goal-difference", "penalties"]
           }
         ]
       },
@@ -1076,10 +932,7 @@
             "numberOfTies": 4,
             "legs": 2,
             "secondLegHost": "group-winner",
-            "tiebreakers": [
-              "goal-difference",
-              "penalties"
-            ]
+            "tiebreakers": ["goal-difference", "penalties"]
           },
           {
             "kind": "knockout",
@@ -1087,10 +940,7 @@
             "numberOfTies": 2,
             "legs": 2,
             "secondLegHost": "accumulated-points",
-            "tiebreakers": [
-              "goal-difference",
-              "penalties"
-            ]
+            "tiebreakers": ["goal-difference", "penalties"]
           },
           {
             "kind": "knockout",
@@ -1098,10 +948,7 @@
             "numberOfTies": 1,
             "legs": 2,
             "secondLegHost": "accumulated-points",
-            "tiebreakers": [
-              "goal-difference",
-              "penalties"
-            ]
+            "tiebreakers": ["goal-difference", "penalties"]
           }
         ]
       }
@@ -1155,15 +1002,10 @@
         "numberOfTies": 1,
         "legs": 1,
         "secondLegHost": "drawn",
-        "tiebreakers": [
-          "penalties"
-        ]
+        "tiebreakers": ["penalties"]
       }
     ],
-    "teamNames": [
-      "corinthians",
-      "palmeiras"
-    ]
+    "teamNames": ["corinthians", "palmeiras"]
   },
   {
     "name": "COPA DO BRASIL FEMININA",
@@ -1179,15 +1021,8 @@
         "numberOfTies": 2,
         "legs": 1,
         "secondLegHost": "drawn",
-        "tiebreakers": [
-          "penalties"
-        ],
-        "entrants": [
-          "liga-sanjoanense",
-          "sampaio-correa",
-          "pantanal",
-          "portuguesa"
-        ]
+        "tiebreakers": ["penalties"],
+        "entrants": ["liga-sanjoanense", "sampaio-correa", "pantanal", "portuguesa"]
       },
       {
         "kind": "knockout",
@@ -1195,9 +1030,7 @@
         "numberOfTies": 16,
         "legs": 1,
         "secondLegHost": "drawn",
-        "tiebreakers": [
-          "penalties"
-        ],
+        "tiebreakers": ["penalties"],
         "entrants": [
           "sao-jose",
           "remo",
@@ -1237,9 +1070,7 @@
         "numberOfTies": 16,
         "legs": 1,
         "secondLegHost": "drawn",
-        "tiebreakers": [
-          "penalties"
-        ],
+        "tiebreakers": ["penalties"],
         "entrants": [
           "sport-recife",
           "instituto-3b",
@@ -1265,9 +1096,7 @@
         "numberOfTies": 16,
         "legs": 1,
         "secondLegHost": "drawn",
-        "tiebreakers": [
-          "penalties"
-        ],
+        "tiebreakers": ["penalties"],
         "entrants": [
           "corinthians",
           "palmeiras",
@@ -1293,9 +1122,7 @@
         "numberOfTies": 8,
         "legs": 1,
         "secondLegHost": "drawn",
-        "tiebreakers": [
-          "penalties"
-        ]
+        "tiebreakers": ["penalties"]
       },
       {
         "kind": "knockout",
@@ -1303,10 +1130,7 @@
         "numberOfTies": 4,
         "legs": 2,
         "secondLegHost": "drawn",
-        "tiebreakers": [
-          "goal-difference",
-          "penalties"
-        ]
+        "tiebreakers": ["goal-difference", "penalties"]
       },
       {
         "kind": "knockout",
@@ -1314,10 +1138,7 @@
         "numberOfTies": 2,
         "legs": 2,
         "secondLegHost": "drawn",
-        "tiebreakers": [
-          "goal-difference",
-          "penalties"
-        ]
+        "tiebreakers": ["goal-difference", "penalties"]
       },
       {
         "kind": "knockout",
@@ -1325,10 +1146,7 @@
         "numberOfTies": 1,
         "legs": 2,
         "secondLegHost": "drawn",
-        "tiebreakers": [
-          "goal-difference",
-          "penalties"
-        ]
+        "tiebreakers": ["goal-difference", "penalties"]
       }
     ],
     "teamNames": [

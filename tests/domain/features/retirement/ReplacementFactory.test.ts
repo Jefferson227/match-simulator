@@ -26,6 +26,7 @@ function player(overrides: Partial<Player>): Player {
     xp: 12,
     seasonGames: 0,
     seasonGoals: 0,
+    strengthProgressGames: 0,
     isStarter: true,
     isSub: false,
     ...overrides,

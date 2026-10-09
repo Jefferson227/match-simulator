@@ -59,6 +59,7 @@ function getTeam(internalName: string, leagueType: LeagueType = 'mens'): Team {
       xp: 0,
       seasonGames: 0,
       seasonGoals: 0,
+      strengthProgressGames: 0,
       isStarter: false,
       isSub: false,
     })),

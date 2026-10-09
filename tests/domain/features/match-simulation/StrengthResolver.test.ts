@@ -22,6 +22,7 @@ function buildPlayer(overrides: Partial<Player> & Pick<Player, 'strength'>): Pla
     xp: 0,
     seasonGames: 0,
     seasonGoals: 0,
+    strengthProgressGames: 0,
     isStarter: true,
     isSub: false,
     ...overrides,

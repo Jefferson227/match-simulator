@@ -35,6 +35,7 @@ const playerOf = (teamSeed: string, index: number): Player => ({
   xp: index * 10,
   seasonGames: 0,
   seasonGoals: 0,
+  strengthProgressGames: 0,
   isStarter: index < 2,
   isSub: index >= 2,
 });
@@ -429,6 +430,41 @@ describe('GameStateMapper', () => {
         expect(player.seasonGames).toBe(10 + index);
         expect(player.seasonGoals).toBe(index);
       });
+    });
+  });
+
+  describe('strength progress counter (MS-115)', () => {
+    const withProgress = (state: GameState): GameState => ({
+      ...state,
+      championshipContainer: {
+        ...state.championshipContainer,
+        championships: state.championshipContainer.championships.map((championship) => ({
+          ...championship,
+          teams: championship.teams.map((team) => ({
+            ...team,
+            players: team.players.map((player, index) => ({
+              ...player,
+              strengthProgressGames: index + 1,
+            })),
+          })),
+        })),
+      },
+    });
+
+    it('writes the counter under its short key only', () => {
+      const json = JSON.stringify(GameStateMapper.dehydrate(withProgress(buildState())));
+
+      expect(json).not.toContain('strengthProgressGames');
+      expect(json).toContain('"spg":');
+    });
+
+    it('brings the counter back under its full name', () => {
+      const state = withProgress(buildState());
+      const reloaded = roundTrip(state);
+
+      reloaded.championshipContainer.championships.forEach((championship, i) =>
+        expect(championship.teams).toEqual(state.championshipContainer.championships[i].teams)
+      );
     });
   });
 

@@ -25,6 +25,7 @@ const squadOf = (positions: Player['position'][]): Team => ({
     xp: 0,
     seasonGames: 0,
     seasonGoals: 0,
+    strengthProgressGames: 0,
     isStarter: true,
     isSub: false,
   })),

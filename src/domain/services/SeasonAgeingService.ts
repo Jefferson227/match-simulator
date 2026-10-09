@@ -87,6 +87,7 @@ function toRetiredPlayer(
     isSub,
     seasonGames,
     seasonGoals,
+    strengthProgressGames,
     ...career
   } = player;
   return {

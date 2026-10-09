@@ -200,6 +200,7 @@ describe('TeamService match-scoped substitution markers', () => {
       xp: 0,
       seasonGames: 1,
       seasonGoals: 0,
+      strengthProgressGames: 0,
       isStarter: true,
       isSub: false,
     };

@@ -15,6 +15,8 @@ type Player = {
   // Match-scoped: the minute a player was substituted off. Absent means not substituted off.
   leftAtMinute?: number;
   xp: number;
+  // Persisted: team games since the last strength change. Not reset on NEW SEASON.
+  strengthProgressGames: number;
   // Season-scoped: matches played this season, counted when each round ends. Reset on NEW SEASON.
   seasonGames: number;
   // Season-scoped: goals scored this season, shootout kicks excluded. Reset on NEW SEASON.

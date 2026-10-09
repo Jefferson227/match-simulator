@@ -16,6 +16,7 @@ type RetiredPlayer = Omit<
   | 'isSub'
   | 'seasonGames'
   | 'seasonGoals'
+  | 'strengthProgressGames'
 > & {
   isRetired: true;
   /** The season that had just ended when they retired. */

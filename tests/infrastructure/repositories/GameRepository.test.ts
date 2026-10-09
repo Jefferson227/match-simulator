@@ -63,6 +63,7 @@ const playerOf = (teamSeed: string, index: number): Player => ({
   xp: index,
   seasonGames: 0,
   seasonGoals: 0,
+  strengthProgressGames: 0,
   isStarter: index < 2,
   isSub: index >= 2,
 });

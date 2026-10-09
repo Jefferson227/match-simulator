@@ -60,6 +60,7 @@ export function createYouthPlayer(
     xp: 0,
     seasonGames: 0,
     seasonGoals: 0,
+    strengthProgressGames: 0,
     isStarter: false,
     isSub: false,
   };

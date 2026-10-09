@@ -36,6 +36,19 @@ import { GameState } from '../../game-engine/GameState';
  */
 export const SAVE_VERSION = 5;
 
+/**
+ * A player as written to disk. `strengthProgressGames` is written as `spg`: every saved player
+ * carries it, and the full name alone cost a five-season men's save ~233,000 code units (MS-115).
+ */
+export type SavedPlayer = Omit<Player, 'strengthProgressGames'> & {
+  spg: Player['strengthProgressGames'];
+};
+
+/** A club as written to disk: its squad in the `SavedPlayer` form. */
+export type SavedTeam = Omit<Team, 'players'> & {
+  players: SavedPlayer[];
+};
+
 /** A goal, with the scorer written as an id rather than a full `Player`. */
 export type SavedScorer = Omit<Scorer, 'player'> & {
   playerId: Player['id'];
@@ -62,8 +75,8 @@ export type SavedMatchContainer = Omit<MatchContainer, 'rounds'> & {
 };
 
 /**
- * A championship with every team-bearing field dehydrated. `teams` stays whole — it is what the
- * ids resolve against.
+ * A championship with every team-bearing field dehydrated. `teams` stays whole, squads in the
+ * `SavedTeam` form — it is what the ids resolve against.
  *
  * `currentRoundTeams` carries the clubs of the round about to be or being played in full, so the
  * lineup a player is looking at survives the round-trip byte-identically. One round is ~55,000 code
@@ -77,6 +90,7 @@ export type SavedChampionship = Championship extends infer C
   ? C extends Championship
     ? Omit<
         C,
+        | 'teams'
         | 'standings'
         | 'matchContainer'
         | 'phaseEntrants'
@@ -84,13 +98,14 @@ export type SavedChampionship = Championship extends infer C
         | 'phaseStandings'
         | 'accumulatedStandings'
       > & {
+        teams: SavedTeam[];
         standings: SavedStanding[];
         matchContainer: SavedMatchContainer;
         phaseEntrants?: Team['id'][][];
         firstPhaseStandings?: SavedStanding[];
         phaseStandings?: SavedStanding[][];
         accumulatedStandings?: SavedStanding[];
-        currentRoundTeams: Team[];
+        currentRoundTeams: SavedTeam[];
       }
     : never
   : never;

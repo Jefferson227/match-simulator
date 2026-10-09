@@ -26,6 +26,7 @@ const makePlayer = (id: string, name: string, position: Player['position'], stre
   xp: 0,
   seasonGames: 0,
   seasonGoals: 0,
+  strengthProgressGames: 0,
   isStarter: false,
   isSub: false,
 });
@@ -269,6 +270,7 @@ describe('TeamManager', () => {
       ...player,
       seasonGames: 10 + index,
       seasonGoals: 3 + index,
+      strengthProgressGames: 0,
     }));
     renderTeamManager([createTeam(players)]);
 

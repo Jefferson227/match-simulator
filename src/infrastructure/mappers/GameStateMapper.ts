@@ -30,6 +30,7 @@ import {
   SavedRound,
   SavedScorer,
   SavedStanding,
+  SavedTeam,
 } from '../data-transfer-objects/GameStateSaveDTO';
 
 const dehydrateStanding = (standing: Standing): SavedStanding => {
@@ -58,14 +59,18 @@ const dehydrateRound = (round: Round): SavedRound => ({
 });
 
 /**
- * `stamina` is match-scoped: it is recomputed from the minute on every tick, so a value caught
- * mid-match in a save is stale the instant it is read back. Dropped here rather than on load, so
- * it never reaches the disk at all.
+ * A club in its on-disk form. `stamina` is match-scoped: it is recomputed from the minute on every
+ * tick, so a value caught mid-match in a save is stale the instant it is read back. Dropped here
+ * rather than on load, so it never reaches the disk at all. `strengthProgressGames` is written
+ * under its short key (see `SavedPlayer`).
  */
-function withoutStamina(team: Team): Team {
+function dehydrateTeam(team: Team): SavedTeam {
   return {
     ...team,
-    players: team.players.map(({ stamina: _stamina, ...player }) => player),
+    players: team.players.map(({ stamina: _stamina, strengthProgressGames, ...player }) => ({
+      ...player,
+      spg: strengthProgressGames,
+    })),
   };
 }
 
@@ -73,7 +78,7 @@ function withoutStamina(team: Team): Team {
  * The clubs of the round about to be or being played, taken from the fixtures themselves rather
  * than from `teams`, so the lineup on screen survives the round-trip byte-identically.
  */
-function currentRoundTeamsOf(championship: Championship): Team[] {
+function currentRoundTeamsOf(championship: Championship): SavedTeam[] {
   const { currentRound, rounds } = championship.matchContainer;
   const byId = new Map<Team['id'], Team>();
 
@@ -85,7 +90,7 @@ function currentRoundTeamsOf(championship: Championship): Team[] {
       byId.set(match.awayTeam.id, match.awayTeam);
     });
 
-  return [...byId.values()].map(withoutStamina);
+  return [...byId.values()].map(dehydrateTeam);
 }
 
 function dehydrateChampionship(championship: Championship): SavedChampionship {
@@ -101,7 +106,7 @@ function dehydrateChampionship(championship: Championship): SavedChampionship {
 
   const saved = {
     ...rest,
-    teams: rest.teams.map(withoutStamina),
+    teams: rest.teams.map(dehydrateTeam),
     standings: standings.map(dehydrateStanding),
     matchContainer: { ...matchContainer, rounds: matchContainer.rounds.map(dehydrateRound) },
     currentRoundTeams: currentRoundTeamsOf(championship),
@@ -139,14 +144,15 @@ export function dehydrate(state: GameState): SavedGameState {
 }
 
 /**
- * A save written before MS-114 has no season counters. Its players start at 0 and count from the
- * next match; past rounds are not replayed to rebuild them.
+ * A club back in its in-memory form. A save written before MS-114 has no season counters. Its
+ * players start at 0 and count from the next match; past rounds are not replayed to rebuild them.
  */
-function withSeasonCounters(team: Team): Team {
+function hydrateTeam(team: SavedTeam): Team {
   return {
     ...team,
-    players: team.players.map((player) => ({
+    players: team.players.map(({ spg, ...player }) => ({
       ...player,
+      strengthProgressGames: spg,
       seasonGames: player.seasonGames ?? 0,
       seasonGoals: player.seasonGoals ?? 0,
     })),
@@ -159,7 +165,7 @@ type Resolver = {
   player: (id: Player['id']) => Player;
 };
 
-function resolverFor(saved: SavedChampionship): Resolver {
+function resolverFor(teamsInPlay: Team[], currentRoundTeams: Team[]): Resolver {
   const teams = new Map<Team['id'], Team>();
   const players = new Map<Player['id'], Player>();
 
@@ -168,9 +174,9 @@ function resolverFor(saved: SavedChampionship): Resolver {
     team.players.forEach((player) => players.set(player.id, player));
   };
 
-  saved.teams.forEach(register);
+  teamsInPlay.forEach(register);
   // Registered second so the current round's snapshot overrides the canonical club.
-  saved.currentRoundTeams.forEach(register);
+  currentRoundTeams.forEach(register);
 
   return {
     team: (id) => {
@@ -206,14 +212,10 @@ const hydrateMatch = (match: SavedMatch, resolve: Resolver): Match => {
   };
 };
 
-function hydrateChampionship(stored: SavedChampionship): Championship {
-  // Every other copy of a club is resolved from these two, so defaulting here covers them all.
-  const saved: SavedChampionship = {
-    ...stored,
-    teams: stored.teams.map(withSeasonCounters),
-    currentRoundTeams: stored.currentRoundTeams.map(withSeasonCounters),
-  };
-  const resolve = resolverFor(saved);
+function hydrateChampionship(saved: SavedChampionship): Championship {
+  // Every other copy of a club is resolved from these two, so hydrating them covers them all.
+  const teams = saved.teams.map(hydrateTeam);
+  const resolve = resolverFor(teams, saved.currentRoundTeams.map(hydrateTeam));
   const {
     standings,
     matchContainer,
@@ -221,12 +223,13 @@ function hydrateChampionship(stored: SavedChampionship): Championship {
     firstPhaseStandings,
     phaseStandings,
     accumulatedStandings,
-    currentRoundTeams,
+    currentRoundTeams: _currentRoundTeams,
     ...rest
   } = saved;
 
   const championship = {
     ...rest,
+    teams,
     standings: standings.map((standing) => hydrateStanding(standing, resolve)),
     matchContainer: {
       ...matchContainer,

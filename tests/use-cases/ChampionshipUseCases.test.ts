@@ -400,6 +400,7 @@ describe('ChampionshipUseCases', () => {
         xp: 0,
         seasonGames: 30,
         seasonGoals: 12,
+        strengthProgressGames: 0,
         isStarter: true,
         isSub: false,
       });
