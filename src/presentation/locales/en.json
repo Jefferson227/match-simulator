@@ -45,7 +45,6 @@
     "none": "NONE",
     "playerStats": {
       "strength": "STRENGTH",
-      "xp": "XP",
       "age": "AGE",
       "matches": "MATCHES",
       "goals": "GOALS",

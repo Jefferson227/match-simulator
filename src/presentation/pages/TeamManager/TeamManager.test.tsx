@@ -270,7 +270,6 @@ describe('TeamManager', () => {
       ...player,
       seasonGames: 10 + index,
       seasonGoals: 3 + index,
-      strengthProgressGames: 0,
     }));
     renderTeamManager([createTeam(players)]);
 
@@ -284,6 +283,16 @@ describe('TeamManager', () => {
     expect(screen.getByText('GOALS').parentElement!.textContent).toBe(`GOALS${shown.seasonGoals}`);
     expect(screen.getByText('YELLOW CARDS').parentElement!.textContent).toBe('YELLOW CARDS-');
     expect(screen.queryByText('STAMINA')).toBeNull();
+  });
+
+  it('shows no XP in the player view (MS-115)', () => {
+    renderTeamManager([createTeam(basePlayers)]);
+
+    fireEvent.click(screen.getByText('CHOOSE STRATEGY'));
+    fireEvent.click(screen.getByText('PLAYER'));
+
+    expect(screen.queryByText('STRENGTH')).not.toBeNull();
+    expect(screen.queryByText('XP')).toBeNull();
   });
 
   it('picks the best lineup and navigates to the match when Start Match is clicked', () => {

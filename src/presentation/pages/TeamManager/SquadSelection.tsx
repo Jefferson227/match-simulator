@@ -331,7 +331,6 @@ const SquadSelection: React.FC<SquadSelectionProps> = ({
     const selState = playerStates[detailPlayer.id] ?? PlayerSelectionState.Unselected;
     const stats: [string, string | number][] = [
       ['teamManager.playerStats.strength', detailPlayer.strength],
-      ['teamManager.playerStats.xp', detailPlayer.xp],
       ['teamManager.playerStats.age', detailPlayer.age],
       ['teamManager.playerStats.matches', detailPlayer.seasonGames ?? 0],
       ['teamManager.playerStats.goals', detailPlayer.seasonGoals ?? 0],
