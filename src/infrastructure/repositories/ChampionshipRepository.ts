@@ -3,7 +3,9 @@ import championshipsJSON from '../data/championships.json';
 import { Championship } from '../../domain/models/Championship';
 import ChampionshipPhase, { PhaseVariant } from '../../domain/models/ChampionshipPhase';
 import LeagueType from '../../domain/enums/LeagueType';
-import TeamRepository from './TeamRepository';
+import TeamRepository, { StartingStrength } from './TeamRepository';
+import { getStrengthRange } from '../../domain/features/strength-progression/StrengthRange';
+import { getClubTargets } from '../../domain/features/strength-progression/SeedStrength';
 
 /**
  * Rejects every variant list the rest of the system cannot honour.
@@ -231,6 +233,31 @@ function validateTiers(championships: ChampionshipJSONDTO[], leagueType: LeagueT
   });
 }
 
+/**
+ * Where each seeded club of a division starts (MS-115): the division's slice of the strength scale,
+ * worked out from its tier among its league type's tiers, and each club's target within it. In
+ * `teamNames` order. `undefined` for a cup, which has no tier.
+ */
+function getStartingStrengths(
+  championshipsJSONDTO: ChampionshipJSONDTO[],
+  championship: ChampionshipJSONDTO
+): StartingStrength[] | undefined {
+  if (championship.tier === undefined) return undefined;
+
+  const tierCount = championshipsJSONDTO.filter(
+    (entry) => entry.leagueType === championship.leagueType && entry.tier !== undefined
+  ).length;
+  const range = getStrengthRange(championship.tier, tierCount);
+  const targets = getClubTargets(
+    championship.teamNames.map((teamName) =>
+      TeamRepository.getInitialOverallStrength(teamName, championship.leagueType)
+    ),
+    range
+  );
+
+  return targets.map((target) => ({ target, range }));
+}
+
 export function getChampionship(
   championshipInternalName: string,
   hasTeamControlledByHuman: boolean
@@ -316,8 +343,11 @@ export function getChampionship(
     };
   }
 
+  const startingStrengths = getStartingStrengths(championshipsJSONDTO, championshipJSONDTO);
   const teams = championshipJSONDTO.teamNames
-    .map((teamName) => TeamRepository.getTeam(teamName, championshipJSONDTO.leagueType))
+    .map((teamName, index) =>
+      TeamRepository.getTeam(teamName, championshipJSONDTO.leagueType, startingStrengths?.[index])
+    )
     .filter((team): team is NonNullable<typeof team> => Boolean(team));
 
   const teamsByName = new Map(

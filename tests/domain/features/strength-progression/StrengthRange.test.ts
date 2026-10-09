@@ -84,6 +84,14 @@ describe('getDivisionStrengthRange', () => {
     });
   });
 
+  it('reads the tier count off the lowest division, so a partial pyramid keeps its ranges', () => {
+    const bottomOnly = { ...container, championships: [container.championships[3]] };
+    expect(getDivisionStrengthRange(bottomOnly, bottomOnly.championships[0])).toEqual({
+      min: 1,
+      max: 24,
+    });
+  });
+
   it('returns undefined for a tierless cup', () => {
     expect(getDivisionStrengthRange(container, container.cups![0])).toBeUndefined();
   });

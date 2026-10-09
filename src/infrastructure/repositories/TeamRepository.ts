@@ -4,6 +4,8 @@ import { Team } from '../../domain/models/Team';
 import Coach from '../../domain/models/Coach';
 import { getRandomPlayerStrength } from '../../domain/utils/Utils';
 import LeagueType from '../../domain/enums/LeagueType';
+import { StrengthRange } from '../../domain/features/strength-progression/StrengthRange';
+import { rollPlayerStrength } from '../../domain/features/strength-progression/SeedStrength';
 import mensTeamsData from '../data/teams.json';
 import womensTeamsData from '../data/teams-womens.json';
 
@@ -33,11 +35,35 @@ function mapCoach(coach: NonNullable<TeamJSONDTO['coach']>): Coach {
   };
 }
 
-function getTeam(internalName: string, leagueType: LeagueType = 'mens'): Team {
+function getTeamJSONDTO(internalName: string, leagueType: LeagueType): TeamJSONDTO {
   const teamsByInternalName = teamsByLeagueType[leagueType] ?? initTeams(leagueType);
 
   const teamJSONDTO = teamsByInternalName[internalName];
   if (!teamJSONDTO) throw new Error(`Team not found: ${internalName}.`);
+  return teamJSONDTO;
+}
+
+/** The club's seed `initialOverallStrength`, which a division's ranges are mapped from. */
+function getInitialOverallStrength(internalName: string, leagueType: LeagueType = 'mens'): number {
+  return getTeamJSONDTO(internalName, leagueType).initialOverallStrength;
+}
+
+/**
+ * Where a club's squad starts within its division (MS-115): every player is rolled around `target`
+ * and kept inside `range`. See `features/strength-progression/SeedStrength.ts`.
+ */
+export type StartingStrength = { target: number; range: StrengthRange };
+
+/**
+ * A fresh copy of the club. With `startingStrength` its squad starts inside the division's range;
+ * without it — a club outside the pyramid — every player is rolled around the seed strength.
+ */
+function getTeam(
+  internalName: string,
+  leagueType: LeagueType = 'mens',
+  startingStrength?: StartingStrength
+): Team {
+  const teamJSONDTO = getTeamJSONDTO(internalName, leagueType);
 
   const mappedTeam: Team = {
     id: crypto.randomUUID(),
@@ -53,7 +79,9 @@ function getTeam(internalName: string, leagueType: LeagueType = 'mens'): Team {
       id: crypto.randomUUID(),
       position: player.position as PlayerPosition,
       name: player.name,
-      strength: getRandomPlayerStrength(teamJSONDTO.initialOverallStrength),
+      strength: startingStrength
+        ? rollPlayerStrength(startingStrength.target, startingStrength.range)
+        : getRandomPlayerStrength(teamJSONDTO.initialOverallStrength),
       age: player.age,
       nationalities: [...player.nationalities],
       xp: 0,
@@ -71,4 +99,4 @@ function getTeam(internalName: string, leagueType: LeagueType = 'mens'): Team {
   return mappedTeam;
 }
 
-export default { getTeam };
+export default { getTeam, getInitialOverallStrength };

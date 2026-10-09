@@ -2,6 +2,10 @@ import {
   getChampionship,
   getChampionships,
 } from '../../../src/infrastructure/repositories/ChampionshipRepository';
+import TeamRepository from '../../../src/infrastructure/repositories/TeamRepository';
+import championshipsData from '../../../src/infrastructure/data/championships.json';
+import ChampionshipJSONDTO from '../../../src/infrastructure/data-transfer-objects/ChampionshipJSONDTO';
+import LeagueType from '../../../src/domain/enums/LeagueType';
 
 describe('ChampionshipRepository', () => {
   describe('getChampionships', () => {
@@ -106,5 +110,65 @@ describe('ChampionshipRepository', () => {
       expect(serieA.phases).toBeUndefined();
       expect(serieA.isRelegatable && serieA.relegationRule).toBe('table-position');
     });
+  });
+});
+
+describe('ChampionshipRepository starting strengths (MS-115)', () => {
+  const championshipsJSON = championshipsData as ChampionshipJSONDTO[];
+
+  const pyramids: [LeagueType, Record<string, [number, number]>][] = [
+    [
+      'mens',
+      {
+        'brasileirao-serie-a': [75, 99],
+        'brasileirao-serie-b': [50, 74],
+        'brasileirao-serie-c': [25, 49],
+        'brasileirao-serie-d': [1, 24],
+      },
+    ],
+    [
+      'womens',
+      {
+        'brasileirao-feminino-serie-a1': [67, 99],
+        'brasileirao-feminino-serie-a2': [34, 66],
+        'brasileirao-feminino-serie-a3': [1, 33],
+      },
+    ],
+  ];
+
+  describe.each(pyramids)('%s pyramid', (leagueType, ranges) => {
+    it.each(Object.entries(ranges))(
+      'starts every player of %s inside %p',
+      (internalName, range) => {
+        const [min, max] = range;
+        const championship = getChampionship(internalName, false);
+        const strengths = championship.teams.flatMap((team) =>
+          team.players.map((player) => player.strength)
+        );
+
+        expect(strengths.length).toBeGreaterThan(0);
+        expect(Math.min(...strengths)).toBeGreaterThanOrEqual(min);
+        expect(Math.max(...strengths)).toBeLessThanOrEqual(max);
+      }
+    );
+
+    it.each(Object.keys(ranges))(
+      'keeps the seed order of %s: the strongest club near the top, the weakest near the bottom',
+      (internalName) => {
+        const [min, max] = ranges[internalName];
+        const json = championshipsJSON.find((entry) => entry.internalName === internalName)!;
+        const seeds = json.teamNames.map((teamName) =>
+          TeamRepository.getInitialOverallStrength(teamName, leagueType)
+        );
+        const championship = getChampionship(internalName, false);
+        const strongest = championship.teams[seeds.indexOf(Math.max(...seeds))];
+        const weakest = championship.teams[seeds.indexOf(Math.min(...seeds))];
+
+        strongest.players.forEach((player) =>
+          expect(player.strength).toBeGreaterThanOrEqual(max - 2)
+        );
+        weakest.players.forEach((player) => expect(player.strength).toBeLessThanOrEqual(min + 2));
+      }
+    );
   });
 });

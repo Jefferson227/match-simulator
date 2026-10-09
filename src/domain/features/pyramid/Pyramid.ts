@@ -74,7 +74,11 @@ export function updatePlayableChampionship(
   return replaceChampionship(container, update(getPlayableChampionship(container)));
 }
 
-/** How many tiers the pyramid has. Cups have no tier and are not counted. */
+/**
+ * How many tiers the pyramid has: its lowest division's tier. Tiers run contiguously from 1 (the
+ * repository rejects any other seed), so this is the division count for a whole pyramid, and stays
+ * right for a container holding only part of one. Cups have no tier. 0 when nothing is tiered.
+ */
 export function getTierCount(container: ChampionshipContainer): number {
-  return container.championships.filter((championship) => championship.tier !== undefined).length;
+  return Math.max(0, ...container.championships.map((championship) => championship.tier ?? 0));
 }
