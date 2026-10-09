@@ -13,7 +13,7 @@ import {
   YOUTH_AGE_RANGE,
   YOUTH_STRENGTH_PENALTY,
 } from '../../constants/RetirementConstants';
-import { MAX_STRENGTH, MIN_STRENGTH } from '../../constants/StrengthConstants';
+import { clampToScale } from '../strength-progression/StrengthRange';
 
 /** The gender of a league's players: a men's league fields men, a women's league women. */
 export function getPlayerGender(leagueType: LeagueType): Gender {
@@ -44,13 +44,8 @@ export function createYouthPlayer(
   rng: RandomProvider
 ): Player {
   const age = rng.nextInt(YOUTH_AGE_RANGE[0], YOUTH_AGE_RANGE[1]);
-  const strength = Math.max(
-    MIN_STRENGTH,
-    Math.min(
-      MAX_STRENGTH,
-      getRandomPlayerStrength(getRemainingSquadStrength(team, retiree), rng) -
-        YOUTH_STRENGTH_PENALTY
-    )
+  const strength = clampToScale(
+    getRandomPlayerStrength(getRemainingSquadStrength(team, retiree), rng) - YOUTH_STRENGTH_PENALTY
   );
   const name = generateName({ gender, kind: 'player', takenNames, avoidName: retiree.name, rng });
 

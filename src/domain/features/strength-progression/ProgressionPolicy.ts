@@ -3,8 +3,7 @@
  * or down, by how the club's morale stands, pulled back toward the division's range when outside
  * it. Pure — no randomness. The spec is `wiki/specs/player-strength-progression.md`.
  */
-import { MAX_STRENGTH, MIN_STRENGTH } from '../../constants/StrengthConstants';
-import { StrengthRange } from './StrengthRange';
+import { clampToScale, StrengthRange } from './StrengthRange';
 
 export type MoraleBand = 'low' | 'mid' | 'high';
 export type AgeBand = 'young' | 'prime' | 'veteran';
@@ -43,10 +42,6 @@ export function getInterval(moraleBand: MoraleBand, ageBand: AgeBand): number {
   return INTERVALS[moraleBand][ageBand];
 }
 
-function clampStrength(strength: number): number {
-  return Math.max(MIN_STRENGTH, Math.min(MAX_STRENGTH, strength));
-}
-
 /**
  * The strength after one change. Inside the range a player moves 1, never past the bound it moves
  * toward. Outside it, moving back toward the range, they move 2. Already past the range in the
@@ -55,13 +50,13 @@ function clampStrength(strength: number): number {
 export function getStep(strength: number, range: StrengthRange, direction: Direction): number {
   if (direction === 'increase') {
     if (strength > range.max) return strength;
-    if (strength < range.min) return clampStrength(strength + 2);
-    return clampStrength(Math.min(strength + 1, range.max));
+    if (strength < range.min) return clampToScale(strength + 2);
+    return clampToScale(Math.min(strength + 1, range.max));
   }
 
   if (strength < range.min) return strength;
-  if (strength > range.max) return clampStrength(strength - 2);
-  return clampStrength(Math.max(strength - 1, range.min));
+  if (strength > range.max) return clampToScale(strength - 2);
+  return clampToScale(Math.max(strength - 1, range.min));
 }
 
 /**

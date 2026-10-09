@@ -3,6 +3,11 @@ import { Championship } from '../../models/Championship';
 import ChampionshipContainer from '../../models/ChampionshipContainer';
 import { getTierCount } from '../pyramid/Pyramid';
 
+/** `strength` kept within the 1–99 scale every strength lives on. */
+export function clampToScale(strength: number): number {
+  return Math.max(MIN_STRENGTH, Math.min(MAX_STRENGTH, strength));
+}
+
 /** An inclusive slice of the strength scale. */
 export type StrengthRange = { min: number; max: number };
 

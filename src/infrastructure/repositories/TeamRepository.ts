@@ -4,7 +4,10 @@ import { Team } from '../../domain/models/Team';
 import Coach from '../../domain/models/Coach';
 import { getRandomPlayerStrength } from '../../domain/utils/Utils';
 import LeagueType from '../../domain/enums/LeagueType';
-import { StrengthRange } from '../../domain/features/strength-progression/StrengthRange';
+import {
+  clampToScale,
+  StrengthRange,
+} from '../../domain/features/strength-progression/StrengthRange';
 import { rollPlayerStrength } from '../../domain/features/strength-progression/SeedStrength';
 import mensTeamsData from '../data/teams.json';
 import womensTeamsData from '../data/teams-womens.json';
@@ -81,7 +84,7 @@ function getTeam(
       name: player.name,
       strength: startingStrength
         ? rollPlayerStrength(startingStrength.target, startingStrength.range)
-        : getRandomPlayerStrength(teamJSONDTO.initialOverallStrength),
+        : clampToScale(getRandomPlayerStrength(teamJSONDTO.initialOverallStrength)),
       age: player.age,
       nationalities: [...player.nationalities],
       xp: 0,

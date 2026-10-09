@@ -1,5 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import {
+  clampToScale,
   getDivisionStrengthRange,
   getStrengthRange,
 } from '../../../../src/domain/features/strength-progression/StrengthRange';
@@ -94,5 +95,19 @@ describe('getDivisionStrengthRange', () => {
 
   it('returns undefined for a tierless cup', () => {
     expect(getDivisionStrengthRange(container, container.cups![0])).toBeUndefined();
+  });
+});
+
+describe('clampToScale', () => {
+  it.each([
+    [-3, 1],
+    [0, 1],
+    [1, 1],
+    [50, 50],
+    [99, 99],
+    [100, 99],
+    [105, 99],
+  ])('keeps %p at %p', (strength, clamped) => {
+    expect(clampToScale(strength)).toBe(clamped);
   });
 });
