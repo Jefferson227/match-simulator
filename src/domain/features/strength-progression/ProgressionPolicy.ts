@@ -1,7 +1,7 @@
 /**
  * The rubber band that moves a player's strength (MS-115): every few team games a player steps up
- * or down, by how the club's morale stands, pulled back toward the division's range when outside
- * it. Pure — no randomness. The spec is `wiki/specs/player-strength-progression.md`.
+ * or down, by how the club's morale stands, and is pulled back toward the division's range when
+ * outside it. Pure — no randomness. The spec is `wiki/specs/player-strength-progression.md`.
  */
 import { clampToScale, StrengthRange } from './StrengthRange';
 
@@ -43,20 +43,15 @@ export function getInterval(moraleBand: MoraleBand, ageBand: AgeBand): number {
 }
 
 /**
- * The strength after one change. Inside the range a player moves 1, never past the bound it moves
- * toward. Outside it, moving back toward the range, they move 2. Already past the range in the
- * direction of travel, they stay put.
+ * The strength after one change. Outside the range a player moves 2 back toward it, whatever the
+ * direction — the rubber band pulls both ways, so a relegated squad comes down without its morale
+ * collapsing first. Inside it they move 1 in `direction`, never past the bound they move toward.
  */
 export function getStep(strength: number, range: StrengthRange, direction: Direction): number {
-  if (direction === 'increase') {
-    if (strength > range.max) return strength;
-    if (strength < range.min) return clampToScale(strength + 2);
-    return clampToScale(Math.min(strength + 1, range.max));
-  }
-
-  if (strength < range.min) return strength;
   if (strength > range.max) return clampToScale(strength - 2);
-  return clampToScale(Math.max(strength - 1, range.min));
+  if (strength < range.min) return clampToScale(strength + 2);
+  if (direction === 'increase') return Math.min(strength + 1, range.max);
+  return Math.max(strength - 1, range.min);
 }
 
 /**

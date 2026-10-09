@@ -71,7 +71,8 @@ describe('getStep', () => {
     it('adds 2 below the range', () => expect(getStep(20, range, 'increase')).toBe(22));
     it('may land inside the range from below', () =>
       expect(getStep(24, range, 'increase')).toBe(26));
-    it('stays put above the range', () => expect(getStep(60, range, 'increase')).toBe(60));
+    it('takes 2 above the range, pulled back toward it', () =>
+      expect(getStep(60, range, 'increase')).toBe(58));
     it('clamps to 99', () => expect(getStep(98, { min: 99, max: 99 }, 'increase')).toBe(99));
   });
 
@@ -81,7 +82,8 @@ describe('getStep', () => {
     it('takes 2 above the range', () => expect(getStep(60, range, 'decrease')).toBe(58));
     it('may land inside the range from above', () =>
       expect(getStep(50, range, 'decrease')).toBe(48));
-    it('stays put below the range', () => expect(getStep(20, range, 'decrease')).toBe(20));
+    it('adds 2 below the range, pulled back toward it', () =>
+      expect(getStep(20, range, 'decrease')).toBe(22));
     it('clamps to 1', () => expect(getStep(2, { min: 1, max: 1 }, 'decrease')).toBe(1));
   });
 });
