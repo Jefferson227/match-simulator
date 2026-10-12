@@ -3,6 +3,26 @@ import reactPlugin from '@vitejs/plugin-react-swc';
 import { VitePWA } from 'vite-plugin-pwa';
 import { fileURLToPath, URL } from 'node:url';
 
+// Netlify sets CONTEXT ('production' for main) and COMMIT_REF on every build;
+// anything else (local dev, deploy previews) shows 'DEV'.
+function getBuildVersion(): string {
+  if (process.env.CONTEXT !== 'production') return 'DEV';
+
+  const timestamp = new Intl.DateTimeFormat('sv-SE', {
+    timeZone: 'America/Sao_Paulo',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+    .format(new Date())
+    .replace(/\D/g, '');
+  const commit = process.env.COMMIT_REF?.slice(0, 7);
+
+  return commit ? `${timestamp}-${commit}` : timestamp;
+}
+
 // Use dynamic import for tailwindcss to avoid ESM issues
 export default defineConfig(async () => {
   // Import tailwindcss dynamically
@@ -10,6 +30,9 @@ export default defineConfig(async () => {
   const srcDir = fileURLToPath(new URL('./src', import.meta.url));
 
   return {
+    define: {
+      __BUILD_VERSION__: JSON.stringify(getBuildVersion()),
+    },
     resolve: {
       alias: [
         { find: /^~domain\//, replacement: `${srcDir}/domain/` },

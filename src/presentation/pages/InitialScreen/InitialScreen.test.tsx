@@ -21,10 +21,6 @@ jest.mock('~domain/services/GameService', () => ({
   },
 }));
 
-jest.mock('../../assets/build-version.json', () => ({
-  buildVersion: 'TEST_BUILD',
-}));
-
 const mockDispatch = jest.fn();
 const mockEngine = { dispatch: mockDispatch };
 const mockedGameService = GameService as jest.Mocked<typeof GameService>;

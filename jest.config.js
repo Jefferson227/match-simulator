@@ -3,6 +3,9 @@ const config = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
+  globals: {
+    __BUILD_VERSION__: 'TEST_BUILD',
+  },
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
     '^~domain/(.*)$': '<rootDir>/src/domain/$1',

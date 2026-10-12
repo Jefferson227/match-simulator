@@ -1,24 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import buildVersionData from '../../assets/build-version.json';
 import { useGameEngine } from '../../contexts/GameEngineContext';
 import MainLayout from '../../components/MainLayout/MainLayout';
 import PixelLetter from '../../components/PixelLetter';
 import GameService from '../../../domain/services/GameService';
 
 const InitialScreen: React.FC = () => {
-  const [buildVersion, setBuildVersion] = useState('');
   const [hasSavedGame, setHasSavedGame] = useState(false);
   const engine = useGameEngine();
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (buildVersionData && buildVersionData.buildVersion) {
-      setBuildVersion(buildVersionData.buildVersion);
-    } else {
-      setBuildVersion('DEV');
-    }
-
     const savedGame = GameService.hasSavedGame();
     setHasSavedGame(savedGame.succeeded && savedGame.getResult());
   }, []);
@@ -91,7 +83,7 @@ const InitialScreen: React.FC = () => {
 
         <div className="mt-16 text-center" style={{ textShadow: '-3px 3px 0 #2a5624' }}>
           <p>{t('initialScreen.buildVersion')}</p>
-          <p>{buildVersion}</p>
+          <p>{__BUILD_VERSION__}</p>
         </div>
       </div>
     </MainLayout>
