@@ -57,6 +57,24 @@ describe('TeamRepository', () => {
     });
   });
 
+  describe('level (MS-116)', () => {
+    test("sets a league club's level to its starting strength target", () => {
+      const team = TeamRepository.getTeam('palmeiras', 'mens', {
+        target: 90,
+        range: { min: 75, max: 99 },
+      });
+
+      expect(team.level).toBe(90);
+    });
+
+    test('leaves a club with no starting strength without a level', () => {
+      const team = TeamRepository.getTeam('palmeiras', 'womens');
+
+      expect(team.level).toBeUndefined();
+      expect('level' in team).toBe(false);
+    });
+  });
+
   describe('coach and nationalities (MS-112)', () => {
     const seedTeam = (overrides: Partial<TeamJSONDTO>): TeamJSONDTO => ({
       name: 'Seed Club',

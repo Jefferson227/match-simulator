@@ -6,6 +6,7 @@ import TeamRepository from '../../../src/infrastructure/repositories/TeamReposit
 import championshipsData from '../../../src/infrastructure/data/championships.json';
 import ChampionshipJSONDTO from '../../../src/infrastructure/data-transfer-objects/ChampionshipJSONDTO';
 import LeagueType from '../../../src/domain/enums/LeagueType';
+import { getClubTargets } from '../../../src/domain/features/strength-progression/SeedStrength';
 
 describe('ChampionshipRepository', () => {
   describe('getChampionships', () => {
@@ -168,6 +169,23 @@ describe('ChampionshipRepository starting strengths (MS-115)', () => {
           expect(player.strength).toBeGreaterThanOrEqual(max - 2)
         );
         weakest.players.forEach((player) => expect(player.strength).toBeLessThanOrEqual(min + 2));
+      }
+    );
+
+    it.each(Object.keys(ranges))(
+      'gives every club of %s its seed target as its level (MS-116)',
+      (internalName) => {
+        const [min, max] = ranges[internalName];
+        const json = championshipsJSON.find((entry) => entry.internalName === internalName)!;
+        const targets = getClubTargets(
+          json.teamNames.map((teamName) =>
+            TeamRepository.getInitialOverallStrength(teamName, leagueType)
+          ),
+          { min, max }
+        );
+        const championship = getChampionship(internalName, false);
+
+        expect(championship.teams.map((team) => team.level)).toEqual(targets);
       }
     );
   });

@@ -58,8 +58,9 @@ function getInitialOverallStrength(internalName: string, leagueType: LeagueType 
 export type StartingStrength = { target: number; range: StrengthRange };
 
 /**
- * A fresh copy of the club. With `startingStrength` its squad starts inside the division's range;
- * without it — a club outside the pyramid — every player is rolled around the seed strength.
+ * A fresh copy of the club. With `startingStrength` its squad starts inside the division's range and
+ * its level is the target (MS-116); without it — a club outside the pyramid — every player is rolled
+ * around the seed strength and the club has no level.
  */
 function getTeam(
   internalName: string,
@@ -95,6 +96,7 @@ function getTeam(
     })),
     morale: 50,
     isControlledByHuman: false,
+    ...(startingStrength && { level: startingStrength.target }),
     ...(teamJSONDTO.coach && { coach: mapCoach(teamJSONDTO.coach) }),
   };
 

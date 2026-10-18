@@ -11,5 +11,8 @@ export type Team = {
   players: Player[];
   coach?: Coach;
   morale: number;
+  // Persisted: the club's place in its division's strength range (MS-116). Undefined for a club
+  // that only plays cups.
+  level?: number;
   isControlledByHuman: boolean;
 };
