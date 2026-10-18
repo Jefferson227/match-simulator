@@ -1,7 +1,7 @@
 ---
 title: Invented data
 type: concept
-verified: 2026-10-08
+verified: 2026-10-18
 sources: [atletas-api, rec-a3-2026, rec-copa-2026, jogos-api, rec-serie-c-2025, rec-serie-d-2025, rec-serie-c-2026, rec-serie-d-2026, ogol-rosters-2026, tabelas-serie-d-2026, tabela-serie-d-2026]
 ---
 
@@ -236,6 +236,22 @@ table and the steps — are the user's spec. These are not, and nothing publishe
 
 The seed's `initialOverallStrength` values themselves stay as MS-102/MS-106/MS-112 invented them;
 they now decide only the order of a division's clubs, not their level.
+
+## Invented by MS-116
+
+The MS-116 rules of [[player-strength-progression]] are the user's spec, agreed in clarification on
+2026-10-17 after a review of the MS-115 policy. Like MS-115's, nothing publishes any of these
+numbers; they were chosen to give a division's clubs different resting strengths:
+
+- **The ±3 club band.** A club's band is its level ± 3, cut to the division range.
+- **The ±2 season change.** A staying club's level moves linearly from +2 (champion) to −2 (last),
+  rounded.
+- **The +3 / −3 offsets.** A promoted club's level starts at its new range's min + 3, a relegated
+  club's at its new range's max − 3.
+- **The four age bands** (≤ 23, 24–29, 30–33, ≥ 34), **the direction table** (mid morale holds from
+  24, high morale holds from 30, everything declines from 34) **and the interval table** (2–4 games
+  per change). They replace MS-115's three bands and intervals.
+- **The rolled +1.** A gain applies with probability `(bandMax − strength) / (bandMax − bandMin)`.
 
 ## Provenance detail
 
