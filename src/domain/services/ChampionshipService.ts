@@ -12,6 +12,7 @@ import { createMatches } from '../features/fixture-generation/FixtureGenerator';
 import { rankStandings } from '../features/standings/StandingsComparator';
 import {
   buildFinalClassification,
+  buildSeasonRanking,
   groupsOfPhase,
   initialisePhaseState,
   isPhasedChampionshipOver,
@@ -28,6 +29,11 @@ import {
   getDivisionStrengthRange,
   StrengthRange,
 } from '../features/strength-progression/StrengthRange';
+import {
+  getNextSeasonLevel,
+  getPromotedLevel,
+  getRelegatedLevel,
+} from '../features/strength-progression/ClubLevel';
 import PlayerProgressionService from './PlayerProgressionService';
 import Player from '../models/Player';
 import {
@@ -820,10 +826,48 @@ function runEndOfChampionshipActionsForAllChampionships(
       [...moves.promoted, ...moves.relegated],
       [...moves.relegatedFromAbove, ...moves.promotedFromBelow]
     );
-    return resetChampionshipForNewSeason(division, teams);
+    return resetChampionshipForNewSeason(
+      division,
+      withNextSeasonLevels(
+        division,
+        teams,
+        moves,
+        getDivisionStrengthRange(championshipContainer, division)
+      )
+    );
   });
 
   return followHumanClub({ ...championshipContainer, championships });
+}
+
+/**
+ * `teams`, `division`'s clubs for next season, with each club's level for it (MS-116), read before
+ * the reset throws this season's tables away. A club arriving from below starts near the bottom of
+ * `range`, one arriving from above near its top; a club that stays moves by its season rank
+ * (`buildSeasonRanking`). The human's club is treated like any other. A division with no range —
+ * a cup — and a club with no level are left alone.
+ */
+function withNextSeasonLevels(
+  division: Championship,
+  teams: Team[],
+  moves: DivisionMoves,
+  range: StrengthRange | undefined
+): Team[] {
+  if (!range) return teams;
+
+  const promotedIds = new Set(moves.promotedFromBelow.map((team) => team.id));
+  const relegatedIds = new Set(moves.relegatedFromAbove.map((team) => team.id));
+  const ranking = buildSeasonRanking(division);
+  const rankById = new Map(ranking.map((team, index) => [team.id, index + 1]));
+
+  return teams.map((team) => {
+    if (promotedIds.has(team.id)) return { ...team, level: getPromotedLevel(range) };
+    if (relegatedIds.has(team.id)) return { ...team, level: getRelegatedLevel(range) };
+
+    const rank = rankById.get(team.id);
+    if (team.level === undefined || rank === undefined) return team;
+    return { ...team, level: getNextSeasonLevel(team.level, rank, ranking.length, range) };
+  });
 }
 
 /**
