@@ -35,8 +35,9 @@ import { GameState } from '../../game-engine/GameState';
  * without them still loads, its players starting at 0 (see `GameStateMapper.hydrate`).
  * 6 (MS-115): MS-115 replaced xp with strengthProgressGames, written as `spg` (see `SavedPlayer`);
  * version-5 saves are abandoned, not migrated.
+ * 7 (MS-116): teams carry `level`. Version-6 saves are abandoned, not migrated.
  */
-export const SAVE_VERSION = 6;
+export const SAVE_VERSION = 7;
 
 /**
  * A player as written to disk. `strengthProgressGames` is written as `spg`: every saved player

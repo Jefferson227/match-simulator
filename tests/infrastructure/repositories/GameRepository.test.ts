@@ -76,6 +76,8 @@ const teamOf = (seed: string): Team => ({
   players: [0, 1, 2].map((index) => playerOf(seed, index)),
   morale: 80,
   isControlledByHuman: seed === 'home',
+  // Only the home club has a level, as a club that only plays cups has none (MS-116).
+  ...(seed === 'home' && { level: 62 }),
 });
 
 const standingOf = (team: Team, position: number): Standing => ({
@@ -173,7 +175,7 @@ describe('GameRepository', () => {
     const raw = window.localStorage.getItem(STORAGE_KEY)!;
     const parsed = JSON.parse(raw);
 
-    expect(parsed.saveVersion).toBe(6);
+    expect(parsed.saveVersion).toBe(7);
     expect(parsed.championshipContainer.playableInternalName).toBe('mock-championship');
     expect(
       getPlayableChampionship(parsed.championshipContainer).matchContainer.rounds[0].matches[0]
@@ -283,6 +285,36 @@ describe('GameRepository', () => {
       },
     };
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(versionFive));
+
+    expect(GameRepository.hasSavedGame()).toBe(false);
+    expect(() => GameRepository.loadGame()).toThrow('Saved game could not be found.');
+  });
+
+  it("keeps every club's level through a save and a load, and no level where there was none (MS-116)", () => {
+    GameRepository.saveGame(buildPlayedState());
+
+    const loaded = getPlayableChampionship(GameRepository.loadGame().championshipContainer);
+    const home = loaded.teams.find((team) => team.id === uuid('home'))!;
+    const away = loaded.teams.find((team) => team.id === uuid('away'))!;
+
+    expect(home.level).toBe(62);
+    expect('level' in away).toBe(false);
+  });
+
+  it('abandons a version-6 save, whose clubs carry no level (MS-116)', () => {
+    const saved = GameStateMapper.dehydrate(buildPlayedState());
+    const versionSix = {
+      ...saved,
+      saveVersion: 6,
+      championshipContainer: {
+        ...saved.championshipContainer,
+        championships: saved.championshipContainer.championships.map((championship) => ({
+          ...championship,
+          teams: championship.teams.map(({ level: _level, ...team }) => team),
+        })),
+      },
+    };
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(versionSix));
 
     expect(GameRepository.hasSavedGame()).toBe(false);
     expect(() => GameRepository.loadGame()).toThrow('Saved game could not be found.');

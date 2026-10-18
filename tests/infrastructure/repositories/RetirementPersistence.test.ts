@@ -89,9 +89,9 @@ describe('retirement data across save and load (MS-113)', () => {
     rolled = nextSeason(stateOf(mensPyramid()), everyoneRetires);
   });
 
-  it('writes save version 6', () => {
+  it('writes save version 7', () => {
     GameRepository.saveGame(rolled);
-    expect(JSON.parse(window.localStorage.getItem(STORAGE_KEY)!).saveVersion).toBe(6);
+    expect(JSON.parse(window.localStorage.getItem(STORAGE_KEY)!).saveVersion).toBe(7);
   });
 
   it('brings the coach pool, retired lists and report back unchanged', () => {

@@ -62,7 +62,8 @@ const dehydrateRound = (round: Round): SavedRound => ({
  * A club in its on-disk form. `stamina` is match-scoped: it is recomputed from the minute on every
  * tick, so a value caught mid-match in a save is stale the instant it is read back. Dropped here
  * rather than on load, so it never reaches the disk at all. `strengthProgressGames` is written
- * under its short key (see `SavedPlayer`).
+ * under its short key (see `SavedPlayer`). The club's `level` (MS-116) is written under its full
+ * name: there is one per club, not one per player.
  */
 function dehydrateTeam(team: Team): SavedTeam {
   return {
