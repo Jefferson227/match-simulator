@@ -462,6 +462,44 @@ export function buildFinalClassification(championship: Championship): Standing[]
   return ordered.map((standing, index) => ({ ...standing, position: index + 1 }));
 }
 
+/**
+ * Every club of `championship` ranked for its season (MS-116): what a club's level moves by. The
+ * champion and runner-up come first; then the clubs that went further rank above the clubs that
+ * went out earlier, and clubs that went out in the same phase rank by points across every phase,
+ * by the league tiebreaker cascade. So A2's 8th-placed league club that reaches the semifinals
+ * ranks above the league leader knocked out in the quarter-finals. An unphased championship ranks
+ * by its table.
+ *
+ * Unlike `buildFinalClassification`, which reports points with the podium forced to the top, this
+ * reads how far a club went. Clubs come back as `championship.teams` holds them.
+ */
+export function buildSeasonRanking(championship: Championship): Team[] {
+  const teamsById = new Map(championship.teams.map((team) => [team.id, team]));
+  const toTeams = (standings: Standing[]): Team[] =>
+    standings.map((standing) => teamsById.get(standing.team.id) ?? standing.team);
+
+  if (!championship.phases?.length) return toTeams(rankStandings(championship.standings));
+
+  const furthestPhase = new Map<Team['id'], number>();
+  (championship.phaseParticipants ?? []).forEach((participants, phaseIndex) =>
+    participants?.forEach((teamId) => furthestPhase.set(teamId, phaseIndex))
+  );
+  const reached = (standing: Standing) => furthestPhase.get(standing.team.id) ?? -1;
+
+  // `buildFinalClassification` already puts the podium first and the rest by accumulated points;
+  // a stable sort by phase reached keeps both orders inside each group.
+  const classification = buildFinalClassification(championship);
+  const podiumSize = isPhasedChampionshipOver(championship)
+    ? Math.min(2, (championship.phaseParticipants?.[championship.phases.length - 1] ?? []).length)
+    : 0;
+  const podium = classification.slice(0, podiumSize);
+  const rest = classification
+    .slice(podiumSize)
+    .sort((left, right) => reached(right) - reached(left));
+
+  return toTeams([...podium, ...rest]);
+}
+
 /** Initial phase state for a freshly generated phased championship. */
 export function initialisePhaseState(championship: Championship): Championship {
   if (!championship.phases?.length) return championship;
