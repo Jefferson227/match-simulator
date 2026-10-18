@@ -658,6 +658,9 @@ describe('ChampionshipService strength progression (MS-115)', () => {
     return { ...team, morale, players: team.players.map((p) => ({ ...p, ...player })) };
   };
 
+  /** Always rolls the lowest value, so every gain below the band top lands. */
+  const alwaysGains: RandomProvider = { nextInt: (min) => min };
+
   const endAll = (container: ChampionshipContainer, rng?: RandomProvider) => {
     const result = ChampionshipService.endRoundForAllChampionships(container, rng ? { rng } : {});
     expect(result.succeeded).toBe(true);
@@ -671,11 +674,12 @@ describe('ChampionshipService strength progression (MS-115)', () => {
 
   /**
    * A two-tier pyramid: the playable division is the bottom tier (range 1–49) with three clubs.
-   * `home` (high morale, 20-year-olds: every game) beats `away` (low morale, 26-year-olds one game
-   * short of their 4) in round 1; `idle` plays nobody. A bench player sits outside the lineup.
+   * `home` (high morale, 20-year-olds one game short of their 2) beats `away` (low morale,
+   * 26-year-olds one game short of their 4) in round 1; `idle` plays nobody. A bench player sits
+   * outside the lineup. No club has a level, so the band is the whole range.
    */
   function bottomTierAfterRoundOne(status: Round['status'] = 'in-progress', tier = 2) {
-    const homeCanonical = squad(1, 80, { age: 20, strength: 30, strengthProgressGames: 0 });
+    const homeCanonical = squad(1, 80, { age: 20, strength: 30, strengthProgressGames: 1 });
     const bench: Player = {
       ...homeCanonical.players[1],
       id: 'player-1-bench' as Player['id'],
@@ -684,7 +688,7 @@ describe('ChampionshipService strength progression (MS-115)', () => {
     };
     const home = { ...homeCanonical, players: [...homeCanonical.players, bench] };
     const away = squad(2, 30, { age: 26, strength: 30, strengthProgressGames: 3 });
-    const idle = squad(3, 80, { age: 20, strength: 30, strengthProgressGames: 0 });
+    const idle = squad(3, 80, { age: 20, strength: 30, strengthProgressGames: 1 });
     const homeInRoundOne = { ...home, players: homeCanonical.players };
 
     const playable = leagueOf(
@@ -704,7 +708,7 @@ describe('ChampionshipService strength progression (MS-115)', () => {
   it('moves every player of every club that played, bench included', () => {
     const { container, home, away } = bottomTierAfterRoundOne();
 
-    const ended = getPlayableChampionship(endAll(container));
+    const ended = getPlayableChampionship(endAll(container, alwaysGains));
     const endedHome = ended.teams.find((team) => team.id === home.id)!;
     const endedAway = ended.teams.find((team) => team.id === away.id)!;
 
@@ -726,7 +730,7 @@ describe('ChampionshipService strength progression (MS-115)', () => {
   it('carries strength and counter to the table rows and the fixtures still to play', () => {
     const { container, home } = bottomTierAfterRoundOne();
 
-    const ended = getPlayableChampionship(endAll(container));
+    const ended = getPlayableChampionship(endAll(container, alwaysGains));
     const row = ended.standings.find((standing) => standing.team.id === home.id)!;
     const next = ended.matchContainer.rounds[1].matches[0].awayTeam;
     const played = ended.matchContainer.rounds[0].matches[0].homeTeam;
@@ -740,6 +744,44 @@ describe('ChampionshipService strength progression (MS-115)', () => {
     );
     // The played round keeps its own snapshot.
     expect(strengths(played)).toEqual([30]);
+  });
+
+  it("pulls toward the club's band and keeps its level on every copy (MS-116)", () => {
+    const { container, home } = bottomTierAfterRoundOne();
+    // Level 10 in 1–49: the band is 7–13, so 30 is pulled down 2 whatever the morale.
+    const withLevel = (team: Team): Team => (team.id === home.id ? { ...team, level: 10 } : team);
+    const playable = getPlayableChampionship(container);
+    const leveled = {
+      ...container,
+      championships: container.championships.map((championship) =>
+        championship !== playable
+          ? championship
+          : {
+              ...playable,
+              teams: playable.teams.map(withLevel),
+              standings: playable.standings.map((row) => ({ ...row, team: withLevel(row.team) })),
+              matchContainer: {
+                ...playable.matchContainer,
+                rounds: playable.matchContainer.rounds.map((round) => ({
+                  ...round,
+                  matches: round.matches.map((match) => ({
+                    ...match,
+                    homeTeam: withLevel(match.homeTeam),
+                    awayTeam: withLevel(match.awayTeam),
+                  })),
+                })),
+              },
+            }
+      ),
+    };
+
+    const ended = getPlayableChampionship(endAll(leveled, alwaysGains));
+    const endedHome = ended.teams.find((team) => team.id === home.id)!;
+    const row = ended.standings.find((standing) => standing.team.id === home.id)!;
+    const next = ended.matchContainer.rounds[1].matches[0].awayTeam;
+
+    expect(strengths(endedHome)).toEqual([28]);
+    expect([endedHome.level, row.team.level, next.level]).toEqual([10, 10, 10]);
   });
 
   it('does not move anyone for a round that has already ended', () => {
@@ -757,14 +799,14 @@ describe('ChampionshipService strength progression (MS-115)', () => {
     const endedHome = ended.teams.find((team) => team.id === home.id)!;
 
     expect(strengths(endedHome)).toEqual([30]);
-    expect(counters(endedHome)).toEqual([0]);
+    expect(counters(endedHome)).toEqual([1]);
   });
 
   it('counts every round an AI division catches up in one call, each exactly once', () => {
     const { container } = bottomTierAfterRoundOne();
-    // Mid morale, 26-year-olds: one step every 4 games, inside the top tier's 50–99.
-    const aiHome = squad(4, 50, { age: 26, strength: 60, strengthProgressGames: 0 });
-    const aiAway = squad(5, 50, { age: 26, strength: 60, strengthProgressGames: 0 });
+    // Low morale, 26-year-olds: one certain step down every 4 games, inside the top tier's 50–99.
+    const aiHome = squad(4, 30, { age: 26, strength: 60, strengthProgressGames: 0 });
+    const aiAway = squad(5, 30, { age: 26, strength: 60, strengthProgressGames: 0 });
     const ai = leagueOf(
       'top',
       1,
@@ -791,7 +833,7 @@ describe('ChampionshipService strength progression (MS-115)', () => {
     ).length;
     expect(roundsPlayed).toBeGreaterThan(4);
     caughtUp.teams.forEach((team) => {
-      expect(strengths(team)).toEqual([60 + Math.floor(roundsPlayed / 4)]);
+      expect(strengths(team)).toEqual([60 - Math.floor(roundsPlayed / 4)]);
       expect(counters(team)).toEqual([roundsPlayed % 4]);
     });
   });
@@ -822,7 +864,8 @@ describe('ChampionshipService next-phase squads (MS-115)', () => {
   ];
 
   it('deals the new phase its fixtures with the squads as they stand after the round', () => {
-    // Young squads at high morale move every game, so a stale copy shows at once.
+    // Young squads at high morale one game short of their 2 move this round, so a stale copy shows
+    // at once.
     const fresh = buildPhasedChampionship(4, semifinalThenFinal);
     let championship: Championship = {
       ...fresh,
@@ -832,7 +875,7 @@ describe('ChampionshipService next-phase squads (MS-115)', () => {
       teams: fresh.teams.map((team) => ({
         ...team,
         morale: 80,
-        players: team.players.map((player) => ({ ...player, age: 20 })),
+        players: team.players.map((player) => ({ ...player, age: 20, strengthProgressGames: 1 })),
       })),
     };
     championship = initialisePhaseState({

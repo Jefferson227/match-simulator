@@ -181,7 +181,8 @@ function endRound(
       round.matches
     ),
     round.matches,
-    range
+    range,
+    resolveDependencies(dependencies).rng
   );
 
   // A phased championship does not end when its rounds run out — it resolves the phase and
@@ -236,11 +237,15 @@ function withSeasonStats(championship: Championship, matches: Match[]): Champion
  * ends here exactly once. Morale is the club's as it stands, before `UPDATE_TEAM_STATS` applies
  * the round's result. Clubs that did not play — knocked out, or a bye — are left alone, and so is
  * a division with no `range`.
+ *
+ * Gains are rolled from `rng`, the division's own stream (MS-116) — the playable division's `rng`,
+ * an AI division's `rngForDivision` — so they cannot shift another division's results.
  */
 function withStrengthProgression(
   championship: Championship,
   matches: Match[],
-  range: StrengthRange | undefined
+  range: StrengthRange | undefined,
+  rng: RandomProvider
 ): Championship {
   if (!range) return championship;
 
@@ -253,7 +258,7 @@ function withStrengthProgression(
   return withUpdatedSquads(
     championship,
     championship.teams.map((team) =>
-      PlayerProgressionService.progressTeamPlayers(team, gamesPlayed.get(team.id) ?? 0, range)
+      PlayerProgressionService.progressTeamPlayers(team, gamesPlayed.get(team.id) ?? 0, range, rng)
     ),
     ({ strength, strengthProgressGames }) => ({ strength, strengthProgressGames })
   );
