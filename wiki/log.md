@@ -687,3 +687,25 @@ pyramids, not in the running app.
 - [[index]]: spec and decision rows; "Neighbouring men's divisions' strengths overlap" closed; new
   thread for squads saturating at the top of their range.
 - `CLAUDE.md`: the knowledge-base pointer now names the new spec.
+
+## [2026-10-18] spec | MS-116 — club levels inside a division's strength range
+
+sha 87c8571
+
+Every league club has a hidden, persisted level inside its division's range; its players are pulled
+toward level ± 3, a four-band age curve with a mid-morale hold decides the direction, and each +1 is
+rolled against the band top. Levels move at roll-over by final rank, promotion and relegation. Save
+version 7. Verified by a scripted three- and six-season run of both pyramids, not in the running
+app; the ≤ 10%-at-max and above-range targets were missed and accepted by the user.
+
+- [[player-strength-progression]]: amended (dated 2026-10-17). New *Club level and band* section,
+  final-rank rule, new age bands, direction and interval tables, the rolled +1, the pull aimed at the
+  band, *Saves* section; `ClubLevel.ts` asserted.
+- [[ms-116-club-levels]]: new decision. Why, clarification choices, rejected options (longer
+  intervals only, save migration, UI, morale rebalance, a squared roll, a band cap), before/after
+  numbers, and the six-season pile-up as an open thread.
+- [[ms-115-strength-ranges]]: "Still open" saturation thread closed with a link.
+- [[invented-data]]: "Invented by MS-116" (±3 band, ±2 season change, +3/−3 offsets, the tables,
+  the rolled +1).
+- [[index]]: decision row; saturation thread closed; new thread for the top band filling over
+  seasons.

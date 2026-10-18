@@ -74,7 +74,8 @@ Why things are the way they are — the part the code cannot state.
 | [[ms-110-language-selection]] | MS-110 | implemented; verified in the running app |
 | [[ms-112-2026-rosters-and-serie-d]] | MS-112 | implemented; playoff screens covered by component tests only (running-app check waived) |
 | [[ms-113-ageing-and-retirement]] | MS-113 | implemented; verified in the running app |
-| [[ms-115-strength-ranges]] | MS-115 | implemented; spec amended to a two-way pull; verified by a scripted engine run, not the running app |
+| [[ms-115-strength-ranges]] | MS-115 | implemented; spec amended to a two-way pull; verified by a scripted engine run, not the running app; saturation closed by MS-116 |
+| [[ms-116-club-levels]] | MS-116 | implemented; ≤ 10%-at-max and above-range targets missed and accepted by the user; verified by a scripted engine run, not the running app |
 
 ## Raw
 
@@ -125,9 +126,12 @@ Things named across these pages that nothing currently owns:
 - ~~**Neighbouring men's divisions' strengths overlap.**~~ — **closed by MS-115.** Every division
   owns a slice of 1–99, squads start in it, and a promoted or relegated squad is pulled into its new
   slice. See [[player-strength-progression]].
-- **Squads saturate at the top of their range.** Inside the range mid and high morale both
-  increase, and morale drifts up, so by season 3 of a scripted run 84% of Série A players were at
-  99. Strength stops telling a division's clubs apart. No ticket. See [[ms-115-strength-ranges]].
+- ~~**Squads saturate at the top of their range.**~~ — **closed by MS-116.** Each club has its own
+  level and band inside its division's range, so by season 3 15–18% of Série A players are at 99,
+  down from 85–89%. See [[ms-116-club-levels]].
+- **The top band still fills over seasons.** The season change rewards winners, so more clubs reach
+  the max level (Série D: 2 at season 3, 8–12 at season 6) and the share of players at the max
+  climbs back to 22–35% by season 6. No ticket. See [[ms-116-club-levels]].
 - **Coaches and nationalities are not shown.** MS-112 added both to the seed and neither to any
   screen. No ticket. See [[ms-112-2026-rosters-and-serie-d]].
 - **Série C and D stop tracking reality from 2027.** The game's 6 ↔ 6 keeps both sizes fixed, while

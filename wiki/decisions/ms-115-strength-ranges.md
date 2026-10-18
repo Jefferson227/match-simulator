@@ -70,9 +70,12 @@ only decides the direction inside. Players above their range at the end of seaso
 
 Rejected: keeping the brief and filing the finding for later; redesigning the morale thresholds.
 
-**Still open.** Inside the range mid and high morale both increase, and morale drifts up over a
+~~**Still open.** Inside the range mid and high morale both increase, and morale drifts up over a
 season, so squads pile up at the top of their range: by season 3, 84% of Série A players were at 99
-and 82% of Série B's at 74. Strength stops telling a division's clubs apart. No ticket.
+and 82% of Série B's at 74. Strength stops telling a division's clubs apart.~~ — **closed by
+MS-116.** Each club now has its own level and band inside the range, mid morale holds, and a gain
+is rolled against the band top. By season 3, 15–18% of Série A players are at 99. See
+[[ms-116-club-levels]].
 
 ## Smaller choices
 
